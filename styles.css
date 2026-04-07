@@ -10,7 +10,7 @@
   --blueHover:#1577d4;
   --blueSoft:rgba(30,144,255,0.16);
   --shadow:0 12px 28px rgba(0,0,0,0.28);
-  --maxW:560px;
+  --maxW:860px;
 }
 
 *{ box-sizing:border-box; }
@@ -37,20 +37,18 @@ body{
   width:100%;
   max-width:var(--maxW);
   min-height:88vh;
-  max-height:92vh;
   background:rgba(255,255,255,0.04);
   border:1px solid var(--cardBorder);
   border-radius:28px;
   box-shadow:var(--shadow);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   display:flex;
   flex-direction:column;
   overflow:hidden;
 }
 
 .chat-topbar{
-  padding:16px 16px 12px;
+  padding:18px 18px 14px;
   border-bottom:1px solid rgba(255,255,255,0.08);
   background:rgba(255,255,255,0.04);
 }
@@ -62,9 +60,9 @@ body{
 }
 
 .chat-brand-icon{
-  width:44px;
-  height:44px;
-  border-radius:14px;
+  width:46px;
+  height:46px;
+  border-radius:16px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -74,11 +72,10 @@ body{
   font-family:"Bangers", cursive;
   font-size:24px;
   letter-spacing:.5px;
-  flex:0 0 auto;
 }
 
 .chat-brand-title{
-  font-size:20px;
+  font-size:22px;
   font-weight:900;
   line-height:1.1;
 }
@@ -87,12 +84,11 @@ body{
   margin-top:3px;
   font-size:12px;
   color:var(--muted);
-  line-height:1.35;
 }
 
 .chat-messages{
   flex:1;
-  padding:16px;
+  padding:18px;
   overflow:auto;
   display:flex;
   flex-direction:column;
@@ -112,9 +108,9 @@ body{
 }
 
 .message-bubble{
-  max-width:88%;
-  border-radius:20px;
-  padding:12px 14px;
+  max-width:82%;
+  border-radius:22px;
+  padding:12px 15px;
   font-size:14px;
   line-height:1.5;
   box-shadow:var(--shadow);
@@ -132,12 +128,11 @@ body{
 }
 
 .answer-card{
-  width:100%;
-  max-width:100%;
+  width:min(100%, 700px);
   background:rgba(255,255,255,0.06);
   border:1px solid var(--cardBorder);
-  border-radius:20px;
-  padding:15px;
+  border-radius:22px;
+  padding:16px;
   box-shadow:var(--shadow);
 }
 
@@ -154,7 +149,7 @@ body{
 }
 
 .answer-title{
-  font-size:20px;
+  font-size:22px;
   font-weight:900;
   line-height:1.15;
   margin-bottom:8px;
@@ -195,13 +190,13 @@ body{
   justify-content:center;
   min-height:42px;
   padding:10px 14px;
+  border-radius:14px;
   border:1px solid rgba(30,144,255,0.34);
   background:var(--blue);
   color:#fff;
   text-decoration:none;
   font-weight:800;
   font-size:13px;
-  border-radius:14px;
   transition:transform 120ms ease, background 120ms ease;
 }
 
@@ -237,11 +232,11 @@ body{
 .followup-btn{
   border:1px solid var(--cardBorder);
   background:var(--cardBg2);
-  color:var(--text);
-  padding:10px 12px;
+  color:#fff;
   border-radius:999px;
-  cursor:pointer;
+  padding:10px 12px;
   font-size:12px;
+  cursor:pointer;
   transition:transform 120ms ease, background 120ms ease;
   box-shadow:var(--shadow);
 }
@@ -252,7 +247,7 @@ body{
 }
 
 .chat-suggestions{
-  padding:0 16px 12px;
+  padding:0 18px 14px;
   display:flex;
   flex-wrap:wrap;
   gap:8px;
@@ -276,7 +271,7 @@ body{
 }
 
 .chat-input-shell{
-  padding:14px 16px 16px;
+  padding:14px 18px 18px;
   border-top:1px solid rgba(255,255,255,0.08);
   display:flex;
   gap:10px;
@@ -286,8 +281,8 @@ body{
 .chat-input{
   flex:1;
   min-width:0;
-  height:52px;
-  border-radius:16px;
+  height:54px;
+  border-radius:18px;
   border:1px solid var(--cardBorder);
   background:rgba(255,255,255,0.06);
   color:var(--text);
@@ -301,9 +296,9 @@ body{
 }
 
 .send-btn{
-  height:52px;
-  padding:0 18px;
-  border-radius:16px;
+  height:54px;
+  padding:0 20px;
+  border-radius:18px;
   border:1px solid rgba(30,144,255,0.34);
   cursor:pointer;
   font-weight:800;
@@ -311,7 +306,6 @@ body{
   background:var(--blue);
   color:#fff;
   transition:transform 120ms ease, background 120ms ease;
-  flex:0 0 auto;
 }
 
 .send-btn:hover{
@@ -326,11 +320,9 @@ body{
 
   .chat-app{
     min-height:100vh;
-    max-height:none;
     border-radius:0;
     border-left:0;
     border-right:0;
-    max-width:none;
   }
 
   .chat-input-shell{

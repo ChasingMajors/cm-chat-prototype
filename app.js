@@ -1,83 +1,12 @@
-const PRODUCT_INDEX = [
-  {
-    name: "2026 Topps Series 1 Baseball",
-    sport: "baseball",
-    year: "2026",
-    checklistCode: "2026_topps_series1",
-    printRunCode: "26TS1mlb",
-    aliases: ["2026 topps series 1", "topps series 1", "series 1 baseball"]
-  },
-  {
-    name: "2026 Topps Heritage Baseball",
-    sport: "baseball",
-    year: "2026",
-    checklistCode: "2026_Topps_Heritage",
-    printRunCode: "26HertitageMLB",
-    aliases: ["2026 topps heritage", "topps heritage baseball", "heritage baseball"]
-  },
-  {
-    name: "2025 Topps Chrome Football",
-    sport: "football",
-    year: "2025",
-    checklistCode: "2025_topps_chrome_football",
-    printRunCode: "",
-    aliases: ["2025 topps chrome football", "topps chrome football"]
-  },
-  {
-    name: "2025-26 Topps Chrome UEFA Club Competitions Soccer",
-    sport: "soccer",
-    year: "2025-26",
-    checklistCode: "2025_26_Topps_Chrome_UEFA_Club_Competitions_Soccer",
-    printRunCode: "",
-    aliases: ["uefa chrome soccer", "topps chrome uefa", "2025-26 topps chrome soccer"]
-  },
-  {
-    name: "2025 Topps Transcendent Baseball",
-    sport: "baseball",
-    year: "2025",
-    checklistCode: "2025_Topps_Transcendent_baseball",
-    printRunCode: "",
-    aliases: ["2025 topps transcendent", "topps transcendent baseball"]
-  }
-];
+const CHECKLIST_EXEC_URL = "https://script.google.com/macros/s/AKfycbxVsOvACvcgwf8igVdlRcGVqTa0KciCO_w23GCHzVXp4dQrUE-4hx1Uut5o_KrCLXYL/exec";
+const VAULT_EXEC_URL = "https://script.google.com/macros/s/AKfycbx_1rqxgSCu6aqDc7jEnETYC-KcNxHEf208GWXM23FR7hDT0ey8Y1SZ2i4U1VmXOZgpAg/exec";
+const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0VmnUeJqP0OcFL5qCe-MUjN0JonJ8QTlfpMsf0XRKZzCwLdFdiF/exec";
 
-const PLAYER_INDEX = [
-  { name: "Roman Anthony", sport: "baseball", tags: ["prospect", "rookie chase"] },
-  { name: "James Wood", sport: "baseball", tags: ["rookie", "hot cards"] },
-  { name: "Aaron Judge", sport: "baseball", tags: ["veteran", "slugger"] },
-  { name: "Victor Wembanyama", sport: "basketball", tags: ["rookie", "basketball"] },
-  { name: "Caleb Williams", sport: "football", tags: ["rookie", "football"] }
-];
-
-const TRENDING = {
-  baseball: [
-    "2026 Topps Series 1 Baseball",
-    "2026 Topps Heritage Baseball",
-    "2025 Topps Transcendent Baseball"
-  ],
-  football: [
-    "2025 Topps Chrome Football",
-    "2025 Prizm Football",
-    "2025 Donruss Football"
-  ],
-  soccer: [
-    "2025-26 Topps Chrome UEFA Club Competitions Soccer",
-    "2025-26 Topps Gold UEFA Club Competitions Soccer",
-    "2026 Topps Finest Premier League Soccer"
-  ],
-  all: [
-    "2026 Topps Series 1 Baseball",
-    "2026 Topps Heritage Baseball",
-    "2025 Topps Chrome Football"
-  ]
-};
-
-const JUST_ADDED = [
-  "2025 Topps Chrome Football",
-  "2025-26 Topps Chrome UEFA Club Competitions Soccer",
-  "2025 Topps Transcendent Baseball",
-  "2026 Topps Heritage Baseball"
-];
+const CL_INDEX_KEY = "cm_chat_cl_index_v1";
+const PRV_INDEX_KEY = "cm_chat_prv_index_v1";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v1";
+const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v1";
+const INDEX_TTL_MS = 1000 * 60 * 30;
 
 const EXAMPLES = [
   "Show me 2026 Topps Series 1 print run",
@@ -91,420 +20,18 @@ const chatInput = document.getElementById("chatInput");
 const sendBtn = document.getElementById("sendBtn");
 const examplePills = document.getElementById("examplePills");
 
-function normalize(text) {
-  return String(text || "")
-    .toLowerCase()
-    .replace(/[^a-z0-9\\s'-]/g, " ")
-    .replace(/\\s+/g, " ")
-    .trim();
-}
-
-function includesAny(haystack, needles) {
-  return needles.some((n) => haystack.includes(normalize(n)));
-}
-
-function escapeHtml(str) {
-  return String(str || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-function renderExamples() {
-  examplePills.innerHTML = EXAMPLES.map((example) => {
-    return `<button class="example-pill" type="button" data-example="${escapeHtml(example)}">${escapeHtml(example)}</button>`;
-  }).join("");
-
-  examplePills.querySelectorAll("[data-example]").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      submitQuery(btn.getAttribute("data-example") || "");
-    });
-  });
-}
-
-function findProduct(query) {
-  const nq = normalize(query);
-  let best = null;
-  let bestScore = 0;
-
-  PRODUCT_INDEX.forEach((item) => {
-    let score = 0;
-    if (nq.includes(normalize(item.name))) score += 10;
-
-    item.aliases.forEach((alias) => {
-      if (nq.includes(normalize(alias))) score += 4;
-    });
-
-    if (String(item.year) && nq.includes(String(item.year))) score += 1;
-    if (nq.includes(item.sport)) score += 1;
-
-    if (score > bestScore) {
-      best = item;
-      bestScore = score;
-    }
-  });
-
-  return bestScore > 0 ? best : null;
-}
-
-function findPlayer(query) {
-  const nq = normalize(query);
-  let best = null;
-  let bestScore = 0;
-
-  PLAYER_INDEX.forEach((item) => {
-    let score = 0;
-    if (nq.includes(normalize(item.name))) score += 10;
-    if (nq.includes(item.sport)) score += 1;
-
-    if (score > bestScore) {
-      best = item;
-      bestScore = score;
-    }
-  });
-
-  return bestScore > 0 ? best : null;
-}
-
-function detectIntent(query) {
-  const nq = normalize(query);
-
-  const asksPrintRun = includesAny(nq, ["print run", "print-run", "production", "how many made", "rarity"]);
-  const asksChecklist = includesAny(nq, ["checklist", "check list", "card list", "full list"]);
-  const asksTrending = includesAny(nq, ["trending", "hot", "popular", "what's hot", "whats hot"]);
-  const asksJustAdded = includesAny(nq, ["just added", "newly added", "new stuff", "new data"]);
-  const asksRelease = includesAny(nq, ["release", "release date", "releases", "coming out", "dropping next"]);
-  const asksPlayer = includesAny(nq, ["player", "rookie cards", "cards for", "show me cards for"]);
-
-  if (asksJustAdded) return "just_added";
-  if (asksTrending) return "trending";
-  if (asksRelease) return "release";
-  if (asksPrintRun) return "print_run";
-  if (asksChecklist) return "checklist";
-  if (asksPlayer) return "player";
-  return "search";
-}
-
-function buildResponse(query) {
-  const intent = detectIntent(query);
-  const product = findProduct(query);
-  const player = findPlayer(query);
-  const nq = normalize(query);
-
-  if (intent === "just_added") {
-    return {
-      badge: "Just Added",
-      title: "Here’s what was just added",
-      summary: JUST_ADDED.join(" • "),
-      metadata: [],
-      actions: [
-        { label: "Open Checklist Vault", href: "/checklists/", primary: true },
-        { label: "Open Print Run Vault", href: "/vault/", primary: false }
-      ],
-      followUps: [
-        "Show me baseball sets just added",
-        "What print runs are trending?"
-      ]
-    };
-  }
-
-  if (intent === "trending") {
-    const sport = ["baseball", "football", "basketball", "soccer", "hockey"].find((s) => nq.includes(s)) || "all";
-
-    return {
-      badge: "Trending",
-      title: sport === "all" ? "Here’s what’s trending now" : `Trending ${sport}`,
-      summary: (TRENDING[sport] || TRENDING.all).join(" • "),
-      metadata: [],
-      actions: [
-        { label: "Open Checklist Vault", href: "/checklists/", primary: true },
-        { label: "Open Print Run Vault", href: "/vault/", primary: false }
-      ],
-      followUps: [
-        "What was just added?",
-        "Show me 2026 Topps Heritage print run"
-      ]
-    };
-  }
-
-  if (intent === "release") {
-    return {
-      badge: "Release Schedule",
-      title: "Release lookup",
-      summary: "In the full app this would route to Release Schedule and return the best matching upcoming products by sport, brand, and date.",
-      metadata: [],
-      actions: [
-        { label: "Open Release Schedule", href: "/schedule/", primary: true }
-      ],
-      followUps: [
-        "What baseball sets are trending?",
-        "Show me soccer releases"
-      ]
-    };
-  }
-
-  if (intent === "print_run" && product) {
-    return {
-      badge: "Print Run",
-      title: `I found ${product.name}`,
-      summary: product.printRunCode
-        ? "This product is available in Print Run Vault."
-        : "I found the product, but a print run record is not loaded in this prototype yet.",
-      metadata: [`Sport: ${product.sport}`, `Year: ${product.year}`],
-      actions: [
-        ...(product.printRunCode
-          ? [{
-              label: "Open Print Run Vault",
-              href: `/vault/?code=${encodeURIComponent(product.printRunCode)}&sport=${encodeURIComponent(product.sport)}&type=product&q=${encodeURIComponent(product.name)}`,
-              primary: true
-            }]
-          : []),
-        {
-          label: "Open Checklist Vault",
-          href: `/checklists/?code=${encodeURIComponent(product.checklistCode)}&sport=${encodeURIComponent(product.sport)}&type=product&q=${encodeURIComponent(product.name)}`,
-          primary: !product.printRunCode
-        }
-      ],
-      followUps: [
-        `Show me the checklist for ${product.name}`,
-        `What’s trending in ${product.sport}?`
-      ]
-    };
-  }
-
-  if ((intent === "checklist" || intent === "search") && product) {
-    return {
-      badge: "Checklist",
-      title: `I found ${product.name}`,
-      summary: "Best match found in Checklist Vault.",
-      metadata: [`Sport: ${product.sport}`, `Year: ${product.year}`],
-      actions: [
-        {
-          label: "Open Checklist Vault",
-          href: `/checklists/?code=${encodeURIComponent(product.checklistCode)}&sport=${encodeURIComponent(product.sport)}&type=product&q=${encodeURIComponent(product.name)}`,
-          primary: true
-        },
-        ...(product.printRunCode
-          ? [{
-              label: "Open Print Run Vault",
-              href: `/vault/?code=${encodeURIComponent(product.printRunCode)}&sport=${encodeURIComponent(product.sport)}&type=product&q=${encodeURIComponent(product.name)}`,
-              primary: false
-            }]
-          : [])
-      ],
-      followUps: [
-        `Show me ${product.name} print run`,
-        `What else is trending in ${product.sport}?`
-      ]
-    };
-  }
-
-  if ((intent === "player" || (!product && player)) && player) {
-    return {
-      badge: "Player",
-      title: `Player search: ${player.name}`,
-      summary: `I found a player match in ${player.sport}. In the full app this would route to grouped card results, player checklist hits, and related products.`,
-      metadata: player.tags.map((tag) => `Tag: ${tag}`),
-      actions: [
-        {
-          label: "Search Checklist Vault",
-          href: `/checklists/?q=${encodeURIComponent(player.name)}`,
-          primary: true
-        },
-        {
-          label: "Open Print Run Vault",
-          href: `/vault/?q=${encodeURIComponent(player.name)}`,
-          primary: false
-        }
-      ],
-      followUps: [
-        `Find ${player.name} rookie cards`,
-        `What ${player.sport} sets are trending?`
-      ]
-    };
-  }
-
-  return {
-    badge: "Try This",
-    title: "I’m not sure yet, but I can still help",
-    summary: "Try asking for a checklist, a print run, a player, what’s trending, what was just added, or a release lookup.",
-    metadata: [],
-    actions: [
-      { label: "Open Checklist Vault", href: "/checklists/", primary: true },
-      { label: "Open Print Run Vault", href: "/vault/", primary: false }
-    ],
-    followUps: [
-      "Show me 2026 Topps Series 1 print run",
-      "Find Roman Anthony cards",
-      "What was just added?"
-    ]
-  };
-}
-
-function addUserMessage(text) {
-  const row = document.createElement("div");
-  row.className = "message-row user";
-  row.innerHTML = `<div class="message-bubble">${escapeHtml(text)}</div>`;
-  chatMessages.appendChild(row);
-  scrollMessages();
-}
-
-function addAssistantIntro() {
-  const row = document.createElement("div");
-  row.className = "message-row assistant";
-  row.innerHTML = `<div class="message-bubble">Here’s what I found.</div>`;
-  chatMessages.appendChild(row);
-}
-
-function addAnswerCard(response) {
-  const row = document.createElement("div");
-  row.className = "message-row assistant";
-
-  const metaHtml = (response.metadata || []).length
-    ? `
-      <div class="answer-meta">
-        ${(response.metadata || []).map((item) => `<div class="answer-meta-chip">${escapeHtml(item)}</div>`).join("")}
-      </div>
-    `
-    : "";
-
-  const actionsHtml = (response.actions || []).length
-    ? `
-      <div class="answer-actions">
-        ${(response.actions || []).map((action) => `
-          <a class="answer-action ${action.primary ? "" : "secondary"}" href="${escapeHtml(action.href || "#")}">
-            ${escapeHtml(action.label)}
-          </a>
-        `).join("")}
-      </div>
-    `
-    : "";
-
-  const followUpsHtml = (response.followUps || []).length
-    ? `
-      <div class="answer-followups">
-        <div class="followup-label">Suggested follow-ups</div>
-        <div class="followup-list">
-          ${(response.followUps || []).map((item) => `
-            <button class="followup-btn" type="button" data-followup="${escapeHtml(item)}">${escapeHtml(item)}</button>
-          `).join("")}
-        </div>
-      </div>
-    `
-    : "";
-
-  row.innerHTML = `
-    <div class="answer-card">
-      <div class="answer-badge">${escapeHtml(response.badge || "Answer")}</div>
-      <div class="answer-title">${escapeHtml(response.title)}</div>
-      <div class="answer-summary">${escapeHtml(response.summary)}</div>
-      ${metaHtml}
-      ${actionsHtml}
-      ${followUpsHtml}
-    </div>
-  `;
-
-  chatMessages.appendChild(row);
-
-  row.querySelectorAll("[data-followup]").forEach((btn) => {
-    btn.addEventListener("click", function () {
-      submitQuery(btn.getAttribute("data-followup") || "");
-    });
-  });
-
-  scrollMessages();
-}
-
-function addInitialAssistantCard() {
-  const response = {
-    badge: "Ask",
-    title: "Ask Chasing Majors",
-    summary: "Ask about a checklist, print run, player, trending products, or what was just added.",
-    metadata: [],
-    actions: [],
-    followUps: EXAMPLES
-  };
-
-  addAssistantIntro();
-  addAnswerCard(response);
-}
-
-function scrollMessages() {
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-function submitQuery(text) {
-  const value = String(text || chatInput.value || "").trim();
-  if (!value) return;
-
-  addUserMessage(value);
-
-  const response = buildResponse(value);
-  addAssistantIntro();
-  addAnswerCard(response);
-
-  chatInput.value = "";
-  chatInput.focus();
-}
-
-sendBtn.addEventListener("click", function () {
-  submitQuery();
-});
-
-chatInput.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    submitQuery();
-  }
-});
-
-renderExamples();
-addInitialAssistantCard();    "2025-26 Topps Chrome UEFA Club Competitions Soccer",
-    "2025-26 Topps Gold UEFA Club Competitions Soccer",
-    "2026 Topps Finest Premier League Soccer"
-  ],
-  all: [
-    "2026 Topps Series 1 Baseball",
-    "2026 Topps Heritage Baseball",
-    "2025 Topps Chrome Football"
-  ]
-};
-
-const JUST_ADDED = [
-  "2025 Topps Chrome Football",
-  "2025-26 Topps Chrome UEFA Club Competitions Soccer",
-  "2025 Topps Transcendent Baseball",
-  "2026 Topps Heritage Baseball"
-];
-
-const EXAMPLES = [
-  "Show me 2026 Topps Series 1 print run",
-  "Find the checklist for 2025 Topps Chrome Football",
-  "What baseball sets are trending?",
-  "Find Roman Anthony cards",
-  "What was just added?",
-  "Show me soccer releases"
-];
-
-const chatMessages = document.getElementById("chatMessages");
-const chatInput = document.getElementById("chatInput");
-const sendBtn = document.getElementById("sendBtn");
-const examplePills = document.getElementById("examplePills");
+let checklistIndex = [];
+let printRunIndex = [];
+let bootPromise = null;
 
 function normalize(text) {
   return String(text || "")
     .toLowerCase()
-    .replace(/[^a-z0-9\s'-]/g, " ")
+    .replace(/[^\w\s'-]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
 
-function includesAny(haystack, needles) {
-  return needles.some((n) => haystack.includes(normalize(n)));
-}
-
 function escapeHtml(str) {
   return String(str || "")
     .replace(/&/g, "&amp;")
@@ -512,6 +39,10 @@ function escapeHtml(str) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+function includesAny(haystack, needles) {
+  return needles.some((n) => haystack.includes(normalize(n)));
 }
 
 function renderExamples() {
@@ -526,224 +57,8 @@ function renderExamples() {
   });
 }
 
-function findProduct(query) {
-  const nq = normalize(query);
-  let best = null;
-  let bestScore = 0;
-
-  PRODUCT_INDEX.forEach((item) => {
-    let score = 0;
-
-    if (nq.includes(normalize(item.name))) score += 10;
-
-    item.aliases.forEach((alias) => {
-      if (nq.includes(normalize(alias))) score += 4;
-    });
-
-    if (String(item.year) && nq.includes(String(item.year))) score += 1;
-    if (nq.includes(item.sport)) score += 1;
-
-    if (score > bestScore) {
-      best = item;
-      bestScore = score;
-    }
-  });
-
-  return bestScore > 0 ? best : null;
-}
-
-function findPlayer(query) {
-  const nq = normalize(query);
-  let best = null;
-  let bestScore = 0;
-
-  PLAYER_INDEX.forEach((item) => {
-    let score = 0;
-    if (nq.includes(normalize(item.name))) score += 10;
-    if (nq.includes(item.sport)) score += 1;
-
-    if (score > bestScore) {
-      best = item;
-      bestScore = score;
-    }
-  });
-
-  return bestScore > 0 ? best : null;
-}
-
-function detectIntent(query) {
-  const nq = normalize(query);
-
-  const asksPrintRun = includesAny(nq, ["print run", "print-run", "production", "how many made", "rarity"]);
-  const asksChecklist = includesAny(nq, ["checklist", "check list", "card list", "full list"]);
-  const asksTrending = includesAny(nq, ["trending", "hot", "popular", "what's hot", "whats hot"]);
-  const asksJustAdded = includesAny(nq, ["just added", "newly added", "new stuff", "new data"]);
-  const asksRelease = includesAny(nq, ["release", "release date", "releases", "coming out", "dropping next"]);
-  const asksPlayer = includesAny(nq, ["player", "rookie cards", "cards for", "show me cards for"]);
-
-  if (asksJustAdded) return "just_added";
-  if (asksTrending) return "trending";
-  if (asksRelease) return "release";
-  if (asksPrintRun) return "print_run";
-  if (asksChecklist) return "checklist";
-  if (asksPlayer) return "player";
-  return "search";
-}
-
-function buildResponse(query) {
-  const intent = detectIntent(query);
-  const product = findProduct(query);
-  const player = findPlayer(query);
-  const nq = normalize(query);
-
-  if (intent === "just_added") {
-    return {
-      badge: "Just Added",
-      title: "Here’s what was just added",
-      summary: JUST_ADDED.join(" • "),
-      metadata: [],
-      actions: [
-        { label: "Open Checklist Vault", href: "/checklists/", primary: true },
-        { label: "Open Print Run Vault", href: "/vault/", primary: false }
-      ],
-      followUps: [
-        "Show me baseball sets just added",
-        "What print runs are trending?"
-      ]
-    };
-  }
-
-  if (intent === "trending") {
-    const sport = ["baseball", "football", "basketball", "soccer", "hockey"].find((s) => nq.includes(s)) || "all";
-
-    return {
-      badge: "Trending",
-      title: sport === "all" ? "Here’s what’s trending now" : `Trending ${sport}`,
-      summary: (TRENDING[sport] || TRENDING.all).join(" • "),
-      metadata: [],
-      actions: [
-        { label: "Open Checklist Vault", href: "/checklists/", primary: true },
-        { label: "Open Print Run Vault", href: "/vault/", primary: false }
-      ],
-      followUps: [
-        "What was just added?",
-        "Show me 2026 Topps Heritage print run"
-      ]
-    };
-  }
-
-  if (intent === "release") {
-    return {
-      badge: "Release Schedule",
-      title: "Release lookup",
-      summary: "In the full app this would route to Release Schedule and return the best matching upcoming products by sport, brand, and date.",
-      metadata: [],
-      actions: [
-        { label: "Open Release Schedule", href: "/schedule/", primary: true }
-      ],
-      followUps: [
-        "What baseball sets are trending?",
-        "Show me soccer releases"
-      ]
-    };
-  }
-
-  if (intent === "print_run" && product) {
-    return {
-      badge: "Print Run",
-      title: `I found ${product.name}`,
-      summary: product.printRunCode
-        ? "This product is available in Print Run Vault."
-        : "I found the product, but a print run record is not loaded in this prototype yet.",
-      metadata: [`Sport: ${product.sport}`, `Year: ${product.year}`],
-      actions: [
-        ...(product.printRunCode
-          ? [{
-              label: "Open Print Run Vault",
-              href: `/vault/?code=${encodeURIComponent(product.printRunCode)}&sport=${encodeURIComponent(product.sport)}&type=product&q=${encodeURIComponent(product.name)}`,
-              primary: true
-            }]
-          : []),
-        {
-          label: "Open Checklist Vault",
-          href: `/checklists/?code=${encodeURIComponent(product.checklistCode)}&sport=${encodeURIComponent(product.sport)}&type=product&q=${encodeURIComponent(product.name)}`,
-          primary: !product.printRunCode
-        }
-      ],
-      followUps: [
-        `Show me the checklist for ${product.name}`,
-        `What’s trending in ${product.sport}?`
-      ]
-    };
-  }
-
-  if ((intent === "checklist" || intent === "search") && product) {
-    return {
-      badge: "Checklist",
-      title: `I found ${product.name}`,
-      summary: "Best match found in Checklist Vault.",
-      metadata: [`Sport: ${product.sport}`, `Year: ${product.year}`],
-      actions: [
-        {
-          label: "Open Checklist Vault",
-          href: `/checklists/?code=${encodeURIComponent(product.checklistCode)}&sport=${encodeURIComponent(product.sport)}&type=product&q=${encodeURIComponent(product.name)}`,
-          primary: true
-        },
-        ...(product.printRunCode
-          ? [{
-              label: "Open Print Run Vault",
-              href: `/vault/?code=${encodeURIComponent(product.printRunCode)}&sport=${encodeURIComponent(product.sport)}&type=product&q=${encodeURIComponent(product.name)}`,
-              primary: false
-            }]
-          : [])
-      ],
-      followUps: [
-        `Show me ${product.name} print run`,
-        `What else is trending in ${product.sport}?`
-      ]
-    };
-  }
-
-  if ((intent === "player" || (!product && player)) && player) {
-    return {
-      badge: "Player",
-      title: `Player search: ${player.name}`,
-      summary: `I found a player match in ${player.sport}. In the full app this would route to grouped card results, player checklist hits, and related products.`,
-      metadata: player.tags.map((tag) => `Tag: ${tag}`),
-      actions: [
-        {
-          label: "Search Checklist Vault",
-          href: `/checklists/?q=${encodeURIComponent(player.name)}`,
-          primary: true
-        },
-        {
-          label: "Open Print Run Vault",
-          href: `/vault/?q=${encodeURIComponent(player.name)}`,
-          primary: false
-        }
-      ],
-      followUps: [
-        `Find ${player.name} rookie cards`,
-        `What ${player.sport} sets are trending?`
-      ]
-    };
-  }
-
-  return {
-    badge: "Try This",
-    title: "I’m not sure yet, but I can still help",
-    summary: "Try asking for a checklist, a print run, a player, what’s trending, what was just added, or a release lookup.",
-    metadata: [],
-    actions: [
-      { label: "Open Checklist Vault", href: "/checklists/", primary: true },
-      { label: "Open Print Run Vault", href: "/vault/", primary: false }
-    ],
-    followUps: [
-      "Show me 2026 Topps Series 1 print run",
-      "Find Roman Anthony cards",
-      "What was just added?"
-    ]
-  };
+function scrollMessages() {
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 function addUserMessage(text) {
@@ -754,11 +69,28 @@ function addUserMessage(text) {
   scrollMessages();
 }
 
-function addAssistantIntro() {
+function addAssistantBubble(text) {
   const row = document.createElement("div");
   row.className = "message-row assistant";
-  row.innerHTML = `<div class="message-bubble">Here’s what I found.</div>`;
+  row.innerHTML = `<div class="message-bubble">${escapeHtml(text)}</div>`;
   chatMessages.appendChild(row);
+  scrollMessages();
+  return row;
+}
+
+function addThinkingBubble() {
+  const row = document.createElement("div");
+  row.className = "message-row assistant";
+  row.innerHTML = `<div class="message-bubble">Thinking...</div>`;
+  chatMessages.appendChild(row);
+  scrollMessages();
+  return row;
+}
+
+function removeNode(node) {
+  if (node && node.parentNode) {
+    node.parentNode.removeChild(node);
+  }
 }
 
 function addAnswerCard(response) {
@@ -801,8 +133,8 @@ function addAnswerCard(response) {
   row.innerHTML = `
     <div class="answer-card">
       <div class="answer-badge">${escapeHtml(response.badge || "Answer")}</div>
-      <div class="answer-title">${escapeHtml(response.title)}</div>
-      <div class="answer-summary">${escapeHtml(response.summary)}</div>
+      <div class="answer-title">${escapeHtml(response.title || "")}</div>
+      <div class="answer-summary">${escapeHtml(response.summary || "")}</div>
       ${metaHtml}
       ${actionsHtml}
       ${followUpsHtml}
@@ -821,34 +153,444 @@ function addAnswerCard(response) {
 }
 
 function addInitialAssistantCard() {
-  const response = {
-    badge: "Prototype",
+  addAssistantBubble("Ask me about a set, player, print run, checklist, what’s trending, or what was just added.");
+  addAnswerCard({
+    badge: "Ask",
     title: "Ask Chasing Majors",
-    summary: "Try a product, player, print run, checklist, trending, just added, or release-style question.",
+    summary: "This version uses your live Chasing Majors data sources so you can test actual speed and behavior.",
     metadata: [],
     actions: [],
-    followUps: EXAMPLES.slice(0, 4)
+    followUps: EXAMPLES
+  });
+}
+
+function getCachedJson(key, tsKey) {
+  try {
+    const raw = localStorage.getItem(key);
+    const ts = Number(localStorage.getItem(tsKey) || 0);
+    if (!raw || !ts) return null;
+    if (Date.now() - ts > INDEX_TTL_MS) return null;
+    return JSON.parse(raw);
+  } catch (e) {
+    return null;
+  }
+}
+
+function setCachedJson(key, tsKey, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value || []));
+    localStorage.setItem(tsKey, String(Date.now()));
+  } catch (e) {}
+}
+
+async function postJson(url, bodyObj) {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(bodyObj)
+  });
+  return res.json();
+}
+
+async function getJson(url) {
+  const res = await fetch(url, { method: "GET" });
+  return res.json();
+}
+
+async function loadChecklistIndex() {
+  const cached = getCachedJson(CL_INDEX_KEY, CL_INDEX_TS_KEY);
+  if (cached && Array.isArray(cached)) {
+    checklistIndex = cached;
+    return cached;
+  }
+
+  const data = await postJson(CHECKLIST_EXEC_URL, {
+    action: "index",
+    payload: {}
+  });
+
+  if (data && data.ok && Array.isArray(data.index)) {
+    checklistIndex = data.index;
+    setCachedJson(CL_INDEX_KEY, CL_INDEX_TS_KEY, checklistIndex);
+    return checklistIndex;
+  }
+
+  return [];
+}
+
+async function loadPrintRunIndex() {
+  const cached = getCachedJson(PRV_INDEX_KEY, PRV_INDEX_TS_KEY);
+  if (cached && Array.isArray(cached)) {
+    printRunIndex = cached;
+    return cached;
+  }
+
+  const data = await postJson(VAULT_EXEC_URL, {
+    action: "index",
+    payload: {}
+  });
+
+  let index = [];
+  if (data && data.ok && Array.isArray(data.index)) {
+    index = data.index;
+  } else if (data && Array.isArray(data.products)) {
+    index = data.products;
+  }
+
+  printRunIndex = index;
+  setCachedJson(PRV_INDEX_KEY, PRV_INDEX_TS_KEY, printRunIndex);
+  return printRunIndex;
+}
+
+async function bootstrapData() {
+  if (bootPromise) return bootPromise;
+
+  bootPromise = Promise.all([
+    loadChecklistIndex(),
+    loadPrintRunIndex()
+  ]).catch(function () {
+    return [];
+  });
+
+  return bootPromise;
+}
+
+function findChecklistProduct(query) {
+  const nq = normalize(query);
+  let best = null;
+  let bestScore = 0;
+
+  checklistIndex.forEach((item) => {
+    const displayName = String(item.DisplayName || "");
+    const keywords = String(item.Keywords || "");
+    const sport = String(item.sport || "");
+    const year = String(item.year || "");
+    const code = String(item.Code || "");
+
+    const hay = normalize(displayName + " " + keywords + " " + code);
+    if (!hay) return;
+
+    let score = 0;
+    if (nq.includes(normalize(displayName))) score += 12;
+    if (normalize(displayName).includes(nq)) score += 8;
+    if (hay.includes(nq)) score += 3;
+    if (year && nq.includes(year)) score += 1;
+    if (sport && nq.includes(normalize(sport))) score += 1;
+
+    if (score > bestScore) {
+      bestScore = score;
+      best = {
+        name: displayName,
+        sport: sport,
+        year: year,
+        code: code,
+        keywords: keywords
+      };
+    }
+  });
+
+  return bestScore > 0 ? best : null;
+}
+
+function findPrintRunProduct(query) {
+  const nq = normalize(query);
+  let best = null;
+  let bestScore = 0;
+
+  printRunIndex.forEach((item) => {
+    const displayName = String(item.DisplayName || item.displayName || item.name || "");
+    const keywords = String(item.Keywords || item.keywords || "");
+    const sport = String(item.sport || "");
+    const year = String(item.year || "");
+    const code = String(item.Code || item.code || "");
+
+    const hay = normalize(displayName + " " + keywords + " " + code);
+    if (!hay) return;
+
+    let score = 0;
+    if (nq.includes(normalize(displayName))) score += 12;
+    if (normalize(displayName).includes(nq)) score += 8;
+    if (hay.includes(nq)) score += 3;
+    if (year && nq.includes(String(year))) score += 1;
+    if (sport && nq.includes(normalize(sport))) score += 1;
+
+    if (score > bestScore) {
+      bestScore = score;
+      best = {
+        name: displayName,
+        sport: sport,
+        year: year,
+        code: code,
+        keywords: keywords
+      };
+    }
+  });
+
+  return bestScore > 0 ? best : null;
+}
+
+function detectIntent(query) {
+  const nq = normalize(query);
+
+  const asksPrintRun = includesAny(nq, ["print run", "print-run", "production", "how many made", "rarity"]);
+  const asksChecklist = includesAny(nq, ["checklist", "check list", "card list", "full list"]);
+  const asksTrending = includesAny(nq, ["trending", "hot", "popular", "what's hot", "whats hot"]);
+  const asksJustAdded = includesAny(nq, ["just added", "newly added", "new stuff", "new data"]);
+  const asksRelease = includesAny(nq, ["release", "release date", "releases", "coming out", "dropping next"]);
+  const asksPlayer = includesAny(nq, ["player", "rookie cards", "cards for", "show me cards for"]);
+
+  if (asksJustAdded) return "just_added";
+  if (asksTrending) return "trending";
+  if (asksRelease) return "release";
+  if (asksPrintRun) return "print_run";
+  if (asksChecklist) return "checklist";
+  if (asksPlayer) return "player";
+  return "search";
+}
+
+async function getHomeFeed() {
+  const url = LOG_EXEC_URL + "?action=getHomeFeed&trendingLimit=3&addedLimit=4";
+  return getJson(url);
+}
+
+async function searchPlayerCards(query) {
+  const data = await postJson(CHECKLIST_EXEC_URL, {
+    action: "searchCards",
+    payload: {
+      q: query,
+      page: 1,
+      limit: 8
+    }
+  });
+
+  if (data && data.ok) {
+    return data.results || [];
+  }
+  return [];
+}
+
+function buildChecklistUrl(product) {
+  return "/checklists/?code=" + encodeURIComponent(product.code) +
+    "&sport=" + encodeURIComponent(product.sport) +
+    "&type=product&q=" + encodeURIComponent(product.name);
+}
+
+function buildVaultUrl(product) {
+  return "/vault/?code=" + encodeURIComponent(product.code) +
+    "&sport=" + encodeURIComponent(product.sport) +
+    "&type=product&q=" + encodeURIComponent(product.name);
+}
+
+async function buildResponse(query) {
+  const intent = detectIntent(query);
+  const checklistProduct = findChecklistProduct(query);
+  const printRunProduct = findPrintRunProduct(query);
+
+  if (intent === "just_added") {
+    const homeFeed = await getHomeFeed();
+    const items = Array.isArray(homeFeed.justAdded) ? homeFeed.justAdded : [];
+
+    return {
+      badge: "Just Added",
+      title: "Here’s what was just added",
+      summary: items.length
+        ? items.map((x) => x.label || x.query || "").filter(Boolean).join(" • ")
+        : "I couldn’t find any just-added items right now.",
+      metadata: [],
+      actions: [
+        { label: "Open Checklist Vault", href: "/checklists/", primary: true },
+        { label: "Open Print Run Vault", href: "/vault/", primary: false }
+      ],
+      followUps: [
+        "What baseball sets are trending?",
+        "Show me 2026 Topps Series 1 print run"
+      ]
+    };
+  }
+
+  if (intent === "trending") {
+    const homeFeed = await getHomeFeed();
+    const nq = normalize(query);
+    const sport = ["baseball", "football", "basketball", "soccer", "hockey"].find((s) => nq.includes(s)) || "";
+    const trendItems = Array.isArray(homeFeed.trendingChecklists) ? homeFeed.trendingChecklists : [];
+
+    let filtered = trendItems;
+    if (sport) {
+      filtered = trendItems.filter((x) => normalize(x.sport || "") === sport);
+    }
+
+    const labels = (filtered.length ? filtered : trendItems)
+      .map((x) => x.label || x.query || "")
+      .filter(Boolean)
+      .slice(0, 3);
+
+    return {
+      badge: "Trending",
+      title: sport ? `Trending ${sport}` : "Here’s what’s trending now",
+      summary: labels.length
+        ? labels.join(" • ")
+        : "I couldn’t pull trending items right now.",
+      metadata: [],
+      actions: [
+        { label: "Open Checklist Vault", href: "/checklists/", primary: true },
+        { label: "Open Print Run Vault", href: "/vault/", primary: false }
+      ],
+      followUps: [
+        "What was just added?",
+        "Find Roman Anthony cards"
+      ]
+    };
+  }
+
+  if (intent === "release") {
+    return {
+      badge: "Release Schedule",
+      title: "Release lookup",
+      summary: "This would route to your release schedule experience. For now it can open the schedule route directly.",
+      metadata: [],
+      actions: [
+        { label: "Open Release Schedule", href: "/schedule/", primary: true }
+      ],
+      followUps: [
+        "What baseball sets are trending?",
+        "What was just added?"
+      ]
+    };
+  }
+
+  if (intent === "print_run") {
+    if (printRunProduct) {
+      return {
+        badge: "Print Run",
+        title: `I found ${printRunProduct.name}`,
+        summary: "Best match found in Print Run Vault.",
+        metadata: [
+          "Sport: " + (printRunProduct.sport || ""),
+          "Year: " + (printRunProduct.year || "")
+        ].filter(Boolean),
+        actions: [
+          { label: "Open Print Run Vault", href: buildVaultUrl(printRunProduct), primary: true },
+          ...(checklistProduct ? [{ label: "Open Checklist Vault", href: buildChecklistUrl(checklistProduct), primary: false }] : [])
+        ],
+        followUps: [
+          "Show me the checklist for " + printRunProduct.name,
+          "What’s trending in " + (printRunProduct.sport || "this sport") + "?"
+        ]
+      };
+    }
+
+    if (checklistProduct) {
+      return {
+        badge: "Print Run",
+        title: `I found ${checklistProduct.name}`,
+        summary: "I found the product in Checklist Vault, but I could not find a matching Print Run Vault result yet.",
+        metadata: [
+          "Sport: " + (checklistProduct.sport || ""),
+          "Year: " + (checklistProduct.year || "")
+        ].filter(Boolean),
+        actions: [
+          { label: "Open Checklist Vault", href: buildChecklistUrl(checklistProduct), primary: true }
+        ],
+        followUps: [
+          "What baseball sets are trending?",
+          "What was just added?"
+        ]
+      };
+    }
+  }
+
+  if (intent === "checklist" || intent === "search") {
+    if (checklistProduct) {
+      return {
+        badge: "Checklist",
+        title: `I found ${checklistProduct.name}`,
+        summary: "Best match found in Checklist Vault.",
+        metadata: [
+          "Sport: " + (checklistProduct.sport || ""),
+          "Year: " + (checklistProduct.year || "")
+        ].filter(Boolean),
+        actions: [
+          { label: "Open Checklist Vault", href: buildChecklistUrl(checklistProduct), primary: true },
+          ...(printRunProduct ? [{ label: "Open Print Run Vault", href: buildVaultUrl(printRunProduct), primary: false }] : [])
+        ],
+        followUps: [
+          "Show me " + checklistProduct.name + " print run",
+          "What’s trending in " + (checklistProduct.sport || "this sport") + "?"
+        ]
+      };
+    }
+  }
+
+  if (intent === "player" || (!checklistProduct && !printRunProduct)) {
+    const playerResults = await searchPlayerCards(query);
+
+    if (playerResults.length) {
+      const first = playerResults[0];
+      const playerName = first.player || query;
+      const sport = first.sport || "";
+      const setNames = Array.from(new Set(playerResults.map((x) => x.displayName).filter(Boolean))).slice(0, 3);
+
+      return {
+        badge: "Player",
+        title: `Player search: ${playerName}`,
+        summary: setNames.length
+          ? "I found matching cards in: " + setNames.join(" • ")
+          : "I found matching cards for this player.",
+        metadata: [
+          "Sport: " + sport,
+          "Matches: " + playerResults.length
+        ].filter(Boolean),
+        actions: [
+          { label: "Search Checklist Vault", href: "/checklists/?q=" + encodeURIComponent(query), primary: true },
+          { label: "Open Print Run Vault", href: "/vault/?q=" + encodeURIComponent(query), primary: false }
+        ],
+        followUps: [
+          "What " + (sport || "baseball") + " sets are trending?",
+          "What was just added?"
+        ]
+      };
+    }
+  }
+
+  return {
+    badge: "Try This",
+    title: "I’m not sure yet, but I can still help",
+    summary: "Try asking for a checklist, a print run, a player, what’s trending, what was just added, or a release lookup.",
+    metadata: [],
+    actions: [
+      { label: "Open Checklist Vault", href: "/checklists/", primary: true },
+      { label: "Open Print Run Vault", href: "/vault/", primary: false }
+    ],
+    followUps: [
+      "Show me 2026 Topps Series 1 print run",
+      "Find Roman Anthony cards",
+      "What was just added?"
+    ]
   };
-
-  addAssistantIntro();
-  addAnswerCard(response);
 }
 
-function scrollMessages() {
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-function submitQuery(text) {
+async function submitQuery(text) {
   const value = String(text || chatInput.value || "").trim();
   if (!value) return;
 
   addUserMessage(value);
-
-  const response = buildResponse(value);
-  addAssistantIntro();
-  addAnswerCard(response);
-
   chatInput.value = "";
+
+  const thinking = addThinkingBubble();
+
+  try {
+    await bootstrapData();
+    removeNode(thinking);
+
+    const response = await buildResponse(value);
+    addAssistantBubble("Here’s what I found.");
+    addAnswerCard(response);
+  } catch (err) {
+    removeNode(thinking);
+    addAssistantBubble("Something went wrong while I was searching. Try again.");
+    console.error(err);
+  }
+
   chatInput.focus();
 }
 
@@ -865,3 +607,5 @@ chatInput.addEventListener("keydown", function (e) {
 
 renderExamples();
 addInitialAssistantCard();
+bootstrapData();
+chatInput.focus();

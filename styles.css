@@ -1,340 +1,464 @@
-:root{
-  --bg:#0b0b0b;
-  --bg2:#121212;
-  --text:#ffffff;
-  --muted:rgba(255,255,255,0.68);
-  --cardBg:rgba(255,255,255,0.08);
-  --cardBg2:rgba(255,255,255,0.05);
-  --cardBorder:rgba(255,255,255,0.12);
-  --blue:#1e90ff;
-  --blueHover:#1577d4;
-  --blueSoft:rgba(30,144,255,0.16);
-  --shadow:0 12px 28px rgba(0,0,0,0.28);
-  --maxW:860px;
+const PRODUCT_INDEX = [
+  {
+    name: "2026 Topps Series 1 Baseball",
+    sport: "baseball",
+    year: "2026",
+    checklistCode: "2026_topps_series1",
+    printRunCode: "26TS1mlb",
+    aliases: ["2026 topps series 1", "topps series 1", "series 1 baseball"]
+  },
+  {
+    name: "2026 Topps Heritage Baseball",
+    sport: "baseball",
+    year: "2026",
+    checklistCode: "2026_Topps_Heritage",
+    printRunCode: "26HertitageMLB",
+    aliases: ["2026 topps heritage", "topps heritage baseball", "heritage baseball"]
+  },
+  {
+    name: "2025 Topps Chrome Football",
+    sport: "football",
+    year: "2025",
+    checklistCode: "2025_topps_chrome_football",
+    printRunCode: "",
+    aliases: ["2025 topps chrome football", "topps chrome football"]
+  },
+  {
+    name: "2025-26 Topps Chrome UEFA Club Competitions Soccer",
+    sport: "soccer",
+    year: "2025-26",
+    checklistCode: "2025_26_Topps_Chrome_UEFA_Club_Competitions_Soccer",
+    printRunCode: "",
+    aliases: ["uefa chrome soccer", "topps chrome uefa", "2025-26 topps chrome soccer"]
+  },
+  {
+    name: "2025 Topps Transcendent Baseball",
+    sport: "baseball",
+    year: "2025",
+    checklistCode: "2025_Topps_Transcendent_baseball",
+    printRunCode: "",
+    aliases: ["2025 topps transcendent", "topps transcendent baseball"]
+  }
+];
+
+const PLAYER_INDEX = [
+  { name: "Roman Anthony", sport: "baseball", tags: ["prospect", "rookie chase"] },
+  { name: "James Wood", sport: "baseball", tags: ["rookie", "hot cards"] },
+  { name: "Aaron Judge", sport: "baseball", tags: ["veteran", "slugger"] },
+  { name: "Victor Wembanyama", sport: "basketball", tags: ["rookie", "basketball"] },
+  { name: "Caleb Williams", sport: "football", tags: ["rookie", "football"] }
+];
+
+const TRENDING = {
+  baseball: [
+    "2026 Topps Series 1 Baseball",
+    "2026 Topps Heritage Baseball",
+    "2025 Topps Transcendent Baseball"
+  ],
+  football: [
+    "2025 Topps Chrome Football",
+    "2025 Prizm Football",
+    "2025 Donruss Football"
+  ],
+  soccer: [
+    "2025-26 Topps Chrome UEFA Club Competitions Soccer",
+    "2025-26 Topps Gold UEFA Club Competitions Soccer",
+    "2026 Topps Finest Premier League Soccer"
+  ],
+  all: [
+    "2026 Topps Series 1 Baseball",
+    "2026 Topps Heritage Baseball",
+    "2025 Topps Chrome Football"
+  ]
+};
+
+const JUST_ADDED = [
+  "2025 Topps Chrome Football",
+  "2025-26 Topps Chrome UEFA Club Competitions Soccer",
+  "2025 Topps Transcendent Baseball",
+  "2026 Topps Heritage Baseball"
+];
+
+const EXAMPLES = [
+  "Show me 2026 Topps Series 1 print run",
+  "Find the checklist for 2025 Topps Chrome Football",
+  "What baseball sets are trending?",
+  "Find Roman Anthony cards"
+];
+
+const chatMessages = document.getElementById("chatMessages");
+const chatInput = document.getElementById("chatInput");
+const sendBtn = document.getElementById("sendBtn");
+const examplePills = document.getElementById("examplePills");
+
+function normalize(text) {
+  return String(text || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\\s'-]/g, " ")
+    .replace(/\\s+/g, " ")
+    .trim();
 }
 
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
-
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:
-    radial-gradient(circle at top center, rgba(30,144,255,0.12), transparent 28%),
-    linear-gradient(180deg, #0b0b0b 0%, #111111 100%);
-  color:var(--text);
+function includesAny(haystack, needles) {
+  return needles.some((n) => haystack.includes(normalize(n)));
 }
 
-.app-shell{
-  min-height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
+function escapeHtml(str) {
+  return String(str || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
-.chat-app{
-  width:100%;
-  max-width:var(--maxW);
-  min-height:88vh;
-  background:rgba(255,255,255,0.04);
-  border:1px solid var(--cardBorder);
-  border-radius:28px;
-  box-shadow:var(--shadow);
-  backdrop-filter: blur(8px);
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
+function renderExamples() {
+  examplePills.innerHTML = EXAMPLES.map((example) => {
+    return `<button class="example-pill" type="button" data-example="${escapeHtml(example)}">${escapeHtml(example)}</button>`;
+  }).join("");
+
+  examplePills.querySelectorAll("[data-example]").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      submitQuery(btn.getAttribute("data-example") || "");
+    });
+  });
 }
 
-.chat-topbar{
-  padding:18px 18px 14px;
-  border-bottom:1px solid rgba(255,255,255,0.08);
-  background:rgba(255,255,255,0.04);
+function findProduct(query) {
+  const nq = normalize(query);
+  let best = null;
+  let bestScore = 0;
+
+  PRODUCT_INDEX.forEach((item) => {
+    let score = 0;
+    if (nq.includes(normalize(item.name))) score += 10;
+
+    item.aliases.forEach((alias) => {
+      if (nq.includes(normalize(alias))) score += 4;
+    });
+
+    if (String(item.year) && nq.includes(String(item.year))) score += 1;
+    if (nq.includes(item.sport)) score += 1;
+
+    if (score > bestScore) {
+      best = item;
+      bestScore = score;
+    }
+  });
+
+  return bestScore > 0 ? best : null;
 }
 
-.chat-brand-wrap{
-  display:flex;
-  align-items:center;
-  gap:12px;
+function findPlayer(query) {
+  const nq = normalize(query);
+  let best = null;
+  let bestScore = 0;
+
+  PLAYER_INDEX.forEach((item) => {
+    let score = 0;
+    if (nq.includes(normalize(item.name))) score += 10;
+    if (nq.includes(item.sport)) score += 1;
+
+    if (score > bestScore) {
+      best = item;
+      bestScore = score;
+    }
+  });
+
+  return bestScore > 0 ? best : null;
 }
 
-.chat-brand-icon{
-  width:46px;
-  height:46px;
-  border-radius:16px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--blueSoft);
-  border:1px solid rgba(30,144,255,0.25);
-  color:#fff;
-  font-family:"Bangers", cursive;
-  font-size:24px;
-  letter-spacing:.5px;
+function detectIntent(query) {
+  const nq = normalize(query);
+
+  const asksPrintRun = includesAny(nq, ["print run", "print-run", "production", "how many made", "rarity"]);
+  const asksChecklist = includesAny(nq, ["checklist", "check list", "card list", "full list"]);
+  const asksTrending = includesAny(nq, ["trending", "hot", "popular", "what's hot", "whats hot"]);
+  const asksJustAdded = includesAny(nq, ["just added", "newly added", "new stuff", "new data"]);
+  const asksRelease = includesAny(nq, ["release", "release date", "releases", "coming out", "dropping next"]);
+  const asksPlayer = includesAny(nq, ["player", "rookie cards", "cards for", "show me cards for"]);
+
+  if (asksJustAdded) return "just_added";
+  if (asksTrending) return "trending";
+  if (asksRelease) return "release";
+  if (asksPrintRun) return "print_run";
+  if (asksChecklist) return "checklist";
+  if (asksPlayer) return "player";
+  return "search";
 }
 
-.chat-brand-title{
-  font-size:22px;
-  font-weight:900;
-  line-height:1.1;
-}
+function buildResponse(query) {
+  const intent = detectIntent(query);
+  const product = findProduct(query);
+  const player = findPlayer(query);
+  const nq = normalize(query);
 
-.chat-brand-subtitle{
-  margin-top:3px;
-  font-size:12px;
-  color:var(--muted);
-}
-
-.chat-messages{
-  flex:1;
-  padding:18px;
-  overflow:auto;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.message-row{
-  display:flex;
-}
-
-.message-row.user{
-  justify-content:flex-end;
-}
-
-.message-row.assistant{
-  justify-content:flex-start;
-}
-
-.message-bubble{
-  max-width:82%;
-  border-radius:22px;
-  padding:12px 15px;
-  font-size:14px;
-  line-height:1.5;
-  box-shadow:var(--shadow);
-}
-
-.message-row.user .message-bubble{
-  background:var(--blue);
-  color:#fff;
-}
-
-.message-row.assistant .message-bubble{
-  background:var(--cardBg);
-  border:1px solid var(--cardBorder);
-  color:#fff;
-}
-
-.answer-card{
-  width:min(100%, 700px);
-  background:rgba(255,255,255,0.06);
-  border:1px solid var(--cardBorder);
-  border-radius:22px;
-  padding:16px;
-  box-shadow:var(--shadow);
-}
-
-.answer-badge{
-  display:inline-block;
-  margin-bottom:10px;
-  padding:6px 10px;
-  border-radius:999px;
-  background:var(--blue);
-  color:#fff;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:.3px;
-}
-
-.answer-title{
-  font-size:22px;
-  font-weight:900;
-  line-height:1.15;
-  margin-bottom:8px;
-}
-
-.answer-summary{
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.55;
-}
-
-.answer-meta{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:14px;
-}
-
-.answer-meta-chip{
-  border:1px solid var(--cardBorder);
-  background:var(--cardBg2);
-  border-radius:999px;
-  padding:7px 10px;
-  font-size:12px;
-  color:rgba(255,255,255,0.88);
-}
-
-.answer-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:16px;
-}
-
-.answer-action{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:42px;
-  padding:10px 14px;
-  border-radius:14px;
-  border:1px solid rgba(30,144,255,0.34);
-  background:var(--blue);
-  color:#fff;
-  text-decoration:none;
-  font-weight:800;
-  font-size:13px;
-  transition:transform 120ms ease, background 120ms ease;
-}
-
-.answer-action.secondary{
-  background:var(--cardBg2);
-  border:1px solid var(--cardBorder);
-  color:#fff;
-}
-
-.answer-action:hover{
-  transform:translateY(-1px);
-}
-
-.answer-followups{
-  margin-top:16px;
-}
-
-.followup-label{
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.5px;
-  color:rgba(255,255,255,0.50);
-  margin-bottom:8px;
-  font-weight:800;
-}
-
-.followup-list{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-}
-
-.followup-btn{
-  border:1px solid var(--cardBorder);
-  background:var(--cardBg2);
-  color:#fff;
-  border-radius:999px;
-  padding:10px 12px;
-  font-size:12px;
-  cursor:pointer;
-  transition:transform 120ms ease, background 120ms ease;
-  box-shadow:var(--shadow);
-}
-
-.followup-btn:hover{
-  transform:translateY(-1px);
-  background:rgba(255,255,255,0.08);
-}
-
-.chat-suggestions{
-  padding:0 18px 14px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-}
-
-.example-pill{
-  border:1px solid var(--cardBorder);
-  background:var(--cardBg2);
-  color:var(--text);
-  padding:10px 14px;
-  border-radius:999px;
-  cursor:pointer;
-  font-size:12px;
-  transition:transform 120ms ease, background 120ms ease, border-color 120ms ease;
-}
-
-.example-pill:hover{
-  transform:translateY(-1px);
-  background:rgba(255,255,255,0.08);
-  border-color:rgba(255,255,255,0.18);
-}
-
-.chat-input-shell{
-  padding:14px 18px 18px;
-  border-top:1px solid rgba(255,255,255,0.08);
-  display:flex;
-  gap:10px;
-  background:rgba(255,255,255,0.03);
-}
-
-.chat-input{
-  flex:1;
-  min-width:0;
-  height:54px;
-  border-radius:18px;
-  border:1px solid var(--cardBorder);
-  background:rgba(255,255,255,0.06);
-  color:var(--text);
-  padding:0 16px;
-  outline:none;
-  font-size:15px;
-}
-
-.chat-input::placeholder{
-  color:rgba(255,255,255,0.42);
-}
-
-.send-btn{
-  height:54px;
-  padding:0 20px;
-  border-radius:18px;
-  border:1px solid rgba(30,144,255,0.34);
-  cursor:pointer;
-  font-weight:800;
-  font-size:14px;
-  background:var(--blue);
-  color:#fff;
-  transition:transform 120ms ease, background 120ms ease;
-}
-
-.send-btn:hover{
-  transform:translateY(-1px);
-  background:var(--blueHover);
-}
-
-@media (max-width: 640px){
-  .app-shell{
-    padding:0;
+  if (intent === "just_added") {
+    return {
+      badge: "Just Added",
+      title: "Here’s what was just added",
+      summary: JUST_ADDED.join(" • "),
+      metadata: [],
+      actions: [
+        { label: "Open Checklist Vault", href: "/checklists/", primary: true },
+        { label: "Open Print Run Vault", href: "/vault/", primary: false }
+      ],
+      followUps: [
+        "Show me baseball sets just added",
+        "What print runs are trending?"
+      ]
+    };
   }
 
-  .chat-app{
-    min-height:100vh;
-    border-radius:0;
-    border-left:0;
-    border-right:0;
+  if (intent === "trending") {
+    const sport = ["baseball", "football", "basketball", "soccer", "hockey"].find((s) => nq.includes(s)) || "all";
+
+    return {
+      badge: "Trending",
+      title: sport === "all" ? "Here’s what’s trending now" : `Trending ${sport}`,
+      summary: (TRENDING[sport] || TRENDING.all).join(" • "),
+      metadata: [],
+      actions: [
+        { label: "Open Checklist Vault", href: "/checklists/", primary: true },
+        { label: "Open Print Run Vault", href: "/vault/", primary: false }
+      ],
+      followUps: [
+        "What was just added?",
+        "Show me 2026 Topps Heritage print run"
+      ]
+    };
   }
 
-  .chat-input-shell{
-    flex-direction:column;
+  if (intent === "release") {
+    return {
+      badge: "Release Schedule",
+      title: "Release lookup",
+      summary: "In the full app this would route to Release Schedule and return the best matching upcoming products by sport, brand, and date.",
+      metadata: [],
+      actions: [
+        { label: "Open Release Schedule", href: "/schedule/", primary: true }
+      ],
+      followUps: [
+        "What baseball sets are trending?",
+        "Show me soccer releases"
+      ]
+    };
   }
 
-  .send-btn{
-    width:100%;
+  if (intent === "print_run" && product) {
+    return {
+      badge: "Print Run",
+      title: `I found ${product.name}`,
+      summary: product.printRunCode
+        ? "This product is available in Print Run Vault."
+        : "I found the product, but a print run record is not loaded in this prototype yet.",
+      metadata: [`Sport: ${product.sport}`, `Year: ${product.year}`],
+      actions: [
+        ...(product.printRunCode
+          ? [{
+              label: "Open Print Run Vault",
+              href: `/vault/?code=${encodeURIComponent(product.printRunCode)}&sport=${encodeURIComponent(product.sport)}&type=product&q=${encodeURIComponent(product.name)}`,
+              primary: true
+            }]
+          : []),
+        {
+          label: "Open Checklist Vault",
+          href: `/checklists/?code=${encodeURIComponent(product.checklistCode)}&sport=${encodeURIComponent(product.sport)}&type=product&q=${encodeURIComponent(product.name)}`,
+          primary: !product.printRunCode
+        }
+      ],
+      followUps: [
+        `Show me the checklist for ${product.name}`,
+        `What’s trending in ${product.sport}?`
+      ]
+    };
   }
 
-  .message-bubble,
-  .answer-card{
-    max-width:100%;
+  if ((intent === "checklist" || intent === "search") && product) {
+    return {
+      badge: "Checklist",
+      title: `I found ${product.name}`,
+      summary: "Best match found in Checklist Vault.",
+      metadata: [`Sport: ${product.sport}`, `Year: ${product.year}`],
+      actions: [
+        {
+          label: "Open Checklist Vault",
+          href: `/checklists/?code=${encodeURIComponent(product.checklistCode)}&sport=${encodeURIComponent(product.sport)}&type=product&q=${encodeURIComponent(product.name)}`,
+          primary: true
+        },
+        ...(product.printRunCode
+          ? [{
+              label: "Open Print Run Vault",
+              href: `/vault/?code=${encodeURIComponent(product.printRunCode)}&sport=${encodeURIComponent(product.sport)}&type=product&q=${encodeURIComponent(product.name)}`,
+              primary: false
+            }]
+          : [])
+      ],
+      followUps: [
+        `Show me ${product.name} print run`,
+        `What else is trending in ${product.sport}?`
+      ]
+    };
   }
+
+  if ((intent === "player" || (!product && player)) && player) {
+    return {
+      badge: "Player",
+      title: `Player search: ${player.name}`,
+      summary: `I found a player match in ${player.sport}. In the full app this would route to grouped card results, player checklist hits, and related products.`,
+      metadata: player.tags.map((tag) => `Tag: ${tag}`),
+      actions: [
+        {
+          label: "Search Checklist Vault",
+          href: `/checklists/?q=${encodeURIComponent(player.name)}`,
+          primary: true
+        },
+        {
+          label: "Open Print Run Vault",
+          href: `/vault/?q=${encodeURIComponent(player.name)}`,
+          primary: false
+        }
+      ],
+      followUps: [
+        `Find ${player.name} rookie cards`,
+        `What ${player.sport} sets are trending?`
+      ]
+    };
+  }
+
+  return {
+    badge: "Try This",
+    title: "I’m not sure yet, but I can still help",
+    summary: "Try asking for a checklist, a print run, a player, what’s trending, what was just added, or a release lookup.",
+    metadata: [],
+    actions: [
+      { label: "Open Checklist Vault", href: "/checklists/", primary: true },
+      { label: "Open Print Run Vault", href: "/vault/", primary: false }
+    ],
+    followUps: [
+      "Show me 2026 Topps Series 1 print run",
+      "Find Roman Anthony cards",
+      "What was just added?"
+    ]
+  };
 }
+
+function addUserMessage(text) {
+  const row = document.createElement("div");
+  row.className = "message-row user";
+  row.innerHTML = `<div class="message-bubble">${escapeHtml(text)}</div>`;
+  chatMessages.appendChild(row);
+  scrollMessages();
+}
+
+function addAssistantIntro() {
+  const row = document.createElement("div");
+  row.className = "message-row assistant";
+  row.innerHTML = `<div class="message-bubble">Here’s what I found.</div>`;
+  chatMessages.appendChild(row);
+}
+
+function addAnswerCard(response) {
+  const row = document.createElement("div");
+  row.className = "message-row assistant";
+
+  const metaHtml = (response.metadata || []).length
+    ? `
+      <div class="answer-meta">
+        ${(response.metadata || []).map((item) => `<div class="answer-meta-chip">${escapeHtml(item)}</div>`).join("")}
+      </div>
+    `
+    : "";
+
+  const actionsHtml = (response.actions || []).length
+    ? `
+      <div class="answer-actions">
+        ${(response.actions || []).map((action) => `
+          <a class="answer-action ${action.primary ? "" : "secondary"}" href="${escapeHtml(action.href || "#")}">
+            ${escapeHtml(action.label)}
+          </a>
+        `).join("")}
+      </div>
+    `
+    : "";
+
+  const followUpsHtml = (response.followUps || []).length
+    ? `
+      <div class="answer-followups">
+        <div class="followup-label">Suggested follow-ups</div>
+        <div class="followup-list">
+          ${(response.followUps || []).map((item) => `
+            <button class="followup-btn" type="button" data-followup="${escapeHtml(item)}">${escapeHtml(item)}</button>
+          `).join("")}
+        </div>
+      </div>
+    `
+    : "";
+
+  row.innerHTML = `
+    <div class="answer-card">
+      <div class="answer-badge">${escapeHtml(response.badge || "Answer")}</div>
+      <div class="answer-title">${escapeHtml(response.title)}</div>
+      <div class="answer-summary">${escapeHtml(response.summary)}</div>
+      ${metaHtml}
+      ${actionsHtml}
+      ${followUpsHtml}
+    </div>
+  `;
+
+  chatMessages.appendChild(row);
+
+  row.querySelectorAll("[data-followup]").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      submitQuery(btn.getAttribute("data-followup") || "");
+    });
+  });
+
+  scrollMessages();
+}
+
+function addInitialAssistantCard() {
+  const response = {
+    badge: "Ask",
+    title: "Ask Chasing Majors",
+    summary: "Ask about a checklist, print run, player, trending products, or what was just added.",
+    metadata: [],
+    actions: [],
+    followUps: EXAMPLES
+  };
+
+  addAssistantIntro();
+  addAnswerCard(response);
+}
+
+function scrollMessages() {
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function submitQuery(text) {
+  const value = String(text || chatInput.value || "").trim();
+  if (!value) return;
+
+  addUserMessage(value);
+
+  const response = buildResponse(value);
+  addAssistantIntro();
+  addAnswerCard(response);
+
+  chatInput.value = "";
+  chatInput.focus();
+}
+
+sendBtn.addEventListener("click", function () {
+  submitQuery();
+});
+
+chatInput.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    submitQuery();
+  }
+});
+
+renderExamples();
+addInitialAssistantCard();

@@ -5,10 +5,10 @@ const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0V
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v2";
-const PRV_INDEX_KEY = "cm_chat_prv_index_v2";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v2";
-const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v2";
+const CL_INDEX_KEY = "cm_chat_cl_index_v3";
+const PRV_INDEX_KEY = "cm_chat_prv_index_v3";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v3";
+const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v3";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
 const EXAMPLES = [
@@ -70,7 +70,7 @@ function titleCase(str) {
 }
 
 function uniq(arr) {
-  return [...new Set(arr.filter(Boolean))];
+  return [...new Set((arr || []).filter(Boolean))];
 }
 
 function tokenize(text) {
@@ -125,10 +125,11 @@ function includesAny(haystack, needles) {
   return needles.some(n => h.includes(normalize(n)));
 }
 
-function clampText(str, max = 180) {
-  const s = String(str || "").trim();
-  if (s.length <= max) return s;
-  return s.slice(0, max - 1).trim() + "…";
+function formatNumber(val) {
+  if (val === null || val === undefined || val === "") return "";
+  const n = Number(String(val).replace(/,/g, ""));
+  if (Number.isFinite(n)) return n.toLocaleString("en-US");
+  return String(val);
 }
 
 /* ------------------ UI ------------------ */
@@ -161,7 +162,7 @@ function addAssistantBubble(text) {
   scroll();
 }
 
-function addAnswerCard(r) {
+function addStandardAnswerCard(r) {
   const metaHtml = (r.metadata || []).length
     ? `<div class="answer-meta">${(r.metadata || []).map(m => `<div class="answer-meta-chip">${escapeHtml(m)}</div>`).join("")}</div>`
     : "";
@@ -197,11 +198,88 @@ function addAnswerCard(r) {
     </div>
   `;
 
+  bindFollowups();
+  scroll();
+}
+
+function addPrvResultCard(result) {
+  const product = result.product || {};
+  const rows = result.rows || [];
+  const chips = result.metadata || [];
+  const followups = result.followups || [];
+
+  const rowsHtml = rows.map(r => {
+    const left = escapeHtml(r.label || "");
+    const right = escapeHtml(r.value || "");
+    const sub = escapeHtml(r.sub || "");
+    return `
+      <div class="prv-chat-row">
+        <div class="prv-chat-row-main">
+          <div class="prv-chat-row-left">${left}</div>
+          <div class="prv-chat-row-right">${right}</div>
+        </div>
+        ${sub ? `<div class="prv-chat-row-sub">${sub}</div>` : ""}
+      </div>
+    `;
+  }).join("");
+
+  const chipsHtml = chips.length
+    ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
+    : "";
+
+  const actionsHtml = `
+    <div class="answer-actions">
+      <a class="answer-action" href="${escapeHtml(`${VAULT_BASE_URL}?q=${encodeURIComponent(product.name || product.code || "")}`)}">Open Print Run Vault</a>
+      <a class="answer-action secondary" href="${escapeHtml(`${CHECKLIST_BASE_URL}?q=${encodeURIComponent(product.name || product.code || "")}`)}">Open Checklist Vault</a>
+    </div>
+  `;
+
+  const followupsHtml = followups.length
+    ? `
+      <div class="answer-followups">
+        <div class="followup-label">Try next</div>
+        <div class="followup-list">
+          ${followups.map(f => `<button class="followup-btn" data-followup="${escapeHtml(f)}">${escapeHtml(f)}</button>`).join("")}
+        </div>
+      </div>
+    `
+    : "";
+
+  chatMessages.innerHTML += `
+    <div class="message-row assistant">
+      <div class="prv-chat-card">
+        <div class="prv-chat-topline">
+          <div class="answer-badge">Print Run</div>
+        </div>
+
+        <div class="prv-chat-title">${escapeHtml(product.name || "")}</div>
+
+        ${chipsHtml}
+
+        <div class="prv-chat-table">
+          <div class="prv-chat-table-head">
+            <div>Card / Parallel</div>
+            <div>Print Run</div>
+          </div>
+          <div class="prv-chat-table-body">
+            ${rowsHtml}
+          </div>
+        </div>
+
+        ${actionsHtml}
+        ${followupsHtml}
+      </div>
+    </div>
+  `;
+
+  bindFollowups();
+  scroll();
+}
+
+function bindFollowups() {
   chatMessages.querySelectorAll("[data-followup]").forEach(btn => {
     btn.onclick = () => submitQuery(btn.dataset.followup);
   });
-
-  scroll();
 }
 
 function scroll() {
@@ -409,40 +487,42 @@ function detectIntent(q) {
   if (includesAny(n, INTENT_PRINT_RUN_WORDS)) return "print_run";
   if (includesAny(n, INTENT_CHECKLIST_WORDS)) return "checklist";
   if (includesAny(n, INTENT_TRENDING_WORDS)) return "trending";
-  if (n.includes("cards for ") || n.includes("find ") || n.includes("roman anthony")) return "search";
-
   return "search";
 }
 
 /* ------------------ FORMATTERS ------------------ */
 
-function formatPrintRunRows(rows) {
-  if (!rows.length) return "No print run rows found yet.";
-
-  const preview = rows.slice(0, 5).map(r => {
-    const type = r.setType || "";
-    const line = r.setLine || "";
-    const pr = r.printRun || "";
-    const subset = r.subSetSize ? ` | subset: ${r.subSetSize}` : "";
-    return `${[type, line].filter(Boolean).join(" ")}: ${pr}${subset}`;
+function buildPrvRows(rows) {
+  return rows.slice(0, 12).map(r => {
+    const setType = r.setType || "";
+    const setLine = r.setLine || "";
+    const label = [setType, setLine].filter(Boolean).join(" ").trim() || "Row";
+    const value = formatNumber(r.printRun || "");
+    const subset = r.subSetSize ? `Subset size: ${formatNumber(r.subSetSize)}` : "";
+    return {
+      label,
+      value,
+      sub: subset
+    };
   });
-
-  return preview.join(" • ");
 }
 
-function buildVaultUrl(product) {
-  const q = product?.name || product?.code || "";
-  return `${VAULT_BASE_URL}?q=${encodeURIComponent(q)}`;
-}
+function buildPrvMetadata(product, rows) {
+  const types = uniq(rows.map(r => r.setType).filter(Boolean));
+  const lines = uniq(rows.map(r => r.setLine).filter(Boolean));
 
-function buildChecklistUrl(product) {
-  const q = product?.name || product?.code || "";
-  return `${CHECKLIST_BASE_URL}?q=${encodeURIComponent(q)}`;
+  return uniq([
+    `Rows: ${rows.length}`,
+    types.length ? `Types: ${types.length}` : "",
+    lines.length ? `Lines: ${lines.length}` : "",
+    product.year ? `Year: ${product.year}` : "",
+    product.sport ? `Sport: ${titleCase(product.sport)}` : ""
+  ]);
 }
 
 /* ------------------ RESPONSES ------------------ */
 
-async function buildTrendingResponse(query) {
+async function buildTrendingResponse() {
   const rows = await getHomeFeed();
 
   const trendingChecklistRows = rows.filter(r => r[0] === "trending_checklists").slice(0, 3);
@@ -451,18 +531,15 @@ async function buildTrendingResponse(query) {
   const chunks = [];
 
   if (trendingChecklistRows.length) {
-    chunks.push(
-      `Checklist trending: ${trendingChecklistRows.map(r => r[2]).join(" • ")}`
-    );
+    chunks.push(`Checklist trending: ${trendingChecklistRows.map(r => r[2]).join(" • ")}`);
   }
 
   if (trendingVaultRows.length) {
-    chunks.push(
-      `Print run trending: ${trendingVaultRows.map(r => r[2]).join(" • ")}`
-    );
+    chunks.push(`Print run trending: ${trendingVaultRows.map(r => r[2]).join(" • ")}`);
   }
 
   return {
+    type: "standard",
     badge: "Trending",
     title: "What collectors are searching right now",
     summary: chunks.length ? chunks.join(" | ") : "No trending data is available yet.",
@@ -474,10 +551,13 @@ async function buildTrendingResponse(query) {
 }
 
 async function buildPrintRunResponse(query) {
-  const product = findBestProduct(printRunIndex, query, "print_run") || findBestProduct(printRunIndex, stripIntentWords(query), "print_run");
+  const product =
+    findBestProduct(printRunIndex, query, "print_run") ||
+    findBestProduct(printRunIndex, stripIntentWords(query), "print_run");
 
   if (!product) {
     return {
+      type: "standard",
       badge: "Print Run",
       title: "I could not match that set",
       summary: "Try using the year and product name, like 2026 Topps Series 1 print run.",
@@ -493,6 +573,7 @@ async function buildPrintRunResponse(query) {
 
   if (!rows.length) {
     return {
+      type: "standard",
       badge: "Print Run",
       title: product.name,
       summary: "I found the product in the vault index, but no print run rows were returned yet.",
@@ -502,8 +583,8 @@ async function buildPrintRunResponse(query) {
         product.code ? `Code: ${product.code}` : ""
       ]),
       actions: [
-        { label: "Open Print Run Vault", href: buildVaultUrl(product) },
-        { label: "Open Checklist Vault", href: buildChecklistUrl(product), secondary: true }
+        { label: "Open Print Run Vault", href: `${VAULT_BASE_URL}?q=${encodeURIComponent(product.name || product.code || "")}` },
+        { label: "Open Checklist Vault", href: `${CHECKLIST_BASE_URL}?q=${encodeURIComponent(product.name || product.code || "")}`, secondary: true }
       ],
       followups: [
         `Find the checklist for ${product.name}`,
@@ -512,24 +593,11 @@ async function buildPrintRunResponse(query) {
     };
   }
 
-  const uniqueTypes = uniq(rows.map(r => r.setType).filter(Boolean));
-  const uniqueLines = uniq(rows.map(r => r.setLine).filter(Boolean));
-
   return {
-    badge: "Print Run",
-    title: product.name,
-    summary: formatPrintRunRows(rows),
-    metadata: uniq([
-      `Rows: ${rows.length}`,
-      uniqueTypes.length ? `Types: ${uniqueTypes.length}` : "",
-      uniqueLines.length ? `Lines: ${uniqueLines.length}` : "",
-      product.year ? `Year: ${product.year}` : "",
-      product.sport ? `Sport: ${titleCase(product.sport)}` : ""
-    ]),
-    actions: [
-      { label: "Open Print Run Vault", href: buildVaultUrl(product) },
-      { label: "Open Checklist Vault", href: buildChecklistUrl(product), secondary: true }
-    ],
+    type: "prv",
+    product,
+    rows: buildPrvRows(rows),
+    metadata: buildPrvMetadata(product, rows),
     followups: [
       `Find the checklist for ${product.name}`,
       `Show me ${product.name} print run`,
@@ -539,10 +607,13 @@ async function buildPrintRunResponse(query) {
 }
 
 async function buildChecklistResponse(query) {
-  const product = findBestProduct(checklistIndex, query, "checklist") || findBestProduct(checklistIndex, stripIntentWords(query), "checklist");
+  const product =
+    findBestProduct(checklistIndex, query, "checklist") ||
+    findBestProduct(checklistIndex, stripIntentWords(query), "checklist");
 
   if (!product) {
     return {
+      type: "standard",
       badge: "Checklist",
       title: "I could not match that checklist",
       summary: "Try using the year and set name, like 2025 Topps Chrome Football checklist.",
@@ -555,6 +626,7 @@ async function buildChecklistResponse(query) {
   }
 
   return {
+    type: "standard",
     badge: "Checklist",
     title: product.name,
     summary: "I found a matching checklist. Open it in Checklist Vault for the full card list, sections, and parallels.",
@@ -564,8 +636,8 @@ async function buildChecklistResponse(query) {
       product.code ? `Code: ${product.code}` : ""
     ]),
     actions: [
-      { label: "Open Checklist Vault", href: buildChecklistUrl(product) },
-      { label: "Open Print Run Vault", href: buildVaultUrl(product), secondary: true }
+      { label: "Open Checklist Vault", href: `${CHECKLIST_BASE_URL}?q=${encodeURIComponent(product.name || product.code || "")}` },
+      { label: "Open Print Run Vault", href: `${VAULT_BASE_URL}?q=${encodeURIComponent(product.name || product.code || "")}`, secondary: true }
     ],
     followups: [
       `Show me ${product.name} print run`,
@@ -584,6 +656,7 @@ async function buildSearchResponse(query) {
 
   if (!winner) {
     return {
+      type: "standard",
       badge: "Try",
       title: "Try another search",
       summary: "Ask for a print run, checklist, trending set, or a player/set search.",
@@ -596,17 +669,18 @@ async function buildSearchResponse(query) {
   }
 
   return {
+    type: "standard",
     badge: "Match",
     title: winner.name,
-    summary: "I found a likely product match. Open the vault tools for deeper data.",
+    summary: "I found a likely product match. Choose a vault below.",
     metadata: uniq([
       winner.year ? `Year: ${winner.year}` : "",
       winner.sport ? `Sport: ${titleCase(winner.sport)}` : "",
       winner.code ? `Code: ${winner.code}` : ""
     ]),
     actions: [
-      { label: "Open Checklist Vault", href: buildChecklistUrl(winner) },
-      { label: "Open Print Run Vault", href: buildVaultUrl(winner), secondary: true }
+      { label: "Open Checklist Vault", href: `${CHECKLIST_BASE_URL}?q=${encodeURIComponent(winner.name || winner.code || "")}` },
+      { label: "Open Print Run Vault", href: `${VAULT_BASE_URL}?q=${encodeURIComponent(winner.name || winner.code || "")}`, secondary: true }
     ],
     followups: [
       `Show me ${winner.name} print run`,
@@ -618,17 +692,9 @@ async function buildSearchResponse(query) {
 async function buildResponse(query) {
   const intent = detectIntent(query);
 
-  if (intent === "trending") {
-    return buildTrendingResponse(query);
-  }
-
-  if (intent === "print_run") {
-    return buildPrintRunResponse(query);
-  }
-
-  if (intent === "checklist") {
-    return buildChecklistResponse(query);
-  }
+  if (intent === "trending") return buildTrendingResponse();
+  if (intent === "print_run") return buildPrintRunResponse(query);
+  if (intent === "checklist") return buildChecklistResponse(query);
 
   return buildSearchResponse(query);
 }
@@ -641,30 +707,30 @@ async function submitQuery(text) {
 
   addUserMessage(val);
   chatInput.value = "";
-
   addAssistantBubble("Thinking...");
 
   try {
     await bootstrapData();
-
     const res = await buildResponse(val);
 
     if (chatMessages.lastElementChild) {
       chatMessages.lastElementChild.remove();
     }
 
-    addAnswerCard(res);
+    if (res.type === "prv") {
+      addPrvResultCard(res);
+    } else {
+      addStandardAnswerCard(res);
+    }
 
     logEvent({
       app: "chat_demo",
       page: "fake_chatbot",
       event_type: "chat_query",
       query: val,
-      selected_name: res.title || "",
-      selected_type: res.badge || "",
-      route_target:
-        (res.badge || "").toLowerCase() === "print run" ? "vault" :
-        (res.badge || "").toLowerCase() === "checklist" ? "checklists" : ""
+      selected_name: res.product?.name || res.title || "",
+      selected_type: res.type === "prv" ? "Print Run" : (res.badge || ""),
+      route_target: res.type === "prv" ? "vault" : ""
     });
   } catch (err) {
     console.error(err);
@@ -673,7 +739,7 @@ async function submitQuery(text) {
       chatMessages.lastElementChild.remove();
     }
 
-    addAnswerCard({
+    addStandardAnswerCard({
       badge: "Error",
       title: "Something went wrong",
       summary: "The chat could not load data right now. Please try again.",

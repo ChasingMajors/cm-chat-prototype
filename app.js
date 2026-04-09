@@ -162,6 +162,43 @@ function addAssistantBubble(text) {
   scroll();
 }
 
+function startLoadingBubble(messages, intervalMs = 1000) {
+  const id = `loading_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+  const safeMessages = Array.isArray(messages) && messages.length
+    ? messages
+    : ["Thinking..."];
+
+  chatMessages.innerHTML += `
+    <div class="message-row assistant" id="${id}">
+      <div class="message-bubble" data-loading-bubble>${escapeHtml(safeMessages[0])}</div>
+    </div>
+  `;
+  scroll();
+
+  const row = document.getElementById(id);
+  const bubble = row ? row.querySelector("[data-loading-bubble]") : null;
+
+  let idx = 0;
+  let timer = null;
+  let delayedStart = null;
+
+  delayedStart = setTimeout(() => {
+    timer = setInterval(() => {
+      if (!bubble) return;
+      idx = (idx + 1) % safeMessages.length;
+      bubble.textContent = safeMessages[idx];
+    }, intervalMs);
+  }, 800);
+
+  return {
+    remove() {
+      if (delayedStart) clearTimeout(delayedStart);
+      if (timer) clearInterval(timer);
+      if (row && row.parentNode) row.parentNode.removeChild(row);
+    }
+  };
+}
+
 function addStandardAnswerCard(r) {
   const metaHtml = (r.metadata || []).length
     ? `<div class="answer-meta">${(r.metadata || []).map(m => `<div class="answer-meta-chip">${escapeHtml(m)}</div>`).join("")}</div>`
@@ -207,8 +244,10 @@ function addPrvResultCard(result) {
   const rows = result.rows || [];
   const chips = result.metadata || [];
   const followups = result.followups || [];
+  const initialRows = rows.slice(0, 8);
+  const hasMore = rows.length > 8;
 
-  const rowsHtml = rows.map(r => {
+  const buildRowsHtml = (list) => list.map(r => {
     const left = escapeHtml(r.label || "");
     const right = escapeHtml(r.value || "");
     const sub = escapeHtml(r.sub || "");
@@ -245,9 +284,11 @@ function addPrvResultCard(result) {
     `
     : "";
 
+  const cardId = `prv_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+
   chatMessages.innerHTML += `
     <div class="message-row assistant">
-      <div class="prv-chat-card">
+      <div class="prv-chat-card" id="${cardId}">
         <div class="prv-chat-topline">
           <div class="answer-badge">Print Run</div>
         </div>
@@ -261,16 +302,48 @@ function addPrvResultCard(result) {
             <div>Card / Parallel</div>
             <div>Print Run</div>
           </div>
-          <div class="prv-chat-table-body">
-            ${rowsHtml}
+          <div class="prv-chat-table-body" data-prv-body>
+            ${buildRowsHtml(initialRows)}
           </div>
         </div>
+
+        ${hasMore ? `
+          <div class="prv-chat-more">
+            <button class="prv-chat-more-btn" type="button" data-prv-expand="false">
+              Show ${rows.length - initialRows.length} More Rows
+            </button>
+          </div>
+        ` : ""}
 
         ${actionsHtml}
         ${followupsHtml}
       </div>
     </div>
   `;
+
+  const card = document.getElementById(cardId);
+
+  if (card) {
+    const body = card.querySelector("[data-prv-body]");
+    const toggleBtn = card.querySelector("[data-prv-expand]");
+
+    if (toggleBtn && body) {
+      toggleBtn.onclick = () => {
+        const expanded = toggleBtn.getAttribute("data-prv-expand") === "true";
+
+        if (!expanded) {
+          body.innerHTML = buildRowsHtml(rows);
+          toggleBtn.setAttribute("data-prv-expand", "true");
+          toggleBtn.textContent = "Show Less";
+        } else {
+          body.innerHTML = buildRowsHtml(initialRows);
+          toggleBtn.setAttribute("data-prv-expand", "false");
+          toggleBtn.textContent = `Show ${rows.length - initialRows.length} More Rows`;
+          card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+      };
+    }
+  }
 
   bindFollowups();
   scroll();
@@ -509,12 +582,10 @@ function buildPrvRows(rows) {
 
 function buildPrvMetadata(product, rows) {
   const types = uniq(rows.map(r => r.setType).filter(Boolean));
-  const lines = uniq(rows.map(r => r.setLine).filter(Boolean));
 
   return uniq([
     `Rows: ${rows.length}`,
     types.length ? `Types: ${types.length}` : "",
-    lines.length ? `Lines: ${lines.length}` : "",
     product.year ? `Year: ${product.year}` : "",
     product.sport ? `Sport: ${titleCase(product.sport)}` : ""
   ]);
@@ -707,15 +778,19 @@ async function submitQuery(text) {
 
   addUserMessage(val);
   chatInput.value = "";
-  addAssistantBubble("Thinking...");
+
+  const loader = startLoadingBubble([
+    "Thinking...",
+    "Finding match...",
+    "Pulling data...",
+    "Formatting results..."
+  ], 1000);
 
   try {
     await bootstrapData();
     const res = await buildResponse(val);
 
-    if (chatMessages.lastElementChild) {
-      chatMessages.lastElementChild.remove();
-    }
+    loader.remove();
 
     if (res.type === "prv") {
       addPrvResultCard(res);
@@ -735,9 +810,7 @@ async function submitQuery(text) {
   } catch (err) {
     console.error(err);
 
-    if (chatMessages.lastElementChild) {
-      chatMessages.lastElementChild.remove();
-    }
+    loader.remove();
 
     addStandardAnswerCard({
       badge: "Error",

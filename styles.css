@@ -14,10 +14,15 @@
 }
 
 *{ box-sizing:border-box; }
-html,body{ height:100%; }
+
+html,
+body{
+  height:100%;
+  margin:0;
+}
 
 body{
-  margin:0;
+  overflow:hidden;
   font-family:Arial,sans-serif;
   background:
     radial-gradient(circle at top center, rgba(30,144,255,0.12), transparent 28%),
@@ -26,7 +31,8 @@ body{
 }
 
 .app-shell{
-  min-height:100%;
+  height:100dvh;
+  min-height:100dvh;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -36,18 +42,19 @@ body{
 .chat-app{
   width:100%;
   max-width:var(--maxW);
-  min-height:88vh;
+  height:min(94dvh, 980px);
   background:rgba(255,255,255,0.04);
   border:1px solid var(--cardBorder);
   border-radius:28px;
   box-shadow:var(--shadow);
-  backdrop-filter: blur(8px);
+  backdrop-filter:blur(8px);
   display:flex;
   flex-direction:column;
   overflow:hidden;
 }
 
 .chat-topbar{
+  flex:0 0 auto;
   padding:18px 18px 14px;
   border-bottom:1px solid rgba(255,255,255,0.08);
   background:rgba(255,255,255,0.04);
@@ -87,9 +94,11 @@ body{
 }
 
 .chat-messages{
-  flex:1;
+  flex:1 1 auto;
+  min-height:0;
   padding:18px;
-  overflow:auto;
+  overflow-y:auto;
+  overflow-x:hidden;
   display:flex;
   flex-direction:column;
   gap:12px;
@@ -247,10 +256,12 @@ body{
 }
 
 .chat-suggestions{
+  flex:0 0 auto;
   padding:0 18px 14px;
   display:flex;
   flex-wrap:wrap;
   gap:8px;
+  background:rgba(255,255,255,0.03);
 }
 
 .example-pill{
@@ -271,6 +282,7 @@ body{
 }
 
 .chat-input-shell{
+  flex:0 0 auto;
   padding:14px 18px 18px;
   border-top:1px solid rgba(255,255,255,0.08);
   display:flex;
@@ -311,32 +323,6 @@ body{
 .send-btn:hover{
   transform:translateY(-1px);
   background:var(--blueHover);
-}
-
-@media (max-width: 640px){
-  .app-shell{
-    padding:0;
-  }
-
-  .chat-app{
-    min-height:100vh;
-    border-radius:0;
-    border-left:0;
-    border-right:0;
-  }
-
-  .chat-input-shell{
-    flex-direction:column;
-  }
-
-  .send-btn{
-    width:100%;
-  }
-
-  .message-bubble,
-  .answer-card{
-    max-width:100%;
-  }
 }
 
 .prv-chat-card{
@@ -426,9 +412,27 @@ body{
   text-align:right;
 }
 
-.checklist-chat-table thead th:nth-child(2),
+.checklist-chat-table thead th:nth-child(1){
+  width:180px;
+}
+
+.checklist-chat-table thead th:nth-child(2){
+  width:120px;
+  text-align:left;
+}
+
 .checklist-chat-table thead th:nth-child(3){
+  width:auto;
+  text-align:left;
+}
+
+.checklist-chat-table thead th:nth-child(4){
   width:160px;
+  text-align:left;
+}
+
+.checklist-chat-table thead th:nth-child(5){
+  width:80px;
   text-align:left;
 }
 
@@ -510,6 +514,36 @@ body{
 }
 
 @media (max-width: 640px){
+  .app-shell{
+    padding:0;
+    height:100dvh;
+    min-height:100dvh;
+  }
+
+  .chat-app{
+    height:100dvh;
+    min-height:100dvh;
+    max-width:100%;
+    border-radius:0;
+    border-left:0;
+    border-right:0;
+  }
+
+  .chat-input-shell{
+    flex-direction:column;
+    padding-bottom:calc(18px + env(safe-area-inset-bottom));
+  }
+
+  .send-btn{
+    width:100%;
+  }
+
+  .message-bubble,
+  .answer-card,
+  .prv-chat-card{
+    max-width:100%;
+  }
+
   .prv-chat-title{
     font-size:23px;
   }
@@ -522,9 +556,20 @@ body{
     width:82px;
   }
 
-  .checklist-chat-table thead th:nth-child(2),
-  .checklist-chat-table thead th:nth-child(3){
-    width:110px;
+  .checklist-chat-table thead th:nth-child(1){
+    width:120px;
+  }
+
+  .checklist-chat-table thead th:nth-child(2){
+    width:88px;
+  }
+
+  .checklist-chat-table thead th:nth-child(4){
+    width:100px;
+  }
+
+  .checklist-chat-table thead th:nth-child(5){
+    width:62px;
   }
 
   .prv-chat-td-right{

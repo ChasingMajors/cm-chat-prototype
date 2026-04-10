@@ -30,7 +30,7 @@ const INTENT_PRINT_RUN_WORDS = [
 ];
 
 const INTENT_CHECKLIST_WORDS = [
-  "checklist","check list","cards in set","full set","entire checklist","base checklist","insert checklist","autograph checklist","auto checklist","relic checklist","variation checklist","parallel checklist"
+  "checklist","check list","cards in set","full set","entire checklist","base checklist","insert checklist","autograph checklist","auto checklist","relic checklist","variation checklist","parallel checklist","parallels"
 ];
 
 const INTENT_TRENDING_WORDS = [
@@ -53,6 +53,7 @@ const CHECKLIST_SECTION_LABELS = {
   parallels: "Parallels"
 };
 
+const ALL_CHECKLIST_SECTION_KEYS = ["all", "base", "inserts", "autographs", "relics", "variations", "parallels"];
 
 const chatMessages = document.getElementById("chatMessages");
 const chatInput = document.getElementById("chatInput");
@@ -179,6 +180,20 @@ function resolveChecklistSection(text) {
   for (const [key, label] of Object.entries(CHECKLIST_SECTION_LABELS)) {
     if (normalize(label) === n) return key;
   }
+  return null;
+}
+
+function detectChecklistSectionIntent(query) {
+  const n = normalize(query);
+
+  if (n.includes("parallels") || n.includes("parallel")) return "parallels";
+  if (n.includes("autographs") || n.includes("autograph") || n.includes("autos") || n.includes("auto")) return "autographs";
+  if (n.includes("relics") || n.includes("relic")) return "relics";
+  if (n.includes("variations") || n.includes("variation")) return "variations";
+  if (n.includes("inserts") || n.includes("insert")) return "inserts";
+  if (n.includes("base")) return "base";
+  if (n.includes("entire checklist") || n.includes("full checklist")) return "all";
+
   return null;
 }
 
@@ -1072,6 +1087,11 @@ async function buildChecklistSummaryResponse(query) {
     summary
   };
 
+  const directSection = detectChecklistSectionIntent(query);
+  if (directSection) {
+    return buildChecklistSectionResponse(directSection);
+  }
+
   const countsLine = summarizeChecklistCounts(summary);
 
   return {
@@ -1084,7 +1104,7 @@ async function buildChecklistSummaryResponse(query) {
       product.year ? `Year: ${product.year}` : "",
       product.sport ? `Sport: ${titleCase(product.sport)}` : ""
     ]),
-followups: checklistSectionOptionsFromSummary(summary)
+    followups: checklistSectionOptionsFromSummary(summary)
   };
 }
 
@@ -1122,7 +1142,7 @@ async function buildChecklistSectionResponse(sectionKey) {
       product.year ? `Year: ${product.year}` : "",
       product.sport ? `Sport: ${titleCase(product.sport)}` : ""
     ]),
-sectionOptions: checklistSectionOptionsFromSummary(pendingChecklistChoice.summary),
+    sectionOptions: checklistSectionOptionsFromSummary(pendingChecklistChoice.summary),
     followups: [
       `Show me ${product.name} print run`
     ]

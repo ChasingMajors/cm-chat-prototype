@@ -5,16 +5,16 @@ const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0V
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v9";
+const CL_INDEX_KEY = "cm_chat_cl_index_v10";
 const PRV_INDEX_KEY = "cm_chat_prv_index_v9";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v9";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v10";
 const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v9";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
 const EXAMPLES = [
   "Show me 2026 Topps Series 1 print run",
   "Show me the 2026 Topps Chrome Black baseball checklist",
-  "What baseball sets are trending?",
+  "What 2018 baseball products do you have?",
   "Find Roman Anthony cards"
 ];
 
@@ -22,7 +22,7 @@ const STOP_WORDS = new Set([
   "show","me","find","give","need","want","pull","get","for","the","a","an","of","to",
   "please","can","you","i","looking","look","up","tell","about","what","whats","what's",
   "is","are","my","some","data","info","information","on","do","have","in","your","database",
-  "how","about","see"
+  "how","about","see","products","product","sets","set"
 ]);
 
 const INTENT_PRINT_RUN_WORDS = [
@@ -52,8 +52,6 @@ const CHECKLIST_SECTION_LABELS = {
   variations: "Variations",
   parallels: "Parallels"
 };
-
-const ALL_CHECKLIST_SECTION_KEYS = ["all", "base", "inserts", "autographs", "relics", "variations", "parallels"];
 
 const chatMessages = document.getElementById("chatMessages");
 const chatInput = document.getElementById("chatInput");
@@ -134,7 +132,12 @@ function stripIntentWords(text) {
     "what sets are trending",
     "trending",
     "how about",
-    "entire checklist"
+    "entire checklist",
+    "what products do you have",
+    "what sets do you have",
+    "what do you have",
+    "products do you have",
+    "sets do you have"
   ].forEach(p => {
     out = out.replace(new RegExp(`\\b${p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
   });
@@ -219,6 +222,23 @@ function isCatalogCoverageQuestion(query) {
   );
 }
 
+function isSpecificYearLineupQuestion(query) {
+  const n = normalize(query);
+  const year = extractYear(query);
+  const sport = extractSport(query);
+
+  if (!year || !sport) return false;
+
+  return (
+    n.includes("what products do you have") ||
+    n.includes("what sets do you have") ||
+    n.includes("what products are in") ||
+    n.includes("what sets are in") ||
+    n.includes("show me") ||
+    n.includes("what do you have")
+  );
+}
+
 function isPricingQuestion(query) {
   const n = normalize(query);
   return (
@@ -298,6 +318,28 @@ function getSampleCurrentSetsForSport(sport, limit = 8) {
   });
 
   return results.sort((a, b) => a.localeCompare(b)).slice(0, limit);
+}
+
+function getProductsForSportYear(sport, year) {
+  const s = normalize(sport);
+  const y = String(year || "").trim();
+
+  const seen = new Set();
+  const results = [];
+
+  [...checklistIndex, ...printRunIndex].forEach(item => {
+    const p = mapProduct(item);
+    if (normalize(p.sport) !== s) return;
+    if (String(p.year) !== y) return;
+
+    const key = normalize(p.name);
+    if (!key || seen.has(key)) return;
+
+    seen.add(key);
+    results.push(p);
+  });
+
+  return results.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 /* ------------------ UI ------------------ */
@@ -1003,6 +1045,27 @@ function buildCatalogSportResponse(sport) {
   };
 }
 
+function buildYearLineupResponse(year, sport) {
+  const products = getProductsForSportYear(sport, year);
+
+  if (!products.length) {
+    return {
+      type: "standard",
+      badge: "Database",
+      title: `${year} ${titleCase(sport)} coverage`,
+      summary: `I did not find any ${sport} products for ${year} in the database.`
+    };
+  }
+
+  return {
+    type: "standard",
+    badge: "Database",
+    title: `${year} ${titleCase(sport)} coverage`,
+    summary: `We currently have ${formatNumber(products.length)} ${sport} products for ${year}: ${products.map(p => p.name).join(" • ")}`,
+    followups: products.slice(0, 8).map(p => `Show me the ${p.name} checklist`)
+  };
+}
+
 function buildClarifyProductTypeResponse(productName, query) {
   pendingProductChoice = { query, productName };
   pendingChecklistChoice = null;
@@ -1150,6 +1213,10 @@ async function buildChecklistSectionResponse(sectionKey) {
 }
 
 async function buildSearchResponse(query) {
+  if (isSpecificYearLineupQuestion(query)) {
+    return buildYearLineupResponse(extractYear(query), extractSport(query));
+  }
+
   if (isCatalogCoverageQuestion(query)) return buildAskSportResponse();
   if (isPricingQuestion(query)) return buildPricingResponse();
   if (isDataSourceQuestion(query)) return buildDataSourceResponse();
@@ -1164,7 +1231,7 @@ async function buildSearchResponse(query) {
       type: "standard",
       badge: "Try",
       title: "Try another search",
-      summary: "Ask for a print run, checklist, trending set, pricing, or a player/set search."
+      summary: "Ask for a print run, checklist, year + sport product lineup, trending set, pricing, or a player/set search."
     };
   }
 

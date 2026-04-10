@@ -868,8 +868,11 @@ function summarizeChecklistCounts(summary) {
   return parts.join(" • ");
 }
 
-function checklistSectionOptionsAlways() {
-  return ALL_CHECKLIST_SECTION_KEYS.map(key => CHECKLIST_SECTION_LABELS[key]);
+function checklistSectionOptionsFromSummary(summary) {
+  const available = Array.isArray(summary?.available_sections) ? summary.available_sections : ["all"];
+  return available
+    .map(key => CHECKLIST_SECTION_LABELS[key])
+    .filter(Boolean);
 }
 
 function formatChecklistTable(sectionKey, data) {
@@ -877,19 +880,20 @@ function formatChecklistTable(sectionKey, data) {
 
   if (section === "parallels") {
     return {
-      columns: data.columns || ["Parallel", "Serial No.", "Applies To"],
+      columns: data.columns || ["Applies To", "Parallel", "Serial No."],
       rows: (data.rows || []).map(r => ({
-        cells: Array.isArray(r) ? r : [r.parallel_name || "", r.serial_no || "", r.applies_to || ""]
+        cells: Array.isArray(r) ? r : [r.applies_to || "", r.parallel_name || "", r.serial_no || ""]
       }))
     };
   }
 
- return {
-  columns: data.columns || ["Subset", "Card No.", "Player", "Team", "Tag"],
-  rows: (data.rows || []).map(r => ({
-    cells: Array.isArray(r) ? r : [r.subset || "", r.card_no || "", r.player || "", r.team || "", r.tag || ""]
-  }))
-};
+  return {
+    columns: data.columns || ["Subset", "Card No.", "Player", "Team", "Tag"],
+    rows: (data.rows || []).map(r => ({
+      cells: Array.isArray(r) ? r : [r.subset || "", r.card_no || "", r.player || "", r.team || "", r.tag || ""]
+    }))
+  };
+}
 
 /* ------------------ RESPONSES ------------------ */
 
@@ -1081,7 +1085,7 @@ async function buildChecklistSummaryResponse(query) {
       product.year ? `Year: ${product.year}` : "",
       product.sport ? `Sport: ${titleCase(product.sport)}` : ""
     ]),
-    followups: checklistSectionOptionsAlways()
+followups: checklistSectionOptionsFromSummary(summary)
   };
 }
 
@@ -1119,7 +1123,7 @@ async function buildChecklistSectionResponse(sectionKey) {
       product.year ? `Year: ${product.year}` : "",
       product.sport ? `Sport: ${titleCase(product.sport)}` : ""
     ]),
-    sectionOptions: checklistSectionOptionsAlways(),
+sectionOptions: checklistSectionOptionsFromSummary(pendingChecklistChoice.summary),
     followups: [
       `Show me ${product.name} print run`
     ]

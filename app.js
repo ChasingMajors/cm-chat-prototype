@@ -5,10 +5,10 @@ const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0V
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v7";
-const PRV_INDEX_KEY = "cm_chat_prv_index_v7";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v7";
-const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v7";
+const CL_INDEX_KEY = "cm_chat_cl_index_v8";
+const PRV_INDEX_KEY = "cm_chat_prv_index_v8";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v8";
+const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v8";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
 const EXAMPLES = [
@@ -51,15 +51,6 @@ const CHECKLIST_SECTION_LABELS = {
   relics: "Relics",
   variations: "Variations",
   parallels: "Parallels"
-};
-
-const CHECKLIST_SECTION_ALIASES = {
-  all: [""],
-  base: ["Base", "base"],
-  inserts: ["Insert", "Inserts", "insert", "inserts"],
-  autographs: ["Autograph", "Autographs", "Auto Relic", "auto", "autograph", "autographs"],
-  relics: ["Relic", "Relics", "Memorabilia", "relic", "relics"],
-  variations: ["Variation", "Variations", "variation", "variations"]
 };
 
 const ALL_CHECKLIST_SECTION_KEYS = ["all", "base", "inserts", "autographs", "relics", "variations", "parallels"];
@@ -295,16 +286,6 @@ function getSampleCurrentSetsForSport(sport, limit = 8) {
   return results.sort((a, b) => a.localeCompare(b)).slice(0, limit);
 }
 
-function dedupeRowsByKey(rows, keyBuilder) {
-  const seen = new Set();
-  return (rows || []).filter(r => {
-    const key = keyBuilder(r);
-    if (!key || seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-}
-
 /* ------------------ UI ------------------ */
 
 function renderExamples() {
@@ -391,7 +372,7 @@ function addWelcomeMessage(force = false) {
   scroll();
 }
 
-function startLoadingBubble(messages, intervalMs = 1000) {
+function startLoadingBubble(messages, intervalMs = 2000) {
   const id = `loading_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
   const safeMessages = Array.isArray(messages) && messages.length
     ? messages
@@ -704,13 +685,22 @@ async function getChecklistSummary(code, sport) {
 async function getChecklistCards(code, sport, section) {
   try {
     const payload = { code, sport };
-    if (section) payload.section = section;
+    if (section !== undefined && section !== null) payload.section = section;
 
     const data = await postJson(CHECKLIST_EXEC_URL, {
       action: "cards",
       payload
     });
-    return Array.isArray(data?.rows) ? data.rows : [];
+
+    console.log("CHECKLIST cards payload:", payload);
+    console.log("CHECKLIST cards raw response:", data);
+
+    if (Array.isArray(data?.rows)) return data.rows;
+    if (Array.isArray(data?.cards)) return data.cards;
+    if (Array.isArray(data?.items)) return data.items;
+    if (Array.isArray(data?.data)) return data.data;
+
+    return [];
   } catch (err) {
     console.warn("getChecklistCards failed", err);
     return [];
@@ -723,7 +713,15 @@ async function getChecklistParallels(code, sport) {
       action: "parallels",
       payload: { code, sport }
     });
-    return Array.isArray(data?.rows) ? data.rows : [];
+
+    console.log("CHECKLIST parallels raw response:", data);
+
+    if (Array.isArray(data?.rows)) return data.rows;
+    if (Array.isArray(data?.parallels)) return data.parallels;
+    if (Array.isArray(data?.items)) return data.items;
+    if (Array.isArray(data?.data)) return data.data;
+
+    return [];
   } catch (err) {
     console.warn("getChecklistParallels failed", err);
     return [];
@@ -946,50 +944,49 @@ function formatChecklistRows(section, rows) {
 /* ------------------ CHECKLIST FETCH HELPERS ------------------ */
 
 async function fetchChecklistSectionRows(product, sectionKey) {
+  const allRows = await getChecklistCards(product.code, product.sport, "");
 
-  // 🔥 Always pull ALL rows once
-const allRows = await getChecklistCards(product.code, product.sport, "");
-console.log("CHECKLIST ROW SAMPLE:", allRows[0]);
-
-  if (!allRows.length) return [];
+  console.log("CHECKLIST allRows length:", allRows.length);
+  console.log("CHECKLIST first row sample:", allRows[0]);
 
   const section = normalize(sectionKey);
 
-  // ENTIRE CHECKLIST
+  if (section === "parallels") {
+    const parallels = await getChecklistParallels(product.code, product.sport);
+    console.log("CHECKLIST parallels length:", parallels.length);
+    console.log("CHECKLIST first parallel sample:", parallels[0]);
+    return parallels;
+  }
+
+  if (!allRows.length) return [];
+
   if (section === "all") {
     return allRows;
   }
 
-  // PARALLELS handled separately
-  if (section === "parallels") {
-    return await getChecklistParallels(product.code, product.sport);
-  }
+  return allRows.filter(r => {
+    const s = normalize(
+      r.section ||
+      r.subset ||
+      r.Section ||
+      r.Subset ||
+      r.type ||
+      r.Type ||
+      r.category ||
+      r.Category ||
+      r.setType ||
+      ""
+    );
 
-  // 🔥 FILTER FRONTEND
-return allRows.filter(r => {
-  const s = normalize(
-    r.section ||
-    r.subset ||
-    r.Section ||
-    r.Subset ||
-    r.type ||
-    r.Type ||
-    r.category ||
-    r.Category ||
-    r.setType ||
-    ""
-  );
+    if (section === "base") return s === "base";
+    if (section === "inserts") return s.includes("insert");
+    if (section === "autographs") return s.includes("auto");
+    if (section === "relics") return s.includes("relic");
+    if (section === "variations") return s.includes("variation");
 
-  if (section === "base") return s === "base";
-  if (section === "inserts") return s.includes("insert");
-  if (section === "autographs") return s.includes("auto");
-  if (section === "relics") return s.includes("relic");
-  if (section === "variations") return s.includes("variation");
-
-  return false;
-});
+    return false;
+  });
 }
-
 
 /* ------------------ RESPONSES ------------------ */
 
@@ -1350,3 +1347,4 @@ if (chatInput) {
     if (e.key === "Enter") submitQuery();
   };
 }
+

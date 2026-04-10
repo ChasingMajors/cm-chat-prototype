@@ -15,8 +15,10 @@ const EXAMPLES = [
   "Show me 2026 Topps Series 1 print run",
   "Show me the 2026 Topps Chrome Black baseball checklist",
   "What 2018 baseball products do you have?",
-  "Find Roman Anthony cards"
+  "Aaron Judge"
 ];
+
+const PLAYER_YEAR_OPTIONS = ["2026","2025","2024","2023","2022","2021","2020","2019","2018"];
 
 const STOP_WORDS = new Set([
   "show","me","find","give","need","want","pull","get","for","the","a","an","of","to",
@@ -64,6 +66,7 @@ let bootPromise = null;
 let awaitingCatalogSport = false;
 let pendingProductChoice = null;
 let pendingChecklistChoice = null;
+let pendingPlayerChoice = null;
 
 /* ------------------ UTIL ------------------ */
 
@@ -196,6 +199,71 @@ function detectChecklistSectionIntent(query) {
   if (/\binserts?\b/.test(n)) return "inserts";
   if (/\bbase\b/.test(n)) return "base";
   if (/\bentire checklist\b/.test(n) || /\bfull checklist\b/.test(n)) return "all";
+
+  return null;
+}
+
+function isOnlyPlayerStatsReply(text) {
+  const n = normalize(text);
+  return n === "stats" || n === "stat" || n === "statistics";
+}
+
+function isOnlyPlayerChecklistReply(text) {
+  const n = normalize(text);
+  return n === "checklist info" || n === "checklist" || n === "all cards";
+}
+
+function isOnlyYearReply(text) {
+  return /^\d{4}$/.test(String(text || "").trim());
+}
+
+function detectPlayerSearchRequest(query) {
+  const year = extractYear(query);
+  const sport = extractSport(query) || "baseball";
+  const cleaned = stripIntentWords(query);
+  const cleanedTokens = meaningfulTokens(cleaned);
+
+  const matchedProduct = findBestProduct(checklistIndex, query, "checklist");
+
+  if (matchedProduct) {
+    const productTokens = new Set([
+      ...meaningfulTokens(matchedProduct.name),
+      ...meaningfulTokens(matchedProduct.keywords),
+      ...meaningfulTokens(matchedProduct.code)
+    ]);
+
+    const residual = cleanedTokens.filter(t => {
+      if (year && t === normalize(year)) return false;
+      if (sport && t === normalize(sport)) return false;
+      return !productTokens.has(t);
+    });
+
+    if (residual.length >= 2 && residual.length <= 3) {
+      return {
+        playerName: titleCase(residual.join(" ")),
+        sport: matchedProduct.sport || sport,
+        year: matchedProduct.year || year || "",
+        code: matchedProduct.code || "",
+        productName: matchedProduct.name || ""
+      };
+    }
+  }
+
+  const baseTokens = cleanedTokens.filter(t => {
+    if (year && t === normalize(year)) return false;
+    if (sport && t === normalize(sport)) return false;
+    return true;
+  });
+
+  if (!matchedProduct && baseTokens.length >= 2 && baseTokens.length <= 3) {
+    return {
+      playerName: titleCase(baseTokens.join(" ")),
+      sport,
+      year: year || "",
+      code: "",
+      productName: ""
+    };
+  }
 
   return null;
 }
@@ -742,6 +810,17 @@ async function getChecklistParallels(code) {
   return data || {};
 }
 
+async function getPlayerCards(playerQuery, sport, year = "", code = "") {
+  const data = await postJson(CHECKLIST_EXEC_URL, {
+    action: "player_cards",
+    player_query: playerQuery,
+    sport: sport || "baseball",
+    year: year || "",
+    code: code || ""
+  });
+  return data || {};
+}
+
 /* ------------------ INDEX LOAD ------------------ */
 
 async function loadChecklistIndex() {
@@ -978,6 +1057,7 @@ async function buildTrendingResponse() {
 function buildPricingResponse() {
   pendingProductChoice = null;
   pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
 
   return {
     type: "standard",
@@ -990,6 +1070,7 @@ function buildPricingResponse() {
 function buildDataSourceResponse() {
   pendingProductChoice = null;
   pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
 
   return {
     type: "standard",
@@ -1002,6 +1083,7 @@ function buildDataSourceResponse() {
 function buildRestrictedBrandPrintRunResponse() {
   pendingProductChoice = null;
   pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
 
   return {
     type: "standard",
@@ -1020,6 +1102,7 @@ function buildAskSportResponse() {
   awaitingCatalogSport = true;
   pendingProductChoice = null;
   pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
 
   return {
     type: "standard",
@@ -1069,6 +1152,7 @@ function buildYearLineupResponse(year, sport) {
 function buildClarifyProductTypeResponse(productName, query) {
   pendingProductChoice = { query, productName };
   pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
 
   return {
     type: "standard",
@@ -1076,6 +1160,91 @@ function buildClarifyProductTypeResponse(productName, query) {
     title: productName,
     summary: "Are you looking for print run or checklist data?",
     followups: ["Print run", "Checklist"]
+  };
+}
+
+function buildPlayerChoiceResponse(playerReq) {
+  pendingPlayerChoice = { ...playerReq };
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+
+  const yearButtons = PLAYER_YEAR_OPTIONS
+    .filter(y => !playerReq.year || y !== playerReq.year)
+    .slice(0, 5);
+
+  return {
+    type: "standard",
+    badge: "Player",
+    title: playerReq.playerName,
+    summary: "Are you looking for high level on-field statistics, or checklist info? You can also jump straight to a year.",
+    followups: [
+      "Stats",
+      "All Cards",
+      ...(playerReq.year ? [playerReq.year] : []),
+      ...yearButtons
+    ]
+  };
+}
+
+function buildPlayerStatsPlaceholderResponse(playerReq) {
+  pendingPlayerChoice = { ...playerReq };
+
+  return {
+    type: "standard",
+    badge: "Player Stats",
+    title: playerReq.playerName,
+    summary: "High level on-field statistics are the next player-search piece to wire in. The player checklist side is live now."
+  };
+}
+
+async function buildPlayerChecklistResponse(playerReq) {
+  pendingPlayerChoice = { ...playerReq };
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+
+  const data = await getPlayerCards(
+    playerReq.playerName,
+    playerReq.sport || "baseball",
+    playerReq.year || "",
+    playerReq.code || ""
+  );
+
+  const rowCount = Array.isArray(data?.rows) ? data.rows.length : 0;
+
+  let sectionLabel = "Checklist Info";
+  if (playerReq.code && playerReq.productName) {
+    sectionLabel = playerReq.productName;
+  } else if (playerReq.year) {
+    sectionLabel = `${playerReq.year} Cards`;
+  } else {
+    sectionLabel = "All Checklist Results";
+  }
+
+  if (!rowCount) {
+    return {
+      type: "standard",
+      badge: "Player",
+      title: playerReq.playerName,
+      summary: "No matching checklist rows were found for that player search."
+    };
+  }
+
+  return {
+    type: "checklist_table",
+    product: { name: playerReq.playerName },
+    sectionKey: "player",
+    sectionLabel,
+    rows: (data.rows || []).map(r => ({ cells: r })),
+    columns: data.columns || [],
+    metadata: uniq([
+      `Rows: ${formatNumber(rowCount)}`,
+      playerReq.sport ? `Sport: ${titleCase(playerReq.sport)}` : "",
+      playerReq.year ? `Year: ${playerReq.year}` : ""
+    ]),
+    sectionOptions: [],
+    followups: playerReq.code
+      ? []
+      : ["Stats", "All Cards", ...PLAYER_YEAR_OPTIONS.slice(0, 5)]
   };
 }
 
@@ -1090,6 +1259,7 @@ async function buildPrintRunResponse(query) {
 
   pendingProductChoice = null;
   pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
 
   if (!product) {
     return {
@@ -1133,6 +1303,7 @@ async function buildChecklistSummaryResponse(query) {
     findBestProduct(checklistIndex, stripIntentWords(query), "checklist");
 
   pendingProductChoice = null;
+  pendingPlayerChoice = null;
 
   if (!product) {
     pendingChecklistChoice = null;
@@ -1221,17 +1392,26 @@ async function buildSearchResponse(query) {
   if (isPricingQuestion(query)) return buildPricingResponse();
   if (isDataSourceQuestion(query)) return buildDataSourceResponse();
 
+  const playerReq = detectPlayerSearchRequest(query);
+  if (playerReq) {
+    if (playerReq.code || playerReq.year) {
+      return buildPlayerChecklistResponse(playerReq);
+    }
+    return buildPlayerChoiceResponse(playerReq);
+  }
+
   const matches = getCombinedBestMatches(query);
 
   if (!matches.winner) {
     pendingProductChoice = null;
     pendingChecklistChoice = null;
+    pendingPlayerChoice = null;
 
     return {
       type: "standard",
       badge: "Try",
       title: "Try another search",
-      summary: "Ask for a print run, checklist, year + sport product lineup, trending set, pricing, or a player/set search."
+      summary: "Ask for a print run, checklist, year + sport product lineup, trending set, player search, pricing, or a set search."
     };
   }
 
@@ -1241,6 +1421,26 @@ async function buildSearchResponse(query) {
 async function buildResponse(query) {
   if (awaitingCatalogSport && isOnlySportReply(query)) {
     return buildCatalogSportResponse(normalize(query));
+  }
+
+  if (pendingPlayerChoice && isOnlyPlayerStatsReply(query)) {
+    return buildPlayerStatsPlaceholderResponse(pendingPlayerChoice);
+  }
+
+  if (pendingPlayerChoice && isOnlyPlayerChecklistReply(query)) {
+    return buildPlayerChecklistResponse({
+      ...pendingPlayerChoice,
+      year: "",
+      code: ""
+    });
+  }
+
+  if (pendingPlayerChoice && isOnlyYearReply(query)) {
+    return buildPlayerChecklistResponse({
+      ...pendingPlayerChoice,
+      year: String(query).trim(),
+      code: ""
+    });
   }
 
   if (pendingChecklistChoice && isChecklistSectionReply(query)) {

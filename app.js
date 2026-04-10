@@ -53,7 +53,6 @@ const CHECKLIST_SECTION_LABELS = {
   parallels: "Parallels"
 };
 
-const ALL_CHECKLIST_SECTION_KEYS = ["all", "base", "inserts", "autographs", "relics", "variations", "parallels"];
 
 const chatMessages = document.getElementById("chatMessages");
 const chatInput = document.getElementById("chatInput");

@@ -948,7 +948,8 @@ function formatChecklistRows(section, rows) {
 async function fetchChecklistSectionRows(product, sectionKey) {
 
   // 🔥 Always pull ALL rows once
-  const allRows = await getChecklistCards(product.code, product.sport, "");
+const allRows = await getChecklistCards(product.code, product.sport, "");
+console.log("CHECKLIST ROW SAMPLE:", allRows[0]);
 
   if (!allRows.length) return [];
 
@@ -964,19 +965,31 @@ async function fetchChecklistSectionRows(product, sectionKey) {
     return await getChecklistParallels(product.code, product.sport);
   }
 
-  // 🔥 FILTER FRONTEND (THIS FIXES YOUR ISSUE)
-  return allRows.filter(r => {
-    const s = normalize(r.section || "");
-    
-    if (section === "base") return s === "base";
-    if (section === "inserts") return s.includes("insert");
-    if (section === "autographs") return s.includes("auto");
-    if (section === "relics") return s.includes("relic");
-    if (section === "variations") return s.includes("variation");
+  // 🔥 FILTER FRONTEND
+return allRows.filter(r => {
+  const s = normalize(
+    r.section ||
+    r.subset ||
+    r.Section ||
+    r.Subset ||
+    r.type ||
+    r.Type ||
+    r.category ||
+    r.Category ||
+    r.setType ||
+    ""
+  );
 
-    return false;
-  });
+  if (section === "base") return s === "base";
+  if (section === "inserts") return s.includes("insert");
+  if (section === "autographs") return s.includes("auto");
+  if (section === "relics") return s.includes("relic");
+  if (section === "variations") return s.includes("variation");
+
+  return false;
+});
 }
+
 
 /* ------------------ RESPONSES ------------------ */
 

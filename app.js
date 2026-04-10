@@ -884,13 +884,12 @@ function formatChecklistTable(sectionKey, data) {
     };
   }
 
-  return {
-    columns: data.columns || ["Card No.", "Player", "Team", "Tag"],
-    rows: (data.rows || []).map(r => ({
-      cells: Array.isArray(r) ? r : [r.card_no || "", r.player || "", r.team || "", r.tag || ""]
-    }))
-  };
-}
+ return {
+  columns: data.columns || ["Subset", "Card No.", "Player", "Team", "Tag"],
+  rows: (data.rows || []).map(r => ({
+    cells: Array.isArray(r) ? r : [r.subset || "", r.card_no || "", r.player || "", r.team || "", r.tag || ""]
+  }))
+};
 
 /* ------------------ RESPONSES ------------------ */
 

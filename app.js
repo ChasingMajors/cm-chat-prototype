@@ -1,14 +1,14 @@
-const CHECKLIST_EXEC_URL = "https://script.google.com/macros/s/AKfycbxVsOvACvcgwf8igVdlRcGVqTa0KciCO_w23GCHzVXp4dQrUE-4hx1Uut5o_KrCLXYL/exec";
+const CHECKLIST_EXEC_URL = "https://script.google.com/macros/s/AKfycbxl2JnZGnEtmUes6UXjz6upyEd6tj20yMeX1X0bnseKo1ISaBHjWILVrp9ZyYqk-rpE_w/exec";
 const VAULT_EXEC_URL = "https://script.google.com/macros/s/AKfycbx_1rqxgSCu6aqDc7jEnETYC-KcNxHEf208GWXM23FR7hDT0ey8Y1SZ2i4U1VmXOZgpAg/exec";
 const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0VmnUeJqP0OcFL5qCe-MUjN0JonJ8QTlfpMsf0XRKZzCwLdFdiF/exec";
 
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v8";
-const PRV_INDEX_KEY = "cm_chat_prv_index_v8";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v8";
-const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v8";
+const CL_INDEX_KEY = "cm_chat_cl_index_v9";
+const PRV_INDEX_KEY = "cm_chat_prv_index_v9";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v9";
+const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v9";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
 const EXAMPLES = [
@@ -314,13 +314,6 @@ function addStandardAnswerCard(r) {
     ? `<div class="answer-meta">${(r.metadata || []).map(m => `<div class="answer-meta-chip">${escapeHtml(m)}</div>`).join("")}</div>`
     : "";
 
-  const actionsHtml = (r.actions || []).length
-    ? `<div class="answer-actions">${(r.actions || []).map(a => {
-        const cls = a.secondary ? "answer-action secondary" : "answer-action";
-        return `<a class="${cls}" href="${escapeHtml(a.href)}">${escapeHtml(a.label)}</a>`;
-      }).join("")}</div>`
-    : "";
-
   const followupsHtml = (r.followups || []).length
     ? `
       <div class="answer-followups">
@@ -339,7 +332,6 @@ function addStandardAnswerCard(r) {
         <div class="answer-title">${escapeHtml(r.title || "Result")}</div>
         <div class="answer-summary">${escapeHtml(r.summary || "")}</div>
         ${metaHtml}
-        ${actionsHtml}
         ${followupsHtml}
       </div>
     </div>
@@ -522,7 +514,7 @@ function addChecklistResultCard(result) {
   const followups = result.followups || [];
   const sectionLabel = result.sectionLabel || "Checklist";
 
-  const headers = result.columns || ["Card No.", "Player", "Team"];
+  const headers = result.columns || ["Card No.", "Player", "Team", "Tag"];
   const headHtml = headers.map(h => `<th>${escapeHtml(h)}</th>`).join("");
 
   const bodyHtml = rows.map(row => `
@@ -669,110 +661,30 @@ async function getHomeFeed() {
   }
 }
 
-async function getChecklistSummary(code, sport) {
-  try {
-    const data = await postJson(CHECKLIST_EXEC_URL, {
-      action: "summary",
-      payload: { code, sport }
-    });
-    return data || {};
-  } catch (err) {
-    console.warn("getChecklistSummary failed", err);
-    return {};
-  }
-}
-
-function extractRowsFromChecklistResponse(data) {
-  if (Array.isArray(data?.rows) && data.rows.length) return data.rows;
-  if (Array.isArray(data?.cards) && data.cards.length) return data.cards;
-  if (Array.isArray(data?.items) && data.items.length) return data.items;
-  if (Array.isArray(data?.data) && data.data.length) return data.data;
-  if (Array.isArray(data?.results) && data.results.length) return data.results;
-  return [];
-}
-
-async function getChecklistCards(code, sport, section) {
-  const attempts = [];
-
-  const routeNames = ["cards", "search_cards", "checklist"];
-
-  routeNames.forEach(route => {
-    const nestedBody = {
-      action: route,
-      payload: { code, sport }
-    };
-    if (section !== undefined && section !== null && section !== "") {
-      nestedBody.payload.section = section;
-      nestedBody.payload.q = section;
-    }
-    attempts.push({ label: `${route}:nested`, body: nestedBody });
-
-    const flatBody = {
-      action: route,
-      code,
-      sport
-    };
-    if (section !== undefined && section !== null && section !== "") {
-      flatBody.section = section;
-      flatBody.q = section;
-    }
-    attempts.push({ label: `${route}:flat`, body: flatBody });
+async function getChecklistSummary(code) {
+  const data = await postJson(CHECKLIST_EXEC_URL, {
+    action: "checklist_summary",
+    code
   });
-
-  for (const attempt of attempts) {
-    try {
-      const data = await postJson(CHECKLIST_EXEC_URL, attempt.body);
-
-      console.log("CHECKLIST cards attempt:", attempt.label, attempt.body);
-      console.log("CHECKLIST cards raw response:", data);
-
-      const rows = extractRowsFromChecklistResponse(data);
-      if (rows.length) return rows;
-    } catch (err) {
-      console.warn(`getChecklistCards failed on ${attempt.label}`, err);
-    }
-  }
-
-  return [];
+  return data || {};
 }
 
-async function getChecklistParallels(code, sport) {
-  const attempts = [
-    {
-      label: "parallels:nested",
-      body: {
-        action: "parallels",
-        payload: { code, sport }
-      }
-    },
-    {
-      label: "parallels:flat",
-      body: {
-        action: "parallels",
-        code,
-        sport
-      }
-    }
-  ];
-
-  for (const attempt of attempts) {
-    try {
-      const data = await postJson(CHECKLIST_EXEC_URL, attempt.body);
-
-      console.log("CHECKLIST parallels attempt:", attempt.label, attempt.body);
-      console.log("CHECKLIST parallels raw response:", data);
-
-      const rows = extractRowsFromChecklistResponse(data);
-      if (rows.length) return rows;
-    } catch (err) {
-      console.warn(`getChecklistParallels failed on ${attempt.label}`, err);
-    }
-  }
-
-  return [];
+async function getChecklistSection(code, section) {
+  const data = await postJson(CHECKLIST_EXEC_URL, {
+    action: "checklist_section",
+    code,
+    section
+  });
+  return data || {};
 }
 
-
+async function getChecklistParallels(code) {
+  const data = await postJson(CHECKLIST_EXEC_URL, {
+    action: "parallels",
+    code
+  });
+  return data || {};
+}
 
 /* ------------------ INDEX LOAD ------------------ */
 
@@ -815,9 +727,9 @@ async function bootstrapData() {
 /* ------------------ INDEX HELPERS ------------------ */
 
 function mapProduct(item) {
-  const name = item.DisplayName || item.displayName || item.name || "";
-  const keywords = item.Keywords || item.keywords || "";
-  const code = item.Code || item.code || "";
+  const name = item.name || item.DisplayName || item.displayName || item.product || "";
+  const keywords = item.keywords || item.Keywords || "";
+  const code = item.code || item.Code || "";
   const sport = item.sport || "";
   const year = item.year || extractYear(name) || "";
 
@@ -944,14 +856,15 @@ function buildPrvMetadata(product, rows) {
 }
 
 function summarizeChecklistCounts(summary) {
+  const c = summary.counts || {};
   const parts = [];
-  if (summary.total_rows) parts.push(`${formatNumber(summary.total_rows)} total rows`);
-  if (summary.base_count) parts.push(`${formatNumber(summary.base_count)} base`);
-  if (summary.inserts_count) parts.push(`${formatNumber(summary.inserts_count)} inserts`);
-  if (summary.autographs_count) parts.push(`${formatNumber(summary.autographs_count)} autographs`);
-  if (summary.relics_count) parts.push(`${formatNumber(summary.relics_count)} relics`);
-  if (summary.variations_count) parts.push(`${formatNumber(summary.variations_count)} variations`);
-  if (summary.parallels_count) parts.push(`${formatNumber(summary.parallels_count)} parallels`);
+  if (c.all) parts.push(`${formatNumber(c.all)} total rows`);
+  if (c.base) parts.push(`${formatNumber(c.base)} base`);
+  if (c.inserts) parts.push(`${formatNumber(c.inserts)} inserts`);
+  if (c.autographs) parts.push(`${formatNumber(c.autographs)} autographs`);
+  if (c.relics) parts.push(`${formatNumber(c.relics)} relics`);
+  if (c.variations) parts.push(`${formatNumber(c.variations)} variations`);
+  if (c.parallels) parts.push(`${formatNumber(c.parallels)} parallels`);
   return parts.join(" • ");
 }
 
@@ -959,79 +872,24 @@ function checklistSectionOptionsAlways() {
   return ALL_CHECKLIST_SECTION_KEYS.map(key => CHECKLIST_SECTION_LABELS[key]);
 }
 
-function formatChecklistRows(section, rows) {
-  const s = normalize(section);
+function formatChecklistTable(sectionKey, data) {
+  const section = normalize(sectionKey);
 
-  if (s === "parallels") {
+  if (section === "parallels") {
     return {
-      columns: ["Parallel", "Serial No.", "Applies To"],
-      rows: rows.map(r => ({
-        cells: [
-          r.parallel_name || r.parallel || r.name || "",
-          r.serial_no || r.serial || "",
-          [r.applies_to_section || r.section || "", r.applies_to_subset || r.subset || ""].filter(Boolean).join(" / ")
-        ]
+      columns: data.columns || ["Parallel", "Serial No.", "Applies To"],
+      rows: (data.rows || []).map(r => ({
+        cells: Array.isArray(r) ? r : [r.parallel_name || "", r.serial_no || "", r.applies_to || ""]
       }))
     };
   }
 
   return {
-    columns: ["Card No.", "Player", "Team"],
-    rows: rows.map(r => ({
-      cells: [
-        r.card_no || r.cardNo || "",
-        r.player || "",
-        r.team || ""
-      ]
+    columns: data.columns || ["Card No.", "Player", "Team", "Tag"],
+    rows: (data.rows || []).map(r => ({
+      cells: Array.isArray(r) ? r : [r.card_no || "", r.player || "", r.team || "", r.tag || ""]
     }))
   };
-}
-
-/* ------------------ CHECKLIST FETCH HELPERS ------------------ */
-
-async function fetchChecklistSectionRows(product, sectionKey) {
-  const allRows = await getChecklistCards(product.code, product.sport, "");
-
-  console.log("CHECKLIST allRows length:", allRows.length);
-  console.log("CHECKLIST first row sample:", allRows[0]);
-
-  const section = normalize(sectionKey);
-
-  if (section === "parallels") {
-    const parallels = await getChecklistParallels(product.code, product.sport);
-    console.log("CHECKLIST parallels length:", parallels.length);
-    console.log("CHECKLIST first parallel sample:", parallels[0]);
-    return parallels;
-  }
-
-  if (!allRows.length) return [];
-
-  if (section === "all") {
-    return allRows;
-  }
-
-  return allRows.filter(r => {
-    const s = normalize(
-      r.section ||
-      r.subset ||
-      r.Section ||
-      r.Subset ||
-      r.type ||
-      r.Type ||
-      r.category ||
-      r.Category ||
-      r.setType ||
-      ""
-    );
-
-    if (section === "base") return s === "base";
-    if (section === "inserts") return s.includes("insert");
-    if (section === "autographs") return s.includes("auto");
-    if (section === "relics") return s.includes("relic");
-    if (section === "variations") return s.includes("variation");
-
-    return false;
-  });
 }
 
 /* ------------------ RESPONSES ------------------ */
@@ -1206,8 +1064,11 @@ async function buildChecklistSummaryResponse(query) {
     };
   }
 
-  const summary = await getChecklistSummary(product.code, product.sport);
-  pendingChecklistChoice = { product, summary };
+  const summary = await getChecklistSummary(product.code);
+  pendingChecklistChoice = {
+    product,
+    summary
+  };
 
   const countsLine = summarizeChecklistCounts(summary);
 
@@ -1217,7 +1078,7 @@ async function buildChecklistSummaryResponse(query) {
     title: product.name,
     summary: `I found a matching checklist.${countsLine ? ` ${countsLine}.` : ""} Are you looking for the entire checklist or a checklist for base, inserts, autographs, relics, variations, or parallels?`,
     metadata: uniq([
-      summary.total_rows ? `Rows: ${formatNumber(summary.total_rows)}` : "",
+      summary.counts?.all ? `Rows: ${formatNumber(summary.counts.all)}` : "",
       product.year ? `Year: ${product.year}` : "",
       product.sport ? `Sport: ${titleCase(product.sport)}` : ""
     ]),
@@ -1236,11 +1097,16 @@ async function buildChecklistSectionResponse(sectionKey) {
   }
 
   const product = pendingChecklistChoice.product;
-  const summary = pendingChecklistChoice.summary || {};
   const section = sectionKey || "all";
 
-  const rawRows = await fetchChecklistSectionRows(product, section);
-  const formatted = formatChecklistRows(section, rawRows);
+  let data;
+  if (section === "parallels") {
+    data = await getChecklistParallels(product.code);
+  } else {
+    data = await getChecklistSection(product.code, section);
+  }
+
+  const formatted = formatChecklistTable(section, data);
 
   return {
     type: "checklist_table",
@@ -1250,7 +1116,7 @@ async function buildChecklistSectionResponse(sectionKey) {
     rows: formatted.rows,
     columns: formatted.columns,
     metadata: uniq([
-      `Rows: ${formatNumber(rawRows.length)}`,
+      Array.isArray(data?.rows) ? `Rows: ${formatNumber(data.rows.length)}` : "",
       product.year ? `Year: ${product.year}` : "",
       product.sport ? `Sport: ${titleCase(product.sport)}` : ""
     ]),
@@ -1393,4 +1259,3 @@ if (chatInput) {
     if (e.key === "Enter") submitQuery();
   };
 }
-

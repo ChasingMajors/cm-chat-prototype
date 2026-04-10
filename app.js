@@ -514,7 +514,7 @@ function addChecklistResultCard(result) {
   const followups = result.followups || [];
   const sectionLabel = result.sectionLabel || "Checklist";
 
-  const headers = result.columns || ["Card No.", "Player", "Team", "Tag"];
+  const headers = result.columns || ["Subset", "Card No.", "Player", "Team", "Tag"];
   const headHtml = headers.map(h => `<th>${escapeHtml(h)}</th>`).join("");
 
   const bodyHtml = rows.map(row => `

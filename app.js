@@ -186,13 +186,13 @@ function resolveChecklistSection(text) {
 function detectChecklistSectionIntent(query) {
   const n = normalize(query);
 
-  if (n.includes("parallels") || n.includes("parallel")) return "parallels";
-  if (n.includes("autographs") || n.includes("autograph") || n.includes("autos") || n.includes("auto")) return "autographs";
-  if (n.includes("relics") || n.includes("relic")) return "relics";
-  if (n.includes("variations") || n.includes("variation")) return "variations";
-  if (n.includes("inserts") || n.includes("insert")) return "inserts";
-  if (n.includes("base")) return "base";
-  if (n.includes("entire checklist") || n.includes("full checklist")) return "all";
+  if (/\bparallels?\b/.test(n)) return "parallels";
+  if (/\bautographs?\b/.test(n) || /\bautos?\b/.test(n) || /\bauto\b/.test(n)) return "autographs";
+  if (/\brelics?\b/.test(n)) return "relics";
+  if (/\bvariations?\b/.test(n)) return "variations";
+  if (/\binserts?\b/.test(n)) return "inserts";
+  if (/\bbase\b/.test(n)) return "base";
+  if (/\bentire checklist\b/.test(n) || /\bfull checklist\b/.test(n)) return "all";
 
   return null;
 }

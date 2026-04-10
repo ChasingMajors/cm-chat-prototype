@@ -946,43 +946,36 @@ function formatChecklistRows(section, rows) {
 /* ------------------ CHECKLIST FETCH HELPERS ------------------ */
 
 async function fetchChecklistSectionRows(product, sectionKey) {
-  if (sectionKey === "parallels") {
-    const parallels = await getChecklistParallels(product.code, product.sport);
-    return parallels;
+
+  // 🔥 Always pull ALL rows once
+  const allRows = await getChecklistCards(product.code, product.sport, "");
+
+  if (!allRows.length) return [];
+
+  const section = normalize(sectionKey);
+
+  // ENTIRE CHECKLIST
+  if (section === "all") {
+    return allRows;
   }
 
-  if (sectionKey === "all") {
-    const directAll = await getChecklistCards(product.code, product.sport, "");
-    if (directAll.length) {
-      return dedupeRowsByKey(directAll, r => [r.card_no || r.cardNo || "", r.player || "", r.team || ""].join("|"));
-    }
-
-    const sectionKeys = ["base", "inserts", "autographs", "relics", "variations"];
-    let combined = [];
-
-    for (const key of sectionKeys) {
-      const aliases = CHECKLIST_SECTION_ALIASES[key] || [];
-      for (const alias of aliases) {
-        const rows = await getChecklistCards(product.code, product.sport, alias);
-        if (rows.length) {
-          combined = combined.concat(rows);
-          break;
-        }
-      }
-    }
-
-    return dedupeRowsByKey(combined, r => [r.card_no || r.cardNo || "", r.player || "", r.team || ""].join("|"));
+  // PARALLELS handled separately
+  if (section === "parallels") {
+    return await getChecklistParallels(product.code, product.sport);
   }
 
-  const aliases = CHECKLIST_SECTION_ALIASES[sectionKey] || [];
-  for (const alias of aliases) {
-    const rows = await getChecklistCards(product.code, product.sport, alias);
-    if (rows.length) {
-      return rows;
-    }
-  }
+  // 🔥 FILTER FRONTEND (THIS FIXES YOUR ISSUE)
+  return allRows.filter(r => {
+    const s = normalize(r.section || "");
+    
+    if (section === "base") return s === "base";
+    if (section === "inserts") return s.includes("insert");
+    if (section === "autographs") return s.includes("auto");
+    if (section === "relics") return s.includes("relic");
+    if (section === "variations") return s.includes("variation");
 
-  return [];
+    return false;
+  });
 }
 
 /* ------------------ RESPONSES ------------------ */
@@ -1277,7 +1270,7 @@ async function submitQuery(text) {
     "Finding match...",
     "Pulling Chasing Majors data...",
     "Formatting results..."
-  ], 1000);
+  ], 2000);
 
   try {
     await bootstrapData();

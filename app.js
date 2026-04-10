@@ -682,27 +682,42 @@ async function getChecklistSummary(code, sport) {
   }
 }
 
+function extractRowsFromChecklistResponse(data) {
+  if (Array.isArray(data?.rows) && data.rows.length) return data.rows;
+  if (Array.isArray(data?.cards) && data.cards.length) return data.cards;
+  if (Array.isArray(data?.items) && data.items.length) return data.items;
+  if (Array.isArray(data?.data) && data.data.length) return data.data;
+  if (Array.isArray(data?.results) && data.results.length) return data.results;
+  return [];
+}
+
 async function getChecklistCards(code, sport, section) {
   const attempts = [];
 
-  const nestedBody = {
-    action: "cards",
-    payload: { code, sport }
-  };
-  if (section !== undefined && section !== null) {
-    nestedBody.payload.section = section;
-  }
-  attempts.push({ label: "nested", body: nestedBody });
+  const routeNames = ["cards", "search_cards", "checklist"];
 
-  const flatBody = {
-    action: "cards",
-    code,
-    sport
-  };
-  if (section !== undefined && section !== null) {
-    flatBody.section = section;
-  }
-  attempts.push({ label: "flat", body: flatBody });
+  routeNames.forEach(route => {
+    const nestedBody = {
+      action: route,
+      payload: { code, sport }
+    };
+    if (section !== undefined && section !== null && section !== "") {
+      nestedBody.payload.section = section;
+      nestedBody.payload.q = section;
+    }
+    attempts.push({ label: `${route}:nested`, body: nestedBody });
+
+    const flatBody = {
+      action: route,
+      code,
+      sport
+    };
+    if (section !== undefined && section !== null && section !== "") {
+      flatBody.section = section;
+      flatBody.q = section;
+    }
+    attempts.push({ label: `${route}:flat`, body: flatBody });
+  });
 
   for (const attempt of attempts) {
     try {
@@ -711,12 +726,10 @@ async function getChecklistCards(code, sport, section) {
       console.log("CHECKLIST cards attempt:", attempt.label, attempt.body);
       console.log("CHECKLIST cards raw response:", data);
 
-      if (Array.isArray(data?.rows) && data.rows.length) return data.rows;
-      if (Array.isArray(data?.cards) && data.cards.length) return data.cards;
-      if (Array.isArray(data?.items) && data.items.length) return data.items;
-      if (Array.isArray(data?.data) && data.data.length) return data.data;
+      const rows = extractRowsFromChecklistResponse(data);
+      if (rows.length) return rows;
     } catch (err) {
-      console.warn(`getChecklistCards failed on ${attempt.label} body`, err);
+      console.warn(`getChecklistCards failed on ${attempt.label}`, err);
     }
   }
 
@@ -726,14 +739,14 @@ async function getChecklistCards(code, sport, section) {
 async function getChecklistParallels(code, sport) {
   const attempts = [
     {
-      label: "nested",
+      label: "parallels:nested",
       body: {
         action: "parallels",
         payload: { code, sport }
       }
     },
     {
-      label: "flat",
+      label: "parallels:flat",
       body: {
         action: "parallels",
         code,
@@ -749,17 +762,16 @@ async function getChecklistParallels(code, sport) {
       console.log("CHECKLIST parallels attempt:", attempt.label, attempt.body);
       console.log("CHECKLIST parallels raw response:", data);
 
-      if (Array.isArray(data?.rows) && data.rows.length) return data.rows;
-      if (Array.isArray(data?.parallels) && data.parallels.length) return data.parallels;
-      if (Array.isArray(data?.items) && data.items.length) return data.items;
-      if (Array.isArray(data?.data) && data.data.length) return data.data;
+      const rows = extractRowsFromChecklistResponse(data);
+      if (rows.length) return rows;
     } catch (err) {
-      console.warn(`getChecklistParallels failed on ${attempt.label} body`, err);
+      console.warn(`getChecklistParallels failed on ${attempt.label}`, err);
     }
   }
 
   return [];
 }
+
 
 
 /* ------------------ INDEX LOAD ------------------ */

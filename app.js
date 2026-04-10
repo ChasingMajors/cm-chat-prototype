@@ -5,10 +5,10 @@ const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0V
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v4";
-const PRV_INDEX_KEY = "cm_chat_prv_index_v4";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v4";
-const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v4";
+const CL_INDEX_KEY = "cm_chat_cl_index_v5";
+const PRV_INDEX_KEY = "cm_chat_prv_index_v5";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v5";
+const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v5";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
 const EXAMPLES = [
@@ -21,7 +21,8 @@ const EXAMPLES = [
 const STOP_WORDS = new Set([
   "show","me","find","give","need","want","pull","get","for","the","a","an","of","to",
   "please","can","you","i","looking","look","up","tell","about","what","whats","what's",
-  "is","are","my","some","data","info","information","on","do","have","in","your","database"
+  "is","are","my","some","data","info","information","on","do","have","in","your","database",
+  "how","about"
 ]);
 
 const INTENT_PRINT_RUN_WORDS = [
@@ -51,6 +52,7 @@ let checklistIndex = [];
 let printRunIndex = [];
 let bootPromise = null;
 let awaitingCatalogSport = false;
+let pendingProductChoice = null;
 
 /* ------------------ UTIL ------------------ */
 
@@ -117,7 +119,8 @@ function stripIntentWords(text) {
     "check list",
     "what baseball sets are trending",
     "what sets are trending",
-    "trending"
+    "trending",
+    "how about"
   ].forEach(p => {
     out = out.replace(new RegExp(`\\b${p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
   });
@@ -140,6 +143,14 @@ function formatNumber(val) {
 function isOnlySportReply(text) {
   const n = normalize(text);
   return SPORT_WORDS.includes(n);
+}
+
+function isOnlyPrintRunReply(text) {
+  return ["print run", "printrun", "print-run"].includes(normalize(text));
+}
+
+function isOnlyChecklistReply(text) {
+  return ["checklist", "check list"].includes(normalize(text));
 }
 
 function mentionsRestrictedPrintRunBrand(query) {
@@ -248,22 +259,16 @@ function addAssistantBubble(text) {
 }
 
 function addWelcomeMessage() {
-  const hasSeenWelcome = sessionStorage.getItem("cm_chat_welcome_seen_v1");
+  const hasSeenWelcome = sessionStorage.getItem("cm_chat_welcome_seen_v2");
   if (hasSeenWelcome) return;
 
   addStandardAnswerCard({
     badge: "Welcome",
     title: "Welcome to Chasing Majors Chat",
-    summary:
-      "If you are looking for print run data, checklist search, limited player lookups, and Universal POP data, you are in the right place. For the best experience, include the sport and year in your search.",
-    followups: [
-      "Show me 2026 Topps Series 1 print run",
-      "Find the checklist for 2025 Topps Chrome Football",
-      "What sets do you have?"
-    ]
+    summary: "If you are looking for print run data, checklist search, limited player lookups, and Universal POP data, you are in the right place. For the best experience, include the sport and year in your search."
   });
 
-  sessionStorage.setItem("cm_chat_welcome_seen_v1", "1");
+  sessionStorage.setItem("cm_chat_welcome_seen_v2", "1");
 }
 
 function startLoadingBubble(messages, intervalMs = 1000) {
@@ -355,9 +360,9 @@ function addPrvResultCard(result) {
     <tr class="prv-chat-tr">
       <td class="prv-chat-td prv-chat-td-left">
         <div class="prv-chat-cell-main">${escapeHtml(r.label || "")}</div>
-        ${r.sub ? `<div class="prv-chat-cell-sub">${escapeHtml(r.sub)}</div>` : ""}
       </td>
       <td class="prv-chat-td prv-chat-td-right">${escapeHtml(r.value || "")}</td>
+      <td class="prv-chat-td prv-chat-td-setsize">${escapeHtml(r.setSize || "")}</td>
     </tr>
   `).join("");
 
@@ -402,6 +407,7 @@ function addPrvResultCard(result) {
               <tr>
                 <th>Card / Parallel</th>
                 <th>Print Run</th>
+                <th>Set Size</th>
               </tr>
             </thead>
             <tbody data-prv-body>
@@ -417,6 +423,10 @@ function addPrvResultCard(result) {
             </button>
           </div>
         ` : ""}
+
+        <div class="prv-chat-note">
+          If you’re looking for serial numbered data ask for a serial numbered card.
+        </div>
 
         ${actionsHtml}
         ${followupsHtml}
@@ -655,6 +665,18 @@ function findBestProduct(list, query, targetIntent) {
   return { ...best, score: bestScore };
 }
 
+function getCombinedBestMatches(query) {
+  const cl = findBestProduct(checklistIndex, query, "checklist");
+  const prv = findBestProduct(printRunIndex, query, "print_run");
+
+  const options = [cl, prv].filter(Boolean).sort((a, b) => (b.score || 0) - (a.score || 0));
+  return {
+    checklist: cl,
+    printRun: prv,
+    winner: options[0] || null
+  };
+}
+
 /* ------------------ INTENT ------------------ */
 
 function detectIntent(q) {
@@ -674,11 +696,11 @@ function buildPrvRows(rows) {
     const setLine = r.setLine || "";
     const label = [setType, setLine].filter(Boolean).join(" ").trim() || "Row";
     const value = formatNumber(r.printRun || "");
-    const subset = r.subSetSize ? `Subset size: ${formatNumber(r.subSetSize)}` : "";
+    const setSize = formatNumber(r.subSetSize || "");
     return {
       label,
       value,
-      sub: subset
+      setSize
     };
   });
 }
@@ -725,6 +747,7 @@ async function buildTrendingResponse() {
 }
 
 function buildRestrictedBrandPrintRunResponse() {
+  pendingProductChoice = null;
   return {
     type: "standard",
     badge: "Print Run",
@@ -740,6 +763,7 @@ function buildRestrictedBrandPrintRunResponse() {
 
 function buildAskSportResponse() {
   awaitingCatalogSport = true;
+  pendingProductChoice = null;
   return {
     type: "standard",
     badge: "Database",
@@ -775,6 +799,24 @@ function buildCatalogSportResponse(sport) {
   };
 }
 
+function buildClarifyProductTypeResponse(productName, query) {
+  pendingProductChoice = {
+    query,
+    productName
+  };
+
+  return {
+    type: "standard",
+    badge: "Clarify",
+    title: productName,
+    summary: "Are you looking for print run or checklist data?",
+    followups: [
+      "Print run",
+      "Checklist"
+    ]
+  };
+}
+
 async function buildPrintRunResponse(query) {
   if (mentionsRestrictedPrintRunBrand(query)) {
     return buildRestrictedBrandPrintRunResponse();
@@ -783,6 +825,8 @@ async function buildPrintRunResponse(query) {
   const product =
     findBestProduct(printRunIndex, query, "print_run") ||
     findBestProduct(printRunIndex, stripIntentWords(query), "print_run");
+
+  pendingProductChoice = null;
 
   if (!product) {
     return {
@@ -840,6 +884,8 @@ async function buildChecklistResponse(query) {
     findBestProduct(checklistIndex, query, "checklist") ||
     findBestProduct(checklistIndex, stripIntentWords(query), "checklist");
 
+  pendingProductChoice = null;
+
   if (!product) {
     return {
       type: "standard",
@@ -880,14 +926,10 @@ async function buildSearchResponse(query) {
     return buildAskSportResponse();
   }
 
-  const cl = findBestProduct(checklistIndex, query, "checklist");
-  const prv = findBestProduct(printRunIndex, query, "print_run");
+  const matches = getCombinedBestMatches(query);
 
-  const winner = [cl, prv]
-    .filter(Boolean)
-    .sort((a, b) => (b.score || 0) - (a.score || 0))[0];
-
-  if (!winner) {
+  if (!matches.winner) {
+    pendingProductChoice = null;
     return {
       type: "standard",
       badge: "Try",
@@ -901,30 +943,20 @@ async function buildSearchResponse(query) {
     };
   }
 
-  return {
-    type: "standard",
-    badge: "Match",
-    title: winner.name,
-    summary: "I found a likely product match. Choose a vault below.",
-    metadata: uniq([
-      winner.year ? `Year: ${winner.year}` : "",
-      winner.sport ? `Sport: ${titleCase(winner.sport)}` : "",
-      winner.code ? `Code: ${winner.code}` : ""
-    ]),
-    actions: [
-      { label: "Open Checklist Vault", href: `${CHECKLIST_BASE_URL}?q=${encodeURIComponent(winner.name || winner.code || "")}` },
-      { label: "Open Print Run Vault", href: `${VAULT_BASE_URL}?q=${encodeURIComponent(winner.name || winner.code || "")}`, secondary: true }
-    ],
-    followups: [
-      `Show me ${winner.name} print run`,
-      `Find the checklist for ${winner.name}`
-    ]
-  };
+  return buildClarifyProductTypeResponse(matches.winner.name, query);
 }
 
 async function buildResponse(query) {
   if (awaitingCatalogSport && isOnlySportReply(query)) {
     return buildCatalogSportResponse(normalize(query));
+  }
+
+  if (pendingProductChoice && isOnlyPrintRunReply(query)) {
+    return buildPrintRunResponse(pendingProductChoice.query);
+  }
+
+  if (pendingProductChoice && isOnlyChecklistReply(query)) {
+    return buildChecklistResponse(pendingProductChoice.query);
   }
 
   const intent = detectIntent(query);
@@ -998,7 +1030,7 @@ chatInput.onkeydown = e => {
 };
 
 renderExamples();
-bootstrapData().then(() => {
-  addWelcomeMessage();
-});
+addWelcomeMessage();
+bootstrapData();
 chatInput.focus();
+

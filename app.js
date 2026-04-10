@@ -5,10 +5,10 @@ const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0V
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v3";
-const PRV_INDEX_KEY = "cm_chat_prv_index_v3";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v3";
-const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v3";
+const CL_INDEX_KEY = "cm_chat_cl_index_v4";
+const PRV_INDEX_KEY = "cm_chat_prv_index_v4";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v4";
+const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v4";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
 const EXAMPLES = [
@@ -21,7 +21,7 @@ const EXAMPLES = [
 const STOP_WORDS = new Set([
   "show","me","find","give","need","want","pull","get","for","the","a","an","of","to",
   "please","can","you","i","looking","look","up","tell","about","what","whats","what's",
-  "is","are","my","some","data","info","information","on"
+  "is","are","my","some","data","info","information","on","do","have","in","your","database"
 ]);
 
 const INTENT_PRINT_RUN_WORDS = [
@@ -38,6 +38,10 @@ const INTENT_TRENDING_WORDS = [
 
 const SPORT_WORDS = ["baseball","basketball","football","soccer","hockey"];
 
+const NON_TOPPS_PRINTRUN_BRANDS = [
+  "panini","donruss","score","leaf","wild card","wildcard","upper deck","fleer"
+];
+
 const chatMessages = document.getElementById("chatMessages");
 const chatInput = document.getElementById("chatInput");
 const sendBtn = document.getElementById("sendBtn");
@@ -46,6 +50,7 @@ const examplePills = document.getElementById("examplePills");
 let checklistIndex = [];
 let printRunIndex = [];
 let bootPromise = null;
+let awaitingCatalogSport = false;
 
 /* ------------------ UTIL ------------------ */
 
@@ -132,6 +137,86 @@ function formatNumber(val) {
   return String(val);
 }
 
+function isOnlySportReply(text) {
+  const n = normalize(text);
+  return SPORT_WORDS.includes(n);
+}
+
+function mentionsRestrictedPrintRunBrand(query) {
+  const n = normalize(query);
+  return NON_TOPPS_PRINTRUN_BRANDS.some(b => n.includes(normalize(b)));
+}
+
+function isCatalogCoverageQuestion(query) {
+  const n = normalize(query);
+  return (
+    n.includes("what sets do you have") ||
+    n.includes("what products do you have") ||
+    n.includes("what checklists do you have") ||
+    n.includes("what print runs do you have") ||
+    n.includes("what do you have") ||
+    n.includes("what is in your database") ||
+    n.includes("what's in your database") ||
+    n.includes("what sets are in your database") ||
+    n.includes("what products are in your database") ||
+    n.includes("what can i search") ||
+    n.includes("what can you search")
+  );
+}
+
+function getAllProductsForSport(sport) {
+  const s = normalize(sport);
+  const items = [];
+
+  checklistIndex.forEach(item => {
+    const p = mapProduct(item);
+    if (normalize(p.sport) === s) items.push(p);
+  });
+
+  printRunIndex.forEach(item => {
+    const p = mapProduct(item);
+    if (normalize(p.sport) === s) items.push(p);
+  });
+
+  return items;
+}
+
+function getLatestYearsForSport(sport) {
+  const products = getAllProductsForSport(sport);
+  const years = uniq(
+    products
+      .map(p => String(p.year || ""))
+      .filter(y => /\b(19|20)\d{2}(?:-\d{2})?\b/.test(y))
+  );
+
+  return years.sort((a, b) => {
+    const aStart = parseInt(a.slice(0, 4), 10);
+    const bStart = parseInt(b.slice(0, 4), 10);
+    return bStart - aStart;
+  });
+}
+
+function getSampleCurrentSetsForSport(sport, limit = 10) {
+  const s = normalize(sport);
+  const latestYears = getLatestYearsForSport(s);
+  const latestYear = latestYears[0] || "";
+
+  const seen = new Set();
+  const results = [];
+
+  [...checklistIndex, ...printRunIndex].forEach(item => {
+    const p = mapProduct(item);
+    if (normalize(p.sport) !== s) return;
+    if (latestYear && String(p.year) !== latestYear) return;
+    const key = normalize(p.name);
+    if (!key || seen.has(key)) return;
+    seen.add(key);
+    results.push(p.name);
+  });
+
+  return results.sort((a, b) => a.localeCompare(b)).slice(0, limit);
+}
+
 /* ------------------ UI ------------------ */
 
 function renderExamples() {
@@ -160,6 +245,25 @@ function addAssistantBubble(text) {
     </div>
   `;
   scroll();
+}
+
+function addWelcomeMessage() {
+  const hasSeenWelcome = sessionStorage.getItem("cm_chat_welcome_seen_v1");
+  if (hasSeenWelcome) return;
+
+  addStandardAnswerCard({
+    badge: "Welcome",
+    title: "Welcome to Chasing Majors Chat",
+    summary:
+      "If you are looking for print run data, checklist search, limited player lookups, and Universal POP data, you are in the right place. For the best experience, include the sport and year in your search.",
+    followups: [
+      "Show me 2026 Topps Series 1 print run",
+      "Find the checklist for 2025 Topps Chrome Football",
+      "What sets do you have?"
+    ]
+  });
+
+  sessionStorage.setItem("cm_chat_welcome_seen_v1", "1");
 }
 
 function startLoadingBubble(messages, intervalMs = 1000) {
@@ -247,20 +351,15 @@ function addPrvResultCard(result) {
   const initialRows = rows.slice(0, 8);
   const hasMore = rows.length > 8;
 
-  const buildRowsHtml = (list) => list.map(r => {
-    const left = escapeHtml(r.label || "");
-    const right = escapeHtml(r.value || "");
-    const sub = escapeHtml(r.sub || "");
-    return `
-      <div class="prv-chat-row">
-        <div class="prv-chat-row-main">
-          <div class="prv-chat-row-left">${left}</div>
-          <div class="prv-chat-row-right">${right}</div>
-        </div>
-        ${sub ? `<div class="prv-chat-row-sub">${sub}</div>` : ""}
-      </div>
-    `;
-  }).join("");
+  const buildRowsHtml = (list) => list.map(r => `
+    <tr class="prv-chat-tr">
+      <td class="prv-chat-td prv-chat-td-left">
+        <div class="prv-chat-cell-main">${escapeHtml(r.label || "")}</div>
+        ${r.sub ? `<div class="prv-chat-cell-sub">${escapeHtml(r.sub)}</div>` : ""}
+      </td>
+      <td class="prv-chat-td prv-chat-td-right">${escapeHtml(r.value || "")}</td>
+    </tr>
+  `).join("");
 
   const chipsHtml = chips.length
     ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
@@ -297,14 +396,18 @@ function addPrvResultCard(result) {
 
         ${chipsHtml}
 
-        <div class="prv-chat-table">
-          <div class="prv-chat-table-head">
-            <div>Card / Parallel</div>
-            <div>Print Run</div>
-          </div>
-          <div class="prv-chat-table-body" data-prv-body>
-            ${buildRowsHtml(initialRows)}
-          </div>
+        <div class="prv-chat-table-wrap">
+          <table class="prv-chat-table">
+            <thead>
+              <tr>
+                <th>Card / Parallel</th>
+                <th>Print Run</th>
+              </tr>
+            </thead>
+            <tbody data-prv-body>
+              ${buildRowsHtml(initialRows)}
+            </tbody>
+          </table>
         </div>
 
         ${hasMore ? `
@@ -621,7 +724,62 @@ async function buildTrendingResponse() {
   };
 }
 
+function buildRestrictedBrandPrintRunResponse() {
+  return {
+    type: "standard",
+    badge: "Print Run",
+    title: "Topps products only",
+    summary: "Due to limited and unreliable pack odds data, print run search is currently available only for Topps products.",
+    followups: [
+      "Show me 2026 Topps Series 1 print run",
+      "Show me 2026 Bowman Baseball print run",
+      "Find the checklist for 2025 Panini Prizm Football"
+    ]
+  };
+}
+
+function buildAskSportResponse() {
+  awaitingCatalogSport = true;
+  return {
+    type: "standard",
+    badge: "Database",
+    title: "Which sport are you looking for?",
+    summary: "Choose one: baseball, football, basketball, hockey, or soccer.",
+    followups: [
+      "Baseball",
+      "Football",
+      "Basketball",
+      "Hockey",
+      "Soccer"
+    ]
+  };
+}
+
+function buildCatalogSportResponse(sport) {
+  awaitingCatalogSport = false;
+
+  const latestYears = getLatestYearsForSport(sport);
+  const latestYear = latestYears[0] || "recent years";
+  const sampleSets = getSampleCurrentSetsForSport(sport, 8);
+
+  return {
+    type: "standard",
+    badge: "Database",
+    title: `${titleCase(sport)} coverage`,
+    summary: `We have hundreds of ${sport} sets in the database. The most current year I found is ${latestYear}.${sampleSets.length ? ` Here are a few examples: ${sampleSets.join(" • ")}` : ""}`,
+    followups: [
+      `Show me ${latestYear} ${titleCase(sport)} print run`,
+      `Find the checklist for ${latestYear} ${titleCase(sport)}`,
+      `What ${sport} sets are trending?`
+    ]
+  };
+}
+
 async function buildPrintRunResponse(query) {
+  if (mentionsRestrictedPrintRunBrand(query)) {
+    return buildRestrictedBrandPrintRunResponse();
+  }
+
   const product =
     findBestProduct(printRunIndex, query, "print_run") ||
     findBestProduct(printRunIndex, stripIntentWords(query), "print_run");
@@ -718,6 +876,10 @@ async function buildChecklistResponse(query) {
 }
 
 async function buildSearchResponse(query) {
+  if (isCatalogCoverageQuestion(query)) {
+    return buildAskSportResponse();
+  }
+
   const cl = findBestProduct(checklistIndex, query, "checklist");
   const prv = findBestProduct(printRunIndex, query, "print_run");
 
@@ -761,6 +923,10 @@ async function buildSearchResponse(query) {
 }
 
 async function buildResponse(query) {
+  if (awaitingCatalogSport && isOnlySportReply(query)) {
+    return buildCatalogSportResponse(normalize(query));
+  }
+
   const intent = detectIntent(query);
 
   if (intent === "trending") return buildTrendingResponse();
@@ -782,7 +948,7 @@ async function submitQuery(text) {
   const loader = startLoadingBubble([
     "Thinking...",
     "Finding match...",
-    "Pulling data...",
+    "Pulling Chasing Majors data...",
     "Formatting results..."
   ], 1000);
 
@@ -832,5 +998,7 @@ chatInput.onkeydown = e => {
 };
 
 renderExamples();
-bootstrapData();
+bootstrapData().then(() => {
+  addWelcomeMessage();
+});
 chatInput.focus();

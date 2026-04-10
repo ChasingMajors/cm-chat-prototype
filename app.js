@@ -683,50 +683,84 @@ async function getChecklistSummary(code, sport) {
 }
 
 async function getChecklistCards(code, sport, section) {
-  try {
-    const payload = { code, sport };
-    if (section !== undefined && section !== null) payload.section = section;
+  const attempts = [];
 
-    const data = await postJson(CHECKLIST_EXEC_URL, {
-      action: "cards",
-      payload
-    });
-
-    console.log("CHECKLIST cards payload:", payload);
-    console.log("CHECKLIST cards raw response:", data);
-
-    if (Array.isArray(data?.rows)) return data.rows;
-    if (Array.isArray(data?.cards)) return data.cards;
-    if (Array.isArray(data?.items)) return data.items;
-    if (Array.isArray(data?.data)) return data.data;
-
-    return [];
-  } catch (err) {
-    console.warn("getChecklistCards failed", err);
-    return [];
+  const nestedBody = {
+    action: "cards",
+    payload: { code, sport }
+  };
+  if (section !== undefined && section !== null) {
+    nestedBody.payload.section = section;
   }
+  attempts.push({ label: "nested", body: nestedBody });
+
+  const flatBody = {
+    action: "cards",
+    code,
+    sport
+  };
+  if (section !== undefined && section !== null) {
+    flatBody.section = section;
+  }
+  attempts.push({ label: "flat", body: flatBody });
+
+  for (const attempt of attempts) {
+    try {
+      const data = await postJson(CHECKLIST_EXEC_URL, attempt.body);
+
+      console.log("CHECKLIST cards attempt:", attempt.label, attempt.body);
+      console.log("CHECKLIST cards raw response:", data);
+
+      if (Array.isArray(data?.rows) && data.rows.length) return data.rows;
+      if (Array.isArray(data?.cards) && data.cards.length) return data.cards;
+      if (Array.isArray(data?.items) && data.items.length) return data.items;
+      if (Array.isArray(data?.data) && data.data.length) return data.data;
+    } catch (err) {
+      console.warn(`getChecklistCards failed on ${attempt.label} body`, err);
+    }
+  }
+
+  return [];
 }
 
 async function getChecklistParallels(code, sport) {
-  try {
-    const data = await postJson(CHECKLIST_EXEC_URL, {
-      action: "parallels",
-      payload: { code, sport }
-    });
+  const attempts = [
+    {
+      label: "nested",
+      body: {
+        action: "parallels",
+        payload: { code, sport }
+      }
+    },
+    {
+      label: "flat",
+      body: {
+        action: "parallels",
+        code,
+        sport
+      }
+    }
+  ];
 
-    console.log("CHECKLIST parallels raw response:", data);
+  for (const attempt of attempts) {
+    try {
+      const data = await postJson(CHECKLIST_EXEC_URL, attempt.body);
 
-    if (Array.isArray(data?.rows)) return data.rows;
-    if (Array.isArray(data?.parallels)) return data.parallels;
-    if (Array.isArray(data?.items)) return data.items;
-    if (Array.isArray(data?.data)) return data.data;
+      console.log("CHECKLIST parallels attempt:", attempt.label, attempt.body);
+      console.log("CHECKLIST parallels raw response:", data);
 
-    return [];
-  } catch (err) {
-    console.warn("getChecklistParallels failed", err);
-    return [];
+      if (Array.isArray(data?.rows) && data.rows.length) return data.rows;
+      if (Array.isArray(data?.parallels) && data.parallels.length) return data.parallels;
+      if (Array.isArray(data?.items) && data.items.length) return data.items;
+      if (Array.isArray(data?.data) && data.data.length) return data.data;
+    } catch (err) {
+      console.warn(`getChecklistParallels failed on ${attempt.label} body`, err);
+    }
   }
+
+  return [];
 }
+
 
 /* ------------------ INDEX LOAD ------------------ */
 

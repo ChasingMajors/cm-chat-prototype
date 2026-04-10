@@ -5,15 +5,15 @@ const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0V
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v5";
-const PRV_INDEX_KEY = "cm_chat_prv_index_v5";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v5";
-const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v5";
+const CL_INDEX_KEY = "cm_chat_cl_index_v6";
+const PRV_INDEX_KEY = "cm_chat_prv_index_v6";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v6";
+const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v6";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
 const EXAMPLES = [
   "Show me 2026 Topps Series 1 print run",
-  "Find the checklist for 2025 Topps Chrome Football",
+  "Show me the 2026 Topps Chrome Black baseball checklist",
   "What baseball sets are trending?",
   "Find Roman Anthony cards"
 ];
@@ -22,7 +22,7 @@ const STOP_WORDS = new Set([
   "show","me","find","give","need","want","pull","get","for","the","a","an","of","to",
   "please","can","you","i","looking","look","up","tell","about","what","whats","what's",
   "is","are","my","some","data","info","information","on","do","have","in","your","database",
-  "how","about"
+  "how","about","see"
 ]);
 
 const INTENT_PRINT_RUN_WORDS = [
@@ -30,7 +30,7 @@ const INTENT_PRINT_RUN_WORDS = [
 ];
 
 const INTENT_CHECKLIST_WORDS = [
-  "checklist","check list","cards in set","full set","set checklist"
+  "checklist","check list","cards in set","full set","entire checklist","base checklist","insert checklist","autograph checklist","auto checklist","relic checklist","variation checklist","parallel checklist"
 ];
 
 const INTENT_TRENDING_WORDS = [
@@ -43,6 +43,16 @@ const NON_TOPPS_PRINTRUN_BRANDS = [
   "panini","donruss","score","leaf","wild card","wildcard","upper deck","fleer"
 ];
 
+const CHECKLIST_SECTION_LABELS = {
+  all: "Entire Checklist",
+  base: "Base",
+  inserts: "Inserts",
+  autographs: "Autographs",
+  relics: "Relics",
+  variations: "Variations",
+  parallels: "Parallels"
+};
+
 const chatMessages = document.getElementById("chatMessages");
 const chatInput = document.getElementById("chatInput");
 const sendBtn = document.getElementById("sendBtn");
@@ -53,6 +63,7 @@ let printRunIndex = [];
 let bootPromise = null;
 let awaitingCatalogSport = false;
 let pendingProductChoice = null;
+let pendingChecklistChoice = null;
 
 /* ------------------ UTIL ------------------ */
 
@@ -120,7 +131,8 @@ function stripIntentWords(text) {
     "what baseball sets are trending",
     "what sets are trending",
     "trending",
-    "how about"
+    "how about",
+    "entire checklist"
   ].forEach(p => {
     out = out.replace(new RegExp(`\\b${p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
   });
@@ -141,16 +153,32 @@ function formatNumber(val) {
 }
 
 function isOnlySportReply(text) {
-  const n = normalize(text);
-  return SPORT_WORDS.includes(n);
+  return SPORT_WORDS.includes(normalize(text));
 }
 
 function isOnlyPrintRunReply(text) {
-  return ["print run", "printrun", "print-run"].includes(normalize(text));
+  const n = normalize(text);
+  return n === "print run" || n === "printrun" || n === "print-run";
 }
 
 function isOnlyChecklistReply(text) {
-  return ["checklist", "check list"].includes(normalize(text));
+  const n = normalize(text);
+  return n === "checklist" || n === "check list";
+}
+
+function isChecklistSectionReply(text) {
+  const n = normalize(text);
+  return Object.keys(CHECKLIST_SECTION_LABELS).includes(n) ||
+    Object.values(CHECKLIST_SECTION_LABELS).map(normalize).includes(n);
+}
+
+function resolveChecklistSection(text) {
+  const n = normalize(text);
+  if (Object.keys(CHECKLIST_SECTION_LABELS).includes(n)) return n;
+  for (const [key, label] of Object.entries(CHECKLIST_SECTION_LABELS)) {
+    if (normalize(label) === n) return key;
+  }
+  return null;
 }
 
 function mentionsRestrictedPrintRunBrand(query) {
@@ -172,6 +200,32 @@ function isCatalogCoverageQuestion(query) {
     n.includes("what products are in your database") ||
     n.includes("what can i search") ||
     n.includes("what can you search")
+  );
+}
+
+function isPricingQuestion(query) {
+  const n = normalize(query);
+  return (
+    n.includes("pricing") ||
+    n.includes("price comps") ||
+    n.includes("price comp") ||
+    n.includes("recent sales") ||
+    n.includes("sales data") ||
+    n.includes("comps") ||
+    n.includes("price data")
+  );
+}
+
+function isDataSourceQuestion(query) {
+  const n = normalize(query);
+  return (
+    n.includes("where does your data come from") ||
+    n.includes("where do you get your data") ||
+    n.includes("how do you source your data") ||
+    n.includes("where is the data from") ||
+    n.includes("where do the data come from") ||
+    n.includes("data source") ||
+    n.includes("data sources")
   );
 }
 
@@ -207,7 +261,7 @@ function getLatestYearsForSport(sport) {
   });
 }
 
-function getSampleCurrentSetsForSport(sport, limit = 10) {
+function getSampleCurrentSetsForSport(sport, limit = 8) {
   const s = normalize(sport);
   const latestYears = getLatestYearsForSport(s);
   const latestYear = latestYears[0] || "";
@@ -231,6 +285,8 @@ function getSampleCurrentSetsForSport(sport, limit = 10) {
 /* ------------------ UI ------------------ */
 
 function renderExamples() {
+  if (!examplePills) return;
+
   examplePills.innerHTML = EXAMPLES.map(e =>
     `<button class="example-pill" data-example="${escapeHtml(e)}">${escapeHtml(e)}</button>`
   ).join("");
@@ -247,65 +303,6 @@ function addUserMessage(text) {
     </div>
   `;
   scroll();
-}
-
-function addAssistantBubble(text) {
-  chatMessages.innerHTML += `
-    <div class="message-row assistant">
-      <div class="message-bubble">${escapeHtml(text)}</div>
-    </div>
-  `;
-  scroll();
-}
-
-function addWelcomeMessage() {
-  const hasSeenWelcome = sessionStorage.getItem("cm_chat_welcome_seen_v2");
-  if (hasSeenWelcome) return;
-
-  addStandardAnswerCard({
-    badge: "Welcome",
-    title: "Welcome to Chasing Majors Chat",
-    summary: "If you are looking for print run data, checklist search, limited player lookups, and Universal POP data, you are in the right place. For the best experience, include the sport and year in your search."
-  });
-
-  sessionStorage.setItem("cm_chat_welcome_seen_v2", "1");
-}
-
-function startLoadingBubble(messages, intervalMs = 1000) {
-  const id = `loading_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-  const safeMessages = Array.isArray(messages) && messages.length
-    ? messages
-    : ["Thinking..."];
-
-  chatMessages.innerHTML += `
-    <div class="message-row assistant" id="${id}">
-      <div class="message-bubble" data-loading-bubble>${escapeHtml(safeMessages[0])}</div>
-    </div>
-  `;
-  scroll();
-
-  const row = document.getElementById(id);
-  const bubble = row ? row.querySelector("[data-loading-bubble]") : null;
-
-  let idx = 0;
-  let timer = null;
-  let delayedStart = null;
-
-  delayedStart = setTimeout(() => {
-    timer = setInterval(() => {
-      if (!bubble) return;
-      idx = (idx + 1) % safeMessages.length;
-      bubble.textContent = safeMessages[idx];
-    }, intervalMs);
-  }, 800);
-
-  return {
-    remove() {
-      if (delayedStart) clearTimeout(delayedStart);
-      if (timer) clearInterval(timer);
-      if (row && row.parentNode) row.parentNode.removeChild(row);
-    }
-  };
 }
 
 function addStandardAnswerCard(r) {
@@ -348,13 +345,63 @@ function addStandardAnswerCard(r) {
   scroll();
 }
 
+function addWelcomeMessage() {
+  const seen = sessionStorage.getItem("cm_chat_welcome_seen_v3");
+  if (seen) return;
+
+  addStandardAnswerCard({
+    badge: "Welcome",
+    title: "Welcome to Chasing Majors Chat",
+    summary: "If you are looking for print run data, checklist search, limited player lookups, and Universal POP data, you are in the right place. For the best experience, include the sport and year in your search."
+  });
+
+  sessionStorage.setItem("cm_chat_welcome_seen_v3", "1");
+}
+
+function startLoadingBubble(messages, intervalMs = 1000) {
+  const id = `loading_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+  const safeMessages = Array.isArray(messages) && messages.length
+    ? messages
+    : ["Thinking..."];
+
+  chatMessages.innerHTML += `
+    <div class="message-row assistant" id="${id}">
+      <div class="message-bubble" data-loading-bubble>${escapeHtml(safeMessages[0])}</div>
+    </div>
+  `;
+  scroll();
+
+  const row = document.getElementById(id);
+  const bubble = row ? row.querySelector("[data-loading-bubble]") : null;
+
+  let idx = 0;
+  let timer = null;
+  let delayedStart = null;
+
+  delayedStart = setTimeout(() => {
+    timer = setInterval(() => {
+      if (!bubble) return;
+      idx = (idx + 1) % safeMessages.length;
+      bubble.textContent = safeMessages[idx];
+    }, intervalMs);
+  }, 800);
+
+  return {
+    remove() {
+      if (delayedStart) clearTimeout(delayedStart);
+      if (timer) clearInterval(timer);
+      if (row && row.parentNode) row.parentNode.removeChild(row);
+    }
+  };
+}
+
 function addPrvResultCard(result) {
   const product = result.product || {};
   const rows = result.rows || [];
   const chips = result.metadata || [];
   const followups = result.followups || [];
-  const initialRows = rows.slice(0, 8);
-  const hasMore = rows.length > 8;
+  const initialCount = Math.min(8, rows.length);
+  let visibleCount = initialCount;
 
   const buildRowsHtml = (list) => list.map(r => `
     <tr class="prv-chat-tr">
@@ -369,13 +416,6 @@ function addPrvResultCard(result) {
   const chipsHtml = chips.length
     ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
     : "";
-
-  const actionsHtml = `
-    <div class="answer-actions">
-      <a class="answer-action" href="${escapeHtml(`${VAULT_BASE_URL}?q=${encodeURIComponent(product.name || product.code || "")}`)}">Open Print Run Vault</a>
-      <a class="answer-action secondary" href="${escapeHtml(`${CHECKLIST_BASE_URL}?q=${encodeURIComponent(product.name || product.code || "")}`)}">Open Checklist Vault</a>
-    </div>
-  `;
 
   const followupsHtml = followups.length
     ? `
@@ -411,52 +451,141 @@ function addPrvResultCard(result) {
               </tr>
             </thead>
             <tbody data-prv-body>
-              ${buildRowsHtml(initialRows)}
+              ${buildRowsHtml(rows.slice(0, visibleCount))}
             </tbody>
           </table>
         </div>
 
-        ${hasMore ? `
+        ${rows.length > visibleCount ? `
           <div class="prv-chat-more">
-            <button class="prv-chat-more-btn" type="button" data-prv-expand="false">
-              Show ${rows.length - initialRows.length} More Rows
+            <button class="prv-chat-more-btn" type="button" data-prv-more>
+              ${getMoreButtonLabel(rows.length, visibleCount)}
             </button>
           </div>
         ` : ""}
 
         <div class="prv-chat-note">
-          If you’re looking for serial numbered data ask for a serial numbered card.
+          If you’re looking for serial numbered data ask to see serial numbered for a given set.
         </div>
 
-        ${actionsHtml}
         ${followupsHtml}
       </div>
     </div>
   `;
 
   const card = document.getElementById(cardId);
-
   if (card) {
     const body = card.querySelector("[data-prv-body]");
-    const toggleBtn = card.querySelector("[data-prv-expand]");
+    const btn = card.querySelector("[data-prv-more]");
 
-    if (toggleBtn && body) {
-      toggleBtn.onclick = () => {
-        const expanded = toggleBtn.getAttribute("data-prv-expand") === "true";
-
-        if (!expanded) {
-          body.innerHTML = buildRowsHtml(rows);
-          toggleBtn.setAttribute("data-prv-expand", "true");
-          toggleBtn.textContent = "Show Less";
+    if (btn && body) {
+      btn.onclick = () => {
+        if (visibleCount < 8) {
+          visibleCount = Math.min(8, rows.length);
+        } else if (visibleCount < 16) {
+          visibleCount = Math.min(16, rows.length);
         } else {
-          body.innerHTML = buildRowsHtml(initialRows);
-          toggleBtn.setAttribute("data-prv-expand", "false");
-          toggleBtn.textContent = `Show ${rows.length - initialRows.length} More Rows`;
-          card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          visibleCount = rows.length;
+        }
+
+        body.innerHTML = buildRowsHtml(rows.slice(0, visibleCount));
+
+        if (visibleCount >= rows.length) {
+          btn.remove();
+        } else {
+          btn.textContent = getMoreButtonLabel(rows.length, visibleCount);
         }
       };
     }
   }
+
+  bindFollowups();
+  scroll();
+}
+
+function getMoreButtonLabel(total, visible) {
+  if (visible < 8) {
+    return `Show ${Math.min(8, total) - visible} More Rows`;
+  }
+  if (visible < 16) {
+    return `Show ${Math.min(16, total) - visible} More Rows`;
+  }
+  return `Show ${total - visible} More Rows`;
+}
+
+function addChecklistResultCard(result) {
+  const product = result.product || {};
+  const rows = result.rows || [];
+  const chips = result.metadata || [];
+  const followups = result.followups || [];
+  const sectionLabel = result.sectionLabel || "Checklist";
+
+  const headers = result.columns || ["Card No.", "Player", "Team"];
+  const visibleRows = rows;
+
+  const headHtml = headers.map(h => `<th>${escapeHtml(h)}</th>`).join("");
+
+  const bodyHtml = visibleRows.map(row => {
+    return `
+      <tr class="prv-chat-tr">
+        ${(row.cells || []).map((cell, idx) => `
+          <td class="prv-chat-td ${idx === row.cells.length - 1 ? "prv-chat-td-checklist-last" : ""}">
+            <div class="prv-chat-cell-main">${escapeHtml(cell || "")}</div>
+          </td>
+        `).join("")}
+      </tr>
+    `;
+  }).join("");
+
+  const chipsHtml = chips.length
+    ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
+    : "";
+
+  const sectionOptions = (result.sectionOptions || [])
+    .map(opt => `<button class="followup-btn" data-followup="${escapeHtml(opt)}">${escapeHtml(opt)}</button>`)
+    .join("");
+
+  chatMessages.innerHTML += `
+    <div class="message-row assistant">
+      <div class="prv-chat-card">
+        <div class="prv-chat-topline">
+          <div class="answer-badge">Checklist</div>
+        </div>
+
+        <div class="prv-chat-title">${escapeHtml(product.name || "")}</div>
+        <div class="answer-summary" style="margin-bottom:14px;">${escapeHtml(sectionLabel)}</div>
+
+        ${chipsHtml}
+
+        <div class="prv-chat-table-wrap">
+          <table class="prv-chat-table checklist-chat-table">
+            <thead>
+              <tr>${headHtml}</tr>
+            </thead>
+            <tbody>
+              ${bodyHtml || `<tr><td class="prv-chat-td" colspan="${headers.length}"><div class="prv-chat-cell-main">No rows found.</div></td></tr>`}
+            </tbody>
+          </table>
+        </div>
+
+        ${sectionOptions ? `
+          <div class="answer-followups">
+            <div class="followup-label">View another section</div>
+            <div class="followup-list">${sectionOptions}</div>
+          </div>
+        ` : ""}
+
+        ${(followups || []).length ? `
+          <div class="answer-followups">
+            <div class="followup-label">Try next</div>
+            <div class="followup-list">
+              ${followups.map(f => `<button class="followup-btn" data-followup="${escapeHtml(f)}">${escapeHtml(f)}</button>`).join("")}
+            </div>
+          </div>
+        ` : ""}
+      </div>
+    </div>
+  `;
 
   bindFollowups();
   scroll();
@@ -538,6 +667,45 @@ async function getHomeFeed() {
     return Array.isArray(data?.rows) ? data.rows : [];
   } catch (err) {
     console.warn("getHomeFeed failed", err);
+    return [];
+  }
+}
+
+async function getChecklistSummary(code, sport) {
+  try {
+    const data = await postJson(CHECKLIST_EXEC_URL, {
+      action: "summary",
+      payload: { code, sport }
+    });
+    return data || {};
+  } catch (err) {
+    console.warn("getChecklistSummary failed", err);
+    return {};
+  }
+}
+
+async function getChecklistCards(code, sport, section) {
+  try {
+    const data = await postJson(CHECKLIST_EXEC_URL, {
+      action: "cards",
+      payload: { code, sport, section }
+    });
+    return Array.isArray(data?.rows) ? data.rows : [];
+  } catch (err) {
+    console.warn("getChecklistCards failed", err);
+    return [];
+  }
+}
+
+async function getChecklistParallels(code, sport) {
+  try {
+    const data = await postJson(CHECKLIST_EXEC_URL, {
+      action: "parallels",
+      payload: { code, sport }
+    });
+    return Array.isArray(data?.rows) ? data.rows : [];
+  } catch (err) {
+    console.warn("getChecklistParallels failed", err);
     return [];
   }
 }
@@ -668,8 +836,8 @@ function findBestProduct(list, query, targetIntent) {
 function getCombinedBestMatches(query) {
   const cl = findBestProduct(checklistIndex, query, "checklist");
   const prv = findBestProduct(printRunIndex, query, "print_run");
-
   const options = [cl, prv].filter(Boolean).sort((a, b) => (b.score || 0) - (a.score || 0));
+
   return {
     checklist: cl,
     printRun: prv,
@@ -691,29 +859,75 @@ function detectIntent(q) {
 /* ------------------ FORMATTERS ------------------ */
 
 function buildPrvRows(rows) {
-  return rows.slice(0, 12).map(r => {
+  return rows.map(r => {
     const setType = r.setType || "";
     const setLine = r.setLine || "";
     const label = [setType, setLine].filter(Boolean).join(" ").trim() || "Row";
     const value = formatNumber(r.printRun || "");
     const setSize = formatNumber(r.subSetSize || "");
-    return {
-      label,
-      value,
-      setSize
-    };
+    return { label, value, setSize };
   });
 }
 
 function buildPrvMetadata(product, rows) {
   const types = uniq(rows.map(r => r.setType).filter(Boolean));
-
   return uniq([
     `Rows: ${rows.length}`,
     types.length ? `Types: ${types.length}` : "",
     product.year ? `Year: ${product.year}` : "",
     product.sport ? `Sport: ${titleCase(product.sport)}` : ""
   ]);
+}
+
+function summarizeChecklistCounts(summary) {
+  const parts = [];
+  if (summary.total_rows) parts.push(`${formatNumber(summary.total_rows)} total rows`);
+  if (summary.base_count) parts.push(`${formatNumber(summary.base_count)} base`);
+  if (summary.inserts_count) parts.push(`${formatNumber(summary.inserts_count)} inserts`);
+  if (summary.autographs_count) parts.push(`${formatNumber(summary.autographs_count)} autographs`);
+  if (summary.relics_count) parts.push(`${formatNumber(summary.relics_count)} relics`);
+  if (summary.variations_count) parts.push(`${formatNumber(summary.variations_count)} variations`);
+  if (summary.parallels_count) parts.push(`${formatNumber(summary.parallels_count)} parallels`);
+  return parts.join(" • ");
+}
+
+function checklistSectionOptionsFromSummary(summary) {
+  const options = ["Entire Checklist"];
+  if (summary.base_count) options.push("Base");
+  if (summary.inserts_count) options.push("Inserts");
+  if (summary.autographs_count) options.push("Autographs");
+  if (summary.relics_count) options.push("Relics");
+  if (summary.variations_count) options.push("Variations");
+  if (summary.parallels_count) options.push("Parallels");
+  return options;
+}
+
+function formatChecklistRows(section, rows) {
+  const s = normalize(section);
+
+  if (s === "parallels") {
+    return {
+      columns: ["Parallel", "Serial No.", "Applies To"],
+      rows: rows.map(r => ({
+        cells: [
+          r.parallel_name || r.parallel || r.name || "",
+          r.serial_no || r.serial || "",
+          [r.applies_to_section || r.section || "", r.applies_to_subset || r.subset || ""].filter(Boolean).join(" / ")
+        ]
+      }))
+    };
+  }
+
+  return {
+    columns: ["Card No.", "Player", "Team"],
+    rows: rows.map(r => ({
+      cells: [
+        r.card_no || r.cardNo || "",
+        r.player || "",
+        r.team || ""
+      ]
+    }))
+  };
 }
 
 /* ------------------ RESPONSES ------------------ */
@@ -725,14 +939,8 @@ async function buildTrendingResponse() {
   const trendingVaultRows = rows.filter(r => r[0] === "trending_print_runs").slice(0, 3);
 
   const chunks = [];
-
-  if (trendingChecklistRows.length) {
-    chunks.push(`Checklist trending: ${trendingChecklistRows.map(r => r[2]).join(" • ")}`);
-  }
-
-  if (trendingVaultRows.length) {
-    chunks.push(`Print run trending: ${trendingVaultRows.map(r => r[2]).join(" • ")}`);
-  }
+  if (trendingChecklistRows.length) chunks.push(`Checklist trending: ${trendingChecklistRows.map(r => r[2]).join(" • ")}`);
+  if (trendingVaultRows.length) chunks.push(`Print run trending: ${trendingVaultRows.map(r => r[2]).join(" • ")}`);
 
   return {
     type: "standard",
@@ -741,13 +949,39 @@ async function buildTrendingResponse() {
     summary: chunks.length ? chunks.join(" | ") : "No trending data is available yet.",
     followups: [
       "Show me 2026 Topps Series 1 print run",
-      "Find the checklist for 2025 Topps Chrome Football"
+      "Show me the 2026 Topps Chrome Black baseball checklist"
     ]
+  };
+}
+
+function buildPricingResponse() {
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+
+  return {
+    type: "standard",
+    badge: "Pricing",
+    title: "Pricing data is coming soon",
+    summary: "Pricing data, recent sales, and price comps will be added soon. This is an evolution we’ll work on in the coming weeks."
+  };
+}
+
+function buildDataSourceResponse() {
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+
+  return {
+    type: "standard",
+    badge: "Data",
+    title: "About our data sourcing",
+    summary: "Chasing Majors data sourcing is proprietary information. If you have a suggestion or find an error, please let us know."
   };
 }
 
 function buildRestrictedBrandPrintRunResponse() {
   pendingProductChoice = null;
+  pendingChecklistChoice = null;
+
   return {
     type: "standard",
     badge: "Print Run",
@@ -756,7 +990,7 @@ function buildRestrictedBrandPrintRunResponse() {
     followups: [
       "Show me 2026 Topps Series 1 print run",
       "Show me 2026 Bowman Baseball print run",
-      "Find the checklist for 2025 Panini Prizm Football"
+      "Show me the 2025 Panini Prizm Football checklist"
     ]
   };
 }
@@ -764,18 +998,14 @@ function buildRestrictedBrandPrintRunResponse() {
 function buildAskSportResponse() {
   awaitingCatalogSport = true;
   pendingProductChoice = null;
+  pendingChecklistChoice = null;
+
   return {
     type: "standard",
     badge: "Database",
     title: "Which sport are you looking for?",
     summary: "Choose one: baseball, football, basketball, hockey, or soccer.",
-    followups: [
-      "Baseball",
-      "Football",
-      "Basketball",
-      "Hockey",
-      "Soccer"
-    ]
+    followups: ["Baseball", "Football", "Basketball", "Hockey", "Soccer"]
   };
 }
 
@@ -790,30 +1020,20 @@ function buildCatalogSportResponse(sport) {
     type: "standard",
     badge: "Database",
     title: `${titleCase(sport)} coverage`,
-    summary: `We have hundreds of ${sport} sets in the database. The most current year I found is ${latestYear}.${sampleSets.length ? ` Here are a few examples: ${sampleSets.join(" • ")}` : ""}`,
-    followups: [
-      `Show me ${latestYear} ${titleCase(sport)} print run`,
-      `Find the checklist for ${latestYear} ${titleCase(sport)}`,
-      `What ${sport} sets are trending?`
-    ]
+    summary: `We have hundreds of ${sport} sets in the database. The most current year I found is ${latestYear}.${sampleSets.length ? ` Here are a few examples: ${sampleSets.join(" • ")}` : ""}`
   };
 }
 
 function buildClarifyProductTypeResponse(productName, query) {
-  pendingProductChoice = {
-    query,
-    productName
-  };
+  pendingProductChoice = { query, productName };
+  pendingChecklistChoice = null;
 
   return {
     type: "standard",
     badge: "Clarify",
     title: productName,
     summary: "Are you looking for print run or checklist data?",
-    followups: [
-      "Print run",
-      "Checklist"
-    ]
+    followups: ["Print run", "Checklist"]
   };
 }
 
@@ -827,24 +1047,19 @@ async function buildPrintRunResponse(query) {
     findBestProduct(printRunIndex, stripIntentWords(query), "print_run");
 
   pendingProductChoice = null;
+  pendingChecklistChoice = null;
 
   if (!product) {
     return {
       type: "standard",
       badge: "Print Run",
       title: "I could not match that set",
-      summary: "Try using the year and product name, like 2026 Topps Series 1 print run.",
-      followups: [
-        "Show me 2026 Topps Series 1 print run",
-        "Show me 2026 Bowman Baseball print run",
-        "Show me 2025 Topps Chrome Football print run"
-      ]
+      summary: "Try using the year and product name, like 2026 Topps Series 1 print run."
     };
   }
 
-  const rows = await getPrintRunData(product.code, product.sport);
-
-  if (!rows.length) {
+  const rawRows = await getPrintRunData(product.code, product.sport);
+  if (!rawRows.length) {
     return {
       type: "standard",
       badge: "Print Run",
@@ -854,32 +1069,23 @@ async function buildPrintRunResponse(query) {
         product.year ? `Year: ${product.year}` : "",
         product.sport ? `Sport: ${titleCase(product.sport)}` : "",
         product.code ? `Code: ${product.code}` : ""
-      ]),
-      actions: [
-        { label: "Open Print Run Vault", href: `${VAULT_BASE_URL}?q=${encodeURIComponent(product.name || product.code || "")}` },
-        { label: "Open Checklist Vault", href: `${CHECKLIST_BASE_URL}?q=${encodeURIComponent(product.name || product.code || "")}`, secondary: true }
-      ],
-      followups: [
-        `Find the checklist for ${product.name}`,
-        `Show me more details for ${product.name}`
-      ]
+      ])
     };
   }
 
   return {
     type: "prv",
     product,
-    rows: buildPrvRows(rows),
-    metadata: buildPrvMetadata(product, rows),
+    rows: buildPrvRows(rawRows),
+    metadata: buildPrvMetadata(product, rawRows),
     followups: [
-      `Find the checklist for ${product.name}`,
-      `Show me ${product.name} print run`,
+      `Show me the ${product.name} checklist`,
       `What parallels are in ${product.name}`
     ]
   };
 }
 
-async function buildChecklistResponse(query) {
+async function buildChecklistSummaryResponse(query) {
   const product =
     findBestProduct(checklistIndex, query, "checklist") ||
     findBestProduct(checklistIndex, stripIntentWords(query), "checklist");
@@ -887,36 +1093,74 @@ async function buildChecklistResponse(query) {
   pendingProductChoice = null;
 
   if (!product) {
+    pendingChecklistChoice = null;
     return {
       type: "standard",
       badge: "Checklist",
       title: "I could not match that checklist",
-      summary: "Try using the year and set name, like 2025 Topps Chrome Football checklist.",
-      followups: [
-        "Find the checklist for 2025 Topps Chrome Football",
-        "Find the checklist for 2026 Topps Series 1",
-        "Find Roman Anthony cards"
-      ]
+      summary: "Try using the year and set name, like 2026 Topps Chrome Black baseball checklist."
     };
   }
+
+  const summary = await getChecklistSummary(product.code, product.sport);
+  pendingChecklistChoice = { product, summary };
+
+  const countsLine = summarizeChecklistCounts(summary);
 
   return {
     type: "standard",
     badge: "Checklist",
     title: product.name,
-    summary: "I found a matching checklist. Open it in Checklist Vault for the full card list, sections, and parallels.",
+    summary: `I found a matching checklist.${countsLine ? ` ${countsLine}.` : ""} Are you looking for the entire checklist or a checklist for base, inserts, autographs, relics, variations, or parallels?`,
     metadata: uniq([
+      summary.total_rows ? `Rows: ${formatNumber(summary.total_rows)}` : "",
       product.year ? `Year: ${product.year}` : "",
-      product.sport ? `Sport: ${titleCase(product.sport)}` : "",
-      product.code ? `Code: ${product.code}` : ""
+      product.sport ? `Sport: ${titleCase(product.sport)}` : ""
     ]),
-    actions: [
-      { label: "Open Checklist Vault", href: `${CHECKLIST_BASE_URL}?q=${encodeURIComponent(product.name || product.code || "")}` },
-      { label: "Open Print Run Vault", href: `${VAULT_BASE_URL}?q=${encodeURIComponent(product.name || product.code || "")}`, secondary: true }
-    ],
+    followups: checklistSectionOptionsFromSummary(summary)
+  };
+}
+
+async function buildChecklistSectionResponse(sectionKey) {
+  if (!pendingChecklistChoice || !pendingChecklistChoice.product) {
+    return {
+      type: "standard",
+      badge: "Checklist",
+      title: "Checklist selection expired",
+      summary: "Search for a checklist again and I’ll load the section you want."
+    };
+  }
+
+  const product = pendingChecklistChoice.product;
+  const summary = pendingChecklistChoice.summary || {};
+  const section = sectionKey || "all";
+
+  let rawRows = [];
+  if (section === "parallels") {
+    rawRows = await getChecklistParallels(product.code, product.sport);
+  } else if (section === "all") {
+    rawRows = await getChecklistCards(product.code, product.sport, "");
+  } else {
+    rawRows = await getChecklistCards(product.code, product.sport, section);
+  }
+
+  const formatted = formatChecklistRows(section, rawRows);
+
+  return {
+    type: "checklist_table",
+    product,
+    sectionKey: section,
+    sectionLabel: CHECKLIST_SECTION_LABELS[section] || "Checklist",
+    rows: formatted.rows,
+    columns: formatted.columns,
+    metadata: uniq([
+      `Rows: ${formatNumber(rawRows.length)}`,
+      product.year ? `Year: ${product.year}` : "",
+      product.sport ? `Sport: ${titleCase(product.sport)}` : ""
+    ]),
+    sectionOptions: checklistSectionOptionsFromSummary(summary),
     followups: [
-      `Show me ${product.name} print run`,
-      `What parallels are in ${product.name}`
+      `Show me ${product.name} print run`
     ]
   };
 }
@@ -926,20 +1170,25 @@ async function buildSearchResponse(query) {
     return buildAskSportResponse();
   }
 
+  if (isPricingQuestion(query)) {
+    return buildPricingResponse();
+  }
+
+  if (isDataSourceQuestion(query)) {
+    return buildDataSourceResponse();
+  }
+
   const matches = getCombinedBestMatches(query);
 
   if (!matches.winner) {
     pendingProductChoice = null;
+    pendingChecklistChoice = null;
+
     return {
       type: "standard",
       badge: "Try",
       title: "Try another search",
-      summary: "Ask for a print run, checklist, trending set, or a player/set search.",
-      followups: [
-        "Show me 2026 Topps Series 1 print run",
-        "Find the checklist for 2025 Topps Chrome Football",
-        "What baseball sets are trending?"
-      ]
+      summary: "Ask for a print run, checklist, trending set, pricing, or a player/set search."
     };
   }
 
@@ -951,19 +1200,26 @@ async function buildResponse(query) {
     return buildCatalogSportResponse(normalize(query));
   }
 
+  if (pendingChecklistChoice && isChecklistSectionReply(query)) {
+    return buildChecklistSectionResponse(resolveChecklistSection(query));
+  }
+
   if (pendingProductChoice && isOnlyPrintRunReply(query)) {
     return buildPrintRunResponse(pendingProductChoice.query);
   }
 
   if (pendingProductChoice && isOnlyChecklistReply(query)) {
-    return buildChecklistResponse(pendingProductChoice.query);
+    return buildChecklistSummaryResponse(pendingProductChoice.query);
   }
+
+  if (isPricingQuestion(query)) return buildPricingResponse();
+  if (isDataSourceQuestion(query)) return buildDataSourceResponse();
 
   const intent = detectIntent(query);
 
   if (intent === "trending") return buildTrendingResponse();
   if (intent === "print_run") return buildPrintRunResponse(query);
-  if (intent === "checklist") return buildChecklistResponse(query);
+  if (intent === "checklist") return buildChecklistSummaryResponse(query);
 
   return buildSearchResponse(query);
 }
@@ -992,6 +1248,8 @@ async function submitQuery(text) {
 
     if (res.type === "prv") {
       addPrvResultCard(res);
+    } else if (res.type === "checklist_table") {
+      addChecklistResultCard(res);
     } else {
       addStandardAnswerCard(res);
     }
@@ -1002,8 +1260,13 @@ async function submitQuery(text) {
       event_type: "chat_query",
       query: val,
       selected_name: res.product?.name || res.title || "",
-      selected_type: res.type === "prv" ? "Print Run" : (res.badge || ""),
-      route_target: res.type === "prv" ? "vault" : ""
+      selected_type:
+        res.type === "prv" ? "Print Run" :
+        res.type === "checklist_table" ? "Checklist" :
+        (res.badge || ""),
+      route_target:
+        res.type === "prv" ? "vault" :
+        res.type === "checklist_table" ? "checklists" : ""
     });
   } catch (err) {
     console.error(err);
@@ -1013,24 +1276,33 @@ async function submitQuery(text) {
     addStandardAnswerCard({
       badge: "Error",
       title: "Something went wrong",
-      summary: "The chat could not load data right now. Please try again.",
-      followups: [
-        "Show me 2026 Topps Series 1 print run",
-        "Find the checklist for 2025 Topps Chrome Football"
-      ]
+      summary: "The chat could not load data right now. Please try again."
     });
   }
 }
 
 /* ------------------ INIT ------------------ */
 
-sendBtn.onclick = () => submitQuery();
-chatInput.onkeydown = e => {
-  if (e.key === "Enter") submitQuery();
-};
+function initChat() {
+  renderExamples();
+  addWelcomeMessage();
+  bootstrapData();
+  if (chatInput) chatInput.focus();
+}
 
-renderExamples();
-addWelcomeMessage();
-bootstrapData();
-chatInput.focus();
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initChat);
+} else {
+  initChat();
+}
+
+if (sendBtn) {
+  sendBtn.onclick = () => submitQuery();
+}
+
+if (chatInput) {
+  chatInput.onkeydown = e => {
+    if (e.key === "Enter") submitQuery();
+  };
+}
 

@@ -5,10 +5,10 @@ const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0V
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v6";
-const PRV_INDEX_KEY = "cm_chat_prv_index_v6";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v6";
-const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v6";
+const CL_INDEX_KEY = "cm_chat_cl_index_v7";
+const PRV_INDEX_KEY = "cm_chat_prv_index_v7";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v7";
+const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v7";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
 const EXAMPLES = [
@@ -52,6 +52,17 @@ const CHECKLIST_SECTION_LABELS = {
   variations: "Variations",
   parallels: "Parallels"
 };
+
+const CHECKLIST_SECTION_ALIASES = {
+  all: [""],
+  base: ["Base", "base"],
+  inserts: ["Insert", "Inserts", "insert", "inserts"],
+  autographs: ["Autograph", "Autographs", "Auto Relic", "auto", "autograph", "autographs"],
+  relics: ["Relic", "Relics", "Memorabilia", "relic", "relics"],
+  variations: ["Variation", "Variations", "variation", "variations"]
+};
+
+const ALL_CHECKLIST_SECTION_KEYS = ["all", "base", "inserts", "autographs", "relics", "variations", "parallels"];
 
 const chatMessages = document.getElementById("chatMessages");
 const chatInput = document.getElementById("chatInput");
@@ -220,6 +231,8 @@ function isDataSourceQuestion(query) {
   const n = normalize(query);
   return (
     n.includes("where does your data come from") ||
+    n.includes("where does your data com from") ||
+    n.includes("where does the data come from") ||
     n.includes("where do you get your data") ||
     n.includes("how do you source your data") ||
     n.includes("where is the data from") ||
@@ -280,6 +293,16 @@ function getSampleCurrentSetsForSport(sport, limit = 8) {
   });
 
   return results.sort((a, b) => a.localeCompare(b)).slice(0, limit);
+}
+
+function dedupeRowsByKey(rows, keyBuilder) {
+  const seen = new Set();
+  return (rows || []).filter(r => {
+    const key = keyBuilder(r);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 /* ------------------ UI ------------------ */
@@ -345,17 +368,27 @@ function addStandardAnswerCard(r) {
   scroll();
 }
 
-function addWelcomeMessage() {
-  const seen = sessionStorage.getItem("cm_chat_welcome_seen_v3");
-  if (seen) return;
+function addWelcomeMessage(force = false) {
+  if (!chatMessages) return;
 
-  addStandardAnswerCard({
-    badge: "Welcome",
-    title: "Welcome to Chasing Majors Chat",
-    summary: "If you are looking for print run data, checklist search, limited player lookups, and Universal POP data, you are in the right place. For the best experience, include the sport and year in your search."
-  });
+  const alreadyHasWelcome = !!chatMessages.querySelector("[data-cm-welcome]");
+  if (alreadyHasWelcome && !force) return;
 
-  sessionStorage.setItem("cm_chat_welcome_seen_v3", "1");
+  if (alreadyHasWelcome && force) {
+    chatMessages.querySelector("[data-cm-welcome]")?.closest(".message-row")?.remove();
+  }
+
+  chatMessages.innerHTML = `
+    <div class="message-row assistant">
+      <div class="answer-card" data-cm-welcome="1">
+        <div class="answer-badge">Welcome</div>
+        <div class="answer-title">Welcome to Chasing Majors Chat</div>
+        <div class="answer-summary">If you are looking for print run data, checklist search, limited player lookups, and Universal POP data, you are in the right place. For the best experience, include the sport and year in your search.</div>
+      </div>
+    </div>
+  ` + chatMessages.innerHTML;
+
+  scroll();
 }
 
 function startLoadingBubble(messages, intervalMs = 1000) {
@@ -395,13 +428,18 @@ function startLoadingBubble(messages, intervalMs = 1000) {
   };
 }
 
+function getMoreButtonLabel(total, visible) {
+  if (visible < 8) return `Show ${Math.min(8, total) - visible} More Rows`;
+  if (visible < 16) return `Show ${Math.min(16, total) - visible} More Rows`;
+  return `Show ${total - visible} More Rows`;
+}
+
 function addPrvResultCard(result) {
   const product = result.product || {};
   const rows = result.rows || [];
   const chips = result.metadata || [];
   const followups = result.followups || [];
-  const initialCount = Math.min(8, rows.length);
-  let visibleCount = initialCount;
+  let visibleCount = Math.min(8, rows.length);
 
   const buildRowsHtml = (list) => list.map(r => `
     <tr class="prv-chat-tr">
@@ -480,37 +518,20 @@ function addPrvResultCard(result) {
 
     if (btn && body) {
       btn.onclick = () => {
-        if (visibleCount < 8) {
-          visibleCount = Math.min(8, rows.length);
-        } else if (visibleCount < 16) {
-          visibleCount = Math.min(16, rows.length);
-        } else {
-          visibleCount = rows.length;
-        }
+        if (visibleCount < 8) visibleCount = Math.min(8, rows.length);
+        else if (visibleCount < 16) visibleCount = Math.min(16, rows.length);
+        else visibleCount = rows.length;
 
         body.innerHTML = buildRowsHtml(rows.slice(0, visibleCount));
 
-        if (visibleCount >= rows.length) {
-          btn.remove();
-        } else {
-          btn.textContent = getMoreButtonLabel(rows.length, visibleCount);
-        }
+        if (visibleCount >= rows.length) btn.remove();
+        else btn.textContent = getMoreButtonLabel(rows.length, visibleCount);
       };
     }
   }
 
   bindFollowups();
   scroll();
-}
-
-function getMoreButtonLabel(total, visible) {
-  if (visible < 8) {
-    return `Show ${Math.min(8, total) - visible} More Rows`;
-  }
-  if (visible < 16) {
-    return `Show ${Math.min(16, total) - visible} More Rows`;
-  }
-  return `Show ${total - visible} More Rows`;
 }
 
 function addChecklistResultCard(result) {
@@ -521,21 +542,17 @@ function addChecklistResultCard(result) {
   const sectionLabel = result.sectionLabel || "Checklist";
 
   const headers = result.columns || ["Card No.", "Player", "Team"];
-  const visibleRows = rows;
-
   const headHtml = headers.map(h => `<th>${escapeHtml(h)}</th>`).join("");
 
-  const bodyHtml = visibleRows.map(row => {
-    return `
-      <tr class="prv-chat-tr">
-        ${(row.cells || []).map((cell, idx) => `
-          <td class="prv-chat-td ${idx === row.cells.length - 1 ? "prv-chat-td-checklist-last" : ""}">
-            <div class="prv-chat-cell-main">${escapeHtml(cell || "")}</div>
-          </td>
-        `).join("")}
-      </tr>
-    `;
-  }).join("");
+  const bodyHtml = rows.map(row => `
+    <tr class="prv-chat-tr">
+      ${(row.cells || []).map((cell, idx) => `
+        <td class="prv-chat-td ${idx === row.cells.length - 1 ? "prv-chat-td-checklist-last" : ""}">
+          <div class="prv-chat-cell-main">${escapeHtml(cell || "")}</div>
+        </td>
+      `).join("")}
+    </tr>
+  `).join("");
 
   const chipsHtml = chips.length
     ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
@@ -575,7 +592,7 @@ function addChecklistResultCard(result) {
           </div>
         ` : ""}
 
-        ${(followups || []).length ? `
+        ${followups.length ? `
           <div class="answer-followups">
             <div class="followup-label">Try next</div>
             <div class="followup-list">
@@ -686,9 +703,12 @@ async function getChecklistSummary(code, sport) {
 
 async function getChecklistCards(code, sport, section) {
   try {
+    const payload = { code, sport };
+    if (section) payload.section = section;
+
     const data = await postJson(CHECKLIST_EXEC_URL, {
       action: "cards",
-      payload: { code, sport, section }
+      payload
     });
     return Array.isArray(data?.rows) ? data.rows : [];
   } catch (err) {
@@ -891,15 +911,8 @@ function summarizeChecklistCounts(summary) {
   return parts.join(" • ");
 }
 
-function checklistSectionOptionsFromSummary(summary) {
-  const options = ["Entire Checklist"];
-  if (summary.base_count) options.push("Base");
-  if (summary.inserts_count) options.push("Inserts");
-  if (summary.autographs_count) options.push("Autographs");
-  if (summary.relics_count) options.push("Relics");
-  if (summary.variations_count) options.push("Variations");
-  if (summary.parallels_count) options.push("Parallels");
-  return options;
+function checklistSectionOptionsAlways() {
+  return ALL_CHECKLIST_SECTION_KEYS.map(key => CHECKLIST_SECTION_LABELS[key]);
 }
 
 function formatChecklistRows(section, rows) {
@@ -928,6 +941,48 @@ function formatChecklistRows(section, rows) {
       ]
     }))
   };
+}
+
+/* ------------------ CHECKLIST FETCH HELPERS ------------------ */
+
+async function fetchChecklistSectionRows(product, sectionKey) {
+  if (sectionKey === "parallels") {
+    const parallels = await getChecklistParallels(product.code, product.sport);
+    return parallels;
+  }
+
+  if (sectionKey === "all") {
+    const directAll = await getChecklistCards(product.code, product.sport, "");
+    if (directAll.length) {
+      return dedupeRowsByKey(directAll, r => [r.card_no || r.cardNo || "", r.player || "", r.team || ""].join("|"));
+    }
+
+    const sectionKeys = ["base", "inserts", "autographs", "relics", "variations"];
+    let combined = [];
+
+    for (const key of sectionKeys) {
+      const aliases = CHECKLIST_SECTION_ALIASES[key] || [];
+      for (const alias of aliases) {
+        const rows = await getChecklistCards(product.code, product.sport, alias);
+        if (rows.length) {
+          combined = combined.concat(rows);
+          break;
+        }
+      }
+    }
+
+    return dedupeRowsByKey(combined, r => [r.card_no || r.cardNo || "", r.player || "", r.team || ""].join("|"));
+  }
+
+  const aliases = CHECKLIST_SECTION_ALIASES[sectionKey] || [];
+  for (const alias of aliases) {
+    const rows = await getChecklistCards(product.code, product.sport, alias);
+    if (rows.length) {
+      return rows;
+    }
+  }
+
+  return [];
 }
 
 /* ------------------ RESPONSES ------------------ */
@@ -974,7 +1029,7 @@ function buildDataSourceResponse() {
     type: "standard",
     badge: "Data",
     title: "About our data sourcing",
-    summary: "Chasing Majors data sourcing is proprietary information. If you have a suggestion or find an error, please let us know."
+    summary: "Chasing Majors data sourcing is proprietary information and for internal Chasing Majors use only. If you have a suggestion or find an error, please let us know."
   };
 }
 
@@ -1117,7 +1172,7 @@ async function buildChecklistSummaryResponse(query) {
       product.year ? `Year: ${product.year}` : "",
       product.sport ? `Sport: ${titleCase(product.sport)}` : ""
     ]),
-    followups: checklistSectionOptionsFromSummary(summary)
+    followups: checklistSectionOptionsAlways()
   };
 }
 
@@ -1135,15 +1190,7 @@ async function buildChecklistSectionResponse(sectionKey) {
   const summary = pendingChecklistChoice.summary || {};
   const section = sectionKey || "all";
 
-  let rawRows = [];
-  if (section === "parallels") {
-    rawRows = await getChecklistParallels(product.code, product.sport);
-  } else if (section === "all") {
-    rawRows = await getChecklistCards(product.code, product.sport, "");
-  } else {
-    rawRows = await getChecklistCards(product.code, product.sport, section);
-  }
-
+  const rawRows = await fetchChecklistSectionRows(product, section);
   const formatted = formatChecklistRows(section, rawRows);
 
   return {
@@ -1158,7 +1205,7 @@ async function buildChecklistSectionResponse(sectionKey) {
       product.year ? `Year: ${product.year}` : "",
       product.sport ? `Sport: ${titleCase(product.sport)}` : ""
     ]),
-    sectionOptions: checklistSectionOptionsFromSummary(summary),
+    sectionOptions: checklistSectionOptionsAlways(),
     followups: [
       `Show me ${product.name} print run`
     ]
@@ -1166,17 +1213,9 @@ async function buildChecklistSectionResponse(sectionKey) {
 }
 
 async function buildSearchResponse(query) {
-  if (isCatalogCoverageQuestion(query)) {
-    return buildAskSportResponse();
-  }
-
-  if (isPricingQuestion(query)) {
-    return buildPricingResponse();
-  }
-
-  if (isDataSourceQuestion(query)) {
-    return buildDataSourceResponse();
-  }
+  if (isCatalogCoverageQuestion(query)) return buildAskSportResponse();
+  if (isPricingQuestion(query)) return buildPricingResponse();
+  if (isDataSourceQuestion(query)) return buildDataSourceResponse();
 
   const matches = getCombinedBestMatches(query);
 
@@ -1285,7 +1324,7 @@ async function submitQuery(text) {
 
 function initChat() {
   renderExamples();
-  addWelcomeMessage();
+  requestAnimationFrame(() => addWelcomeMessage(true));
   bootstrapData();
   if (chatInput) chatInput.focus();
 }
@@ -1305,4 +1344,3 @@ if (chatInput) {
     if (e.key === "Enter") submitQuery();
   };
 }
-

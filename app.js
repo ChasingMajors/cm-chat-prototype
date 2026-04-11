@@ -5,9 +5,9 @@ const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0V
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v11";
+const CL_INDEX_KEY = "cm_chat_cl_index_v12";
 const PRV_INDEX_KEY = "cm_chat_prv_index_v9";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v11";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v12";
 const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v9";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
@@ -67,6 +67,12 @@ const PLAYER_SEARCH_NON_NAME_WORDS = new Set([
   "dynasty","flagship","celebration","draft","best","platinum","anniversary",
   "checklist","print","run","parallels","parallel","autographs","autograph","autos",
   "auto","relics","relic","variations","variation","inserts","insert","base"
+]);
+
+const PLAYER_SEARCH_FILLER_WORDS = new Set([
+  "show","me","find","give","pull","get","tell","about","looking","look","up",
+  "is","are","was","were","does","do","did","in","from","for","all",
+  "card","cards","rookie","rookies"
 ]);
 
 const chatMessages = document.getElementById("chatMessages");
@@ -232,13 +238,20 @@ function isOnlyYearReply(text) {
 }
 
 function splitPlayerSearchQuery(query) {
-  const rawTokens = String(query || "").trim().split(/\s+/).filter(Boolean);
-  if (!rawTokens.length) return null;
-
   const year = extractYear(query);
   const sport = extractSport(query);
 
-  const normalizedTokens = rawTokens.map(t => normalize(t)).filter(Boolean);
+  const rawTokens = String(query || "").trim().split(/\s+/).filter(Boolean);
+  if (!rawTokens.length) return null;
+
+  const cleanedRawTokens = rawTokens.filter(t => {
+    const n = normalize(t);
+    return n && !PLAYER_SEARCH_FILLER_WORDS.has(n);
+  });
+
+  if (!cleanedRawTokens.length) return null;
+
+  const normalizedTokens = cleanedRawTokens.map(t => normalize(t)).filter(Boolean);
 
   let stopIdx = normalizedTokens.length;
 
@@ -251,26 +264,21 @@ function splitPlayerSearchQuery(query) {
     }
   }
 
-  let playerTokens = rawTokens.slice(0, stopIdx).filter(Boolean);
+  let playerTokens = cleanedRawTokens.slice(0, stopIdx).filter(Boolean);
 
-  if (playerTokens.length < 2) {
-    const meaningful = rawTokens.filter(t => {
-      const n = normalize(t);
-      return n &&
-        !PLAYER_SEARCH_NON_NAME_WORDS.has(n) &&
-        (!year || n !== normalize(year)) &&
-        (!sport || n !== normalize(sport));
-    });
-    playerTokens = meaningful.slice(0, 2);
+  if (!playerTokens.length) return null;
+
+  if (playerTokens.length > 3) {
+    playerTokens = playerTokens.slice(0, 3);
   }
 
-  if (playerTokens.length < 2 || playerTokens.length > 3) return null;
-
   const playerName = titleCase(playerTokens.join(" "));
-  const playerNorms = playerTokens.map(t => normalize(t));
+  const playerNormSet = new Set(playerTokens.map(t => normalize(t)));
 
-  const remainderTokens = rawTokens.filter((t, idx) => {
-    if (idx < playerTokens.length && normalize(t) === playerNorms[idx]) return false;
+  const remainderTokens = cleanedRawTokens.filter((t, idx) => {
+    if (idx < playerTokens.length) return false;
+    const n = normalize(t);
+    if (playerNormSet.has(n) && idx < playerTokens.length) return false;
     return true;
   });
 
@@ -302,8 +310,8 @@ function findBestProductFromRemainder(remainder) {
   const queryTokens = meaningfulTokens(cleaned);
   const overlap = queryTokens.filter(t => productTokens.has(t)).length;
 
-  if (overlap < 2) return null;
-  if (score < 55) return null;
+  if (overlap < 1) return null;
+  if (score < 45) return null;
 
   return candidate;
 }

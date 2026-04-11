@@ -5,9 +5,9 @@ const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0V
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v13";
+const CL_INDEX_KEY = "cm_chat_cl_index_v14";
 const PRV_INDEX_KEY = "cm_chat_prv_index_v9";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v13";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v14";
 const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v9";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
@@ -264,7 +264,6 @@ function splitPlayerSearchQuery(query) {
   }
 
   let playerTokens = cleanedRawTokens.slice(0, stopIdx).filter(Boolean);
-
   if (!playerTokens.length) return null;
   if (playerTokens.length > 3) playerTokens = playerTokens.slice(0, 3);
 
@@ -309,7 +308,6 @@ function detectPlayerSearchRequest(query) {
   if (!parts) return null;
 
   const { playerName, sport, year, remainder } = parts;
-
   const product = findBestProductFromRemainder(remainder);
 
   if (product) {
@@ -318,16 +316,29 @@ function detectPlayerSearchRequest(query) {
       sport: product.sport || sport || "baseball",
       year: product.year || year || "",
       code: product.code || "",
-      productName: product.name || ""
+      productName: product.name || "",
+      mode: "player_product"
+    };
+  }
+
+  if (year) {
+    return {
+      playerName,
+      sport: sport || "baseball",
+      year: year || "",
+      code: "",
+      productName: "",
+      mode: "player_year"
     };
   }
 
   return {
     playerName,
     sport: sport || "baseball",
-    year: year || "",
+    year: "",
     code: "",
-    productName: ""
+    productName: "",
+    mode: "player_only"
   };
 }
 
@@ -493,7 +504,25 @@ function addUserMessage(text) {
       <div class="message-bubble">${escapeHtml(text)}</div>
     </div>
   `;
-  scroll();
+  scrollToBottom();
+}
+
+function scrollToBottom() {
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function scrollNewCardToTop(element) {
+  if (!element) {
+    scrollToBottom();
+    return;
+  }
+
+  requestAnimationFrame(() => {
+    const containerRect = chatMessages.getBoundingClientRect();
+    const elRect = element.getBoundingClientRect();
+    const delta = elRect.top - containerRect.top;
+    chatMessages.scrollTop += delta - 8;
+  });
 }
 
 function addStandardAnswerCard(r) {
@@ -512,9 +541,11 @@ function addStandardAnswerCard(r) {
     `
     : "";
 
+  const cardId = `standard_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+
   chatMessages.innerHTML += `
     <div class="message-row assistant">
-      <div class="answer-card">
+      <div class="answer-card" id="${cardId}">
         <div class="answer-badge">${escapeHtml(r.badge || "Answer")}</div>
         <div class="answer-title">${escapeHtml(r.title || "Result")}</div>
         <div class="answer-summary">${escapeHtml(r.summary || "")}</div>
@@ -525,7 +556,7 @@ function addStandardAnswerCard(r) {
   `;
 
   bindFollowups();
-  scroll();
+  scrollNewCardToTop(document.getElementById(cardId));
 }
 
 function addWelcomeMessage(force = false) {
@@ -548,7 +579,7 @@ function addWelcomeMessage(force = false) {
     </div>
   ` + chatMessages.innerHTML;
 
-  scroll();
+  scrollToBottom();
 }
 
 function startLoadingBubble(messages, intervalMs = 2000) {
@@ -562,7 +593,7 @@ function startLoadingBubble(messages, intervalMs = 2000) {
       <div class="message-bubble" data-loading-bubble>${escapeHtml(safeMessages[0])}</div>
     </div>
   `;
-  scroll();
+  scrollToBottom();
 
   const row = document.getElementById(id);
   const bubble = row ? row.querySelector("[data-loading-bubble]") : null;
@@ -686,12 +717,14 @@ function addPrvResultCard(result) {
 
         if (visibleCount >= rows.length) btn.remove();
         else btn.textContent = getMoreButtonLabel(rows.length, visibleCount);
+
+        scrollNewCardToTop(card);
       };
     }
   }
 
   bindFollowups();
-  scroll();
+  scrollNewCardToTop(card);
 }
 
 function addChecklistResultCard(result) {
@@ -722,9 +755,11 @@ function addChecklistResultCard(result) {
     .map(opt => `<button class="followup-btn" data-followup="${escapeHtml(opt)}">${escapeHtml(opt)}</button>`)
     .join("");
 
+  const cardId = `checklist_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+
   chatMessages.innerHTML += `
     <div class="message-row assistant">
-      <div class="prv-chat-card">
+      <div class="prv-chat-card" id="${cardId}">
         <div class="prv-chat-topline">
           <div class="answer-badge">Checklist</div>
         </div>
@@ -764,18 +799,15 @@ function addChecklistResultCard(result) {
     </div>
   `;
 
+  const card = document.getElementById(cardId);
   bindFollowups();
-  scroll();
+  scrollNewCardToTop(card);
 }
 
 function bindFollowups() {
   chatMessages.querySelectorAll("[data-followup]").forEach(btn => {
     btn.onclick = () => submitQuery(btn.dataset.followup);
   });
-}
-
-function scroll() {
-  chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 /* ------------------ CACHE ------------------ */
@@ -882,6 +914,15 @@ async function getPlayerCards(playerQuery, sport, year = "", code = "") {
     code: code || ""
   });
   return data || {};
+}
+
+async function getPlayerYears(playerQuery, sport = "baseball") {
+  const data = await postJson(CHECKLIST_EXEC_URL, {
+    action: "player_years",
+    player_query: playerQuery,
+    sport
+  });
+  return Array.isArray(data?.years) ? data.years : [];
 }
 
 /* ------------------ INDEX LOAD ------------------ */
@@ -1229,14 +1270,17 @@ function buildClarifyProductTypeResponse(productName, query) {
   };
 }
 
-function buildPlayerChoiceResponse(playerReq) {
-  pendingPlayerChoice = { ...playerReq };
+async function buildPlayerChoiceResponse(playerReq) {
+  const availableYears = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
+
+  pendingPlayerChoice = {
+    ...playerReq,
+    availableYears
+  };
   pendingProductChoice = null;
   pendingChecklistChoice = null;
 
-  const yearButtons = PLAYER_YEAR_OPTIONS
-    .filter(y => !playerReq.year || y !== playerReq.year)
-    .slice(0, 5);
+  const yearButtons = (availableYears || []).slice(0, 6);
 
   return {
     type: "standard",
@@ -1246,7 +1290,6 @@ function buildPlayerChoiceResponse(playerReq) {
     followups: [
       "Stats",
       "All Cards",
-      ...(playerReq.year ? [playerReq.year] : []),
       ...yearButtons
     ]
   };
@@ -1310,7 +1353,11 @@ async function buildPlayerChecklistResponse(playerReq) {
     sectionOptions: [],
     followups: playerReq.code
       ? []
-      : ["Stats", "All Cards", ...PLAYER_YEAR_OPTIONS.slice(0, 5)]
+      : [
+          "Stats",
+          "All Cards",
+          ...((pendingPlayerChoice?.availableYears || []).slice(0, 6))
+        ]
   };
 }
 
@@ -1460,7 +1507,10 @@ async function buildSearchResponse(query) {
 
   const playerReq = detectPlayerSearchRequest(query);
   if (playerReq) {
-    if (playerReq.code || playerReq.year) {
+    if (playerReq.mode === "player_product") {
+      return buildPlayerChecklistResponse(playerReq);
+    }
+    if (playerReq.mode === "player_year") {
       return buildPlayerChecklistResponse(playerReq);
     }
     return buildPlayerChoiceResponse(playerReq);

@@ -5,9 +5,9 @@ const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0V
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v14";
+const CL_INDEX_KEY = "cm_chat_cl_index_v15";
 const PRV_INDEX_KEY = "cm_chat_prv_index_v9";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v14";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v15";
 const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v9";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
@@ -279,6 +279,18 @@ function splitPlayerSearchQuery(query) {
   };
 }
 
+function looksLikeStandaloneYearQuery(parts) {
+  if (!parts) return false;
+  if (!parts.year) return false;
+  const rem = normalize(parts.remainder || "");
+  if (!rem) return true;
+
+  const tokens = tokenize(rem);
+  const productishCount = tokens.filter(t => PLAYER_SEARCH_NON_NAME_WORDS.has(t)).length;
+
+  return productishCount === 0;
+}
+
 function findBestProductFromRemainder(remainder) {
   const cleaned = stripIntentWords(remainder || "");
   if (!cleaned) return null;
@@ -308,6 +320,18 @@ function detectPlayerSearchRequest(query) {
   if (!parts) return null;
 
   const { playerName, sport, year, remainder } = parts;
+
+  if (looksLikeStandaloneYearQuery(parts)) {
+    return {
+      playerName,
+      sport: sport || "baseball",
+      year: year || "",
+      code: "",
+      productName: "",
+      mode: year ? "player_year" : "player_only"
+    };
+  }
+
   const product = findBestProductFromRemainder(remainder);
 
   if (product) {
@@ -916,15 +940,6 @@ async function getPlayerCards(playerQuery, sport, year = "", code = "") {
   return data || {};
 }
 
-async function getPlayerYears(playerQuery, sport = "baseball") {
-  const data = await postJson(CHECKLIST_EXEC_URL, {
-    action: "player_years",
-    player_query: playerQuery,
-    sport
-  });
-  return Array.isArray(data?.years) ? data.years : [];
-}
-
 /* ------------------ INDEX LOAD ------------------ */
 
 async function loadChecklistIndex() {
@@ -1271,16 +1286,9 @@ function buildClarifyProductTypeResponse(productName, query) {
 }
 
 async function buildPlayerChoiceResponse(playerReq) {
-  const availableYears = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
-
-  pendingPlayerChoice = {
-    ...playerReq,
-    availableYears
-  };
+  pendingPlayerChoice = { ...playerReq };
   pendingProductChoice = null;
   pendingChecklistChoice = null;
-
-  const yearButtons = (availableYears || []).slice(0, 6);
 
   return {
     type: "standard",
@@ -1290,7 +1298,7 @@ async function buildPlayerChoiceResponse(playerReq) {
     followups: [
       "Stats",
       "All Cards",
-      ...yearButtons
+      ...PLAYER_YEAR_OPTIONS.slice(0, 6)
     ]
   };
 }
@@ -1356,7 +1364,7 @@ async function buildPlayerChecklistResponse(playerReq) {
       : [
           "Stats",
           "All Cards",
-          ...((pendingPlayerChoice?.availableYears || []).slice(0, 6))
+          ...PLAYER_YEAR_OPTIONS.slice(0, 6)
         ]
   };
 }

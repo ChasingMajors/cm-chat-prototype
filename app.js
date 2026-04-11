@@ -5,9 +5,9 @@ const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0V
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v12";
+const CL_INDEX_KEY = "cm_chat_cl_index_v13";
 const PRV_INDEX_KEY = "cm_chat_prv_index_v9";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v12";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v13";
 const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v9";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
@@ -72,7 +72,7 @@ const PLAYER_SEARCH_NON_NAME_WORDS = new Set([
 const PLAYER_SEARCH_FILLER_WORDS = new Set([
   "show","me","find","give","pull","get","tell","about","looking","look","up",
   "is","are","was","were","does","do","did","in","from","for","all",
-  "card","cards","rookie","rookies"
+  "card","cards","rookie","rookies","have","has"
 ]);
 
 const chatMessages = document.getElementById("chatMessages");
@@ -257,7 +257,6 @@ function splitPlayerSearchQuery(query) {
 
   for (let i = 0; i < normalizedTokens.length; i++) {
     const t = normalizedTokens[i];
-
     if ((year && t === normalize(year)) || (sport && t === normalize(sport)) || PLAYER_SEARCH_NON_NAME_WORDS.has(t)) {
       stopIdx = i;
       break;
@@ -267,21 +266,10 @@ function splitPlayerSearchQuery(query) {
   let playerTokens = cleanedRawTokens.slice(0, stopIdx).filter(Boolean);
 
   if (!playerTokens.length) return null;
-
-  if (playerTokens.length > 3) {
-    playerTokens = playerTokens.slice(0, 3);
-  }
+  if (playerTokens.length > 3) playerTokens = playerTokens.slice(0, 3);
 
   const playerName = titleCase(playerTokens.join(" "));
-  const playerNormSet = new Set(playerTokens.map(t => normalize(t)));
-
-  const remainderTokens = cleanedRawTokens.filter((t, idx) => {
-    if (idx < playerTokens.length) return false;
-    const n = normalize(t);
-    if (playerNormSet.has(n) && idx < playerTokens.length) return false;
-    return true;
-  });
-
+  const remainderTokens = cleanedRawTokens.slice(playerTokens.length);
   const remainder = remainderTokens.join(" ").trim();
 
   return {
@@ -969,10 +957,10 @@ function scoreProduct(item, query, targetIntent) {
   const sport = extractSport(query);
   const year = extractYear(query);
 
-  if (qNorm.includes(nameNorm)) score += 120;
-  if (cleanedNorm && nameNorm.includes(cleanedNorm)) score += 60;
+  if (qNorm.includes(nameNorm)) score += 140;
+  if (cleanedNorm && nameNorm.includes(cleanedNorm)) score += 70;
   if (cleanedNorm && product.haystack.includes(cleanedNorm)) score += 50;
-  if (codeNorm && qNorm.includes(codeNorm)) score += 80;
+  if (codeNorm && qNorm.includes(codeNorm)) score += 90;
 
   if (year && String(product.year) === year) score += 25;
   if (sport && normalize(product.sport) === sport) score += 18;
@@ -998,7 +986,10 @@ function scoreProduct(item, query, targetIntent) {
   if (targetIntent === "print_run" && product.haystack.includes("print")) score += 2;
   if (targetIntent === "checklist" && product.haystack.includes("checklist")) score += 2;
 
-  if (qTokens.length && overlap === 0 && !qNorm.includes(nameNorm)) score -= 25;
+  if (!qNorm.includes("celebration") && nameNorm.includes("celebration")) score -= 30;
+
+  const missingCoreTokens = qTokens.filter(t => !nameNorm.includes(t) && !codeNorm.includes(t)).length;
+  score -= missingCoreTokens * 8;
 
   return score;
 }

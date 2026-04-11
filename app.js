@@ -5,9 +5,9 @@ const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0V
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v10";
+const CL_INDEX_KEY = "cm_chat_cl_index_v11";
 const PRV_INDEX_KEY = "cm_chat_prv_index_v9";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v10";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v11";
 const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v9";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
@@ -54,6 +54,20 @@ const CHECKLIST_SECTION_LABELS = {
   variations: "Variations",
   parallels: "Parallels"
 };
+
+const PLAYER_SEARCH_MANUFACTURER_WORDS = [
+  "topps","bowman","panini","donruss","upper","deck","leaf","fleer","score"
+];
+
+const PLAYER_SEARCH_NON_NAME_WORDS = new Set([
+  ...SPORT_WORDS,
+  ...PLAYER_SEARCH_MANUFACTURER_WORDS,
+  "series","update","chrome","heritage","finest","sapphire","black","cosmic",
+  "stadium","club","pristine","archives","tribute","sterling","museum","inception",
+  "dynasty","flagship","celebration","draft","best","platinum","anniversary",
+  "checklist","print","run","parallels","parallel","autographs","autograph","autos",
+  "auto","relics","relic","variations","variation","inserts","insert","base"
+]);
 
 const chatMessages = document.getElementById("chatMessages");
 const chatInput = document.getElementById("chatInput");
@@ -217,55 +231,108 @@ function isOnlyYearReply(text) {
   return /^\d{4}$/.test(String(text || "").trim());
 }
 
-function detectPlayerSearchRequest(query) {
+function splitPlayerSearchQuery(query) {
+  const rawTokens = String(query || "").trim().split(/\s+/).filter(Boolean);
+  if (!rawTokens.length) return null;
+
   const year = extractYear(query);
-  const sport = extractSport(query) || "baseball";
-  const cleaned = stripIntentWords(query);
-  const cleanedTokens = meaningfulTokens(cleaned);
+  const sport = extractSport(query);
 
-  const matchedProduct = findBestProduct(checklistIndex, query, "checklist");
+  const normalizedTokens = rawTokens.map(t => normalize(t)).filter(Boolean);
 
-  if (matchedProduct) {
-    const productTokens = new Set([
-      ...meaningfulTokens(matchedProduct.name),
-      ...meaningfulTokens(matchedProduct.keywords),
-      ...meaningfulTokens(matchedProduct.code)
-    ]);
+  let stopIdx = normalizedTokens.length;
 
-    const residual = cleanedTokens.filter(t => {
-      if (year && t === normalize(year)) return false;
-      if (sport && t === normalize(sport)) return false;
-      return !productTokens.has(t);
-    });
+  for (let i = 0; i < normalizedTokens.length; i++) {
+    const t = normalizedTokens[i];
 
-    if (residual.length >= 2 && residual.length <= 3) {
-      return {
-        playerName: titleCase(residual.join(" ")),
-        sport: matchedProduct.sport || sport,
-        year: matchedProduct.year || year || "",
-        code: matchedProduct.code || "",
-        productName: matchedProduct.name || ""
-      };
+    if ((year && t === normalize(year)) || (sport && t === normalize(sport)) || PLAYER_SEARCH_NON_NAME_WORDS.has(t)) {
+      stopIdx = i;
+      break;
     }
   }
 
-  const baseTokens = cleanedTokens.filter(t => {
-    if (year && t === normalize(year)) return false;
-    if (sport && t === normalize(sport)) return false;
+  let playerTokens = rawTokens.slice(0, stopIdx).filter(Boolean);
+
+  if (playerTokens.length < 2) {
+    const meaningful = rawTokens.filter(t => {
+      const n = normalize(t);
+      return n &&
+        !PLAYER_SEARCH_NON_NAME_WORDS.has(n) &&
+        (!year || n !== normalize(year)) &&
+        (!sport || n !== normalize(sport));
+    });
+    playerTokens = meaningful.slice(0, 2);
+  }
+
+  if (playerTokens.length < 2 || playerTokens.length > 3) return null;
+
+  const playerName = titleCase(playerTokens.join(" "));
+  const playerNorms = playerTokens.map(t => normalize(t));
+
+  const remainderTokens = rawTokens.filter((t, idx) => {
+    if (idx < playerTokens.length && normalize(t) === playerNorms[idx]) return false;
     return true;
   });
 
-  if (!matchedProduct && baseTokens.length >= 2 && baseTokens.length <= 3) {
+  const remainder = remainderTokens.join(" ").trim();
+
+  return {
+    playerName,
+    year: year || "",
+    sport: sport || "baseball",
+    remainder
+  };
+}
+
+function findBestProductFromRemainder(remainder) {
+  const cleaned = stripIntentWords(remainder || "");
+  if (!cleaned) return null;
+
+  const candidate = findBestProduct(checklistIndex, cleaned, "checklist");
+  if (!candidate) return null;
+
+  const score = candidate.score || 0;
+
+  const productTokens = new Set([
+    ...meaningfulTokens(candidate.name),
+    ...meaningfulTokens(candidate.keywords),
+    ...meaningfulTokens(candidate.code)
+  ]);
+
+  const queryTokens = meaningfulTokens(cleaned);
+  const overlap = queryTokens.filter(t => productTokens.has(t)).length;
+
+  if (overlap < 2) return null;
+  if (score < 55) return null;
+
+  return candidate;
+}
+
+function detectPlayerSearchRequest(query) {
+  const parts = splitPlayerSearchQuery(query);
+  if (!parts) return null;
+
+  const { playerName, sport, year, remainder } = parts;
+
+  const product = findBestProductFromRemainder(remainder);
+
+  if (product) {
     return {
-      playerName: titleCase(baseTokens.join(" ")),
-      sport,
-      year: year || "",
-      code: "",
-      productName: ""
+      playerName,
+      sport: product.sport || sport || "baseball",
+      year: product.year || year || "",
+      code: product.code || "",
+      productName: product.name || ""
     };
   }
 
-  return null;
+  return {
+    playerName,
+    sport: sport || "baseball",
+    year: year || "",
+    code: "",
+    productName: ""
+  };
 }
 
 function mentionsRestrictedPrintRunBrand(query) {

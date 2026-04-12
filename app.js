@@ -1171,12 +1171,17 @@ async function bootstrapData() {
   if (!bootPromise) {
     bootPromise = Promise.all([
       loadChecklistIndex(),
-      loadPrintRunIndex(),
-      loadPlayerMeta(),
-      loadPlayerStats()
+      loadPrintRunIndex()
     ]);
   }
   return bootPromise;
+}
+
+async function ensurePlayerDataLoaded() {
+  await Promise.all([
+    loadPlayerMeta(),
+    loadPlayerStats()
+  ]);
 }
 
 /* ------------------ INDEX HELPERS ------------------ */
@@ -1304,11 +1309,31 @@ function getPlayerYearOptions(playerName, fallbackYears = []) {
   const meta = getPlayerMetaEntry(playerName);
 
   if (meta && Array.isArray(meta.checklist_years) && meta.checklist_years.length) {
-    return meta.checklist_years.map(y => ({
-      year: String(y.year || ""),
-      label: String(y.label || y.year || ""),
-      isRcYear: !!y.is_rc_year
-    })).filter(x => x.year);
+    const normalized = meta.checklist_years
+      .map(y => {
+        if (typeof y === "object" && y !== null) {
+          const year = String(y.year || "").trim();
+          if (!year) return null;
+          return {
+            year,
+            label: String(y.label || year).trim(),
+            isRcYear: !!y.is_rc_year
+          };
+        }
+
+        const year = String(y || "").trim();
+        if (!year) return null;
+
+        const isRcYear = String(meta.rc_year || "") === year;
+        return {
+          year,
+          label: isRcYear ? `${year} (RC)` : year,
+          isRcYear
+        };
+      })
+      .filter(Boolean);
+
+    if (normalized.length) return normalized;
   }
 
   return (fallbackYears || []).map(y => ({
@@ -1328,122 +1353,6 @@ function buildPlayerFollowups(playerName, fallbackYears = [], includeStats = tru
   if (includeAllCards) out.push("All Cards");
 
   return uniq(out);
-}
-
-function buildStatEntries(card, keys) {
-  return keys.map(key => ({
-    label: key,
-    value: cleanStatValue(card?.[key])
-  }));
-}
-
-function buildCurrentSeasonSummary(playerName, currentSeason) {
-  if (!currentSeason || !currentSeason.stat_card) {
-    return `${playerName} does not have current season stats available yet.`;
-  }
-
-  const c = currentSeason.stat_card;
-  const bits = [];
-
-  if (hasRealStatValue(c.HR)) bits.push(`${cleanStatValue(c.HR)} home runs`);
-  if (hasRealStatValue(c.BA)) bits.push(`${cleanStatValue(c.BA)} batting average`);
-  if (hasRealStatValue(c.H)) bits.push(`${cleanStatValue(c.H)} hits`);
-  if (hasRealStatValue(c.RBI)) bits.push(`${cleanStatValue(c.RBI)} RBI`);
-  if (hasRealStatValue(c.SB)) bits.push(`${cleanStatValue(c.SB)} stolen bases`);
-
-  if (!bits.length) return `${playerName} has current season stats available.`;
-  return `${playerName}'s current season includes ${bits.join(", ")}.`;
-}
-
-function buildCareerSummary(playerName, career) {
-  if (!career || !career.stat_card) {
-    return `${playerName} does not have career summary stats available yet.`;
-  }
-
-  const c = career.stat_card;
-  const bits = [];
-
-  if (hasRealStatValue(c.HR)) bits.push(`${cleanStatValue(c.HR)} home runs`);
-  if (hasRealStatValue(c.H)) bits.push(`${cleanStatValue(c.H)} hits`);
-  if (hasRealStatValue(c.BA)) bits.push(`${cleanStatValue(c.BA)} batting average`);
-  if (hasRealStatValue(c.OPS)) bits.push(`${cleanStatValue(c.OPS)} OPS`);
-
-  if (!bits.length) return `${playerName} has career stats available.`;
-  return `${playerName}'s career line includes ${bits.join(", ")}.`;
-}
-
-/* ------------------ INTENT ------------------ */
-
-function detectIntent(q) {
-  const n = normalize(q);
-
-  if (includesAny(n, INTENT_PRINT_RUN_WORDS)) return "print_run";
-  if (includesAny(n, INTENT_CHECKLIST_WORDS)) return "checklist";
-  if (includesAny(n, INTENT_TRENDING_WORDS)) return "trending";
-  return "search";
-}
-
-/* ------------------ FORMATTERS ------------------ */
-
-function buildPrvRows(rows) {
-  return rows.map(r => {
-    const setType = r.setType || "";
-    const setLine = r.setLine || "";
-    const label = [setType, setLine].filter(Boolean).join(" ").trim() || "Row";
-    const value = formatNumber(r.printRun || "");
-    const setSize = formatNumber(r.subSetSize || "");
-    return { label, value, setSize };
-  });
-}
-
-function buildPrvMetadata(product, rows) {
-  const types = uniq(rows.map(r => r.setType).filter(Boolean));
-  return uniq([
-    `Rows: ${rows.length}`,
-    types.length ? `Types: ${types.length}` : "",
-    product.year ? `Year: ${product.year}` : "",
-    product.sport ? `Sport: ${titleCase(product.sport)}` : ""
-  ]);
-}
-
-function summarizeChecklistCounts(summary) {
-  const c = summary.counts || {};
-  const parts = [];
-  if (c.all) parts.push(`${formatNumber(c.all)} total rows`);
-  if (c.base) parts.push(`${formatNumber(c.base)} base`);
-  if (c.inserts) parts.push(`${formatNumber(c.inserts)} inserts`);
-  if (c.autographs) parts.push(`${formatNumber(c.autographs)} autographs`);
-  if (c.relics) parts.push(`${formatNumber(c.relics)} relics`);
-  if (c.variations) parts.push(`${formatNumber(c.variations)} variations`);
-  if (c.parallels) parts.push(`${formatNumber(c.parallels)} parallels`);
-  return parts.join(" • ");
-}
-
-function checklistSectionOptionsFromSummary(summary) {
-  const available = Array.isArray(summary?.available_sections) ? summary.available_sections : ["all"];
-  return available
-    .map(key => CHECKLIST_SECTION_LABELS[key])
-    .filter(Boolean);
-}
-
-function formatChecklistTable(sectionKey, data) {
-  const section = normalize(sectionKey);
-
-  if (section === "parallels") {
-    return {
-      columns: data.columns || ["Applies To", "Parallel", "Serial No."],
-      rows: (data.rows || []).map(r => ({
-        cells: Array.isArray(r) ? r : [r.applies_to || "", r.parallel_name || "", r.serial_no || ""]
-      }))
-    };
-  }
-
-  return {
-    columns: data.columns || ["Subset", "Card No.", "Player", "Team", "Tag"],
-    rows: (data.rows || []).map(r => ({
-      cells: Array.isArray(r) ? r : [r.subset || "", r.card_no || "", r.player || "", r.team || "", r.tag || ""]
-    }))
-  };
 }
 
 /* ------------------ RESPONSES ------------------ */
@@ -1594,13 +1503,25 @@ function buildClarifyProductTypeResponse(productName, query) {
 }
 
 async function buildPlayerChoiceResponse(playerReq) {
-  const fallbackYears = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
-  const followups = buildPlayerFollowups(playerReq.playerName, fallbackYears, true, true);
+  await ensurePlayerDataLoaded();
+
+  const fallbackYears = await getPlayerYears(
+    playerReq.playerName,
+    playerReq.sport || "baseball"
+  );
+
+  const followups = buildPlayerFollowups(
+    playerReq.playerName,
+    fallbackYears,
+    true,
+    true
+  );
 
   pendingPlayerChoice = {
     ...playerReq,
     availableYears: getPlayerYearOptions(playerReq.playerName, fallbackYears)
   };
+
   pendingProductChoice = null;
   pendingChecklistChoice = null;
 
@@ -1614,6 +1535,8 @@ async function buildPlayerChoiceResponse(playerReq) {
 }
 
 async function buildPlayerStatsPlaceholderResponse(playerReq) {
+  await ensurePlayerDataLoaded();
+
   const stats = getPlayerStatsEntry(playerReq.playerName);
   const fallbackYears = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
   const followups = buildPlayerFollowups(playerReq.playerName, fallbackYears, false, true);
@@ -1634,8 +1557,15 @@ async function buildPlayerStatsPlaceholderResponse(playerReq) {
     };
   }
 
-  const currentStats = buildStatEntries(stats.current_season?.stat_card, ["WAR", "AB", "H", "HR", "BA", "R", "RBI", "SB", "OBP", "SLG", "OPS", "OPS+"]);
-  const careerStats = buildStatEntries(stats.career?.stat_card, ["WAR", "H", "HR", "BA", "R", "RBI", "SB", "OBP", "SLG", "OPS", "OPS+"]);
+  const currentStats = buildStatEntries(
+    stats.current_season?.stat_card,
+    ["AB", "H", "HR", "BA", "R", "RBI", "SB", "OBP", "SLG", "OPS"]
+  );
+
+  const careerStats = buildStatEntries(
+    stats.career?.stat_card,
+    ["H", "HR", "BA", "R", "RBI", "SB", "OBP", "SLG", "OPS"]
+  );
 
   return {
     type: "player_stats",
@@ -1660,6 +1590,8 @@ async function buildPlayerStatsPlaceholderResponse(playerReq) {
 }
 
 async function buildPlayerChecklistResponse(playerReq) {
+  await ensurePlayerDataLoaded();
+
   pendingProductChoice = null;
   pendingChecklistChoice = null;
 
@@ -1912,12 +1844,26 @@ async function buildResponse(query) {
     });
   }
 
-  if (pendingPlayerChoice && extractSelectedYear(query)) {
-    return buildPlayerChecklistResponse({
-      ...pendingPlayerChoice,
-      year: extractSelectedYear(query),
-      code: ""
-    });
+  if (pendingPlayerChoice) {
+    const selectedYear = extractSelectedYear(query);
+    const normalizedQuery = normalize(query);
+    const allowedYearLabels = (pendingPlayerChoice.availableYears || []).map(y =>
+      normalize(y.label || y.year || "")
+    );
+
+    if (
+      selectedYear &&
+      (
+        normalizedQuery === normalize(selectedYear) ||
+        allowedYearLabels.includes(normalizedQuery)
+      )
+    ) {
+      return buildPlayerChecklistResponse({
+        ...pendingPlayerChoice,
+        year: selectedYear,
+        code: ""
+      });
+    }
   }
 
   if (pendingChecklistChoice && isChecklistSectionReply(query)) {

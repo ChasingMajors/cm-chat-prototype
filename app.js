@@ -18,8 +18,6 @@ const EXAMPLES = [
   "Aaron Judge"
 ];
 
-const PLAYER_YEAR_OPTIONS = ["2026","2025","2024","2023","2022","2021","2020","2019","2018"];
-
 const STOP_WORDS = new Set([
   "show","me","find","give","need","want","pull","get","for","the","a","an","of","to",
   "please","can","you","i","looking","look","up","tell","about","what","whats","what's",
@@ -1296,24 +1294,23 @@ function buildClarifyProductTypeResponse(productName, query) {
 
 async function buildPlayerChoiceResponse(playerReq) {
   const years = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
+  const safeYears = Array.isArray(years) ? years.filter(y => /^\d{4}$/.test(String(y))) : [];
 
   pendingPlayerChoice = {
     ...playerReq,
-    availableYears: years
+    availableYears: safeYears
   };
   pendingProductChoice = null;
   pendingChecklistChoice = null;
+
+  const followups = ["Stats", "All Cards", ...safeYears];
 
   return {
     type: "standard",
     badge: "Player",
     title: playerReq.playerName,
     summary: "Are you looking for high level on-field statistics, or checklist info? You can also jump straight to a year.",
-    followups: [
-      "Stats",
-      "All Cards",
-      ...(years.length ? years : PLAYER_YEAR_OPTIONS.slice(0, 6))
-    ]
+    followups
   };
 }
 
@@ -1329,9 +1326,19 @@ function buildPlayerStatsPlaceholderResponse(playerReq) {
 }
 
 async function buildPlayerChecklistResponse(playerReq) {
-  pendingPlayerChoice = { ...playerReq };
   pendingProductChoice = null;
   pendingChecklistChoice = null;
+
+  const years = Array.isArray(playerReq.availableYears) && playerReq.availableYears.length
+    ? playerReq.availableYears
+    : await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
+
+  const safeYears = Array.isArray(years) ? years.filter(y => /^\d{4}$/.test(String(y))) : [];
+
+  pendingPlayerChoice = {
+    ...playerReq,
+    availableYears: safeYears
+  };
 
   const data = await getPlayerCards(
     playerReq.playerName,
@@ -1356,18 +1363,10 @@ async function buildPlayerChecklistResponse(playerReq) {
       type: "standard",
       badge: "Player",
       title: playerReq.playerName,
-      summary: "No matching checklist rows were found for that player search."
+      summary: "No matching checklist rows were found for that player search.",
+      followups: ["Stats", "All Cards", ...safeYears]
     };
   }
-
-  const years = Array.isArray(pendingPlayerChoice?.availableYears) && pendingPlayerChoice.availableYears.length
-    ? pendingPlayerChoice.availableYears
-    : await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
-
-  pendingPlayerChoice = {
-    ...playerReq,
-    availableYears: years
-  };
 
   return {
     type: "checklist_table",
@@ -1384,11 +1383,7 @@ async function buildPlayerChecklistResponse(playerReq) {
     sectionOptions: [],
     followups: playerReq.code
       ? []
-      : [
-          "Stats",
-          "All Cards",
-          ...years
-        ]
+      : ["Stats", "All Cards", ...safeYears]
   };
 }
 
@@ -1538,8 +1533,12 @@ async function buildSearchResponse(query) {
 
   const playerReq = detectPlayerSearchRequest(query);
   if (playerReq) {
-    if (playerReq.mode === "player_product") return buildPlayerChecklistResponse(playerReq);
-    if (playerReq.mode === "player_year") return buildPlayerChecklistResponse(playerReq);
+    if (playerReq.mode === "player_product") {
+      return buildPlayerChecklistResponse(playerReq);
+    }
+    if (playerReq.mode === "player_year") {
+      return buildPlayerChecklistResponse(playerReq);
+    }
     return buildPlayerChoiceResponse(playerReq);
   }
 

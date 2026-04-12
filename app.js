@@ -5,17 +5,27 @@ const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0V
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v18";
+const CL_INDEX_KEY = "cm_chat_cl_index_v19";
 const PRV_INDEX_KEY = "cm_chat_prv_index_v9";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v18";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v19";
 const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v9";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
-const EXAMPLES = [
-  "Show me 2026 Topps Series 1 print run",
-  "Show me the 2026 Topps Chrome Black baseball checklist",
-  "What 2018 baseball products do you have?",
-  "Aaron Judge"
+const EXAMPLES = [];
+
+const SEARCH_HELP_EXAMPLES = [
+  "2026 Topps Series 1 Baseball",
+  "2026 Topps Series 1 Baseball Checklist",
+  "2026 Topps Series 1 Baseball Print Run",
+  "2026 Topps Series 1 Baseball Parallels",
+  "2026 Topps Chrome Black Baseball Checklist",
+  "2025 Topps Heritage Baseball",
+  "Aaron Judge",
+  "2026 Aaron Judge",
+  "Aaron Judge 2026 Topps Series 1",
+  "Shohei Ohtani 2025",
+  "Roman Anthony 2026 Heritage",
+  "What 2018 baseball products do you have?"
 ];
 
 const STOP_WORDS = new Set([
@@ -455,6 +465,19 @@ function isDataSourceQuestion(query) {
   );
 }
 
+function isSearchHelpRequest(query) {
+  const n = normalize(query);
+  return (
+    n === "see the best way search" ||
+    n === "best way search" ||
+    n === "best way to search" ||
+    n === "search help" ||
+    n === "how should i search" ||
+    n === "how do i search" ||
+    n === "search examples"
+  );
+}
+
 function getAllProductsForSport(sport) {
   const s = normalize(sport);
   const items = [];
@@ -535,6 +558,13 @@ function getProductsForSportYear(sport, year) {
 function renderExamples() {
   if (!examplePills) return;
 
+  if (!EXAMPLES.length) {
+    examplePills.innerHTML = "";
+    examplePills.style.display = "none";
+    return;
+  }
+
+  examplePills.style.display = "";
   examplePills.innerHTML = EXAMPLES.map(e =>
     `<button class="example-pill" data-example="${escapeHtml(e)}">${escapeHtml(e)}</button>`
   ).join("");
@@ -620,11 +650,18 @@ function addWelcomeMessage(force = false) {
       <div class="answer-card" data-cm-welcome="1">
         <div class="answer-badge">Welcome</div>
         <div class="answer-title">Welcome to Chasing Majors Chat</div>
-        <div class="answer-summary">If you are looking for print run data, checklist search, limited player lookups, and Universal POP data, you are in the right place. For the best experience, include the sport and year in your search.</div>
+        <div class="answer-summary">If you are looking for print run data, checklist search, player lookups, and product coverage, you are in the right place.</div>
+        <div class="answer-followups">
+          <div class="followup-label">Start here</div>
+          <div class="followup-list">
+            <button class="followup-btn" data-followup="See the best way search">See the best way search</button>
+          </div>
+        </div>
       </div>
     </div>
   ` + chatMessages.innerHTML;
 
+  bindFollowups();
   scrollToBottom();
 }
 
@@ -1302,6 +1339,20 @@ function buildYearLineupResponse(year, sport) {
   };
 }
 
+function buildSearchHelpResponse() {
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
+
+  return {
+    type: "standard",
+    badge: "Search Help",
+    title: "Best ways to search",
+    summary: "The most effective searches usually include the year, full product name, and what you want to see. Player searches also work best with the year or set when you know it.",
+    followups: SEARCH_HELP_EXAMPLES
+  };
+}
+
 function buildClarifyProductTypeResponse(productName, query) {
   pendingProductChoice = { query, productName };
   pendingChecklistChoice = null;
@@ -1545,6 +1596,8 @@ async function buildChecklistSectionResponse(sectionKey) {
 }
 
 async function buildSearchResponse(query) {
+  if (isSearchHelpRequest(query)) return buildSearchHelpResponse();
+
   if (isSpecificYearLineupQuestion(query)) {
     return buildYearLineupResponse(extractYear(query), extractSport(query));
   }
@@ -1575,7 +1628,8 @@ async function buildSearchResponse(query) {
       type: "standard",
       badge: "Try",
       title: "Try another search",
-      summary: "Ask for a print run, checklist, year + sport product lineup, trending set, player search, pricing, or a set search."
+      summary: "Ask for a print run, checklist, year + sport product lineup, trending set, player search, pricing, or a set search.",
+      followups: ["See the best way search"]
     };
   }
 
@@ -1619,6 +1673,7 @@ async function buildResponse(query) {
     return buildChecklistSummaryResponse(pendingProductChoice.query);
   }
 
+  if (isSearchHelpRequest(query)) return buildSearchHelpResponse();
   if (isPricingQuestion(query)) return buildPricingResponse();
   if (isDataSourceQuestion(query)) return buildDataSourceResponse();
 

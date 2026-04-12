@@ -2,6 +2,9 @@ const CHECKLIST_EXEC_URL = "https://script.google.com/macros/s/AKfycbxl2JnZGnEtm
 const VAULT_EXEC_URL = "https://script.google.com/macros/s/AKfycbx_1rqxgSCu6aqDc7jEnETYC-KcNxHEf208GWXM23FR7hDT0ey8Y1SZ2i4U1VmXOZgpAg/exec";
 const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0VmnUeJqP0OcFL5qCe-MUjN0JonJ8QTlfpMsf0XRKZzCwLdFdiF/exec";
 
+const PLAYER_META_URL = `${CHECKLIST_EXEC_URL}?action=playerMetaIndex`;
+const PLAYER_STATS_JSON_URL = "https://cdn.jsdelivr.net/gh/ChasingMajors/cm-mlb-stats@main/data/public/player_summaries.json";
+
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
@@ -10,6 +13,12 @@ const PRV_INDEX_KEY = "cm_chat_prv_index_v9";
 const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v19";
 const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v9";
 const INDEX_TTL_MS = 1000 * 60 * 30;
+
+const PLAYER_META_KEY = "cm_chat_player_meta_v1";
+const PLAYER_STATS_KEY = "cm_chat_player_stats_v1";
+const PLAYER_META_TS_KEY = "cm_chat_player_meta_ts_v1";
+const PLAYER_STATS_TS_KEY = "cm_chat_player_stats_ts_v1";
+const PLAYER_DATA_TTL_MS = 1000 * 60 * 60 * 6;
 
 const EXAMPLES = [];
 
@@ -91,6 +100,10 @@ const examplePills = document.getElementById("examplePills");
 
 let checklistIndex = [];
 let printRunIndex = [];
+let playerMetaIndex = [];
+let playerStatsData = null;
+let playerMetaByName = {};
+let playerStatsByName = {};
 let bootPromise = null;
 let awaitingCatalogSport = false;
 let pendingProductChoice = null;
@@ -136,6 +149,11 @@ function meaningfulTokens(text) {
 
 function extractYear(text) {
   const m = String(text || "").match(/\b(19|20)\d{2}(?:-\d{2})?\b/);
+  return m ? m[0] : "";
+}
+
+function extractSelectedYear(text) {
+  const m = String(text || "").match(/\b(19|20)\d{2}\b/);
   return m ? m[0] : "";
 }
 
@@ -240,10 +258,6 @@ function isOnlyPlayerStatsReply(text) {
 function isOnlyPlayerChecklistReply(text) {
   const n = normalize(text);
   return n === "checklist info" || n === "checklist" || n === "all cards";
-}
-
-function isOnlyYearReply(text) {
-  return /^\d{4}$/.test(String(text || "").trim());
 }
 
 function isLikelyPlayerNameToken(token) {
@@ -512,7 +526,7 @@ function getLatestYearsForSport(sport) {
 
 function getSampleCurrentSetsForSport(sport, limit = 8) {
   const s = normalize(sport);
-  const latestYears = getLatestYearsForSport(s);
+  const latestYears = getLatestYearsForSport(sport);
   const latestYear = latestYears[0] || "";
 
   const seen = new Set();
@@ -626,6 +640,61 @@ function addStandardAnswerCard(r) {
         <div class="answer-title">${escapeHtml(r.title || "Result")}</div>
         <div class="answer-summary">${escapeHtml(r.summary || "")}</div>
         ${metaHtml}
+        ${followupsHtml}
+      </div>
+    </div>
+  `;
+
+  bindFollowups();
+  scrollNewCardToTop(document.getElementById(cardId));
+}
+
+function addPlayerStatsCard(r) {
+  const metaHtml = (r.metadata || []).length
+    ? `<div class="answer-meta">${(r.metadata || []).map(m => `<div class="answer-meta-chip">${escapeHtml(m)}</div>`).join("")}</div>`
+    : "";
+
+  const renderStatGrid = (title, stats) => {
+    if (!stats || !stats.length) return "";
+    return `
+      <div style="margin-top:14px;">
+        <div style="font-weight:700; margin-bottom:8px;">${escapeHtml(title)}</div>
+        <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px;">
+          ${stats.map(s => `
+            <div style="border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:10px; background:rgba(255,255,255,.03);">
+              <div style="font-size:11px; opacity:.7; margin-bottom:4px;">${escapeHtml(s.label)}</div>
+              <div style="font-size:16px; font-weight:700;">${escapeHtml(s.value)}</div>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  };
+
+  const followupsHtml = (r.followups || []).length
+    ? `
+      <div class="answer-followups">
+        <div class="followup-label">Try next</div>
+        <div class="followup-list">
+          ${(r.followups || []).map(f => `<button class="followup-btn" data-followup="${escapeHtml(f)}">${escapeHtml(f)}</button>`).join("")}
+        </div>
+      </div>
+    `
+    : "";
+
+  const cardId = `playerstats_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+
+  chatMessages.innerHTML += `
+    <div class="message-row assistant">
+      <div class="answer-card" id="${cardId}">
+        <div class="answer-badge">${escapeHtml(r.badge || "Player Stats")}</div>
+        <div class="answer-title">${escapeHtml(r.title || "Player Stats")}</div>
+        <div class="answer-summary">${escapeHtml(r.summary || "")}</div>
+        ${metaHtml}
+        ${r.currentSummary ? `<div class="answer-summary" style="margin-top:12px;">${escapeHtml(r.currentSummary)}</div>` : ""}
+        ${renderStatGrid(r.currentTitle || "Current Season", r.currentStats || [])}
+        ${r.careerSummary ? `<div class="answer-summary" style="margin-top:12px;">${escapeHtml(r.careerSummary)}</div>` : ""}
+        ${renderStatGrid(r.careerTitle || "Career", r.careerStats || [])}
         ${followupsHtml}
       </div>
     </div>
@@ -895,24 +964,32 @@ function bindFollowups() {
 
 /* ------------------ CACHE ------------------ */
 
-function getCached(key, tsKey) {
+function getCachedWithTtl(key, tsKey, ttlMs) {
   try {
     const raw = localStorage.getItem(key);
     const ts = +localStorage.getItem(tsKey);
-    if (!raw || !ts || Date.now() - ts > INDEX_TTL_MS) return null;
+    if (!raw || !ts || Date.now() - ts > ttlMs) return null;
     return JSON.parse(raw);
   } catch {
     return null;
   }
 }
 
-function setCached(key, tsKey, val) {
+function setCachedWithTtl(key, tsKey, val) {
   try {
     localStorage.setItem(key, JSON.stringify(val));
     localStorage.setItem(tsKey, String(Date.now()));
   } catch (err) {
     console.warn("Cache write failed", err);
   }
+}
+
+function getCached(key, tsKey) {
+  return getCachedWithTtl(key, tsKey, INDEX_TTL_MS);
+}
+
+function setCached(key, tsKey, val) {
+  setCachedWithTtl(key, tsKey, val);
 }
 
 /* ------------------ API ------------------ */
@@ -1036,11 +1113,67 @@ async function loadPrintRunIndex() {
   return printRunIndex;
 }
 
+async function loadPlayerMeta() {
+  const cached = getCachedWithTtl(PLAYER_META_KEY, PLAYER_META_TS_KEY, PLAYER_DATA_TTL_MS);
+  if (cached) {
+    playerMetaIndex = Array.isArray(cached?.players) ? cached.players : (Array.isArray(cached) ? cached : []);
+    playerMetaByName = {};
+    playerMetaIndex.forEach(p => {
+      const key = normalize(p.player_name || "");
+      if (key) playerMetaByName[key] = p;
+    });
+    return playerMetaIndex;
+  }
+
+  const res = await fetch(PLAYER_META_URL);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+  const data = await res.json();
+  playerMetaIndex = Array.isArray(data?.players) ? data.players : [];
+  playerMetaByName = {};
+  playerMetaIndex.forEach(p => {
+    const key = normalize(p.player_name || "");
+    if (key) playerMetaByName[key] = p;
+  });
+
+  setCachedWithTtl(PLAYER_META_KEY, PLAYER_META_TS_KEY, { players: playerMetaIndex });
+  return playerMetaIndex;
+}
+
+async function loadPlayerStats() {
+  const cached = getCachedWithTtl(PLAYER_STATS_KEY, PLAYER_STATS_TS_KEY, PLAYER_DATA_TTL_MS);
+  if (cached) {
+    playerStatsData = cached;
+    playerStatsByName = {};
+    (cached?.players || []).forEach(p => {
+      const key = normalize(p.player_name || "");
+      if (key) playerStatsByName[key] = p;
+    });
+    return playerStatsData;
+  }
+
+  const res = await fetch(PLAYER_STATS_JSON_URL);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+  const data = await res.json();
+  playerStatsData = data || { players: [] };
+  playerStatsByName = {};
+  (playerStatsData.players || []).forEach(p => {
+    const key = normalize(p.player_name || "");
+    if (key) playerStatsByName[key] = p;
+  });
+
+  setCachedWithTtl(PLAYER_STATS_KEY, PLAYER_STATS_TS_KEY, playerStatsData);
+  return playerStatsData;
+}
+
 async function bootstrapData() {
   if (!bootPromise) {
     bootPromise = Promise.all([
       loadChecklistIndex(),
-      loadPrintRunIndex()
+      loadPrintRunIndex(),
+      loadPlayerMeta(),
+      loadPlayerStats()
     ]);
   }
   return bootPromise;
@@ -1144,6 +1277,99 @@ function getCombinedBestMatches(query) {
     printRun: prv,
     winner: options[0] || null
   };
+}
+
+function getPlayerMetaEntry(playerName) {
+  return playerMetaByName[normalize(playerName || "")] || null;
+}
+
+function getPlayerStatsEntry(playerName) {
+  return playerStatsByName[normalize(playerName || "")] || null;
+}
+
+function cleanStatValue(val) {
+  let s = String(val ?? "").trim();
+  if (!s) return "—";
+  s = s.replace(/^\.\./, ".");
+  s = s.replace(/^-\.$/, "—");
+  return s;
+}
+
+function hasRealStatValue(val) {
+  const s = cleanStatValue(val);
+  return s && s !== "—";
+}
+
+function getPlayerYearOptions(playerName, fallbackYears = []) {
+  const meta = getPlayerMetaEntry(playerName);
+
+  if (meta && Array.isArray(meta.checklist_years) && meta.checklist_years.length) {
+    return meta.checklist_years.map(y => ({
+      year: String(y.year || ""),
+      label: String(y.label || y.year || ""),
+      isRcYear: !!y.is_rc_year
+    })).filter(x => x.year);
+  }
+
+  return (fallbackYears || []).map(y => ({
+    year: String(y),
+    label: String(y),
+    isRcYear: false
+  }));
+}
+
+function buildPlayerFollowups(playerName, fallbackYears = [], includeStats = true, includeAllCards = true) {
+  const yearOptions = getPlayerYearOptions(playerName, fallbackYears);
+  const labels = yearOptions.map(y => y.label);
+
+  const out = [];
+  if (includeStats) out.push("Stats");
+  labels.forEach(l => out.push(l));
+  if (includeAllCards) out.push("All Cards");
+
+  return uniq(out);
+}
+
+function buildStatEntries(card, keys) {
+  return keys.map(key => ({
+    label: key,
+    value: cleanStatValue(card?.[key])
+  }));
+}
+
+function buildCurrentSeasonSummary(playerName, currentSeason) {
+  if (!currentSeason || !currentSeason.stat_card) {
+    return `${playerName} does not have current season stats available yet.`;
+  }
+
+  const c = currentSeason.stat_card;
+  const bits = [];
+
+  if (hasRealStatValue(c.HR)) bits.push(`${cleanStatValue(c.HR)} home runs`);
+  if (hasRealStatValue(c.BA)) bits.push(`${cleanStatValue(c.BA)} batting average`);
+  if (hasRealStatValue(c.H)) bits.push(`${cleanStatValue(c.H)} hits`);
+  if (hasRealStatValue(c.RBI)) bits.push(`${cleanStatValue(c.RBI)} RBI`);
+  if (hasRealStatValue(c.SB)) bits.push(`${cleanStatValue(c.SB)} stolen bases`);
+
+  if (!bits.length) return `${playerName} has current season stats available.`;
+  return `${playerName}'s current season includes ${bits.join(", ")}.`;
+}
+
+function buildCareerSummary(playerName, career) {
+  if (!career || !career.stat_card) {
+    return `${playerName} does not have career summary stats available yet.`;
+  }
+
+  const c = career.stat_card;
+  const bits = [];
+
+  if (hasRealStatValue(c.HR)) bits.push(`${cleanStatValue(c.HR)} home runs`);
+  if (hasRealStatValue(c.H)) bits.push(`${cleanStatValue(c.H)} hits`);
+  if (hasRealStatValue(c.BA)) bits.push(`${cleanStatValue(c.BA)} batting average`);
+  if (hasRealStatValue(c.OPS)) bits.push(`${cleanStatValue(c.OPS)} OPS`);
+
+  if (!bits.length) return `${playerName} has career stats available.`;
+  return `${playerName}'s career line includes ${bits.join(", ")}.`;
 }
 
 /* ------------------ INTENT ------------------ */
@@ -1368,12 +1594,12 @@ function buildClarifyProductTypeResponse(productName, query) {
 }
 
 async function buildPlayerChoiceResponse(playerReq) {
-  const years = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
-  const safeYears = Array.isArray(years) ? years.filter(y => /^\d{4}$/.test(String(y))) : [];
+  const fallbackYears = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
+  const followups = buildPlayerFollowups(playerReq.playerName, fallbackYears, true, true);
 
   pendingPlayerChoice = {
     ...playerReq,
-    availableYears: safeYears
+    availableYears: getPlayerYearOptions(playerReq.playerName, fallbackYears)
   };
   pendingProductChoice = null;
   pendingChecklistChoice = null;
@@ -1382,19 +1608,54 @@ async function buildPlayerChoiceResponse(playerReq) {
     type: "standard",
     badge: "Player",
     title: playerReq.playerName,
-    summary: "Are you looking for high level on-field statistics, or checklist info? You can also jump straight to a year.",
-    followups: ["Stats", "All Cards", ...safeYears]
+    summary: "Choose stats, jump to a checklist year, or open all cards for this player.",
+    followups
   };
 }
 
-function buildPlayerStatsPlaceholderResponse(playerReq) {
-  pendingPlayerChoice = { ...playerReq };
+async function buildPlayerStatsPlaceholderResponse(playerReq) {
+  const stats = getPlayerStatsEntry(playerReq.playerName);
+  const fallbackYears = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
+  const followups = buildPlayerFollowups(playerReq.playerName, fallbackYears, false, true);
+  const meta = getPlayerMetaEntry(playerReq.playerName);
+
+  pendingPlayerChoice = {
+    ...playerReq,
+    availableYears: getPlayerYearOptions(playerReq.playerName, fallbackYears)
+  };
+
+  if (!stats) {
+    return {
+      type: "standard",
+      badge: "Player Stats",
+      title: playerReq.playerName,
+      summary: "Player stats are not available for that player yet.",
+      followups
+    };
+  }
+
+  const currentStats = buildStatEntries(stats.current_season?.stat_card, ["WAR", "AB", "H", "HR", "BA", "R", "RBI", "SB", "OBP", "SLG", "OPS", "OPS+"]);
+  const careerStats = buildStatEntries(stats.career?.stat_card, ["WAR", "H", "HR", "BA", "R", "RBI", "SB", "OBP", "SLG", "OPS", "OPS+"]);
 
   return {
-    type: "standard",
+    type: "player_stats",
     badge: "Player Stats",
-    title: playerReq.playerName,
-    summary: "High level on-field statistics are the next player-search piece to wire in. The player checklist side is live now."
+    title: stats.player_name || playerReq.playerName,
+    summary: meta?.rc_year
+      ? `${stats.player_name || playerReq.playerName} has checklist coverage beginning in ${meta.rc_year}, which is currently tagged as the RC year.`
+      : `${stats.player_name || playerReq.playerName} has player stats and checklist year coverage loaded.`,
+    metadata: uniq([
+      stats.team ? `Team: ${stats.team}` : "",
+      meta?.rc_year ? `RC Year: ${meta.rc_year}` : "",
+      Array.isArray(meta?.checklist_years) ? `Checklist Years: ${meta.checklist_years.length}` : ""
+    ]),
+    currentTitle: stats.current_season ? `${stats.current_season.season} Season` : "",
+    currentSummary: buildCurrentSeasonSummary(stats.player_name || playerReq.playerName, stats.current_season),
+    currentStats,
+    careerTitle: "Career",
+    careerSummary: buildCareerSummary(stats.player_name || playerReq.playerName, stats.career),
+    careerStats,
+    followups
   };
 }
 
@@ -1402,15 +1663,12 @@ async function buildPlayerChecklistResponse(playerReq) {
   pendingProductChoice = null;
   pendingChecklistChoice = null;
 
-  const years = Array.isArray(playerReq.availableYears) && playerReq.availableYears.length
-    ? playerReq.availableYears
-    : await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
-
-  const safeYears = Array.isArray(years) ? years.filter(y => /^\d{4}$/.test(String(y))) : [];
+  const fallbackYears = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
+  const yearOptions = getPlayerYearOptions(playerReq.playerName, fallbackYears);
 
   pendingPlayerChoice = {
     ...playerReq,
-    availableYears: safeYears
+    availableYears: yearOptions
   };
 
   const data = await getPlayerCards(
@@ -1426,7 +1684,8 @@ async function buildPlayerChecklistResponse(playerReq) {
   if (playerReq.code && playerReq.productName) {
     sectionLabel = playerReq.productName;
   } else if (playerReq.year) {
-    sectionLabel = `${playerReq.year} Cards`;
+    const matchYear = yearOptions.find(y => String(y.year) === String(playerReq.year));
+    sectionLabel = matchYear ? matchYear.label : `${playerReq.year} Cards`;
   } else {
     sectionLabel = "All Checklist Results";
   }
@@ -1437,7 +1696,7 @@ async function buildPlayerChecklistResponse(playerReq) {
       badge: "Player",
       title: playerReq.playerName,
       summary: "No matching checklist rows were found for that player search.",
-      followups: ["Stats", "All Cards", ...safeYears]
+      followups: buildPlayerFollowups(playerReq.playerName, fallbackYears, true, true)
     };
   }
 
@@ -1456,7 +1715,7 @@ async function buildPlayerChecklistResponse(playerReq) {
     sectionOptions: [],
     followups: playerReq.code
       ? []
-      : ["Stats", "All Cards", ...safeYears]
+      : buildPlayerFollowups(playerReq.playerName, fallbackYears, true, true)
   };
 }
 
@@ -1653,10 +1912,10 @@ async function buildResponse(query) {
     });
   }
 
-  if (pendingPlayerChoice && isOnlyYearReply(query)) {
+  if (pendingPlayerChoice && extractSelectedYear(query)) {
     return buildPlayerChecklistResponse({
       ...pendingPlayerChoice,
-      year: String(query).trim(),
+      year: extractSelectedYear(query),
       code: ""
     });
   }
@@ -1712,6 +1971,8 @@ async function submitQuery(text) {
       addPrvResultCard(res);
     } else if (res.type === "checklist_table") {
       addChecklistResultCard(res);
+    } else if (res.type === "player_stats") {
+      addPlayerStatsCard(res);
     } else {
       addStandardAnswerCard(res);
     }
@@ -1725,6 +1986,7 @@ async function submitQuery(text) {
       selected_type:
         res.type === "prv" ? "Print Run" :
         res.type === "checklist_table" ? "Checklist" :
+        res.type === "player_stats" ? "Player Stats" :
         (res.badge || ""),
       route_target:
         res.type === "prv" ? "vault" :

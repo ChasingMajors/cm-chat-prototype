@@ -5,9 +5,9 @@ const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0V
 const CHECKLIST_BASE_URL = "/checklists/";
 const VAULT_BASE_URL = "/vault/";
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v17";
+const CL_INDEX_KEY = "cm_chat_cl_index_v18";
 const PRV_INDEX_KEY = "cm_chat_prv_index_v9";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v17";
+const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v18";
 const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v9";
 const INDEX_TTL_MS = 1000 * 60 * 30;
 
@@ -64,7 +64,8 @@ const PLAYER_SEARCH_NON_NAME_WORDS = new Set([
   "stadium","club","pristine","archives","tribute","sterling","museum","inception",
   "dynasty","flagship","celebration","draft","best","platinum","anniversary",
   "checklist","print","run","parallels","parallel","autographs","autograph","autos",
-  "auto","relics","relic","variations","variation","inserts","insert","base"
+  "auto","relics","relic","variations","variation","inserts","insert","base",
+  "number","high","mega","box","jumbo","blaster","hanger","choice","mini"
 ]);
 
 const PLAYER_SEARCH_FILLER_WORDS = new Set([
@@ -235,6 +236,15 @@ function isOnlyYearReply(text) {
   return /^\d{4}$/.test(String(text || "").trim());
 }
 
+function isLikelyPlayerNameToken(token) {
+  const n = normalize(token);
+  if (!n) return false;
+  if (/^(19|20)\d{2}(?:-\d{2})?$/.test(n)) return false;
+  if (SPORT_WORDS.includes(n)) return false;
+  if (PLAYER_SEARCH_NON_NAME_WORDS.has(n)) return false;
+  return true;
+}
+
 function splitPlayerSearchQuery(query) {
   const year = extractYear(query);
   const sport = extractSport(query);
@@ -249,24 +259,38 @@ function splitPlayerSearchQuery(query) {
 
   if (!cleanedRawTokens.length) return null;
 
-  const normalizedTokens = cleanedRawTokens.map(t => normalize(t)).filter(Boolean);
+  const candidateTokens = cleanedRawTokens.filter(t => {
+    const n = normalize(t);
+    if (!n) return false;
+    if (year && n === normalize(year)) return false;
+    if (sport && n === normalize(sport)) return false;
+    return true;
+  });
 
-  let stopIdx = normalizedTokens.length;
+  if (!candidateTokens.length) return null;
 
-  for (let i = 0; i < normalizedTokens.length; i++) {
-    const t = normalizedTokens[i];
-    if ((year && t === normalize(year)) || (sport && t === normalize(sport)) || PLAYER_SEARCH_NON_NAME_WORDS.has(t)) {
+  const candidateNorms = candidateTokens.map(t => normalize(t));
+
+  if (!isLikelyPlayerNameToken(candidateNorms[0])) {
+    return null;
+  }
+
+  let stopIdx = candidateNorms.length;
+  for (let i = 0; i < candidateNorms.length; i++) {
+    if (PLAYER_SEARCH_NON_NAME_WORDS.has(candidateNorms[i])) {
       stopIdx = i;
       break;
     }
   }
 
-  let playerTokens = cleanedRawTokens.slice(0, stopIdx).filter(Boolean);
+  let playerTokens = candidateTokens.slice(0, stopIdx).filter(Boolean);
+
   if (!playerTokens.length) return null;
+  if (playerTokens.some(t => !isLikelyPlayerNameToken(t))) return null;
   if (playerTokens.length > 3) playerTokens = playerTokens.slice(0, 3);
 
   const playerName = titleCase(playerTokens.join(" "));
-  const remainderTokens = cleanedRawTokens.slice(playerTokens.length);
+  const remainderTokens = candidateTokens.slice(stopIdx);
   const remainder = remainderTokens.join(" ").trim();
 
   return {
@@ -280,12 +304,12 @@ function splitPlayerSearchQuery(query) {
 function looksLikeStandaloneYearQuery(parts) {
   if (!parts) return false;
   if (!parts.year) return false;
+
   const rem = normalize(parts.remainder || "");
   if (!rem) return true;
 
   const tokens = tokenize(rem);
   const productishCount = tokens.filter(t => PLAYER_SEARCH_NON_NAME_WORDS.has(t)).length;
-
   return productishCount === 0;
 }
 
@@ -1303,14 +1327,12 @@ async function buildPlayerChoiceResponse(playerReq) {
   pendingProductChoice = null;
   pendingChecklistChoice = null;
 
-  const followups = ["Stats", "All Cards", ...safeYears];
-
   return {
     type: "standard",
     badge: "Player",
     title: playerReq.playerName,
     summary: "Are you looking for high level on-field statistics, or checklist info? You can also jump straight to a year.",
-    followups
+    followups: ["Stats", "All Cards", ...safeYears]
   };
 }
 

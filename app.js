@@ -1404,6 +1404,75 @@ function detectIntent(q) {
   if (includesAny(n, INTENT_TRENDING_WORDS)) return "trending";
   return "search";
 }
+/* ------------------ FORMATTERS ------------------ */
+
+function buildPrvRows(rows) {
+  return rows.map(r => {
+    const setType = r.setType || "";
+    const setLine = r.setLine || "";
+    const label = [setType, setLine].filter(Boolean).join(" ").trim() || "Row";
+    const value = formatNumber(r.printRun || "");
+    const setSize = formatNumber(r.subSetSize || "");
+    return { label, value, setSize };
+  });
+}
+
+function buildPrvMetadata(product, rows) {
+  const types = uniq(rows.map(r => r.setType).filter(Boolean));
+  return uniq([
+    `Rows: ${rows.length}`,
+    types.length ? `Types: ${types.length}` : "",
+    product.year ? `Year: ${product.year}` : "",
+    product.sport ? `Sport: ${titleCase(product.sport)}` : ""
+  ]);
+}
+
+function summarizeChecklistCounts(summary) {
+  const c = summary.counts || {};
+  const parts = [];
+  if (c.all) parts.push(`${formatNumber(c.all)} total rows`);
+  if (c.base) parts.push(`${formatNumber(c.base)} base`);
+  if (c.inserts) parts.push(`${formatNumber(c.inserts)} inserts`);
+  if (c.autographs) parts.push(`${formatNumber(c.autographs)} autographs`);
+  if (c.relics) parts.push(`${formatNumber(c.relics)} relics`);
+  if (c.variations) parts.push(`${formatNumber(c.variations)} variations`);
+  if (c.parallels) parts.push(`${formatNumber(c.parallels)} parallels`);
+  return parts.join(" • ");
+}
+
+function checklistSectionOptionsFromSummary(summary) {
+  const available = Array.isArray(summary?.available_sections)
+    ? summary.available_sections
+    : ["all"];
+
+  return available
+    .map(key => CHECKLIST_SECTION_LABELS[key])
+    .filter(Boolean);
+}
+
+function formatChecklistTable(sectionKey, data) {
+  const section = normalize(sectionKey);
+
+  if (section === "parallels") {
+    return {
+      columns: data.columns || ["Applies To", "Parallel", "Serial No."],
+      rows: (data.rows || []).map(r => ({
+        cells: Array.isArray(r)
+          ? r
+          : [r.applies_to || "", r.parallel_name || "", r.serial_no || ""]
+      }))
+    };
+  }
+
+  return {
+    columns: data.columns || ["Subset", "Card No.", "Player", "Team", "Tag"],
+    rows: (data.rows || []).map(r => ({
+      cells: Array.isArray(r)
+        ? r
+        : [r.subset || "", r.card_no || "", r.player || "", r.team || "", r.tag || ""]
+    }))
+  };
+}
 
 /* ------------------ RESPONSES ------------------ */
 

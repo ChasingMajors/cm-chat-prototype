@@ -1355,6 +1355,48 @@ function buildPlayerFollowups(playerName, fallbackYears = [], includeStats = tru
   return uniq(out);
 }
 
+function buildStatEntries(card, keys) {
+  return keys.map(key => ({
+    label: key,
+    value: cleanStatValue(card?.[key])
+  }));
+}
+
+function buildCurrentSeasonSummary(playerName, currentSeason) {
+  if (!currentSeason || !currentSeason.stat_card) {
+    return `${playerName} does not have current season stats available yet.`;
+  }
+
+  const c = currentSeason.stat_card;
+  const bits = [];
+
+  if (hasRealStatValue(c.HR)) bits.push(`${cleanStatValue(c.HR)} home runs`);
+  if (hasRealStatValue(c.BA)) bits.push(`${cleanStatValue(c.BA)} batting average`);
+  if (hasRealStatValue(c.H)) bits.push(`${cleanStatValue(c.H)} hits`);
+  if (hasRealStatValue(c.RBI)) bits.push(`${cleanStatValue(c.RBI)} RBI`);
+  if (hasRealStatValue(c.SB)) bits.push(`${cleanStatValue(c.SB)} stolen bases`);
+
+  if (!bits.length) return `${playerName} has current season stats available.`;
+  return `${playerName}'s current season includes ${bits.join(", ")}.`;
+}
+
+function buildCareerSummary(playerName, career) {
+  if (!career || !career.stat_card) {
+    return `${playerName} does not have career summary stats available yet.`;
+  }
+
+  const c = career.stat_card;
+  const bits = [];
+
+  if (hasRealStatValue(c.HR)) bits.push(`${cleanStatValue(c.HR)} home runs`);
+  if (hasRealStatValue(c.H)) bits.push(`${cleanStatValue(c.H)} hits`);
+  if (hasRealStatValue(c.BA)) bits.push(`${cleanStatValue(c.BA)} batting average`);
+  if (hasRealStatValue(c.OPS)) bits.push(`${cleanStatValue(c.OPS)} OPS`);
+
+  if (!bits.length) return `${playerName} has career stats available.`;
+  return `${playerName}'s career line includes ${bits.join(", ")}.`;
+}
+
 /* ------------------ RESPONSES ------------------ */
 
 async function buildTrendingResponse() {

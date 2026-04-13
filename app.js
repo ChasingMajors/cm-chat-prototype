@@ -1396,6 +1396,14 @@ function buildCareerSummary(playerName, career) {
   if (!bits.length) return `${playerName} has career stats available.`;
   return `${playerName}'s career line includes ${bits.join(", ")}.`;
 }
+function detectIntent(q) {
+  const n = normalize(q);
+
+  if (includesAny(n, INTENT_PRINT_RUN_WORDS)) return "print_run";
+  if (includesAny(n, INTENT_CHECKLIST_WORDS)) return "checklist";
+  if (includesAny(n, INTENT_TRENDING_WORDS)) return "trending";
+  return "search";
+}
 
 /* ------------------ RESPONSES ------------------ */
 

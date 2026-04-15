@@ -375,13 +375,15 @@ body{
   width:100%;
   border:1px solid rgba(255,255,255,0.10);
   border-radius:18px;
-  overflow:hidden;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
   background:rgba(255,255,255,0.03);
   margin-bottom:16px;
 }
 
 .prv-chat-table{
   width:100%;
+  min-width:720px;
   border-collapse:collapse;
   table-layout:fixed;
 }
@@ -396,6 +398,7 @@ body{
   text-transform:uppercase;
   color:rgba(255,255,255,0.62);
   text-align:left;
+  white-space:nowrap;
 }
 
 .prv-chat-table thead th:nth-child(1){
@@ -546,6 +549,10 @@ body{
 
   .prv-chat-title{
     font-size:23px;
+  }
+
+  .prv-chat-table{
+    min-width:640px;
   }
 
   .prv-chat-table thead th:nth-child(2){

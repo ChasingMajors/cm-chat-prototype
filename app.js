@@ -1,6 +1,7 @@
 const CHECKLIST_EXEC_URL = "https://script.google.com/macros/s/AKfycbxl2JnZGnEtmUes6UXjz6upyEd6tj20yMeX1X0bnseKo1ISaBHjWILVrp9ZyYqk-rpE_w/exec";
 const VAULT_EXEC_URL = "https://script.google.com/macros/s/AKfycbx_1rqxgSCu6aqDc7jEnETYC-KcNxHEf208GWXM23FR7hDT0ey8Y1SZ2i4U1VmXOZgpAg/exec";
 const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0VmnUeJqP0OcFL5qCe-MUjN0JonJ8QTlfpMsf0XRKZzCwLdFdiF/exec";
+const RELEASE_SCHEDULE_EXEC_URL = "https://script.google.com/macros/s/AKfycbzWRkmn2xhvsaqvlMxx4AJmqvpyDTR6wKmd9rvpr4ttzXOkH9vH4qPxk59YlEHVMInlHw/exec";
 
 const PLAYER_META_URL = `${CHECKLIST_EXEC_URL}?action=playerMetaIndex`;
 const PLAYER_STATS_JSON_URL = "https://cdn.jsdelivr.net/gh/ChasingMajors/cm-mlb-stats@main/data/public/player_summaries.json";
@@ -20,6 +21,10 @@ const PLAYER_META_TS_KEY = "cm_chat_player_meta_ts_v1";
 const PLAYER_STATS_TS_KEY = "cm_chat_player_stats_ts_v1";
 const PLAYER_DATA_TTL_MS = 1000 * 60 * 60 * 6;
 
+const RELEASE_SCHEDULE_KEY = "cm_chat_release_schedule_v1";
+const RELEASE_SCHEDULE_TS_KEY = "cm_chat_release_schedule_ts_v1";
+const RELEASE_SCHEDULE_TTL_MS = 1000 * 60 * 15;
+
 const EXAMPLES = [];
 
 const SEARCH_HELP_EXAMPLES = [
@@ -34,7 +39,11 @@ const SEARCH_HELP_EXAMPLES = [
   "Aaron Judge 2026 Topps Series 1",
   "Shohei Ohtani 2025",
   "Roman Anthony 2026 Heritage",
-  "What 2018 baseball products do you have?"
+  "What 2018 baseball products do you have?",
+  "Show the release schedule",
+  "Show upcoming baseball releases",
+  "What products are coming out soon?",
+  "Upcoming football releases"
 ];
 
 const STOP_WORDS = new Set([
@@ -104,11 +113,14 @@ let playerMetaIndex = [];
 let playerStatsData = null;
 let playerMetaByName = {};
 let playerStatsByName = {};
+let releaseScheduleData = [];
+
 let bootPromise = null;
 let checklistIndexPromise = null;
 let printRunIndexPromise = null;
 let playerMetaPromise = null;
 let playerStatsPromise = null;
+let releaseSchedulePromise = null;
 
 let awaitingCatalogSport = false;
 let pendingProductChoice = null;
@@ -124,7 +136,8 @@ const memCache = {
   playerCards: new Map(),
   playerYears: new Map(),
   printRunRows: new Map(),
-  homeFeed: null
+  homeFeed: null,
+  releaseSchedule: null
 };
 
 function makeKey(...parts) {
@@ -513,6 +526,96 @@ function isSearchHelpRequest(query) {
   );
 }
 
+function isReleaseScheduleQuestion(query) {
+  const n = normalize(query);
+  return (
+    n.includes("release schedule") ||
+    n.includes("release schedules") ||
+    n.includes("upcoming releases") ||
+    n.includes("upcoming products") ||
+    n.includes("new products") ||
+    n.includes("new product") ||
+    n.includes("coming out") ||
+    n.includes("coming soon") ||
+    n.includes("what releases are coming") ||
+    n.includes("what products are coming") ||
+    n.includes("what comes out") ||
+    n.includes("what is coming out") ||
+    n.includes("what's coming out") ||
+    n.includes("upcoming baseball releases") ||
+    n.includes("upcoming basketball releases") ||
+    n.includes("upcoming football releases") ||
+    n.includes("upcoming hockey releases") ||
+    n.includes("upcoming soccer releases")
+  );
+}
+
+function parseDateSafe(val) {
+  const d = new Date(val);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function formatReleaseDate(val) {
+  const d = parseDateSafe(val);
+  if (!d) return String(val || "");
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  });
+}
+
+function normalizeReleaseRow(row) {
+  return {
+    releaseDate: row.releaseDate || "",
+    sport: row.sport || "",
+    manufacturer: row.manufacturer || "",
+    product: row.product || "",
+    setName: row.setName || "",
+    format: row.format || "",
+    status: row.status || "",
+    checklistUrl: row.checklistUrl || "",
+    vaultUrl: row.vaultUrl || ""
+  };
+}
+
+function filterReleaseScheduleRows(rows, query) {
+  const n = normalize(query);
+  const sport = extractSport(query);
+  const year = extractYear(query);
+
+  let filtered = (rows || []).map(normalizeReleaseRow);
+
+  if (sport) {
+    filtered = filtered.filter(r => normalize(r.sport) === sport);
+  }
+
+  if (year) {
+    filtered = filtered.filter(r => {
+      const rowYear = String(r.releaseDate || "").slice(0, 4);
+      return rowYear === String(year).slice(0, 4);
+    });
+  }
+
+  if (n.includes("upcoming") || n.includes("coming") || n.includes("new")) {
+    filtered = filtered.filter(r => {
+      const status = normalize(r.status);
+      return status === "upcoming" || status === "announced" || status === "scheduled" || !status;
+    });
+  }
+
+  filtered.sort((a, b) => {
+    const ad = parseDateSafe(a.releaseDate);
+    const bd = parseDateSafe(b.releaseDate);
+    if (!ad && !bd) return 0;
+    if (!ad) return 1;
+    if (!bd) return -1;
+    return ad - bd;
+  });
+
+  return filtered;
+}
+
 function getAllProductsForSport(sport) {
   const s = normalize(sport);
   const items = [];
@@ -740,11 +843,12 @@ function addWelcomeMessage(force = false) {
       <div class="answer-card" data-cm-welcome="1">
         <div class="answer-badge">Welcome</div>
         <div class="answer-title">Welcome to Chasing Majors Chat</div>
-        <div class="answer-summary">If you are looking for print run data, checklist search, player lookups, and product coverage, you are in the right place.</div>
+        <div class="answer-summary">If you are looking for print run data, checklist search, player lookups, product coverage, or release schedule information, you are in the right place.</div>
         <div class="answer-followups">
           <div class="followup-label">Start here</div>
           <div class="followup-list">
             <button class="followup-btn" data-followup="See the best way search">See the best way search</button>
+            <button class="followup-btn" data-followup="Show the release schedule">Show the release schedule</button>
           </div>
         </div>
       </div>
@@ -977,6 +1081,87 @@ function addChecklistResultCard(result) {
   scrollNewCardToTop(card);
 }
 
+function addReleaseScheduleCard(result) {
+  const rows = result.rows || [];
+  const chips = result.metadata || [];
+  const followups = result.followups || [];
+
+  const chipsHtml = chips.length
+    ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
+    : "";
+
+  const bodyHtml = rows.map(r => `
+    <tr class="prv-chat-tr">
+      <td class="prv-chat-td">
+        <div class="prv-chat-cell-main">${escapeHtml(formatReleaseDate(r.releaseDate))}</div>
+      </td>
+      <td class="prv-chat-td">
+        <div class="prv-chat-cell-main">${escapeHtml(r.sport || "")}</div>
+      </td>
+      <td class="prv-chat-td">
+        <div class="prv-chat-cell-main">${escapeHtml(r.manufacturer || "")}</div>
+      </td>
+      <td class="prv-chat-td">
+        <div class="prv-chat-cell-main">${escapeHtml(r.setName || r.product || "")}</div>
+      </td>
+      <td class="prv-chat-td">
+        <div class="prv-chat-cell-main">${escapeHtml(r.status || "")}</div>
+      </td>
+    </tr>
+  `).join("");
+
+  const followupsHtml = followups.length
+    ? `
+      <div class="answer-followups">
+        <div class="followup-label">Try next</div>
+        <div class="followup-list">
+          ${followups.map(f => `<button class="followup-btn" data-followup="${escapeHtml(f)}">${escapeHtml(f)}</button>`).join("")}
+        </div>
+      </div>
+    `
+    : "";
+
+  const cardId = `release_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+
+  chatMessages.innerHTML += `
+    <div class="message-row assistant">
+      <div class="prv-chat-card" id="${cardId}">
+        <div class="prv-chat-topline">
+          <div class="answer-badge">${escapeHtml(result.badge || "Release Schedule")}</div>
+        </div>
+
+        <div class="prv-chat-title">${escapeHtml(result.title || "Upcoming Releases")}</div>
+        <div class="answer-summary" style="margin-bottom:14px;">${escapeHtml(result.summary || "")}</div>
+
+        ${chipsHtml}
+
+        <div class="prv-chat-table-wrap">
+          <table class="prv-chat-table checklist-chat-table">
+            <thead>
+              <tr>
+                <th>Release Date</th>
+                <th>Sport</th>
+                <th>Brand</th>
+                <th>Product</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${bodyHtml}
+            </tbody>
+          </table>
+        </div>
+
+        ${followupsHtml}
+      </div>
+    </div>
+  `;
+
+  const card = document.getElementById(cardId);
+  bindFollowups();
+  scrollNewCardToTop(card);
+}
+
 function bindFollowups() {
   chatMessages.querySelectorAll("[data-followup]").forEach(btn => {
     btn.onclick = () => submitQuery(btn.dataset.followup);
@@ -1128,6 +1313,22 @@ async function getPlayerYears(playerQuery, sport = "baseball") {
   return years;
 }
 
+async function getReleaseSchedule() {
+  if (Array.isArray(memCache.releaseSchedule)) return memCache.releaseSchedule;
+
+  try {
+    const res = await fetch(`${RELEASE_SCHEDULE_EXEC_URL}?action=release_schedule`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const rows = Array.isArray(data?.rows) ? data.rows : [];
+    memCache.releaseSchedule = rows;
+    return rows;
+  } catch (err) {
+    console.warn("getReleaseSchedule failed", err);
+    return [];
+  }
+}
+
 /* ------------------ INDEX LOAD ------------------ */
 
 async function loadChecklistIndex() {
@@ -1238,12 +1439,46 @@ async function loadPlayerStats() {
   return playerStatsPromise;
 }
 
+async function loadReleaseScheduleData() {
+  if (releaseScheduleData.length) return releaseScheduleData;
+  if (releaseSchedulePromise) return releaseSchedulePromise;
+
+  releaseSchedulePromise = (async () => {
+    const cached = getCachedWithTtl(
+      RELEASE_SCHEDULE_KEY,
+      RELEASE_SCHEDULE_TS_KEY,
+      RELEASE_SCHEDULE_TTL_MS
+    );
+
+    if (cached) {
+      releaseScheduleData = Array.isArray(cached) ? cached : [];
+      return releaseScheduleData;
+    }
+
+    const rows = await getReleaseSchedule();
+    releaseScheduleData = Array.isArray(rows) ? rows : [];
+    setCachedWithTtl(
+      RELEASE_SCHEDULE_KEY,
+      RELEASE_SCHEDULE_TS_KEY,
+      releaseScheduleData
+    );
+    return releaseScheduleData;
+  })();
+
+  return releaseSchedulePromise;
+}
+
 async function bootstrapData() {
   if (!bootPromise) {
     bootPromise = Promise.all([
       loadChecklistIndex(),
       loadPrintRunIndex()
-    ]);
+    ]).then(async (res) => {
+      loadPlayerMeta().catch(() => {});
+      loadPlayerStats().catch(() => {});
+      loadReleaseScheduleData().catch(() => {});
+      return res;
+    });
   }
   return bootPromise;
 }
@@ -1255,11 +1490,19 @@ async function ensurePlayerDataLoaded() {
   ]);
 }
 
+async function ensureReleaseScheduleLoaded() {
+  await loadReleaseScheduleData();
+}
+
 /* ------------------ PRELOAD / PREFETCH ------------------ */
 
 function preloadPlayerDataInBackground() {
   loadPlayerMeta().catch(err => console.warn("Background player meta preload failed", err));
   loadPlayerStats().catch(err => console.warn("Background player stats preload failed", err));
+}
+
+function preloadReleaseScheduleInBackground() {
+  loadReleaseScheduleData().catch(err => console.warn("Background release schedule preload failed", err));
 }
 
 function prefetchPlayerData(playerReq) {
@@ -1581,7 +1824,69 @@ function formatChecklistTable(sectionKey, data) {
   };
 }
 
+function buildReleaseScheduleMetadata(rows) {
+  const sports = uniq(rows.map(r => r.sport).filter(Boolean));
+  const manufacturers = uniq(rows.map(r => r.manufacturer).filter(Boolean));
+
+  return uniq([
+    `Releases: ${rows.length}`,
+    sports.length ? `Sports: ${sports.length}` : "",
+    manufacturers.length ? `Manufacturers: ${manufacturers.length}` : ""
+  ]);
+}
+
 /* ------------------ RESPONSES ------------------ */
+
+async function buildReleaseScheduleResponse(query) {
+  await ensureReleaseScheduleLoaded();
+
+  const rows = filterReleaseScheduleRows(releaseScheduleData, query).slice(0, 12);
+
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
+  awaitingCatalogSport = false;
+
+  if (!rows.length) {
+    return {
+      type: "standard",
+      badge: "Release Schedule",
+      title: "No matching releases found",
+      summary: "I could not find any matching release schedule results for that search.",
+      followups: [
+        "Show upcoming baseball releases",
+        "Show upcoming football releases",
+        "Show the release schedule"
+      ]
+    };
+  }
+
+  const nextRelease = rows[0];
+  const summaryBits = [
+    `Next up: ${nextRelease.setName || nextRelease.product || "Release"} on ${formatReleaseDate(nextRelease.releaseDate)}`
+  ];
+
+  if (nextRelease.status) summaryBits.push(`Status: ${nextRelease.status}`);
+
+  return {
+    type: "release_schedule",
+    badge: "Release Schedule",
+    title: "Upcoming Releases",
+    summary: summaryBits.join(" • "),
+    metadata: buildReleaseScheduleMetadata(rows),
+    rows,
+    followups: uniq(
+      rows.slice(0, 4).flatMap(r => {
+        const out = [];
+        if (r.setName) {
+          out.push(`Show me the ${r.setName} checklist`);
+          out.push(`Show me ${r.setName} print run`);
+        }
+        return out;
+      })
+    ).slice(0, 6)
+  };
+}
 
 async function buildTrendingResponse() {
   const rows = await getHomeFeed();
@@ -1981,11 +2286,13 @@ async function buildChecklistSummaryResponse(query) {
     return buildChecklistSectionResponse(directSection);
   }
 
+  const countsLine = summarizeChecklistCounts(summary);
+
   return {
     type: "standard",
     badge: "Checklist",
     title: product.name,
-    summary: `I found a matching checklist.${summarizeChecklistCounts(summary) ? ` ${summarizeChecklistCounts(summary)}.` : ""} Are you looking for the entire checklist or a checklist for base, inserts, autographs, relics, variations, or parallels?`,
+    summary: `I found a matching checklist.${countsLine ? ` ${countsLine}.` : ""} Are you looking for the entire checklist or a checklist for base, inserts, autographs, relics, variations, or parallels?`,
     metadata: uniq([
       summary.counts?.all ? `Rows: ${formatNumber(summary.counts.all)}` : "",
       product.year ? `Year: ${product.year}` : "",
@@ -2043,6 +2350,10 @@ async function buildSearchResponse(query) {
     return buildYearLineupResponse(extractYear(query), extractSport(query));
   }
 
+  if (isReleaseScheduleQuestion(query)) {
+    return buildReleaseScheduleResponse(query);
+  }
+
   if (isCatalogCoverageQuestion(query)) return buildAskSportResponse();
   if (isPricingQuestion(query)) return buildPricingResponse();
   if (isDataSourceQuestion(query)) return buildDataSourceResponse();
@@ -2072,8 +2383,8 @@ async function buildSearchResponse(query) {
       type: "standard",
       badge: "Try",
       title: "Try another search",
-      summary: "Ask for a print run, checklist, year + sport product lineup, trending set, player search, pricing, or a set search.",
-      followups: ["See the best way search"]
+      summary: "Ask for a print run, checklist, release schedule, year + sport product lineup, trending set, player search, pricing, or a set search.",
+      followups: ["See the best way search", "Show the release schedule"]
     };
   }
 
@@ -2141,6 +2452,7 @@ async function buildResponse(query) {
   if (isSearchHelpRequest(query)) return buildSearchHelpResponse();
   if (isPricingQuestion(query)) return buildPricingResponse();
   if (isDataSourceQuestion(query)) return buildDataSourceResponse();
+  if (isReleaseScheduleQuestion(query)) return buildReleaseScheduleResponse(query);
 
   const intent = detectIntent(query);
 
@@ -2179,6 +2491,8 @@ async function submitQuery(text) {
       addChecklistResultCard(res);
     } else if (res.type === "player_stats") {
       addPlayerStatsCard(res);
+    } else if (res.type === "release_schedule") {
+      addReleaseScheduleCard(res);
     } else {
       addStandardAnswerCard(res);
     }
@@ -2193,10 +2507,12 @@ async function submitQuery(text) {
         res.type === "prv" ? "Print Run" :
         res.type === "checklist_table" ? "Checklist" :
         res.type === "player_stats" ? "Player Stats" :
+        res.type === "release_schedule" ? "Release Schedule" :
         (res.badge || ""),
       route_target:
         res.type === "prv" ? "vault" :
-        res.type === "checklist_table" ? "checklists" : ""
+        res.type === "checklist_table" ? "checklists" :
+        res.type === "release_schedule" ? "release_schedule" : ""
     });
   } catch (err) {
     console.error(err);
@@ -2221,6 +2537,7 @@ function initChat() {
 
   setTimeout(() => {
     preloadPlayerDataInBackground();
+    preloadReleaseScheduleInBackground();
   }, 0);
 
   if (chatInput) chatInput.focus();

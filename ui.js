@@ -8,9 +8,14 @@ window.CMChat.ui = window.CMChat.ui || {};
   } = utils;
 
   let submitHandler = null;
+  let latestResultCardId = null;
 
   function setSubmitHandler(fn) {
     submitHandler = typeof fn === "function" ? fn : null;
+  }
+
+  function getChatApp() {
+    return document.querySelector(".chat-app");
   }
 
   function getChatMessages() {
@@ -19,6 +24,18 @@ window.CMChat.ui = window.CMChat.ui || {};
 
   function getExamplePills() {
     return document.getElementById("examplePills");
+  }
+
+  function getJumpNav() {
+    return document.getElementById("chatJumpNav");
+  }
+
+  function getJumpBtn() {
+    return document.getElementById("chatJumpBtn");
+  }
+
+  function getJumpBtnIcon() {
+    return document.getElementById("chatJumpBtnIcon");
   }
 
   function runSubmit(value) {
@@ -61,6 +78,7 @@ window.CMChat.ui = window.CMChat.ui || {};
     const chatMessages = getChatMessages();
     if (!chatMessages) return;
     chatMessages.scrollTop = chatMessages.scrollHeight;
+    updateJumpNav();
   }
 
   function scrollNewCardToTop(element) {
@@ -73,11 +91,136 @@ window.CMChat.ui = window.CMChat.ui || {};
     }
 
     requestAnimationFrame(() => {
-      const containerRect = chatMessages.getBoundingClientRect();
-      const elRect = element.getBoundingClientRect();
-      const delta = elRect.top - containerRect.top;
-      chatMessages.scrollTop += delta - 8;
+      const targetTop = Math.max(0, element.offsetTop - 8);
+      chatMessages.scrollTo({
+        top: targetTop,
+        behavior: "smooth"
+      });
+
+      setTimeout(updateJumpNav, 180);
     });
+  }
+
+  function setLatestResultCard(element) {
+    if (!element) return;
+
+    const chatMessages = getChatMessages();
+    if (!chatMessages) return;
+
+    const prev = chatMessages.querySelector("[data-latest-result='1']");
+    if (prev) prev.removeAttribute("data-latest-result");
+
+    element.setAttribute("data-latest-result", "1");
+    latestResultCardId = element.id || null;
+
+    updateJumpNav();
+  }
+
+  function getLatestResultCard() {
+    if (latestResultCardId) {
+      const byId = document.getElementById(latestResultCardId);
+      if (byId) return byId;
+    }
+
+    const chatMessages = getChatMessages();
+    if (!chatMessages) return null;
+
+    return chatMessages.querySelector("[data-latest-result='1']");
+  }
+
+  function scrollLatestResultToTop() {
+    const chatMessages = getChatMessages();
+    const card = getLatestResultCard();
+    if (!chatMessages || !card) return;
+
+    const top = Math.max(0, card.offsetTop - 8);
+    chatMessages.scrollTo({
+      top,
+      behavior: "smooth"
+    });
+
+    setTimeout(updateJumpNav, 220);
+  }
+
+  function scrollLatestResultToBottom() {
+    const chatMessages = getChatMessages();
+    const card = getLatestResultCard();
+    if (!chatMessages || !card) return;
+
+    const bottomTarget = Math.max(
+      0,
+      card.offsetTop + card.offsetHeight - chatMessages.clientHeight + 8
+    );
+
+    chatMessages.scrollTo({
+      top: bottomTarget,
+      behavior: "smooth"
+    });
+
+    setTimeout(updateJumpNav, 220);
+  }
+
+  function updateJumpNav() {
+    const chatMessages = getChatMessages();
+    const nav = getJumpNav();
+    const btn = getJumpBtn();
+    const icon = getJumpBtnIcon();
+    const card = getLatestResultCard();
+
+    if (!chatMessages || !nav || !btn || !icon || !card) {
+      if (nav) nav.classList.add("is-hidden");
+      return;
+    }
+
+    const viewTop = chatMessages.scrollTop;
+    const viewBottom = viewTop + chatMessages.clientHeight;
+    const cardTop = card.offsetTop;
+    const cardBottom = cardTop + card.offsetHeight;
+    const cardHeight = card.offsetHeight;
+
+    if (cardHeight <= chatMessages.clientHeight - 32) {
+      nav.classList.add("is-hidden");
+      btn.dataset.direction = "";
+      btn.setAttribute("aria-label", "Jump within latest result");
+      return;
+    }
+
+    const nearBottom = viewBottom >= cardBottom - 28;
+    const nearTop = viewTop <= cardTop + 28;
+
+    nav.classList.remove("is-hidden");
+
+    if (nearBottom && !nearTop) {
+      icon.textContent = "↑";
+      btn.dataset.direction = "up";
+      btn.setAttribute("aria-label", "Jump to top of latest result");
+    } else {
+      icon.textContent = "↓";
+      btn.dataset.direction = "down";
+      btn.setAttribute("aria-label", "Jump to bottom of latest result");
+    }
+  }
+
+  function initJumpNav() {
+    const chatMessages = getChatMessages();
+    const btn = getJumpBtn();
+
+    if (chatMessages) {
+      chatMessages.addEventListener("scroll", updateJumpNav, { passive: true });
+    }
+
+    if (btn) {
+      btn.addEventListener("click", () => {
+        const direction = btn.dataset.direction || "down";
+        if (direction === "up") {
+          scrollLatestResultToTop();
+        } else {
+          scrollLatestResultToBottom();
+        }
+      });
+    }
+
+    updateJumpNav();
   }
 
   function addStandardAnswerCard(r) {
@@ -113,8 +256,10 @@ window.CMChat.ui = window.CMChat.ui || {};
       </div>
     `;
 
+    const card = document.getElementById(cardId);
+    setLatestResultCard(card);
     bindFollowups();
-    scrollNewCardToTop(document.getElementById(cardId));
+    scrollNewCardToTop(card);
   }
 
   function addPlayerStatsCard(r) {
@@ -171,8 +316,10 @@ window.CMChat.ui = window.CMChat.ui || {};
       </div>
     `;
 
+    const card = document.getElementById(cardId);
+    setLatestResultCard(card);
     bindFollowups();
-    scrollNewCardToTop(document.getElementById(cardId));
+    scrollNewCardToTop(card);
   }
 
   function addWelcomeMessage(force = false) {
@@ -351,11 +498,12 @@ window.CMChat.ui = window.CMChat.ui || {};
           if (visibleCount >= rows.length) btn.remove();
           else btn.textContent = getMoreButtonLabel(rows.length, visibleCount);
 
-          scrollNewCardToTop(card);
+          updateJumpNav();
         };
       }
     }
 
+    setLatestResultCard(card);
     bindFollowups();
     scrollNewCardToTop(card);
   }
@@ -436,6 +584,7 @@ window.CMChat.ui = window.CMChat.ui || {};
     `;
 
     const card = document.getElementById(cardId);
+    setLatestResultCard(card);
     bindFollowups();
     scrollNewCardToTop(card);
   }
@@ -520,6 +669,7 @@ window.CMChat.ui = window.CMChat.ui || {};
     `;
 
     const card = document.getElementById(cardId);
+    setLatestResultCard(card);
     bindFollowups();
     scrollNewCardToTop(card);
   }
@@ -547,4 +697,6 @@ window.CMChat.ui = window.CMChat.ui || {};
   ns.addChecklistResultCard = addChecklistResultCard;
   ns.addReleaseScheduleCard = addReleaseScheduleCard;
   ns.bindFollowups = bindFollowups;
+  ns.initJumpNav = initJumpNav;
+  ns.updateJumpNav = updateJumpNav;
 })(window.CMChat.ui, window.CMChat.utils);

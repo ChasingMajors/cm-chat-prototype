@@ -1183,9 +1183,18 @@ function buildPrvRows(rows) {
   return rows.map(r => {
     const setType = r.setType || "";
     const setLine = r.setLine || "";
+
     const label = [setType, setLine].filter(Boolean).join(" ").trim() || "Row";
-    const value = formatNumber(r.printRun || "");
+
+    const printRunValue = formatNumber(r.printRun || "");
+    const rarityTag = window.CMChat.utils.getRarityTag(r.printRun);
+
+    const value = rarityTag
+      ? `${printRunValue} <span class="prv-rarity">${rarityTag}</span>`
+      : printRunValue;
+
     const setSize = formatNumber(r.subSetSize || "");
+
     return { label, value, setSize };
   });
 }

@@ -255,3 +255,64 @@ window.CMChat.utils.getRarityTag = function(printRun) {
   if (n <= 1000) return "Mid Tier";
   return "Common";
 };
+
+window.CMChat.utils.parseSerialNumber = function(serialText) {
+  const s = String(serialText || "").trim();
+  if (!s) return null;
+
+  const match = s.match(/(\d+)/);
+  if (!match) return null;
+
+  const n = Number(match[1]);
+  return Number.isFinite(n) ? n : null;
+};
+
+window.CMChat.utils.getParallelRarityTag = function(serialText) {
+  const n = window.CMChat.utils.parseSerialNumber(serialText);
+  if (!n) return "";
+
+  if (n <= 100) return "Ultra Rare";
+  if (n <= 300) return "Rare";
+  if (n <= 1000) return "Mid Tier";
+  return "Common";
+};
+
+window.CMChat.utils.buildParallelInsights = function(rows) {
+  if (!Array.isArray(rows) || !rows.length) return [];
+
+  const serialValues = rows
+    .map(r => window.CMChat.utils.parseSerialNumber(
+      Array.isArray(r) ? r[2] : (r.serial_no || "")
+    ))
+    .filter(v => Number.isFinite(v));
+
+  const insights = [];
+
+  if (!serialValues.length) {
+    insights.push("Most parallels in this section appear to be unnumbered, so scarcity is driven more by pull difficulty and collector demand than serial numbering.");
+    return insights;
+  }
+
+  const ultraRare = serialValues.filter(n => n <= 100).length;
+  const rare = serialValues.filter(n => n > 100 && n <= 300).length;
+  const mid = serialValues.filter(n => n > 300 && n <= 1000).length;
+  const common = serialValues.filter(n => n > 1000).length;
+
+  if (ultraRare) {
+    insights.push("True chase scarcity begins with parallels numbered to 100 or less.");
+  }
+
+  if (rare) {
+    insights.push("Parallels in the /101 to /300 range offer strong collector-level rarity without being the absolute toughest pulls.");
+  }
+
+  if (mid) {
+    insights.push("Mid-tier serial-numbered parallels can still feel scarce while remaining more attainable.");
+  }
+
+  if (common) {
+    insights.push("Higher-numbered parallels are generally more accessible and less scarce than the lower-numbered chase tiers.");
+  }
+
+  return insights;
+};

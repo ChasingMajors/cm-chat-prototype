@@ -142,6 +142,9 @@ window.CMChat.ui = window.CMChat.ui || {};
   function scrollLatestResultToTop() {
   const chatMessages = getChatMessages();
   const card = getLatestResultCard();
+  const btn = getJumpBtn();
+  const icon = getJumpBtnIcon();
+
   if (!chatMessages || !card) return;
 
   const topTarget = Math.max(0, card.offsetTop - 8);
@@ -151,15 +154,21 @@ window.CMChat.ui = window.CMChat.ui || {};
     behavior: "smooth"
   });
 
-  // force re-check after smooth scroll settles
   setTimeout(() => {
-    updateJumpNav();
-  }, 420);
+    if (btn && icon) {
+      icon.textContent = "↓";
+      btn.dataset.direction = "down";
+      btn.setAttribute("aria-label", "Jump to bottom of latest result");
+    }
+  }, 450);
 }
 
 function scrollLatestResultToBottom() {
   const chatMessages = getChatMessages();
   const card = getLatestResultCard();
+  const btn = getJumpBtn();
+  const icon = getJumpBtnIcon();
+
   if (!chatMessages || !card) return;
 
   const bottomTarget = Math.max(
@@ -172,10 +181,13 @@ function scrollLatestResultToBottom() {
     behavior: "smooth"
   });
 
-  // force re-check after smooth scroll settles
   setTimeout(() => {
-    updateJumpNav();
-  }, 420);
+    if (btn && icon) {
+      icon.textContent = "↑";
+      btn.dataset.direction = "up";
+      btn.setAttribute("aria-label", "Jump to top of latest result");
+    }
+  }, 450);
 }
 
 function updateJumpNav() {

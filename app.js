@@ -691,15 +691,17 @@ function addPrvResultCard(result) {
   const chips = result.metadata || [];
   const followups = result.followups || [];
   let visibleCount = Math.min(8, rows.length);
-  const insights = window.CMChat.utils.buildPrintRunInsights(result.rawRows || []);
-
+const insights = utils.buildPrintRunInsights(result.rawRows || []);
+  
   const buildRowsHtml = (list) => list.map(r => `
     <tr class="prv-chat-tr">
       <td class="prv-chat-td prv-chat-td-left">
         <div class="prv-chat-cell-main">${escapeHtml(r.label || "")}</div>
       </td>
-      <td class="prv-chat-td prv-chat-td-right">${escapeHtml(r.value || "")}</td>
-      <td class="prv-chat-td prv-chat-td-setsize">${escapeHtml(r.setSize || "")}</td>
+<td class="prv-chat-td prv-chat-td-right">
+  ${escapeHtml(r.value || "")}
+  ${r.rarity ? `<div class="prv-rarity">${escapeHtml(r.rarity)}</div>` : ""}
+</td>      <td class="prv-chat-td prv-chat-td-setsize">${escapeHtml(r.setSize || "")}</td>
     </tr>
   `).join("");
 
@@ -1183,19 +1185,12 @@ function buildPrvRows(rows) {
   return rows.map(r => {
     const setType = r.setType || "";
     const setLine = r.setLine || "";
-
     const label = [setType, setLine].filter(Boolean).join(" ").trim() || "Row";
-
-    const printRunValue = formatNumber(r.printRun || "");
-    const rarityTag = window.CMChat.utils.getRarityTag(r.printRun);
-
-    const value = rarityTag
-      ? `${printRunValue} <span class="prv-rarity">${rarityTag}</span>`
-      : printRunValue;
-
+    const value = formatNumber(r.printRun || "");
+    const rarity = utils.getRarityTag ? utils.getRarityTag(r.printRun) : "";
     const setSize = formatNumber(r.subSetSize || "");
 
-    return { label, value, setSize };
+    return { label, value, rarity, setSize };
   });
 }
 

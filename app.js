@@ -691,6 +691,7 @@ function addPrvResultCard(result) {
   const chips = result.metadata || [];
   const followups = result.followups || [];
   let visibleCount = Math.min(8, rows.length);
+  const insights = window.CMChat.utils.buildPrintRunInsights(result.rawRows || []);
 
   const buildRowsHtml = (list) => list.map(r => `
     <tr class="prv-chat-tr">
@@ -706,6 +707,17 @@ function addPrvResultCard(result) {
     ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
     : "";
 
+const insightsHtml = insights.length
+  ? `
+    <div class="prv-chat-insights">
+      <div class="prv-chat-insights-title">What this means</div>
+      <ul class="prv-chat-insights-list">
+        ${insights.map(i => `<li>${escapeHtml(i)}</li>`).join("")}
+      </ul>
+    </div>
+  `
+  : "";
+  
   const followupsHtml = followups.length
     ? `
       <div class="answer-followups">
@@ -752,7 +764,7 @@ function addPrvResultCard(result) {
             </button>
           </div>
         ` : ""}
-
+${insightsHtml}
         <div class="prv-chat-note">
           If you’re looking for serial numbered data ask to see serial numbered for a given set.
         </div>
@@ -1657,9 +1669,10 @@ async function buildPrintRunResponse(query) {
   }
 
   return {
-    type: "prv",
-    product,
-    rows: buildPrvRows(rawRows),
+  type: "prv",
+  product,
+  rawRows: rawRows,
+  rows: buildPrvRows(rawRows),
     metadata: buildPrvMetadata(product, rawRows),
     followups: [
       `Show me the ${product.name} checklist`,

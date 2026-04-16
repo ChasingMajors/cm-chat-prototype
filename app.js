@@ -1,4 +1,5 @@
 console.log("CMChat at app start:", window.CMChat);
+
 const { config, utils, api, cache, store } = window.CMChat;
 
 const {

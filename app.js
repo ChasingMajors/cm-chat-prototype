@@ -2016,7 +2016,6 @@ if (document.readyState === "loading") {
   initChat();
 }
 
-
 if (sendBtn) {
   sendBtn.onclick = () => submitQuery();
 }

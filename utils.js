@@ -245,3 +245,13 @@ window.CMChat.utils.buildPrintRunInsights = function(rows) {
 
   return insights;
 };
+
+window.CMChat.utils.getRarityTag = function(printRun) {
+  const n = Number(printRun);
+  if (!n) return "";
+
+  if (n <= 100) return "Ultra Rare";
+  if (n <= 300) return "Rare";
+  if (n <= 1000) return "Mid Tier";
+  return "Common";
+};

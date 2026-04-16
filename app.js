@@ -1,5 +1,3 @@
-console.log("CMChat at app start:", window.CMChat);
-
 const { config, utils, api, cache, store } = window.CMChat;
 
 const {
@@ -816,43 +814,42 @@ function addChecklistResultCard(result) {
   const headers = result.columns || ["Subset", "Card No.", "Player", "Team", "Tag"];
   const headHtml = headers.map(h => `<th>${escapeHtml(h)}</th>`).join("");
 
-  const bodyHtml = rows.map(row => `
-    <tr class="prv-chat-tr">
-      ${(row.cells || []).map((cell, idx) => {
-        const isParallelSerialCell = result.sectionKey === "parallels" && idx === 2;
+const bodyHtml = rows.map(row => `
+  <tr class="prv-chat-tr">
+    ${(row.cells || []).map((cell, idx) => {
+      const isParallelSerialCell = result.sectionKey === "parallels" && idx === 2;
 
-        if (isParallelSerialCell) {
-          return `
-            <td class="prv-chat-td prv-chat-td-checklist-last prv-chat-td-parallel-stack">
-              <div class="prv-chat-cell-main">${escapeHtml(cell || "")}</div>
-              ${row.rarity ? `<div class="prv-rarity">${escapeHtml(row.rarity)}</div>` : ""}
-            </td>
-          `;
-        }
-
+      if (isParallelSerialCell) {
         return `
-          <td class="prv-chat-td ${idx === row.cells.length - 1 ? "prv-chat-td-checklist-last" : ""}">
+          <td class="prv-chat-td prv-chat-td-checklist-last">
             <div class="prv-chat-cell-main">${escapeHtml(cell || "")}</div>
+            ${row.rarity ? `<div class="prv-rarity">${escapeHtml(row.rarity)}</div>` : ""}
           </td>
         `;
-      }).join("")}
-    </tr>
-  `).join("");
+      }
+
+      return `
+        <td class="prv-chat-td ${idx === row.cells.length - 1 ? "prv-chat-td-checklist-last" : ""}">
+          <div class="prv-chat-cell-main">${escapeHtml(cell || "")}</div>
+        </td>
+      `;
+    }).join("")}
+  </tr>
+`).join("");
 
   const chipsHtml = chips.length
     ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
     : "";
-
   const insightsHtml = insights.length
-    ? `
-      <div class="prv-chat-insights">
-        <div class="prv-chat-insights-title">What this means</div>
-        <ul class="prv-chat-insights-list">
-          ${insights.map(i => `<li>${escapeHtml(i)}</li>`).join("")}
-        </ul>
-      </div>
-    `
-    : "";
+  ? `
+    <div class="prv-chat-insights">
+      <div class="prv-chat-insights-title">What this means</div>
+      <ul class="prv-chat-insights-list">
+        ${insights.map(i => `<li>${escapeHtml(i)}</li>`).join("")}
+      </ul>
+    </div>
+  `
+  : "";
 
   const sectionOptions = (result.sectionOptions || [])
     .map(opt => `<button class="followup-btn" data-followup="${escapeHtml(opt)}">${escapeHtml(opt)}</button>`)
@@ -882,9 +879,7 @@ function addChecklistResultCard(result) {
             </tbody>
           </table>
         </div>
-
-        ${insightsHtml}
-
+${insightsHtml}
         ${sectionOptions ? `
           <div class="answer-followups">
             <div class="followup-label">View another section</div>
@@ -1270,10 +1265,7 @@ function formatChecklistTable(sectionKey, data) {
         const serialNo = Array.isArray(r) ? (r[2] || "") : (r.serial_no || "");
         const tier = getParallelRarityTag(serialNo);
 
-        const cleanedSerial = String(serialNo || "")
-          .replace(/^\s*-\s*/, "")
-          .trim();
-
+        const cleanedSerial = String(serialNo || "").replace(/^\s*-\s*/, "").trim();
         const serialDisplay = cleanedSerial ? `SN: ${cleanedSerial}` : "Non-Serial";
 
         return {

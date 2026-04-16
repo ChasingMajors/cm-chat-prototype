@@ -2010,6 +2010,13 @@ function initChat() {
   if (chatInput) chatInput.focus();
 }
 
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initChat);
+} else {
+  initChat();
+}
+
+
 if (sendBtn) {
   sendBtn.onclick = () => submitQuery();
 }

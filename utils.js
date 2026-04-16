@@ -203,3 +203,45 @@ window.CMChat.utils = window.CMChat.utils || {};
   ns.parseDateSafe = parseDateSafe;
   ns.formatReleaseDate = formatReleaseDate;
 })(window.CMChat.utils, window.CMChat.config);
+
+
+window.CMChat = window.CMChat || {};
+window.CMChat.utils = window.CMChat.utils || {};
+
+// ------------------ PRINT RUN INSIGHTS ------------------
+
+window.CMChat.utils.buildPrintRunInsights = function(rows) {
+  if (!Array.isArray(rows) || !rows.length) return [];
+
+  const insights = [];
+
+  const parsed = rows.map(r => ({
+    label: r.setType || "" + " " + (r.setLine || ""),
+    printRun: Number(r.printRun) || null
+  })).filter(r => r.printRun);
+
+  if (!parsed.length) return [];
+
+  const ultraRare = parsed.filter(r => r.printRun <= 100);
+  const rare = parsed.filter(r => r.printRun > 100 && r.printRun <= 300);
+  const mid = parsed.filter(r => r.printRun > 300 && r.printRun <= 1000);
+  const common = parsed.filter(r => r.printRun > 1000);
+
+  if (ultraRare.length) {
+    insights.push("True scarcity begins at parallels under /100.");
+  }
+
+  if (rare.length) {
+    insights.push("Parallels in the /100–/300 range offer strong collector-level rarity.");
+  }
+
+  if (mid.length) {
+    insights.push("Mid-tier parallels (/300–/1000) are attainable but still carry scarcity.");
+  }
+
+  if (common.length) {
+    insights.push("Higher print run parallels above /1000 are generally considered more common.");
+  }
+
+  return insights;
+};

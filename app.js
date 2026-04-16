@@ -1,307 +1,105 @@
-const CHECKLIST_EXEC_URL = "https://script.google.com/macros/s/AKfycbxl2JnZGnEtmUes6UXjz6upyEd6tj20yMeX1X0bnseKo1ISaBHjWILVrp9ZyYqk-rpE_w/exec";
-const VAULT_EXEC_URL = "https://script.google.com/macros/s/AKfycbx_1rqxgSCu6aqDc7jEnETYC-KcNxHEf208GWXM23FR7hDT0ey8Y1SZ2i4U1VmXOZgpAg/exec";
-const LOG_EXEC_URL = "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0VmnUeJqP0OcFL5qCe-MUjN0JonJ8QTlfpMsf0XRKZzCwLdFdiF/exec";
-const RELEASE_SCHEDULE_EXEC_URL = "https://script.google.com/macros/s/AKfycbzWRkmn2xhvsaqvlMxx4AJmqvpyDTR6wKmd9rvpr4ttzXOkH9vH4qPxk59YlEHVMInlHw/exec";
+const { config, utils, api, cache, store } = window.CMChat;
 
-const PLAYER_META_URL = `${CHECKLIST_EXEC_URL}?action=playerMetaIndex`;
-const PLAYER_STATS_JSON_URL = "https://cdn.jsdelivr.net/gh/ChasingMajors/cm-mlb-stats@main/data/public/player_summaries.json";
+const {
+  SEARCH_HELP_EXAMPLES,
+  EXAMPLES,
+  SPORT_WORDS,
+  INTENT_PRINT_RUN_WORDS,
+  INTENT_CHECKLIST_WORDS,
+  INTENT_TRENDING_WORDS,
+  NON_TOPPS_PRINTRUN_BRANDS,
+  CHECKLIST_SECTION_LABELS,
+  PLAYER_SEARCH_NON_NAME_WORDS,
+  PLAYER_SEARCH_FILLER_WORDS
+} = config;
 
-const CHECKLIST_BASE_URL = "/checklists/";
-const VAULT_BASE_URL = "/vault/";
+const {
+  normalize,
+  escapeHtml,
+  titleCase,
+  uniq,
+  tokenize,
+  meaningfulTokens,
+  extractYear,
+  extractSelectedYear,
+  extractSport,
+  stripIntentWords,
+  includesAny,
+  formatNumber,
+  isOnlySportReply,
+  isOnlyPrintRunReply,
+  isOnlyChecklistReply,
+  isChecklistSectionReply,
+  resolveChecklistSection,
+  detectChecklistSectionIntent,
+  isOnlyPlayerStatsReply,
+  isOnlyPlayerChecklistReply,
+  isLikelyPlayerNameToken,
+  parseDateSafe,
+  formatReleaseDate
+} = utils;
 
-const CL_INDEX_KEY = "cm_chat_cl_index_v19";
-const PRV_INDEX_KEY = "cm_chat_prv_index_v9";
-const CL_INDEX_TS_KEY = "cm_chat_cl_index_ts_v19";
-const PRV_INDEX_TS_KEY = "cm_chat_prv_index_ts_v9";
-const INDEX_TTL_MS = 1000 * 60 * 30;
+const {
+  logEvent,
+  getPrintRunData,
+  getHomeFeed,
+  getChecklistSummary,
+  getChecklistSection,
+  getChecklistParallels,
+  getPlayerCards,
+  getPlayerYears
+} = api;
 
-const PLAYER_META_KEY = "cm_chat_player_meta_v1";
-const PLAYER_STATS_KEY = "cm_chat_player_stats_v1";
-const PLAYER_META_TS_KEY = "cm_chat_player_meta_ts_v1";
-const PLAYER_STATS_TS_KEY = "cm_chat_player_stats_ts_v1";
-const PLAYER_DATA_TTL_MS = 1000 * 60 * 60 * 6;
+const {
+  memCache
+} = cache;
 
-const RELEASE_SCHEDULE_KEY = "cm_chat_release_schedule_v1";
-const RELEASE_SCHEDULE_TS_KEY = "cm_chat_release_schedule_ts_v1";
-const RELEASE_SCHEDULE_TTL_MS = 1000 * 60 * 15;
-
-const EXAMPLES = [];
-
-const SEARCH_HELP_EXAMPLES = [
-  "2026 Topps Series 1 Baseball",
-  "2026 Topps Series 1 Baseball Checklist",
-  "2026 Topps Series 1 Baseball Print Run",
-  "2026 Topps Series 1 Baseball Parallels",
-  "2026 Topps Chrome Black Baseball Checklist",
-  "2025 Topps Heritage Baseball",
-  "Aaron Judge",
-  "2026 Aaron Judge",
-  "Aaron Judge 2026 Topps Series 1",
-  "Shohei Ohtani 2025",
-  "Roman Anthony 2026 Heritage",
-  "What 2018 baseball products do you have?",
-  "Show the release schedule",
-  "Show upcoming baseball releases",
-  "What products are coming out soon?",
-  "Upcoming football releases"
-];
-
-const STOP_WORDS = new Set([
-  "show","me","find","give","need","want","pull","get","for","the","a","an","of","to",
-  "please","can","you","i","looking","look","up","tell","about","what","whats","what's",
-  "is","are","my","some","data","info","information","on","do","have","in","your","database",
-  "how","about","see","products","product","sets","set"
-]);
-
-const INTENT_PRINT_RUN_WORDS = [
-  "print run","print-run","copies","production","produced","how many copies","run size","estimated print run"
-];
-
-const INTENT_CHECKLIST_WORDS = [
-  "checklist","check list","cards in set","full set","entire checklist","base checklist","insert checklist","autograph checklist","auto checklist","relic checklist","variation checklist","parallel checklist","parallels"
-];
-
-const INTENT_TRENDING_WORDS = [
-  "trending","popular","hot","top searched","most searched"
-];
-
-const SPORT_WORDS = ["baseball","basketball","football","soccer","hockey"];
-
-const NON_TOPPS_PRINTRUN_BRANDS = [
-  "panini","donruss","score","leaf","wild card","wildcard","upper deck","fleer"
-];
-
-const CHECKLIST_SECTION_LABELS = {
-  all: "Entire Checklist",
-  base: "Base",
-  inserts: "Inserts",
-  autographs: "Autographs",
-  relics: "Relics",
-  variations: "Variations",
-  parallels: "Parallels"
-};
-
-const PLAYER_SEARCH_MANUFACTURER_WORDS = [
-  "topps","bowman","panini","donruss","upper","deck","leaf","fleer","score"
-];
-
-const PLAYER_SEARCH_NON_NAME_WORDS = new Set([
-  ...SPORT_WORDS,
-  ...PLAYER_SEARCH_MANUFACTURER_WORDS,
-  "series","update","chrome","heritage","finest","sapphire","black","cosmic",
-  "stadium","club","pristine","archives","tribute","sterling","museum","inception",
-  "dynasty","flagship","celebration","draft","best","platinum","anniversary",
-  "checklist","print","run","parallels","parallel","autographs","autograph","autos",
-  "auto","relics","relic","variations","variation","inserts","insert","base",
-  "number","high","mega","box","jumbo","blaster","hanger","choice","mini"
-]);
-
-const PLAYER_SEARCH_FILLER_WORDS = new Set([
-  "show","me","find","give","pull","get","tell","about","looking","look","up",
-  "is","are","was","were","does","do","did","in","from","for","all",
-  "card","cards","rookie","rookies","have","has"
-]);
+const {
+  preloadPlayerDataInBackground,
+  preloadReleaseScheduleInBackground,
+  prefetchPlayerData,
+  prefetchChecklistData,
+  prefetchPrintRunData,
+  getPlayerMetaEntry,
+  getPlayerStatsEntry,
+  bootstrapData,
+  ensurePlayerDataLoaded,
+  ensureReleaseScheduleLoaded,
+  loadPlayerMeta,
+  loadPlayerStats
+} = store;
 
 const chatMessages = document.getElementById("chatMessages");
 const chatInput = document.getElementById("chatInput");
 const sendBtn = document.getElementById("sendBtn");
 const examplePills = document.getElementById("examplePills");
 
-let checklistIndex = [];
-let printRunIndex = [];
-let playerMetaIndex = [];
-let playerStatsData = null;
-let playerMetaByName = {};
-let playerStatsByName = {};
-let releaseScheduleData = [];
-
-let bootPromise = null;
-let checklistIndexPromise = null;
-let printRunIndexPromise = null;
-let playerMetaPromise = null;
-let playerStatsPromise = null;
-let releaseSchedulePromise = null;
-
 let awaitingCatalogSport = false;
 let pendingProductChoice = null;
 let pendingChecklistChoice = null;
 let pendingPlayerChoice = null;
 
-/* ------------------ FAST MEMORY CACHES ------------------ */
-
-const memCache = {
-  checklistSummary: new Map(),
-  checklistSection: new Map(),
-  checklistParallels: new Map(),
-  playerCards: new Map(),
-  playerYears: new Map(),
-  printRunRows: new Map(),
-  homeFeed: null,
-  releaseSchedule: null
-};
-
-function makeKey(...parts) {
-  return parts.map(v => String(v || "").trim()).join("::");
+function getChecklistIndex() {
+  return store.checklistIndex || [];
 }
 
-/* ------------------ UTIL ------------------ */
-
-function normalize(text) {
-  return String(text || "")
-    .toLowerCase()
-    .replace(/&/g, " and ")
-    .replace(/[^\w\s'-]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+function getPrintRunIndex() {
+  return store.printRunIndex || [];
 }
 
-function escapeHtml(str) {
-  return String(str || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+function getPlayerMetaIndex() {
+  return store.playerMetaIndex || [];
 }
 
-function titleCase(str) {
-  return String(str || "").replace(/\b\w/g, c => c.toUpperCase());
+function getPlayerStatsData() {
+  return store.playerStatsData || null;
 }
 
-function uniq(arr) {
-  return [...new Set((arr || []).filter(Boolean))];
+function getReleaseScheduleData() {
+  return store.releaseScheduleData || [];
 }
 
-function tokenize(text) {
-  return normalize(text)
-    .split(" ")
-    .map(t => t.trim())
-    .filter(Boolean);
-}
-
-function meaningfulTokens(text) {
-  return tokenize(text).filter(t => !STOP_WORDS.has(t) && t.length > 1);
-}
-
-function extractYear(text) {
-  const m = String(text || "").match(/\b(19|20)\d{2}(?:-\d{2})?\b/);
-  return m ? m[0] : "";
-}
-
-function extractSelectedYear(text) {
-  const m = String(text || "").match(/\b(19|20)\d{2}\b/);
-  return m ? m[0] : "";
-}
-
-function extractSport(text) {
-  const n = normalize(text);
-  return SPORT_WORDS.find(s => n.includes(s)) || "";
-}
-
-function stripIntentWords(text) {
-  let out = normalize(text);
-
-  [
-    "show me",
-    "find me",
-    "give me",
-    "tell me",
-    "i want",
-    "i need",
-    "can you",
-    "please",
-    "print run",
-    "print-run",
-    "checklist",
-    "check list",
-    "what baseball sets are trending",
-    "what sets are trending",
-    "trending",
-    "how about",
-    "entire checklist",
-    "what products do you have",
-    "what sets do you have",
-    "what do you have",
-    "products do you have",
-    "sets do you have"
-  ].forEach(p => {
-    out = out.replace(new RegExp(`\\b${p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
-  });
-
-  return out.replace(/\s+/g, " ").trim();
-}
-
-function includesAny(haystack, needles) {
-  const h = normalize(haystack);
-  return needles.some(n => h.includes(normalize(n)));
-}
-
-function formatNumber(val) {
-  if (val === null || val === undefined || val === "") return "";
-  const n = Number(String(val).replace(/,/g, ""));
-  if (Number.isFinite(n)) return n.toLocaleString("en-US");
-  return String(val);
-}
-
-function isOnlySportReply(text) {
-  return SPORT_WORDS.includes(normalize(text));
-}
-
-function isOnlyPrintRunReply(text) {
-  const n = normalize(text);
-  return n === "print run" || n === "printrun" || n === "print-run";
-}
-
-function isOnlyChecklistReply(text) {
-  const n = normalize(text);
-  return n === "checklist" || n === "check list";
-}
-
-function isChecklistSectionReply(text) {
-  const n = normalize(text);
-  return Object.keys(CHECKLIST_SECTION_LABELS).includes(n) ||
-    Object.values(CHECKLIST_SECTION_LABELS).map(normalize).includes(n);
-}
-
-function resolveChecklistSection(text) {
-  const n = normalize(text);
-  if (Object.keys(CHECKLIST_SECTION_LABELS).includes(n)) return n;
-  for (const [key, label] of Object.entries(CHECKLIST_SECTION_LABELS)) {
-    if (normalize(label) === n) return key;
-  }
-  return null;
-}
-
-function detectChecklistSectionIntent(query) {
-  const n = normalize(query);
-
-  if (/\bparallels?\b/.test(n)) return "parallels";
-  if (/\bautographs?\b/.test(n) || /\bautos?\b/.test(n) || /\bauto\b/.test(n)) return "autographs";
-  if (/\brelics?\b/.test(n)) return "relics";
-  if (/\bvariations?\b/.test(n)) return "variations";
-  if (/\binserts?\b/.test(n)) return "inserts";
-  if (/\bbase\b/.test(n)) return "base";
-  if (/\bentire checklist\b/.test(n) || /\bfull checklist\b/.test(n)) return "all";
-
-  return null;
-}
-
-function isOnlyPlayerStatsReply(text) {
-  const n = normalize(text);
-  return n === "stats" || n === "stat" || n === "statistics";
-}
-
-function isOnlyPlayerChecklistReply(text) {
-  const n = normalize(text);
-  return n === "checklist info" || n === "checklist" || n === "all cards";
-}
-
-function isLikelyPlayerNameToken(token) {
-  const n = normalize(token);
-  if (!n) return false;
-  if (/^(19|20)\d{2}(?:-\d{2})?$/.test(n)) return false;
-  if (SPORT_WORDS.includes(n)) return false;
-  if (PLAYER_SEARCH_NON_NAME_WORDS.has(n)) return false;
-  return true;
-}
+/* ------------------ SEARCH / QUERY HELPERS ------------------ */
 
 function splitPlayerSearchQuery(query) {
   const year = extractYear(query);
@@ -375,7 +173,7 @@ function findBestProductFromRemainder(remainder) {
   const cleaned = stripIntentWords(remainder || "");
   if (!cleaned) return null;
 
-  const candidate = findBestProduct(checklistIndex, cleaned, "checklist");
+  const candidate = findBestProduct(getChecklistIndex(), cleaned, "checklist");
   if (!candidate) return null;
 
   const score = candidate.score || 0;
@@ -550,21 +348,6 @@ function isReleaseScheduleQuestion(query) {
   );
 }
 
-function parseDateSafe(val) {
-  const d = new Date(val);
-  return Number.isNaN(d.getTime()) ? null : d;
-}
-
-function formatReleaseDate(val) {
-  const d = parseDateSafe(val);
-  if (!d) return String(val || "");
-  return d.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric"
-  });
-}
-
 function normalizeReleaseRow(row) {
   return {
     releaseDate: row.releaseDate || "",
@@ -620,12 +403,12 @@ function getAllProductsForSport(sport) {
   const s = normalize(sport);
   const items = [];
 
-  checklistIndex.forEach(item => {
+  getChecklistIndex().forEach(item => {
     const p = mapProduct(item);
     if (normalize(p.sport) === s) items.push(p);
   });
 
-  printRunIndex.forEach(item => {
+  getPrintRunIndex().forEach(item => {
     const p = mapProduct(item);
     if (normalize(p.sport) === s) items.push(p);
   });
@@ -656,7 +439,7 @@ function getSampleCurrentSetsForSport(sport, limit = 8) {
   const seen = new Set();
   const results = [];
 
-  [...checklistIndex, ...printRunIndex].forEach(item => {
+  [...getChecklistIndex(), ...getPrintRunIndex()].forEach(item => {
     const p = mapProduct(item);
     if (normalize(p.sport) !== s) return;
     if (latestYear && String(p.year) !== latestYear) return;
@@ -676,7 +459,7 @@ function getProductsForSportYear(sport, year) {
   const seen = new Set();
   const results = [];
 
-  [...checklistIndex, ...printRunIndex].forEach(item => {
+  [...getChecklistIndex(), ...getPrintRunIndex()].forEach(item => {
     const p = mapProduct(item);
     if (normalize(p.sport) !== s) return;
     if (String(p.year) !== y) return;
@@ -1168,370 +951,6 @@ function bindFollowups() {
   });
 }
 
-/* ------------------ CACHE ------------------ */
-
-function getCachedWithTtl(key, tsKey, ttlMs) {
-  try {
-    const raw = localStorage.getItem(key);
-    const ts = +localStorage.getItem(tsKey);
-    if (!raw || !ts || Date.now() - ts > ttlMs) return null;
-    return JSON.parse(raw);
-  } catch {
-    return null;
-  }
-}
-
-function setCachedWithTtl(key, tsKey, val) {
-  try {
-    localStorage.setItem(key, JSON.stringify(val));
-    localStorage.setItem(tsKey, String(Date.now()));
-  } catch (err) {
-    console.warn("Cache write failed", err);
-  }
-}
-
-function getCached(key, tsKey) {
-  return getCachedWithTtl(key, tsKey, INDEX_TTL_MS);
-}
-
-function setCached(key, tsKey, val) {
-  setCachedWithTtl(key, tsKey, val);
-}
-
-/* ------------------ API ------------------ */
-
-async function postJson(url, body) {
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
-    cache: "no-store",
-    body: JSON.stringify(body || {})
-  });
-
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
-}
-
-async function logEvent(payload) {
-  try {
-    await postJson(LOG_EXEC_URL, {
-      action: "logEvent",
-      payload: payload || {}
-    });
-  } catch (err) {
-    console.warn("Log failed", err);
-  }
-}
-
-async function getPrintRunData(code, sport) {
-  const key = makeKey(code, sport);
-  if (memCache.printRunRows.has(key)) return memCache.printRunRows.get(key);
-
-  try {
-    const data = await postJson(VAULT_EXEC_URL, {
-      action: "getRowsByCode",
-      payload: { code, sport }
-    });
-    const rows = Array.isArray(data?.rows) ? data.rows : [];
-    memCache.printRunRows.set(key, rows);
-    return rows;
-  } catch (err) {
-    console.warn("getPrintRunData failed", err);
-    return [];
-  }
-}
-
-async function getHomeFeed() {
-  if (Array.isArray(memCache.homeFeed)) return memCache.homeFeed;
-
-  try {
-    const res = await fetch(`${LOG_EXEC_URL}?action=getHomeFeed`, { cache: "no-store" });
-    const data = await res.json();
-    const rows = Array.isArray(data?.rows) ? data.rows : [];
-    memCache.homeFeed = rows;
-    return rows;
-  } catch (err) {
-    console.warn("getHomeFeed failed", err);
-    return [];
-  }
-}
-
-async function getChecklistSummary(code) {
-  if (memCache.checklistSummary.has(code)) return memCache.checklistSummary.get(code);
-  const data = await postJson(CHECKLIST_EXEC_URL, { action: "checklist_summary", code });
-  const out = data || {};
-  memCache.checklistSummary.set(code, out);
-  return out;
-}
-
-async function getChecklistSection(code, section) {
-  const key = makeKey(code, section);
-  if (memCache.checklistSection.has(key)) return memCache.checklistSection.get(key);
-  const data = await postJson(CHECKLIST_EXEC_URL, { action: "checklist_section", code, section });
-  const out = data || {};
-  memCache.checklistSection.set(key, out);
-  return out;
-}
-
-async function getChecklistParallels(code) {
-  if (memCache.checklistParallels.has(code)) return memCache.checklistParallels.get(code);
-  const data = await postJson(CHECKLIST_EXEC_URL, { action: "parallels", code });
-  const out = data || {};
-  memCache.checklistParallels.set(code, out);
-  return out;
-}
-
-async function getPlayerCards(playerQuery, sport, year = "", code = "") {
-  const key = makeKey(normalize(playerQuery), sport || "baseball", year, code);
-  if (memCache.playerCards.has(key)) return memCache.playerCards.get(key);
-
-  const data = await postJson(CHECKLIST_EXEC_URL, {
-    action: "player_cards",
-    player_query: playerQuery,
-    sport: sport || "baseball",
-    year: year || "",
-    code: code || ""
-  });
-
-  const out = data || {};
-  memCache.playerCards.set(key, out);
-  return out;
-}
-
-async function getPlayerYears(playerQuery, sport = "baseball") {
-  const key = makeKey(normalize(playerQuery), sport);
-  if (memCache.playerYears.has(key)) return memCache.playerYears.get(key);
-
-  const data = await postJson(CHECKLIST_EXEC_URL, {
-    action: "player_years",
-    player_query: playerQuery,
-    sport
-  });
-
-  const years = Array.isArray(data?.years) ? data.years : [];
-  memCache.playerYears.set(key, years);
-  return years;
-}
-
-async function getReleaseSchedule() {
-  if (Array.isArray(memCache.releaseSchedule)) return memCache.releaseSchedule;
-
-  try {
-    const res = await fetch(`${RELEASE_SCHEDULE_EXEC_URL}?action=release_schedule`, { cache: "no-store" });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    const rows = Array.isArray(data?.rows) ? data.rows : [];
-    memCache.releaseSchedule = rows;
-    return rows;
-  } catch (err) {
-    console.warn("getReleaseSchedule failed", err);
-    return [];
-  }
-}
-
-/* ------------------ INDEX LOAD ------------------ */
-
-async function loadChecklistIndex() {
-  if (checklistIndex.length) return checklistIndex;
-  if (checklistIndexPromise) return checklistIndexPromise;
-
-  checklistIndexPromise = (async () => {
-    const cached = getCached(CL_INDEX_KEY, CL_INDEX_TS_KEY);
-    if (cached) {
-      checklistIndex = cached;
-      return checklistIndex;
-    }
-
-    const data = await postJson(CHECKLIST_EXEC_URL, { action: "index" });
-    checklistIndex = Array.isArray(data?.index) ? data.index : [];
-    setCached(CL_INDEX_KEY, CL_INDEX_TS_KEY, checklistIndex);
-    return checklistIndex;
-  })();
-
-  return checklistIndexPromise;
-}
-
-async function loadPrintRunIndex() {
-  if (printRunIndex.length) return printRunIndex;
-  if (printRunIndexPromise) return printRunIndexPromise;
-
-  printRunIndexPromise = (async () => {
-    const cached = getCached(PRV_INDEX_KEY, PRV_INDEX_TS_KEY);
-    if (cached) {
-      printRunIndex = cached;
-      return printRunIndex;
-    }
-
-    const data = await postJson(VAULT_EXEC_URL, { action: "index" });
-    printRunIndex = Array.isArray(data?.index) ? data.index : (Array.isArray(data?.products) ? data.products : []);
-    setCached(PRV_INDEX_KEY, PRV_INDEX_TS_KEY, printRunIndex);
-    return printRunIndex;
-  })();
-
-  return printRunIndexPromise;
-}
-
-async function loadPlayerMeta() {
-  if (playerMetaIndex.length) return playerMetaIndex;
-  if (playerMetaPromise) return playerMetaPromise;
-
-  playerMetaPromise = (async () => {
-    const cached = getCachedWithTtl(PLAYER_META_KEY, PLAYER_META_TS_KEY, PLAYER_DATA_TTL_MS);
-    if (cached) {
-      playerMetaIndex = Array.isArray(cached?.players) ? cached.players : (Array.isArray(cached) ? cached : []);
-      playerMetaByName = {};
-      playerMetaIndex.forEach(p => {
-        const key = normalize(p.player_name || "");
-        if (key) playerMetaByName[key] = p;
-      });
-      return playerMetaIndex;
-    }
-
-    const res = await fetch(PLAYER_META_URL, { cache: "no-store" });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-    const data = await res.json();
-    playerMetaIndex = Array.isArray(data?.players) ? data.players : [];
-    playerMetaByName = {};
-    playerMetaIndex.forEach(p => {
-      const key = normalize(p.player_name || "");
-      if (key) playerMetaByName[key] = p;
-    });
-
-    setCachedWithTtl(PLAYER_META_KEY, PLAYER_META_TS_KEY, { players: playerMetaIndex });
-    return playerMetaIndex;
-  })();
-
-  return playerMetaPromise;
-}
-
-async function loadPlayerStats() {
-  if (playerStatsData?.players?.length) return playerStatsData;
-  if (playerStatsPromise) return playerStatsPromise;
-
-  playerStatsPromise = (async () => {
-    const cached = getCachedWithTtl(PLAYER_STATS_KEY, PLAYER_STATS_TS_KEY, PLAYER_DATA_TTL_MS);
-    if (cached) {
-      playerStatsData = cached;
-      playerStatsByName = {};
-      (cached?.players || []).forEach(p => {
-        const key = normalize(p.player_name || "");
-        if (key) playerStatsByName[key] = p;
-      });
-      return playerStatsData;
-    }
-
-    const res = await fetch(PLAYER_STATS_JSON_URL, { cache: "no-store" });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-    const data = await res.json();
-    playerStatsData = data || { players: [] };
-    playerStatsByName = {};
-    (playerStatsData.players || []).forEach(p => {
-      const key = normalize(p.player_name || "");
-      if (key) playerStatsByName[key] = p;
-    });
-
-    setCachedWithTtl(PLAYER_STATS_KEY, PLAYER_STATS_TS_KEY, playerStatsData);
-    return playerStatsData;
-  })();
-
-  return playerStatsPromise;
-}
-
-async function loadReleaseScheduleData() {
-  if (releaseScheduleData.length) return releaseScheduleData;
-  if (releaseSchedulePromise) return releaseSchedulePromise;
-
-  releaseSchedulePromise = (async () => {
-    const cached = getCachedWithTtl(
-      RELEASE_SCHEDULE_KEY,
-      RELEASE_SCHEDULE_TS_KEY,
-      RELEASE_SCHEDULE_TTL_MS
-    );
-
-    if (cached) {
-      releaseScheduleData = Array.isArray(cached) ? cached : [];
-      return releaseScheduleData;
-    }
-
-    const rows = await getReleaseSchedule();
-    releaseScheduleData = Array.isArray(rows) ? rows : [];
-    setCachedWithTtl(
-      RELEASE_SCHEDULE_KEY,
-      RELEASE_SCHEDULE_TS_KEY,
-      releaseScheduleData
-    );
-    return releaseScheduleData;
-  })();
-
-  return releaseSchedulePromise;
-}
-
-async function bootstrapData() {
-  if (!bootPromise) {
-    bootPromise = Promise.all([
-      loadChecklistIndex(),
-      loadPrintRunIndex()
-    ]).then(async (res) => {
-      loadPlayerMeta().catch(() => {});
-      loadPlayerStats().catch(() => {});
-      loadReleaseScheduleData().catch(() => {});
-      return res;
-    });
-  }
-  return bootPromise;
-}
-
-async function ensurePlayerDataLoaded() {
-  await Promise.all([
-    loadPlayerMeta(),
-    loadPlayerStats()
-  ]);
-}
-
-async function ensureReleaseScheduleLoaded() {
-  await loadReleaseScheduleData();
-}
-
-/* ------------------ PRELOAD / PREFETCH ------------------ */
-
-function preloadPlayerDataInBackground() {
-  loadPlayerMeta().catch(err => console.warn("Background player meta preload failed", err));
-  loadPlayerStats().catch(err => console.warn("Background player stats preload failed", err));
-}
-
-function preloadReleaseScheduleInBackground() {
-  loadReleaseScheduleData().catch(err => console.warn("Background release schedule preload failed", err));
-}
-
-function prefetchPlayerData(playerReq) {
-  if (!playerReq?.playerName) return;
-
-  loadPlayerMeta().catch(() => {});
-  loadPlayerStats().catch(() => {});
-  getPlayerYears(playerReq.playerName, playerReq.sport || "baseball").catch(() => {});
-
-  if (playerReq.year || playerReq.code) {
-    getPlayerCards(
-      playerReq.playerName,
-      playerReq.sport || "baseball",
-      playerReq.year || "",
-      playerReq.code || ""
-    ).catch(() => {});
-  }
-}
-
-function prefetchChecklistData(product) {
-  if (!product?.code) return;
-  getChecklistSummary(product.code).catch(() => {});
-}
-
-function prefetchPrintRunData(product) {
-  if (!product?.code) return;
-  getPrintRunData(product.code, product.sport || "").catch(() => {});
-}
-
 /* ------------------ INDEX HELPERS ------------------ */
 
 function mapProduct(item) {
@@ -1621,8 +1040,8 @@ function findBestProduct(list, query, targetIntent) {
 }
 
 function getCombinedBestMatches(query) {
-  const cl = findBestProduct(checklistIndex, query, "checklist");
-  const prv = findBestProduct(printRunIndex, query, "print_run");
+  const cl = findBestProduct(getChecklistIndex(), query, "checklist");
+  const prv = findBestProduct(getPrintRunIndex(), query, "print_run");
   const options = [cl, prv].filter(Boolean).sort((a, b) => (b.score || 0) - (a.score || 0));
 
   return {
@@ -1630,14 +1049,6 @@ function getCombinedBestMatches(query) {
     printRun: prv,
     winner: options[0] || null
   };
-}
-
-function getPlayerMetaEntry(playerName) {
-  return playerMetaByName[normalize(playerName || "")] || null;
-}
-
-function getPlayerStatsEntry(playerName) {
-  return playerStatsByName[normalize(playerName || "")] || null;
 }
 
 function cleanStatValue(val) {
@@ -1840,7 +1251,7 @@ function buildReleaseScheduleMetadata(rows) {
 async function buildReleaseScheduleResponse(query) {
   await ensureReleaseScheduleLoaded();
 
-  const rows = filterReleaseScheduleRows(releaseScheduleData, query).slice(0, 12);
+  const rows = filterReleaseScheduleRows(getReleaseScheduleData(), query).slice(0, 12);
 
   pendingProductChoice = null;
   pendingChecklistChoice = null;
@@ -2214,8 +1625,8 @@ async function buildPrintRunResponse(query) {
   }
 
   const product =
-    findBestProduct(printRunIndex, query, "print_run") ||
-    findBestProduct(printRunIndex, stripIntentWords(query), "print_run");
+    findBestProduct(getPrintRunIndex(), query, "print_run") ||
+    findBestProduct(getPrintRunIndex(), stripIntentWords(query), "print_run");
 
   pendingProductChoice = null;
   pendingChecklistChoice = null;
@@ -2259,8 +1670,8 @@ async function buildPrintRunResponse(query) {
 
 async function buildChecklistSummaryResponse(query) {
   const product =
-    findBestProduct(checklistIndex, query, "checklist") ||
-    findBestProduct(checklistIndex, stripIntentWords(query), "checklist");
+    findBestProduct(getChecklistIndex(), query, "checklist") ||
+    findBestProduct(getChecklistIndex(), stripIntentWords(query), "checklist");
 
   pendingProductChoice = null;
   pendingPlayerChoice = null;

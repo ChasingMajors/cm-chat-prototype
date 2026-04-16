@@ -36,7 +36,9 @@ const {
   isOnlyPlayerChecklistReply,
   isLikelyPlayerNameToken,
   parseDateSafe,
-  formatReleaseDate
+  formatReleaseDate,
+  parseSerialNumber,
+  getParallelRarityTag
 } = utils;
 
 const {
@@ -807,6 +809,7 @@ function addChecklistResultCard(result) {
   const chips = result.metadata || [];
   const followups = result.followups || [];
   const sectionLabel = result.sectionLabel || "Checklist";
+  const insights = result.insights || [];
 
   const headers = result.columns || ["Subset", "Card No.", "Player", "Team", "Tag"];
   const headHtml = headers.map(h => `<th>${escapeHtml(h)}</th>`).join("");
@@ -824,6 +827,16 @@ function addChecklistResultCard(result) {
   const chipsHtml = chips.length
     ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
     : "";
+  const insightsHtml = insights.length
+  ? `
+    <div class="prv-chat-insights">
+      <div class="prv-chat-insights-title">What this means</div>
+      <ul class="prv-chat-insights-list">
+        ${insights.map(i => `<li>${escapeHtml(i)}</li>`).join("")}
+      </ul>
+    </div>
+  `
+  : "";
 
   const sectionOptions = (result.sectionOptions || [])
     .map(opt => `<button class="followup-btn" data-followup="${escapeHtml(opt)}">${escapeHtml(opt)}</button>`)
@@ -853,7 +866,7 @@ function addChecklistResultCard(result) {
             </tbody>
           </table>
         </div>
-
+${insightsHtml}
         ${sectionOptions ? `
           <div class="answer-followups">
             <div class="followup-label">View another section</div>
@@ -1231,15 +1244,20 @@ function formatChecklistTable(sectionKey, data) {
   const section = normalize(sectionKey);
 
   if (section === "parallels") {
-    return {
-      columns: data.columns || ["Applies To", "Parallel", "Serial No."],
-      rows: (data.rows || []).map(r => ({
-        cells: Array.isArray(r)
-          ? r
-          : [r.applies_to || "", r.parallel_name || "", r.serial_no || ""]
-      }))
-    };
-  }
+  return {
+    columns: data.columns || ["Applies To", "Parallel", "Serial No.", "Tier"],
+    rows: (data.rows || []).map(r => {
+      const appliesTo = Array.isArray(r) ? (r[0] || "") : (r.applies_to || "");
+      const parallelName = Array.isArray(r) ? (r[1] || "") : (r.parallel_name || "");
+      const serialNo = Array.isArray(r) ? (r[2] || "") : (r.serial_no || "");
+      const tier = getParallelRarityTag(serialNo);
+
+      return {
+        cells: [appliesTo, parallelName, serialNo, tier]
+      };
+    })
+  };
+}
 
   return {
     columns: data.columns || ["Subset", "Card No.", "Player", "Team", "Tag"],
@@ -1753,22 +1771,23 @@ async function buildChecklistSectionResponse(sectionKey) {
   const formatted = formatChecklistTable(section, data);
 
   return {
-    type: "checklist_table",
-    product,
-    sectionKey: section,
-    sectionLabel: CHECKLIST_SECTION_LABELS[section] || "Checklist",
-    rows: formatted.rows,
-    columns: formatted.columns,
-    metadata: uniq([
-      Array.isArray(data?.rows) ? `Rows: ${formatNumber(data.rows.length)}` : "",
-      product.year ? `Year: ${product.year}` : "",
-      product.sport ? `Sport: ${titleCase(product.sport)}` : ""
-    ]),
-    sectionOptions: checklistSectionOptionsFromSummary(pendingChecklistChoice.summary),
-    followups: [
-      `Show me ${product.name} print run`
-    ]
-  };
+  type: "checklist_table",
+  product,
+  sectionKey: section,
+  sectionLabel: CHECKLIST_SECTION_LABELS[section] || "Checklist",
+  rows: formatted.rows,
+  columns: formatted.columns,
+  metadata: uniq([
+    Array.isArray(data?.rows) ? `Rows: ${formatNumber(data.rows.length)}` : "",
+    product.year ? `Year: ${product.year}` : "",
+    product.sport ? `Sport: ${titleCase(product.sport)}` : ""
+  ]),
+  insights: section === "parallels" ? utils.buildParallelInsights(data?.rows || []) : [],
+  sectionOptions: checklistSectionOptionsFromSummary(pendingChecklistChoice.summary),
+  followups: [
+    `Show me ${product.name} print run`
+  ]
+};
 }
 
 async function buildSearchResponse(query) {

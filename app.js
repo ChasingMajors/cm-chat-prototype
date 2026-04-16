@@ -1995,8 +1995,9 @@ async function submitQuery(text) {
 
 function initChat() {
   renderExamples();
-requestAnimationFrame(() => window.CMChat.ui.addWelcomeMessage(true));
-  
+  window.CMChat.ui.setSubmitHandler(submitQuery);
+  requestAnimationFrame(() => window.CMChat.ui.addWelcomeMessage(true));
+
   bootstrapData().catch(err => console.warn("Bootstrap failed", err));
 
   setTimeout(() => {

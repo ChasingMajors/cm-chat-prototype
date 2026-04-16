@@ -29,25 +29,29 @@
       <div class="chat-suggestions" id="examplePills"></div>
 
       <div class="chat-input-shell">
-        <input
-          id="chatInput"
-          class="chat-input"
-          type="text"
-          placeholder="Ask about a set, player, print run, checklist, trending, or releases..."
-          autocomplete="off"
-          enterkeyhint="send"
-        />
-        <button id="sendBtn" class="send-btn" type="button">Send</button>
+        <div class="chat-composer">
+          <input
+            id="chatInput"
+            class="chat-input"
+            type="text"
+            placeholder="Ask about a set, player, print run, checklist, trending, or releases..."
+            autocomplete="off"
+            enterkeyhint="send"
+          />
+          <button id="sendBtn" class="send-btn" type="button" aria-label="Send">
+            <span class="send-btn-text">Send</span>
+          </button>
+        </div>
       </div>
     </main>
   </div>
 
-<script defer src="./config.js"></script>
-<script defer src="./utils.js"></script>
-<script defer src="./cache.js"></script>
-<script defer src="./api.js"></script>
-<script defer src="./data-store.js"></script>
-<script defer src="./ui.js"></script>
-<script defer src="./app.js"></script>
+  <script defer src="./config.js"></script>
+  <script defer src="./utils.js"></script>
+  <script defer src="./cache.js"></script>
+  <script defer src="./api.js"></script>
+  <script defer src="./data-store.js"></script>
+  <script defer src="./ui.js"></script>
+  <script defer src="./app.js"></script>
 </body>
 </html>

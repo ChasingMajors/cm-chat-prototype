@@ -216,7 +216,7 @@ window.CMChat.utils.buildPrintRunInsights = function(rows) {
   const insights = [];
 
   const parsed = rows.map(r => ({
-    label: r.setType || "" + " " + (r.setLine || ""),
+    label: r.setType || "" + " " + (label: `${r.setType || ""} ${r.setLine || ""}`.trim() || ""),
     printRun: Number(r.printRun) || null
   })).filter(r => r.printRun);
 

@@ -139,7 +139,7 @@ window.CMChat.ui = window.CMChat.ui || {};
       behavior: "smooth"
     });
 
-    setTimeout(updateJumpNav, 220);
+    setTimeout(updateJumpNav, 350);
   }
 
   function scrollLatestResultToBottom() {

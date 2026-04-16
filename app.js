@@ -1245,16 +1245,23 @@ function formatChecklistTable(sectionKey, data) {
 
   if (section === "parallels") {
   return {
-    columns: data.columns || ["Applies To", "Parallel", "Serial No.", "Tier"],
-    rows: (data.rows || []).map(r => {
+columns: ["Applies To", "Parallel", "Rarity"],    rows: (data.rows || []).map(r => {
       const appliesTo = Array.isArray(r) ? (r[0] || "") : (r.applies_to || "");
       const parallelName = Array.isArray(r) ? (r[1] || "") : (r.parallel_name || "");
       const serialNo = Array.isArray(r) ? (r[2] || "") : (r.serial_no || "");
-      const tier = getParallelRarityTag(serialNo);
+const tier = getParallelRarityTag(serialNo);
 
-      return {
-        cells: [appliesTo, parallelName, serialNo, tier]
-      };
+const serialDisplay = serialNo
+  ? `SN: ${serialNo}`
+  : "Non-Serial";
+
+return {
+  cells: [
+    appliesTo,
+    parallelName,
+    `${serialDisplay}${tier ? `\n${tier}` : ""}`
+  ]
+};
     })
   };
 }

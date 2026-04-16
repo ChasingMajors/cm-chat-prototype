@@ -1949,17 +1949,17 @@ async function submitQuery(text) {
 
     loader.remove();
 
-    if (res.type === "prv") {
+   if (res.type === "prv") {
   window.CMChat.ui.addPrvResultCard(res);
-    } else if (res.type === "checklist_table") {
-      addChecklistResultCard(res);
-    } else if (res.type === "player_stats") {
-      addPlayerStatsCard(res);
-    } else if (res.type === "release_schedule") {
-      addReleaseScheduleCard(res);
-    } else {
-      addStandardAnswerCard(res);
-    }
+} else if (res.type === "checklist_table") {
+  window.CMChat.ui.addChecklistResultCard(res);
+} else if (res.type === "player_stats") {
+  window.CMChat.ui.addPlayerStatsCard(res);
+} else if (res.type === "release_schedule") {
+  window.CMChat.ui.addReleaseScheduleCard(res);
+} else {
+  window.CMChat.ui.addStandardAnswerCard(res);
+}
 
     logEvent({
       app: "chat_demo",

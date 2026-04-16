@@ -587,22 +587,60 @@ body{
     font-size:13px;
   }
 }
+/* ================================
+   PRINT RUN INSIGHTS (UPGRADED)
+================================ */
+
 .prv-chat-insights {
   margin-top: 16px;
-  padding: 12px;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
+  padding: 14px 16px;
+  border-radius: 16px;
+
+  /* subtle premium gradient */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.08),
+    rgba(255, 255, 255, 0.02)
+  );
+
+  border: 1px solid rgba(255, 215, 0, 0.25);
+
+  /* slight separation from table */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
 }
 
 .prv-chat-insights-title {
-  font-weight: 700;
-  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+
+  margin-bottom: 8px;
+
+  color: rgba(255, 215, 0, 0.95);
+}
+
+/* 💡 icon */
+.prv-chat-insights-title::before {
+  content: "💡";
+  font-size: 12px;
 }
 
 .prv-chat-insights-list {
   margin: 0;
-  padding-left: 16px;
+  padding-left: 18px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.prv-chat-insights-list li {
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.85);
 }

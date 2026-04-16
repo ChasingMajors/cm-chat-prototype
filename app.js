@@ -1950,7 +1950,7 @@ async function submitQuery(text) {
     loader.remove();
 
     if (res.type === "prv") {
-      addPrvResultCard(res);
+  window.CMChat.ui.addPrvResultCard(res);
     } else if (res.type === "checklist_table") {
       addChecklistResultCard(res);
     } else if (res.type === "player_stats") {

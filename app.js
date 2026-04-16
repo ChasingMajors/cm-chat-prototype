@@ -2004,13 +2004,9 @@ function initChat() {
     preloadReleaseScheduleInBackground();
   }, 0);
 
-  if (chatInput) chatInput.focus();
-}
+  window.CMChat.ui.initJumpNav();
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initChat);
-} else {
-  initChat();
+  if (chatInput) chatInput.focus();
 }
 
 if (sendBtn) {

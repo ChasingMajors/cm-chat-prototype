@@ -1244,27 +1244,24 @@ function formatChecklistTable(sectionKey, data) {
   const section = normalize(sectionKey);
 
   if (section === "parallels") {
-  return {
-columns: ["Applies To", "Parallel", "Rarity"],    rows: (data.rows || []).map(r => {
-      const appliesTo = Array.isArray(r) ? (r[0] || "") : (r.applies_to || "");
-      const parallelName = Array.isArray(r) ? (r[1] || "") : (r.parallel_name || "");
-      const serialNo = Array.isArray(r) ? (r[2] || "") : (r.serial_no || "");
-const tier = getParallelRarityTag(serialNo);
+    return {
+      columns: ["Applies To", "Parallel", "Serial / Rarity"],
+      rows: (data.rows || []).map(r => {
+        const appliesTo = Array.isArray(r) ? (r[0] || "") : (r.applies_to || "");
+        const parallelName = Array.isArray(r) ? (r[1] || "") : (r.parallel_name || "");
+        const serialNo = Array.isArray(r) ? (r[2] || "") : (r.serial_no || "");
+        const tier = getParallelRarityTag(serialNo);
 
-const serialDisplay = serialNo
-  ? `SN: ${serialNo}`
-  : "Non-Serial";
+        const cleanedSerial = String(serialNo || "").replace(/^\s*-\s*/, "").trim();
+        const serialDisplay = cleanedSerial ? `SN: ${cleanedSerial}` : "Non-Serial";
 
-return {
-  cells: [
-    appliesTo,
-    parallelName,
-    ``${serialDisplay}${tier ? `<br><span class="prv-rarity">${tier}</span>` : ""}`
-  ]
-};
-    })
-  };
-}
+        return {
+          cells: [appliesTo, parallelName, serialDisplay],
+          rarity: tier || ""
+        };
+      })
+    };
+  }
 
   return {
     columns: data.columns || ["Subset", "Card No.", "Player", "Team", "Tag"],

@@ -1259,7 +1259,7 @@ return {
   cells: [
     appliesTo,
     parallelName,
-    `${serialDisplay}${tier ? `\n${tier}` : ""}`
+    ``${serialDisplay}${tier ? `<br><span class="prv-rarity">${tier}</span>` : ""}`
   ]
 };
     })

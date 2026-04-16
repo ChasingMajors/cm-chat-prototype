@@ -814,15 +814,28 @@ function addChecklistResultCard(result) {
   const headers = result.columns || ["Subset", "Card No.", "Player", "Team", "Tag"];
   const headHtml = headers.map(h => `<th>${escapeHtml(h)}</th>`).join("");
 
-  const bodyHtml = rows.map(row => `
-    <tr class="prv-chat-tr">
-      ${(row.cells || []).map((cell, idx) => `
+const bodyHtml = rows.map(row => `
+  <tr class="prv-chat-tr">
+    ${(row.cells || []).map((cell, idx) => {
+      const isParallelSerialCell = result.sectionKey === "parallels" && idx === 2;
+
+      if (isParallelSerialCell) {
+        return `
+          <td class="prv-chat-td prv-chat-td-checklist-last">
+            <div class="prv-chat-cell-main">${escapeHtml(cell || "")}</div>
+            ${row.rarity ? `<div class="prv-rarity">${escapeHtml(row.rarity)}</div>` : ""}
+          </td>
+        `;
+      }
+
+      return `
         <td class="prv-chat-td ${idx === row.cells.length - 1 ? "prv-chat-td-checklist-last" : ""}">
           <div class="prv-chat-cell-main">${escapeHtml(cell || "")}</div>
         </td>
-      `).join("")}
-    </tr>
-  `).join("");
+      `;
+    }).join("")}
+  </tr>
+`).join("");
 
   const chipsHtml = chips.length
     ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`

@@ -1,4 +1,4 @@
-const { config, utils, api, cache, store } = window.CMChat;
+const { config, utils, api, cache, store, ui } = window.CMChat;
 
 const {
   SEARCH_HELP_EXAMPLES,
@@ -15,7 +15,6 @@ const {
 
 const {
   normalize,
-  escapeHtml,
   titleCase,
   uniq,
   tokenize,
@@ -51,10 +50,6 @@ const {
 } = api;
 
 const {
-  memCache
-} = cache;
-
-const {
   preloadPlayerDataInBackground,
   preloadReleaseScheduleInBackground,
   prefetchPlayerData,
@@ -65,14 +60,11 @@ const {
   bootstrapData,
   ensurePlayerDataLoaded,
   ensureReleaseScheduleLoaded,
-  loadPlayerMeta,
-  loadPlayerStats
+  loadPlayerMeta
 } = store;
 
-const chatMessages = document.getElementById("chatMessages");
 const chatInput = document.getElementById("chatInput");
 const sendBtn = document.getElementById("sendBtn");
-const examplePills = document.getElementById("examplePills");
 
 let awaitingCatalogSport = false;
 let pendingProductChoice = null;

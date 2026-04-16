@@ -102,19 +102,30 @@ window.CMChat.ui = window.CMChat.ui || {};
   }
 
   function setLatestResultCard(element) {
-    if (!element) return;
+  if (!element) return;
 
-    const chatMessages = getChatMessages();
-    if (!chatMessages) return;
+  const chatMessages = getChatMessages();
+  if (!chatMessages) return;
 
-    const prev = chatMessages.querySelector("[data-latest-result='1']");
-    if (prev) prev.removeAttribute("data-latest-result");
+  const prev = chatMessages.querySelector("[data-latest-result='1']");
+  if (prev) prev.removeAttribute("data-latest-result");
 
-    element.setAttribute("data-latest-result", "1");
-    latestResultCardId = element.id || null;
+  element.setAttribute("data-latest-result", "1");
+  latestResultCardId = element.id || null;
 
-    updateJumpNav();
+  // when a new result is rendered, default to down arrow behavior
+  const btn = getJumpBtn();
+  const icon = getJumpBtnIcon();
+  const nav = getJumpNav();
+
+  if (btn && icon && nav) {
+    icon.textContent = "↓";
+    btn.dataset.direction = "down";
+    btn.setAttribute("aria-label", "Jump to bottom of latest result");
   }
+
+  updateJumpNav();
+}
 
   function getLatestResultCard() {
     if (latestResultCardId) {
@@ -129,77 +140,100 @@ window.CMChat.ui = window.CMChat.ui || {};
   }
 
   function scrollLatestResultToTop() {
-    const chatMessages = getChatMessages();
-    const card = getLatestResultCard();
-    if (!chatMessages || !card) return;
+  const chatMessages = getChatMessages();
+  const card = getLatestResultCard();
+  if (!chatMessages || !card) return;
 
-    const top = Math.max(0, card.offsetTop - 8);
-    chatMessages.scrollTo({
-      top,
-      behavior: "smooth"
-    });
+  const topTarget = Math.max(0, card.offsetTop - 8);
 
-    setTimeout(updateJumpNav, 350);
+  chatMessages.scrollTo({
+    top: topTarget,
+    behavior: "smooth"
+  });
+
+  // force re-check after smooth scroll settles
+  setTimeout(() => {
+    updateJumpNav();
+  }, 420);
+}
+
+function scrollLatestResultToBottom() {
+  const chatMessages = getChatMessages();
+  const card = getLatestResultCard();
+  if (!chatMessages || !card) return;
+
+  const bottomTarget = Math.max(
+    0,
+    card.offsetTop + card.offsetHeight - chatMessages.clientHeight + 8
+  );
+
+  chatMessages.scrollTo({
+    top: bottomTarget,
+    behavior: "smooth"
+  });
+
+  // force re-check after smooth scroll settles
+  setTimeout(() => {
+    updateJumpNav();
+  }, 420);
+}
+
+function updateJumpNav() {
+  const chatMessages = getChatMessages();
+  const nav = getJumpNav();
+  const btn = getJumpBtn();
+  const icon = getJumpBtnIcon();
+  const card = getLatestResultCard();
+
+  if (!chatMessages || !nav || !btn || !icon || !card) {
+    if (nav) nav.classList.add("is-hidden");
+    return;
   }
 
-  function scrollLatestResultToBottom() {
-    const chatMessages = getChatMessages();
-    const card = getLatestResultCard();
-    if (!chatMessages || !card) return;
+  const viewTop = chatMessages.scrollTop;
+  const viewBottom = viewTop + chatMessages.clientHeight;
 
-    const bottomTarget = Math.max(
-      0,
-      card.offsetTop + card.offsetHeight - chatMessages.clientHeight + 8
-    );
+  const cardTop = card.offsetTop;
+  const cardBottom = cardTop + card.offsetHeight;
+  const cardHeight = card.offsetHeight;
 
-    chatMessages.scrollTo({
-      top: bottomTarget,
-      behavior: "smooth"
-    });
+  const tolerance = 24;
 
-    setTimeout(updateJumpNav, 220);
+  // If the result fits mostly in view, hide the jump nav
+  if (cardHeight <= chatMessages.clientHeight - 24) {
+    nav.classList.add("is-hidden");
+    btn.dataset.direction = "";
+    btn.setAttribute("aria-label", "Jump within latest result");
+    return;
   }
 
-  function updateJumpNav() {
-    const chatMessages = getChatMessages();
-    const nav = getJumpNav();
-    const btn = getJumpBtn();
-    const icon = getJumpBtnIcon();
-    const card = getLatestResultCard();
+  // Only show jump nav when the latest result is actually the active thing on screen
+  const latestResultVisible =
+    viewBottom > cardTop + 40 &&
+    viewTop < cardBottom - 40;
 
-    if (!chatMessages || !nav || !btn || !icon || !card) {
-      if (nav) nav.classList.add("is-hidden");
-      return;
-    }
-
-    const viewTop = chatMessages.scrollTop;
-    const viewBottom = viewTop + chatMessages.clientHeight;
-    const cardTop = card.offsetTop;
-    const cardBottom = cardTop + card.offsetHeight;
-    const cardHeight = card.offsetHeight;
-
-    if (cardHeight <= chatMessages.clientHeight - 32) {
-      nav.classList.add("is-hidden");
-      btn.dataset.direction = "";
-      btn.setAttribute("aria-label", "Jump within latest result");
-      return;
-    }
-
-    const nearBottom = viewBottom >= cardBottom - 28;
-    const nearTop = viewTop <= cardTop + 28;
-
-    nav.classList.remove("is-hidden");
-
-    if (nearBottom && !nearTop) {
-      icon.textContent = "↑";
-      btn.dataset.direction = "up";
-      btn.setAttribute("aria-label", "Jump to top of latest result");
-    } else {
-      icon.textContent = "↓";
-      btn.dataset.direction = "down";
-      btn.setAttribute("aria-label", "Jump to bottom of latest result");
-    }
+  if (!latestResultVisible) {
+    nav.classList.add("is-hidden");
+    btn.dataset.direction = "";
+    btn.setAttribute("aria-label", "Jump within latest result");
+    return;
   }
+
+  const atTopOfCard = viewTop <= cardTop + tolerance;
+  const atBottomOfCard = viewBottom >= cardBottom - tolerance;
+
+  nav.classList.remove("is-hidden");
+
+  if (atBottomOfCard && !atTopOfCard) {
+    icon.textContent = "↑";
+    btn.dataset.direction = "up";
+    btn.setAttribute("aria-label", "Jump to top of latest result");
+  } else {
+    icon.textContent = "↓";
+    btn.dataset.direction = "down";
+    btn.setAttribute("aria-label", "Jump to bottom of latest result");
+  }
+}
 
   function initJumpNav() {
     const chatMessages = getChatMessages();

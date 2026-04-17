@@ -231,8 +231,12 @@ function updateJumpNav() {
     return;
   }
 
-  const atTopOfCard = viewTop <= cardTop + tolerance;
-  const atBottomOfCard = viewBottom >= cardBottom - tolerance;
+ const atTopOfCard = viewTop <= cardTop + tolerance;
+
+// make bottom detection more forgiving
+const atBottomOfCard =
+  Math.abs(viewBottom - cardBottom) <= 40 ||
+  viewBottom >= cardBottom - tolerance;
 
   nav.classList.remove("is-hidden");
 

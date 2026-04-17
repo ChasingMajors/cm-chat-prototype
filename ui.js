@@ -716,8 +716,8 @@ function addReleaseScheduleCard(result) {
     : "";
 
   const bodyHtml = rows.map(r => {
-    const checklistQuery = r.setName || r.product || "";
-    const vaultQuery = r.setName || r.product || "";
+    const checklistQuery = `__release_action__|checklist|${encodeURIComponent(r.checklistMatchName || "")}|${encodeURIComponent(r.checklistMatchCode || "")}|${encodeURIComponent(r.checklistMatchSport || "")}`;
+    const vaultQuery = `__release_action__|print_run|${encodeURIComponent(r.vaultMatchName || "")}|${encodeURIComponent(r.vaultMatchCode || "")}|${encodeURIComponent(r.vaultMatchSport || "")}`;
 
     const iconHtml = (r.hasChecklist || r.hasVault)
       ? `
@@ -726,7 +726,7 @@ function addReleaseScheduleCard(result) {
             <button
               type="button"
               class="release-sport-link"
-              data-release-query="${escapeHtml(`Show me the ${checklistQuery} checklist`)}"
+              data-release-query="${escapeHtml(checklistQuery)}"
               title="Open checklist in chat"
               aria-label="Open checklist in chat"
             >📋</button>
@@ -735,7 +735,7 @@ function addReleaseScheduleCard(result) {
             <button
               type="button"
               class="release-sport-link"
-              data-release-query="${escapeHtml(`Show me ${vaultQuery} print run`)}"
+              data-release-query="${escapeHtml(vaultQuery)}"
               title="Open print run in chat"
               aria-label="Open print run in chat"
             >📦</button>

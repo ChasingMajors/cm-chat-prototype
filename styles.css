@@ -798,3 +798,27 @@ body{
     font-size:20px;
   }
 }
+
+
+/* hide visible scrollbars but keep scrolling enabled */
+.chat-messages{
+  -ms-overflow-style:none;     /* IE / old Edge */
+  scrollbar-width:none;        /* Firefox */
+}
+
+.chat-messages::-webkit-scrollbar{
+  width:0;
+  height:0;
+  display:none;                /* Chrome / Safari */
+}
+
+.prv-chat-table-wrap{
+  -ms-overflow-style:none;
+  scrollbar-width:none;
+}
+
+.prv-chat-table-wrap::-webkit-scrollbar{
+  width:0;
+  height:0;
+  display:none;
+}

@@ -1,9 +1,8 @@
-const { config, utils, api, cache, store } = window.CMChat;
+const { config, utils, api, cache, store, ui } = window.CMChat;
 
 const {
   SEARCH_HELP_EXAMPLES,
   EXAMPLES,
-  SPORT_WORDS,
   INTENT_PRINT_RUN_WORDS,
   INTENT_CHECKLIST_WORDS,
   INTENT_TRENDING_WORDS,
@@ -52,10 +51,6 @@ const {
 } = api;
 
 const {
-  memCache
-} = cache;
-
-const {
   preloadPlayerDataInBackground,
   preloadReleaseScheduleInBackground,
   prefetchPlayerData,
@@ -69,15 +64,37 @@ const {
   loadPlayerMeta
 } = store;
 
-const chatMessages = document.getElementById("chatMessages");
 const chatInput = document.getElementById("chatInput");
 const sendBtn = document.getElementById("sendBtn");
-const examplePills = document.getElementById("examplePills");
 
 let awaitingCatalogSport = false;
 let pendingProductChoice = null;
 let pendingChecklistChoice = null;
 let pendingPlayerChoice = null;
+
+const RELEASE_SPORT_ORDER = ["baseball", "football", "basketball", "soccer", "hockey"];
+
+const GENERIC_PRODUCT_MATCH_TOKENS = new Set([
+  "topps",
+  "panini",
+  "upper",
+  "deck",
+  "leaf",
+  "bowman",
+  "baseball",
+  "football",
+  "basketball",
+  "hockey",
+  "soccer",
+  "cards",
+  "card",
+  "trading",
+  "checklist",
+  "print",
+  "run",
+  "release",
+  "schedule"
+]);
 
 function getChecklistIndex() {
   return store.checklistIndex || [];
@@ -87,16 +104,161 @@ function getPrintRunIndex() {
   return store.printRunIndex || [];
 }
 
-function getPlayerMetaIndex() {
-  return store.playerMetaIndex || [];
-}
-
-function getPlayerStatsData() {
-  return store.playerStatsData || null;
-}
-
 function getReleaseScheduleData() {
   return store.releaseScheduleData || [];
+}
+
+/* ------------------ DIRECT RELEASE ACTIONS ------------------ */
+
+function isDirectReleaseActionQuery(query) {
+  return String(query || "").startsWith("__release_action__|");
+}
+
+function parseDirectReleaseActionQuery(query) {
+  const raw = String(query || "");
+  const parts = raw.split("|");
+
+  return {
+    kind: parts[1] || "",
+    name: decodeURIComponent(parts[2] || ""),
+    code: decodeURIComponent(parts[3] || ""),
+    sport: decodeURIComponent(parts[4] || "")
+  };
+}
+
+function getDirectReleaseActionDisplayText(action) {
+  const name = action.name || "that product";
+
+  if (action.kind === "checklist") return `Open ${name} checklist`;
+  if (action.kind === "print_run") return `Open ${name} print run`;
+
+  return `Open ${name}`;
+}
+
+function findProductByCode(list, code) {
+  const targetCode = String(code || "").trim();
+  if (!targetCode) return null;
+
+  const item = (list || []).find(p => String(p.code || p.Code || "").trim() === targetCode);
+  return item ? mapProduct(item) : null;
+}
+
+async function buildDirectChecklistResponse(action) {
+  let product = {
+    name: action.name || "",
+    code: action.code || "",
+    sport: action.sport || ""
+  };
+
+  awaitingCatalogSport = false;
+  pendingProductChoice = null;
+  pendingPlayerChoice = null;
+
+  if (!product.code) {
+    pendingChecklistChoice = null;
+
+    return {
+      type: "standard",
+      badge: "Checklist",
+      title: "Checklist not available",
+      summary: "I could not open that checklist directly from the release schedule."
+    };
+  }
+
+  const indexedProduct = findProductByCode(getChecklistIndex(), product.code);
+  if (indexedProduct) {
+    product = {
+      ...indexedProduct,
+      name: action.name || indexedProduct.name,
+      sport: action.sport || indexedProduct.sport
+    };
+  }
+
+  const summary = await getChecklistSummary(product.code);
+
+  product.name = product.name || summary.name || "";
+  product.year = product.year || summary.year || "";
+  product.sport = product.sport || summary.sport || "";
+
+  pendingChecklistChoice = {
+    product,
+    summary
+  };
+
+  const countsLine = summarizeChecklistCounts(summary);
+
+  return {
+    type: "standard",
+    badge: "Checklist",
+    title: product.name,
+    summary: `I found the exact checklist.${countsLine ? ` ${countsLine}.` : ""} Are you looking for the entire checklist or a checklist for base, inserts, autographs, relics, variations, or parallels?`,
+    metadata: uniq([
+      summary.counts?.all ? `Rows: ${formatNumber(summary.counts.all)}` : "",
+      product.year ? `Year: ${product.year}` : "",
+      product.sport ? `Sport: ${titleCase(product.sport)}` : "",
+      product.code ? `Code: ${product.code}` : ""
+    ]),
+    followups: checklistSectionOptionsFromSummary(summary)
+  };
+}
+
+async function buildDirectPrintRunResponse(action) {
+  let product = {
+    name: action.name || "",
+    code: action.code || "",
+    sport: action.sport || ""
+  };
+
+  awaitingCatalogSport = false;
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
+
+  if (!product.code) {
+    return {
+      type: "standard",
+      badge: "Print Run",
+      title: "Print run not available",
+      summary: "I could not open that print run result directly from the release schedule."
+    };
+  }
+
+  const indexedProduct = findProductByCode(getPrintRunIndex(), product.code);
+  if (indexedProduct) {
+    product = {
+      ...indexedProduct,
+      name: action.name || indexedProduct.name,
+      sport: action.sport || indexedProduct.sport
+    };
+  }
+
+  const rawRows = await getPrintRunData(product.code, product.sport);
+
+  if (!rawRows.length) {
+    return {
+      type: "standard",
+      badge: "Print Run",
+      title: product.name || "Print Run",
+      summary: "I found the exact product, but no print run rows were returned yet.",
+      metadata: uniq([
+        product.year ? `Year: ${product.year}` : "",
+        product.sport ? `Sport: ${titleCase(product.sport)}` : "",
+        product.code ? `Code: ${product.code}` : ""
+      ])
+    };
+  }
+
+  return {
+    type: "prv",
+    product,
+    rawRows,
+    rows: buildPrvRows(rawRows),
+    metadata: buildPrvMetadata(product, rawRows),
+    followups: [
+      `Show me the ${product.name} checklist`,
+      `What parallels are in ${product.name}`
+    ]
+  };
 }
 
 /* ------------------ SEARCH / QUERY HELPERS ------------------ */
@@ -127,9 +289,7 @@ function splitPlayerSearchQuery(query) {
 
   const candidateNorms = candidateTokens.map(t => normalize(t));
 
-  if (!isLikelyPlayerNameToken(candidateNorms[0])) {
-    return null;
-  }
+  if (!isLikelyPlayerNameToken(candidateNorms[0])) return null;
 
   let stopIdx = candidateNorms.length;
   for (let i = 0; i < candidateNorms.length; i++) {
@@ -145,21 +305,16 @@ function splitPlayerSearchQuery(query) {
   if (playerTokens.some(t => !isLikelyPlayerNameToken(t))) return null;
   if (playerTokens.length > 3) playerTokens = playerTokens.slice(0, 3);
 
-  const playerName = titleCase(playerTokens.join(" "));
-  const remainderTokens = candidateTokens.slice(stopIdx);
-  const remainder = remainderTokens.join(" ").trim();
-
   return {
-    playerName,
+    playerName: titleCase(playerTokens.join(" ")),
     year: year || "",
     sport: sport || "baseball",
-    remainder
+    remainder: candidateTokens.slice(stopIdx).join(" ").trim()
   };
 }
 
 function looksLikeStandaloneYearQuery(parts) {
-  if (!parts) return false;
-  if (!parts.year) return false;
+  if (!parts?.year) return false;
 
   const rem = normalize(parts.remainder || "");
   if (!rem) return true;
@@ -176,8 +331,6 @@ function findBestProductFromRemainder(remainder) {
   const candidate = findBestProduct(getChecklistIndex(), cleaned, "checklist");
   if (!candidate) return null;
 
-  const score = candidate.score || 0;
-
   const productTokens = new Set([
     ...meaningfulTokens(candidate.name),
     ...meaningfulTokens(candidate.keywords),
@@ -188,7 +341,7 @@ function findBestProductFromRemainder(remainder) {
   const overlap = queryTokens.filter(t => productTokens.has(t)).length;
 
   if (overlap < 1) return null;
-  if (score < 45) return null;
+  if ((candidate.score || 0) < 45) return null;
 
   return candidate;
 }
@@ -227,7 +380,7 @@ function detectPlayerSearchRequest(query) {
     return {
       playerName,
       sport: sport || "baseball",
-      year: year || "",
+      year,
       code: "",
       productName: "",
       mode: "player_year"
@@ -292,7 +445,9 @@ function isPricingQuestion(query) {
     n.includes("recent sales") ||
     n.includes("sales data") ||
     n.includes("comps") ||
-    n.includes("price data")
+    n.includes("price data") ||
+    n.includes("psa 10") ||
+    n.includes("psa 9")
   );
 }
 
@@ -406,16 +561,7 @@ function filterReleaseScheduleRows(rows, query) {
     });
   }
 
-  filtered.sort((a, b) => {
-    const ad = parseDateSafe(a.releaseDate);
-    const bd = parseDateSafe(b.releaseDate);
-    if (!ad && !bd) return 0;
-    if (!ad) return 1;
-    if (!bd) return -1;
-    return ad - bd;
-  });
-
-  return filtered;
+  return sortReleaseScheduleRows(filtered, sport || "");
 }
 
 function getAllProductsForSport(sport) {
@@ -462,8 +608,10 @@ function getSampleCurrentSetsForSport(sport, limit = 8) {
     const p = mapProduct(item);
     if (normalize(p.sport) !== s) return;
     if (latestYear && String(p.year) !== latestYear) return;
+
     const key = normalize(p.name);
     if (!key || seen.has(key)) return;
+
     seen.add(key);
     results.push(p.name);
   });
@@ -494,8 +642,6 @@ function getProductsForSportYear(sport, year) {
 }
 
 /* ------------------ RELEASE SCHEDULE HELPERS ------------------ */
-
-const RELEASE_SPORT_ORDER = ["baseball", "football", "basketball", "soccer", "hockey"];
 
 function getReleaseSportRank(sport) {
   const idx = RELEASE_SPORT_ORDER.indexOf(normalize(sport));
@@ -586,9 +732,7 @@ function sortReleaseScheduleRows(rows, sportOnly = "") {
     const aAnnounced = isAnnouncedReleaseValue(a.releaseDate);
     const bAnnounced = isAnnouncedReleaseValue(b.releaseDate);
 
-    if (aAnnounced !== bAnnounced) {
-      return aAnnounced ? 1 : -1;
-    }
+    if (aAnnounced !== bAnnounced) return aAnnounced ? 1 : -1;
 
     const aDate = parseDateSafe(a.releaseDate);
     const bDate = parseDateSafe(b.releaseDate);
@@ -598,37 +742,107 @@ function sortReleaseScheduleRows(rows, sportOnly = "") {
       if (diff !== 0) return diff;
     }
 
-    const aName = normalize(a.setName || a.product);
-    const bName = normalize(b.setName || b.product);
-    return aName.localeCompare(bName);
+    return normalize(a.setName || a.product).localeCompare(normalize(b.setName || b.product));
   });
 }
 
+function specificProductTokens(text) {
+  return meaningfulTokens(text).filter(t => {
+    if (!t) return false;
+    if (/^(19|20)\d{2}$/.test(t)) return false;
+    return !GENERIC_PRODUCT_MATCH_TOKENS.has(t);
+  });
+}
+
+function findExactOrStrongReleaseProduct(list, row, targetIntent) {
+  const releaseName = row.setName || row.product || "";
+  const releaseNorm = normalize(releaseName);
+  const releaseSport = normalize(row.sport || "");
+  const releaseYear = extractYear(releaseName) || String(row.releaseDate || "").slice(0, 4);
+
+  if (!releaseNorm) return null;
+
+  const mapped = (list || []).map(mapProduct).filter(p => p.name && p.code);
+
+  const exact = mapped.find(p => {
+    if (normalize(p.name) !== releaseNorm) return false;
+    if (releaseSport && normalize(p.sport) && normalize(p.sport) !== releaseSport) return false;
+    if (releaseYear && String(p.year || "") && String(p.year || "") !== String(releaseYear)) return false;
+    return true;
+  });
+
+  if (exact) return { ...exact, score: 999, matchType: "exact" };
+
+  const releaseTokens = specificProductTokens(releaseName);
+  if (!releaseTokens.length) return null;
+
+  let best = null;
+  let bestScore = -9999;
+
+  mapped.forEach(product => {
+    if (releaseSport && normalize(product.sport) && normalize(product.sport) !== releaseSport) return;
+    if (releaseYear && String(product.year || "") && String(product.year || "") !== String(releaseYear)) return;
+
+    const productTokenSet = new Set([
+      ...meaningfulTokens(product.name),
+      ...meaningfulTokens(product.keywords),
+      ...meaningfulTokens(product.code)
+    ]);
+
+    const requiredMatches = releaseTokens.filter(t => productTokenSet.has(t)).length;
+    if (requiredMatches !== releaseTokens.length) return;
+
+    const score = scoreProduct(product.raw || product, releaseName, targetIntent);
+
+    if (score > bestScore) {
+      bestScore = score;
+      best = product;
+    }
+  });
+
+  if (!best || bestScore < 80) return null;
+
+  return {
+    ...best,
+    score: bestScore,
+    matchType: "strong"
+  };
+}
+
 function enrichReleaseRowForUi(row) {
-  const checklistMatch = findBestProduct(
+  const checklistMatch = findExactOrStrongReleaseProduct(
     getChecklistIndex(),
-    row.setName || row.product || "",
+    row,
     "checklist"
   );
 
-  const vaultMatch = findBestProduct(
+  const vaultMatch = findExactOrStrongReleaseProduct(
     getPrintRunIndex(),
-    row.setName || row.product || "",
+    row,
     "print_run"
   );
 
-  const hasChecklist = !!(checklistMatch && checklistMatch.score >= 40);
-  const hasVault = !!(vaultMatch && vaultMatch.score >= 40);
+  const hasChecklist = !!checklistMatch;
+  const hasVault = !!vaultMatch;
 
   return {
     ...row,
     hasChecklist,
     hasVault,
+
+    checklistMatchName: hasChecklist ? checklistMatch.name : "",
+    checklistMatchCode: hasChecklist ? checklistMatch.code : "",
+    checklistMatchSport: hasChecklist ? checklistMatch.sport : "",
+
+    vaultMatchName: hasVault ? vaultMatch.name : "",
+    vaultMatchCode: hasVault ? vaultMatch.code : "",
+    vaultMatchSport: hasVault ? vaultMatch.sport : "",
+
     checklistUrl: hasChecklist
-      ? `/checklists/?q=${encodeURIComponent(checklistMatch.name || row.setName || row.product || "")}`
+      ? `/checklists/?q=${encodeURIComponent(checklistMatch.name)}`
       : "",
     vaultUrl: hasVault
-      ? `/vault/?q=${encodeURIComponent(vaultMatch.name || row.setName || row.product || "")}`
+      ? `/vault/?q=${encodeURIComponent(vaultMatch.name)}`
       : ""
   };
 }
@@ -664,9 +878,7 @@ function scoreReleaseRowMatch(row, query) {
 
   score += overlap * 14;
 
-  if (qTokens.length) {
-    score += Math.round((overlap / qTokens.length) * 35);
-  }
+  if (qTokens.length) score += Math.round((overlap / qTokens.length) * 35);
 
   const sport = extractSport(query);
   if (sport && normalize(row.sport) === sport) score += 10;
@@ -688,446 +900,6 @@ function findBestReleaseRow(rows, query) {
 
   if (!best || bestScore < 34) return null;
   return { row: best, score: bestScore };
-}
-
-/* ------------------ UI ------------------ */
-
-function renderExamples() {
-  if (!examplePills) return;
-
-  if (!EXAMPLES.length) {
-    examplePills.innerHTML = "";
-    examplePills.style.display = "none";
-    return;
-  }
-
-  examplePills.style.display = "";
-  examplePills.innerHTML = EXAMPLES.map(e =>
-    `<button class="example-pill" data-example="${escapeHtml(e)}">${escapeHtml(e)}</button>`
-  ).join("");
-
-  examplePills.querySelectorAll("[data-example]").forEach(btn => {
-    btn.onclick = () => submitQuery(btn.dataset.example);
-  });
-}
-
-function addUserMessage(text) {
-  chatMessages.innerHTML += `
-    <div class="message-row user">
-      <div class="message-bubble">${escapeHtml(text)}</div>
-    </div>
-  `;
-  scrollToBottom();
-}
-
-function scrollToBottom() {
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-function scrollNewCardToTop(element) {
-  if (!element) {
-    scrollToBottom();
-    return;
-  }
-
-  requestAnimationFrame(() => {
-    const containerRect = chatMessages.getBoundingClientRect();
-    const elRect = element.getBoundingClientRect();
-    const delta = elRect.top - containerRect.top;
-    chatMessages.scrollTop += delta - 8;
-  });
-}
-
-function addStandardAnswerCard(r) {
-  const metaHtml = (r.metadata || []).length
-    ? `<div class="answer-meta">${(r.metadata || []).map(m => `<div class="answer-meta-chip">${escapeHtml(m)}</div>`).join("")}</div>`
-    : "";
-
-  const followupsHtml = (r.followups || []).length
-    ? `
-      <div class="answer-followups">
-        <div class="followup-label">Try next</div>
-        <div class="followup-list">
-          ${(r.followups || []).map(f => `<button class="followup-btn" data-followup="${escapeHtml(f)}">${escapeHtml(f)}</button>`).join("")}
-        </div>
-      </div>
-    `
-    : "";
-
-  const cardId = `standard_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-
-  chatMessages.innerHTML += `
-    <div class="message-row assistant">
-      <div class="answer-card" id="${cardId}">
-        <div class="answer-badge">${escapeHtml(r.badge || "Answer")}</div>
-        <div class="answer-title">${escapeHtml(r.title || "Result")}</div>
-        <div class="answer-summary">${escapeHtml(r.summary || "")}</div>
-        ${metaHtml}
-        ${followupsHtml}
-      </div>
-    </div>
-  `;
-
-  bindFollowups();
-  scrollNewCardToTop(document.getElementById(cardId));
-}
-
-function addPlayerStatsCard(r) {
-  const metaHtml = (r.metadata || []).length
-    ? `<div class="answer-meta">${(r.metadata || []).map(m => `<div class="answer-meta-chip">${escapeHtml(m)}</div>`).join("")}</div>`
-    : "";
-
-  const renderStatGrid = (title, stats) => {
-    if (!stats || !stats.length) return "";
-    return `
-      <div style="margin-top:14px;">
-        <div style="font-weight:700; margin-bottom:8px;">${escapeHtml(title)}</div>
-        <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px;">
-          ${stats.map(s => `
-            <div style="border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:10px; background:rgba(255,255,255,.03);">
-              <div style="font-size:11px; opacity:.7; margin-bottom:4px;">${escapeHtml(s.label)}</div>
-              <div style="font-size:16px; font-weight:700;">${escapeHtml(s.value)}</div>
-            </div>
-          `).join("")}
-        </div>
-      </div>
-    `;
-  };
-
-  const followupsHtml = (r.followups || []).length
-    ? `
-      <div class="answer-followups">
-        <div class="followup-label">Try next</div>
-        <div class="followup-list">
-          ${(r.followups || []).map(f => `<button class="followup-btn" data-followup="${escapeHtml(f)}">${escapeHtml(f)}</button>`).join("")}
-        </div>
-      </div>
-    `
-    : "";
-
-  const cardId = `playerstats_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-
-  chatMessages.innerHTML += `
-    <div class="message-row assistant">
-      <div class="answer-card" id="${cardId}">
-        <div class="answer-badge">${escapeHtml(r.badge || "Player Stats")}</div>
-        <div class="answer-title">${escapeHtml(r.title || "Player Stats")}</div>
-        <div class="answer-summary">${escapeHtml(r.summary || "")}</div>
-        ${metaHtml}
-        ${r.currentSummary ? `<div class="answer-summary" style="margin-top:12px;">${escapeHtml(r.currentSummary)}</div>` : ""}
-        ${renderStatGrid(r.currentTitle || "Current Season", r.currentStats || [])}
-        ${r.careerSummary ? `<div class="answer-summary" style="margin-top:12px;">${escapeHtml(r.careerSummary)}</div>` : ""}
-        ${renderStatGrid(r.careerTitle || "Career", r.careerStats || [])}
-        ${followupsHtml}
-      </div>
-    </div>
-  `;
-
-  bindFollowups();
-  scrollNewCardToTop(document.getElementById(cardId));
-}
-
-function addWelcomeMessage(force = false) {
-  if (!chatMessages) return;
-
-  const alreadyHasWelcome = !!chatMessages.querySelector("[data-cm-welcome]");
-  if (alreadyHasWelcome && !force) return;
-
-  if (alreadyHasWelcome && force) {
-    chatMessages.querySelector("[data-cm-welcome]")?.closest(".message-row")?.remove();
-  }
-
-  chatMessages.innerHTML = `
-    <div class="message-row assistant">
-      <div class="answer-card" data-cm-welcome="1">
-        <div class="answer-badge">Welcome</div>
-        <div class="answer-title">Welcome to Chasing Majors Chat</div>
-        <div class="answer-summary">If you are looking for print run data, checklist search, player lookups, product coverage, or release schedule information, you are in the right place.</div>
-        <div class="answer-followups">
-          <div class="followup-label">Start here</div>
-          <div class="followup-list">
-            <button class="followup-btn" data-followup="See the best way search">See the best way search</button>
-            <button class="followup-btn" data-followup="Show the release schedule">Show the release schedule</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  ` + chatMessages.innerHTML;
-
-  bindFollowups();
-  scrollToBottom();
-}
-
-function startLoadingBubble(messages, intervalMs = 1500) {
-  const id = `loading_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-  const safeMessages = Array.isArray(messages) && messages.length
-    ? messages
-    : ["Thinking..."];
-
-  chatMessages.innerHTML += `
-    <div class="message-row assistant" id="${id}">
-      <div class="message-bubble" data-loading-bubble>${escapeHtml(safeMessages[0])}</div>
-    </div>
-  `;
-  scrollToBottom();
-
-  const row = document.getElementById(id);
-  const bubble = row ? row.querySelector("[data-loading-bubble]") : null;
-
-  let idx = 0;
-  let timer = null;
-  let delayedStart = null;
-
-  delayedStart = setTimeout(() => {
-    timer = setInterval(() => {
-      if (!bubble) return;
-      idx = (idx + 1) % safeMessages.length;
-      bubble.textContent = safeMessages[idx];
-    }, intervalMs);
-  }, 500);
-
-  return {
-    remove() {
-      if (delayedStart) clearTimeout(delayedStart);
-      if (timer) clearInterval(timer);
-      if (row && row.parentNode) row.parentNode.removeChild(row);
-    }
-  };
-}
-
-function getMoreButtonLabel(total, visible) {
-  if (visible < 8) return `Show ${Math.min(8, total) - visible} More Rows`;
-  if (visible < 16) return `Show ${Math.min(16, total) - visible} More Rows`;
-  return `Show ${total - visible} More Rows`;
-}
-
-function addPrvResultCard(result) {
-  const product = result.product || {};
-  const rows = result.rows || [];
-  const chips = result.metadata || [];
-  const followups = result.followups || [];
-  let visibleCount = Math.min(8, rows.length);
-  const insights = utils.buildPrintRunInsights(result.rawRows || []);
-
-  const buildRowsHtml = (list) => list.map(r => `
-    <tr class="prv-chat-tr">
-      <td class="prv-chat-td prv-chat-td-left">
-        <div class="prv-chat-cell-main">${escapeHtml(r.label || "")}</div>
-      </td>
-      <td class="prv-chat-td prv-chat-td-right">
-        ${escapeHtml(r.value || "")}
-        ${r.rarity ? `<div class="prv-rarity">${escapeHtml(r.rarity)}</div>` : ""}
-      </td>
-      <td class="prv-chat-td prv-chat-td-setsize">${escapeHtml(r.setSize || "")}</td>
-    </tr>
-  `).join("");
-
-  const chipsHtml = chips.length
-    ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
-    : "";
-
-  const insightsHtml = insights.length
-    ? `
-      <div class="prv-chat-insights">
-        <div class="prv-chat-insights-title">What this means</div>
-        <ul class="prv-chat-insights-list">
-          ${insights.map(i => `<li>${escapeHtml(i)}</li>`).join("")}
-        </ul>
-      </div>
-    `
-    : "";
-
-  const followupsHtml = followups.length
-    ? `
-      <div class="answer-followups">
-        <div class="followup-label">Try next</div>
-        <div class="followup-list">
-          ${followups.map(f => `<button class="followup-btn" data-followup="${escapeHtml(f)}">${escapeHtml(f)}</button>`).join("")}
-        </div>
-      </div>
-    `
-    : "";
-
-  const cardId = `prv_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-
-  chatMessages.innerHTML += `
-    <div class="message-row assistant">
-      <div class="prv-chat-card" id="${cardId}">
-        <div class="prv-chat-topline">
-          <div class="answer-badge">Print Run</div>
-        </div>
-
-        <div class="prv-chat-title">${escapeHtml(product.name || "")}</div>
-
-        ${chipsHtml}
-
-        <div class="prv-chat-table-wrap">
-          <table class="prv-chat-table">
-            <thead>
-              <tr>
-                <th>Card / Parallel</th>
-                <th>Print Run</th>
-                <th>Set Size</th>
-              </tr>
-            </thead>
-            <tbody data-prv-body>
-              ${buildRowsHtml(rows.slice(0, visibleCount))}
-            </tbody>
-          </table>
-        </div>
-
-        ${rows.length > visibleCount ? `
-          <div class="prv-chat-more">
-            <button class="prv-chat-more-btn" type="button" data-prv-more>
-              ${getMoreButtonLabel(rows.length, visibleCount)}
-            </button>
-          </div>
-        ` : ""}
-
-        ${insightsHtml}
-
-        <div class="prv-chat-note">
-          If you’re looking for serial numbered data ask to see serial numbered for a given set.
-        </div>
-
-        ${followupsHtml}
-      </div>
-    </div>
-  `;
-
-  const card = document.getElementById(cardId);
-  if (card) {
-    const body = card.querySelector("[data-prv-body]");
-    const btn = card.querySelector("[data-prv-more]");
-
-    if (btn && body) {
-      btn.onclick = () => {
-        if (visibleCount < 8) visibleCount = Math.min(8, rows.length);
-        else if (visibleCount < 16) visibleCount = Math.min(16, rows.length);
-        else visibleCount = rows.length;
-
-        body.innerHTML = buildRowsHtml(rows.slice(0, visibleCount));
-
-        if (visibleCount >= rows.length) btn.remove();
-        else btn.textContent = getMoreButtonLabel(rows.length, visibleCount);
-
-        scrollNewCardToTop(card);
-      };
-    }
-  }
-
-  bindFollowups();
-  scrollNewCardToTop(card);
-}
-
-function addChecklistResultCard(result) {
-  const product = result.product || {};
-  const rows = result.rows || [];
-  const chips = result.metadata || [];
-  const followups = result.followups || [];
-  const sectionLabel = result.sectionLabel || "Checklist";
-  const insights = result.insights || [];
-
-  const headers = result.columns || ["Subset", "Card No.", "Player", "Team", "Tag"];
-  const headHtml = headers.map(h => `<th>${escapeHtml(h)}</th>`).join("");
-
-  const bodyHtml = rows.map(row => `
-    <tr class="prv-chat-tr">
-      ${(row.cells || []).map((cell, idx) => {
-        const isParallelSerialCell = result.sectionKey === "parallels" && idx === 2;
-
-        if (isParallelSerialCell) {
-          return `
-            <td class="prv-chat-td prv-chat-td-checklist-last">
-              <div class="prv-chat-cell-main">${escapeHtml(cell || "")}</div>
-              ${row.rarity ? `<div class="prv-rarity">${escapeHtml(row.rarity)}</div>` : ""}
-            </td>
-          `;
-        }
-
-        return `
-          <td class="prv-chat-td ${idx === row.cells.length - 1 ? "prv-chat-td-checklist-last" : ""}">
-            <div class="prv-chat-cell-main">${escapeHtml(cell || "")}</div>
-          </td>
-        `;
-      }).join("")}
-    </tr>
-  `).join("");
-
-  const chipsHtml = chips.length
-    ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
-    : "";
-
-  const insightsHtml = insights.length
-    ? `
-      <div class="prv-chat-insights">
-        <div class="prv-chat-insights-title">What this means</div>
-        <ul class="prv-chat-insights-list">
-          ${insights.map(i => `<li>${escapeHtml(i)}</li>`).join("")}
-        </ul>
-      </div>
-    `
-    : "";
-
-  const sectionOptions = (result.sectionOptions || [])
-    .map(opt => `<button class="followup-btn" data-followup="${escapeHtml(opt)}">${escapeHtml(opt)}</button>`)
-    .join("");
-
-  const cardId = `checklist_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-
-  chatMessages.innerHTML += `
-    <div class="message-row assistant">
-      <div class="prv-chat-card" id="${cardId}">
-        <div class="prv-chat-topline">
-          <div class="answer-badge">Checklist</div>
-        </div>
-
-        <div class="prv-chat-title">${escapeHtml(product.name || "")}</div>
-        <div class="answer-summary" style="margin-bottom:14px;">${escapeHtml(sectionLabel)}</div>
-
-        ${chipsHtml}
-
-        <div class="prv-chat-table-wrap">
-          <table class="prv-chat-table checklist-chat-table">
-            <thead>
-              <tr>${headHtml}</tr>
-            </thead>
-            <tbody>
-              ${bodyHtml || `<tr><td class="prv-chat-td" colspan="${headers.length}"><div class="prv-chat-cell-main">No rows found.</div></td></tr>`}
-            </tbody>
-          </table>
-        </div>
-
-        ${insightsHtml}
-
-        ${sectionOptions ? `
-          <div class="answer-followups">
-            <div class="followup-label">View another section</div>
-            <div class="followup-list">${sectionOptions}</div>
-          </div>
-        ` : ""}
-
-        ${followups.length ? `
-          <div class="answer-followups">
-            <div class="followup-label">Try next</div>
-            <div class="followup-list">
-              ${followups.map(f => `<button class="followup-btn" data-followup="${escapeHtml(f)}">${escapeHtml(f)}</button>`).join("")}
-            </div>
-          </div>
-        ` : ""}
-      </div>
-    </div>
-  `;
-
-  const card = document.getElementById(cardId);
-  bindFollowups();
-  scrollNewCardToTop(card);
-}
-
-function bindFollowups() {
-  chatMessages.querySelectorAll("[data-followup]").forEach(btn => {
-    btn.onclick = () => submitQuery(btn.dataset.followup);
-  });
 }
 
 /* ------------------ INDEX HELPERS ------------------ */
@@ -1165,10 +937,11 @@ function scoreProduct(item, query, targetIntent) {
   const sport = extractSport(query);
   const year = extractYear(query);
 
+  if (qNorm === nameNorm || cleanedNorm === nameNorm) score += 300;
   if (qNorm.includes(nameNorm)) score += 140;
   if (cleanedNorm && nameNorm.includes(cleanedNorm)) score += 70;
   if (cleanedNorm && product.haystack.includes(cleanedNorm)) score += 50;
-  if (codeNorm && qNorm.includes(codeNorm)) score += 90;
+  if (codeNorm && qNorm.includes(codeNorm)) score += 120;
 
   if (year && String(product.year) === year) score += 25;
   if (sport && normalize(product.sport) === sport) score += 18;
@@ -1203,19 +976,37 @@ function scoreProduct(item, query, targetIntent) {
 }
 
 function findBestProduct(list, query, targetIntent) {
+  const cleaned = stripIntentWords(query || "");
+  const cleanedNorm = normalize(cleaned);
+  const qNorm = normalize(query || "");
+  const sport = extractSport(query);
+  const year = extractYear(query);
+
   let best = null;
   let bestScore = -9999;
 
-  list.forEach(item => {
-    const s = scoreProduct(item, query, targetIntent);
+  const mapped = (list || []).map(mapProduct).filter(p => p.name);
+
+  const exact = mapped.find(product => {
+    const nameNorm = normalize(product.name);
+    if (cleanedNorm !== nameNorm && qNorm !== nameNorm && !qNorm.includes(nameNorm)) return false;
+    if (sport && normalize(product.sport) && normalize(product.sport) !== sport) return false;
+    if (year && String(product.year || "") && String(product.year || "") !== String(year)) return false;
+    return true;
+  });
+
+  if (exact) return { ...exact, score: 999, matchType: "exact" };
+
+  mapped.forEach(item => {
+    const s = scoreProduct(item.raw || item, query, targetIntent);
     if (s > bestScore) {
       bestScore = s;
-      best = mapProduct(item);
+      best = item;
     }
   });
 
   if (!best || bestScore < 24) return null;
-  return { ...best, score: bestScore };
+  return { ...best, score: bestScore, matchType: "fuzzy" };
 }
 
 function getCombinedBestMatches(query) {
@@ -1230,17 +1021,19 @@ function getCombinedBestMatches(query) {
   };
 }
 
+/* ------------------ PLAYER HELPERS ------------------ */
+
 function cleanStatValue(val) {
   let s = String(val ?? "").trim();
-  if (!s) return "—";
+  if (!s) return "-";
   s = s.replace(/^\.\./, ".");
-  s = s.replace(/^-\.$/, "—");
+  s = s.replace(/^-\.$/, "-");
   return s;
 }
 
 function hasRealStatValue(val) {
   const s = cleanStatValue(val);
-  return s && s !== "—";
+  return s && s !== "-";
 }
 
 function getPlayerYearOptions(playerName, fallbackYears = []) {
@@ -1335,16 +1128,17 @@ function buildCareerSummary(playerName, career) {
   return `${playerName}'s career line includes ${bits.join(", ")}.`;
 }
 
+/* ------------------ FORMATTERS ------------------ */
+
 function detectIntent(q) {
   const n = normalize(q);
 
   if (includesAny(n, INTENT_PRINT_RUN_WORDS)) return "print_run";
   if (includesAny(n, INTENT_CHECKLIST_WORDS)) return "checklist";
   if (includesAny(n, INTENT_TRENDING_WORDS)) return "trending";
+
   return "search";
 }
-
-/* ------------------ FORMATTERS ------------------ */
 
 function buildPrvRows(rows) {
   return rows.map(r => {
@@ -1361,17 +1155,20 @@ function buildPrvRows(rows) {
 
 function buildPrvMetadata(product, rows) {
   const types = uniq(rows.map(r => r.setType).filter(Boolean));
+
   return uniq([
     `Rows: ${rows.length}`,
     types.length ? `Types: ${types.length}` : "",
     product.year ? `Year: ${product.year}` : "",
-    product.sport ? `Sport: ${titleCase(product.sport)}` : ""
+    product.sport ? `Sport: ${titleCase(product.sport)}` : "",
+    product.code ? `Code: ${product.code}` : ""
   ]);
 }
 
 function summarizeChecklistCounts(summary) {
   const c = summary.counts || {};
   const parts = [];
+
   if (c.all) parts.push(`${formatNumber(c.all)} total rows`);
   if (c.base) parts.push(`${formatNumber(c.base)} base`);
   if (c.inserts) parts.push(`${formatNumber(c.inserts)} inserts`);
@@ -1379,6 +1176,7 @@ function summarizeChecklistCounts(summary) {
   if (c.relics) parts.push(`${formatNumber(c.relics)} relics`);
   if (c.variations) parts.push(`${formatNumber(c.variations)} variations`);
   if (c.parallels) parts.push(`${formatNumber(c.parallels)} parallels`);
+
   return parts.join(" • ");
 }
 
@@ -1461,13 +1259,12 @@ async function buildReleaseScheduleResponse(query) {
   }
 
   const sport = extractSport(query);
-  const broadQuery = isBroadReleaseScheduleQuery(query);
   const specificReleaseDate = isSpecificReleaseDateQuestion(query);
 
   if (specificReleaseDate) {
     const best = findBestReleaseRow(rows, query);
 
-    if (best && best.row) {
+    if (best?.row) {
       const row = enrichReleaseRowForUi(best.row);
       const productName = row.setName || row.product || "That product";
 
@@ -1489,51 +1286,51 @@ async function buildReleaseScheduleResponse(query) {
         };
       }
 
-return {
-  type: "standard",
-  badge: "Release Date",
-  title: productName,
-  heroSummary: true,
-  summary: `${productName} releases on ${formatReleaseDate(row.releaseDate)}.`,
-  metadata: uniq([
-    row.sport ? `Sport: ${titleCase(row.sport)}` : "",
-    row.status ? `Status: ${row.status}` : ""
-  ]),
-  followups: [
-    "Show the release schedule",
-    row.hasChecklist ? `Show me the ${productName} checklist` : "",
-    row.hasVault ? `Show me ${productName} print run` : ""
-  ].filter(Boolean)
-};
+      return {
+        type: "standard",
+        badge: "Release Date",
+        title: productName,
+        heroSummary: true,
+        summary: `${productName} releases on ${formatReleaseDate(row.releaseDate)}.`,
+        metadata: uniq([
+          row.sport ? `Sport: ${titleCase(row.sport)}` : "",
+          row.status ? `Status: ${row.status}` : ""
+        ]),
+        followups: [
+          "Show the release schedule",
+          row.hasChecklist ? `Show me the ${productName} checklist` : "",
+          row.hasVault ? `Show me ${productName} print run` : ""
+        ].filter(Boolean)
+      };
     }
   }
 
-if (sport) {
-  rows = sortReleaseScheduleRows(rows, sport).map(enrichReleaseRowForUi);
+  if (sport) {
+    rows = sortReleaseScheduleRows(rows, sport).map(enrichReleaseRowForUi);
 
-  return {
-    type: "release_schedule",
-    badge: "Release Schedule",
-    title: `${titleCase(sport)} Release Schedule`,
-    summary: `Showing upcoming ${sport} releases. Announced products without firm dates are listed after dated releases.`,
-    metadata: buildReleaseScheduleMetadata(rows),
-    rows,
-    isSportSpecific: true,
-    followups: buildOtherSportReleaseFollowups(sport).slice(0, 4)
-  };
-}
+    return {
+      type: "release_schedule",
+      badge: "Release Schedule",
+      title: `${titleCase(sport)} Release Schedule`,
+      summary: `Showing upcoming ${sport} releases. Announced products without firm dates are listed after dated releases.`,
+      metadata: buildReleaseScheduleMetadata(rows),
+      rows,
+      isSportSpecific: true,
+      followups: buildOtherSportReleaseFollowups(sport).slice(0, 4)
+    };
+  }
 
   rows = sortReleaseScheduleRows(rows).map(enrichReleaseRowForUi);
 
   return {
-  type: "release_schedule",
-  badge: "Release Schedule",
-  title: "Release Schedule",
-  summary: "Showing the full release schedule sorted by sport. Announced products without firm dates appear after dated releases within each sport.",
-  metadata: buildReleaseScheduleMetadata(rows),
-  rows,
-  isSportSpecific: false,
-  followups: [
+    type: "release_schedule",
+    badge: "Release Schedule",
+    title: "Release Schedule",
+    summary: "Showing the full release schedule sorted by sport. Announced products without firm dates appear after dated releases within each sport.",
+    metadata: buildReleaseScheduleMetadata(rows),
+    rows,
+    isSportSpecific: false,
+    followups: [
       "Show baseball release schedule",
       "Show football release schedule",
       "Show basketball release schedule",
@@ -1702,12 +1499,7 @@ async function buildPlayerChoiceResponse(playerReq) {
     fallbackYears = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
   }
 
-  const followups = buildPlayerFollowups(
-    playerReq.playerName,
-    fallbackYears,
-    true,
-    true
-  );
+  const followups = buildPlayerFollowups(playerReq.playerName, fallbackYears, true, true);
 
   pendingPlayerChoice = {
     ...playerReq,
@@ -1800,6 +1592,7 @@ async function buildPlayerChecklistResponse(playerReq) {
 
   const meta = getPlayerMetaEntry(playerReq.playerName);
   let fallbackYears = [];
+
   if (meta && Array.isArray(meta.checklist_years) && meta.checklist_years.length) {
     fallbackYears = meta.checklist_years.map(y =>
       typeof y === "object" && y !== null ? String(y.year || "").trim() : String(y || "").trim()
@@ -1825,9 +1618,8 @@ async function buildPlayerChecklistResponse(playerReq) {
   const rowCount = Array.isArray(data?.rows) ? data.rows.length : 0;
 
   let sectionLabel = "Checklist Info";
-  if (playerReq.code && playerReq.productName) {
-    sectionLabel = playerReq.productName;
-  } else if (playerReq.year) {
+  if (playerReq.code && playerReq.productName) sectionLabel = playerReq.productName;
+  else if (playerReq.year) {
     const matchYear = yearOptions.find(y => String(y.year) === String(playerReq.year));
     sectionLabel = matchYear ? matchYear.label : `${playerReq.year} Cards`;
   } else {
@@ -1864,9 +1656,7 @@ async function buildPlayerChecklistResponse(playerReq) {
 }
 
 async function buildPrintRunResponse(query) {
-  if (mentionsRestrictedPrintRunBrand(query)) {
-    return buildRestrictedBrandPrintRunResponse();
-  }
+  if (mentionsRestrictedPrintRunBrand(query)) return buildRestrictedBrandPrintRunResponse();
 
   const product =
     findBestProduct(getPrintRunIndex(), query, "print_run") ||
@@ -1886,6 +1676,7 @@ async function buildPrintRunResponse(query) {
   }
 
   const rawRows = await getPrintRunData(product.code, product.sport);
+
   if (!rawRows.length) {
     return {
       type: "standard",
@@ -1923,6 +1714,7 @@ async function buildChecklistSummaryResponse(query) {
 
   if (!product) {
     pendingChecklistChoice = null;
+
     return {
       type: "standard",
       badge: "Checklist",
@@ -1932,15 +1724,14 @@ async function buildChecklistSummaryResponse(query) {
   }
 
   const summary = await getChecklistSummary(product.code);
+
   pendingChecklistChoice = {
     product,
     summary
   };
 
   const directSection = detectChecklistSectionIntent(query);
-  if (directSection) {
-    return buildChecklistSectionResponse(directSection);
-  }
+  if (directSection) return buildChecklistSectionResponse(directSection);
 
   const countsLine = summarizeChecklistCounts(summary);
 
@@ -1959,7 +1750,7 @@ async function buildChecklistSummaryResponse(query) {
 }
 
 async function buildChecklistSectionResponse(sectionKey) {
-  if (!pendingChecklistChoice || !pendingChecklistChoice.product) {
+  if (!pendingChecklistChoice?.product) {
     return {
       type: "standard",
       badge: "Checklist",
@@ -1971,12 +1762,9 @@ async function buildChecklistSectionResponse(sectionKey) {
   const product = pendingChecklistChoice.product;
   const section = sectionKey || "all";
 
-  let data;
-  if (section === "parallels") {
-    data = await getChecklistParallels(product.code);
-  } else {
-    data = await getChecklistSection(product.code, section);
-  }
+  const data = section === "parallels"
+    ? await getChecklistParallels(product.code)
+    : await getChecklistSection(product.code, section);
 
   const formatted = formatChecklistTable(section, data);
 
@@ -2007,25 +1795,19 @@ async function buildSearchResponse(query) {
     return buildYearLineupResponse(extractYear(query), extractSport(query));
   }
 
-  if (isReleaseScheduleQuestion(query)) {
-    return buildReleaseScheduleResponse(query);
-  }
-
+  if (isReleaseScheduleQuestion(query)) return buildReleaseScheduleResponse(query);
   if (isCatalogCoverageQuestion(query)) return buildAskSportResponse();
   if (isPricingQuestion(query)) return buildPricingResponse();
   if (isDataSourceQuestion(query)) return buildDataSourceResponse();
 
   const playerReq = detectPlayerSearchRequest(query);
   if (playerReq) {
-    if (playerReq.mode === "player_product") {
-      prefetchPlayerData(playerReq);
-      return buildPlayerChecklistResponse(playerReq);
-    }
-    if (playerReq.mode === "player_year") {
-      prefetchPlayerData(playerReq);
-      return buildPlayerChecklistResponse(playerReq);
-    }
     prefetchPlayerData(playerReq);
+
+    if (playerReq.mode === "player_product" || playerReq.mode === "player_year") {
+      return buildPlayerChecklistResponse(playerReq);
+    }
+
     return buildPlayerChoiceResponse(playerReq);
   }
 
@@ -2045,17 +1827,29 @@ async function buildSearchResponse(query) {
     };
   }
 
-  if (matches.winner.code) {
-    if (matches.winner.score >= 50) {
-      prefetchChecklistData(matches.winner);
-      prefetchPrintRunData(matches.winner);
-    }
+  if (matches.winner.code && matches.winner.score >= 50) {
+    prefetchChecklistData(matches.winner);
+    prefetchPrintRunData(matches.winner);
   }
 
   return buildClarifyProductTypeResponse(matches.winner.name, query);
 }
 
 async function buildResponse(query) {
+  if (isDirectReleaseActionQuery(query)) {
+    const action = parseDirectReleaseActionQuery(query);
+
+    if (action.kind === "checklist") return buildDirectChecklistResponse(action);
+    if (action.kind === "print_run") return buildDirectPrintRunResponse(action);
+
+    return {
+      type: "standard",
+      badge: "Release Schedule",
+      title: "Action not available",
+      summary: "I could not open that release schedule action."
+    };
+  }
+
   if (awaitingCatalogSport && isOnlySportReply(query)) {
     return buildCatalogSportResponse(normalize(query));
   }
@@ -2126,10 +1920,15 @@ async function submitQuery(text) {
   const val = String(text || chatInput?.value || "").trim();
   if (!val) return;
 
-  addUserMessage(val);
+  if (isDirectReleaseActionQuery(val)) {
+    ui.addUserMessage(getDirectReleaseActionDisplayText(parseDirectReleaseActionQuery(val)));
+  } else {
+    ui.addUserMessage(val);
+  }
+
   if (chatInput) chatInput.value = "";
 
-  const loader = startLoadingBubble([
+  const loader = ui.startLoadingBubble([
     "Thinking...",
     "Finding match...",
     "Pulling Chasing Majors data...",
@@ -2143,22 +1942,24 @@ async function submitQuery(text) {
     loader.remove();
 
     if (res.type === "prv") {
-      window.CMChat.ui.addPrvResultCard(res);
+      ui.addPrvResultCard(res);
     } else if (res.type === "checklist_table") {
-      window.CMChat.ui.addChecklistResultCard(res);
+      ui.addChecklistResultCard(res);
     } else if (res.type === "player_stats") {
-      window.CMChat.ui.addPlayerStatsCard(res);
+      ui.addPlayerStatsCard(res);
     } else if (res.type === "release_schedule") {
-      window.CMChat.ui.addReleaseScheduleCard(res);
+      ui.addReleaseScheduleCard(res);
     } else {
-      window.CMChat.ui.addStandardAnswerCard(res);
+      ui.addStandardAnswerCard(res);
     }
 
     logEvent({
       app: "chat_demo",
       page: "fake_chatbot",
       event_type: "chat_query",
-      query: val,
+      query: isDirectReleaseActionQuery(val)
+        ? getDirectReleaseActionDisplayText(parseDirectReleaseActionQuery(val))
+        : val,
       selected_name: res.product?.name || res.title || "",
       selected_type:
         res.type === "prv" ? "Print Run" :
@@ -2176,7 +1977,7 @@ async function submitQuery(text) {
 
     loader.remove();
 
-    window.CMChat.ui.addStandardAnswerCard({
+    ui.addStandardAnswerCard({
       badge: "Error",
       title: "Something went wrong",
       summary: "The chat could not load data right now. Please try again."
@@ -2187,9 +1988,10 @@ async function submitQuery(text) {
 /* ------------------ INIT ------------------ */
 
 function initChat() {
-  renderExamples();
-  window.CMChat.ui.setSubmitHandler(submitQuery);
-  requestAnimationFrame(() => window.CMChat.ui.addWelcomeMessage(true));
+  ui.renderExamples(EXAMPLES);
+  ui.setSubmitHandler(submitQuery);
+
+  requestAnimationFrame(() => ui.addWelcomeMessage(true));
 
   bootstrapData().catch(err => console.warn("Bootstrap failed", err));
 
@@ -2198,7 +2000,7 @@ function initChat() {
     preloadReleaseScheduleInBackground();
   }, 0);
 
-  window.CMChat.ui.initJumpNav();
+  ui.initJumpNav();
 
   if (chatInput) chatInput.focus();
 }

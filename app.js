@@ -331,6 +331,8 @@ function isReleaseScheduleQuestion(query) {
   return (
     n.includes("release schedule") ||
     n.includes("release schedules") ||
+    n.includes("release calendar") ||
+    n.includes("release calendars") ||
     n.includes("upcoming releases") ||
     n.includes("upcoming products") ||
     n.includes("new products") ||
@@ -342,6 +344,13 @@ function isReleaseScheduleQuestion(query) {
     n.includes("what comes out") ||
     n.includes("what is coming out") ||
     n.includes("what's coming out") ||
+    n.includes("releasing soon") ||
+    n.includes("release date") ||
+    n.includes("when does") ||
+    n.includes("when is") ||
+    n.includes("when will") ||
+    n === "schedule" ||
+    n === "calendar" ||
     n.includes("upcoming baseball releases") ||
     n.includes("upcoming basketball releases") ||
     n.includes("upcoming football releases") ||
@@ -377,17 +386,30 @@ function filterReleaseScheduleRows(rows, query) {
 
   if (year) {
     filtered = filtered.filter(r => {
-      const rowYear = String(r.releaseDate || "").slice(0, 4);
-      return rowYear === String(year).slice(0, 4);
+      const releaseYear = String(r.releaseDate || "").slice(0, 4);
+      const setYear = String(extractYear(r.setName || r.product || "") || "").slice(0, 4);
+      return releaseYear === String(year).slice(0, 4) || setYear === String(year).slice(0, 4);
     });
   }
 
-  if (n.includes("upcoming") || n.includes("coming") || n.includes("new")) {
+  if (
+    n.includes("upcoming") ||
+    n.includes("coming") ||
+    n.includes("new") ||
+    n.includes("release schedule") ||
+    n.includes("release calendar") ||
+    n.includes("releasing soon") ||
+    n === "schedule" ||
+    n === "calendar"
+  ) {
     filtered = filtered.filter(r => {
       const status = normalize(r.status);
       return status === "upcoming" || status === "announced" || status === "scheduled" || !status;
     });
   }
+
+  return filtered;
+}
 
   filtered.sort((a, b) => {
     const ad = parseDateSafe(a.releaseDate);
@@ -474,6 +496,37 @@ function getProductsForSportYear(sport, year) {
   });
 
   return results.sort((a, b) => a.name.localeCompare(b.name));
+}
+/* ================== ADD YOUR NEW CODE RIGHT HERE ================== */
+
+const RELEASE_SPORT_ORDER = ["baseball", "football", "basketball", "soccer", "hockey"];
+
+function getReleaseSportRank(sport) {
+  const idx = RELEASE_SPORT_ORDER.indexOf(normalize(sport));
+  return idx === -1 ? 999 : idx;
+}
+
+function isAnnouncedReleaseValue(val) {
+  const n = normalize(val);
+  return !val || n === "announced" || n === "tbd" || n === "to be announced";
+}
+
+// ...rest of your block...
+
+function findBestReleaseRow(rows, query) {
+  let best = null;
+  let bestScore = -9999;
+
+  (rows || []).forEach(row => {
+    const score = scoreReleaseRowMatch(row, query);
+    if (score > bestScore) {
+      bestScore = score;
+      best = row;
+    }
+  });
+
+  if (!best || bestScore < 34) return null;
+  return { row: best, score: bestScore };
 }
 
 /* ------------------ UI ------------------ */
@@ -913,25 +966,36 @@ function addReleaseScheduleCard(result) {
     ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
     : "";
 
-  const bodyHtml = rows.map(r => `
-    <tr class="prv-chat-tr">
-      <td class="prv-chat-td">
-        <div class="prv-chat-cell-main">${escapeHtml(formatReleaseDate(r.releaseDate))}</div>
-      </td>
-      <td class="prv-chat-td">
-        <div class="prv-chat-cell-main">${escapeHtml(r.sport || "")}</div>
-      </td>
-      <td class="prv-chat-td">
-        <div class="prv-chat-cell-main">${escapeHtml(r.manufacturer || "")}</div>
-      </td>
-      <td class="prv-chat-td">
-        <div class="prv-chat-cell-main">${escapeHtml(r.setName || r.product || "")}</div>
-      </td>
-      <td class="prv-chat-td">
-        <div class="prv-chat-cell-main">${escapeHtml(r.status || "")}</div>
-      </td>
-    </tr>
-  `).join("");
+  const bodyHtml = rows.map(r => {
+    const sportLinksHtml = `
+      <div class="release-sport-wrap">
+        <span>${escapeHtml(r.sport || "")}</span>
+        ${(r.hasChecklist || r.hasVault) ? `
+          <div class="release-sport-links">
+            ${r.hasChecklist ? `<a class="release-sport-link" href="${escapeHtml(r.checklistUrl || "")}" aria-label="Open checklist">📋</a>` : ""}
+            ${r.hasVault ? `<a class="release-sport-link" href="${escapeHtml(r.vaultUrl || "")}" aria-label="Open vault">📦</a>` : ""}
+          </div>
+        ` : ""}
+      </div>
+    `;
+
+    return `
+      <tr class="prv-chat-tr">
+        <td class="prv-chat-td">
+          <div class="prv-chat-cell-main">${escapeHtml(formatReleaseDate(r.releaseDate))}</div>
+        </td>
+        <td class="prv-chat-td">
+          <div class="prv-chat-cell-main">${sportLinksHtml}</div>
+        </td>
+        <td class="prv-chat-td">
+          <div class="prv-chat-cell-main">${escapeHtml(r.setName || r.product || "")}</div>
+        </td>
+        <td class="prv-chat-td">
+          <div class="prv-chat-cell-main">${escapeHtml(r.status || "")}</div>
+        </td>
+      </tr>
+    `;
+  }).join("");
 
   const followupsHtml = followups.length
     ? `
@@ -953,7 +1017,7 @@ function addReleaseScheduleCard(result) {
           <div class="answer-badge">${escapeHtml(result.badge || "Release Schedule")}</div>
         </div>
 
-        <div class="prv-chat-title">${escapeHtml(result.title || "Upcoming Releases")}</div>
+        <div class="prv-chat-title">${escapeHtml(result.title || "Release Schedule")}</div>
         <div class="answer-summary" style="margin-bottom:14px;">${escapeHtml(result.summary || "")}</div>
 
         ${chipsHtml}
@@ -964,7 +1028,6 @@ function addReleaseScheduleCard(result) {
               <tr>
                 <th>Release Date</th>
                 <th>Sport</th>
-                <th>Brand</th>
                 <th>Product</th>
                 <th>Status</th>
               </tr>
@@ -1298,57 +1361,6 @@ function buildReleaseScheduleMetadata(rows) {
 }
 
 /* ------------------ RESPONSES ------------------ */
-
-async function buildReleaseScheduleResponse(query) {
-  await ensureReleaseScheduleLoaded();
-
-  const rows = filterReleaseScheduleRows(getReleaseScheduleData(), query).slice(0, 12);
-
-  pendingProductChoice = null;
-  pendingChecklistChoice = null;
-  pendingPlayerChoice = null;
-  awaitingCatalogSport = false;
-
-  if (!rows.length) {
-    return {
-      type: "standard",
-      badge: "Release Schedule",
-      title: "No matching releases found",
-      summary: "I could not find any matching release schedule results for that search.",
-      followups: [
-        "Show upcoming baseball releases",
-        "Show upcoming football releases",
-        "Show the release schedule"
-      ]
-    };
-  }
-
-  const nextRelease = rows[0];
-  const summaryBits = [
-    `Next up: ${nextRelease.setName || nextRelease.product || "Release"} on ${formatReleaseDate(nextRelease.releaseDate)}`
-  ];
-
-  if (nextRelease.status) summaryBits.push(`Status: ${nextRelease.status}`);
-
-  return {
-    type: "release_schedule",
-    badge: "Release Schedule",
-    title: "Upcoming Releases",
-    summary: summaryBits.join(" • "),
-    metadata: buildReleaseScheduleMetadata(rows),
-    rows,
-    followups: uniq(
-      rows.slice(0, 4).flatMap(r => {
-        const out = [];
-        if (r.setName) {
-          out.push(`Show me the ${r.setName} checklist`);
-          out.push(`Show me ${r.setName} print run`);
-        }
-        return out;
-      })
-    ).slice(0, 6)
-  };
-}
 
 async function buildTrendingResponse() {
   const rows = await getHomeFeed();

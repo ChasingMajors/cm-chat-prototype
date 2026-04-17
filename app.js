@@ -1489,21 +1489,22 @@ async function buildReleaseScheduleResponse(query) {
         };
       }
 
-      return {
-        type: "standard",
-        badge: "Release Date",
-        title: productName,
-        summary: `${productName} releases on ${formatReleaseDate(row.releaseDate)}.`,
-        metadata: uniq([
-          row.sport ? `Sport: ${titleCase(row.sport)}` : "",
-          row.status ? `Status: ${row.status}` : ""
-        ]),
-        followups: [
-          "Show the release schedule",
-          row.hasChecklist ? `Show me the ${productName} checklist` : "",
-          row.hasVault ? `Show me ${productName} print run` : ""
-        ].filter(Boolean)
-      };
+return {
+  type: "standard",
+  badge: "Release Date",
+  title: productName,
+  heroSummary: true,
+  summary: `${productName} is currently announced, but a firm release date has not been posted yet.`,
+  metadata: uniq([
+    row.sport ? `Sport: ${titleCase(row.sport)}` : "",
+    row.status ? `Status: ${row.status}` : ""
+  ]),
+  followups: [
+    "Show the release schedule",
+    row.hasChecklist ? `Show me the ${productName} checklist` : "",
+    row.hasVault ? `Show me ${productName} print run` : ""
+  ].filter(Boolean)
+};
     }
   }
 

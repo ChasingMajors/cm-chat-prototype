@@ -1515,6 +1515,7 @@ async function buildReleaseScheduleResponse(query) {
       badge: "Release Schedule",
       title: `${titleCase(sport)} Release Schedule`,
       summary: `Showing upcoming ${sport} releases. Announced products without firm dates are listed after dated releases.`,
+      isSportSpecific: true,
       metadata: buildReleaseScheduleMetadata(rows),
       rows,
       followups: buildOtherSportReleaseFollowups(sport).slice(0, 4)
@@ -1528,6 +1529,7 @@ async function buildReleaseScheduleResponse(query) {
     badge: "Release Schedule",
     title: "Release Schedule",
     summary: "Showing the full release schedule sorted by sport. Announced products without firm dates appear after dated releases within each sport.",
+    isSportSpecific: false,
     metadata: buildReleaseScheduleMetadata(rows),
     rows,
     followups: [

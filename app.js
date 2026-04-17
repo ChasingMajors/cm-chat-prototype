@@ -37,7 +37,6 @@ const {
   isLikelyPlayerNameToken,
   parseDateSafe,
   formatReleaseDate,
-  parseSerialNumber,
   getParallelRarityTag
 } = utils;
 
@@ -67,8 +66,7 @@ const {
   bootstrapData,
   ensurePlayerDataLoaded,
   ensureReleaseScheduleLoaded,
-  loadPlayerMeta,
-  loadPlayerStats
+  loadPlayerMeta
 } = store;
 
 const chatMessages = document.getElementById("chatMessages");
@@ -408,9 +406,6 @@ function filterReleaseScheduleRows(rows, query) {
     });
   }
 
-  return filtered;
-}
-
   filtered.sort((a, b) => {
     const ad = parseDateSafe(a.releaseDate);
     const bd = parseDateSafe(b.releaseDate);
@@ -497,7 +492,8 @@ function getProductsForSportYear(sport, year) {
 
   return results.sort((a, b) => a.name.localeCompare(b.name));
 }
-/* ================== ADD YOUR NEW CODE RIGHT HERE ================== */
+
+/* ------------------ RELEASE SCHEDULE HELPERS ------------------ */
 
 const RELEASE_SPORT_ORDER = ["baseball", "football", "basketball", "soccer", "hockey"];
 
@@ -511,7 +507,172 @@ function isAnnouncedReleaseValue(val) {
   return !val || n === "announced" || n === "tbd" || n === "to be announced";
 }
 
-// ...rest of your block...
+function isBroadReleaseScheduleQuery(query) {
+  const n = normalize(query);
+  return (
+    n.includes("release schedule") ||
+    n.includes("release schedules") ||
+    n.includes("release calendar") ||
+    n.includes("release calendars") ||
+    n.includes("upcoming releases") ||
+    n.includes("upcoming products") ||
+    n.includes("what releases are coming") ||
+    n.includes("what products are coming") ||
+    n.includes("what comes out") ||
+    n.includes("what is coming out") ||
+    n.includes("what's coming out") ||
+    n.includes("releasing soon") ||
+    n === "schedule" ||
+    n === "calendar"
+  );
+}
+
+function isSpecificReleaseDateQuestion(query) {
+  const n = normalize(query);
+  return (
+    n.includes("when does") ||
+    n.includes("when is") ||
+    n.includes("when will") ||
+    n.includes("release date") ||
+    n.includes("come out")
+  );
+}
+
+function stripReleaseQuestionWords(query) {
+  let out = normalize(query || "");
+
+  [
+    "when does",
+    "when is",
+    "when will",
+    "release date",
+    "come out",
+    "what is the release date for",
+    "what's the release date for",
+    "release schedule",
+    "release calendar",
+    "schedule",
+    "calendar",
+    "upcoming releases",
+    "upcoming products",
+    "releasing soon",
+    "what releases are coming",
+    "what products are coming"
+  ].forEach(p => {
+    out = out.replace(new RegExp(`\\b${p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
+  });
+
+  return out.replace(/\s+/g, " ").trim();
+}
+
+function buildOtherSportReleaseFollowups(currentSport) {
+  return RELEASE_SPORT_ORDER
+    .filter(s => s !== normalize(currentSport))
+    .map(s => `Show ${titleCase(s)} release schedule`);
+}
+
+function sortReleaseScheduleRows(rows, sportOnly = "") {
+  const sportFilter = normalize(sportOnly);
+
+  return [...(rows || [])].sort((a, b) => {
+    const aSport = normalize(a.sport);
+    const bSport = normalize(b.sport);
+
+    if (!sportFilter) {
+      const sportDiff = getReleaseSportRank(aSport) - getReleaseSportRank(bSport);
+      if (sportDiff !== 0) return sportDiff;
+    }
+
+    const aAnnounced = isAnnouncedReleaseValue(a.releaseDate);
+    const bAnnounced = isAnnouncedReleaseValue(b.releaseDate);
+
+    if (aAnnounced !== bAnnounced) {
+      return aAnnounced ? 1 : -1;
+    }
+
+    const aDate = parseDateSafe(a.releaseDate);
+    const bDate = parseDateSafe(b.releaseDate);
+
+    if (aDate && bDate) {
+      const diff = aDate - bDate;
+      if (diff !== 0) return diff;
+    }
+
+    const aName = normalize(a.setName || a.product);
+    const bName = normalize(b.setName || b.product);
+    return aName.localeCompare(bName);
+  });
+}
+
+function enrichReleaseRowForUi(row) {
+  const checklistMatch = findBestProduct(
+    getChecklistIndex(),
+    row.setName || row.product || "",
+    "checklist"
+  );
+
+  const vaultMatch = findBestProduct(
+    getPrintRunIndex(),
+    row.setName || row.product || "",
+    "print_run"
+  );
+
+  const hasChecklist = !!(checklistMatch && checklistMatch.score >= 40);
+  const hasVault = !!(vaultMatch && vaultMatch.score >= 40);
+
+  return {
+    ...row,
+    hasChecklist,
+    hasVault,
+    checklistUrl: hasChecklist
+      ? `/checklists/?q=${encodeURIComponent(checklistMatch.name || row.setName || row.product || "")}`
+      : "",
+    vaultUrl: hasVault
+      ? `/vault/?q=${encodeURIComponent(vaultMatch.name || row.setName || row.product || "")}`
+      : ""
+  };
+}
+
+function scoreReleaseRowMatch(row, query) {
+  const cleaned = stripReleaseQuestionWords(query);
+  if (!cleaned) return 0;
+
+  const qNorm = normalize(cleaned);
+  const qTokens = meaningfulTokens(qNorm);
+
+  const nameNorm = normalize(row.setName || row.product || "");
+  const haystack = normalize([
+    row.setName || "",
+    row.product || "",
+    row.manufacturer || "",
+    row.sport || "",
+    row.releaseDate || ""
+  ].join(" "));
+
+  let score = 0;
+
+  if (qNorm && nameNorm && qNorm.includes(nameNorm)) score += 120;
+  if (qNorm && nameNorm && nameNorm.includes(qNorm)) score += 80;
+  if (qNorm && haystack.includes(qNorm)) score += 45;
+
+  const rowTokens = new Set(meaningfulTokens(haystack));
+  let overlap = 0;
+
+  qTokens.forEach(t => {
+    if (rowTokens.has(t)) overlap += 1;
+  });
+
+  score += overlap * 14;
+
+  if (qTokens.length) {
+    score += Math.round((overlap / qTokens.length) * 35);
+  }
+
+  const sport = extractSport(query);
+  if (sport && normalize(row.sport) === sport) score += 10;
+
+  return score;
+}
 
 function findBestReleaseRow(rows, query) {
   let best = null;
@@ -746,17 +907,18 @@ function addPrvResultCard(result) {
   const chips = result.metadata || [];
   const followups = result.followups || [];
   let visibleCount = Math.min(8, rows.length);
-const insights = utils.buildPrintRunInsights(result.rawRows || []);
-  
+  const insights = utils.buildPrintRunInsights(result.rawRows || []);
+
   const buildRowsHtml = (list) => list.map(r => `
     <tr class="prv-chat-tr">
       <td class="prv-chat-td prv-chat-td-left">
         <div class="prv-chat-cell-main">${escapeHtml(r.label || "")}</div>
       </td>
-<td class="prv-chat-td prv-chat-td-right">
-  ${escapeHtml(r.value || "")}
-  ${r.rarity ? `<div class="prv-rarity">${escapeHtml(r.rarity)}</div>` : ""}
-</td>      <td class="prv-chat-td prv-chat-td-setsize">${escapeHtml(r.setSize || "")}</td>
+      <td class="prv-chat-td prv-chat-td-right">
+        ${escapeHtml(r.value || "")}
+        ${r.rarity ? `<div class="prv-rarity">${escapeHtml(r.rarity)}</div>` : ""}
+      </td>
+      <td class="prv-chat-td prv-chat-td-setsize">${escapeHtml(r.setSize || "")}</td>
     </tr>
   `).join("");
 
@@ -764,17 +926,17 @@ const insights = utils.buildPrintRunInsights(result.rawRows || []);
     ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
     : "";
 
-const insightsHtml = insights.length
-  ? `
-    <div class="prv-chat-insights">
-      <div class="prv-chat-insights-title">What this means</div>
-      <ul class="prv-chat-insights-list">
-        ${insights.map(i => `<li>${escapeHtml(i)}</li>`).join("")}
-      </ul>
-    </div>
-  `
-  : "";
-  
+  const insightsHtml = insights.length
+    ? `
+      <div class="prv-chat-insights">
+        <div class="prv-chat-insights-title">What this means</div>
+        <ul class="prv-chat-insights-list">
+          ${insights.map(i => `<li>${escapeHtml(i)}</li>`).join("")}
+        </ul>
+      </div>
+    `
+    : "";
+
   const followupsHtml = followups.length
     ? `
       <div class="answer-followups">
@@ -821,7 +983,9 @@ const insightsHtml = insights.length
             </button>
           </div>
         ` : ""}
-${insightsHtml}
+
+        ${insightsHtml}
+
         <div class="prv-chat-note">
           If you’re looking for serial numbered data ask to see serial numbered for a given set.
         </div>
@@ -867,42 +1031,43 @@ function addChecklistResultCard(result) {
   const headers = result.columns || ["Subset", "Card No.", "Player", "Team", "Tag"];
   const headHtml = headers.map(h => `<th>${escapeHtml(h)}</th>`).join("");
 
-const bodyHtml = rows.map(row => `
-  <tr class="prv-chat-tr">
-    ${(row.cells || []).map((cell, idx) => {
-      const isParallelSerialCell = result.sectionKey === "parallels" && idx === 2;
+  const bodyHtml = rows.map(row => `
+    <tr class="prv-chat-tr">
+      ${(row.cells || []).map((cell, idx) => {
+        const isParallelSerialCell = result.sectionKey === "parallels" && idx === 2;
 
-      if (isParallelSerialCell) {
+        if (isParallelSerialCell) {
+          return `
+            <td class="prv-chat-td prv-chat-td-checklist-last">
+              <div class="prv-chat-cell-main">${escapeHtml(cell || "")}</div>
+              ${row.rarity ? `<div class="prv-rarity">${escapeHtml(row.rarity)}</div>` : ""}
+            </td>
+          `;
+        }
+
         return `
-          <td class="prv-chat-td prv-chat-td-checklist-last">
+          <td class="prv-chat-td ${idx === row.cells.length - 1 ? "prv-chat-td-checklist-last" : ""}">
             <div class="prv-chat-cell-main">${escapeHtml(cell || "")}</div>
-            ${row.rarity ? `<div class="prv-rarity">${escapeHtml(row.rarity)}</div>` : ""}
           </td>
         `;
-      }
-
-      return `
-        <td class="prv-chat-td ${idx === row.cells.length - 1 ? "prv-chat-td-checklist-last" : ""}">
-          <div class="prv-chat-cell-main">${escapeHtml(cell || "")}</div>
-        </td>
-      `;
-    }).join("")}
-  </tr>
-`).join("");
+      }).join("")}
+    </tr>
+  `).join("");
 
   const chipsHtml = chips.length
     ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
     : "";
+
   const insightsHtml = insights.length
-  ? `
-    <div class="prv-chat-insights">
-      <div class="prv-chat-insights-title">What this means</div>
-      <ul class="prv-chat-insights-list">
-        ${insights.map(i => `<li>${escapeHtml(i)}</li>`).join("")}
-      </ul>
-    </div>
-  `
-  : "";
+    ? `
+      <div class="prv-chat-insights">
+        <div class="prv-chat-insights-title">What this means</div>
+        <ul class="prv-chat-insights-list">
+          ${insights.map(i => `<li>${escapeHtml(i)}</li>`).join("")}
+        </ul>
+      </div>
+    `
+    : "";
 
   const sectionOptions = (result.sectionOptions || [])
     .map(opt => `<button class="followup-btn" data-followup="${escapeHtml(opt)}">${escapeHtml(opt)}</button>`)
@@ -932,7 +1097,9 @@ const bodyHtml = rows.map(row => `
             </tbody>
           </table>
         </div>
-${insightsHtml}
+
+        ${insightsHtml}
+
         ${sectionOptions ? `
           <div class="answer-followups">
             <div class="followup-label">View another section</div>
@@ -948,97 +1115,6 @@ ${insightsHtml}
             </div>
           </div>
         ` : ""}
-      </div>
-    </div>
-  `;
-
-  const card = document.getElementById(cardId);
-  bindFollowups();
-  scrollNewCardToTop(card);
-}
-
-function addReleaseScheduleCard(result) {
-  const rows = result.rows || [];
-  const chips = result.metadata || [];
-  const followups = result.followups || [];
-
-  const chipsHtml = chips.length
-    ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
-    : "";
-
-  const bodyHtml = rows.map(r => {
-    const sportLinksHtml = `
-      <div class="release-sport-wrap">
-        <span>${escapeHtml(r.sport || "")}</span>
-        ${(r.hasChecklist || r.hasVault) ? `
-          <div class="release-sport-links">
-            ${r.hasChecklist ? `<a class="release-sport-link" href="${escapeHtml(r.checklistUrl || "")}" aria-label="Open checklist">📋</a>` : ""}
-            ${r.hasVault ? `<a class="release-sport-link" href="${escapeHtml(r.vaultUrl || "")}" aria-label="Open vault">📦</a>` : ""}
-          </div>
-        ` : ""}
-      </div>
-    `;
-
-    return `
-      <tr class="prv-chat-tr">
-        <td class="prv-chat-td">
-          <div class="prv-chat-cell-main">${escapeHtml(formatReleaseDate(r.releaseDate))}</div>
-        </td>
-        <td class="prv-chat-td">
-          <div class="prv-chat-cell-main">${sportLinksHtml}</div>
-        </td>
-        <td class="prv-chat-td">
-          <div class="prv-chat-cell-main">${escapeHtml(r.setName || r.product || "")}</div>
-        </td>
-        <td class="prv-chat-td">
-          <div class="prv-chat-cell-main">${escapeHtml(r.status || "")}</div>
-        </td>
-      </tr>
-    `;
-  }).join("");
-
-  const followupsHtml = followups.length
-    ? `
-      <div class="answer-followups">
-        <div class="followup-label">Try next</div>
-        <div class="followup-list">
-          ${followups.map(f => `<button class="followup-btn" data-followup="${escapeHtml(f)}">${escapeHtml(f)}</button>`).join("")}
-        </div>
-      </div>
-    `
-    : "";
-
-  const cardId = `release_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-
-  chatMessages.innerHTML += `
-    <div class="message-row assistant">
-      <div class="prv-chat-card" id="${cardId}">
-        <div class="prv-chat-topline">
-          <div class="answer-badge">${escapeHtml(result.badge || "Release Schedule")}</div>
-        </div>
-
-        <div class="prv-chat-title">${escapeHtml(result.title || "Release Schedule")}</div>
-        <div class="answer-summary" style="margin-bottom:14px;">${escapeHtml(result.summary || "")}</div>
-
-        ${chipsHtml}
-
-        <div class="prv-chat-table-wrap">
-          <table class="prv-chat-table checklist-chat-table">
-            <thead>
-              <tr>
-                <th>Release Date</th>
-                <th>Sport</th>
-                <th>Product</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${bodyHtml}
-            </tbody>
-          </table>
-        </div>
-
-        ${followupsHtml}
       </div>
     </div>
   `;
@@ -1351,16 +1427,118 @@ function formatChecklistTable(sectionKey, data) {
 
 function buildReleaseScheduleMetadata(rows) {
   const sports = uniq(rows.map(r => r.sport).filter(Boolean));
-  const manufacturers = uniq(rows.map(r => r.manufacturer).filter(Boolean));
 
   return uniq([
     `Releases: ${rows.length}`,
-    sports.length ? `Sports: ${sports.length}` : "",
-    manufacturers.length ? `Manufacturers: ${manufacturers.length}` : ""
+    sports.length ? `Sports: ${sports.length}` : ""
   ]);
 }
 
 /* ------------------ RESPONSES ------------------ */
+
+async function buildReleaseScheduleResponse(query) {
+  await ensureReleaseScheduleLoaded();
+
+  let rows = filterReleaseScheduleRows(getReleaseScheduleData(), query);
+
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
+  awaitingCatalogSport = false;
+
+  if (!rows.length) {
+    return {
+      type: "standard",
+      badge: "Release Schedule",
+      title: "No matching releases found",
+      summary: "I could not find any matching release schedule results for that search.",
+      followups: [
+        "Show baseball release schedule",
+        "Show football release schedule",
+        "Show the release schedule"
+      ]
+    };
+  }
+
+  const sport = extractSport(query);
+  const broadQuery = isBroadReleaseScheduleQuery(query);
+  const specificReleaseDate = isSpecificReleaseDateQuestion(query);
+
+  if (specificReleaseDate) {
+    const best = findBestReleaseRow(rows, query);
+
+    if (best && best.row) {
+      const row = enrichReleaseRowForUi(best.row);
+      const productName = row.setName || row.product || "That product";
+
+      if (isAnnouncedReleaseValue(row.releaseDate)) {
+        return {
+          type: "standard",
+          badge: "Release Date",
+          title: productName,
+          summary: `${productName} is currently announced, but a firm release date has not been posted yet.`,
+          metadata: uniq([
+            row.sport ? `Sport: ${titleCase(row.sport)}` : "",
+            row.status ? `Status: ${row.status}` : ""
+          ]),
+          followups: [
+            "Show the release schedule",
+            row.hasChecklist ? `Show me the ${productName} checklist` : "",
+            row.hasVault ? `Show me ${productName} print run` : ""
+          ].filter(Boolean)
+        };
+      }
+
+      return {
+        type: "standard",
+        badge: "Release Date",
+        title: productName,
+        summary: `${productName} releases on ${formatReleaseDate(row.releaseDate)}.`,
+        metadata: uniq([
+          row.sport ? `Sport: ${titleCase(row.sport)}` : "",
+          row.status ? `Status: ${row.status}` : ""
+        ]),
+        followups: [
+          "Show the release schedule",
+          row.hasChecklist ? `Show me the ${productName} checklist` : "",
+          row.hasVault ? `Show me ${productName} print run` : ""
+        ].filter(Boolean)
+      };
+    }
+  }
+
+  if (sport && !broadQuery) {
+    rows = sortReleaseScheduleRows(rows, sport).map(enrichReleaseRowForUi);
+
+    return {
+      type: "release_schedule",
+      badge: "Release Schedule",
+      title: `${titleCase(sport)} Release Schedule`,
+      summary: `Showing upcoming ${sport} releases. Announced products without firm dates are listed after dated releases.`,
+      metadata: buildReleaseScheduleMetadata(rows),
+      rows,
+      followups: buildOtherSportReleaseFollowups(sport).slice(0, 4)
+    };
+  }
+
+  rows = sortReleaseScheduleRows(rows).map(enrichReleaseRowForUi);
+
+  return {
+    type: "release_schedule",
+    badge: "Release Schedule",
+    title: "Release Schedule",
+    summary: "Showing the full release schedule sorted by sport. Announced products without firm dates appear after dated releases within each sport.",
+    metadata: buildReleaseScheduleMetadata(rows),
+    rows,
+    followups: [
+      "Show baseball release schedule",
+      "Show football release schedule",
+      "Show basketball release schedule",
+      "Show soccer release schedule",
+      "Show hockey release schedule"
+    ]
+  };
+}
 
 async function buildTrendingResponse() {
   const rows = await getHomeFeed();
@@ -1720,10 +1898,10 @@ async function buildPrintRunResponse(query) {
   }
 
   return {
-  type: "prv",
-  product,
-  rawRows: rawRows,
-  rows: buildPrvRows(rawRows),
+    type: "prv",
+    product,
+    rawRows,
+    rows: buildPrvRows(rawRows),
     metadata: buildPrvMetadata(product, rawRows),
     followups: [
       `Show me the ${product.name} checklist`,
@@ -1800,23 +1978,23 @@ async function buildChecklistSectionResponse(sectionKey) {
   const formatted = formatChecklistTable(section, data);
 
   return {
-  type: "checklist_table",
-  product,
-  sectionKey: section,
-  sectionLabel: CHECKLIST_SECTION_LABELS[section] || "Checklist",
-  rows: formatted.rows,
-  columns: formatted.columns,
-  metadata: uniq([
-    Array.isArray(data?.rows) ? `Rows: ${formatNumber(data.rows.length)}` : "",
-    product.year ? `Year: ${product.year}` : "",
-    product.sport ? `Sport: ${titleCase(product.sport)}` : ""
-  ]),
-  insights: section === "parallels" ? utils.buildParallelInsights(data?.rows || []) : [],
-  sectionOptions: checklistSectionOptionsFromSummary(pendingChecklistChoice.summary),
-  followups: [
-    `Show me ${product.name} print run`
-  ]
-};
+    type: "checklist_table",
+    product,
+    sectionKey: section,
+    sectionLabel: CHECKLIST_SECTION_LABELS[section] || "Checklist",
+    rows: formatted.rows,
+    columns: formatted.columns,
+    metadata: uniq([
+      Array.isArray(data?.rows) ? `Rows: ${formatNumber(data.rows.length)}` : "",
+      product.year ? `Year: ${product.year}` : "",
+      product.sport ? `Sport: ${titleCase(product.sport)}` : ""
+    ]),
+    insights: section === "parallels" ? utils.buildParallelInsights(data?.rows || []) : [],
+    sectionOptions: checklistSectionOptionsFromSummary(pendingChecklistChoice.summary),
+    followups: [
+      `Show me ${product.name} print run`
+    ]
+  };
 }
 
 async function buildSearchResponse(query) {
@@ -1961,17 +2139,17 @@ async function submitQuery(text) {
 
     loader.remove();
 
-   if (res.type === "prv") {
-  window.CMChat.ui.addPrvResultCard(res);
-} else if (res.type === "checklist_table") {
-  window.CMChat.ui.addChecklistResultCard(res);
-} else if (res.type === "player_stats") {
-  window.CMChat.ui.addPlayerStatsCard(res);
-} else if (res.type === "release_schedule") {
-  window.CMChat.ui.addReleaseScheduleCard(res);
-} else {
-  window.CMChat.ui.addStandardAnswerCard(res);
-}
+    if (res.type === "prv") {
+      window.CMChat.ui.addPrvResultCard(res);
+    } else if (res.type === "checklist_table") {
+      window.CMChat.ui.addChecklistResultCard(res);
+    } else if (res.type === "player_stats") {
+      window.CMChat.ui.addPlayerStatsCard(res);
+    } else if (res.type === "release_schedule") {
+      window.CMChat.ui.addReleaseScheduleCard(res);
+    } else {
+      window.CMChat.ui.addStandardAnswerCard(res);
+    }
 
     logEvent({
       app: "chat_demo",
@@ -1995,7 +2173,7 @@ async function submitQuery(text) {
 
     loader.remove();
 
-    addStandardAnswerCard({
+    window.CMChat.ui.addStandardAnswerCard({
       badge: "Error",
       title: "Something went wrong",
       summary: "The chat could not load data right now. Please try again."

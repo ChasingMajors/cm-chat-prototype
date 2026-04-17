@@ -709,30 +709,60 @@ window.CMChat.ui = window.CMChat.ui || {};
     const rows = result.rows || [];
     const chips = result.metadata || [];
     const followups = result.followups || [];
+    const isSportSpecific = !!result.isSportSpecific;
 
     const chipsHtml = chips.length
       ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
       : "";
 
-    const bodyHtml = rows.map(r => `
-      <tr class="prv-chat-tr">
-        <td class="prv-chat-td">
-          <div class="prv-chat-cell-main">${escapeHtml(formatReleaseDate(r.releaseDate))}</div>
-        </td>
-        <td class="prv-chat-td">
-          <div class="prv-chat-cell-main">${escapeHtml(r.sport || "")}</div>
-        </td>
-        <td class="prv-chat-td">
-          <div class="prv-chat-cell-main">${escapeHtml(r.manufacturer || "")}</div>
-        </td>
-        <td class="prv-chat-td">
-          <div class="prv-chat-cell-main">${escapeHtml(r.setName || r.product || "")}</div>
-        </td>
-        <td class="prv-chat-td">
-          <div class="prv-chat-cell-main">${escapeHtml(r.status || "")}</div>
-        </td>
-      </tr>
-    `).join("");
+    const bodyHtml = rows.map(r => {
+      const sportHtml = isSportSpecific
+        ? ""
+        : `
+          <td class="prv-chat-td">
+            <div class="prv-chat-cell-main">
+              <div class="release-sport-wrap">
+                <span>${escapeHtml(r.sport || "")}</span>
+                ${(r.hasChecklist || r.hasVault) ? `
+                  <div class="release-sport-links">
+                    ${r.hasChecklist ? `<a class="release-sport-link" href="${escapeHtml(r.checklistUrl || "")}" aria-label="Open checklist">📋</a>` : ""}
+                    ${r.hasVault ? `<a class="release-sport-link" href="${escapeHtml(r.vaultUrl || "")}" aria-label="Open vault">📦</a>` : ""}
+                  </div>
+                ` : ""}
+              </div>
+            </div>
+          </td>
+        `;
+
+      const productHtml = isSportSpecific
+        ? `
+          <div class="release-product-wrap">
+            <span>${escapeHtml(r.setName || r.product || "")}</span>
+            ${(r.hasChecklist || r.hasVault) ? `
+              <div class="release-sport-links">
+                ${r.hasChecklist ? `<a class="release-sport-link" href="${escapeHtml(r.checklistUrl || "")}" aria-label="Open checklist">📋</a>` : ""}
+                ${r.hasVault ? `<a class="release-sport-link" href="${escapeHtml(r.vaultUrl || "")}" aria-label="Open vault">📦</a>` : ""}
+              </div>
+            ` : ""}
+          </div>
+        `
+        : escapeHtml(r.setName || r.product || "");
+
+      return `
+        <tr class="prv-chat-tr">
+          <td class="prv-chat-td">
+            <div class="prv-chat-cell-main">${escapeHtml(formatReleaseDate(r.releaseDate))}</div>
+          </td>
+          ${sportHtml}
+          <td class="prv-chat-td">
+            <div class="prv-chat-cell-main">${productHtml}</div>
+          </td>
+          <td class="prv-chat-td">
+            <div class="prv-chat-cell-main">${escapeHtml(r.status || "")}</div>
+          </td>
+        </tr>
+      `;
+    }).join("");
 
     const followupsHtml = followups.length
       ? `
@@ -745,6 +775,23 @@ window.CMChat.ui = window.CMChat.ui || {};
       `
       : "";
 
+    const headHtml = isSportSpecific
+      ? `
+        <tr>
+          <th>Release Date</th>
+          <th>Product</th>
+          <th>Status</th>
+        </tr>
+      `
+      : `
+        <tr>
+          <th>Release Date</th>
+          <th>Sport</th>
+          <th>Product</th>
+          <th>Status</th>
+        </tr>
+      `;
+
     const cardId = `release_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
 
     chatMessages.innerHTML += `
@@ -754,7 +801,7 @@ window.CMChat.ui = window.CMChat.ui || {};
             <div class="answer-badge">${escapeHtml(result.badge || "Release Schedule")}</div>
           </div>
 
-          <div class="prv-chat-title">${escapeHtml(result.title || "Upcoming Releases")}</div>
+          <div class="prv-chat-title">${escapeHtml(result.title || "Release Schedule")}</div>
           <div class="answer-summary" style="margin-bottom:14px;">${escapeHtml(result.summary || "")}</div>
 
           ${chipsHtml}
@@ -762,13 +809,7 @@ window.CMChat.ui = window.CMChat.ui || {};
           <div class="prv-chat-table-wrap">
             <table class="prv-chat-table checklist-chat-table">
               <thead>
-                <tr>
-                  <th>Release Date</th>
-                  <th>Sport</th>
-                  <th>Brand</th>
-                  <th>Product</th>
-                  <th>Status</th>
-                </tr>
+                ${headHtml}
               </thead>
               <tbody>
                 ${bodyHtml}

@@ -1508,32 +1508,32 @@ return {
     }
   }
 
-  if (sport && !broadQuery) {
-    rows = sortReleaseScheduleRows(rows, sport).map(enrichReleaseRowForUi);
-
-    return {
-      type: "release_schedule",
-      badge: "Release Schedule",
-      title: `${titleCase(sport)} Release Schedule`,
-      summary: `Showing upcoming ${sport} releases. Announced products without firm dates are listed after dated releases.`,
-      isSportSpecific: true,
-      metadata: buildReleaseScheduleMetadata(rows),
-      rows,
-      followups: buildOtherSportReleaseFollowups(sport).slice(0, 4)
-    };
-  }
-
-  rows = sortReleaseScheduleRows(rows).map(enrichReleaseRowForUi);
+ if (sport && !broadQuery) {
+  rows = sortReleaseScheduleRows(rows, sport).map(enrichReleaseRowForUi);
 
   return {
     type: "release_schedule",
     badge: "Release Schedule",
-    title: "Release Schedule",
-    summary: "Showing the full release schedule sorted by sport. Announced products without firm dates appear after dated releases within each sport.",
-    isSportSpecific: false,
+    title: `${titleCase(sport)} Release Schedule`,
+    summary: `Showing upcoming ${sport} releases. Announced products without firm dates are listed after dated releases.`,
     metadata: buildReleaseScheduleMetadata(rows),
     rows,
-    followups: [
+    isSportSpecific: true,
+    followups: buildOtherSportReleaseFollowups(sport).slice(0, 4)
+  };
+}
+
+  rows = sortReleaseScheduleRows(rows).map(enrichReleaseRowForUi);
+
+  return {
+  type: "release_schedule",
+  badge: "Release Schedule",
+  title: "Release Schedule",
+  summary: "Showing the full release schedule sorted by sport. Announced products without firm dates appear after dated releases within each sport.",
+  metadata: buildReleaseScheduleMetadata(rows),
+  rows,
+  isSportSpecific: false,
+  followups: [
       "Show baseball release schedule",
       "Show football release schedule",
       "Show basketball release schedule",

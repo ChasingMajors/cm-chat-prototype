@@ -74,28 +74,6 @@ let pendingPlayerChoice = null;
 
 const RELEASE_SPORT_ORDER = ["baseball", "football", "basketball", "soccer", "hockey"];
 
-const GENERIC_PRODUCT_MATCH_TOKENS = new Set([
-  "topps",
-  "panini",
-  "upper",
-  "deck",
-  "leaf",
-  "bowman",
-  "baseball",
-  "football",
-  "basketball",
-  "hockey",
-  "soccer",
-  "cards",
-  "card",
-  "trading",
-  "checklist",
-  "print",
-  "run",
-  "release",
-  "schedule"
-]);
-
 function getChecklistIndex() {
   return store.checklistIndex || [];
 }
@@ -114,15 +92,23 @@ function isDirectReleaseActionQuery(query) {
   return String(query || "").startsWith("__release_action__|");
 }
 
+function safeDecodeComponent(value) {
+  try {
+    return decodeURIComponent(value || "");
+  } catch (err) {
+    return "";
+  }
+}
+
 function parseDirectReleaseActionQuery(query) {
   const raw = String(query || "");
   const parts = raw.split("|");
 
   return {
     kind: parts[1] || "",
-    name: decodeURIComponent(parts[2] || ""),
-    code: decodeURIComponent(parts[3] || ""),
-    sport: decodeURIComponent(parts[4] || "")
+    name: safeDecodeComponent(parts[2]),
+    code: safeDecodeComponent(parts[3]),
+    sport: safeDecodeComponent(parts[4])
   };
 }
 
@@ -166,13 +152,43 @@ async function buildDirectChecklistResponse(action) {
   }
 
   const indexedProduct = findProductByCode(getChecklistIndex(), product.code);
-  if (indexedProduct) {
-    product = {
-      ...indexedProduct,
-      name: action.name || indexedProduct.name,
-      sport: action.sport || indexedProduct.sport
+
+  if (!indexedProduct) {
+    pendingChecklistChoice = null;
+
+    return {
+      type: "standard",
+      badge: "Checklist",
+      title: "Checklist not available",
+      summary: "I could not verify that checklist from the release schedule."
     };
   }
+
+  if (action.name && normalize(action.name) !== normalize(indexedProduct.name)) {
+    pendingChecklistChoice = null;
+
+    return {
+      type: "standard",
+      badge: "Checklist",
+      title: "Checklist match needs review",
+      summary: "That release schedule shortcut pointed to a different checklist than expected, so I stopped before opening the wrong set."
+    };
+  }
+
+  product = {
+    ...indexedProduct,
+    name: indexedProduct.name,
+    sport: indexedProduct.sport
+  };
+
+  
+product = {
+  ...indexedProduct,
+  name: indexedProduct.name,
+  sport: indexedProduct.sport
+};
+
+
 
   const summary = await getChecklistSummary(product.code);
 
@@ -224,13 +240,50 @@ async function buildDirectPrintRunResponse(action) {
   }
 
   const indexedProduct = findProductByCode(getPrintRunIndex(), product.code);
-  if (indexedProduct) {
-    product = {
-      ...indexedProduct,
-      name: action.name || indexedProduct.name,
-      sport: action.sport || indexedProduct.sport
+
+  if (!indexedProduct) {
+    return {
+      type: "standard",
+      badge: "Print Run",
+      title: "Print run not available",
+      summary: "I could not verify that print run result from the release schedule."
     };
   }
+
+  if (action.name && normalize(action.name) !== normalize(indexedProduct.name)) {
+    return {
+      type: "standard",
+      badge: "Print Run",
+      title: "Print run match needs review",
+      summary: "That release schedule shortcut pointed to a different print run result than expected, so I stopped before opening the wrong set."
+    };
+  }
+
+  product = {
+    ...indexedProduct,
+    name: indexedProduct.name,
+    sport: indexedProduct.sport
+  };
+ };
+}
+
+if (action.name && normalize(action.name) !== normalize(indexedProduct.name)) {
+  return {
+    type: "standard",
+    badge: "Print Run",
+    title: "Print run match needs review",
+    summary: "That release schedule shortcut pointed to a different print run result than expected, so I stopped before opening the wrong set."
+  };
+}
+
+product = {
+  ...indexedProduct,
+  name: indexedProduct.name,
+  sport: indexedProduct.sport
+};
+sport: action.sport || indexedProduct.sport
+};
+
 
   const rawRows = await getPrintRunData(product.code, product.sport);
 
@@ -746,80 +799,62 @@ function sortReleaseScheduleRows(rows, sportOnly = "") {
   });
 }
 
-function specificProductTokens(text) {
-  return meaningfulTokens(text).filter(t => {
-    if (!t) return false;
-    if (/^(19|20)\d{2}$/.test(t)) return false;
-    return !GENERIC_PRODUCT_MATCH_TOKENS.has(t);
-  });
-}
+function findExactReleaseProduct(list, row) {
+  const releaseNames = uniq([
+    row.setName || "",
+    row.product || ""
+  ])
+    .map(v => String(v || "").trim())
+    .filter(Boolean);
 
-function findExactOrStrongReleaseProduct(list, row, targetIntent) {
-  const releaseName = row.setName || row.product || "";
-  const releaseNorm = normalize(releaseName);
+  if (!releaseNames.length) return null;
+
   const releaseSport = normalize(row.sport || "");
-  const releaseYear = extractYear(releaseName) || String(row.releaseDate || "").slice(0, 4);
+  const releaseYear =
+    extractYear(row.setName || row.product || "") ||
+    String(row.releaseDate || "").slice(0, 4);
 
-  if (!releaseNorm) return null;
+  const mapped = (list || [])
+    .map(mapProduct)
+    .filter(p => p.name && p.code);
 
-  const mapped = (list || []).map(mapProduct).filter(p => p.name && p.code);
+  for (const releaseName of releaseNames) {
+    const releaseNorm = normalize(releaseName);
 
-  const exact = mapped.find(p => {
-    if (normalize(p.name) !== releaseNorm) return false;
-    if (releaseSport && normalize(p.sport) && normalize(p.sport) !== releaseSport) return false;
-    if (releaseYear && String(p.year || "") && String(p.year || "") !== String(releaseYear)) return false;
-    return true;
-  });
+    const exact = mapped.find(product => {
+      const productNameNorm = normalize(product.name || "");
+      const productSport = normalize(product.sport || "");
+      const productYear = String(product.year || "").trim();
 
-  if (exact) return { ...exact, score: 999, matchType: "exact" };
+      if (productNameNorm !== releaseNorm) return false;
+      if (releaseSport && productSport && productSport !== releaseSport) return false;
+      if (releaseYear && productYear && productYear !== String(releaseYear)) return false;
 
-  const releaseTokens = specificProductTokens(releaseName);
-  if (!releaseTokens.length) return null;
+      return true;
+    });
 
-  let best = null;
-  let bestScore = -9999;
-
-  mapped.forEach(product => {
-    if (releaseSport && normalize(product.sport) && normalize(product.sport) !== releaseSport) return;
-    if (releaseYear && String(product.year || "") && String(product.year || "") !== String(releaseYear)) return;
-
-    const productTokenSet = new Set([
-      ...meaningfulTokens(product.name),
-      ...meaningfulTokens(product.keywords),
-      ...meaningfulTokens(product.code)
-    ]);
-
-    const requiredMatches = releaseTokens.filter(t => productTokenSet.has(t)).length;
-    if (requiredMatches !== releaseTokens.length) return;
-
-    const score = scoreProduct(product.raw || product, releaseName, targetIntent);
-
-    if (score > bestScore) {
-      bestScore = score;
-      best = product;
+    if (exact) {
+      return {
+        ...exact,
+        score: 999,
+        matchType: "exact"
+      };
     }
-  });
+  }
 
-  if (!best || bestScore < 80) return null;
-
-  return {
-    ...best,
-    score: bestScore,
-    matchType: "strong"
-  };
+  return null;
 }
+
 
 function enrichReleaseRowForUi(row) {
-  const checklistMatch = findExactOrStrongReleaseProduct(
+  const checklistMatch = findExactReleaseProduct(
     getChecklistIndex(),
-    row,
-    "checklist"
+    row
   );
 
-  const vaultMatch = findExactOrStrongReleaseProduct(
+  const vaultMatch = findExactReleaseProduct(
     getPrintRunIndex(),
-    row,
-    "print_run"
+    row
   );
 
   const hasChecklist = !!checklistMatch;
@@ -846,6 +881,7 @@ function enrichReleaseRowForUi(row) {
       : ""
   };
 }
+
 
 function scoreReleaseRowMatch(row, query) {
   const cleaned = stripReleaseQuestionWords(query);

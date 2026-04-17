@@ -1494,7 +1494,7 @@ return {
   badge: "Release Date",
   title: productName,
   heroSummary: true,
-  summary: `${productName} is currently announced, but a firm release date has not been posted yet.`,
+  summary: `${productName} releases on ${formatReleaseDate(row.releaseDate)}.`,
   metadata: uniq([
     row.sport ? `Sport: ${titleCase(row.sport)}` : "",
     row.status ? `Status: ${row.status}` : ""
@@ -1508,7 +1508,7 @@ return {
     }
   }
 
- if (sport && !broadQuery) {
+if (sport) {
   rows = sortReleaseScheduleRows(rows, sport).map(enrichReleaseRowForUi);
 
   return {

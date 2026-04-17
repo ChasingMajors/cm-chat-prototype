@@ -362,7 +362,7 @@ window.CMChat.ui = window.CMChat.ui || {};
         <div class="answer-card" id="${cardId}">
           <div class="answer-badge">${escapeHtml(r.badge || "Answer")}</div>
           <div class="answer-title">${escapeHtml(r.title || "Result")}</div>
-          <div class="answer-summary">${escapeHtml(r.summary || "")}</div>
+          <div class="answer-summary ${r.heroSummary ? "answer-summary-hero" : ""}">${escapeHtml(r.summary || "")}</div>
           ${metaHtml}
           ${followupsHtml}
         </div>
@@ -702,131 +702,132 @@ window.CMChat.ui = window.CMChat.ui || {};
     scrollNewCardToTop(card);
   }
 
-  function addReleaseScheduleCard(result) {
-    const chatMessages = getChatMessages();
-    if (!chatMessages) return;
+function addReleaseScheduleCard(result) {
+  const chatMessages = getChatMessages();
+  if (!chatMessages) return;
 
-    const rows = result.rows || [];
-    const chips = result.metadata || [];
-    const followups = result.followups || [];
-    const isSportSpecific = !!result.isSportSpecific;
+  const rows = result.rows || [];
+  const chips = result.metadata || [];
+  const followups = result.followups || [];
+  const isSportSpecific = !!result.isSportSpecific;
 
-    const chipsHtml = chips.length
-      ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
+  const chipsHtml = chips.length
+    ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
+    : "";
+
+  const bodyHtml = rows.map(r => {
+    const checklistQuery = r.setName || r.product || "";
+    const vaultQuery = r.setName || r.product || "";
+
+    const iconHtml = (r.hasChecklist || r.hasVault)
+      ? `
+        <div class="release-sport-links">
+          ${r.hasChecklist ? `
+            <button
+              type="button"
+              class="release-sport-link"
+              data-release-query="${escapeHtml(`Show me the ${checklistQuery} checklist`)}"
+              title="Open checklist in chat"
+              aria-label="Open checklist in chat"
+            >📋</button>
+          ` : ""}
+          ${r.hasVault ? `
+            <button
+              type="button"
+              class="release-sport-link"
+              data-release-query="${escapeHtml(`Show me ${vaultQuery} print run`)}"
+              title="Open print run in chat"
+              aria-label="Open print run in chat"
+            >📦</button>
+          ` : ""}
+        </div>
+      `
       : "";
 
-    const bodyHtml = rows.map(r => {
-      const sportHtml = isSportSpecific
-        ? ""
-        : `
+    return `
+      <tr class="prv-chat-tr">
+        <td class="prv-chat-td">
+          <div class="prv-chat-cell-main">${escapeHtml(formatReleaseDate(r.releaseDate))}</div>
+        </td>
+
+        ${isSportSpecific ? "" : `
           <td class="prv-chat-td">
-            <div class="prv-chat-cell-main">
-              <div class="release-sport-wrap">
-                <span>${escapeHtml(r.sport || "")}</span>
-                ${(r.hasChecklist || r.hasVault) ? `
-                  <div class="release-sport-links">
-                    ${r.hasChecklist ? `<a class="release-sport-link" href="${escapeHtml(r.checklistUrl || "")}" aria-label="Open checklist">📋</a>` : ""}
-                    ${r.hasVault ? `<a class="release-sport-link" href="${escapeHtml(r.vaultUrl || "")}" aria-label="Open vault">📦</a>` : ""}
-                  </div>
-                ` : ""}
-              </div>
+            <div class="release-sport-wrap">
+              <div class="prv-chat-cell-main">${escapeHtml(r.sport || "")}</div>
+              ${iconHtml}
             </div>
           </td>
-        `;
+        `}
 
-      const productHtml = isSportSpecific
-        ? `
-          <div class="release-product-wrap">
-            <span>${escapeHtml(r.setName || r.product || "")}</span>
-            ${(r.hasChecklist || r.hasVault) ? `
-              <div class="release-sport-links">
-                ${r.hasChecklist ? `<a class="release-sport-link" href="${escapeHtml(r.checklistUrl || "")}" aria-label="Open checklist">📋</a>` : ""}
-                ${r.hasVault ? `<a class="release-sport-link" href="${escapeHtml(r.vaultUrl || "")}" aria-label="Open vault">📦</a>` : ""}
-              </div>
-            ` : ""}
-          </div>
-        `
-        : escapeHtml(r.setName || r.product || "");
+        <td class="prv-chat-td">
+          <div class="prv-chat-cell-main">${escapeHtml(r.setName || r.product || "")}</div>
+        </td>
 
-      return `
-        <tr class="prv-chat-tr">
-          <td class="prv-chat-td">
-            <div class="prv-chat-cell-main">${escapeHtml(formatReleaseDate(r.releaseDate))}</div>
-          </td>
-          ${sportHtml}
-          <td class="prv-chat-td">
-            <div class="prv-chat-cell-main">${productHtml}</div>
-          </td>
-          <td class="prv-chat-td">
-            <div class="prv-chat-cell-main">${escapeHtml(r.status || "")}</div>
-          </td>
-        </tr>
-      `;
-    }).join("");
+        <td class="prv-chat-td">
+          <div class="prv-chat-cell-main">${escapeHtml(r.status || "")}</div>
+        </td>
+      </tr>
+    `;
+  }).join("");
 
-    const followupsHtml = followups.length
-      ? `
-        <div class="answer-followups">
-          <div class="followup-label">Try next</div>
-          <div class="followup-list">
-            ${followups.map(f => `<button class="followup-btn" data-followup="${escapeHtml(f)}">${escapeHtml(f)}</button>`).join("")}
-          </div>
-        </div>
-      `
-      : "";
-
-    const headHtml = isSportSpecific
-      ? `
-        <tr>
-          <th>Release Date</th>
-          <th>Product</th>
-          <th>Status</th>
-        </tr>
-      `
-      : `
-        <tr>
-          <th>Release Date</th>
-          <th>Sport</th>
-          <th>Product</th>
-          <th>Status</th>
-        </tr>
-      `;
-
-    const cardId = `release_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-
-    chatMessages.innerHTML += `
-      <div class="message-row assistant">
-        <div class="prv-chat-card" id="${cardId}">
-          <div class="prv-chat-topline">
-            <div class="answer-badge">${escapeHtml(result.badge || "Release Schedule")}</div>
-          </div>
-
-          <div class="prv-chat-title">${escapeHtml(result.title || "Release Schedule")}</div>
-          <div class="answer-summary" style="margin-bottom:14px;">${escapeHtml(result.summary || "")}</div>
-
-          ${chipsHtml}
-
-          <div class="prv-chat-table-wrap">
-            <table class="prv-chat-table checklist-chat-table">
-              <thead>
-                ${headHtml}
-              </thead>
-              <tbody>
-                ${bodyHtml}
-              </tbody>
-            </table>
-          </div>
-
-          ${followupsHtml}
+  const followupsHtml = followups.length
+    ? `
+      <div class="answer-followups">
+        <div class="followup-label">Try next</div>
+        <div class="followup-list">
+          ${followups.map(f => `<button class="followup-btn" data-followup="${escapeHtml(f)}">${escapeHtml(f)}</button>`).join("")}
         </div>
       </div>
-    `;
+    `
+    : "";
 
-    const card = document.getElementById(cardId);
-    setLatestResultCard(card);
-    bindFollowups();
-    scrollNewCardToTop(card);
+  const cardId = `release_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+
+  chatMessages.innerHTML += `
+    <div class="message-row assistant">
+      <div class="prv-chat-card" id="${cardId}">
+        <div class="prv-chat-topline">
+          <div class="answer-badge">${escapeHtml(result.badge || "Release Schedule")}</div>
+        </div>
+
+        <div class="prv-chat-title">${escapeHtml(result.title || "Release Schedule")}</div>
+        <div class="answer-summary" style="margin-bottom:14px;">${escapeHtml(result.summary || "")}</div>
+
+        ${chipsHtml}
+
+        <div class="prv-chat-table-wrap">
+          <table class="prv-chat-table checklist-chat-table release-schedule-table">
+            <thead>
+              <tr>
+                <th>Release Date</th>
+                ${isSportSpecific ? "" : "<th>Sport</th>"}
+                <th>Product</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${bodyHtml}
+            </tbody>
+          </table>
+        </div>
+
+        ${followupsHtml}
+      </div>
+    </div>
+  `;
+
+  const card = document.getElementById(cardId);
+
+  if (card) {
+    card.querySelectorAll("[data-release-query]").forEach(btn => {
+      btn.onclick = () => runSubmit(btn.dataset.releaseQuery);
+    });
   }
+
+  setLatestResultCard(card);
+  bindFollowups();
+  scrollNewCardToTop(card);
+}
 
   ns.setSubmitHandler = setSubmitHandler;
   ns.renderExamples = renderExamples;

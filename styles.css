@@ -822,3 +822,38 @@ body{
   height:0;
   display:none;
 }
+
+
+.release-sport-wrap{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.release-sport-links{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+
+.release-sport-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:26px;
+  height:26px;
+  border-radius:999px;
+  text-decoration:none;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.10);
+  font-size:13px;
+  line-height:1;
+  transition:transform 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+
+.release-sport-link:hover{
+  transform:translateY(-1px);
+  background:rgba(255,255,255,0.10);
+  border-color:rgba(255,255,255,0.18);
+}

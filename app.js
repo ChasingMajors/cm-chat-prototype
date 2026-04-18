@@ -446,6 +446,22 @@ function getPlayerCardRowCount(meta) {
   return Number(meta?.card_row_count || meta?.row_count || 0) || 0;
 }
 
+function isSoloPlayerDisplayName(name) {
+  const raw = String(name || "").trim();
+  const n = normalize(raw);
+  if (!raw || !n) return false;
+
+  if (/[\/&]/.test(raw)) return false;
+  if (/\b(and|with|vs|versus)\b/i.test(raw)) return false;
+
+  const words = raw
+    .replace(/[."']/g, "")
+    .split(/\s+/)
+    .filter(Boolean);
+
+  return words.length >= 2 && words.length <= 4;
+}
+
 function editDistance(a, b) {
   const left = String(a || "");
   const right = String(b || "");
@@ -476,6 +492,7 @@ function scorePlayerMetaOption(meta, playerQuery) {
   const nameTokens = tokenize(display);
 
   if (!display || !qTokens.length || !nameTokens.length) return null;
+  if (!isSoloPlayerDisplayName(display)) return null;
 
   let score = 0;
   const qNorm = normalize(playerQuery);
@@ -563,6 +580,18 @@ async function getPlayerMatchClarification(playerReq) {
 
   const options = await getPlayerMatchOptions(playerReq.playerName, playerReq.sport || "baseball");
   return shouldClarifyPlayerMatch(playerReq.playerName, options) ? options : null;
+}
+
+function resolvePlayerRequestFromOptions(playerReq, options) {
+  const qTokens = tokenize(playerReq?.playerName || "");
+  if (!playerReq || qTokens.length !== 1 || !Array.isArray(options) || !options.length) {
+    return playerReq;
+  }
+
+  return {
+    ...playerReq,
+    playerName: options[0].playerName || playerReq.playerName
+  };
 }
 
 function extractNumberedThreshold(query) {
@@ -2754,16 +2783,22 @@ async function buildSearchResponse(query) {
 
   const numberedReq = detectNumberedPlayerSearchRequest(query);
   if (numberedReq) {
-    const playerClarification = await getPlayerMatchClarification(numberedReq);
+    const playerOptions = await getPlayerMatchOptions(numberedReq.playerName, numberedReq.sport || "baseball");
+    const playerClarification = shouldClarifyPlayerMatch(numberedReq.playerName, playerOptions)
+      ? playerOptions
+      : null;
+
     if (playerClarification) {
       return buildPlayerMatchClarifyResponse("numbered", numberedReq, playerClarification);
     }
 
-    if (!numberedReq.year) {
-      return buildPlayerSerialYearChoiceResponse(numberedReq);
+    const resolvedNumberedReq = resolvePlayerRequestFromOptions(numberedReq, playerOptions);
+
+    if (!resolvedNumberedReq.year) {
+      return buildPlayerSerialYearChoiceResponse(resolvedNumberedReq);
     }
 
-    return buildPlayerSerialCardsResponse(numberedReq);
+    return buildPlayerSerialCardsResponse(resolvedNumberedReq);
   }
 
   const productNumberedReq = detectProductNumberedRequest(query);
@@ -2777,18 +2812,24 @@ async function buildSearchResponse(query) {
 
   const playerReq = detectPlayerSearchRequest(query);
   if (playerReq) {
-    const playerClarification = await getPlayerMatchClarification(playerReq);
+    const playerOptions = await getPlayerMatchOptions(playerReq.playerName, playerReq.sport || "baseball");
+    const playerClarification = shouldClarifyPlayerMatch(playerReq.playerName, playerOptions)
+      ? playerOptions
+      : null;
+
     if (playerClarification) {
       return buildPlayerMatchClarifyResponse("player", playerReq, playerClarification);
     }
 
-    prefetchPlayerData(playerReq);
+    const resolvedPlayerReq = resolvePlayerRequestFromOptions(playerReq, playerOptions);
 
-    if (playerReq.mode === "player_product" || playerReq.mode === "player_year") {
-      return buildPlayerChecklistResponse(playerReq);
+    prefetchPlayerData(resolvedPlayerReq);
+
+    if (resolvedPlayerReq.mode === "player_product" || resolvedPlayerReq.mode === "player_year") {
+      return buildPlayerChecklistResponse(resolvedPlayerReq);
     }
 
-    return buildPlayerChoiceResponse(playerReq);
+    return buildPlayerChoiceResponse(resolvedPlayerReq);
   }
 
   const matches = getCombinedBestMatches(query);

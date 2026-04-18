@@ -2605,6 +2605,7 @@ async function buildPlayerParallelFilterResponse(playerReq, data, sourceRows, co
   const matches = [];
   const productCache = new Map();
   const parallelCache = new Map();
+  const rowsByProduct = new Map();
 
   for (const row of sourceRows) {
     const year = getRowCell(row, columns, "Year") || playerReq.year || "";
@@ -2617,39 +2618,65 @@ async function buildPlayerParallelFilterResponse(playerReq, data, sourceRows, co
     if (!productName) continue;
 
     const productKey = `${normalize(productName)}|${year}`;
-    if (!productCache.has(productKey)) {
-      productCache.set(productKey, findChecklistProductByNameYear(productName, year));
-    }
+    if (!rowsByProduct.has(productKey)) rowsByProduct.set(productKey, []);
+    rowsByProduct.get(productKey).push({ year, productName, subset, cardNo, player, team });
+  }
 
+  for (const [productKey, productRows] of rowsByProduct.entries()) {
+    const sample = productRows[0] || {};
+
+    if (!productCache.has(productKey)) {
+      productCache.set(productKey, findChecklistProductByNameYear(sample.productName, sample.year));
+    }
+  }
+
+  const productsToLoad = uniq(
+    [...productCache.values()]
+      .filter(product => product?.code)
+      .map(product => product.code)
+  );
+
+  await Promise.all(productsToLoad.map(async code => {
+    try {
+      parallelCache.set(code, await getChecklistParallels(code));
+    } catch (err) {
+      console.warn("Parallel lookup failed", code, err);
+      parallelCache.set(code, { rows: [] });
+    }
+  }));
+
+  for (const [productKey, productRows] of rowsByProduct.entries()) {
     const product = productCache.get(productKey);
     if (!product?.code) continue;
-
-    if (!parallelCache.has(product.code)) {
-      parallelCache.set(product.code, await getChecklistParallels(product.code));
-    }
 
     const parallelRows = Array.isArray(parallelCache.get(product.code)?.rows)
       ? parallelCache.get(product.code).rows
       : [];
 
-    parallelRows.forEach(parallelRow => {
-      const appliesTo = Array.isArray(parallelRow) ? (parallelRow[0] || "") : (parallelRow.applies_to || "");
-      const parallelName = Array.isArray(parallelRow) ? (parallelRow[1] || "") : (parallelRow.parallel_name || "");
-      const serialNo = Array.isArray(parallelRow) ? (parallelRow[2] || "") : (parallelRow.serial_no || "");
+    const matchingParallelRows = parallelRows
+      .map(parallelRow => {
+        const appliesTo = Array.isArray(parallelRow) ? (parallelRow[0] || "") : (parallelRow.applies_to || "");
+        const parallelName = Array.isArray(parallelRow) ? (parallelRow[1] || "") : (parallelRow.parallel_name || "");
+        const serialNo = Array.isArray(parallelRow) ? (parallelRow[2] || "") : (parallelRow.serial_no || "");
+        return { appliesTo, parallelName, serialNo };
+      })
+      .filter(parallelRow => rowMatchesPlayerFilter([parallelRow.parallelName, parallelRow.serialNo], filter));
 
-      if (!rowMatchesPlayerFilter([parallelName, serialNo], filter)) return;
-      if (!parallelAppliesToPlayerSubset(appliesTo, subset)) return;
+    productRows.forEach(playerRow => {
+      matchingParallelRows.forEach(parallelRow => {
+        if (!parallelAppliesToPlayerSubset(parallelRow.appliesTo, playerRow.subset)) return;
 
-      matches.push([
-        year,
-        productName,
-        subset,
-        cardNo,
-        player,
-        team,
-        parallelName,
-        serialNo
-      ]);
+        matches.push([
+          playerRow.year,
+          playerRow.productName,
+          playerRow.subset,
+          playerRow.cardNo,
+          playerRow.player,
+          playerRow.team,
+          parallelRow.parallelName,
+          parallelRow.serialNo
+        ]);
+      });
     });
   }
 
@@ -2683,7 +2710,7 @@ async function buildPlayerParallelFilterResponse(playerReq, data, sourceRows, co
     type: "checklist_table",
     badge: filter.label,
     product: { name: playerReq.playerName },
-    sectionKey: "player",
+    sectionKey: "player_parallel",
     sectionLabel: [
       playerReq.year || "",
       filter.label

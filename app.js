@@ -47,6 +47,7 @@ const {
   getChecklistSection,
   getChecklistParallels,
   getPlayerCards,
+  getAdvancedPlayerSerialCards,
   getPlayerYears
 } = api;
 
@@ -71,6 +72,7 @@ let awaitingCatalogSport = false;
 let pendingProductChoice = null;
 let pendingChecklistChoice = null;
 let pendingPlayerChoice = null;
+let pendingNumberedChoice = null;
 
 const RELEASE_SPORT_ORDER = ["baseball", "football", "basketball", "soccer", "hockey"];
 
@@ -139,6 +141,7 @@ async function buildDirectChecklistResponse(action) {
   awaitingCatalogSport = false;
   pendingProductChoice = null;
   pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
 
   if (!product.code) {
     pendingChecklistChoice = null;
@@ -181,15 +184,6 @@ async function buildDirectChecklistResponse(action) {
     sport: indexedProduct.sport
   };
 
-  
-product = {
-  ...indexedProduct,
-  name: indexedProduct.name,
-  sport: indexedProduct.sport
-};
-
-
-
   const summary = await getChecklistSummary(product.code);
 
   product.name = product.name || summary.name || "";
@@ -229,6 +223,7 @@ async function buildDirectPrintRunResponse(action) {
   pendingProductChoice = null;
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
 
   if (!product.code) {
     return {
@@ -264,26 +259,6 @@ async function buildDirectPrintRunResponse(action) {
     name: indexedProduct.name,
     sport: indexedProduct.sport
   };
- };
-}
-
-if (action.name && normalize(action.name) !== normalize(indexedProduct.name)) {
-  return {
-    type: "standard",
-    badge: "Print Run",
-    title: "Print run match needs review",
-    summary: "That release schedule shortcut pointed to a different print run result than expected, so I stopped before opening the wrong set."
-  };
-}
-
-product = {
-  ...indexedProduct,
-  name: indexedProduct.name,
-  sport: indexedProduct.sport
-};
-sport: action.sport || indexedProduct.sport
-};
-
 
   const rawRows = await getPrintRunData(product.code, product.sport);
 
@@ -448,6 +423,122 @@ function detectPlayerSearchRequest(query) {
     productName: "",
     mode: "player_only"
   };
+}
+
+function extractNumberedThreshold(query) {
+  const n = normalize(query);
+
+  const strictMatch = n.match(/\b(?:under|less than|below|lower than)\s*\/?\s*(\d{1,4})\b/);
+  if (strictMatch) {
+    const num = Number(strictMatch[1]);
+    return Number.isFinite(num) && num > 1 ? num - 1 : null;
+  }
+
+  const inclusiveMatch = n.match(/\b(?:at most|max|maximum|up to|or less|and less)\s*\/?\s*(\d{1,4})\b/);
+  if (inclusiveMatch) {
+    const num = Number(inclusiveMatch[1]);
+    return Number.isFinite(num) && num > 0 ? num : null;
+  }
+
+  const slashMatch = String(query || "").match(/\/\s*(\d{1,4})\b/);
+  if (slashMatch) {
+    const num = Number(slashMatch[1]);
+    return Number.isFinite(num) && num > 0 ? num : null;
+  }
+
+  if (
+    n.includes("low print run") ||
+    n.includes("low numbered") ||
+    n.includes("low serial") ||
+    n.includes("short print") ||
+    n.includes("ssp")
+  ) {
+    return 100;
+  }
+
+  return null;
+}
+
+function isNumberedSearchQuery(query) {
+  const n = normalize(query);
+
+  return (
+    n.includes("serial numbered") ||
+    n.includes("serial-numbered") ||
+    n.includes("serial number") ||
+    n.includes("numbered under") ||
+    n.includes("numbered less than") ||
+    n.includes("numbered below") ||
+    n.includes("numbered /") ||
+    n.includes("low numbered") ||
+    n.includes("low serial") ||
+    n.includes("short print") ||
+    n.includes("ssp") ||
+    /\bnumbered\s+\d{1,4}\b/.test(n) ||
+    /\/\s*\d{1,4}\b/.test(String(query || ""))
+  );
+}
+
+function stripNumberedSearchWords(query) {
+  let out = normalize(query || "");
+
+  [
+    "serial numbered",
+    "serial-numbered",
+    "serial number",
+    "serial numbers",
+    "serial",
+    "numbered",
+    "number",
+    "numbers",
+    "low print run",
+    "print run",
+    "low numbered",
+    "low serial",
+    "short print",
+    "ssp",
+    "under",
+    "less than",
+    "below",
+    "lower than",
+    "at most",
+    "maximum",
+    "max",
+    "up to",
+    "or less",
+    "and less"
+  ].forEach(phrase => {
+    out = out.replace(new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
+  });
+
+  out = out.replace(/\/\s*\d{1,4}\b/g, " ");
+  out = out.replace(/\b\d{1,3}\b/g, " ");
+
+  return out.replace(/\s+/g, " ").trim();
+}
+
+function detectNumberedPlayerSearchRequest(query) {
+  if (!isNumberedSearchQuery(query)) return null;
+
+  const serialMax = extractNumberedThreshold(query);
+  if (!serialMax) return null;
+
+  const parts = splitPlayerSearchQuery(stripNumberedSearchWords(query));
+  if (!parts?.playerName) return null;
+
+  return {
+    mode: "player_serial",
+    playerName: parts.playerName,
+    sport: parts.sport || "baseball",
+    year: parts.year || "",
+    serialMax,
+    originalQuery: query
+  };
+}
+
+function isAllCardsReply(query) {
+  const n = normalize(query);
+  return n === "all cards" || n === "all" || n === "all years";
 }
 
 function mentionsRestrictedPrintRunBrand(query) {
@@ -1511,6 +1602,7 @@ function buildClarifyProductTypeResponse(productName, query) {
   pendingProductChoice = { query, productName };
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
 
   return {
     type: "standard",
@@ -1518,6 +1610,126 @@ function buildClarifyProductTypeResponse(productName, query) {
     title: productName,
     summary: "Are you looking for print run or checklist data?",
     followups: ["Print run", "Checklist"]
+  };
+}
+
+async function buildPlayerSerialYearChoiceResponse(numberedReq) {
+  await loadPlayerMeta();
+
+  const meta = getPlayerMetaEntry(numberedReq.playerName);
+  let fallbackYears = [];
+
+  if (meta && Array.isArray(meta.checklist_years) && meta.checklist_years.length) {
+    fallbackYears = meta.checklist_years.map(y =>
+      typeof y === "object" && y !== null ? String(y.year || "").trim() : String(y || "").trim()
+    ).filter(Boolean);
+  } else {
+    fallbackYears = await getPlayerYears(numberedReq.playerName, numberedReq.sport || "baseball");
+  }
+
+  const yearOptions = getPlayerYearOptions(numberedReq.playerName, fallbackYears);
+
+  pendingNumberedChoice = {
+    ...numberedReq,
+    availableYears: yearOptions
+  };
+
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
+  awaitingCatalogSport = false;
+
+  const yearFollowups = yearOptions.slice(0, 6).map(y => y.label || y.year);
+
+  return {
+    type: "standard",
+    badge: "Serial Numbered",
+    title: numberedReq.playerName,
+    summary: `Which year should I search for ${numberedReq.playerName} serial-numbered cards under /${numberedReq.serialMax + 1}?`,
+    metadata: uniq([
+      numberedReq.sport ? `Sport: ${titleCase(numberedReq.sport)}` : "",
+      `Serial: Under /${numberedReq.serialMax + 1}`
+    ]),
+    followups: uniq([
+      ...yearFollowups,
+      "All Cards"
+    ])
+  };
+}
+
+async function buildPlayerSerialCardsResponse(numberedReq) {
+  pendingNumberedChoice = null;
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
+  awaitingCatalogSport = false;
+
+  const data = await getAdvancedPlayerSerialCards(
+    numberedReq.playerName,
+    numberedReq.sport || "baseball",
+    numberedReq.year || "",
+    numberedReq.serialMax
+  );
+
+  if (data?.ok === false) {
+    return {
+      type: "standard",
+      badge: "Serial Numbered",
+      title: "Serial search is not ready yet",
+      summary: "The chat recognized that search, but the checklist backend does not have the serial-numbered card search endpoint deployed yet."
+    };
+  }
+
+  const rows = Array.isArray(data?.rows) ? data.rows : [];
+  const rowCount = Number(data?.row_count || rows.length || 0);
+  const serialDisplay = numberedReq.serialMax + 1;
+
+  if (!rowCount) {
+    return {
+      type: "standard",
+      badge: "Serial Numbered",
+      title: numberedReq.playerName,
+      summary: numberedReq.year
+        ? `I did not find ${numberedReq.playerName} ${numberedReq.year} cards serial numbered under /${serialDisplay}.`
+        : `I did not find ${numberedReq.playerName} cards serial numbered under /${serialDisplay}.`,
+      followups: [
+        numberedReq.year ? `Show all ${numberedReq.year} ${numberedReq.playerName} cards` : `Show all ${numberedReq.playerName} cards`,
+        `Show ${numberedReq.playerName} numbered under 100`,
+        `Show ${numberedReq.playerName} numbered less than 50`
+      ]
+    };
+  }
+
+  return {
+    type: "checklist_table",
+    product: { name: data.resolved_player || numberedReq.playerName },
+    sectionKey: "player_serial",
+    sectionLabel: numberedReq.year
+      ? `${numberedReq.year} Serial Numbered Under /${serialDisplay}`
+      : `All Years Serial Numbered Under /${serialDisplay}`,
+    rows: rows.map(r => ({ cells: r })),
+    columns: data.columns || [
+      "Year",
+      "Product",
+      "Subset",
+      "Card No.",
+      "Player",
+      "Team",
+      "Parallel",
+      "Serial No."
+    ],
+    metadata: uniq([
+      `Rows: ${formatNumber(rowCount)}`,
+      numberedReq.year ? `Year: ${numberedReq.year}` : "Years: All",
+      numberedReq.sport ? `Sport: ${titleCase(numberedReq.sport)}` : "",
+      `Serial: Under /${serialDisplay}`
+    ]),
+    sectionOptions: [],
+    followups: [
+      numberedReq.year ? `Show all ${numberedReq.year} ${numberedReq.playerName} cards` : `Show all ${numberedReq.playerName} cards`,
+      numberedReq.serialMax !== 49 ? `Show ${numberedReq.playerName} numbered less than 50` : "",
+      numberedReq.serialMax !== 99 ? `Show ${numberedReq.playerName} numbered under 100` : ""
+    ].filter(Boolean)
   };
 }
 
@@ -1836,6 +2048,15 @@ async function buildSearchResponse(query) {
   if (isPricingQuestion(query)) return buildPricingResponse();
   if (isDataSourceQuestion(query)) return buildDataSourceResponse();
 
+  const numberedReq = detectNumberedPlayerSearchRequest(query);
+  if (numberedReq) {
+    if (!numberedReq.year) {
+      return buildPlayerSerialYearChoiceResponse(numberedReq);
+    }
+
+    return buildPlayerSerialCardsResponse(numberedReq);
+  }
+
   const playerReq = detectPlayerSearchRequest(query);
   if (playerReq) {
     prefetchPlayerData(playerReq);
@@ -1884,6 +2105,34 @@ async function buildResponse(query) {
       title: "Action not available",
       summary: "I could not open that release schedule action."
     };
+  }
+
+  if (pendingNumberedChoice) {
+    if (isAllCardsReply(query)) {
+      return buildPlayerSerialCardsResponse({
+        ...pendingNumberedChoice,
+        year: ""
+      });
+    }
+
+    const selectedYear = extractSelectedYear(query);
+    const normalizedQuery = normalize(query);
+    const allowedYearLabels = (pendingNumberedChoice.availableYears || []).map(y =>
+      normalize(y.label || y.year || "")
+    );
+
+    if (
+      selectedYear &&
+      (
+        normalizedQuery === normalize(selectedYear) ||
+        allowedYearLabels.includes(normalizedQuery)
+      )
+    ) {
+      return buildPlayerSerialCardsResponse({
+        ...pendingNumberedChoice,
+        year: selectedYear
+      });
+    }
   }
 
   if (awaitingCatalogSport && isOnlySportReply(query)) {

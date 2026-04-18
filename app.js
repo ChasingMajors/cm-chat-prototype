@@ -361,6 +361,19 @@ function looksLikeStandaloneYearQuery(parts) {
   return productishCount === 0;
 }
 
+function isRookieCardIntent(query) {
+  const n = normalize(query);
+  return (
+    n.includes("rookie card") ||
+    n.includes("rookie cards") ||
+    n.includes("rookies") ||
+    n.includes(" rc ") ||
+    n.endsWith(" rc") ||
+    n.startsWith("rc ") ||
+    n === "rc"
+  );
+}
+
 function findBestProductFromRemainder(remainder) {
   const cleaned = stripIntentWords(remainder || "");
   if (!cleaned) return null;
@@ -396,7 +409,8 @@ function detectPlayerSearchRequest(query) {
       year: year || "",
       code: "",
       productName: "",
-      mode: year ? "player_year" : "player_only"
+      mode: year ? "player_year" : "player_only",
+      originalQuery: query
     };
   }
 
@@ -409,7 +423,8 @@ function detectPlayerSearchRequest(query) {
       year: product.year || year || "",
       code: product.code || "",
       productName: product.name || "",
-      mode: "player_product"
+      mode: "player_product",
+      originalQuery: query
     };
   }
 
@@ -420,7 +435,8 @@ function detectPlayerSearchRequest(query) {
       year,
       code: "",
       productName: "",
-      mode: "player_year"
+      mode: "player_year",
+      originalQuery: query
     };
   }
 
@@ -430,7 +446,8 @@ function detectPlayerSearchRequest(query) {
     year: "",
     code: "",
     productName: "",
-    mode: "player_only"
+    mode: "player_only",
+    originalQuery: query
   };
 }
 
@@ -592,6 +609,39 @@ function resolvePlayerRequestFromOptions(playerReq, options) {
     ...playerReq,
     playerName: options[0].playerName || playerReq.playerName
   };
+}
+
+async function resolveRookiePlayerRequest(playerReq) {
+  if (!playerReq || !isRookieCardIntent(playerReq.originalQuery || "")) return null;
+  if (playerReq.year || playerReq.code) return null;
+
+  await loadPlayerMeta();
+
+  const meta = getPlayerMetaEntry(playerReq.playerName);
+  const rcYear = String(meta?.rc_year || "").trim();
+
+  if (!rcYear) {
+    return {
+      type: "standard",
+      badge: "Rookie Cards",
+      title: playerReq.playerName,
+      summary: `I do not have a confirmed RC year for ${playerReq.playerName} yet. Choose a year or view all cards.`,
+      followups: buildPlayerFollowups(
+        playerReq.playerName,
+        Array.isArray(meta?.checklist_years) ? meta.checklist_years : [],
+        false,
+        true
+      )
+    };
+  }
+
+  return buildPlayerChecklistResponse({
+    ...playerReq,
+    year: rcYear,
+    code: "",
+    productName: "",
+    mode: "player_year"
+  });
 }
 
 function extractNumberedThreshold(query) {
@@ -2825,6 +2875,9 @@ async function buildSearchResponse(query) {
 
     prefetchPlayerData(resolvedPlayerReq);
 
+    const rookieResponse = await resolveRookiePlayerRequest(resolvedPlayerReq);
+    if (rookieResponse) return rookieResponse;
+
     if (resolvedPlayerReq.mode === "player_product" || resolvedPlayerReq.mode === "player_year") {
       return buildPlayerChecklistResponse(resolvedPlayerReq);
     }
@@ -2917,6 +2970,9 @@ async function buildResponse(query) {
       };
 
       prefetchPlayerData(playerReq);
+
+      const rookieResponse = await resolveRookiePlayerRequest(playerReq);
+      if (rookieResponse) return rookieResponse;
 
       if (playerReq.mode === "player_product" || playerReq.mode === "player_year") {
         return buildPlayerChecklistResponse(playerReq);

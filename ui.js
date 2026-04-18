@@ -523,6 +523,7 @@ window.CMChat.ui = window.CMChat.ui || {};
     const rows = result.rows || [];
     const chips = result.metadata || [];
     const followups = result.followups || [];
+    const badgeLabel = result.badge || "Print Run";
     let visibleCount = Math.min(8, rows.length);
 
     const buildRowsHtml = (list) => list.map(r => `
@@ -556,7 +557,7 @@ window.CMChat.ui = window.CMChat.ui || {};
       <div class="message-row assistant">
         <div class="prv-chat-card" id="${cardId}">
           <div class="prv-chat-topline">
-            <div class="answer-badge">Print Run</div>
+            <div class="answer-badge">${escapeHtml(badgeLabel)}</div>
           </div>
 
           <div class="prv-chat-title">${escapeHtml(product.name || "")}</div>

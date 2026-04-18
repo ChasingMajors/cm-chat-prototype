@@ -541,6 +541,75 @@ function isAllCardsReply(query) {
   return n === "all cards" || n === "all" || n === "all years";
 }
 
+function stripPrintRunThresholdWords(query) {
+  let out = normalize(query || "");
+
+  [
+    "low print run",
+    "print run",
+    "print-run",
+    "low",
+    "cards",
+    "card",
+    "under",
+    "less than",
+    "below",
+    "lower than",
+    "at most",
+    "maximum",
+    "max",
+    "up to",
+    "or less",
+    "and less"
+  ].forEach(phrase => {
+    out = out.replace(new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
+  });
+
+  out = out.replace(/\b\d{1,3}\b/g, " ");
+  out = stripIntentWords(out);
+
+  return out.replace(/\s+/g, " ").trim();
+}
+
+function hasSpecificProductClue(query) {
+  const year = extractYear(query);
+  const sport = extractSport(query);
+
+  const tokens = meaningfulTokens(stripPrintRunThresholdWords(query)).filter(t => {
+    if (year && t === normalize(year)) return false;
+    if (sport && t === normalize(sport)) return false;
+    return !["low", "print", "run", "card", "cards"].includes(t);
+  });
+
+  return tokens.length > 0;
+}
+
+function extractPrintRunThreshold(query) {
+  const n = normalize(query);
+  if (!n.includes("print run") && !n.includes("print-run") && !n.includes("low print run")) {
+    return null;
+  }
+
+  const threshold = extractNumberedThreshold(query);
+  return threshold && threshold > 0 ? threshold : null;
+}
+
+function getThresholdLabel(query, threshold) {
+  const n = normalize(query);
+
+  if (/\b(?:under|less than|below|lower than)\s*\/?\s*\d{1,4}\b/.test(n)) {
+    return `Less than ${threshold + 1}`;
+  }
+
+  return `${threshold} or less`;
+}
+
+function getPrintRunValue(row) {
+  const raw = String(row?.printRun || "").trim();
+  const num = Number(raw.replace(/[^\d.]/g, ""));
+  return Number.isFinite(num) ? num : 0;
+}
+
 function mentionsRestrictedPrintRunBrand(query) {
   const n = normalize(query);
   return NON_TOPPS_PRINTRUN_BRANDS.some(b => n.includes(normalize(b)));
@@ -1919,13 +1988,33 @@ async function buildPlayerChecklistResponse(playerReq) {
 async function buildPrintRunResponse(query) {
   if (mentionsRestrictedPrintRunBrand(query)) return buildRestrictedBrandPrintRunResponse();
 
+  const printRunThreshold = extractPrintRunThreshold(query);
+  const productQuery = printRunThreshold ? stripPrintRunThresholdWords(query) : query;
   const product =
+    (printRunThreshold && hasSpecificProductClue(query)
+      ? findBestProduct(getPrintRunIndex(), productQuery, "print_run")
+      : null) ||
     findBestProduct(getPrintRunIndex(), query, "print_run") ||
     findBestProduct(getPrintRunIndex(), stripIntentWords(query), "print_run");
 
   pendingProductChoice = null;
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+
+  if (printRunThreshold && !hasSpecificProductClue(query)) {
+    return {
+      type: "standard",
+      badge: "Print Run",
+      title: "Which product should I search?",
+      summary: `I can search print-run rows ${getThresholdLabel(query, printRunThreshold).toLowerCase()}, but I need a product name first.`,
+      followups: [
+        "Show me 2026 Topps Series 1 print run less than 100",
+        "Show me 2026 Bowman Baseball print run less than 100",
+        "Show the release schedule"
+      ]
+    };
+  }
 
   if (!product) {
     return {
@@ -1937,6 +2026,7 @@ async function buildPrintRunResponse(query) {
   }
 
   const rawRows = await getPrintRunData(product.code, product.sport);
+  const thresholdLabel = printRunThreshold ? getThresholdLabel(query, printRunThreshold) : "";
 
   if (!rawRows.length) {
     return {
@@ -1949,6 +2039,50 @@ async function buildPrintRunResponse(query) {
         product.sport ? `Sport: ${titleCase(product.sport)}` : "",
         product.code ? `Code: ${product.code}` : ""
       ])
+    };
+  }
+
+  if (printRunThreshold) {
+    const filteredRows = rawRows.filter(r => {
+      const value = getPrintRunValue(r);
+      return value > 0 && value <= printRunThreshold;
+    });
+
+    if (!filteredRows.length) {
+      return {
+        type: "standard",
+        badge: "Low Print Run",
+        title: product.name,
+        summary: `I found the product, but no print-run rows were ${thresholdLabel.toLowerCase()}.`,
+        metadata: uniq([
+          `Filter: ${thresholdLabel}`,
+          product.year ? `Year: ${product.year}` : "",
+          product.sport ? `Sport: ${titleCase(product.sport)}` : "",
+          product.code ? `Code: ${product.code}` : ""
+        ]),
+        followups: [
+          `Show full ${product.name} print run`,
+          `Show me the ${product.name} checklist`
+        ]
+      };
+    }
+
+    return {
+      type: "prv",
+      badge: "Low Print Run",
+      product,
+      rawRows: filteredRows,
+      rows: buildPrvRows(filteredRows),
+      metadata: uniq([
+        `Rows: ${filteredRows.length}`,
+        `Filter: ${thresholdLabel}`,
+        product.year ? `Year: ${product.year}` : "",
+        product.sport ? `Sport: ${titleCase(product.sport)}` : ""
+      ]),
+      followups: [
+        `Show full ${product.name} print run`,
+        `Show me the ${product.name} checklist`
+      ]
     };
   }
 

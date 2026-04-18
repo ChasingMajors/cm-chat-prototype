@@ -750,6 +750,26 @@ function buildRcYearMissingResponse(playerReq, metaEntry = null) {
   };
 }
 
+function getSerialSearchLabel(numberedReq) {
+  const n = normalize(numberedReq?.originalQuery || "");
+  const serialMax = Number(numberedReq?.serialMax || 0);
+
+  if (
+    n.includes("low numbered") ||
+    n.includes("low serial") ||
+    n.includes("short print") ||
+    n.includes("ssp")
+  ) {
+    return `/${serialMax} or less`;
+  }
+
+  if (/\b(?:under|less than|below|lower than)\s*\/?\s*\d{1,4}\b/.test(n)) {
+    return `under /${serialMax + 1}`;
+  }
+
+  return `/${serialMax} or less`;
+}
+
 function extractNumberedThreshold(query) {
   const n = normalize(query);
 
@@ -2428,15 +2448,16 @@ async function buildPlayerSerialYearChoiceResponse(numberedReq) {
   awaitingCatalogSport = false;
 
   const yearFollowups = yearOptions.slice(0, 6).map(y => y.label || y.year);
+  const serialLabel = getSerialSearchLabel(numberedReq);
 
   return {
     type: "standard",
     badge: "Serial Numbered",
     title: numberedReq.playerName,
-    summary: `Which year should I search for ${numberedReq.playerName} serial-numbered cards under /${numberedReq.serialMax + 1}?`,
+    summary: `Which year should I search for ${numberedReq.playerName} serial-numbered cards ${serialLabel}?`,
     metadata: uniq([
       numberedReq.sport ? `Sport: ${titleCase(numberedReq.sport)}` : "",
-      `Serial: Under /${numberedReq.serialMax + 1}`
+      `Serial: ${titleCase(serialLabel)}`
     ]),
     followups: uniq([
       ...yearFollowups,
@@ -2471,21 +2492,26 @@ async function buildPlayerSerialCardsResponse(numberedReq) {
 
   const rows = Array.isArray(data?.rows) ? data.rows : [];
   const rowCount = Number(data?.row_count || rows.length || 0);
-  const serialDisplay = numberedReq.serialMax + 1;
+  const serialLabel = getSerialSearchLabel(numberedReq);
 
   if (!rowCount) {
+    const rookieFollowup = isRookieCardIntent(numberedReq.originalQuery || "")
+      ? `Show ${numberedReq.playerName} low numbered rookies`
+      : "";
+
     return {
       type: "standard",
       badge: "Serial Numbered",
       title: numberedReq.playerName,
       summary: numberedReq.year
-        ? `I did not find ${numberedReq.playerName} ${numberedReq.year} cards serial numbered under /${serialDisplay}.`
-        : `I did not find ${numberedReq.playerName} cards serial numbered under /${serialDisplay}.`,
+        ? `I did not find ${numberedReq.playerName} ${numberedReq.year} cards serial numbered ${serialLabel}.`
+        : `I did not find ${numberedReq.playerName} cards serial numbered ${serialLabel}.`,
       followups: [
         numberedReq.year ? `Show all ${numberedReq.year} ${numberedReq.playerName} cards` : `Show all ${numberedReq.playerName} cards`,
-        `Show ${numberedReq.playerName} numbered under 100`,
+        rookieFollowup,
+        isRookieCardIntent(numberedReq.originalQuery || "") ? "" : `Show ${numberedReq.playerName} numbered under 100`,
         `Show ${numberedReq.playerName} numbered less than 50`
-      ]
+      ].filter(Boolean)
     };
   }
 
@@ -2508,8 +2534,8 @@ async function buildPlayerSerialCardsResponse(numberedReq) {
     product: { name: data.resolved_player || numberedReq.playerName },
     sectionKey: "player_serial",
     sectionLabel: numberedReq.year
-      ? `${numberedReq.year} Serial Numbered Under /${serialDisplay}`
-      : `All Years Serial Numbered Under /${serialDisplay}`,
+      ? `${numberedReq.year} Serial Numbered ${titleCase(serialLabel)}`
+      : `All Years Serial Numbered ${titleCase(serialLabel)}`,
     rows: displayRows.map(r => ({ cells: r })),
     columns: [
       "Year",
@@ -2524,14 +2550,156 @@ async function buildPlayerSerialCardsResponse(numberedReq) {
       `Rows: ${formatNumber(rowCount)}`,
       numberedReq.year ? `Year: ${numberedReq.year}` : "Years: All",
       numberedReq.sport ? `Sport: ${titleCase(numberedReq.sport)}` : "",
-      `Serial: Under /${serialDisplay}`
+      `Serial: ${titleCase(serialLabel)}`
     ]),
     sectionOptions: [],
     followups: [
       numberedReq.year ? `Show all ${numberedReq.year} ${numberedReq.playerName} cards` : `Show all ${numberedReq.playerName} cards`,
       numberedReq.serialMax !== 49 ? `Show ${numberedReq.playerName} numbered less than 50` : "",
-      numberedReq.serialMax !== 99 ? `Show ${numberedReq.playerName} numbered under 100` : ""
+      numberedReq.serialMax !== 99 && !isRookieCardIntent(numberedReq.originalQuery || "") ? `Show ${numberedReq.playerName} numbered under 100` : ""
     ].filter(Boolean)
+  };
+}
+
+function isPlayerParallelFilter(filter) {
+  return filter?.key === "refractor" || filter?.key === "parallels";
+}
+
+function getRowCell(row, columns, columnName) {
+  const idx = (columns || []).map(c => normalize(c)).indexOf(normalize(columnName));
+  return idx > -1 ? String(row?.[idx] || "") : "";
+}
+
+function findChecklistProductByNameYear(productName, year) {
+  const nameNorm = normalize(productName);
+  const yearText = String(year || "").trim();
+
+  return (getChecklistIndex() || [])
+    .map(mapProduct)
+    .find(product => {
+      if (!product.code || normalize(product.name) !== nameNorm) return false;
+      if (yearText && String(product.year || "") && String(product.year || "") !== yearText) return false;
+      return true;
+    }) || null;
+}
+
+function isBroadParallelApplyValue(value) {
+  const n = normalize(value || "");
+  return !n || n === "all" || n === "any" || n === "all cards" || n === "entire checklist" || n === "entire set";
+}
+
+function parallelAppliesToPlayerSubset(appliesTo, subset) {
+  const appliesNorm = normalize(appliesTo || "");
+  const subsetNorm = normalize(subset || "");
+
+  if (isBroadParallelApplyValue(appliesNorm)) return true;
+  if (!subsetNorm) return false;
+  if (appliesNorm === subsetNorm) return true;
+
+  return appliesNorm.includes(subsetNorm) || subsetNorm.includes(appliesNorm);
+}
+
+async function buildPlayerParallelFilterResponse(playerReq, data, sourceRows, columns, filter, fallbackYears) {
+  if (!isPlayerParallelFilter(filter)) return null;
+
+  const matches = [];
+  const productCache = new Map();
+  const parallelCache = new Map();
+
+  for (const row of sourceRows) {
+    const year = getRowCell(row, columns, "Year") || playerReq.year || "";
+    const productName = getRowCell(row, columns, "Product") || playerReq.productName || "";
+    const subset = getRowCell(row, columns, "Subset");
+    const cardNo = getRowCell(row, columns, "Card No.");
+    const player = getRowCell(row, columns, "Player") || playerReq.playerName;
+    const team = getRowCell(row, columns, "Team");
+
+    if (!productName) continue;
+
+    const productKey = `${normalize(productName)}|${year}`;
+    if (!productCache.has(productKey)) {
+      productCache.set(productKey, findChecklistProductByNameYear(productName, year));
+    }
+
+    const product = productCache.get(productKey);
+    if (!product?.code) continue;
+
+    if (!parallelCache.has(product.code)) {
+      parallelCache.set(product.code, await getChecklistParallels(product.code));
+    }
+
+    const parallelRows = Array.isArray(parallelCache.get(product.code)?.rows)
+      ? parallelCache.get(product.code).rows
+      : [];
+
+    parallelRows.forEach(parallelRow => {
+      const appliesTo = Array.isArray(parallelRow) ? (parallelRow[0] || "") : (parallelRow.applies_to || "");
+      const parallelName = Array.isArray(parallelRow) ? (parallelRow[1] || "") : (parallelRow.parallel_name || "");
+      const serialNo = Array.isArray(parallelRow) ? (parallelRow[2] || "") : (parallelRow.serial_no || "");
+
+      if (!rowMatchesPlayerFilter([parallelName, serialNo], filter)) return;
+      if (!parallelAppliesToPlayerSubset(appliesTo, subset)) return;
+
+      matches.push([
+        year,
+        productName,
+        subset,
+        cardNo,
+        player,
+        team,
+        parallelName,
+        serialNo
+      ]);
+    });
+  }
+
+  if (!matches.length) {
+    const searchedContext = [
+      playerReq.year || "",
+      playerReq.playerName,
+      filter.label.toLowerCase()
+    ].filter(Boolean).join(" ");
+
+    pendingPlayerChoice = null;
+    pendingChecklistChoice = null;
+    pendingProductChoice = null;
+    pendingPlayerMatchChoice = null;
+    pendingProductMatchChoice = null;
+
+    return {
+      type: "standard",
+      badge: filter.label,
+      title: playerReq.playerName,
+      summary: `I searched ${searchedContext} parallel rows and did not find a match.`,
+      followups: uniq([
+        playerReq.year ? `Show all ${playerReq.year} ${playerReq.playerName} cards` : "",
+        `Show all ${playerReq.playerName} cards`,
+        ...buildPlayerFollowups(playerReq.playerName, fallbackYears, true, true)
+      ])
+    };
+  }
+
+  return {
+    type: "checklist_table",
+    badge: filter.label,
+    product: { name: playerReq.playerName },
+    sectionKey: "player",
+    sectionLabel: [
+      playerReq.year || "",
+      filter.label
+    ].filter(Boolean).join(" "),
+    rows: matches.map(cells => ({ cells })),
+    columns: ["Year", "Product", "Subset", "Card No.", "Player", "Team", "Parallel", "Serial No."],
+    metadata: uniq([
+      `Rows: ${formatNumber(matches.length)}`,
+      playerReq.year ? `Year: ${playerReq.year}` : "",
+      playerReq.sport ? `Sport: ${titleCase(playerReq.sport)}` : "",
+      `Filter: ${filter.label}`
+    ]),
+    sectionOptions: [],
+    followups: [
+      playerReq.year ? `Show all ${playerReq.year} ${playerReq.playerName} cards` : `Show all ${playerReq.playerName} cards`
+    ]
   };
 }
 
@@ -2672,6 +2840,18 @@ async function buildPlayerChecklistResponse(playerReq) {
   const sourceRows = playerReq.year && yearColumnIndex > -1
     ? allSourceRows.filter(row => String(row?.[yearColumnIndex] || "") === String(playerReq.year))
     : allSourceRows;
+
+  const parallelResponse = await buildPlayerParallelFilterResponse(
+    playerReq,
+    data,
+    sourceRows,
+    columns,
+    filter,
+    fallbackYears
+  );
+
+  if (parallelResponse) return parallelResponse;
+
   const filteredRows = filter
     ? sourceRows.filter(row => rowMatchesPlayerFilter(row, filter))
     : sourceRows;

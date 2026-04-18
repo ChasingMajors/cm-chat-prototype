@@ -655,6 +655,13 @@ window.CMChat.ui = window.CMChat.ui || {};
 
       const groups = [];
       const groupMap = new Map();
+      const formatSerialNo = value => {
+        const raw = String(value || "").trim();
+        if (!raw) return "";
+        if (/^-\s*\//.test(raw)) return raw;
+        if (/^\//.test(raw)) return `- ${raw}`;
+        return raw;
+      };
 
       rows.forEach(row => {
         const cells = row.cells || [];
@@ -695,13 +702,13 @@ window.CMChat.ui = window.CMChat.ui || {};
                         ? escapeHtml(item.subset || "Applies to checklist")
                         : `
                           ${escapeHtml(item.player || "Player")}
+                          ${item.subset ? ` · ${escapeHtml(item.subset)}` : ""}
                           ${item.cardNo ? ` · #${escapeHtml(item.cardNo)}` : ""}
-                          ${item.subset ? ` · [${escapeHtml(item.subset)}]` : ""}
                         `}
                     </div>
                     <div class="serial-parallel-line">
                       ${escapeHtml(item.parallel || "Parallel")}
-                      ${item.serialNo ? ` · <span>${escapeHtml(item.serialNo)}</span>` : ""}
+                      ${item.serialNo ? ` <span>${escapeHtml(formatSerialNo(item.serialNo))}</span>` : ""}
                     </div>
                   </div>
                 `).join("")}

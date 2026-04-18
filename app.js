@@ -74,6 +74,7 @@ let pendingChecklistChoice = null;
 let pendingPlayerChoice = null;
 let pendingNumberedChoice = null;
 let pendingProductNumberedChoice = null;
+let pendingProductMatchChoice = null;
 
 const RELEASE_SPORT_ORDER = ["baseball", "football", "basketball", "soccer", "hockey"];
 
@@ -144,6 +145,7 @@ async function buildDirectChecklistResponse(action) {
   pendingPlayerChoice = null;
   pendingNumberedChoice = null;
   pendingProductNumberedChoice = null;
+  pendingProductMatchChoice = null;
 
   if (!product.code) {
     pendingChecklistChoice = null;
@@ -227,6 +229,7 @@ async function buildDirectPrintRunResponse(action) {
   pendingPlayerChoice = null;
   pendingNumberedChoice = null;
   pendingProductNumberedChoice = null;
+  pendingProductMatchChoice = null;
 
   if (!product.code) {
     return {
@@ -1323,6 +1326,65 @@ function findBestProduct(list, query, targetIntent) {
   return { ...best, score: bestScore, matchType: "fuzzy" };
 }
 
+function getProductMatchOptions(list, query, targetIntent, limit = 4) {
+  const cleaned = stripIntentWords(query || "");
+  const cleanedNorm = normalize(cleaned);
+  const qNorm = normalize(query || "");
+  const sport = extractSport(query);
+  const year = extractYear(query);
+  const seen = new Set();
+
+  return (list || [])
+    .map(item => {
+      const product = mapProduct(item);
+      if (!product.name) return null;
+
+      const nameNorm = normalize(product.name);
+      const exactName = cleanedNorm === nameNorm || qNorm === nameNorm || qNorm.includes(nameNorm);
+
+      if (sport && normalize(product.sport) && normalize(product.sport) !== sport) return null;
+      if (year && String(product.year || "") && String(product.year || "") !== String(year)) return null;
+
+      return {
+        ...product,
+        score: exactName ? 999 : scoreProduct(item, query, targetIntent),
+        matchType: exactName ? "exact" : "fuzzy"
+      };
+    })
+    .filter(Boolean)
+    .filter(product => product.score >= 24)
+    .sort((a, b) => {
+      const scoreDiff = (b.score || 0) - (a.score || 0);
+      if (scoreDiff !== 0) return scoreDiff;
+      return String(a.name || "").localeCompare(String(b.name || ""));
+    })
+    .filter(product => {
+      const key = product.code || normalize(product.name);
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, limit);
+}
+
+function shouldClarifyProductMatch(options) {
+  if (!Array.isArray(options) || options.length < 2) return false;
+
+  const [top, second] = options;
+  if (!top || top.matchType === "exact" || top.score >= 999) return false;
+
+  const topScore = Number(top.score || 0);
+  const secondScore = Number(second.score || 0);
+  if (topScore < 70) return true;
+
+  return secondScore >= topScore - 25 || (topScore > 0 && secondScore / topScore >= 0.72);
+}
+
+function getProductMatchClarification(list, query, targetIntent) {
+  const options = getProductMatchOptions(list, query, targetIntent);
+  return shouldClarifyProductMatch(options) ? options : null;
+}
+
 function getCombinedBestMatches(query) {
   const cl = findBestProduct(getChecklistIndex(), query, "checklist");
   const prv = findBestProduct(getPrintRunIndex(), query, "print_run");
@@ -1803,6 +1865,7 @@ function buildClarifyProductTypeResponse(productName, query) {
   pendingPlayerChoice = null;
   pendingNumberedChoice = null;
   pendingProductNumberedChoice = null;
+  pendingProductMatchChoice = null;
 
   return {
     type: "standard",
@@ -1836,6 +1899,41 @@ function buildProductNumberedClarifyResponse(numberedReq) {
       "Print Run"
     ]
   };
+}
+
+function buildProductMatchClarifyResponse(intent, query, options) {
+  pendingProductMatchChoice = {
+    intent,
+    query,
+    options: options || []
+  };
+
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+  pendingProductNumberedChoice = null;
+  awaitingCatalogSport = false;
+
+  return {
+    type: "standard",
+    badge: "Clarify",
+    title: "Which product should I use?",
+    summary: "I found a few close product matches. Choose the exact product so I do not open the wrong set.",
+    followups: (options || []).map(product => product.name).filter(Boolean)
+  };
+}
+
+function findSelectedProductMatch(query) {
+  if (!pendingProductMatchChoice) return null;
+
+  const qNorm = normalize(query);
+  if (!qNorm) return null;
+
+  return (pendingProductMatchChoice.options || []).find(product =>
+    normalize(product.name) === qNorm ||
+    normalize(product.code) === qNorm
+  ) || null;
 }
 
 async function buildProductSerialResponse(numberedReq) {
@@ -2277,6 +2375,17 @@ async function buildPrintRunResponse(query) {
   }
 
   const productQuery = printRunThreshold ? stripPrintRunThresholdWords(query) : query;
+
+  const clarification = getProductMatchClarification(
+    getPrintRunIndex(),
+    productQuery,
+    "print_run"
+  );
+
+  if (clarification) {
+    return buildProductMatchClarifyResponse("print_run", query, clarification);
+  }
+
   const product =
     (printRunThreshold && hasProductClue
       ? findBestProduct(getPrintRunIndex(), productQuery, "print_run")
@@ -2368,6 +2477,16 @@ async function buildPrintRunResponse(query) {
 }
 
 async function buildChecklistSummaryResponse(query) {
+  const clarification = getProductMatchClarification(
+    getChecklistIndex(),
+    query,
+    "checklist"
+  );
+
+  if (clarification) {
+    return buildProductMatchClarifyResponse("checklist", query, clarification);
+  }
+
   const product =
     findBestProduct(getChecklistIndex(), query, "checklist") ||
     findBestProduct(getChecklistIndex(), stripIntentWords(query), "checklist");
@@ -2498,6 +2617,7 @@ async function buildSearchResponse(query) {
     pendingProductChoice = null;
     pendingChecklistChoice = null;
     pendingPlayerChoice = null;
+    pendingProductMatchChoice = null;
 
     return {
       type: "standard",
@@ -2506,6 +2626,24 @@ async function buildSearchResponse(query) {
       summary: "Ask for a print run, checklist, release schedule, year + sport product lineup, trending set, player search, pricing, or a set search.",
       followups: ["See the best way search", "Show the release schedule"]
     };
+  }
+
+  const seenCombinedOptions = new Set();
+  const combinedOptions = [
+    ...getProductMatchOptions(getChecklistIndex(), query, "checklist", 4),
+    ...getProductMatchOptions(getPrintRunIndex(), query, "print_run", 4)
+  ]
+    .sort((a, b) => (b.score || 0) - (a.score || 0))
+    .filter(product => {
+      const key = product.code || normalize(product.name);
+      if (!key || seenCombinedOptions.has(key)) return false;
+      seenCombinedOptions.add(key);
+      return true;
+    })
+    .slice(0, 4);
+
+  if (shouldClarifyProductMatch(combinedOptions)) {
+    return buildProductMatchClarifyResponse("product_type", query, combinedOptions);
   }
 
   if (matches.winner.code && matches.winner.score >= 50) {
@@ -2529,6 +2667,27 @@ async function buildResponse(query) {
       title: "Action not available",
       summary: "I could not open that release schedule action."
     };
+  }
+
+  if (pendingProductMatchChoice) {
+    const selectedProduct = findSelectedProductMatch(query);
+    const selectedIntent = pendingProductMatchChoice.intent;
+
+    if (selectedProduct) {
+      pendingProductMatchChoice = null;
+
+      if (selectedIntent === "checklist") {
+        return buildChecklistSummaryResponse(selectedProduct.name);
+      }
+
+      if (selectedIntent === "print_run") {
+        return buildPrintRunResponse(selectedProduct.name);
+      }
+
+      return buildClarifyProductTypeResponse(selectedProduct.name, selectedProduct.name);
+    }
+
+    pendingProductMatchChoice = null;
   }
 
   if (pendingProductNumberedChoice) {

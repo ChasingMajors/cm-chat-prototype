@@ -374,6 +374,68 @@ function isRookieCardIntent(query) {
   );
 }
 
+function detectPlayerRowFilterIntent(query) {
+  const n = normalize(query);
+  const section = detectChecklistSectionIntent(query);
+
+  if (/\brefractors?\b/.test(n)) {
+    return {
+      key: "refractor",
+      label: "Refractors",
+      terms: ["refractor"]
+    };
+  }
+
+  if (section === "autographs") {
+    return {
+      key: "autographs",
+      label: "Autographs",
+      terms: ["autograph", "autographs", "auto", "autos", "au"]
+    };
+  }
+
+  if (section === "relics") {
+    return {
+      key: "relics",
+      label: "Relics",
+      terms: ["relic", "relics"]
+    };
+  }
+
+  if (section === "variations") {
+    return {
+      key: "variations",
+      label: "Variations",
+      terms: ["variation", "variations", "sp", "ssp"]
+    };
+  }
+
+  if (section === "parallels") {
+    return {
+      key: "parallels",
+      label: "Parallels",
+      terms: ["parallel", "parallels", "refractor"]
+    };
+  }
+
+  return null;
+}
+
+function rowMatchesPlayerFilter(row, filter) {
+  if (!filter) return true;
+
+  const cells = Array.isArray(row) ? row : [];
+  const haystack = normalize(cells.join(" "));
+  const tokens = tokenize(haystack);
+
+  return (filter.terms || []).some(term => {
+    const t = normalize(term);
+    if (!t) return false;
+    if (t.length <= 2) return tokens.includes(t);
+    return haystack.includes(t);
+  });
+}
+
 function findBestProductFromRemainder(remainder) {
   const cleaned = stripIntentWords(remainder || "");
   if (!cleaned) return null;
@@ -618,7 +680,7 @@ async function resolveRookiePlayerRequest(playerReq) {
   await loadPlayerMeta();
 
   const meta = getPlayerMetaEntry(playerReq.playerName);
-  const rcYear = String(meta?.rc_year || "").trim();
+  const rcYear = getRcYearForPlayerRequest(playerReq, meta);
 
   if (!rcYear) {
     return {
@@ -642,6 +704,30 @@ async function resolveRookiePlayerRequest(playerReq) {
     productName: "",
     mode: "player_year"
   });
+}
+
+function getRcYearForPlayerRequest(playerReq, metaEntry = null) {
+  if (!playerReq || !isRookieCardIntent(playerReq.originalQuery || "")) return "";
+
+  const meta = metaEntry || getPlayerMetaEntry(playerReq.playerName);
+  return String(meta?.rc_year || "").trim();
+}
+
+function buildRcYearMissingResponse(playerReq, metaEntry = null) {
+  const meta = metaEntry || getPlayerMetaEntry(playerReq.playerName);
+
+  return {
+    type: "standard",
+    badge: "Rookie Cards",
+    title: playerReq.playerName,
+    summary: `I do not have a confirmed RC year for ${playerReq.playerName} yet. Choose a year or view all cards.`,
+    followups: buildPlayerFollowups(
+      playerReq.playerName,
+      Array.isArray(meta?.checklist_years) ? meta.checklist_years : [],
+      false,
+      true
+    )
+  };
 }
 
 function extractNumberedThreshold(query) {
@@ -2558,7 +2644,12 @@ async function buildPlayerChecklistResponse(playerReq) {
     playerReq.code || ""
   );
 
-  const rowCount = Array.isArray(data?.rows) ? data.rows.length : 0;
+  const filter = playerReq.filter || null;
+  const sourceRows = Array.isArray(data?.rows) ? data.rows : [];
+  const filteredRows = filter
+    ? sourceRows.filter(row => rowMatchesPlayerFilter(row, filter))
+    : sourceRows;
+  const rowCount = filteredRows.length;
 
   let sectionLabel = "Checklist Info";
   if (playerReq.code && playerReq.productName) sectionLabel = playerReq.productName;
@@ -2569,13 +2660,27 @@ async function buildPlayerChecklistResponse(playerReq) {
     sectionLabel = "All Checklist Results";
   }
 
+  if (filter) {
+    sectionLabel = `${sectionLabel} ${filter.label}`.trim();
+  }
+
   if (!rowCount) {
+    const searchedContext = [
+      playerReq.year || "",
+      playerReq.playerName,
+      filter ? filter.label.toLowerCase() : "checklist"
+    ].filter(Boolean).join(" ");
+
     return {
       type: "standard",
-      badge: "Player",
+      badge: filter ? filter.label : "Player",
       title: playerReq.playerName,
-      summary: "No matching checklist rows were found for that player search.",
-      followups: buildPlayerFollowups(playerReq.playerName, fallbackYears, true, true)
+      summary: `I searched ${searchedContext} rows and did not find a match.`,
+      followups: uniq([
+        playerReq.year ? `Show all ${playerReq.year} ${playerReq.playerName} cards` : "",
+        `Show all ${playerReq.playerName} cards`,
+        ...buildPlayerFollowups(playerReq.playerName, fallbackYears, true, true)
+      ])
     };
   }
 
@@ -2584,12 +2689,13 @@ async function buildPlayerChecklistResponse(playerReq) {
     product: { name: playerReq.playerName },
     sectionKey: "player",
     sectionLabel,
-    rows: (data.rows || []).map(r => ({ cells: r })),
+    rows: filteredRows.map(r => ({ cells: r })),
     columns: data.columns || [],
     metadata: uniq([
       `Rows: ${formatNumber(rowCount)}`,
       playerReq.sport ? `Sport: ${titleCase(playerReq.sport)}` : "",
-      playerReq.year ? `Year: ${playerReq.year}` : ""
+      playerReq.year ? `Year: ${playerReq.year}` : "",
+      filter ? `Filter: ${filter.label}` : ""
     ]),
     sectionOptions: [],
     followups: playerReq.code
@@ -2842,7 +2948,21 @@ async function buildSearchResponse(query) {
       return buildPlayerMatchClarifyResponse("numbered", numberedReq, playerClarification);
     }
 
-    const resolvedNumberedReq = resolvePlayerRequestFromOptions(numberedReq, playerOptions);
+    let resolvedNumberedReq = resolvePlayerRequestFromOptions(numberedReq, playerOptions);
+
+    if (isRookieCardIntent(resolvedNumberedReq.originalQuery || "") && !resolvedNumberedReq.year) {
+      await loadPlayerMeta();
+
+      const meta = getPlayerMetaEntry(resolvedNumberedReq.playerName);
+      const rcYear = getRcYearForPlayerRequest(resolvedNumberedReq, meta);
+
+      if (!rcYear) return buildRcYearMissingResponse(resolvedNumberedReq, meta);
+
+      resolvedNumberedReq = {
+        ...resolvedNumberedReq,
+        year: rcYear
+      };
+    }
 
     if (!resolvedNumberedReq.year) {
       return buildPlayerSerialYearChoiceResponse(resolvedNumberedReq);
@@ -2874,6 +2994,31 @@ async function buildSearchResponse(query) {
     const resolvedPlayerReq = resolvePlayerRequestFromOptions(playerReq, playerOptions);
 
     prefetchPlayerData(resolvedPlayerReq);
+
+    const rowFilter = detectPlayerRowFilterIntent(resolvedPlayerReq.originalQuery || "");
+    if (rowFilter) {
+      let filteredPlayerReq = {
+        ...resolvedPlayerReq,
+        filter: rowFilter
+      };
+
+      if (isRookieCardIntent(filteredPlayerReq.originalQuery || "") && !filteredPlayerReq.year && !filteredPlayerReq.code) {
+        await loadPlayerMeta();
+
+        const meta = getPlayerMetaEntry(filteredPlayerReq.playerName);
+        const rcYear = getRcYearForPlayerRequest(filteredPlayerReq, meta);
+
+        if (!rcYear) return buildRcYearMissingResponse(filteredPlayerReq, meta);
+
+        filteredPlayerReq = {
+          ...filteredPlayerReq,
+          year: rcYear,
+          mode: "player_year"
+        };
+      }
+
+      return buildPlayerChecklistResponse(filteredPlayerReq);
+    }
 
     const rookieResponse = await resolveRookiePlayerRequest(resolvedPlayerReq);
     if (rookieResponse) return rookieResponse;
@@ -2952,10 +3097,24 @@ async function buildResponse(query) {
       pendingPlayerMatchChoice = null;
 
       if (selectedKind === "numbered") {
-        const numberedReq = {
+        let numberedReq = {
           ...selectedRequest,
           playerName: selectedPlayer.playerName
         };
+
+        if (isRookieCardIntent(numberedReq.originalQuery || "") && !numberedReq.year) {
+          await loadPlayerMeta();
+
+          const meta = getPlayerMetaEntry(numberedReq.playerName);
+          const rcYear = getRcYearForPlayerRequest(numberedReq, meta);
+
+          if (!rcYear) return buildRcYearMissingResponse(numberedReq, meta);
+
+          numberedReq = {
+            ...numberedReq,
+            year: rcYear
+          };
+        }
 
         if (!numberedReq.year) {
           return buildPlayerSerialYearChoiceResponse(numberedReq);
@@ -2970,6 +3129,31 @@ async function buildResponse(query) {
       };
 
       prefetchPlayerData(playerReq);
+
+      const rowFilter = detectPlayerRowFilterIntent(playerReq.originalQuery || "");
+      if (rowFilter) {
+        let filteredPlayerReq = {
+          ...playerReq,
+          filter: rowFilter
+        };
+
+        if (isRookieCardIntent(filteredPlayerReq.originalQuery || "") && !filteredPlayerReq.year && !filteredPlayerReq.code) {
+          await loadPlayerMeta();
+
+          const meta = getPlayerMetaEntry(filteredPlayerReq.playerName);
+          const rcYear = getRcYearForPlayerRequest(filteredPlayerReq, meta);
+
+          if (!rcYear) return buildRcYearMissingResponse(filteredPlayerReq, meta);
+
+          filteredPlayerReq = {
+            ...filteredPlayerReq,
+            year: rcYear,
+            mode: "player_year"
+          };
+        }
+
+        return buildPlayerChecklistResponse(filteredPlayerReq);
+      }
 
       const rookieResponse = await resolveRookiePlayerRequest(playerReq);
       if (rookieResponse) return rookieResponse;

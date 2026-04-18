@@ -632,7 +632,9 @@ window.CMChat.ui = window.CMChat.ui || {};
     const followups = result.followups || [];
     const sectionLabel = result.sectionLabel || "Checklist";
     const isSerialResult = result.sectionKey === "player_serial" || result.sectionKey === "product_serial";
+    const isGroupedResult = isSerialResult || result.sectionKey === "player_parallel";
     const isProductSerialResult = result.sectionKey === "product_serial";
+    const isPlayerParallelResult = result.sectionKey === "player_parallel";
     const badgeLabel = result.badge || (isSerialResult ? "Serial Numbered" : "Checklist");
 
     const headers = result.columns || ["Subset", "Card No.", "Player", "Team", "Tag"];
@@ -648,8 +650,8 @@ window.CMChat.ui = window.CMChat.ui || {};
       </tr>
     `).join("");
 
-    const serialListHtml = (() => {
-      if (!isSerialResult) return "";
+    const groupedListHtml = (() => {
+      if (!isGroupedResult) return "";
 
       const groups = [];
       const groupMap = new Map();
@@ -671,8 +673,8 @@ window.CMChat.ui = window.CMChat.ui || {};
           subset: cells[2] || "",
           cardNo: cells[3] || "",
           player: cells[4] || "",
-          parallel: cells[5] || "",
-          serialNo: cells[6] || ""
+          parallel: isPlayerParallelResult ? (cells[6] || "") : (cells[5] || ""),
+          serialNo: isPlayerParallelResult ? (cells[7] || "") : (cells[6] || "")
         });
       });
 
@@ -732,7 +734,7 @@ window.CMChat.ui = window.CMChat.ui || {};
 
           ${chipsHtml}
 
-          ${isSerialResult ? serialListHtml : `
+          ${isGroupedResult ? groupedListHtml : `
             <div class="prv-chat-table-wrap">
               <table class="prv-chat-table checklist-chat-table">
                 <thead>

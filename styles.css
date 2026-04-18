@@ -485,43 +485,72 @@ body{
   text-align:left;
 }
 
-.serial-chat-table{
-  min-width:860px;
+.serial-result-list{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  margin-bottom:16px;
 }
 
-.serial-chat-table thead th:nth-child(1){
-  width:72px;
-  text-align:left;
+.serial-product-group{
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:16px;
+  background:rgba(255,255,255,0.03);
+  overflow:hidden;
 }
 
-.serial-chat-table thead th:nth-child(2){
-  width:160px;
-  text-align:left;
+.serial-product-title{
+  padding:13px 14px;
+  background:rgba(255,255,255,0.05);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  color:#fff;
+  font-size:15px;
+  font-weight:900;
+  line-height:1.25;
 }
 
-.serial-chat-table thead th:nth-child(3){
-  width:105px;
-  text-align:left;
+.serial-product-items{
+  display:flex;
+  flex-direction:column;
 }
 
-.serial-chat-table thead th:nth-child(4){
-  width:88px;
-  text-align:left;
+.serial-result-item{
+  padding:13px 14px;
+  border-bottom:1px solid rgba(255,255,255,0.07);
 }
 
-.serial-chat-table thead th:nth-child(5){
-  width:110px;
-  text-align:left;
+.serial-result-item:last-child{
+  border-bottom:0;
 }
 
-.serial-chat-table thead th:nth-child(6){
-  width:220px;
-  text-align:left;
+.serial-card-line{
+  color:#fff;
+  font-size:14px;
+  font-weight:800;
+  line-height:1.35;
 }
 
-.serial-chat-table thead th:nth-child(7){
-  width:105px;
-  text-align:left;
+.serial-parallel-line{
+  margin-top:5px;
+  color:rgba(255,255,255,0.72);
+  font-size:13px;
+  font-weight:700;
+  line-height:1.35;
+}
+
+.serial-parallel-line span{
+  color:#fff;
+  font-weight:900;
+}
+
+.serial-result-empty{
+  margin-bottom:16px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:16px;
+  background:rgba(255,255,255,0.03);
+  color:rgba(255,255,255,0.76);
+  font-size:14px;
 }
 
 .prv-chat-tr{
@@ -764,36 +793,25 @@ body{
     width:62px;
   }
 
-  .serial-chat-table{
-    min-width:780px;
+  .serial-result-list{
+    gap:12px;
   }
 
-  .serial-chat-table thead th:nth-child(1){
-    width:62px;
+  .serial-product-title{
+    padding:12px;
+    font-size:14px;
   }
 
-  .serial-chat-table thead th:nth-child(2){
-    width:140px;
+  .serial-result-item{
+    padding:12px;
   }
 
-  .serial-chat-table thead th:nth-child(3){
-    width:92px;
+  .serial-card-line{
+    font-size:13px;
   }
 
-  .serial-chat-table thead th:nth-child(4){
-    width:76px;
-  }
-
-  .serial-chat-table thead th:nth-child(5){
-    width:100px;
-  }
-
-  .serial-chat-table thead th:nth-child(6){
-    width:210px;
-  }
-
-  .serial-chat-table thead th:nth-child(7){
-    width:100px;
+  .serial-parallel-line{
+    font-size:12px;
   }
 
   .prv-chat-td-right{

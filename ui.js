@@ -630,6 +630,10 @@ window.CMChat.ui = window.CMChat.ui || {};
     const chips = result.metadata || [];
     const followups = result.followups || [];
     const sectionLabel = result.sectionLabel || "Checklist";
+    const badgeLabel = result.badge || (result.sectionKey === "player_serial" ? "Serial Numbered" : "Checklist");
+    const tableClass = result.sectionKey === "player_serial"
+      ? "prv-chat-table checklist-chat-table serial-chat-table"
+      : "prv-chat-table checklist-chat-table";
 
     const headers = result.columns || ["Subset", "Card No.", "Player", "Team", "Tag"];
     const headHtml = headers.map(h => `<th>${escapeHtml(h)}</th>`).join("");
@@ -658,7 +662,7 @@ window.CMChat.ui = window.CMChat.ui || {};
       <div class="message-row assistant">
         <div class="prv-chat-card" id="${cardId}">
           <div class="prv-chat-topline">
-            <div class="answer-badge">Checklist</div>
+            <div class="answer-badge">${escapeHtml(badgeLabel)}</div>
           </div>
 
           <div class="prv-chat-title">${escapeHtml(product.name || "")}</div>
@@ -667,7 +671,7 @@ window.CMChat.ui = window.CMChat.ui || {};
           ${chipsHtml}
 
           <div class="prv-chat-table-wrap">
-            <table class="prv-chat-table checklist-chat-table">
+            <table class="${tableClass}">
               <thead>
                 <tr>${headHtml}</tr>
               </thead>

@@ -1700,21 +1700,34 @@ async function buildPlayerSerialCardsResponse(numberedReq) {
     };
   }
 
+  const displayRows = rows.map(r => {
+    if (!Array.isArray(r)) return r;
+    return [
+      r[0] || "",
+      r[1] || "",
+      r[2] || "",
+      r[3] || "",
+      r[4] || "",
+      r[6] || "",
+      r[7] || ""
+    ];
+  });
+
   return {
     type: "checklist_table",
+    badge: "Serial Numbered",
     product: { name: data.resolved_player || numberedReq.playerName },
     sectionKey: "player_serial",
     sectionLabel: numberedReq.year
       ? `${numberedReq.year} Serial Numbered Under /${serialDisplay}`
       : `All Years Serial Numbered Under /${serialDisplay}`,
-    rows: rows.map(r => ({ cells: r })),
-    columns: data.columns || [
+    rows: displayRows.map(r => ({ cells: r })),
+    columns: [
       "Year",
       "Product",
       "Subset",
       "Card No.",
       "Player",
-      "Team",
       "Parallel",
       "Serial No."
     ],

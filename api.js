@@ -100,6 +100,31 @@ window.CMChat.api = window.CMChat.api || {};
     return out;
   }
 
+  async function getAdvancedPlayerSerialCards(playerQuery, sport, year = "", serialMax = 99) {
+    const key = utils.makeKey(
+      utils.normalize(playerQuery),
+      sport || "baseball",
+      year || "",
+      serialMax || ""
+    );
+
+    if (cache.memCache.playerSerialCards.has(key)) {
+      return cache.memCache.playerSerialCards.get(key);
+    }
+
+    const data = await postJson(config.CHECKLIST_EXEC_URL, {
+      action: "advanced_player_serial_cards",
+      player_query: playerQuery,
+      sport: sport || "baseball",
+      year: year || "",
+      serial_max: serialMax
+    });
+
+    const out = data || {};
+    cache.memCache.playerSerialCards.set(key, out);
+    return out;
+  }
+
   async function getPlayerYears(playerQuery, sport = "baseball") {
     const key = utils.makeKey(utils.normalize(playerQuery), sport);
     if (cache.memCache.playerYears.has(key)) return cache.memCache.playerYears.get(key);
@@ -139,6 +164,7 @@ window.CMChat.api = window.CMChat.api || {};
   ns.getChecklistSection = getChecklistSection;
   ns.getChecklistParallels = getChecklistParallels;
   ns.getPlayerCards = getPlayerCards;
+  ns.getAdvancedPlayerSerialCards = getAdvancedPlayerSerialCards;
   ns.getPlayerYears = getPlayerYears;
   ns.getReleaseSchedule = getReleaseSchedule;
 })(window.CMChat.api, window.CMChat.config, window.CMChat.cache, window.CMChat.utils);

@@ -528,7 +528,7 @@ async function getPlayerMatchOptions(playerQuery, sport = "baseball", limit = 5)
 
   const seen = new Set();
 
-  return (getPlayerMetaIndex() || [])
+  return (store.playerMetaIndex || [])
     .filter(meta => !sport || normalize(meta.sport || sport || "baseball") === normalize(sport || "baseball"))
     .map(meta => scorePlayerMetaOption(meta, playerQuery))
     .filter(Boolean)

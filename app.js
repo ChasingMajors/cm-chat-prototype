@@ -73,6 +73,7 @@ let pendingProductChoice = null;
 let pendingChecklistChoice = null;
 let pendingPlayerChoice = null;
 let pendingNumberedChoice = null;
+let pendingProductNumberedChoice = null;
 
 const RELEASE_SPORT_ORDER = ["baseball", "football", "basketball", "soccer", "hockey"];
 
@@ -142,6 +143,7 @@ async function buildDirectChecklistResponse(action) {
   pendingProductChoice = null;
   pendingPlayerChoice = null;
   pendingNumberedChoice = null;
+  pendingProductNumberedChoice = null;
 
   if (!product.code) {
     pendingChecklistChoice = null;
@@ -224,6 +226,7 @@ async function buildDirectPrintRunResponse(action) {
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
   pendingNumberedChoice = null;
+  pendingProductNumberedChoice = null;
 
   if (!product.code) {
     return {
@@ -541,6 +544,16 @@ function isAllCardsReply(query) {
   return n === "all cards" || n === "all" || n === "all years";
 }
 
+function isSerialChoiceReply(query) {
+  const n = normalize(query);
+  return n === "serial numbered" || n === "serial" || n === "serial number" || n === "serial numbers";
+}
+
+function isPrintRunChoiceReply(query) {
+  const n = normalize(query);
+  return n === "print run" || n === "print-run" || n === "print runs" || n === "vault";
+}
+
 function stripPrintRunThresholdWords(query) {
   let out = normalize(query || "");
 
@@ -610,6 +623,89 @@ function getPrintRunValue(row) {
   const raw = String(row?.printRun || "").trim();
   const num = Number(raw.replace(/[^\d.]/g, ""));
   return Number.isFinite(num) ? num : 0;
+}
+
+function getSerialLimitValue(value) {
+  const raw = String(value || "").trim();
+  const slash = raw.match(/\/\s*(\d+)/);
+  if (slash) {
+    const num = Number(slash[1]);
+    return Number.isFinite(num) ? num : 0;
+  }
+
+  const fallback = Number(raw.replace(/[^\d.]/g, ""));
+  return Number.isFinite(fallback) ? fallback : 0;
+}
+
+function stripProductNumberedThresholdWords(query) {
+  let out = stripNumberedSearchWords(query);
+
+  [
+    "low",
+    "all",
+    "cards",
+    "card",
+    "parallels",
+    "parallel"
+  ].forEach(phrase => {
+    out = out.replace(new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
+  });
+
+  return out.replace(/\s+/g, " ").trim();
+}
+
+function isExplicitProductSerialQuery(query) {
+  const n = normalize(query);
+  return (
+    n.includes("serial numbered") ||
+    n.includes("serial-numbered") ||
+    n.includes("serial number") ||
+    n.includes("low numbered") ||
+    n.includes("low serial")
+  );
+}
+
+function isAmbiguousProductNumberedQuery(query) {
+  const n = normalize(query);
+
+  if (extractPrintRunThreshold(query)) return false;
+  if (isExplicitProductSerialQuery(query)) return false;
+
+  return (
+    n.includes("numbered under") ||
+    n.includes("numbered less than") ||
+    n.includes("numbered below") ||
+    n.includes("numbered /") ||
+    /\bnumbered\s+\d{1,4}\b/.test(n) ||
+    /\/\s*\d{1,4}\b/.test(String(query || ""))
+  );
+}
+
+function detectProductNumberedRequest(query) {
+  if (!isNumberedSearchQuery(query)) return null;
+  if (extractPrintRunThreshold(query)) return null;
+
+  const serialMax = extractNumberedThreshold(query);
+  if (!serialMax) return null;
+
+  const productQuery = stripProductNumberedThresholdWords(query);
+  if (!productQuery) return null;
+
+  const checklistProduct = findBestProduct(getChecklistIndex(), productQuery, "checklist");
+  const printRunProduct = findBestProduct(getPrintRunIndex(), productQuery, "print_run");
+  const product = checklistProduct || printRunProduct;
+
+  if (!product) return null;
+
+  return {
+    product,
+    checklistProduct,
+    printRunProduct,
+    serialMax,
+    thresholdLabel: getThresholdLabel(query, serialMax),
+    mode: isAmbiguousProductNumberedQuery(query) ? "ambiguous" : "serial",
+    originalQuery: query
+  };
 }
 
 function buildPrintRunProductFollowupsForYear(year, query, threshold) {
@@ -1461,6 +1557,8 @@ async function buildReleaseScheduleResponse(query) {
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
   awaitingCatalogSport = false;
+  pendingNumberedChoice = null;
+  pendingProductNumberedChoice = null;
 
   if (!rows.length) {
     return {
@@ -1584,6 +1682,8 @@ function buildPricingResponse() {
   pendingProductChoice = null;
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+  pendingProductNumberedChoice = null;
 
   return {
     type: "standard",
@@ -1597,6 +1697,8 @@ function buildDataSourceResponse() {
   pendingProductChoice = null;
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+  pendingProductNumberedChoice = null;
 
   return {
     type: "standard",
@@ -1610,6 +1712,8 @@ function buildRestrictedBrandPrintRunResponse() {
   pendingProductChoice = null;
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+  pendingProductNumberedChoice = null;
 
   return {
     type: "standard",
@@ -1629,6 +1733,8 @@ function buildAskSportResponse() {
   pendingProductChoice = null;
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+  pendingProductNumberedChoice = null;
 
   return {
     type: "standard",
@@ -1679,6 +1785,8 @@ function buildSearchHelpResponse() {
   pendingProductChoice = null;
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+  pendingProductNumberedChoice = null;
 
   return {
     type: "standard",
@@ -1694,6 +1802,7 @@ function buildClarifyProductTypeResponse(productName, query) {
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
   pendingNumberedChoice = null;
+  pendingProductNumberedChoice = null;
 
   return {
     type: "standard",
@@ -1702,6 +1811,139 @@ function buildClarifyProductTypeResponse(productName, query) {
     summary: "Are you looking for print run or checklist data?",
     followups: ["Print run", "Checklist"]
   };
+}
+
+function buildProductNumberedClarifyResponse(numberedReq) {
+  pendingProductNumberedChoice = numberedReq;
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+  awaitingCatalogSport = false;
+
+  return {
+    type: "standard",
+    badge: "Numbered",
+    title: numberedReq.product.name,
+    summary: `Do you want serial-numbered parallels or print-run rows ${numberedReq.thresholdLabel.toLowerCase()}?`,
+    metadata: uniq([
+      numberedReq.product.year ? `Year: ${numberedReq.product.year}` : "",
+      numberedReq.product.sport ? `Sport: ${titleCase(numberedReq.product.sport)}` : "",
+      `Filter: ${numberedReq.thresholdLabel}`
+    ]),
+    followups: [
+      "Serial Numbered",
+      "Print Run"
+    ]
+  };
+}
+
+async function buildProductSerialResponse(numberedReq) {
+  const product = numberedReq.checklistProduct || numberedReq.product;
+  const serialDisplay = numberedReq.serialMax + 1;
+
+  pendingProductNumberedChoice = null;
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+  awaitingCatalogSport = false;
+
+  if (!product?.code) {
+    return {
+      type: "standard",
+      badge: "Serial Numbered",
+      title: "Product not available",
+      summary: "I could not verify a checklist product for that serial-numbered search."
+    };
+  }
+
+  const data = await getChecklistParallels(product.code);
+  const rows = Array.isArray(data?.rows) ? data.rows : [];
+
+  const filteredRows = rows
+    .map(r => {
+      const appliesTo = Array.isArray(r) ? (r[0] || "") : (r.applies_to || "");
+      const parallelName = Array.isArray(r) ? (r[1] || "") : (r.parallel_name || "");
+      const serialNo = Array.isArray(r) ? (r[2] || "") : (r.serial_no || "");
+      const value = getSerialLimitValue(serialNo);
+
+      return {
+        appliesTo,
+        parallelName,
+        serialNo,
+        value
+      };
+    })
+    .filter(r => r.value > 0 && r.value <= numberedReq.serialMax);
+
+  if (!filteredRows.length) {
+    return {
+      type: "standard",
+      badge: "Serial Numbered",
+      title: product.name,
+      summary: `I found the checklist product, but no serial-numbered parallels were under /${serialDisplay}.`,
+      metadata: uniq([
+        `Filter: Under /${serialDisplay}`,
+        product.year ? `Year: ${product.year}` : "",
+        product.sport ? `Sport: ${titleCase(product.sport)}` : ""
+      ]),
+      followups: [
+        `Show me the ${product.name} checklist`,
+        numberedReq.printRunProduct ? "Print Run" : ""
+      ].filter(Boolean)
+    };
+  }
+
+  return {
+    type: "checklist_table",
+    badge: "Serial Numbered",
+    product: { name: product.name },
+    sectionKey: "product_serial",
+    sectionLabel: `Serial Numbered Under /${serialDisplay}`,
+    rows: filteredRows.map(r => ({
+      cells: [
+        product.year || "",
+        product.name || "",
+        r.appliesTo || "",
+        "",
+        "",
+        r.parallelName || "",
+        r.serialNo || ""
+      ]
+    })),
+    columns: [
+      "Year",
+      "Product",
+      "Applies To",
+      "Card No.",
+      "Player",
+      "Parallel",
+      "Serial No."
+    ],
+    metadata: uniq([
+      `Rows: ${formatNumber(filteredRows.length)}`,
+      product.year ? `Year: ${product.year}` : "",
+      product.sport ? `Sport: ${titleCase(product.sport)}` : "",
+      `Serial: Under /${serialDisplay}`
+    ]),
+    sectionOptions: [],
+    followups: [
+      numberedReq.printRunProduct ? "Print Run" : "",
+      `Show full ${product.name} parallels`,
+      `Show me the ${product.name} checklist`
+    ].filter(Boolean)
+  };
+}
+
+async function buildProductNumberedPrintRunResponse(numberedReq) {
+  const product = numberedReq.printRunProduct || numberedReq.product;
+
+  pendingProductNumberedChoice = null;
+
+  return buildPrintRunResponse(
+    `Show ${product.name} print run less than ${numberedReq.serialMax + 1}`
+  );
 }
 
 async function buildPlayerSerialYearChoiceResponse(numberedReq) {
@@ -1728,6 +1970,7 @@ async function buildPlayerSerialYearChoiceResponse(numberedReq) {
   pendingProductChoice = null;
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
+  pendingProductNumberedChoice = null;
   awaitingCatalogSport = false;
 
   const yearFollowups = yearOptions.slice(0, 6).map(y => y.label || y.year);
@@ -1753,6 +1996,7 @@ async function buildPlayerSerialCardsResponse(numberedReq) {
   pendingProductChoice = null;
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
+  pendingProductNumberedChoice = null;
   awaitingCatalogSport = false;
 
   const data = await getAdvancedPlayerSerialCards(
@@ -2017,6 +2261,7 @@ async function buildPrintRunResponse(query) {
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
   pendingNumberedChoice = null;
+  pendingProductNumberedChoice = null;
 
   if (printRunThreshold && !hasProductClue) {
     const year = extractYear(query);
@@ -2227,6 +2472,15 @@ async function buildSearchResponse(query) {
     return buildPlayerSerialCardsResponse(numberedReq);
   }
 
+  const productNumberedReq = detectProductNumberedRequest(query);
+  if (productNumberedReq) {
+    if (productNumberedReq.mode === "ambiguous") {
+      return buildProductNumberedClarifyResponse(productNumberedReq);
+    }
+
+    return buildProductSerialResponse(productNumberedReq);
+  }
+
   const playerReq = detectPlayerSearchRequest(query);
   if (playerReq) {
     prefetchPlayerData(playerReq);
@@ -2275,6 +2529,16 @@ async function buildResponse(query) {
       title: "Action not available",
       summary: "I could not open that release schedule action."
     };
+  }
+
+  if (pendingProductNumberedChoice) {
+    if (isSerialChoiceReply(query)) {
+      return buildProductSerialResponse(pendingProductNumberedChoice);
+    }
+
+    if (isPrintRunChoiceReply(query)) {
+      return buildProductNumberedPrintRunResponse(pendingProductNumberedChoice);
+    }
   }
 
   if (pendingNumberedChoice) {

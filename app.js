@@ -364,7 +364,7 @@ function splitPlayerSearchQuery(query) {
   return {
     playerName: titleCase(playerTokens.join(" ")),
     year: year || "",
-    sport: sport || "baseball",
+    sport: sport || "",
     remainder: candidateTokens.slice(stopIdx).join(" ").trim()
   };
 }
@@ -487,7 +487,7 @@ function detectPlayerSearchRequest(query) {
   if (looksLikeStandaloneYearQuery(parts)) {
     return {
       playerName,
-      sport: sport || "baseball",
+      sport: sport || "",
       year: year || "",
       code: "",
       productName: "",
@@ -513,7 +513,7 @@ function detectPlayerSearchRequest(query) {
   if (year) {
     return {
       playerName,
-      sport: sport || "baseball",
+      sport: sport || "",
       year,
       code: "",
       productName: "",
@@ -524,7 +524,7 @@ function detectPlayerSearchRequest(query) {
 
   return {
     playerName,
-    sport: sport || "baseball",
+    sport: sport || "",
     year: "",
     code: "",
     productName: "",
@@ -631,12 +631,13 @@ function scorePlayerMetaOption(meta, playerQuery) {
   return {
     playerName: display,
     score,
+    sport: normalize(meta?.sport || ""),
     years: Array.isArray(meta?.checklist_years) ? meta.checklist_years : [],
     rcYear: meta?.rc_year || ""
   };
 }
 
-async function getPlayerMatchOptions(playerQuery, sport = "baseball", limit = 5) {
+async function getPlayerMatchOptions(playerQuery, sport = "", limit = 5) {
   await loadPlayerMeta();
 
   const qTokens = tokenize(playerQuery);
@@ -677,7 +678,7 @@ function shouldClarifyPlayerMatch(playerQuery, options) {
 async function getPlayerMatchClarification(playerReq) {
   if (!playerReq?.playerName) return null;
 
-  const options = await getPlayerMatchOptions(playerReq.playerName, playerReq.sport || "baseball");
+  const options = await getPlayerMatchOptions(playerReq.playerName, playerReq.sport || "");
   return shouldClarifyPlayerMatch(playerReq.playerName, options) ? options : null;
 }
 
@@ -689,7 +690,8 @@ function resolvePlayerRequestFromOptions(playerReq, options) {
 
   return {
     ...playerReq,
-    playerName: options[0].playerName || playerReq.playerName
+    playerName: options[0].playerName || playerReq.playerName,
+    sport: options[0].sport || playerReq.sport || "baseball"
   };
 }
 
@@ -875,7 +877,7 @@ function detectNumberedPlayerSearchRequest(query) {
   return {
     mode: "player_serial",
     playerName: parts.playerName,
-    sport: parts.sport || "baseball",
+    sport: parts.sport || "",
     year: parts.year || "",
     serialMax,
     originalQuery: query
@@ -3180,7 +3182,7 @@ async function buildSearchResponse(query) {
 
   const numberedReq = detectNumberedPlayerSearchRequest(query);
   if (numberedReq) {
-    const playerOptions = await getPlayerMatchOptions(numberedReq.playerName, numberedReq.sport || "baseball");
+    const playerOptions = await getPlayerMatchOptions(numberedReq.playerName, numberedReq.sport || "");
     const playerClarification = shouldClarifyPlayerMatch(numberedReq.playerName, playerOptions)
       ? playerOptions
       : null;
@@ -3223,7 +3225,7 @@ async function buildSearchResponse(query) {
 
   const playerReq = detectPlayerSearchRequest(query);
   if (playerReq) {
-    const playerOptions = await getPlayerMatchOptions(playerReq.playerName, playerReq.sport || "baseball");
+    const playerOptions = await getPlayerMatchOptions(playerReq.playerName, playerReq.sport || "");
     const playerClarification = shouldClarifyPlayerMatch(playerReq.playerName, playerOptions)
       ? playerOptions
       : null;
@@ -3340,7 +3342,8 @@ async function buildResponse(query) {
       if (selectedKind === "numbered") {
         let numberedReq = {
           ...selectedRequest,
-          playerName: selectedPlayer.playerName
+          playerName: selectedPlayer.playerName,
+          sport: selectedPlayer.sport || selectedRequest.sport || "baseball"
         };
 
         if (isRookieCardIntent(numberedReq.originalQuery || "") && !numberedReq.year) {
@@ -3366,7 +3369,8 @@ async function buildResponse(query) {
 
       const playerReq = {
         ...selectedRequest,
-        playerName: selectedPlayer.playerName
+        playerName: selectedPlayer.playerName,
+        sport: selectedPlayer.sport || selectedRequest.sport || "baseball"
       };
 
       prefetchPlayerData(playerReq);

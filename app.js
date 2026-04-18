@@ -75,6 +75,7 @@ let pendingPlayerChoice = null;
 let pendingNumberedChoice = null;
 let pendingProductNumberedChoice = null;
 let pendingProductMatchChoice = null;
+let pendingPlayerMatchChoice = null;
 
 const RELEASE_SPORT_ORDER = ["baseball", "football", "basketball", "soccer", "hockey"];
 
@@ -146,6 +147,7 @@ async function buildDirectChecklistResponse(action) {
   pendingNumberedChoice = null;
   pendingProductNumberedChoice = null;
   pendingProductMatchChoice = null;
+  pendingPlayerMatchChoice = null;
 
   if (!product.code) {
     pendingChecklistChoice = null;
@@ -230,6 +232,7 @@ async function buildDirectPrintRunResponse(action) {
   pendingNumberedChoice = null;
   pendingProductNumberedChoice = null;
   pendingProductMatchChoice = null;
+  pendingPlayerMatchChoice = null;
 
   if (!product.code) {
     return {
@@ -429,6 +432,137 @@ function detectPlayerSearchRequest(query) {
     productName: "",
     mode: "player_only"
   };
+}
+
+function getPlayerDisplayName(meta) {
+  return String(meta?.player_name || meta?.player_display || "").trim();
+}
+
+function getPlayerChecklistYearCount(meta) {
+  return Array.isArray(meta?.checklist_years) ? meta.checklist_years.length : 0;
+}
+
+function getPlayerCardRowCount(meta) {
+  return Number(meta?.card_row_count || meta?.row_count || 0) || 0;
+}
+
+function editDistance(a, b) {
+  const left = String(a || "");
+  const right = String(b || "");
+
+  if (!left) return right.length;
+  if (!right) return left.length;
+
+  const dp = Array.from({ length: left.length + 1 }, (_, i) => [i]);
+  for (let j = 1; j <= right.length; j++) dp[0][j] = j;
+
+  for (let i = 1; i <= left.length; i++) {
+    for (let j = 1; j <= right.length; j++) {
+      const cost = left[i - 1] === right[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + cost
+      );
+    }
+  }
+
+  return dp[left.length][right.length];
+}
+
+function scorePlayerMetaOption(meta, playerQuery) {
+  const display = getPlayerDisplayName(meta);
+  const qTokens = tokenize(playerQuery);
+  const nameTokens = tokenize(display);
+
+  if (!display || !qTokens.length || !nameTokens.length) return null;
+
+  let score = 0;
+  const qNorm = normalize(playerQuery);
+  const nameNorm = normalize(display);
+
+  if (qNorm === nameNorm) score += 500;
+  if (nameNorm.includes(qNorm)) score += 90;
+
+  qTokens.forEach(q => {
+    nameTokens.forEach((t, idx) => {
+      const isFirst = idx === 0;
+      const isLast = idx === nameTokens.length - 1;
+
+      if (q === t) score += isLast ? 180 : (isFirst ? 145 : 110);
+      else if ((q.length >= 3 || t.length >= 3) && (t.startsWith(q) || q.startsWith(t))) {
+        score += isLast ? 95 : 70;
+      } else {
+        const maxLen = Math.max(q.length, t.length);
+        const dist = editDistance(q, t);
+        if (dist === 1 && maxLen >= 5) score += isLast ? 70 : 50;
+        if (dist === 2 && maxLen >= 7) score += isLast ? 40 : 25;
+      }
+    });
+  });
+
+  const matchedAll = qTokens.every(q => nameTokens.some(t =>
+    q === t ||
+    (q.length >= 3 && t.startsWith(q)) ||
+    (t.length >= 3 && q.startsWith(t))
+  ));
+
+  if (!matchedAll) return null;
+
+  score += Math.min(getPlayerCardRowCount(meta), 1000) / 20;
+  score += getPlayerChecklistYearCount(meta) * 5;
+
+  return {
+    playerName: display,
+    score,
+    years: Array.isArray(meta?.checklist_years) ? meta.checklist_years : [],
+    rcYear: meta?.rc_year || ""
+  };
+}
+
+async function getPlayerMatchOptions(playerQuery, sport = "baseball", limit = 5) {
+  await loadPlayerMeta();
+
+  const qTokens = tokenize(playerQuery);
+  if (!qTokens.length) return [];
+
+  const seen = new Set();
+
+  return (getPlayerMetaIndex() || [])
+    .filter(meta => !sport || normalize(meta.sport || sport || "baseball") === normalize(sport || "baseball"))
+    .map(meta => scorePlayerMetaOption(meta, playerQuery))
+    .filter(Boolean)
+    .filter(option => {
+      const key = normalize(option.playerName);
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .sort((a, b) => {
+      const scoreDiff = (b.score || 0) - (a.score || 0);
+      if (scoreDiff !== 0) return scoreDiff;
+      return String(a.playerName || "").localeCompare(String(b.playerName || ""));
+    })
+    .slice(0, limit);
+}
+
+function shouldClarifyPlayerMatch(playerQuery, options) {
+  const qTokens = tokenize(playerQuery);
+  if (qTokens.length !== 1) return false;
+  if (!Array.isArray(options) || options.length < 2) return false;
+
+  const topScore = Number(options[0]?.score || 0);
+  const secondScore = Number(options[1]?.score || 0);
+  if (topScore < 110) return true;
+
+  return secondScore >= topScore - 45 || (topScore > 0 && secondScore / topScore >= 0.68);
+}
+
+async function getPlayerMatchClarification(playerReq) {
+  if (!playerReq?.playerName) return null;
+
+  const options = await getPlayerMatchOptions(playerReq.playerName, playerReq.sport || "baseball");
+  return shouldClarifyPlayerMatch(playerReq.playerName, options) ? options : null;
 }
 
 function extractNumberedThreshold(query) {
@@ -1913,6 +2047,7 @@ function buildProductMatchClarifyResponse(intent, query, options) {
   pendingPlayerChoice = null;
   pendingNumberedChoice = null;
   pendingProductNumberedChoice = null;
+  pendingPlayerMatchChoice = null;
   awaitingCatalogSport = false;
 
   return {
@@ -1922,6 +2057,41 @@ function buildProductMatchClarifyResponse(intent, query, options) {
     summary: "I found a few close product matches. Choose the exact product so I do not open the wrong set.",
     followups: (options || []).map(product => product.name).filter(Boolean)
   };
+}
+
+function buildPlayerMatchClarifyResponse(kind, request, options) {
+  pendingPlayerMatchChoice = {
+    kind,
+    request,
+    options: options || []
+  };
+
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+  pendingProductNumberedChoice = null;
+  pendingProductMatchChoice = null;
+  awaitingCatalogSport = false;
+
+  return {
+    type: "standard",
+    badge: "Player",
+    title: "Which player should I search?",
+    summary: "I found a few player matches. Choose the exact player so I can keep the results focused.",
+    followups: (options || []).map(option => option.playerName).filter(Boolean)
+  };
+}
+
+function findSelectedPlayerMatch(query) {
+  if (!pendingPlayerMatchChoice) return null;
+
+  const qNorm = normalize(query);
+  if (!qNorm) return null;
+
+  return (pendingPlayerMatchChoice.options || []).find(option =>
+    normalize(option.playerName) === qNorm
+  ) || null;
 }
 
 function findSelectedProductMatch(query) {
@@ -2584,6 +2754,11 @@ async function buildSearchResponse(query) {
 
   const numberedReq = detectNumberedPlayerSearchRequest(query);
   if (numberedReq) {
+    const playerClarification = await getPlayerMatchClarification(numberedReq);
+    if (playerClarification) {
+      return buildPlayerMatchClarifyResponse("numbered", numberedReq, playerClarification);
+    }
+
     if (!numberedReq.year) {
       return buildPlayerSerialYearChoiceResponse(numberedReq);
     }
@@ -2602,6 +2777,11 @@ async function buildSearchResponse(query) {
 
   const playerReq = detectPlayerSearchRequest(query);
   if (playerReq) {
+    const playerClarification = await getPlayerMatchClarification(playerReq);
+    if (playerClarification) {
+      return buildPlayerMatchClarifyResponse("player", playerReq, playerClarification);
+    }
+
     prefetchPlayerData(playerReq);
 
     if (playerReq.mode === "player_product" || playerReq.mode === "player_year") {
@@ -2667,6 +2847,44 @@ async function buildResponse(query) {
       title: "Action not available",
       summary: "I could not open that release schedule action."
     };
+  }
+
+  if (pendingPlayerMatchChoice) {
+    const selectedPlayer = findSelectedPlayerMatch(query);
+    const selectedKind = pendingPlayerMatchChoice.kind;
+    const selectedRequest = pendingPlayerMatchChoice.request || {};
+
+    if (selectedPlayer) {
+      pendingPlayerMatchChoice = null;
+
+      if (selectedKind === "numbered") {
+        const numberedReq = {
+          ...selectedRequest,
+          playerName: selectedPlayer.playerName
+        };
+
+        if (!numberedReq.year) {
+          return buildPlayerSerialYearChoiceResponse(numberedReq);
+        }
+
+        return buildPlayerSerialCardsResponse(numberedReq);
+      }
+
+      const playerReq = {
+        ...selectedRequest,
+        playerName: selectedPlayer.playerName
+      };
+
+      prefetchPlayerData(playerReq);
+
+      if (playerReq.mode === "player_product" || playerReq.mode === "player_year") {
+        return buildPlayerChecklistResponse(playerReq);
+      }
+
+      return buildPlayerChoiceResponse(playerReq);
+    }
+
+    pendingPlayerMatchChoice = null;
   }
 
   if (pendingProductMatchChoice) {

@@ -7,6 +7,7 @@ window.CMChat.cache = window.CMChat.cache || {};
     checklistSection: new Map(),
     checklistParallels: new Map(),
     playerCards: new Map(),
+    playerSerialCards: new Map(),
     playerYears: new Map(),
     printRunRows: new Map(),
     homeFeed: null,

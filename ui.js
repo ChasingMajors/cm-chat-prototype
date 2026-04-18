@@ -631,7 +631,8 @@ window.CMChat.ui = window.CMChat.ui || {};
     const chips = result.metadata || [];
     const followups = result.followups || [];
     const sectionLabel = result.sectionLabel || "Checklist";
-    const isSerialResult = result.sectionKey === "player_serial";
+    const isSerialResult = result.sectionKey === "player_serial" || result.sectionKey === "product_serial";
+    const isProductSerialResult = result.sectionKey === "product_serial";
     const badgeLabel = result.badge || (isSerialResult ? "Serial Numbered" : "Checklist");
 
     const headers = result.columns || ["Subset", "Card No.", "Player", "Team", "Tag"];
@@ -688,9 +689,13 @@ window.CMChat.ui = window.CMChat.ui || {};
                 ${group.items.map(item => `
                   <div class="serial-result-item">
                     <div class="serial-card-line">
-                      ${escapeHtml(item.player || "Player")}
-                      ${item.cardNo ? ` · #${escapeHtml(item.cardNo)}` : ""}
-                      ${item.subset ? ` · [${escapeHtml(item.subset)}]` : ""}
+                      ${isProductSerialResult
+                        ? escapeHtml(item.subset || "Applies to checklist")
+                        : `
+                          ${escapeHtml(item.player || "Player")}
+                          ${item.cardNo ? ` · #${escapeHtml(item.cardNo)}` : ""}
+                          ${item.subset ? ` · [${escapeHtml(item.subset)}]` : ""}
+                        `}
                     </div>
                     <div class="serial-parallel-line">
                       ${escapeHtml(item.parallel || "Parallel")}

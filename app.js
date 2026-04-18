@@ -612,6 +612,26 @@ function getPrintRunValue(row) {
   return Number.isFinite(num) ? num : 0;
 }
 
+function buildPrintRunProductFollowupsForYear(year, query, threshold) {
+  const y = String(year || "").trim();
+  const sport = extractSport(query);
+  const thresholdText = getThresholdLabel(query, threshold).toLowerCase();
+
+  const products = getPrintRunIndex()
+    .map(mapProduct)
+    .filter(p => p.name)
+    .filter(p => !y || String(p.year || "") === y)
+    .filter(p => !sport || normalize(p.sport) === sport)
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .slice(0, 5);
+
+  return uniq([
+    ...products.map(p => `Show ${p.name} print run ${thresholdText}`),
+    y ? `Show ${y} baseball products` : "",
+    y ? `Show ${y} release schedule` : "Show the release schedule"
+  ].filter(Boolean));
+}
+
 function mentionsRestrictedPrintRunBrand(query) {
   const n = normalize(query);
   return NON_TOPPS_PRINTRUN_BRANDS.some(b => n.includes(normalize(b)));
@@ -2007,11 +2027,7 @@ async function buildPrintRunResponse(query) {
       badge: "Low Print Run",
       title: "Which product should I search?",
       summary: `I can search print-run rows ${getThresholdLabel(query, printRunThreshold).toLowerCase()}${yearText}, but I need a product name first.`,
-      followups: [
-        year ? `Show me ${year} Topps Series 1 print run less than 100` : "Show me 2026 Topps Series 1 print run less than 100",
-        year ? `Show me ${year} Bowman Baseball print run less than 100` : "Show me 2026 Bowman Baseball print run less than 100",
-        "Show the release schedule"
-      ]
+      followups: buildPrintRunProductFollowupsForYear(year, query, printRunThreshold)
     };
   }
 

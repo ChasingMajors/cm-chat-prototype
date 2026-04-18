@@ -328,9 +328,28 @@ function splitPlayerSearchQuery(query) {
 
   if (!isLikelyPlayerNameToken(candidateNorms[0])) return null;
 
+  const isPlayerQueryStopToken = token =>
+    PLAYER_SEARCH_NON_NAME_WORDS.has(token) ||
+    [
+      "low",
+      "numbered",
+      "refractor",
+      "refractors",
+      "parallel",
+      "parallels",
+      "autograph",
+      "autographs",
+      "auto",
+      "autos",
+      "variation",
+      "variations",
+      "relic",
+      "relics"
+    ].includes(token);
+
   let stopIdx = candidateNorms.length;
   for (let i = 0; i < candidateNorms.length; i++) {
-    if (PLAYER_SEARCH_NON_NAME_WORDS.has(candidateNorms[i])) {
+    if (isPlayerQueryStopToken(candidateNorms[i])) {
       stopIdx = i;
       break;
     }
@@ -366,6 +385,7 @@ function isRookieCardIntent(query) {
   return (
     n.includes("rookie card") ||
     n.includes("rookie cards") ||
+    /\brookie\b/.test(n) ||
     n.includes("rookies") ||
     n.includes(" rc ") ||
     n.endsWith(" rc") ||
@@ -792,15 +812,16 @@ function stripNumberedSearchWords(query) {
     "serial-numbered",
     "serial number",
     "serial numbers",
+    "low numbered",
+    "low serial",
+    "low print run",
+    "short print",
     "serial",
     "numbered",
     "number",
     "numbers",
-    "low print run",
     "print run",
-    "low numbered",
-    "low serial",
-    "short print",
+    "low",
     "ssp",
     "under",
     "less than",
@@ -2645,7 +2666,12 @@ async function buildPlayerChecklistResponse(playerReq) {
   );
 
   const filter = playerReq.filter || null;
-  const sourceRows = Array.isArray(data?.rows) ? data.rows : [];
+  const allSourceRows = Array.isArray(data?.rows) ? data.rows : [];
+  const columns = data.columns || [];
+  const yearColumnIndex = columns.map(c => normalize(c)).indexOf("year");
+  const sourceRows = playerReq.year && yearColumnIndex > -1
+    ? allSourceRows.filter(row => String(row?.[yearColumnIndex] || "") === String(playerReq.year))
+    : allSourceRows;
   const filteredRows = filter
     ? sourceRows.filter(row => rowMatchesPlayerFilter(row, filter))
     : sourceRows;
@@ -2665,6 +2691,14 @@ async function buildPlayerChecklistResponse(playerReq) {
   }
 
   if (!rowCount) {
+    if (filter) {
+      pendingPlayerChoice = null;
+      pendingChecklistChoice = null;
+      pendingProductChoice = null;
+      pendingPlayerMatchChoice = null;
+      pendingProductMatchChoice = null;
+    }
+
     const searchedContext = [
       playerReq.year || "",
       playerReq.playerName,
@@ -2690,7 +2724,7 @@ async function buildPlayerChecklistResponse(playerReq) {
     sectionKey: "player",
     sectionLabel,
     rows: filteredRows.map(r => ({ cells: r })),
-    columns: data.columns || [],
+    columns,
     metadata: uniq([
       `Rows: ${formatNumber(rowCount)}`,
       playerReq.sport ? `Sport: ${titleCase(playerReq.sport)}` : "",

@@ -15,15 +15,15 @@ window.CMChat.config = {
   CHECKLIST_BASE_URL: "/checklists/",
   VAULT_BASE_URL: "/vault/",
 
-  CL_INDEX_KEY: "cm_chat_cl_index_v19",
+  CL_INDEX_KEY: "cm_chat_cl_index_v20",
   PRV_INDEX_KEY: "cm_chat_prv_index_v9",
-  CL_INDEX_TS_KEY: "cm_chat_cl_index_ts_v19",
+  CL_INDEX_TS_KEY: "cm_chat_cl_index_ts_v20",
   PRV_INDEX_TS_KEY: "cm_chat_prv_index_ts_v9",
   INDEX_TTL_MS: 1000 * 60 * 30,
 
-  PLAYER_META_KEY: "cm_chat_player_meta_v1",
+  PLAYER_META_KEY: "cm_chat_player_meta_v2",
   PLAYER_STATS_KEY: "cm_chat_player_stats_v1",
-  PLAYER_META_TS_KEY: "cm_chat_player_meta_ts_v1",
+  PLAYER_META_TS_KEY: "cm_chat_player_meta_ts_v2",
   PLAYER_STATS_TS_KEY: "cm_chat_player_stats_ts_v1",
   PLAYER_DATA_TTL_MS: 1000 * 60 * 60 * 6,
 

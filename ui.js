@@ -630,10 +630,8 @@ window.CMChat.ui = window.CMChat.ui || {};
     const chips = result.metadata || [];
     const followups = result.followups || [];
     const sectionLabel = result.sectionLabel || "Checklist";
-    const badgeLabel = result.badge || (result.sectionKey === "player_serial" ? "Serial Numbered" : "Checklist");
-    const tableClass = result.sectionKey === "player_serial"
-      ? "prv-chat-table checklist-chat-table serial-chat-table"
-      : "prv-chat-table checklist-chat-table";
+    const isSerialResult = result.sectionKey === "player_serial";
+    const badgeLabel = result.badge || (isSerialResult ? "Serial Numbered" : "Checklist");
 
     const headers = result.columns || ["Subset", "Card No.", "Player", "Team", "Tag"];
     const headHtml = headers.map(h => `<th>${escapeHtml(h)}</th>`).join("");
@@ -647,6 +645,64 @@ window.CMChat.ui = window.CMChat.ui || {};
         `).join("")}
       </tr>
     `).join("");
+
+    const serialListHtml = (() => {
+      if (!isSerialResult) return "";
+
+      const groups = [];
+      const groupMap = new Map();
+
+      rows.forEach(row => {
+        const cells = row.cells || [];
+        const productName = cells[1] || "Unknown Product";
+
+        if (!groupMap.has(productName)) {
+          const group = {
+            productName,
+            items: []
+          };
+          groupMap.set(productName, group);
+          groups.push(group);
+        }
+
+        groupMap.get(productName).items.push({
+          subset: cells[2] || "",
+          cardNo: cells[3] || "",
+          player: cells[4] || "",
+          parallel: cells[5] || "",
+          serialNo: cells[6] || ""
+        });
+      });
+
+      if (!groups.length) {
+        return `<div class="serial-result-empty">No rows found.</div>`;
+      }
+
+      return `
+        <div class="serial-result-list">
+          ${groups.map(group => `
+            <section class="serial-product-group">
+              <div class="serial-product-title">${escapeHtml(group.productName)}</div>
+              <div class="serial-product-items">
+                ${group.items.map(item => `
+                  <div class="serial-result-item">
+                    <div class="serial-card-line">
+                      ${escapeHtml(item.player || "Player")}
+                      ${item.cardNo ? ` · #${escapeHtml(item.cardNo)}` : ""}
+                      ${item.subset ? ` · [${escapeHtml(item.subset)}]` : ""}
+                    </div>
+                    <div class="serial-parallel-line">
+                      ${escapeHtml(item.parallel || "Parallel")}
+                      ${item.serialNo ? ` · <span>${escapeHtml(item.serialNo)}</span>` : ""}
+                    </div>
+                  </div>
+                `).join("")}
+              </div>
+            </section>
+          `).join("")}
+        </div>
+      `;
+    })();
 
     const chipsHtml = chips.length
       ? `<div class="prv-chat-chips">${chips.map(c => `<div class="prv-chat-chip">${escapeHtml(c)}</div>`).join("")}</div>`
@@ -670,16 +726,18 @@ window.CMChat.ui = window.CMChat.ui || {};
 
           ${chipsHtml}
 
-          <div class="prv-chat-table-wrap">
-            <table class="${tableClass}">
-              <thead>
-                <tr>${headHtml}</tr>
-              </thead>
-              <tbody>
-                ${bodyHtml || `<tr><td class="prv-chat-td" colspan="${headers.length}"><div class="prv-chat-cell-main">No rows found.</div></td></tr>`}
-              </tbody>
-            </table>
-          </div>
+          ${isSerialResult ? serialListHtml : `
+            <div class="prv-chat-table-wrap">
+              <table class="prv-chat-table checklist-chat-table">
+                <thead>
+                  <tr>${headHtml}</tr>
+                </thead>
+                <tbody>
+                  ${bodyHtml || `<tr><td class="prv-chat-td" colspan="${headers.length}"><div class="prv-chat-cell-main">No rows found.</div></td></tr>`}
+                </tbody>
+              </table>
+            </div>
+          `}
 
           ${sectionOptions ? `
             <div class="answer-followups">

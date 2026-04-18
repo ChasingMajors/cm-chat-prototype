@@ -548,6 +548,7 @@ function stripPrintRunThresholdWords(query) {
     "low print run",
     "print run",
     "print-run",
+    "all",
     "low",
     "cards",
     "card",
@@ -565,6 +566,7 @@ function stripPrintRunThresholdWords(query) {
     out = out.replace(new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
   });
 
+  out = out.replace(/\b(19|20)\d{2}\b/g, " ");
   out = out.replace(/\b\d{1,3}\b/g, " ");
   out = stripIntentWords(out);
 
@@ -578,7 +580,7 @@ function hasSpecificProductClue(query) {
   const tokens = meaningfulTokens(stripPrintRunThresholdWords(query)).filter(t => {
     if (year && t === normalize(year)) return false;
     if (sport && t === normalize(sport)) return false;
-    return !["low", "print", "run", "card", "cards"].includes(t);
+    return !["all", "low", "print", "run", "card", "cards"].includes(t);
   });
 
   return tokens.length > 0;
@@ -1989,32 +1991,37 @@ async function buildPrintRunResponse(query) {
   if (mentionsRestrictedPrintRunBrand(query)) return buildRestrictedBrandPrintRunResponse();
 
   const printRunThreshold = extractPrintRunThreshold(query);
-  const productQuery = printRunThreshold ? stripPrintRunThresholdWords(query) : query;
-  const product =
-    (printRunThreshold && hasSpecificProductClue(query)
-      ? findBestProduct(getPrintRunIndex(), productQuery, "print_run")
-      : null) ||
-    findBestProduct(getPrintRunIndex(), query, "print_run") ||
-    findBestProduct(getPrintRunIndex(), stripIntentWords(query), "print_run");
+  const hasProductClue = hasSpecificProductClue(query);
 
   pendingProductChoice = null;
   pendingChecklistChoice = null;
   pendingPlayerChoice = null;
   pendingNumberedChoice = null;
 
-  if (printRunThreshold && !hasSpecificProductClue(query)) {
+  if (printRunThreshold && !hasProductClue) {
+    const year = extractYear(query);
+    const yearText = year ? ` for ${year}` : "";
+
     return {
       type: "standard",
-      badge: "Print Run",
+      badge: "Low Print Run",
       title: "Which product should I search?",
-      summary: `I can search print-run rows ${getThresholdLabel(query, printRunThreshold).toLowerCase()}, but I need a product name first.`,
+      summary: `I can search print-run rows ${getThresholdLabel(query, printRunThreshold).toLowerCase()}${yearText}, but I need a product name first.`,
       followups: [
-        "Show me 2026 Topps Series 1 print run less than 100",
-        "Show me 2026 Bowman Baseball print run less than 100",
+        year ? `Show me ${year} Topps Series 1 print run less than 100` : "Show me 2026 Topps Series 1 print run less than 100",
+        year ? `Show me ${year} Bowman Baseball print run less than 100` : "Show me 2026 Bowman Baseball print run less than 100",
         "Show the release schedule"
       ]
     };
   }
+
+  const productQuery = printRunThreshold ? stripPrintRunThresholdWords(query) : query;
+  const product =
+    (printRunThreshold && hasProductClue
+      ? findBestProduct(getPrintRunIndex(), productQuery, "print_run")
+      : null) ||
+    findBestProduct(getPrintRunIndex(), query, "print_run") ||
+    findBestProduct(getPrintRunIndex(), stripIntentWords(query), "print_run");
 
   if (!product) {
     return {

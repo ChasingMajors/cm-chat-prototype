@@ -546,6 +546,83 @@ function getPlayerDisplayName(meta) {
   return String(meta?.player_name || meta?.player_display || "").trim();
 }
 
+function normalizePlayerAliasKey(value) {
+  return normalize(value || "")
+    .replace(/\bjunior\b/g, "jr")
+    .replace(/\bsenior\b/g, "sr")
+    .replace(/\bjr\b/g, "jr")
+    .replace(/\bsr\b/g, "sr")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getPlayerMetaByAliasTarget(targetName, preferredSport = "") {
+  const targetKey = normalizePlayerAliasKey(targetName);
+  const sport = normalize(preferredSport || "");
+  if (!targetKey) return null;
+
+  return (store.playerMetaIndex || []).find(meta => {
+    const display = getPlayerDisplayName(meta);
+    if (normalizePlayerAliasKey(display) !== targetKey) return false;
+    if (sport && normalize(meta.sport || "") && normalize(meta.sport || "") !== sport) return false;
+    return true;
+  }) || null;
+}
+
+function buildPlayerAliasOption(targetName, preferredSport = "") {
+  const meta = getPlayerMetaByAliasTarget(targetName, preferredSport);
+  if (!meta) return null;
+
+  return {
+    playerName: getPlayerDisplayName(meta) || targetName,
+    score: 999,
+    sport: normalize(meta.sport || preferredSport || ""),
+    years: Array.isArray(meta?.checklist_years) ? meta.checklist_years : [],
+    rcYear: meta?.rc_year || "",
+    matchType: "alias"
+  };
+}
+
+async function getClarifyPlayerAliasOptions(playerReq) {
+  if (!playerReq?.playerName) return null;
+  await loadPlayerMeta();
+
+  const key = normalizePlayerAliasKey(playerReq.playerName);
+  const targets = config.PLAYER_ALIAS_CLARIFY_MAP?.[key] || null;
+  if (!Array.isArray(targets) || !targets.length) return null;
+
+  const seen = new Set();
+  const options = targets
+    .map(target => buildPlayerAliasOption(target, playerReq.sport || ""))
+    .filter(Boolean)
+    .filter(option => {
+      const optionKey = normalize(option.playerName);
+      if (!optionKey || seen.has(optionKey)) return false;
+      seen.add(optionKey);
+      return true;
+    });
+
+  return options.length >= 2 ? options : null;
+}
+
+async function applySafePlayerAliasToRequest(playerReq) {
+  if (!playerReq?.playerName) return playerReq;
+  await loadPlayerMeta();
+
+  const key = normalizePlayerAliasKey(playerReq.playerName);
+  const target = config.PLAYER_ALIAS_MAP?.[key] || "";
+  if (!target) return playerReq;
+
+  const option = buildPlayerAliasOption(target, playerReq.sport || "");
+  if (!option) return playerReq;
+
+  return {
+    ...playerReq,
+    playerName: option.playerName,
+    sport: option.sport || playerReq.sport || "baseball"
+  };
+}
+
 function getPlayerChecklistYearCount(meta) {
   return Array.isArray(meta?.checklist_years) ? meta.checklist_years.length : 0;
 }
@@ -3602,16 +3679,22 @@ async function buildSearchResponse(query) {
 
   const numberedReq = detectNumberedPlayerSearchRequest(query);
   if (numberedReq) {
-    const playerOptions = await getPlayerMatchOptions(numberedReq.playerName, numberedReq.sport || "");
-    const playerClarification = shouldClarifyPlayerMatch(numberedReq.playerName, playerOptions)
+    const aliasClarification = await getClarifyPlayerAliasOptions(numberedReq);
+    if (aliasClarification) {
+      return buildPlayerMatchClarifyResponse("numbered", numberedReq, aliasClarification);
+    }
+
+    const aliasNumberedReq = await applySafePlayerAliasToRequest(numberedReq);
+    const playerOptions = await getPlayerMatchOptions(aliasNumberedReq.playerName, aliasNumberedReq.sport || "");
+    const playerClarification = shouldClarifyPlayerMatch(aliasNumberedReq.playerName, playerOptions)
       ? playerOptions
       : null;
 
     if (playerClarification) {
-      return buildPlayerMatchClarifyResponse("numbered", numberedReq, playerClarification);
+      return buildPlayerMatchClarifyResponse("numbered", aliasNumberedReq, playerClarification);
     }
 
-    let resolvedNumberedReq = resolvePlayerRequestFromOptions(numberedReq, playerOptions);
+    let resolvedNumberedReq = resolvePlayerRequestFromOptions(aliasNumberedReq, playerOptions);
 
     if (isRookieCardIntent(resolvedNumberedReq.originalQuery || "") && !resolvedNumberedReq.year) {
       await loadPlayerMeta();
@@ -3654,16 +3737,22 @@ async function buildSearchResponse(query) {
 
   const playerReq = detectPlayerSearchRequest(query);
   if (playerReq) {
-    const playerOptions = await getPlayerMatchOptions(playerReq.playerName, playerReq.sport || "");
-    const playerClarification = shouldClarifyPlayerMatch(playerReq.playerName, playerOptions)
+    const aliasClarification = await getClarifyPlayerAliasOptions(playerReq);
+    if (aliasClarification) {
+      return buildPlayerMatchClarifyResponse("player", playerReq, aliasClarification);
+    }
+
+    const aliasPlayerReq = await applySafePlayerAliasToRequest(playerReq);
+    const playerOptions = await getPlayerMatchOptions(aliasPlayerReq.playerName, aliasPlayerReq.sport || "");
+    const playerClarification = shouldClarifyPlayerMatch(aliasPlayerReq.playerName, playerOptions)
       ? playerOptions
       : null;
 
     if (playerClarification) {
-      return buildPlayerMatchClarifyResponse("player", playerReq, playerClarification);
+      return buildPlayerMatchClarifyResponse("player", aliasPlayerReq, playerClarification);
     }
 
-    const resolvedPlayerReq = resolvePlayerRequestFromOptions(playerReq, playerOptions);
+    const resolvedPlayerReq = resolvePlayerRequestFromOptions(aliasPlayerReq, playerOptions);
     let productSeedPlayerReq = resolvedPlayerReq;
 
     if (isRookieCardIntent(productSeedPlayerReq.originalQuery || "") && !productSeedPlayerReq.year && !productSeedPlayerReq.code) {

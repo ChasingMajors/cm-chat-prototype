@@ -1988,6 +1988,103 @@ function buildPlayerFollowups(playerName, fallbackYears = [], includeStats = tru
   return uniq(out);
 }
 
+function buildPlayerResultFollowups(playerReq, context = {}) {
+  const playerName = playerReq?.playerName || context.playerName || "";
+  if (!playerName) return [];
+
+  const year = playerReq?.year || context.year || "";
+  const productName = playerReq?.productName || context.productName || "";
+  const hasProduct = !!(playerReq?.code || productName);
+  const prefix = year ? `Show ${year} ${playerName}` : `Show ${playerName}`;
+  const productPrefix = productName ? `Show ${playerName} ${productName}` : prefix;
+  const currentFilter = context.filter?.key || playerReq?.filter?.key || "";
+
+  return uniq([
+    currentFilter !== "autographs" ? `${productPrefix} autographs` : "",
+    currentFilter !== "variations" ? `${productPrefix} variations` : "",
+    currentFilter !== "refractor" ? `${productPrefix} refractors` : "",
+    `${prefix} numbered under 100`,
+    `${prefix} numbered less than 50`,
+    isRookieCardIntent(playerReq?.originalQuery || "") ? "" : `${playerName} rookie cards`,
+    "Stats",
+    hasProduct ? `Show me the ${productName} checklist` : ""
+  ].filter(Boolean)).slice(0, 7);
+}
+
+function buildPlayerNoResultFollowups(playerReq, fallbackYears = [], context = {}) {
+  const playerName = playerReq?.playerName || "";
+  if (!playerName) return [];
+
+  const year = playerReq?.year || "";
+  const productName = playerReq?.productName || "";
+  const base = year ? `Show all ${year} ${playerName} cards` : `Show all ${playerName} cards`;
+
+  return uniq([
+    playerReq?.code && year ? `Show all ${year} ${playerName} cards` : "",
+    playerReq?.code ? `Show all ${playerName} cards` : "",
+    base,
+    year && productName ? `Show ${playerName} ${productName}` : "",
+    context.filter?.key !== "autographs" ? `${year ? `${year} ` : ""}${playerName} autographs` : "",
+    context.filter?.key !== "variations" ? `${year ? `${year} ` : ""}${playerName} variations` : "",
+    `${playerName} numbered under 100`,
+    ...buildPlayerFollowups(playerName, fallbackYears, true, true)
+  ].filter(Boolean)).slice(0, 8);
+}
+
+function buildPlayerSerialFollowups(numberedReq, context = {}) {
+  const playerName = numberedReq?.playerName || "";
+  if (!playerName) return [];
+
+  const year = numberedReq?.year || context.year || "";
+  const productName = numberedReq?.productName || numberedReq?.product?.name || "";
+  const base = year ? `Show all ${year} ${playerName} cards` : `Show all ${playerName} cards`;
+  const productBase = productName ? `Show ${playerName} ${productName}` : "";
+
+  return uniq([
+    numberedReq?.serialMax !== 49 ? `${playerName} numbered less than 50` : "",
+    numberedReq?.serialMax !== 99 ? `${playerName} numbered under 100` : "",
+    productName ? `${productBase} autographs` : `${year ? `${year} ` : ""}${playerName} autographs`,
+    productName ? `${productBase} refractors` : `${year ? `${year} ` : ""}${playerName} refractors`,
+    isRookieCardIntent(numberedReq?.originalQuery || "") ? "" : `${playerName} rookie cards`,
+    base,
+    productName ? `Show me the ${productName} checklist` : ""
+  ].filter(Boolean)).slice(0, 7);
+}
+
+function buildProductChecklistFollowups(product, summary = null, context = {}) {
+  if (!product?.name) return [];
+
+  const available = Array.isArray(summary?.available_sections)
+    ? summary.available_sections
+    : ["all", "base", "inserts", "autographs", "relics", "variations", "parallels"];
+
+  const hasSection = key => available.includes(key);
+  const currentSection = context.section || "";
+  const canShowPrintRun = !mentionsRestrictedPrintRunBrand(product.name || "");
+
+  return uniq([
+    currentSection !== "parallels" && hasSection("parallels") ? "Parallels" : "",
+    currentSection !== "autographs" && hasSection("autographs") ? "Autographs" : "",
+    currentSection !== "variations" && hasSection("variations") ? "Variations" : "",
+    currentSection !== "inserts" && hasSection("inserts") ? "Inserts" : "",
+    `Show ${product.name} serial numbered under 100`,
+    `Show ${product.name} serial numbered less than 50`,
+    canShowPrintRun ? `Show me ${product.name} print run` : ""
+  ].filter(Boolean)).slice(0, 7);
+}
+
+function buildProductNoResultFollowups(product, context = {}) {
+  if (!product?.name) return [];
+
+  return uniq([
+    `Show full ${product.name} checklist`,
+    `Show ${product.name} serial numbered under 100`,
+    `Show ${product.name} serial numbered less than 50`,
+    !mentionsRestrictedPrintRunBrand(product.name || "") ? `Show me ${product.name} print run` : "",
+    context.year && product.sport ? `Show ${context.year} ${product.sport} products` : ""
+  ].filter(Boolean));
+}
+
 function buildStatEntries(card, keys) {
   return keys.map(key => ({
     label: key,
@@ -2591,10 +2688,7 @@ async function buildProductSerialResponse(numberedReq) {
         product.year ? `Year: ${product.year}` : "",
         product.sport ? `Sport: ${titleCase(product.sport)}` : ""
       ]),
-      followups: [
-        `Show me the ${product.name} checklist`,
-        numberedReq.printRunProduct ? "Print Run" : ""
-      ].filter(Boolean)
+      followups: buildProductNoResultFollowups(product, { year: product.year })
     };
   }
 
@@ -2631,11 +2725,7 @@ async function buildProductSerialResponse(numberedReq) {
       `Serial: Under /${serialDisplay}`
     ]),
     sectionOptions: [],
-    followups: [
-      numberedReq.printRunProduct ? "Print Run" : "",
-      `Show full ${product.name} parallels`,
-      `Show me the ${product.name} checklist`
-    ].filter(Boolean)
+    followups: buildProductChecklistFollowups(product, null, { section: "parallels" })
   };
 }
 
@@ -2735,12 +2825,10 @@ async function buildPlayerSerialCardsResponse(numberedReq) {
       summary: numberedReq.year
         ? `I did not find ${numberedReq.playerName} ${numberedReq.year} cards serial numbered ${serialLabel}.`
         : `I did not find ${numberedReq.playerName} cards serial numbered ${serialLabel}.`,
-      followups: [
-        numberedReq.year ? `Show all ${numberedReq.year} ${numberedReq.playerName} cards` : `Show all ${numberedReq.playerName} cards`,
-        rookieFollowup,
-        isRookieCardIntent(numberedReq.originalQuery || "") ? "" : `Show ${numberedReq.playerName} numbered under 100`,
-        `Show ${numberedReq.playerName} numbered less than 50`
-      ].filter(Boolean)
+      followups: uniq([
+        ...buildPlayerSerialFollowups(numberedReq),
+        rookieFollowup
+      ])
     };
   }
 
@@ -2782,11 +2870,7 @@ async function buildPlayerSerialCardsResponse(numberedReq) {
       `Serial: ${titleCase(serialLabel)}`
     ]),
     sectionOptions: [],
-    followups: [
-      numberedReq.year ? `Show all ${numberedReq.year} ${numberedReq.playerName} cards` : `Show all ${numberedReq.playerName} cards`,
-      numberedReq.serialMax !== 49 ? `Show ${numberedReq.playerName} numbered less than 50` : "",
-      numberedReq.serialMax !== 99 && !isRookieCardIntent(numberedReq.originalQuery || "") ? `Show ${numberedReq.playerName} numbered under 100` : ""
-    ].filter(Boolean)
+    followups: buildPlayerSerialFollowups(numberedReq)
   };
 }
 
@@ -2928,11 +3012,7 @@ async function buildPlayerParallelFilterResponse(playerReq, data, sourceRows, co
       badge: filter.label,
       title: playerReq.playerName,
       summary: `I searched ${searchedContext} parallel rows and did not find a match.`,
-      followups: uniq([
-        playerReq.year ? `Show all ${playerReq.year} ${playerReq.playerName} cards` : "",
-        `Show all ${playerReq.playerName} cards`,
-        ...buildPlayerFollowups(playerReq.playerName, fallbackYears, true, true)
-      ])
+      followups: buildPlayerNoResultFollowups(playerReq, fallbackYears, { filter })
     };
   }
 
@@ -2954,9 +3034,7 @@ async function buildPlayerParallelFilterResponse(playerReq, data, sourceRows, co
       `Filter: ${filter.label}`
     ]),
     sectionOptions: [],
-    followups: [
-      playerReq.year ? `Show all ${playerReq.year} ${playerReq.playerName} cards` : `Show all ${playerReq.playerName} cards`
-    ]
+    followups: buildPlayerResultFollowups(playerReq, { filter })
   };
 }
 
@@ -3029,10 +3107,7 @@ async function buildPlayerProductSerialParallelResponse(numberedReq) {
         `Serial: ${titleCase(serialLabel)}`,
         filter ? `Filter: ${filter.label}` : ""
       ]),
-      followups: [
-        `Show all ${product.year || ""} ${numberedReq.playerName} cards`.replace(/\s+/g, " ").trim(),
-        `Show me the ${product.name} checklist`
-      ]
+      followups: buildPlayerSerialFollowups(numberedReq, { productName: product.name, year: product.year })
     };
   }
 
@@ -3052,10 +3127,7 @@ async function buildPlayerProductSerialParallelResponse(numberedReq) {
       filter ? `Filter: ${filter.label}` : ""
     ]),
     sectionOptions: [],
-    followups: [
-      `Show all ${product.year || ""} ${numberedReq.playerName} cards`.replace(/\s+/g, " ").trim(),
-      `Show me the ${product.name} checklist`
-    ]
+    followups: buildPlayerSerialFollowups(numberedReq, { productName: product.name, year: product.year })
   };
 }
 
@@ -3246,11 +3318,7 @@ async function buildPlayerChecklistResponse(playerReq) {
       badge: filter ? filter.label : "Player",
       title: playerReq.playerName,
       summary: `I searched ${searchedContext} rows and did not find a match.`,
-      followups: uniq([
-        playerReq.year ? `Show all ${playerReq.year} ${playerReq.playerName} cards` : "",
-        `Show all ${playerReq.playerName} cards`,
-        ...buildPlayerFollowups(playerReq.playerName, fallbackYears, true, true)
-      ])
+      followups: buildPlayerNoResultFollowups(playerReq, fallbackYears, { filter })
     };
   }
 
@@ -3268,9 +3336,7 @@ async function buildPlayerChecklistResponse(playerReq) {
       filter ? `Filter: ${filter.label}` : ""
     ]),
     sectionOptions: [],
-    followups: playerReq.code
-      ? []
-      : buildPlayerFollowups(playerReq.playerName, fallbackYears, true, true)
+    followups: buildPlayerResultFollowups(playerReq, { filter })
   };
 }
 
@@ -3355,17 +3421,14 @@ async function buildPrintRunResponse(query) {
         type: "standard",
         badge: "Low Print Run",
         title: product.name,
-        summary: `I found the product, but no print-run rows were ${thresholdLabel.toLowerCase()}.`,
+      summary: `I found the product, but no print-run rows were ${thresholdLabel.toLowerCase()}.`,
         metadata: uniq([
           `Filter: ${thresholdLabel}`,
           product.year ? `Year: ${product.year}` : "",
           product.sport ? `Sport: ${titleCase(product.sport)}` : "",
           product.code ? `Code: ${product.code}` : ""
         ]),
-        followups: [
-          `Show full ${product.name} print run`,
-          `Show me the ${product.name} checklist`
-        ]
+        followups: buildProductNoResultFollowups(product, { year: product.year })
       };
     }
 
@@ -3381,10 +3444,7 @@ async function buildPrintRunResponse(query) {
         product.year ? `Year: ${product.year}` : "",
         product.sport ? `Sport: ${titleCase(product.sport)}` : ""
       ]),
-      followups: [
-        `Show full ${product.name} print run`,
-        `Show me the ${product.name} checklist`
-      ]
+      followups: buildProductChecklistFollowups(product, null, { section: "print_run" })
     };
   }
 
@@ -3394,10 +3454,7 @@ async function buildPrintRunResponse(query) {
     rawRows,
     rows: buildPrvRows(rawRows),
     metadata: buildPrvMetadata(product, rawRows),
-    followups: [
-      `Show me the ${product.name} checklist`,
-      `What parallels are in ${product.name}`
-    ]
+    followups: buildProductChecklistFollowups(product, null, { section: "print_run" })
   };
 }
 
@@ -3452,7 +3509,7 @@ async function buildChecklistSummaryResponse(query) {
       product.year ? `Year: ${product.year}` : "",
       product.sport ? `Sport: ${titleCase(product.sport)}` : ""
     ]),
-    followups: checklistSectionOptionsFromSummary(summary)
+    followups: buildProductChecklistFollowups(product, summary)
   };
 }
 
@@ -3489,9 +3546,7 @@ async function buildChecklistSectionResponse(sectionKey) {
     ]),
     insights: section === "parallels" ? utils.buildParallelInsights(data?.rows || []) : [],
     sectionOptions: checklistSectionOptionsFromSummary(pendingChecklistChoice.summary),
-    followups: [
-      `Show me ${product.name} print run`
-    ]
+    followups: buildProductChecklistFollowups(product, pendingChecklistChoice.summary, { section })
   };
 }
 

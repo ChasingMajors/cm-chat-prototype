@@ -96,7 +96,35 @@ window.CMChat.config = {
     "show","me","find","give","pull","get","tell","about","looking","look","up",
     "is","are","was","were","does","do","did","in","from","for","all",
     "card","cards","rookie","rookies","have","has"
-  ])
+  ]),
+
+  PLAYER_ALIAS_MAP: {
+    "pat mahomes": "Patrick Mahomes II",
+    "patrick mahomes": "Patrick Mahomes II",
+    "patrick mahomes ii": "Patrick Mahomes II",
+    "mahomes": "Patrick Mahomes II",
+    "wemby": "Victor Wembanyama",
+    "victor wembanyama": "Victor Wembanyama",
+    "elly": "Elly De La Cruz",
+    "elly de la cruz": "Elly De La Cruz",
+    "cj stroud": "C.J. Stroud",
+    "c j stroud": "C.J. Stroud",
+    "c.j. stroud": "C.J. Stroud",
+    "vlad guerrero jr": "Vladimir Guerrero Jr.",
+    "vlad guerrero junior": "Vladimir Guerrero Jr.",
+    "vladimir guerrero jr": "Vladimir Guerrero Jr.",
+    "vladimir guerrero junior": "Vladimir Guerrero Jr.",
+    "ken griffey jr": "Ken Griffey Jr.",
+    "ken griffey junior": "Ken Griffey Jr."
+  },
+
+  PLAYER_ALIAS_CLARIFY_MAP: {
+    "griffey": ["Ken Griffey Jr.", "Ken Griffey Sr."],
+    "ken griffey": ["Ken Griffey Jr.", "Ken Griffey Sr."],
+    "vlad guerrero": ["Vladimir Guerrero", "Vladimir Guerrero Jr."],
+    "vladimir guerrero": ["Vladimir Guerrero", "Vladimir Guerrero Jr."],
+    "guerrero": ["Vladimir Guerrero", "Vladimir Guerrero Jr."]
+  }
 };
 
 window.CMChat.config.PLAYER_SEARCH_NON_NAME_WORDS = new Set([

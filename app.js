@@ -2001,6 +2001,36 @@ function getCombinedBestMatches(query) {
   };
 }
 
+function findEquivalentProduct(list, product) {
+  if (!product) return null;
+
+  const mapped = (list || []).map(mapProduct).filter(p => p.name);
+  const code = String(product.code || "").trim();
+  const name = normalize(product.name || "");
+  const sport = normalize(product.sport || "");
+  const year = String(product.year || "").trim();
+
+  if (code) {
+    const byCode = mapped.find(p => String(p.code || "").trim() === code);
+    if (byCode) return byCode;
+  }
+
+  return mapped.find(p => {
+    if (normalize(p.name || "") !== name) return false;
+    if (sport && normalize(p.sport || "") && normalize(p.sport || "") !== sport) return false;
+    if (year && String(p.year || "").trim() && String(p.year || "").trim() !== year) return false;
+    return true;
+  }) || null;
+}
+
+function shouldOpenProductProfile(matches) {
+  const winner = matches?.winner || null;
+  if (!winner?.code) return false;
+  if (winner.matchType === "exact" || Number(winner.score || 0) >= 999) return true;
+
+  return Number(winner.score || 0) >= 110;
+}
+
 /* ------------------ PLAYER HELPERS ------------------ */
 
 function cleanStatValue(val) {
@@ -2596,6 +2626,121 @@ function buildYearLineupResponse(year, sport) {
     summary: `We currently have ${formatNumber(products.length)} ${sport} products for ${year}:`,
     listItems: products.map(p => p.name),
     followups: products.slice(0, 8).map(p => `Show me the ${p.name} checklist`)
+  };
+}
+
+function buildProductProfileFollowups(product, summary = null, printRunProduct = null) {
+  if (!product?.name) return [];
+
+  const available = Array.isArray(summary?.available_sections)
+    ? summary.available_sections
+    : [];
+
+  const hasSection = key => available.includes(key);
+
+  return uniq([
+    `Show full ${product.name} checklist`,
+    hasSection("autographs") ? "Autographs" : "",
+    hasSection("parallels") ? "Parallels" : "",
+    hasSection("variations") ? "Variations" : "",
+    hasSection("inserts") ? "Inserts" : "",
+    `Show ${product.name} serial numbered under 100`,
+    printRunProduct?.code ? `Show me ${product.name} print run` : "",
+    product.year && product.sport ? `Show ${product.year} ${product.sport} products` : ""
+  ].filter(Boolean)).slice(0, 8);
+}
+
+function buildChecklistCoverageStats(summary) {
+  const counts = summary?.counts || {};
+
+  return [
+    { label: "Rows", value: counts.all ? formatNumber(counts.all) : "-" },
+    { label: "Base", value: counts.base ? formatNumber(counts.base) : "-" },
+    { label: "Inserts", value: counts.inserts ? formatNumber(counts.inserts) : "-" },
+    { label: "Autographs", value: counts.autographs ? formatNumber(counts.autographs) : "-" },
+    { label: "Relics", value: counts.relics ? formatNumber(counts.relics) : "-" },
+    { label: "Variations", value: counts.variations ? formatNumber(counts.variations) : "-" },
+    { label: "Parallels", value: counts.parallels ? formatNumber(counts.parallels) : "-" }
+  ];
+}
+
+async function buildProductProfileResponse(productMatch, query = "") {
+  const checklistProduct = findEquivalentProduct(getChecklistIndex(), productMatch);
+  const printRunProduct = findEquivalentProduct(getPrintRunIndex(), productMatch);
+  const product = checklistProduct || productMatch || printRunProduct;
+
+  pendingProductChoice = product?.name
+    ? { query: product.name, productName: product.name }
+    : null;
+  pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+  pendingProductNumberedChoice = null;
+  pendingProductMatchChoice = null;
+  pendingPlayerMatchChoice = null;
+  pendingCollectorProductChoice = null;
+  awaitingCatalogSport = false;
+
+  if (!product?.name) {
+    pendingChecklistChoice = null;
+
+    return {
+      type: "standard",
+      badge: "Product",
+      title: "Product not available",
+      summary: "I could not verify that product in the checklist index."
+    };
+  }
+
+  let summary = null;
+  if (checklistProduct?.code) {
+    try {
+      summary = await getChecklistSummary(checklistProduct.code);
+    } catch (err) {
+      console.warn("Product profile summary failed", err);
+    }
+  }
+
+  if (summary && checklistProduct?.code) {
+    pendingChecklistChoice = {
+      product: checklistProduct,
+      summary
+    };
+  } else {
+    pendingChecklistChoice = null;
+  }
+
+  const countsLine = summary ? summarizeChecklistCounts(summary) : "";
+  const checklistStatus = summary ? "Checklist coverage loaded." : "Checklist coverage is not loaded yet.";
+  const printRunStatus = printRunProduct?.code
+    ? "Print-run data is available."
+    : "Print-run data is not available for this product yet.";
+
+  return {
+    type: "standard",
+    badge: "Product Profile",
+    title: product.name,
+    summary: `${checklistStatus} ${printRunStatus}${countsLine ? ` ${countsLine}.` : ""}`,
+    metadata: uniq([
+      product.year ? `Year: ${product.year}` : "",
+      product.sport ? `Sport: ${titleCase(product.sport)}` : "",
+      product.code ? `Code: ${product.code}` : "",
+      productMatch?.matchType === "exact" ? "Match: Exact" : productMatch?.score ? "Match: Strong" : ""
+    ]),
+    statGroups: [
+      summary ? {
+        title: "Checklist Coverage",
+        stats: buildChecklistCoverageStats(summary)
+      } : null,
+      {
+        title: "Availability",
+        stats: [
+          { label: "Checklist", value: summary ? "Loaded" : "Not loaded" },
+          { label: "Print Run", value: printRunProduct?.code ? "Available" : "Not available" },
+          { label: "Matched From", value: normalize(query || "").includes("checklist") ? "Checklist" : "Product" }
+        ]
+      }
+    ].filter(Boolean),
+    followups: buildProductProfileFollowups(checklistProduct || product, summary, printRunProduct)
   };
 }
 
@@ -3889,6 +4034,10 @@ async function buildSearchResponse(query) {
     prefetchPrintRunData(matches.winner);
   }
 
+  if (shouldOpenProductProfile(matches)) {
+    return buildProductProfileResponse(matches.winner, query);
+  }
+
   return buildClarifyProductTypeResponse(matches.winner.name, query);
 }
 
@@ -4044,7 +4193,7 @@ async function buildResponse(query) {
         return buildPrintRunResponse(selectedProduct.name);
       }
 
-      return buildClarifyProductTypeResponse(selectedProduct.name, selectedProduct.name);
+      return buildProductProfileResponse(selectedProduct, selectedProduct.name);
     }
 
     pendingProductMatchChoice = null;

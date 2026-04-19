@@ -3153,39 +3153,8 @@ async function buildPlayerProductSerialParallelResponse(numberedReq) {
 }
 
 async function buildPlayerChoiceResponse(playerReq) {
-  await loadPlayerMeta();
-
-  const meta = getPlayerMetaEntry(playerReq.playerName);
-  let fallbackYears = [];
-
-  if (meta && Array.isArray(meta.checklist_years) && meta.checklist_years.length) {
-    fallbackYears = meta.checklist_years.map(y =>
-      typeof y === "object" && y !== null ? String(y.year || "").trim() : String(y || "").trim()
-    ).filter(Boolean);
-  } else {
-    fallbackYears = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
-  }
-
-  const followups = buildPlayerFollowups(playerReq.playerName, fallbackYears, true, true)
-    .map(label => label === "Stats" && normalize(playerReq.sport || "") && normalize(playerReq.sport || "") !== "baseball" ? "Profile" : label);
-
-  pendingPlayerChoice = {
-    ...playerReq,
-    availableYears: getPlayerYearOptions(playerReq.playerName, fallbackYears)
-  };
-
-  pendingProductChoice = null;
-  pendingChecklistChoice = null;
-
   prefetchPlayerData(playerReq);
-
-  return {
-    type: "standard",
-    badge: "Player",
-    title: playerReq.playerName,
-    summary: "Choose profile, jump to a checklist year, or open all cards for this player.",
-    followups
-  };
+  return buildPlayerStatsPlaceholderResponse(playerReq);
 }
 
 async function buildPlayerStatsPlaceholderResponse(playerReq) {
@@ -3264,7 +3233,7 @@ async function buildPlayerStatsPlaceholderResponse(playerReq) {
 
   return {
     type: "player_stats",
-    badge: sport === "baseball" ? "Player Stats" : "Player Profile",
+    badge: "Player Profile",
     title: stats.player_name || playerReq.playerName,
     summary: meta?.rc_year
       ? `${stats.player_name || playerReq.playerName} has checklist coverage beginning in ${meta.rc_year}, which is currently tagged as the RC year.`
@@ -3275,9 +3244,23 @@ async function buildPlayerStatsPlaceholderResponse(playerReq) {
       meta?.rc_year ? `RC Year: ${meta.rc_year}` : "",
       Array.isArray(meta?.checklist_years) ? `Checklist Years: ${meta.checklist_years.length}` : ""
     ]),
-    currentTitle: stats.current_season ? `${stats.current_season.season} Season` : "",
-    currentSummary: buildCurrentSeasonSummary(stats.player_name || playerReq.playerName, stats.current_season),
-    currentStats,
+    currentTitle: "Checklist Coverage",
+    currentSummary: yearLabels.length
+      ? `Checklist years loaded: ${yearLabels.slice(0, 8).join(", ")}${yearLabels.length > 8 ? ", ..." : ""}.`
+      : "Checklist years are still being indexed for this player.",
+    currentStats: buildStatEntries({
+      Sport: sportLabel,
+      "RC Year": rcYear || "-",
+      "Years": yearOptions.length || "-",
+      "Products": sportYearProducts.length || "-"
+    }, ["Sport", "RC Year", "Years", "Products"]),
+    extraSections: [
+      {
+        title: stats.current_season ? `${stats.current_season.season} Season` : "Current Season",
+        summary: buildCurrentSeasonSummary(stats.player_name || playerReq.playerName, stats.current_season),
+        stats: currentStats
+      }
+    ],
     careerTitle: "Career",
     careerSummary: buildCareerSummary(stats.player_name || playerReq.playerName, stats.career),
     careerStats,

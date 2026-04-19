@@ -403,6 +403,39 @@ function isRookieCardIntent(query) {
   );
 }
 
+function isProductRookieReply(query) {
+  const n = normalize(query);
+  return n === "rookies" || n === "rookie cards" || n === "rc" || n === "rookie";
+}
+
+function isProductRookieQuery(query) {
+  return isRookieCardIntent(query);
+}
+
+function stripProductRookieWords(query) {
+  let out = normalize(query || "");
+
+  [
+    "rookie cards",
+    "rookies",
+    "rookie",
+    "rc",
+    "show",
+    "me",
+    "find",
+    "give",
+    "pull",
+    "get",
+    "cards",
+    "card",
+    "in"
+  ].forEach(phrase => {
+    out = out.replace(new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
+  });
+
+  return out.replace(/\s+/g, " ").trim();
+}
+
 function detectPlayerRowFilterIntent(query) {
   const n = normalize(query);
   const section = detectChecklistSectionIntent(query);
@@ -2640,6 +2673,7 @@ function buildProductProfileFollowups(product, summary = null, printRunProduct =
 
   return uniq([
     `Show full ${product.name} checklist`,
+    "Rookies",
     hasSection("autographs") ? "Autographs" : "",
     hasSection("parallels") ? "Parallels" : "",
     hasSection("variations") ? "Variations" : "",
@@ -2662,6 +2696,83 @@ function buildChecklistCoverageStats(summary) {
     { label: "Variations", value: counts.variations ? formatNumber(counts.variations) : "-" },
     { label: "Parallels", value: counts.parallels ? formatNumber(counts.parallels) : "-" }
   ];
+}
+
+function getChecklistColumnIndex(columns, name) {
+  const target = normalize(name);
+  return (columns || []).map(c => normalize(c)).indexOf(target);
+}
+
+function checklistRowMatchesRookie(row, columns) {
+  const getCell = name => {
+    const idx = getChecklistColumnIndex(columns, name);
+    return idx > -1 ? String(row?.[idx] || "") : "";
+  };
+
+  const tag = normalize(getCell("Tag"));
+  const subset = normalize(getCell("Subset"));
+  const player = normalize(getCell("Player"));
+  const haystack = normalize([tag, subset, player].join(" "));
+
+  return (
+    /\brc\b/.test(tag) ||
+    tag.includes("rookie") ||
+    subset.includes("rookie") ||
+    haystack.includes(" rookie ")
+  );
+}
+
+async function buildProductRookieChecklistResponse(productInput) {
+  const product = findEquivalentProduct(getChecklistIndex(), productInput) || productInput;
+
+  if (!product?.code) {
+    return {
+      type: "standard",
+      badge: "Rookies",
+      title: product?.name || "Rookies",
+      summary: "I could not verify a checklist product for that rookie-card search."
+    };
+  }
+
+  const summary = await getChecklistSummary(product.code);
+  const data = await getChecklistSection(product.code, "all");
+  const columns = data.columns || ["Subset", "Card No.", "Player", "Team", "Tag"];
+  const rows = (data.rows || []).filter(row => checklistRowMatchesRookie(row, columns));
+
+  pendingChecklistChoice = {
+    product,
+    summary
+  };
+
+  if (!rows.length) {
+    return {
+      type: "standard",
+      badge: "Rookies",
+      title: product.name,
+      summary: "I searched the checklist rows and did not find rookie-card tags for this product.",
+      metadata: buildProductSearchMetadata(product, {
+        filterLabel: "Rookies"
+      }),
+      followups: buildProductNoResultFollowups(product, { year: product.year })
+    };
+  }
+
+  return {
+    type: "checklist_table",
+    product,
+    sectionKey: "product_rookies",
+    sectionLabel: "Rookies",
+    rows: rows.map(r => ({ cells: r })),
+    columns,
+    metadata: uniq([
+      `Rows: ${formatNumber(rows.length)}`,
+      product.year ? `Year: ${product.year}` : "",
+      product.sport ? `Sport: ${titleCase(product.sport)}` : "",
+      "Filter: Rookies"
+    ]),
+    sectionOptions: checklistSectionOptionsFromSummary(summary),
+    followups: buildProductChecklistFollowups(product, summary, { section: "rookies" })
+  };
 }
 
 async function buildProductProfileResponse(productMatch, query = "") {
@@ -3993,7 +4104,10 @@ async function buildSearchResponse(query) {
     return buildPlayerChoiceResponse(productAwarePlayerReq);
   }
 
-  const matches = getCombinedBestMatches(query);
+  const productMatchQuery = isProductRookieQuery(query)
+    ? (stripProductRookieWords(query) || query)
+    : query;
+  const matches = getCombinedBestMatches(productMatchQuery);
 
   if (!matches.winner) {
     pendingProductChoice = null;
@@ -4013,8 +4127,8 @@ async function buildSearchResponse(query) {
 
   const seenCombinedOptions = new Set();
   const combinedOptions = [
-    ...getProductMatchOptions(getChecklistIndex(), query, "checklist", 4),
-    ...getProductMatchOptions(getPrintRunIndex(), query, "print_run", 4)
+    ...getProductMatchOptions(getChecklistIndex(), productMatchQuery, "checklist", 4),
+    ...getProductMatchOptions(getPrintRunIndex(), productMatchQuery, "print_run", 4)
   ]
     .sort((a, b) => (b.score || 0) - (a.score || 0))
     .filter(product => {
@@ -4032,6 +4146,10 @@ async function buildSearchResponse(query) {
   if (matches.winner.code && matches.winner.score >= 50) {
     prefetchChecklistData(matches.winner);
     prefetchPrintRunData(matches.winner);
+  }
+
+  if (isProductRookieQuery(query)) {
+    return buildProductRookieChecklistResponse(matches.winner);
   }
 
   if (shouldOpenProductProfile(matches)) {
@@ -4181,6 +4299,7 @@ async function buildResponse(query) {
   if (pendingProductMatchChoice) {
     const selectedProduct = findSelectedProductMatch(query);
     const selectedIntent = pendingProductMatchChoice.intent;
+    const selectedOriginalQuery = pendingProductMatchChoice.query || "";
 
     if (selectedProduct) {
       pendingProductMatchChoice = null;
@@ -4191,6 +4310,10 @@ async function buildResponse(query) {
 
       if (selectedIntent === "print_run") {
         return buildPrintRunResponse(selectedProduct.name);
+      }
+
+      if (isProductRookieQuery(selectedOriginalQuery)) {
+        return buildProductRookieChecklistResponse(selectedProduct);
       }
 
       return buildProductProfileResponse(selectedProduct, selectedProduct.name);
@@ -4277,6 +4400,10 @@ async function buildResponse(query) {
 
   if (pendingChecklistChoice && isChecklistSectionReply(query)) {
     return buildChecklistSectionResponse(resolveChecklistSection(query));
+  }
+
+  if (pendingChecklistChoice && isProductRookieReply(query)) {
+    return buildProductRookieChecklistResponse(pendingChecklistChoice.product);
   }
 
   if (pendingProductChoice && isOnlyPrintRunReply(query)) {

@@ -409,6 +409,13 @@ window.CMChat.ui = window.CMChat.ui || {};
       `;
     };
 
+    const extraSectionsHtml = (r.extraSections || [])
+      .map(section => `
+        ${section.summary ? `<div class="answer-summary" style="margin-top:12px;">${escapeHtml(section.summary)}</div>` : ""}
+        ${renderStatGrid(section.title || "", section.stats || [])}
+      `)
+      .join("");
+
     const followupsHtml = (r.followups || []).length
       ? `
         <div class="answer-followups">
@@ -431,6 +438,7 @@ window.CMChat.ui = window.CMChat.ui || {};
           ${metaHtml}
           ${r.currentSummary ? `<div class="answer-summary" style="margin-top:12px;">${escapeHtml(r.currentSummary)}</div>` : ""}
           ${renderStatGrid(r.currentTitle || "Current Season", r.currentStats || [])}
+          ${extraSectionsHtml}
           ${r.careerSummary ? `<div class="answer-summary" style="margin-top:12px;">${escapeHtml(r.careerSummary)}</div>` : ""}
           ${renderStatGrid(r.careerTitle || "Career", r.careerStats || [])}
           ${followupsHtml}

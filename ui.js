@@ -352,6 +352,28 @@ window.CMChat.ui = window.CMChat.ui || {};
       `
       : "";
 
+    const renderStatGrid = (title, stats) => {
+      if (!stats || !stats.length) return "";
+
+      return `
+        <div class="profile-stat-section">
+          ${title ? `<div class="profile-stat-title">${escapeHtml(title)}</div>` : ""}
+          <div class="profile-stat-grid">
+            ${stats.map(s => `
+              <div class="profile-stat-tile">
+                <div class="profile-stat-label">${escapeHtml(s.label || "")}</div>
+                <div class="profile-stat-value">${escapeHtml(s.value || "")}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    };
+
+    const statGroupsHtml = (r.statGroups || [])
+      .map(group => renderStatGrid(group.title || "", group.stats || []))
+      .join("");
+
     const followupsHtml = (r.followups || []).length
       ? `
         <div class="answer-followups">
@@ -373,6 +395,7 @@ window.CMChat.ui = window.CMChat.ui || {};
           <div class="answer-summary ${r.heroSummary ? "answer-summary-hero" : ""}">${escapeHtml(r.summary || "")}</div>
           ${listHtml}
           ${metaHtml}
+          ${statGroupsHtml}
           ${followupsHtml}
         </div>
       </div>

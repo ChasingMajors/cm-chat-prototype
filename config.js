@@ -105,6 +105,9 @@ window.CMChat.config.PLAYER_SEARCH_NON_NAME_WORDS = new Set([
   "series","update","chrome","heritage","finest","sapphire","black","cosmic",
   "stadium","club","pristine","archives","tribute","sterling","museum","inception",
   "dynasty","flagship","celebration","draft","best","platinum","anniversary",
+  "prizm","mosaic","optic","select","absolute","certified","phoenix","origins",
+  "luminance","immaculate","impeccable","flawless","honors","photogenic",
+  "revolution","silhouette","collegiate","university","cfl",
   "checklist","print","run","parallels","parallel","autographs","autograph","autos",
   "auto","relics","relic","variations","variation","inserts","insert","base",
   "number","high","mega","box","jumbo","blaster","hanger","choice","mini"

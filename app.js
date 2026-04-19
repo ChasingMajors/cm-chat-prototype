@@ -62,7 +62,8 @@ const {
   bootstrapData,
   ensurePlayerDataLoaded,
   ensureReleaseScheduleLoaded,
-  loadPlayerMeta
+  loadPlayerMeta,
+  loadPlayerStats
 } = store;
 
 const chatInput = document.getElementById("chatInput");
@@ -2006,7 +2007,7 @@ function buildPlayerResultFollowups(playerReq, context = {}) {
     `${prefix} numbered under 100`,
     `${prefix} numbered less than 50`,
     isRookieCardIntent(playerReq?.originalQuery || "") ? "" : `${playerName} rookie cards`,
-    "Stats",
+    normalize(playerReq?.sport || "") && normalize(playerReq?.sport || "") !== "baseball" ? "Profile" : "Stats",
     hasProduct ? `Show me the ${productName} checklist` : ""
   ].filter(Boolean)).slice(0, 7);
 }
@@ -2049,6 +2050,26 @@ function buildPlayerSerialFollowups(numberedReq, context = {}) {
     base,
     productName ? `Show me the ${productName} checklist` : ""
   ].filter(Boolean)).slice(0, 7);
+}
+
+function buildPlayerProfileFollowups(playerReq, fallbackYears = []) {
+  const playerName = playerReq?.playerName || "";
+  if (!playerName) return [];
+
+  const yearOptions = getPlayerYearOptions(playerName, fallbackYears);
+  const latestYear = yearOptions[0]?.year || "";
+  const sport = normalize(playerReq?.sport || "");
+
+  return uniq([
+    latestYear ? `Show all ${latestYear} ${playerName} cards` : `Show all ${playerName} cards`,
+    `${playerName} rookie cards`,
+    `${playerName} autographs`,
+    `${playerName} numbered under 100`,
+    sport === "football" ? `${playerName} Prizm rookies` : "",
+    sport === "football" ? `${playerName} Mosaic autographs` : "",
+    sport === "football" ? `${playerName} Optic rookies` : "",
+    "All Cards"
+  ].filter(Boolean)).slice(0, 8);
 }
 
 function buildProductChecklistFollowups(product, summary = null, context = {}) {
@@ -3145,7 +3166,8 @@ async function buildPlayerChoiceResponse(playerReq) {
     fallbackYears = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
   }
 
-  const followups = buildPlayerFollowups(playerReq.playerName, fallbackYears, true, true);
+  const followups = buildPlayerFollowups(playerReq.playerName, fallbackYears, true, true)
+    .map(label => label === "Stats" && normalize(playerReq.sport || "") && normalize(playerReq.sport || "") !== "baseball" ? "Profile" : label);
 
   pendingPlayerChoice = {
     ...playerReq,
@@ -3161,16 +3183,20 @@ async function buildPlayerChoiceResponse(playerReq) {
     type: "standard",
     badge: "Player",
     title: playerReq.playerName,
-    summary: "Choose stats, jump to a checklist year, or open all cards for this player.",
+    summary: "Choose profile, jump to a checklist year, or open all cards for this player.",
     followups
   };
 }
 
 async function buildPlayerStatsPlaceholderResponse(playerReq) {
-  await ensurePlayerDataLoaded();
+  await loadPlayerMeta();
+  await loadPlayerStats().catch(() => {});
 
   const stats = getPlayerStatsEntry(playerReq.playerName);
   const meta = getPlayerMetaEntry(playerReq.playerName);
+  const sport = normalize(playerReq.sport || meta?.sport || stats?.sport || "baseball");
+  const sportLabel = sport ? titleCase(sport) : "Unknown";
+  const shouldUseStats = !!stats && (!sport || sport === "baseball");
 
   let fallbackYears = [];
   if (meta && Array.isArray(meta.checklist_years) && meta.checklist_years.length) {
@@ -3181,19 +3207,47 @@ async function buildPlayerStatsPlaceholderResponse(playerReq) {
     fallbackYears = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
   }
 
-  const followups = buildPlayerFollowups(playerReq.playerName, fallbackYears, false, true);
+  const followups = buildPlayerProfileFollowups({ ...playerReq, sport }, fallbackYears);
 
   pendingPlayerChoice = {
     ...playerReq,
+    sport,
     availableYears: getPlayerYearOptions(playerReq.playerName, fallbackYears)
   };
 
-  if (!stats) {
+  const yearOptions = getPlayerYearOptions(playerReq.playerName, fallbackYears);
+  const yearLabels = yearOptions.map(y => y.label || y.year).filter(Boolean);
+  const currentYear = yearOptions[0]?.year || "";
+  const sportYearProducts = currentYear && sport ? getProductsForSportYear(sport, currentYear) : [];
+  const rcYear = String(meta?.rc_year || "").trim();
+
+  if (!shouldUseStats) {
     return {
-      type: "standard",
-      badge: "Player Stats",
+      type: "player_stats",
+      badge: "Player Profile",
       title: playerReq.playerName,
-      summary: "Player stats are not available for that player yet.",
+      summary: rcYear
+        ? `${playerReq.playerName} has checklist coverage beginning in ${rcYear}, which is currently tagged as the RC year.`
+        : `${playerReq.playerName} has checklist coverage loaded. Sport-specific stats are not connected for ${sportLabel} yet.`,
+      metadata: uniq([
+        sport ? `Sport: ${sportLabel}` : "",
+        rcYear ? `RC Year: ${rcYear}` : "",
+        yearOptions.length ? `Checklist Years: ${yearOptions.length}` : "",
+        sportYearProducts.length ? `${currentYear} Products: ${sportYearProducts.length}` : ""
+      ]),
+      currentTitle: "Checklist Coverage",
+      currentSummary: yearLabels.length
+        ? `Checklist years loaded: ${yearLabels.slice(0, 8).join(", ")}${yearLabels.length > 8 ? ", ..." : ""}.`
+        : "Checklist years are still being indexed for this player.",
+      currentStats: buildStatEntries({
+        Sport: sportLabel,
+        "RC Year": rcYear || "-",
+        "Years": yearOptions.length || "-",
+        "Products": sportYearProducts.length || "-"
+      }, ["Sport", "RC Year", "Years", "Products"]),
+      careerTitle: "",
+      careerSummary: "",
+      careerStats: [],
       followups
     };
   }
@@ -3210,13 +3264,14 @@ async function buildPlayerStatsPlaceholderResponse(playerReq) {
 
   return {
     type: "player_stats",
-    badge: "Player Stats",
+    badge: sport === "baseball" ? "Player Stats" : "Player Profile",
     title: stats.player_name || playerReq.playerName,
     summary: meta?.rc_year
       ? `${stats.player_name || playerReq.playerName} has checklist coverage beginning in ${meta.rc_year}, which is currently tagged as the RC year.`
       : `${stats.player_name || playerReq.playerName} has player stats and checklist year coverage loaded.`,
     metadata: uniq([
       stats.team ? `Team: ${stats.team}` : "",
+      sport ? `Sport: ${sportLabel}` : "",
       meta?.rc_year ? `RC Year: ${meta.rc_year}` : "",
       Array.isArray(meta?.checklist_years) ? `Checklist Years: ${meta.checklist_years.length}` : ""
     ]),

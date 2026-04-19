@@ -344,6 +344,14 @@ window.CMChat.ui = window.CMChat.ui || {};
       ? `<div class="answer-meta">${(r.metadata || []).map(m => `<div class="answer-meta-chip">${escapeHtml(m)}</div>`).join("")}</div>`
       : "";
 
+    const listHtml = (r.listItems || []).length
+      ? `
+        <ul class="answer-list">
+          ${(r.listItems || []).map(item => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      `
+      : "";
+
     const followupsHtml = (r.followups || []).length
       ? `
         <div class="answer-followups">
@@ -363,6 +371,7 @@ window.CMChat.ui = window.CMChat.ui || {};
           <div class="answer-badge">${escapeHtml(r.badge || "Answer")}</div>
           <div class="answer-title">${escapeHtml(r.title || "Result")}</div>
           <div class="answer-summary ${r.heroSummary ? "answer-summary-hero" : ""}">${escapeHtml(r.summary || "")}</div>
+          ${listHtml}
           ${metaHtml}
           ${followupsHtml}
         </div>

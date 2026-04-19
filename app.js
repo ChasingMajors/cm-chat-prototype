@@ -76,6 +76,7 @@ let pendingNumberedChoice = null;
 let pendingProductNumberedChoice = null;
 let pendingProductMatchChoice = null;
 let pendingPlayerMatchChoice = null;
+let pendingCollectorProductChoice = null;
 
 const RELEASE_SPORT_ORDER = ["baseball", "football", "basketball", "soccer", "hockey"];
 
@@ -148,6 +149,10 @@ async function buildDirectChecklistResponse(action) {
   pendingProductNumberedChoice = null;
   pendingProductMatchChoice = null;
   pendingPlayerMatchChoice = null;
+  pendingCollectorProductChoice = null;
+  pendingProductMatchChoice = null;
+  pendingPlayerMatchChoice = null;
+  pendingCollectorProductChoice = null;
 
   if (!product.code) {
     pendingChecklistChoice = null;
@@ -233,6 +238,9 @@ async function buildDirectPrintRunResponse(action) {
   pendingProductNumberedChoice = null;
   pendingProductMatchChoice = null;
   pendingPlayerMatchChoice = null;
+  pendingCollectorProductChoice = null;
+  pendingPlayerMatchChoice = null;
+  pendingCollectorProductChoice = null;
 
   if (!product.code) {
     return {
@@ -863,6 +871,79 @@ function stripNumberedSearchWords(query) {
   out = out.replace(/\b\d{1,3}\b/g, " ");
 
   return out.replace(/\s+/g, " ").trim();
+}
+
+function stripCollectorProductHintWords(query, playerName) {
+  let out = normalize(query || "");
+
+  tokenize(playerName || "").forEach(token => {
+    out = out.replace(new RegExp(`\\b${token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
+  });
+
+  [
+    "show",
+    "me",
+    "find",
+    "give",
+    "pull",
+    "get",
+    "cards",
+    "card",
+    "rookie",
+    "rookies",
+    "rookie cards",
+    "rc",
+    "autograph",
+    "autographs",
+    "auto",
+    "autos",
+    "refractor",
+    "refractors",
+    "variation",
+    "variations",
+    "parallel",
+    "parallels",
+    "relic",
+    "relics",
+    "serial numbered",
+    "serial-numbered",
+    "serial number",
+    "low numbered",
+    "low serial",
+    "numbered",
+    "under",
+    "less than",
+    "below",
+    "lower than",
+    "at most",
+    "maximum",
+    "max",
+    "up to",
+    "or less",
+    "and less"
+  ].forEach(phrase => {
+    out = out.replace(new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
+  });
+
+  const year = extractYear(query);
+  const sport = extractSport(query);
+  if (year) out = out.replace(new RegExp(`\\b${year}\\b`, "g"), " ");
+  if (sport) out = out.replace(new RegExp(`\\b${sport}\\b`, "g"), " ");
+
+  out = out.replace(/\/\s*\d{1,4}\b/g, " ");
+  out = out.replace(/\b\d{1,4}\b/g, " ");
+
+  return out.replace(/\s+/g, " ").trim();
+}
+
+function getCollectorProductHint(playerReq) {
+  if (!playerReq?.originalQuery || !playerReq.playerName) return "";
+
+  const hint = stripCollectorProductHintWords(playerReq.originalQuery, playerReq.playerName);
+  const tokens = meaningfulTokens(hint)
+    .filter(t => !PLAYER_SEARCH_FILLER_WORDS.has(t));
+
+  return tokens.join(" ").trim();
 }
 
 function detectNumberedPlayerSearchRequest(query) {
@@ -1727,6 +1808,109 @@ function getProductMatchClarification(list, query, targetIntent) {
   return shouldClarifyProductMatch(options) ? options : null;
 }
 
+function scoreCollectorProductHint(product, hint, playerReq) {
+  const hintTokens = meaningfulTokens(hint);
+  if (!hintTokens.length) return 0;
+
+  const nameTokens = new Set([
+    ...meaningfulTokens(product.name),
+    ...meaningfulTokens(product.keywords),
+    ...meaningfulTokens(product.code)
+  ]);
+
+  let overlap = 0;
+  hintTokens.forEach(token => {
+    if (nameTokens.has(token)) overlap += 1;
+  });
+
+  if (!overlap) return 0;
+
+  let score = overlap * 60;
+  const hintNorm = normalize(hint);
+  const nameNorm = normalize(product.name);
+
+  if (hintNorm && nameNorm.includes(hintNorm)) score += 80;
+  if (hintTokens.length && overlap === hintTokens.length) score += 45;
+  if (playerReq.year && String(product.year || "") === String(playerReq.year)) score += 35;
+  if (playerReq.sport && normalize(product.sport) === normalize(playerReq.sport)) score += 25;
+
+  return score;
+}
+
+function getCollectorProductOptions(playerReq, limit = 5) {
+  const hint = getCollectorProductHint(playerReq);
+  if (!hint) return [];
+
+  const sport = normalize(playerReq.sport || "");
+  const year = String(playerReq.year || "").trim();
+  const seen = new Set();
+
+  return (getChecklistIndex() || [])
+    .map(mapProduct)
+    .filter(product => product.name && product.code)
+    .filter(product => !sport || normalize(product.sport) === sport)
+    .filter(product => !year || String(product.year || "") === year)
+    .map(product => ({
+      ...product,
+      score: scoreCollectorProductHint(product, hint, playerReq),
+      matchType: "collector_hint"
+    }))
+    .filter(product => product.score >= 60)
+    .sort((a, b) => {
+      const scoreDiff = (b.score || 0) - (a.score || 0);
+      if (scoreDiff !== 0) return scoreDiff;
+      return String(a.name || "").localeCompare(String(b.name || ""));
+    })
+    .filter(product => {
+      const key = product.code || normalize(product.name);
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, limit);
+}
+
+function shouldClarifyCollectorProductOptions(options, playerReq) {
+  if (!Array.isArray(options) || options.length < 2) return false;
+
+  const hintTokens = meaningfulTokens(getCollectorProductHint(playerReq));
+  const topScore = Number(options[0]?.score || 0);
+  const secondScore = Number(options[1]?.score || 0);
+
+  if (hintTokens.length <= 1) return true;
+  return secondScore >= topScore - 35 || (topScore > 0 && secondScore / topScore >= 0.74);
+}
+
+function attachCollectorProductToPlayerReq(playerReq, product) {
+  if (!product?.code) return playerReq;
+
+  return {
+    ...playerReq,
+    sport: product.sport || playerReq.sport || "baseball",
+    year: product.year || playerReq.year || "",
+    code: product.code || "",
+    productName: product.name || "",
+    product,
+    mode: "player_product"
+  };
+}
+
+function getCollectorProductResolution(kind, request) {
+  const options = getCollectorProductOptions(request);
+  if (!options.length) return { request };
+
+  if (shouldClarifyCollectorProductOptions(options, request)) {
+    return {
+      response: buildCollectorProductClarifyResponse(kind, request, options)
+    };
+  }
+
+  return {
+    request: attachCollectorProductToPlayerReq(request, options[0]),
+    product: options[0]
+  };
+}
+
 function getCombinedBestMatches(query) {
   const cl = findBestProduct(getChecklistIndex(), query, "checklist");
   const prv = findBestProduct(getPrintRunIndex(), query, "print_run");
@@ -2226,6 +2410,9 @@ function buildProductNumberedClarifyResponse(numberedReq) {
   pendingPlayerChoice = null;
   pendingNumberedChoice = null;
   awaitingCatalogSport = false;
+  pendingProductMatchChoice = null;
+  pendingPlayerMatchChoice = null;
+  pendingCollectorProductChoice = null;
 
   return {
     type: "standard",
@@ -2257,6 +2444,7 @@ function buildProductMatchClarifyResponse(intent, query, options) {
   pendingNumberedChoice = null;
   pendingProductNumberedChoice = null;
   pendingPlayerMatchChoice = null;
+  pendingCollectorProductChoice = null;
   awaitingCatalogSport = false;
 
   return {
@@ -2281,6 +2469,7 @@ function buildPlayerMatchClarifyResponse(kind, request, options) {
   pendingNumberedChoice = null;
   pendingProductNumberedChoice = null;
   pendingProductMatchChoice = null;
+  pendingCollectorProductChoice = null;
   awaitingCatalogSport = false;
 
   return {
@@ -2292,6 +2481,31 @@ function buildPlayerMatchClarifyResponse(kind, request, options) {
   };
 }
 
+function buildCollectorProductClarifyResponse(kind, request, options) {
+  pendingCollectorProductChoice = {
+    kind,
+    request,
+    options: options || []
+  };
+
+  pendingProductChoice = null;
+  pendingChecklistChoice = null;
+  pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+  pendingProductNumberedChoice = null;
+  pendingProductMatchChoice = null;
+  pendingPlayerMatchChoice = null;
+  awaitingCatalogSport = false;
+
+  return {
+    type: "standard",
+    badge: "Clarify",
+    title: "Which product should I use?",
+    summary: `I found a few product matches for ${request.playerName}. Choose the exact product so I can keep the results focused.`,
+    followups: (options || []).map(product => product.name).filter(Boolean)
+  };
+}
+
 function findSelectedPlayerMatch(query) {
   if (!pendingPlayerMatchChoice) return null;
 
@@ -2300,6 +2514,18 @@ function findSelectedPlayerMatch(query) {
 
   return (pendingPlayerMatchChoice.options || []).find(option =>
     normalize(option.playerName) === qNorm
+  ) || null;
+}
+
+function findSelectedCollectorProduct(query) {
+  if (!pendingCollectorProductChoice) return null;
+
+  const qNorm = normalize(query);
+  if (!qNorm) return null;
+
+  return (pendingCollectorProductChoice.options || []).find(product =>
+    normalize(product.name) === qNorm ||
+    normalize(product.code) === qNorm
   ) || null;
 }
 
@@ -2695,6 +2921,7 @@ async function buildPlayerParallelFilterResponse(playerReq, data, sourceRows, co
     pendingProductChoice = null;
     pendingPlayerMatchChoice = null;
     pendingProductMatchChoice = null;
+    pendingCollectorProductChoice = null;
 
     return {
       type: "standard",
@@ -2729,6 +2956,105 @@ async function buildPlayerParallelFilterResponse(playerReq, data, sourceRows, co
     sectionOptions: [],
     followups: [
       playerReq.year ? `Show all ${playerReq.year} ${playerReq.playerName} cards` : `Show all ${playerReq.playerName} cards`
+    ]
+  };
+}
+
+async function buildPlayerProductSerialParallelResponse(numberedReq) {
+  const product = numberedReq.product || null;
+  if (!product?.code) return null;
+
+  const filter = numberedReq.filter || detectPlayerRowFilterIntent(numberedReq.originalQuery || "");
+  const serialLabel = getSerialSearchLabel(numberedReq);
+
+  const data = await getPlayerCards(
+    numberedReq.playerName,
+    product.sport || numberedReq.sport || "baseball",
+    "",
+    product.code
+  );
+
+  const columns = data.columns || [];
+  const playerRows = Array.isArray(data?.rows) ? data.rows : [];
+  const filteredPlayerRows = filter
+    ? playerRows.filter(row => rowMatchesPlayerFilter(row, filter))
+    : playerRows;
+
+  const parallelData = await getChecklistParallels(product.code);
+  const parallelRows = Array.isArray(parallelData?.rows) ? parallelData.rows : [];
+
+  const serialParallelRows = parallelRows
+    .map(parallelRow => {
+      const appliesTo = Array.isArray(parallelRow) ? (parallelRow[0] || "") : (parallelRow.applies_to || "");
+      const parallelName = Array.isArray(parallelRow) ? (parallelRow[1] || "") : (parallelRow.parallel_name || "");
+      const serialNo = Array.isArray(parallelRow) ? (parallelRow[2] || "") : (parallelRow.serial_no || "");
+      const serialValue = getSerialLimitValue(serialNo);
+      return { appliesTo, parallelName, serialNo, serialValue };
+    })
+    .filter(row => row.serialValue > 0 && row.serialValue <= numberedReq.serialMax);
+
+  const matches = [];
+
+  filteredPlayerRows.forEach(playerRow => {
+    const subset = getRowCell(playerRow, columns, "Subset");
+    const cardNo = getRowCell(playerRow, columns, "Card No.");
+    const player = getRowCell(playerRow, columns, "Player") || numberedReq.playerName;
+    const team = getRowCell(playerRow, columns, "Team");
+
+    serialParallelRows.forEach(parallelRow => {
+      if (!parallelAppliesToPlayerSubset(parallelRow.appliesTo, subset)) return;
+
+      matches.push([
+        product.year || numberedReq.year || "",
+        product.name || numberedReq.productName || "",
+        subset,
+        cardNo,
+        player,
+        team,
+        parallelRow.parallelName,
+        parallelRow.serialNo
+      ]);
+    });
+  });
+
+  if (!matches.length) {
+    return {
+      type: "standard",
+      badge: "Serial Numbered",
+      title: numberedReq.playerName,
+      summary: `I searched ${product.name} for ${numberedReq.playerName} cards serial numbered ${serialLabel}${filter ? ` with ${filter.label.toLowerCase()}` : ""} and did not find a match.`,
+      metadata: uniq([
+        product.year ? `Year: ${product.year}` : "",
+        product.sport ? `Sport: ${titleCase(product.sport)}` : "",
+        `Serial: ${titleCase(serialLabel)}`,
+        filter ? `Filter: ${filter.label}` : ""
+      ]),
+      followups: [
+        `Show all ${product.year || ""} ${numberedReq.playerName} cards`.replace(/\s+/g, " ").trim(),
+        `Show me the ${product.name} checklist`
+      ]
+    };
+  }
+
+  return {
+    type: "checklist_table",
+    badge: "Serial Numbered",
+    product: { name: numberedReq.playerName },
+    sectionKey: "player_parallel",
+    sectionLabel: `${product.name} Serial Numbered ${titleCase(serialLabel)}`,
+    rows: matches.map(cells => ({ cells })),
+    columns: ["Year", "Product", "Subset", "Card No.", "Player", "Team", "Parallel", "Serial No."],
+    metadata: uniq([
+      `Rows: ${formatNumber(matches.length)}`,
+      product.year ? `Year: ${product.year}` : "",
+      product.sport ? `Sport: ${titleCase(product.sport)}` : "",
+      `Serial: ${titleCase(serialLabel)}`,
+      filter ? `Filter: ${filter.label}` : ""
+    ]),
+    sectionOptions: [],
+    followups: [
+      `Show all ${product.year || ""} ${numberedReq.playerName} cards`.replace(/\s+/g, " ").trim(),
+      `Show me the ${product.name} checklist`
     ]
   };
 }
@@ -3208,6 +3534,15 @@ async function buildSearchResponse(query) {
       };
     }
 
+    const collectorProductResolution = getCollectorProductResolution("numbered", resolvedNumberedReq);
+    if (collectorProductResolution.response) return collectorProductResolution.response;
+    resolvedNumberedReq = collectorProductResolution.request || resolvedNumberedReq;
+
+    if (resolvedNumberedReq.product?.code) {
+      const productSerialResponse = await buildPlayerProductSerialParallelResponse(resolvedNumberedReq);
+      if (productSerialResponse) return productSerialResponse;
+    }
+
     if (!resolvedNumberedReq.year) {
       return buildPlayerSerialYearChoiceResponse(resolvedNumberedReq);
     }
@@ -3236,13 +3571,33 @@ async function buildSearchResponse(query) {
     }
 
     const resolvedPlayerReq = resolvePlayerRequestFromOptions(playerReq, playerOptions);
+    let productSeedPlayerReq = resolvedPlayerReq;
 
-    prefetchPlayerData(resolvedPlayerReq);
+    if (isRookieCardIntent(productSeedPlayerReq.originalQuery || "") && !productSeedPlayerReq.year && !productSeedPlayerReq.code) {
+      await loadPlayerMeta();
 
-    const rowFilter = detectPlayerRowFilterIntent(resolvedPlayerReq.originalQuery || "");
+      const meta = getPlayerMetaEntry(productSeedPlayerReq.playerName);
+      const rcYear = getRcYearForPlayerRequest(productSeedPlayerReq, meta);
+
+      if (!rcYear) return buildRcYearMissingResponse(productSeedPlayerReq, meta);
+
+      productSeedPlayerReq = {
+        ...productSeedPlayerReq,
+        year: rcYear,
+        mode: "player_year"
+      };
+    }
+
+    const collectorProductResolution = getCollectorProductResolution("player", productSeedPlayerReq);
+    if (collectorProductResolution.response) return collectorProductResolution.response;
+    const productAwarePlayerReq = collectorProductResolution.request || productSeedPlayerReq;
+
+    prefetchPlayerData(productAwarePlayerReq);
+
+    const rowFilter = detectPlayerRowFilterIntent(productAwarePlayerReq.originalQuery || "");
     if (rowFilter) {
       let filteredPlayerReq = {
-        ...resolvedPlayerReq,
+        ...productAwarePlayerReq,
         filter: rowFilter
       };
 
@@ -3264,14 +3619,14 @@ async function buildSearchResponse(query) {
       return buildPlayerChecklistResponse(filteredPlayerReq);
     }
 
-    const rookieResponse = await resolveRookiePlayerRequest(resolvedPlayerReq);
+    const rookieResponse = await resolveRookiePlayerRequest(productAwarePlayerReq);
     if (rookieResponse) return rookieResponse;
 
-    if (resolvedPlayerReq.mode === "player_product" || resolvedPlayerReq.mode === "player_year") {
-      return buildPlayerChecklistResponse(resolvedPlayerReq);
+    if (productAwarePlayerReq.mode === "player_product" || productAwarePlayerReq.mode === "player_year") {
+      return buildPlayerChecklistResponse(productAwarePlayerReq);
     }
 
-    return buildPlayerChoiceResponse(resolvedPlayerReq);
+    return buildPlayerChoiceResponse(productAwarePlayerReq);
   }
 
   const matches = getCombinedBestMatches(query);
@@ -3281,6 +3636,7 @@ async function buildSearchResponse(query) {
     pendingChecklistChoice = null;
     pendingPlayerChoice = null;
     pendingProductMatchChoice = null;
+    pendingCollectorProductChoice = null;
 
     return {
       type: "standard",
@@ -3332,6 +3688,33 @@ async function buildResponse(query) {
     };
   }
 
+  if (pendingCollectorProductChoice) {
+    const selectedProduct = findSelectedCollectorProduct(query);
+    const selectedKind = pendingCollectorProductChoice.kind;
+    const selectedRequest = pendingCollectorProductChoice.request || {};
+
+    if (selectedProduct) {
+      pendingCollectorProductChoice = null;
+
+      if (selectedKind === "numbered") {
+        const numberedReq = attachCollectorProductToPlayerReq(selectedRequest, selectedProduct);
+        const productSerialResponse = await buildPlayerProductSerialParallelResponse(numberedReq);
+        if (productSerialResponse) return productSerialResponse;
+        return buildPlayerSerialCardsResponse(numberedReq);
+      }
+
+      const playerReq = attachCollectorProductToPlayerReq(selectedRequest, selectedProduct);
+      const rowFilter = detectPlayerRowFilterIntent(playerReq.originalQuery || "");
+
+      return buildPlayerChecklistResponse(rowFilter
+        ? { ...playerReq, filter: rowFilter }
+        : playerReq
+      );
+    }
+
+    pendingCollectorProductChoice = null;
+  }
+
   if (pendingPlayerMatchChoice) {
     const selectedPlayer = findSelectedPlayerMatch(query);
     const selectedKind = pendingPlayerMatchChoice.kind;
@@ -3361,6 +3744,15 @@ async function buildResponse(query) {
           };
         }
 
+        const collectorProductResolution = getCollectorProductResolution("numbered", numberedReq);
+        if (collectorProductResolution.response) return collectorProductResolution.response;
+        numberedReq = collectorProductResolution.request || numberedReq;
+
+        if (numberedReq.product?.code) {
+          const productSerialResponse = await buildPlayerProductSerialParallelResponse(numberedReq);
+          if (productSerialResponse) return productSerialResponse;
+        }
+
         if (!numberedReq.year) {
           return buildPlayerSerialYearChoiceResponse(numberedReq);
         }
@@ -3368,11 +3760,30 @@ async function buildResponse(query) {
         return buildPlayerSerialCardsResponse(numberedReq);
       }
 
-      const playerReq = {
+      let playerReq = {
         ...selectedRequest,
         playerName: selectedPlayer.playerName,
         sport: selectedPlayer.sport || selectedRequest.sport || "baseball"
       };
+
+      if (isRookieCardIntent(playerReq.originalQuery || "") && !playerReq.year && !playerReq.code) {
+        await loadPlayerMeta();
+
+        const meta = getPlayerMetaEntry(playerReq.playerName);
+        const rcYear = getRcYearForPlayerRequest(playerReq, meta);
+
+        if (!rcYear) return buildRcYearMissingResponse(playerReq, meta);
+
+        playerReq = {
+          ...playerReq,
+          year: rcYear,
+          mode: "player_year"
+        };
+      }
+
+      const collectorProductResolution = getCollectorProductResolution("player", playerReq);
+      if (collectorProductResolution.response) return collectorProductResolution.response;
+      playerReq = collectorProductResolution.request || playerReq;
 
       prefetchPlayerData(playerReq);
 
@@ -3382,21 +3793,6 @@ async function buildResponse(query) {
           ...playerReq,
           filter: rowFilter
         };
-
-        if (isRookieCardIntent(filteredPlayerReq.originalQuery || "") && !filteredPlayerReq.year && !filteredPlayerReq.code) {
-          await loadPlayerMeta();
-
-          const meta = getPlayerMetaEntry(filteredPlayerReq.playerName);
-          const rcYear = getRcYearForPlayerRequest(filteredPlayerReq, meta);
-
-          if (!rcYear) return buildRcYearMissingResponse(filteredPlayerReq, meta);
-
-          filteredPlayerReq = {
-            ...filteredPlayerReq,
-            year: rcYear,
-            mode: "player_year"
-          };
-        }
 
         return buildPlayerChecklistResponse(filteredPlayerReq);
       }

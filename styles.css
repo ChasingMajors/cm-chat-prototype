@@ -267,6 +267,46 @@ body{
   background:rgba(255,255,255,0.08);
 }
 
+.profile-stat-section{
+  margin-top:14px;
+}
+
+.profile-stat-title{
+  margin-bottom:8px;
+  color:#fff;
+  font-size:14px;
+  font-weight:800;
+}
+
+.profile-stat-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+}
+
+.profile-stat-tile{
+  min-width:0;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;
+  padding:10px;
+  background:rgba(255,255,255,0.03);
+}
+
+.profile-stat-label{
+  margin-bottom:4px;
+  color:rgba(255,255,255,0.70);
+  font-size:11px;
+  line-height:1.25;
+}
+
+.profile-stat-value{
+  color:#fff;
+  font-size:16px;
+  line-height:1.2;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+
 .chat-suggestions{
   flex:0 0 auto;
   padding:0 18px 14px;
@@ -771,6 +811,10 @@ body{
   .answer-card,
   .prv-chat-card{
     max-width:100%;
+  }
+
+  .profile-stat-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
   }
 
   .prv-chat-title{

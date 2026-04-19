@@ -2180,7 +2180,8 @@ function buildYearLineupResponse(year, sport) {
     type: "standard",
     badge: "Database",
     title: `${year} ${titleCase(sport)} coverage`,
-    summary: `We currently have ${formatNumber(products.length)} ${sport} products for ${year}: ${products.map(p => p.name).join(" • ")}`,
+    summary: `We currently have ${formatNumber(products.length)} ${sport} products for ${year}:`,
+    listItems: products.map(p => p.name),
     followups: products.slice(0, 8).map(p => `Show me the ${p.name} checklist`)
   };
 }

@@ -146,7 +146,7 @@ window.CMChat.utils = window.CMChat.utils || {};
 
   function isOnlyPlayerStatsReply(text) {
     const n = normalize(text);
-    return n === "stats" || n === "stat" || n === "statistics";
+    return n === "stats" || n === "stat" || n === "statistics" || n === "profile" || n === "player profile";
   }
 
   function isOnlyPlayerChecklistReply(text) {

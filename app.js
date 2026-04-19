@@ -2183,6 +2183,40 @@ function buildProductNoResultFollowups(product, context = {}) {
   ].filter(Boolean));
 }
 
+function buildSearchedContextMetadata(context = {}) {
+  return uniq([
+    context.playerName ? `Player: ${context.playerName}` : "",
+    context.productName ? `Product: ${context.productName}` : "",
+    context.year ? `Year: ${context.year}` : "",
+    context.sport ? `Sport: ${titleCase(context.sport)}` : "",
+    context.filterLabel ? `Filter: ${context.filterLabel}` : "",
+    context.serialLabel ? `Serial: ${context.serialLabel}` : ""
+  ]);
+}
+
+function buildPlayerSearchMetadata(playerReq = {}, context = {}) {
+  const product = context.product || playerReq.product || null;
+
+  return buildSearchedContextMetadata({
+    playerName: playerReq.playerName,
+    productName: context.productName || product?.name || playerReq.productName || "",
+    year: context.year || product?.year || playerReq.year || "",
+    sport: context.sport || product?.sport || playerReq.sport || "",
+    filterLabel: context.filterLabel || context.filter?.label || playerReq.filter?.label || "",
+    serialLabel: context.serialLabel || ""
+  });
+}
+
+function buildProductSearchMetadata(product = {}, context = {}) {
+  return buildSearchedContextMetadata({
+    productName: product.name || context.productName || "",
+    year: context.year || product.year || "",
+    sport: context.sport || product.sport || "",
+    filterLabel: context.filterLabel || context.filter?.label || "",
+    serialLabel: context.serialLabel || ""
+  });
+}
+
 function buildStatEntries(card, keys) {
   return keys.map(key => ({
     label: key,
@@ -2781,11 +2815,9 @@ async function buildProductSerialResponse(numberedReq) {
       badge: "Serial Numbered",
       title: product.name,
       summary: `I found the checklist product, but no serial-numbered parallels were under /${serialDisplay}.`,
-      metadata: uniq([
-        `Filter: Under /${serialDisplay}`,
-        product.year ? `Year: ${product.year}` : "",
-        product.sport ? `Sport: ${titleCase(product.sport)}` : ""
-      ]),
+      metadata: buildProductSearchMetadata(product, {
+        serialLabel: `Under /${serialDisplay}`
+      }),
       followups: buildProductNoResultFollowups(product, { year: product.year })
     };
   }
@@ -2923,6 +2955,9 @@ async function buildPlayerSerialCardsResponse(numberedReq) {
       summary: numberedReq.year
         ? `I did not find ${numberedReq.playerName} ${numberedReq.year} cards serial numbered ${serialLabel}.`
         : `I did not find ${numberedReq.playerName} cards serial numbered ${serialLabel}.`,
+      metadata: buildPlayerSearchMetadata(numberedReq, {
+        serialLabel: titleCase(serialLabel)
+      }),
       followups: uniq([
         ...buildPlayerSerialFollowups(numberedReq),
         rookieFollowup
@@ -3110,6 +3145,9 @@ async function buildPlayerParallelFilterResponse(playerReq, data, sourceRows, co
       badge: filter.label,
       title: playerReq.playerName,
       summary: `I searched ${searchedContext} parallel rows and did not find a match.`,
+      metadata: buildPlayerSearchMetadata(playerReq, {
+        filter
+      }),
       followups: buildPlayerNoResultFollowups(playerReq, fallbackYears, { filter })
     };
   }
@@ -3199,12 +3237,11 @@ async function buildPlayerProductSerialParallelResponse(numberedReq) {
       badge: "Serial Numbered",
       title: numberedReq.playerName,
       summary: `I searched ${product.name} for ${numberedReq.playerName} cards serial numbered ${serialLabel}${filter ? ` with ${filter.label.toLowerCase()}` : ""} and did not find a match.`,
-      metadata: uniq([
-        product.year ? `Year: ${product.year}` : "",
-        product.sport ? `Sport: ${titleCase(product.sport)}` : "",
-        `Serial: ${titleCase(serialLabel)}`,
-        filter ? `Filter: ${filter.label}` : ""
-      ]),
+      metadata: buildPlayerSearchMetadata(numberedReq, {
+        product,
+        filter,
+        serialLabel: titleCase(serialLabel)
+      }),
       followups: buildPlayerSerialFollowups(numberedReq, { productName: product.name, year: product.year })
     };
   }
@@ -3433,6 +3470,9 @@ async function buildPlayerChecklistResponse(playerReq) {
       badge: filter ? filter.label : "Player",
       title: playerReq.playerName,
       summary: `I searched ${searchedContext} rows and did not find a match.`,
+      metadata: buildPlayerSearchMetadata(playerReq, {
+        filter
+      }),
       followups: buildPlayerNoResultFollowups(playerReq, fallbackYears, { filter })
     };
   }
@@ -3536,13 +3576,10 @@ async function buildPrintRunResponse(query) {
         type: "standard",
         badge: "Low Print Run",
         title: product.name,
-      summary: `I found the product, but no print-run rows were ${thresholdLabel.toLowerCase()}.`,
-        metadata: uniq([
-          `Filter: ${thresholdLabel}`,
-          product.year ? `Year: ${product.year}` : "",
-          product.sport ? `Sport: ${titleCase(product.sport)}` : "",
-          product.code ? `Code: ${product.code}` : ""
-        ]),
+        summary: `I found the product, but no print-run rows were ${thresholdLabel.toLowerCase()}.`,
+        metadata: buildProductSearchMetadata(product, {
+          filterLabel: thresholdLabel
+        }),
         followups: buildProductNoResultFollowups(product, { year: product.year })
       };
     }

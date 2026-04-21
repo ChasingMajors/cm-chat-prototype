@@ -4320,6 +4320,7 @@ async function buildSearchResponse(query) {
     })
     .slice(0, 4);
 
+  const directSection = detectChecklistSectionIntent(query);
   const preferredBaseOption = findPreferredBaseProductOption(productMatchQuery, combinedOptions);
   if (preferredBaseOption) {
     if (preferredBaseOption.code) {
@@ -4347,7 +4348,6 @@ async function buildSearchResponse(query) {
     prefetchPrintRunData(matches.winner);
   }
 
-  const directSection = detectChecklistSectionIntent(query);
   if (directSection && matches.checklist?.code) {
     return buildChecklistSummaryResponse(query);
   }

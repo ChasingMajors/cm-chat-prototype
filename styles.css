@@ -405,7 +405,10 @@ body{
 }
 
 .send-btn::before{
-  content:"â†‘";
+  content:none;
+}
+
+.send-btn-icon{
   font-size:20px;
   font-weight:900;
   line-height:1;
@@ -419,6 +422,27 @@ body{
 .send-btn:hover{
   transform:translateY(-1px);
   background:var(--blueHover);
+}
+
+.chat-feedback-link-wrap{
+  margin-top:10px;
+  display:flex;
+  justify-content:flex-start;
+}
+
+.chat-feedback-link{
+  border:0;
+  background:transparent;
+  color:rgba(255,255,255,0.72);
+  padding:0;
+  font-size:12px;
+  line-height:1.4;
+  text-decoration:underline;
+  cursor:pointer;
+}
+
+.chat-feedback-link:hover{
+  color:#fff;
 }
 
 /* result cards */
@@ -686,6 +710,176 @@ body{
   color:rgba(255,255,255,0.62);
 }
 
+.result-feedback{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,0.08);
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+}
+
+.result-feedback-label{
+  color:rgba(255,255,255,0.72);
+  font-size:12px;
+  font-weight:700;
+}
+
+.result-feedback-actions{
+  display:flex;
+  gap:8px;
+}
+
+.result-feedback-btn{
+  width:36px;
+  height:36px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.05);
+  color:#fff;
+  cursor:pointer;
+  font-size:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform 120ms ease, background 120ms ease, border-color 120ms ease, opacity 120ms ease;
+}
+
+.result-feedback-btn:hover{
+  transform:translateY(-1px);
+  background:rgba(255,255,255,0.08);
+}
+
+.result-feedback-btn:disabled{
+  cursor:default;
+  opacity:0.7;
+}
+
+.result-feedback-btn.is-selected{
+  background:rgba(30,144,255,0.18);
+  border-color:rgba(30,144,255,0.44);
+}
+
+.result-feedback-status{
+  color:rgba(255,255,255,0.62);
+  font-size:12px;
+  line-height:1.4;
+}
+
+.modal-shell{
+  position:fixed;
+  inset:0;
+  z-index:120;
+}
+
+.modal-shell.is-hidden{
+  display:none;
+}
+
+.modal-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.56);
+  backdrop-filter:blur(4px);
+}
+
+.modal-dialog{
+  position:relative;
+  width:min(92vw, 520px);
+  margin:12vh auto 0;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:linear-gradient(180deg, rgba(33,33,33,0.98) 0%, rgba(24,24,24,0.98) 100%);
+  box-shadow:0 24px 60px rgba(0,0,0,0.42);
+  padding:18px;
+}
+
+.modal-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.modal-title{
+  color:#fff;
+  font-size:20px;
+  font-weight:900;
+  line-height:1.15;
+}
+
+.modal-subtitle{
+  margin-top:4px;
+  color:rgba(255,255,255,0.64);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.modal-close-btn{
+  width:34px;
+  height:34px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.10);
+  background:rgba(255,255,255,0.05);
+  color:#fff;
+  cursor:pointer;
+  font-size:20px;
+  line-height:1;
+}
+
+.modal-textarea{
+  width:100%;
+  min-height:140px;
+  resize:vertical;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.04);
+  color:#fff;
+  padding:12px 14px;
+  outline:none;
+  font:inherit;
+  line-height:1.45;
+}
+
+.modal-textarea::placeholder{
+  color:rgba(255,255,255,0.42);
+}
+
+.modal-textarea:focus{
+  border-color:rgba(30,144,255,0.42);
+  box-shadow:0 0 0 3px rgba(30,144,255,0.10);
+}
+
+.modal-actions{
+  margin-top:14px;
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+}
+
+.modal-btn{
+  min-height:40px;
+  padding:10px 14px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.12);
+  cursor:pointer;
+  font-size:13px;
+  font-weight:800;
+}
+
+.modal-btn-secondary{
+  background:rgba(255,255,255,0.05);
+  color:#fff;
+}
+
+.modal-btn-primary{
+  background:var(--blue);
+  border-color:rgba(30,144,255,0.34);
+  color:#fff;
+}
+
 .prv-chat-insights{
   margin-top:16px;
   padding:14px 16px;
@@ -807,6 +1001,10 @@ body{
     height:44px;
   }
 
+  .chat-feedback-link{
+    font-size:11px;
+  }
+
   .message-bubble,
   .answer-card,
   .prv-chat-card{
@@ -876,6 +1074,12 @@ body{
 
   .prv-chat-td-setsize{
     font-size:13px;
+  }
+
+  .modal-dialog{
+    width:min(94vw, 520px);
+    margin:10vh auto 0;
+    padding:16px;
   }
 }
 

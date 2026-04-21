@@ -79,6 +79,35 @@ let pendingProductMatchChoice = null;
 let pendingPlayerMatchChoice = null;
 let pendingCollectorProductChoice = null;
 
+const PRODUCT_VARIANT_TERMS = [
+  "black",
+  "chrome black",
+  "sapphire",
+  "cosmic",
+  "logofractor",
+  "ben baller",
+  "mega",
+  "update",
+  "high number"
+];
+
+const RELEASE_GENERIC_TOKENS = new Set([
+  "topps",
+  "panini",
+  "upper",
+  "deck",
+  "leaf",
+  "bowman",
+  "baseball",
+  "football",
+  "basketball",
+  "hockey",
+  "soccer",
+  "collection",
+  "trading",
+  "cards"
+]);
+
 const RELEASE_SPORT_ORDER = ["baseball", "football", "basketball", "soccer", "hockey"];
 
 function getChecklistIndex() {
@@ -368,7 +397,7 @@ function splitPlayerSearchQuery(query) {
 
   if (!playerTokens.length) return null;
   if (playerTokens.some(t => !isLikelyPlayerNameToken(t))) return null;
-  if (playerTokens.length > 3) playerTokens = playerTokens.slice(0, 3);
+  if (playerTokens.length > 4) playerTokens = playerTokens.slice(0, 4);
 
   return {
     playerName: titleCase(playerTokens.join(" ")),
@@ -501,6 +530,32 @@ function rowMatchesPlayerFilter(row, filter) {
 function findBestProductFromRemainder(remainder) {
   const cleaned = stripIntentWords(remainder || "");
   if (!cleaned) return null;
+
+  const sectionIntent = detectChecklistSectionIntent(cleaned);
+  if (sectionIntent) return null;
+
+  const cleanedTokens = meaningfulTokens(cleaned);
+  const filterOnlyTokens = new Set([
+    "autograph",
+    "autographs",
+    "auto",
+    "autos",
+    "variation",
+    "variations",
+    "parallel",
+    "parallels",
+    "refractor",
+    "refractors",
+    "insert",
+    "inserts",
+    "relic",
+    "relics",
+    "base"
+  ]);
+
+  if (cleanedTokens.length && cleanedTokens.every(t => filterOnlyTokens.has(t))) {
+    return null;
+  }
 
   const candidate = findBestProduct(getChecklistIndex(), cleaned, "checklist");
   if (!candidate) return null;
@@ -1260,7 +1315,8 @@ function buildPrintRunProductFollowupsForYear(year, query, threshold) {
 
   return uniq([
     ...products.map(p => `Show ${p.name} print run ${thresholdText}`),
-    y ? `Show ${y} baseball products` : "",
+    y && sport ? `Show ${y} ${sport} products` : "",
+    y && !sport ? `Show ${y} products` : "",
     y ? `Show ${y} release schedule` : "Show the release schedule"
   ].filter(Boolean));
 }
@@ -1299,6 +1355,9 @@ function isSpecificYearLineupQuestion(query) {
     n.includes("what sets do you have") ||
     n.includes("what products are in") ||
     n.includes("what sets are in") ||
+    n.includes("product list") ||
+    n.includes("products") ||
+    n.includes("checklists") ||
     n.includes("show me") ||
     n.includes("what do you have")
   );
@@ -1737,6 +1796,30 @@ function scoreReleaseRowMatch(row, query) {
   return score;
 }
 
+function getSpecificReleaseTokens(query) {
+  return meaningfulTokens(stripReleaseQuestionWords(query)).filter(token => {
+    if (!token) return false;
+    if (/^(19|20)\d{2}$/.test(token)) return false;
+    return !RELEASE_GENERIC_TOKENS.has(token);
+  });
+}
+
+function isSafeReleaseRowMatch(row, query, score) {
+  const specificTokens = getSpecificReleaseTokens(query);
+  if (!specificTokens.length) return score >= 52;
+
+  const rowTokens = new Set(meaningfulTokens([
+    row.setName || "",
+    row.product || "",
+    row.manufacturer || ""
+  ].join(" ")));
+
+  const overlap = specificTokens.filter(token => rowTokens.has(token)).length;
+  if (!overlap) return false;
+
+  return score >= 52;
+}
+
 function findBestReleaseRow(rows, query) {
   let best = null;
   let bestScore = -9999;
@@ -1749,7 +1832,7 @@ function findBestReleaseRow(rows, query) {
     }
   });
 
-  if (!best || bestScore < 34) return null;
+  if (!best || !isSafeReleaseRowMatch(best, query, bestScore)) return null;
   return { row: best, score: bestScore };
 }
 
@@ -1787,12 +1870,17 @@ function scoreProduct(item, query, targetIntent) {
   const codeNorm = normalize(product.code);
   const sport = extractSport(query);
   const year = extractYear(query);
+  const baseNameNorm = normalizeBaseProductName(product.name);
+  const baseQueryNorm = normalizeBaseProductName(cleanedNorm || qNorm);
 
   if (qNorm === nameNorm || cleanedNorm === nameNorm) score += 300;
   if (qNorm.includes(nameNorm)) score += 140;
   if (cleanedNorm && nameNorm.includes(cleanedNorm)) score += 70;
   if (cleanedNorm && product.haystack.includes(cleanedNorm)) score += 50;
   if (codeNorm && qNorm.includes(codeNorm)) score += 120;
+
+  if (baseNameNorm && baseQueryNorm && baseNameNorm === baseQueryNorm) score += 140;
+  if (baseNameNorm && baseQueryNorm && baseNameNorm === baseQueryNorm && nameNorm !== baseNameNorm) score -= 80;
 
   if (year && String(product.year) === year) score += 25;
   if (sport && normalize(product.sport) === sport) score += 18;
@@ -1820,10 +1908,36 @@ function scoreProduct(item, query, targetIntent) {
 
   if (!qNorm.includes("celebration") && nameNorm.includes("celebration")) score -= 30;
 
+  PRODUCT_VARIANT_TERMS.forEach(term => {
+    const termNorm = normalize(term);
+    if (!termNorm) return;
+    if (nameNorm.includes(termNorm) && !cleanedNorm.includes(termNorm) && !qNorm.includes(termNorm)) {
+      score -= termNorm === "chrome black" || termNorm === "black" ? 90 : 55;
+    }
+  });
+
   const missingCoreTokens = qTokens.filter(t => !nameNorm.includes(t) && !codeNorm.includes(t)).length;
   score -= missingCoreTokens * 8;
 
   return score;
+}
+
+function normalizeBaseProductName(text) {
+  let out = normalize(text || "");
+
+  PRODUCT_VARIANT_TERMS.forEach(term => {
+    const termNorm = normalize(term);
+    if (!termNorm) return;
+    out = out.replace(new RegExp(`\\b${termNorm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
+  });
+
+  out = out.replace(/\bbaseball\b/g, " ");
+  out = out.replace(/\bfootball\b/g, " ");
+  out = out.replace(/\bbasketball\b/g, " ");
+  out = out.replace(/\bhockey\b/g, " ");
+  out = out.replace(/\bsoccer\b/g, " ");
+
+  return out.replace(/\s+/g, " ").trim();
 }
 
 function findBestProduct(list, query, targetIntent) {
@@ -1890,6 +2004,8 @@ function getProductMatchOptions(list, query, targetIntent, limit = 4) {
     .sort((a, b) => {
       const scoreDiff = (b.score || 0) - (a.score || 0);
       if (scoreDiff !== 0) return scoreDiff;
+      const yearDiff = (parseInt(String(b.year || "").slice(0, 4), 10) || 0) - (parseInt(String(a.year || "").slice(0, 4), 10) || 0);
+      if (yearDiff !== 0) return yearDiff;
       return String(a.name || "").localeCompare(String(b.name || ""));
     })
     .filter(product => {
@@ -2487,7 +2603,7 @@ async function buildReleaseScheduleResponse(query) {
         badge: "Release Date",
         title: productName,
         heroSummary: true,
-        summary: `${productName} releases on ${formatReleaseDate(row.releaseDate)}.`,
+        summary: `${formatReleaseDate(row.releaseDate)}.`,
         metadata: uniq([
           row.sport ? `Sport: ${titleCase(row.sport)}` : "",
           row.status ? `Status: ${row.status}` : ""
@@ -2499,6 +2615,20 @@ async function buildReleaseScheduleResponse(query) {
         ].filter(Boolean)
       };
     }
+
+    const requestedProduct = stripReleaseQuestionWords(query);
+    return {
+      type: "standard",
+      badge: "Release Date",
+      title: requestedProduct ? titleCase(requestedProduct) : "No release info available",
+      summary: requestedProduct
+        ? `No release info is available for ${requestedProduct} yet.`
+        : "No release info is available for that product yet.",
+      followups: [
+        "Show the release schedule",
+        sport ? `Show ${titleCase(sport)} release schedule` : ""
+      ].filter(Boolean)
+    };
   }
 
   if (sport) {
@@ -4146,6 +4276,11 @@ async function buildSearchResponse(query) {
   if (matches.winner.code && matches.winner.score >= 50) {
     prefetchChecklistData(matches.winner);
     prefetchPrintRunData(matches.winner);
+  }
+
+  const directSection = detectChecklistSectionIntent(query);
+  if (directSection && matches.checklist?.code) {
+    return buildChecklistSummaryResponse(query);
   }
 
   if (isProductRookieQuery(query)) {

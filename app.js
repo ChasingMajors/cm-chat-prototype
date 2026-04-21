@@ -527,7 +527,7 @@ function rowMatchesPlayerFilter(row, filter) {
   });
 }
 
-function findBestProductFromRemainder(remainder) {
+function findBestProductFromRemainder(remainder, context = {}) {
   const cleaned = stripIntentWords(remainder || "");
   if (!cleaned) return null;
 
@@ -557,7 +557,15 @@ function findBestProductFromRemainder(remainder) {
     return null;
   }
 
-  const candidate = findBestProduct(getChecklistIndex(), cleaned, "checklist");
+  const scopedQuery = [
+    context.year || "",
+    context.sport || "",
+    cleaned
+  ].filter(Boolean).join(" ").trim();
+
+  const candidate =
+    findBestProduct(getChecklistIndex(), scopedQuery || cleaned, "checklist") ||
+    findBestProduct(getChecklistIndex(), cleaned, "checklist");
   if (!candidate) return null;
 
   const productTokens = new Set([
@@ -566,7 +574,7 @@ function findBestProductFromRemainder(remainder) {
     ...meaningfulTokens(candidate.code)
   ]);
 
-  const queryTokens = meaningfulTokens(cleaned);
+  const queryTokens = meaningfulTokens(scopedQuery || cleaned);
   const overlap = queryTokens.filter(t => productTokens.has(t)).length;
 
   if (overlap < 1) return null;
@@ -593,7 +601,7 @@ function detectPlayerSearchRequest(query) {
     };
   }
 
-  const product = findBestProductFromRemainder(remainder);
+  const product = findBestProductFromRemainder(remainder, { year, sport });
 
   if (product) {
     return {

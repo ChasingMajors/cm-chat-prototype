@@ -1967,6 +1967,40 @@ function findPreferredBaseProductOption(query, options = []) {
   return matches[0];
 }
 
+function findDirectBaseProductMatch(query) {
+  const queryNorm = normalize(query || "");
+  if (!queryNorm) return null;
+
+  const sport = extractSport(query);
+  const year = extractYear(query);
+  const queryHasVariant = hasProductVariantTerm(queryNorm);
+  const baseQuery = normalizeBaseProductName(queryNorm);
+
+  const combined = [
+    ...getChecklistIndex(),
+    ...getPrintRunIndex()
+  ]
+    .map(mapProduct)
+    .filter(product => product.name)
+    .filter(product => !sport || normalize(product.sport) === sport)
+    .filter(product => !year || String(product.year || "") === String(year));
+
+  const exactNameMatches = combined.filter(product => normalize(product.name) === queryNorm);
+  if (exactNameMatches.length) {
+    return exactNameMatches.find(product => !hasProductVariantTerm(product.name)) || exactNameMatches[0];
+  }
+
+  if (queryHasVariant || !baseQuery) return null;
+
+  const baseMatches = combined.filter(product => {
+    if (hasProductVariantTerm(product.name)) return false;
+    return normalizeBaseProductName(product.name) === baseQuery;
+  });
+
+  if (baseMatches.length !== 1) return null;
+  return baseMatches[0];
+}
+
 function findBestProduct(list, query, targetIntent) {
   const cleaned = stripIntentWords(query || "");
   const cleanedNorm = normalize(cleaned);
@@ -4288,6 +4322,25 @@ async function buildSearchResponse(query) {
   const productMatchQuery = isProductRookieQuery(query)
     ? (stripProductRookieWords(query) || query)
     : query;
+  const directBaseProduct = findDirectBaseProductMatch(productMatchQuery);
+  if (directBaseProduct) {
+    if (directBaseProduct.code) {
+      prefetchChecklistData(directBaseProduct);
+      prefetchPrintRunData(directBaseProduct);
+    }
+
+    const directSection = detectChecklistSectionIntent(query);
+    if (directSection && findEquivalentProduct(getChecklistIndex(), directBaseProduct)?.code) {
+      return buildChecklistSummaryResponse(directBaseProduct.name);
+    }
+
+    if (isProductRookieQuery(query)) {
+      return buildProductRookieChecklistResponse(directBaseProduct);
+    }
+
+    return buildProductProfileResponse(directBaseProduct, query);
+  }
+
   const matches = getCombinedBestMatches(productMatchQuery);
 
   if (!matches.winner) {

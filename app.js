@@ -1940,12 +1940,21 @@ function normalizeBaseProductName(text) {
   return out.replace(/\s+/g, " ").trim();
 }
 
+function hasProductVariantTerm(text) {
+  const normalizedText = normalize(text || "");
+  return PRODUCT_VARIANT_TERMS.some(term => {
+    const termNorm = normalize(term);
+    return termNorm && normalizedText.includes(termNorm);
+  });
+}
+
 function findBestProduct(list, query, targetIntent) {
   const cleaned = stripIntentWords(query || "");
   const cleanedNorm = normalize(cleaned);
   const qNorm = normalize(query || "");
   const sport = extractSport(query);
   const year = extractYear(query);
+  const baseQueryNorm = normalizeBaseProductName(cleanedNorm || qNorm);
 
   let best = null;
   let bestScore = -9999;
@@ -1961,6 +1970,17 @@ function findBestProduct(list, query, targetIntent) {
   });
 
   if (exact) return { ...exact, score: 999, matchType: "exact" };
+
+  const exactBase = mapped.find(product => {
+    const productBase = normalizeBaseProductName(product.name);
+    if (!productBase || productBase !== baseQueryNorm) return false;
+    if (hasProductVariantTerm(product.name)) return false;
+    if (sport && normalize(product.sport) && normalize(product.sport) !== sport) return false;
+    if (year && String(product.year || "") && String(product.year || "") !== String(year)) return false;
+    return true;
+  });
+
+  if (exactBase) return { ...exactBase, score: 998, matchType: "exact_base" };
 
   mapped.forEach(item => {
     const s = scoreProduct(item.raw || item, query, targetIntent);
@@ -2123,6 +2143,18 @@ function attachCollectorProductToPlayerReq(playerReq, product) {
 }
 
 function getCollectorProductResolution(kind, request) {
+  if (request?.code && request?.productName) {
+    return {
+      request,
+      product: request.product || {
+        code: request.code,
+        name: request.productName,
+        sport: request.sport || "",
+        year: request.year || ""
+      }
+    };
+  }
+
   const options = getCollectorProductOptions(request);
   if (!options.length) return { request };
 

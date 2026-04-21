@@ -41,6 +41,8 @@ const {
 
 const {
   logEvent,
+  submitErrorReport,
+  submitResultFeedback,
   getPrintRunData,
   getHomeFeed,
   getChecklistSummary,
@@ -68,6 +70,7 @@ const {
 
 const chatInput = document.getElementById("chatInput");
 const sendBtn = document.getElementById("sendBtn");
+let lastSubmittedQuery = "";
 
 let awaitingCatalogSport = false;
 let pendingProductChoice = null;
@@ -4699,6 +4702,10 @@ async function submitQuery(text) {
   const val = String(text || chatInput?.value || "").trim();
   if (!val) return;
 
+  lastSubmittedQuery = isDirectReleaseActionQuery(val)
+    ? getDirectReleaseActionDisplayText(parseDirectReleaseActionQuery(val))
+    : val;
+
   if (isDirectReleaseActionQuery(val)) {
     ui.addUserMessage(getDirectReleaseActionDisplayText(parseDirectReleaseActionQuery(val)));
   } else {
@@ -4717,6 +4724,18 @@ async function submitQuery(text) {
   try {
     await bootstrapData();
     const res = await buildResponse(val);
+    const selectedType =
+      res.type === "prv" ? "Print Run" :
+      res.type === "checklist_table" ? "Checklist" :
+      res.type === "player_stats" ? "Player Stats" :
+      res.type === "release_schedule" ? "Release Schedule" :
+      (res.badge || "");
+
+    res.feedback = {
+      query: lastSubmittedQuery,
+      resultTitle: res.product?.name || res.title || "",
+      resultType: selectedType
+    };
 
     loader.remove();
 
@@ -4736,16 +4755,9 @@ async function submitQuery(text) {
       app: "chat_demo",
       page: "fake_chatbot",
       event_type: "chat_query",
-      query: isDirectReleaseActionQuery(val)
-        ? getDirectReleaseActionDisplayText(parseDirectReleaseActionQuery(val))
-        : val,
+      query: lastSubmittedQuery,
       selected_name: res.product?.name || res.title || "",
-      selected_type:
-        res.type === "prv" ? "Print Run" :
-        res.type === "checklist_table" ? "Checklist" :
-        res.type === "player_stats" ? "Player Stats" :
-        res.type === "release_schedule" ? "Release Schedule" :
-        (res.badge || ""),
+      selected_type: selectedType,
       route_target:
         res.type === "prv" ? "vault" :
         res.type === "checklist_table" ? "checklists" :
@@ -4769,6 +4781,25 @@ async function submitQuery(text) {
 function initChat() {
   ui.renderExamples(EXAMPLES);
   ui.setSubmitHandler(submitQuery);
+  ui.setErrorReportHandler(async ({ details }) => {
+    return submitErrorReport({
+      app: "chat_demo",
+      page: "fake_chatbot",
+      query: lastSubmittedQuery || "",
+      details: String(details || "").trim(),
+      user_agent: navigator.userAgent || ""
+    });
+  });
+  ui.setResultFeedbackHandler(async ({ feedback, query, result_title, result_type }) => {
+    return submitResultFeedback({
+      app: "chat_demo",
+      page: "fake_chatbot",
+      query: query || lastSubmittedQuery || "",
+      feedback: feedback || "",
+      result_title: result_title || "",
+      result_type: result_type || ""
+    });
+  });
 
   requestAnimationFrame(() => ui.addWelcomeMessage(true));
 
@@ -4780,6 +4811,7 @@ function initChat() {
   }, 0);
 
   ui.initJumpNav();
+  ui.initFeedbackUi();
 
   if (chatInput) chatInput.focus();
 }

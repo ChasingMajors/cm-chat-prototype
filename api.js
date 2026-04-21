@@ -25,6 +25,30 @@ window.CMChat.api = window.CMChat.api || {};
     }
   }
 
+  async function submitErrorReport(payload) {
+    try {
+      return await postJson(config.LOG_EXEC_URL, {
+        action: "submitErrorReport",
+        payload: payload || {}
+      });
+    } catch (err) {
+      console.warn("submitErrorReport failed", err);
+      return { ok: false };
+    }
+  }
+
+  async function submitResultFeedback(payload) {
+    try {
+      return await postJson(config.LOG_EXEC_URL, {
+        action: "submitResultFeedback",
+        payload: payload || {}
+      });
+    } catch (err) {
+      console.warn("submitResultFeedback failed", err);
+      return { ok: false };
+    }
+  }
+
   async function getPrintRunData(code, sport) {
     const key = utils.makeKey(code, sport);
     if (cache.memCache.printRunRows.has(key)) return cache.memCache.printRunRows.get(key);
@@ -158,6 +182,8 @@ window.CMChat.api = window.CMChat.api || {};
 
   ns.postJson = postJson;
   ns.logEvent = logEvent;
+  ns.submitErrorReport = submitErrorReport;
+  ns.submitResultFeedback = submitResultFeedback;
   ns.getPrintRunData = getPrintRunData;
   ns.getHomeFeed = getHomeFeed;
   ns.getChecklistSummary = getChecklistSummary;

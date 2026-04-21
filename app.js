@@ -1948,6 +1948,25 @@ function hasProductVariantTerm(text) {
   });
 }
 
+function findPreferredBaseProductOption(query, options = []) {
+  const queryNorm = normalize(query || "");
+  if (!queryNorm || !Array.isArray(options) || !options.length) return null;
+
+  const queryHasVariant = hasProductVariantTerm(queryNorm);
+  if (queryHasVariant) return null;
+
+  const queryBase = normalizeBaseProductName(queryNorm);
+  if (!queryBase) return null;
+
+  const matches = options.filter(option => {
+    if (!option?.name || hasProductVariantTerm(option.name)) return false;
+    return normalizeBaseProductName(option.name) === queryBase;
+  });
+
+  if (matches.length !== 1) return null;
+  return matches[0];
+}
+
 function findBestProduct(list, query, targetIntent) {
   const cleaned = stripIntentWords(query || "");
   const cleanedNorm = normalize(cleaned);
@@ -4300,6 +4319,24 @@ async function buildSearchResponse(query) {
       return true;
     })
     .slice(0, 4);
+
+  const preferredBaseOption = findPreferredBaseProductOption(productMatchQuery, combinedOptions);
+  if (preferredBaseOption) {
+    if (preferredBaseOption.code) {
+      prefetchChecklistData(preferredBaseOption);
+      prefetchPrintRunData(preferredBaseOption);
+    }
+
+    if (directSection && preferredBaseOption.code) {
+      return buildChecklistSummaryResponse(preferredBaseOption.name);
+    }
+
+    if (isProductRookieQuery(query)) {
+      return buildProductRookieChecklistResponse(preferredBaseOption);
+    }
+
+    return buildProductProfileResponse(preferredBaseOption, query);
+  }
 
   if (shouldClarifyProductMatch(combinedOptions)) {
     return buildProductMatchClarifyResponse("product_type", query, combinedOptions);

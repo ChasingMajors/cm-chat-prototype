@@ -8,6 +8,8 @@ window.CMChat.ui = window.CMChat.ui || {};
   } = utils;
 
   let submitHandler = null;
+  let errorReportHandler = null;
+  let resultFeedbackHandler = null;
   let latestResultCardId = null;
   let lastScrollTop = 0;
   let lastScrollDirection = "down";
@@ -17,6 +19,14 @@ window.CMChat.ui = window.CMChat.ui || {};
 
   function setSubmitHandler(fn) {
     submitHandler = typeof fn === "function" ? fn : null;
+  }
+
+  function setErrorReportHandler(fn) {
+    errorReportHandler = typeof fn === "function" ? fn : null;
+  }
+
+  function setResultFeedbackHandler(fn) {
+    resultFeedbackHandler = typeof fn === "function" ? fn : null;
   }
 
   function getChatMessages() {
@@ -39,8 +49,60 @@ window.CMChat.ui = window.CMChat.ui || {};
     return document.getElementById("chatJumpBtnIcon");
   }
 
+  function getErrorReportLink() {
+    return document.getElementById("errorReportLink");
+  }
+
+  function getErrorReportModal() {
+    return document.getElementById("errorReportModal");
+  }
+
+  function getErrorReportInput() {
+    return document.getElementById("errorReportInput");
+  }
+
   function runSubmit(value) {
     if (submitHandler) submitHandler(value);
+  }
+
+  async function runErrorReport(payload) {
+    if (!errorReportHandler) return { ok: false };
+    return errorReportHandler(payload);
+  }
+
+  async function runResultFeedback(payload) {
+    if (!resultFeedbackHandler) return { ok: false };
+    return resultFeedbackHandler(payload);
+  }
+
+  function buildFeedbackAttrs(feedback) {
+    const meta = feedback || {};
+    const pairs = [
+      ["query", meta.query || ""],
+      ["title", meta.resultTitle || meta.title || ""],
+      ["type", meta.resultType || meta.type || ""]
+    ];
+
+    return pairs
+      .map(([key, value]) => `data-feedback-${key}="${escapeHtml(String(value || ""))}"`)
+      .join(" ");
+  }
+
+  function buildResultFeedbackHtml(feedback) {
+    if (feedback === false || feedback?.disabled) return "";
+
+    const attrs = buildFeedbackAttrs(feedback);
+
+    return `
+      <div class="result-feedback" ${attrs}>
+        <div class="result-feedback-label">Was this helpful?</div>
+        <div class="result-feedback-actions">
+          <button class="result-feedback-btn" type="button" data-feedback-value="positive" aria-label="Helpful">👍</button>
+          <button class="result-feedback-btn" type="button" data-feedback-value="negative" aria-label="Not helpful">👎</button>
+        </div>
+        <div class="result-feedback-status" data-feedback-status></div>
+      </div>
+    `;
   }
 
   function renderExamples(examples) {
@@ -336,6 +398,139 @@ window.CMChat.ui = window.CMChat.ui || {};
     });
   }
 
+  function bindFeedbackButtons() {
+    const chatMessages = getChatMessages();
+    if (!chatMessages) return;
+
+    chatMessages.querySelectorAll("[data-feedback-value]").forEach(btn => {
+      btn.onclick = async () => {
+        if (btn.disabled) return;
+
+        const wrap = btn.closest(".result-feedback");
+        if (!wrap) return;
+
+        const payload = {
+          feedback: btn.dataset.feedbackValue || "",
+          query: wrap.dataset.feedbackQuery || "",
+          result_title: wrap.dataset.feedbackTitle || "",
+          result_type: wrap.dataset.feedbackType || ""
+        };
+
+        const status = wrap.querySelector("[data-feedback-status]");
+        wrap.querySelectorAll("[data-feedback-value]").forEach(node => {
+          node.disabled = true;
+        });
+
+        if (status) status.textContent = "Saving...";
+
+        const res = await runResultFeedback(payload);
+
+        if (res && res.ok) {
+          btn.classList.add("is-selected");
+          if (status) status.textContent = "Thanks for the feedback.";
+        } else {
+          wrap.querySelectorAll("[data-feedback-value]").forEach(node => {
+            node.disabled = false;
+          });
+          if (status) status.textContent = "Could not save feedback right now.";
+        }
+      };
+    });
+  }
+
+  function openErrorReportModal() {
+    const modal = getErrorReportModal();
+    const input = getErrorReportInput();
+    if (!modal) return;
+
+    modal.classList.remove("is-hidden");
+    modal.setAttribute("aria-hidden", "false");
+
+    requestAnimationFrame(() => {
+      if (input) input.focus();
+    });
+  }
+
+  function closeErrorReportModal() {
+    const modal = getErrorReportModal();
+    const input = getErrorReportInput();
+    if (!modal) return;
+
+    modal.classList.add("is-hidden");
+    modal.setAttribute("aria-hidden", "true");
+    if (input) input.value = "";
+  }
+
+  async function submitErrorReportFromModal() {
+    const input = getErrorReportInput();
+    const submitBtn = document.getElementById("errorReportSubmitBtn");
+    if (!input || !submitBtn) return;
+
+    const details = String(input.value || "").trim();
+    if (!details) {
+      input.focus();
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+
+    const res = await runErrorReport({ details });
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit";
+
+    if (res && res.ok) {
+      closeErrorReportModal();
+      addStandardAnswerCard({
+        badge: "Feedback",
+        title: "Thanks for the report",
+        summary: "Your note was logged for review.",
+        feedback: false
+      });
+      return;
+    }
+
+    addStandardAnswerCard({
+      badge: "Feedback",
+      title: "Could not submit report",
+      summary: "I could not log that error right now. Please try again in a moment.",
+      feedback: false
+    });
+  }
+
+  function initFeedbackUi() {
+    const openBtn = getErrorReportLink();
+    const closeBtn = document.getElementById("errorReportCloseBtn");
+    const cancelBtn = document.getElementById("errorReportCancelBtn");
+    const submitBtn = document.getElementById("errorReportSubmitBtn");
+    const backdrop = document.getElementById("errorReportBackdrop");
+    const input = getErrorReportInput();
+
+    if (openBtn) openBtn.onclick = openErrorReportModal;
+    if (closeBtn) closeBtn.onclick = closeErrorReportModal;
+    if (cancelBtn) cancelBtn.onclick = closeErrorReportModal;
+    if (backdrop) backdrop.onclick = closeErrorReportModal;
+    if (submitBtn) submitBtn.onclick = submitErrorReportFromModal;
+
+    document.addEventListener("keydown", e => {
+      const modal = getErrorReportModal();
+      if (!modal || modal.classList.contains("is-hidden")) return;
+
+      if (e.key === "Escape") {
+        closeErrorReportModal();
+      }
+    });
+
+    if (input) {
+      input.addEventListener("keydown", e => {
+        if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+          submitErrorReportFromModal();
+        }
+      });
+    }
+  }
+
   function addStandardAnswerCard(r) {
     const chatMessages = getChatMessages();
     if (!chatMessages) return;
@@ -385,6 +580,8 @@ window.CMChat.ui = window.CMChat.ui || {};
       `
       : "";
 
+    const feedbackHtml = buildResultFeedbackHtml(r.feedback);
+
     const cardId = `standard_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
 
     chatMessages.innerHTML += `
@@ -397,6 +594,7 @@ window.CMChat.ui = window.CMChat.ui || {};
           ${metaHtml}
           ${statGroupsHtml}
           ${followupsHtml}
+          ${feedbackHtml}
         </div>
       </div>
     `;
@@ -404,6 +602,7 @@ window.CMChat.ui = window.CMChat.ui || {};
     const card = document.getElementById(cardId);
     setLatestResultCard(card);
     bindFollowups();
+    bindFeedbackButtons();
     scrollNewCardToTop(card);
   }
 
@@ -450,6 +649,8 @@ window.CMChat.ui = window.CMChat.ui || {};
       `
       : "";
 
+    const feedbackHtml = buildResultFeedbackHtml(r.feedback);
+
     const cardId = `playerstats_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
 
     chatMessages.innerHTML += `
@@ -465,6 +666,7 @@ window.CMChat.ui = window.CMChat.ui || {};
           ${r.careerSummary ? `<div class="answer-summary" style="margin-top:12px;">${escapeHtml(r.careerSummary)}</div>` : ""}
           ${renderStatGrid(r.careerTitle || "Career", r.careerStats || [])}
           ${followupsHtml}
+          ${feedbackHtml}
         </div>
       </div>
     `;
@@ -472,6 +674,7 @@ window.CMChat.ui = window.CMChat.ui || {};
     const card = document.getElementById(cardId);
     setLatestResultCard(card);
     bindFollowups();
+    bindFeedbackButtons();
     scrollNewCardToTop(card);
   }
 
@@ -591,6 +794,8 @@ window.CMChat.ui = window.CMChat.ui || {};
       `
       : "";
 
+    const feedbackHtml = buildResultFeedbackHtml(result.feedback);
+
     const cardId = `prv_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
 
     chatMessages.innerHTML += `
@@ -632,6 +837,7 @@ window.CMChat.ui = window.CMChat.ui || {};
           </div>
 
           ${followupsHtml}
+          ${feedbackHtml}
         </div>
       </div>
     `;
@@ -659,6 +865,7 @@ window.CMChat.ui = window.CMChat.ui || {};
 
     setLatestResultCard(card);
     bindFollowups();
+    bindFeedbackButtons();
     scrollNewCardToTop(card);
   }
 
@@ -768,6 +975,7 @@ window.CMChat.ui = window.CMChat.ui || {};
       .join("");
 
     const cardId = `checklist_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+    const feedbackHtml = buildResultFeedbackHtml(result.feedback);
 
     chatMessages.innerHTML += `
       <div class="message-row assistant">
@@ -809,6 +1017,8 @@ window.CMChat.ui = window.CMChat.ui || {};
               </div>
             </div>
           ` : ""}
+
+          ${feedbackHtml}
         </div>
       </div>
     `;
@@ -816,6 +1026,7 @@ window.CMChat.ui = window.CMChat.ui || {};
     const card = document.getElementById(cardId);
     setLatestResultCard(card);
     bindFollowups();
+    bindFeedbackButtons();
     scrollNewCardToTop(card);
   }
 
@@ -898,6 +1109,8 @@ function addReleaseScheduleCard(result) {
     `
     : "";
 
+  const feedbackHtml = buildResultFeedbackHtml(result.feedback);
+
   const cardId = `release_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
 
   chatMessages.innerHTML += `
@@ -929,6 +1142,7 @@ function addReleaseScheduleCard(result) {
         </div>
 
         ${followupsHtml}
+        ${feedbackHtml}
       </div>
     </div>
   `;
@@ -943,10 +1157,13 @@ function addReleaseScheduleCard(result) {
 
   setLatestResultCard(card);
   bindFollowups();
+  bindFeedbackButtons();
   scrollNewCardToTop(card);
 }
 
   ns.setSubmitHandler = setSubmitHandler;
+  ns.setErrorReportHandler = setErrorReportHandler;
+  ns.setResultFeedbackHandler = setResultFeedbackHandler;
   ns.renderExamples = renderExamples;
   ns.addUserMessage = addUserMessage;
   ns.scrollToBottom = scrollToBottom;
@@ -960,6 +1177,8 @@ function addReleaseScheduleCard(result) {
   ns.addChecklistResultCard = addChecklistResultCard;
   ns.addReleaseScheduleCard = addReleaseScheduleCard;
   ns.bindFollowups = bindFollowups;
+  ns.bindFeedbackButtons = bindFeedbackButtons;
   ns.initJumpNav = initJumpNav;
+  ns.initFeedbackUi = initFeedbackUi;
   ns.updateJumpNav = updateJumpNav;
 })(window.CMChat.ui, window.CMChat.utils);

@@ -1982,8 +1982,8 @@ function findDirectBaseProductMatch(query) {
   ]
     .map(mapProduct)
     .filter(product => product.name)
-    .filter(product => !sport || normalize(product.sport) === sport)
-    .filter(product => !year || String(product.year || "") === String(year));
+    .filter(product => !sport || !normalize(product.sport) || normalize(product.sport) === sport)
+    .filter(product => !year || !String(product.year || "") || String(product.year || "") === String(year));
 
   const exactNameMatches = combined.filter(product => normalize(product.name) === queryNorm);
   if (exactNameMatches.length) {

@@ -895,6 +895,29 @@
     }
   }
 
+  async function previewSourceImport(sourceUrl, sport) {
+    const endpoint = readOperatorEndpoint();
+
+    if (!endpoint) {
+      renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before previewing imports.", "warning");
+      return;
+    }
+
+    renderSourceCheckMessage("Building import preview", "The Operator Backend is parsing the source page into Chasing Majors rows.", "info");
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=previewSourceImport"
+        + "&sourceUrl=" + encodeURIComponent(sourceUrl)
+        + "&sport=" + encodeURIComponent(sport || "");
+      const data = await fetchJson(url);
+      renderImportPreview(data);
+    } catch (err) {
+      renderSourceCheckMessage("Import preview failed", err && err.message ? err.message : String(err), "critical");
+    }
+  }
+
   function renderBackendValidationResult(data) {
     if (!data || !data.ok) {
       renderSourceCheckMessage("Validation failed", data && data.error ? data.error : "Unknown backend response.", "critical");
@@ -985,6 +1008,12 @@
         btn.disabled = true;
       });
     });
+
+    els.sourceCheckResult.querySelectorAll("[data-preview-import]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        previewSourceImport(btn.dataset.previewImport, btn.dataset.previewSport || "");
+      });
+    });
   }
 
   function renderSourceWatchItem(item, idx) {
@@ -1012,8 +1041,84 @@
           ${item.matched_code ? `<span class="pill">Code: ${escapeHtml(item.matched_code)}</span>` : ""}
           ${item.source_url ? `<a class="pill source-link" href="${escapeHtml(item.source_url)}" target="_blank" rel="noopener noreferrer">Source</a>` : ""}
         </div>
-        ${canTask ? `<button class="action-btn approve" type="button" data-source-task="${idx}">Create Operator Task</button>` : ""}
+        ${canTask ? `
+          <div class="opp-actions">
+            <button class="action-btn approve" type="button" data-preview-import="${escapeHtml(item.source_url || "")}" data-preview-sport="${escapeHtml(item.sport || "")}">Preview Import</button>
+            <button class="action-btn" type="button" data-source-task="${idx}">Create Operator Task</button>
+          </div>
+        ` : ""}
       </article>
+    `;
+  }
+
+  function renderImportPreview(data) {
+    if (!data || !data.ok) {
+      renderSourceCheckMessage("Preview failed", data && data.error ? data.error : "Unknown backend response.", "critical");
+      return;
+    }
+
+    if (data.status === "ignored") {
+      renderSourceCheckMessage("Ignored source", data.reason || "Unsupported source.", "warning");
+      return;
+    }
+
+    const product = data.product || {};
+    const rows = Array.isArray(data.sample_rows) ? data.sample_rows : [];
+    const parallels = Array.isArray(data.sample_parallels) ? data.sample_parallels : [];
+    const warnings = Array.isArray(data.warnings) ? data.warnings : [];
+
+    els.sourceCheckResult.innerHTML = `
+      <div class="import-preview-card">
+        <div class="opp-top">
+          <div>
+            <h3>Import Preview</h3>
+            <p>${escapeHtml(product.display_name || "Untitled product")}</p>
+          </div>
+          <span class="badge ${data.status === "preview_ready" ? "opportunity" : "warning"}">${escapeHtml(data.status || "preview")}</span>
+        </div>
+        <div class="opp-meta">
+          <span class="pill">Code: ${escapeHtml(product.code || "")}</span>
+          <span class="pill">Sport: ${escapeHtml(titleCase(product.sport || ""))}</span>
+          <span class="pill">Year: ${escapeHtml(product.year || "")}</span>
+          <span class="pill">Rows: ${formatNumber(data.row_count || 0)}</span>
+          <span class="pill">Parallels: ${formatNumber(data.parallel_count || 0)}</span>
+          <span class="pill">Target: ${escapeHtml(product.target_bucket || "")}</span>
+        </div>
+        ${warnings.length ? `
+          <div class="task-guardrail">${warnings.map(escapeHtml).join(" ")}</div>
+        ` : ""}
+        <div class="preview-grid">
+          <div>
+            <h4>Sample Rows</h4>
+            ${rows.length ? rows.map(renderPreviewRow).join("") : `<p>No sample rows parsed.</p>`}
+          </div>
+          <div>
+            <h4>Sample Parallels</h4>
+            ${parallels.length ? parallels.map(renderPreviewParallel).join("") : `<p>No sample parallels parsed.</p>`}
+          </div>
+        </div>
+        <div class="task-guardrail">Preview only. Sheet write is not enabled until the approved execution action is built and tested.</div>
+      </div>
+    `;
+  }
+
+  function renderPreviewRow(row) {
+    return `
+      <div class="preview-row">
+        <strong>${escapeHtml(row.card_no || "")}</strong>
+        <span>${escapeHtml(row.player || "")}</span>
+        <em>${escapeHtml(row.team || "")}</em>
+      </div>
+    `;
+  }
+
+  function renderPreviewParallel(row) {
+    return `
+      <div class="preview-row">
+        <strong>${escapeHtml(row.parallel_name || "")}</strong>
+        <span>${escapeHtml(row.applies_to_subset || "")}</span>
+        <em>${escapeHtml(row.serial_no || "")}</em>
+      </div>
     `;
   }
 

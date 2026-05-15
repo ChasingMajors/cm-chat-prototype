@@ -5,6 +5,7 @@
   const BLOCKED_SOURCE_TERMS = ["mma", "ufc", "wwe", "wrestling", "racing", "nascar", "f1", "formula 1", "pokemon", "marvel", "disney", "star wars"];
   const APPROVAL_KEY = "cm_command_center_opportunity_status_v1";
   const TASK_KEY = "cm_command_center_operator_tasks_v1";
+  const OPERATOR_ENDPOINT_KEY = "cm_command_center_operator_endpoint_v1";
 
   const state = {
     opportunities: [],
@@ -17,8 +18,11 @@
     refreshBtn: document.getElementById("refreshBtn"),
     clearDoneBtn: document.getElementById("clearDoneBtn"),
     sourceCheckBtn: document.getElementById("sourceCheckBtn"),
+    sourceWatchBtn: document.getElementById("sourceWatchBtn"),
+    saveEndpointBtn: document.getElementById("saveEndpointBtn"),
     sourceTitleInput: document.getElementById("sourceTitleInput"),
     sourceSportInput: document.getElementById("sourceSportInput"),
+    operatorEndpointInput: document.getElementById("operatorEndpointInput"),
     typeFilter: document.getElementById("typeFilter"),
     systemState: document.getElementById("systemState"),
     opportunityCount: document.getElementById("opportunityCount"),
@@ -59,6 +63,20 @@
   function writeTasks() {
     try {
       localStorage.setItem(TASK_KEY, JSON.stringify(state.tasks));
+    } catch (err) {}
+  }
+
+  function readOperatorEndpoint() {
+    try {
+      return String(localStorage.getItem(OPERATOR_ENDPOINT_KEY) || "").trim();
+    } catch (err) {
+      return "";
+    }
+  }
+
+  function writeOperatorEndpoint(value) {
+    try {
+      localStorage.setItem(OPERATOR_ENDPOINT_KEY, String(value || "").trim());
     } catch (err) {}
   }
 
@@ -824,6 +842,181 @@
     `;
   }
 
+  async function validateSourceProductWithBackend() {
+    const endpoint = readOperatorEndpoint();
+    if (!endpoint) {
+      validateSourceProduct();
+      return;
+    }
+
+    const title = String(els.sourceTitleInput.value || "").trim();
+    const sport = normalize(els.sourceSportInput.value || "");
+
+    if (!title) {
+      renderSourceCheckMessage("Missing source title", "Enter the product title from the source page.", "warning");
+      return;
+    }
+
+    renderSourceCheckMessage("Validating source", "Calling the Operator Backend now.", "info");
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=validateSourceProduct"
+        + "&title=" + encodeURIComponent(title)
+        + "&sport=" + encodeURIComponent(sport);
+      const data = await fetchJson(url);
+      renderBackendValidationResult(data);
+    } catch (err) {
+      renderSourceCheckMessage("Backend validation failed", err && err.message ? err.message : String(err), "critical");
+    }
+  }
+
+  async function runSourceWatchWithBackend() {
+    const endpoint = readOperatorEndpoint();
+
+    if (!endpoint) {
+      renderSourceCheckMessage(
+        "Operator Backend needed",
+        "Paste and save the Apps Script Operator Backend URL before running full source watch. Single-product Source Check still works without it.",
+        "warning"
+      );
+      return;
+    }
+
+    renderSourceCheckMessage("Running source watch", "The Operator Backend is checking recent Checklistcenter items against Chasing Majors.", "info");
+
+    try {
+      const url = endpoint + (endpoint.indexOf("?") > -1 ? "&" : "?") + "action=sourceWatch";
+      const data = await fetchJson(url);
+      renderSourceWatchResults(data);
+    } catch (err) {
+      renderSourceCheckMessage("Source watch failed", err && err.message ? err.message : String(err), "critical");
+    }
+  }
+
+  function renderBackendValidationResult(data) {
+    if (!data || !data.ok) {
+      renderSourceCheckMessage("Validation failed", data && data.error ? data.error : "Unknown backend response.", "critical");
+      return;
+    }
+
+    if (data.status === "covered") {
+      els.sourceCheckResult.innerHTML = `
+        <div class="source-result-card covered">
+          <div class="opp-top">
+            <div>
+              <h3>Already covered</h3>
+              <p>${escapeHtml(data.matched_name || data.title || "")}</p>
+            </div>
+            <span class="badge opportunity">covered</span>
+          </div>
+          <div class="opp-meta">
+            <span class="pill">Sport: ${escapeHtml(titleCase(data.sport || ""))}</span>
+            <span class="pill">Code: ${escapeHtml(data.matched_code || "")}</span>
+            <span class="pill">Score: ${escapeHtml(data.match_score || "")}</span>
+          </div>
+          <p>${escapeHtml(data.recommended_action || "No import needed unless source details are newer.")}</p>
+        </div>
+      `;
+      return;
+    }
+
+    if (data.status === "missing") {
+      const task = createSourceImportTask(data.title || els.sourceTitleInput.value, data.sport || els.sourceSportInput.value);
+      renderOperatorTasks();
+      els.sourceCheckResult.innerHTML = `
+        <div class="source-result-card missing">
+          <div class="opp-top">
+            <div>
+              <h3>Missing from Chasing Majors</h3>
+              <p>${escapeHtml(data.title || "")}</p>
+            </div>
+            <span class="badge warning">task created</span>
+          </div>
+          <p>${escapeHtml(data.recommended_action || "Review source and prepare import.")}</p>
+          <div class="opp-meta">
+            <span class="pill">Sport: ${escapeHtml(titleCase(data.sport || ""))}</span>
+            <span class="pill">Task: ${escapeHtml(task.status)}</span>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    renderSourceCheckMessage(titleCase(data.status || "Needs review"), data.reason || data.recommended_action || "Review source match.", data.status === "ignored" ? "warning" : "info");
+  }
+
+  function renderSourceWatchResults(data) {
+    if (!data || !data.ok) {
+      renderSourceCheckMessage("Source watch failed", data && data.error ? data.error : "Unknown backend response.", "critical");
+      return;
+    }
+
+    const items = Array.isArray(data.items) ? data.items : [];
+    const actionable = items.filter(item => item.status === "missing" || item.status === "needs_review" || item.status === "possible_update");
+
+    els.sourceCheckResult.innerHTML = `
+      <div class="source-watch-summary">
+        <div class="opp-top">
+          <div>
+            <h3>Source Watch Complete</h3>
+            <p>${escapeHtml(data.fetched_count || 0)} source items checked. ${escapeHtml(actionable.length)} need review.</p>
+          </div>
+          <span class="badge info">review</span>
+        </div>
+        <div class="opp-meta">
+          ${Object.keys(data.summary || {}).map(key => `<span class="pill">${escapeHtml(key)}: ${escapeHtml(data.summary[key])}</span>`).join("")}
+        </div>
+      </div>
+      <div class="source-watch-list">
+        ${items.slice(0, 20).map(renderSourceWatchItem).join("")}
+      </div>
+    `;
+
+    els.sourceCheckResult.querySelectorAll("[data-source-task]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const idx = Number(btn.dataset.sourceTask || -1);
+        const item = items[idx];
+        if (!item) return;
+        createSourceImportTask(item.title || "Untitled source item", item.sport || "");
+        renderOperatorTasks();
+        btn.textContent = "Task Created";
+        btn.disabled = true;
+      });
+    });
+  }
+
+  function renderSourceWatchItem(item, idx) {
+    const status = item.status || "needs_review";
+    const badgeClass = status === "covered"
+      ? "opportunity"
+      : status === "missing"
+        ? "warning"
+        : status === "ignored"
+          ? "info"
+          : "warning";
+    const canTask = status === "missing" || status === "needs_review" || status === "possible_update";
+
+    return `
+      <article class="source-watch-item">
+        <div class="opp-top">
+          <div>
+            <h3>${escapeHtml(item.title || "Untitled")}</h3>
+            <p>${escapeHtml(item.recommended_action || item.reason || item.matched_name || "")}</p>
+          </div>
+          <span class="badge ${badgeClass}">${escapeHtml(status)}</span>
+        </div>
+        <div class="opp-meta">
+          <span class="pill">Sport: ${escapeHtml(titleCase(item.sport || ""))}</span>
+          ${item.matched_code ? `<span class="pill">Code: ${escapeHtml(item.matched_code)}</span>` : ""}
+          ${item.source_url ? `<a class="pill source-link" href="${escapeHtml(item.source_url)}" target="_blank" rel="noopener noreferrer">Source</a>` : ""}
+        </div>
+        ${canTask ? `<button class="action-btn approve" type="button" data-source-task="${idx}">Create Operator Task</button>` : ""}
+      </article>
+    `;
+  }
+
   function renderSourceCheckMessage(title, detail, severity) {
     const badgeClass = severity === "critical" ? "critical" : severity === "warning" ? "warning" : "info";
     els.sourceCheckResult.innerHTML = `
@@ -1231,13 +1424,19 @@
 
   els.refreshBtn.addEventListener("click", runAudit);
   els.clearDoneBtn.addEventListener("click", clearDoneTasks);
-  els.sourceCheckBtn.addEventListener("click", validateSourceProduct);
+  els.sourceCheckBtn.addEventListener("click", validateSourceProductWithBackend);
+  els.sourceWatchBtn.addEventListener("click", runSourceWatchWithBackend);
+  els.saveEndpointBtn.addEventListener("click", () => {
+    writeOperatorEndpoint(els.operatorEndpointInput.value || "");
+    renderSourceCheckMessage("Endpoint saved", "Command Center will use this Operator Backend URL for Source Watch and backend validation.", "info");
+  });
   els.sourceTitleInput.addEventListener("keydown", event => {
     if (event.key === "Enter") {
       event.preventDefault();
-      validateSourceProduct();
+      validateSourceProductWithBackend();
     }
   });
+  els.operatorEndpointInput.value = readOperatorEndpoint();
   els.typeFilter.addEventListener("change", renderOpportunities);
   runAudit();
 })();

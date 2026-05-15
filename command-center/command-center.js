@@ -1165,20 +1165,30 @@
 
     const product = data.product || {};
     const validation = data.validation || {};
+<<<<<<< HEAD
     const publish = data.publish || {};
     const publishValidation = publish.validation || {};
     const publicValidation = publishValidation.public || {};
     const checklistVault = publishValidation.checklist_vault || {};
     const chatbot = publishValidation.chatbot || {};
+=======
+>>>>>>> 7105eee24f15c3e99ce9f6c319c32b36639f5fed
 
     els.sourceCheckResult.innerHTML = `
       <div class="source-result-card covered">
         <div class="opp-top">
           <div>
+<<<<<<< HEAD
             <h3>${publish.ok ? "Sheet Updated, JSON Published" : "Google Sheet Updated"}</h3>
             <p>${escapeHtml(product.display_name || "")}</p>
           </div>
           <span class="badge ${(validation.ok && publish.ok) ? "opportunity" : "warning"}">${(validation.ok && publish.ok) ? "validated" : "review"}</span>
+=======
+            <h3>Google Sheet Updated</h3>
+            <p>${escapeHtml(product.display_name || "")}</p>
+          </div>
+          <span class="badge ${validation.ok ? "opportunity" : "warning"}">${validation.ok ? "validated" : "review"}</span>
+>>>>>>> 7105eee24f15c3e99ce9f6c319c32b36639f5fed
         </div>
         <div class="opp-meta">
           <span class="pill">Target: ${escapeHtml(data.target_bucket || "")}</span>
@@ -1186,6 +1196,7 @@
           <span class="pill">Checklist rows: ${formatNumber(validation.checklist_rows || 0)}</span>
           <span class="pill">Parallels: ${formatNumber(validation.parallel_rows || 0)}</span>
         </div>
+<<<<<<< HEAD
         <div class="opp-meta">
           <span class="pill">Publish: ${publish.ok ? "Complete" : "Needs review"}</span>
           <span class="pill">Public rows: ${formatNumber(publicValidation.row_count || 0)}</span>
@@ -1199,6 +1210,10 @@
           ${publish.checklist_url ? `<a class="action-btn approve" href="${escapeHtml(publish.checklist_url)}" target="_blank" rel="noopener noreferrer">Open Checklist Vault Test</a>` : ""}
           ${publish.chatbot_url ? `<a class="action-btn" href="${escapeHtml(publish.chatbot_url)}" target="_blank" rel="noopener noreferrer">Open ChatBot Test</a>` : ""}
         </div>
+=======
+        <div class="task-guardrail">Next publish step: ${escapeHtml(data.publish_next || "")}</div>
+        <p>${escapeHtml(data.next_step || "Run publish and validate Checklist Vault search.")}</p>
+>>>>>>> 7105eee24f15c3e99ce9f6c319c32b36639f5fed
       </div>
     `;
   }

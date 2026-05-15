@@ -12,16 +12,63 @@
  * - sourceWatch
  * - validateSourceProduct
  * - previewSourceImport
+ * - executeSourceImport
  *
  * Current safety:
- * - Review-only. This file does not write to Google Sheets yet.
- * - The next phase is explicit approved execution actions.
+ * - Sheet writes require Script Property CM_OPERATOR_KEY.
+ * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-05-15-operator-v1";
+const CM_OPERATOR_VERSION = "2026-05-15-operator-v2";
 const CM_APP_DATA_BASE = "https://app.chasingmajors.com/data/v1";
 const CM_CHECKLISTCENTER_HOME = "https://www.checklistcenter.com/";
 const CM_ALLOWED_SPORTS = ["baseball", "football", "basketball", "hockey", "soccer"];
+const CM_PRODUCTS_SHEET = "Products";
+const CM_CHECKLIST_ROWS_SHEET = "ChecklistRows";
+const CM_PARALLELS_SHEET = "Parallels";
+const CM_OPERATOR_KEY_PROPERTY = "CM_OPERATOR_KEY";
+const CM_STATIC_EXPORTER_URL_PROPERTY = "CM_STATIC_EXPORTER_URL";
+const CM_CHECKLIST_SOURCE_MAP = {
+  baseball: {
+    current: "1knoZy155nQOw-_9o5ragmoBS_FaxwoZ3lEQ4YGgeSeg",
+    "2026": "1knoZy155nQOw-_9o5ragmoBS_FaxwoZ3lEQ4YGgeSeg",
+    "2025": "1-oJ8JqCuxuxtbBVpVfa9NM4BS5GUSzZel_glGOreewM",
+    "2024": "1jpjTuuB2nrXlcM9mXlAAO1V3nM0EMNL4WHIURHSCjSw",
+    "2023": "11usGtSRq61ohj5ok3gde1yDS4dROuOUl6nNIeEC2Cjg",
+    "2022": "1F-Zl1Ts12HPzg7iPrBlpBFsRml3HmnhEKH1KkN5BT00",
+    "2021": "1qOsq-zu5qDbESJtSjb4-RYmicjs6BFFIXkmmmd4PNr0",
+    "2020": "1HE6ZV7XkjSOJ8TVA4QoBkRx_dHtA65L0H0DHCT76k8s",
+    "2019": "1HTBMx9ml1-LQvlb8zhorzB2SmyEDugmLHZx13rzVC4M",
+    "2018": "1kWESwMoFYOlOH5Y-rfSWE6m8pHm7-pZZKey27pCP8I0",
+    "2017": "1NglNmuUWuKgbZRpqvvU7AeTN4FKwaLt4imVdw_EwnYQ",
+    "2016": "1xfzStBiQhrnGs2GYVbDdaKzVMaLkfqd_rIZ1mILjMKw"
+  },
+  football: {
+    current: "1Sj0nui8PkfDCyGq5L_6ctWnoNt9L2T4MXSU1U4ZM70U",
+    "2026": "1Sj0nui8PkfDCyGq5L_6ctWnoNt9L2T4MXSU1U4ZM70U",
+    "2025": "1bHkBThVdfRb5YpzGXkr696I-biTYfc9CuwHQrpYFR9M",
+    "2024": "1h1jAF3fda-wIii4-N7b4TbrAkSDxxAldm_2L2ogr9Ic",
+    "2023": "19i4PTO2aAgmBPEAocfqSL5B33BLMOhC3oSsR7F3bQ1U"
+  },
+  basketball: {
+    current: "1VbBlGrQILiwBYP1J81pNiFwYxJju3cMWWEVkCxgcHFM",
+    "2025-26": "1VbBlGrQILiwBYP1J81pNiFwYxJju3cMWWEVkCxgcHFM",
+    "2024-25": "1H3ult43T-iBwUtevPizUwVHgul0yAS4kGo6j8U6Nsh0",
+    "2023-24": "12PxOlX8rCARVFujvud00arXOaTSixydHQhyk5ylC24I"
+  },
+  hockey: {
+    current: "16eT73CzM7JQMZcaEI3Zc0elX5lzzMtrvX8TGr1aKYKc",
+    "2025": "16eT73CzM7JQMZcaEI3Zc0elX5lzzMtrvX8TGr1aKYKc",
+    "2024": "1164NTKL3HyxCqY5WSpY87cAc10HDm1LG06usP2LlbvQ",
+    "2023": "1riKx-h-ChEpA-UK4e7UmnWd6OcpPsqFx0oSrxYvcA74"
+  },
+  soccer: {
+    current: "1G90AI7ZhIsTyHDmqdiZ26_ZgWRm4RRaDzdED3CzEG3g",
+    "2025-26": "1G90AI7ZhIsTyHDmqdiZ26_ZgWRm4RRaDzdED3CzEG3g",
+    "2024-25": "14JWdRdT9xsjVbWGUQszbiBgtMNJCxtrMV1yINm_edcE",
+    "2023-24": "1k_7N09xelDEcVUGhIFRSFBKa9NHK3xFCW2urvHYxEZw"
+  }
+};
 const CM_BLOCKED_TERMS = [
   "mma",
   "ufc",
@@ -68,10 +115,18 @@ function doGet(e) {
       }));
     }
 
+    if (action === "executeSourceImport") {
+      return json_(executeSourceImport_({
+        sourceUrl: p.sourceUrl || p.url || "",
+        sport: p.sport || "",
+        key: p.key || ""
+      }));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport"]
+      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport"]
     });
   } catch (err) {
     return json_({
@@ -96,10 +151,14 @@ function doPost(e) {
       return json_(previewSourceImport_(body));
     }
 
+    if (action === "executeSourceImport") {
+      return json_(executeSourceImport_(body));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport"]
+      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport"]
     });
   } catch (err) {
     return json_({
@@ -171,6 +230,72 @@ function previewSourceImport_(input) {
     parallels: parsed.parallels.slice(0, 500),
     warnings: parsed.warnings,
     next_step: "Review preview counts and samples. Sheet write is intentionally not enabled yet."
+  };
+}
+
+function executeSourceImport_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const preview = previewSourceImport_(input);
+  if (!preview || !preview.ok) return preview;
+
+  if (preview.status !== "preview_ready") {
+    return {
+      ok: false,
+      status: preview.status || "not_ready",
+      error: "Source import preview is not ready for write.",
+      preview: preview
+    };
+  }
+
+  const product = preview.product || {};
+  const sport = normalize_(product.sport);
+  const targetSpreadsheetId = getChecklistSpreadsheetId_(sport, product.target_bucket || product.year);
+  if (!targetSpreadsheetId) {
+    return {
+      ok: false,
+      error: "No target spreadsheet configured for " + sport + " " + (product.target_bucket || product.year || "")
+    };
+  }
+
+  const ss = SpreadsheetApp.openById(targetSpreadsheetId);
+  const productRow = productToSheetObject_(product);
+  const fullParsed = parseFullSourceForWrite_(input.sourceUrl || input.url, sport);
+  const rows = fullParsed.rows;
+  const parallels = fullParsed.parallels;
+
+  upsertProducts_(ss, product.code, productRow);
+  replaceRowsByCode_(ss, CM_CHECKLIST_ROWS_SHEET, product.code, rows, [
+    "code", "sport", "section", "subset", "card_no", "player", "team", "tag"
+  ]);
+  replaceRowsByCode_(ss, CM_PARALLELS_SHEET, product.code, parallels, [
+    "code", "sport", "applies_to_section", "applies_to_subset", "parallel_name", "serial_no"
+  ]);
+
+  const validation = validateWrittenProduct_(ss, product.code);
+
+  const publishResult = publishChecklistAfterImport_(product, input && input.key);
+
+  return {
+    ok: true,
+    status: publishResult && publishResult.ok ? "written_published_validated" : "written_publish_needs_review",
+    mode: "sheet_write_publish_validate",
+    source_url: input.sourceUrl || input.url || "",
+    target_spreadsheet_id: targetSpreadsheetId,
+    target_bucket: product.target_bucket || product.year || "",
+    product: product,
+    wrote: {
+      products: 1,
+      rows: rows.length,
+      parallels: parallels.length
+    },
+    validation: validation,
+    publish: publishResult,
+    publish_next: getPublishRecommendation_(sport, product.target_bucket || product.year),
+    next_step: publishResult && publishResult.ok
+      ? "Published and validated. Open Checklist Vault and ChatBot test links for final human review."
+      : "Sheet write succeeded, but publish/live validation needs review.",
+    updated_at: new Date().toISOString()
   };
 }
 
@@ -427,6 +552,200 @@ function looseProductKey_(value) {
 function fetchChecklistIndex_() {
   const data = JSON.parse(fetchText_(CM_APP_DATA_BASE + "/checklists/index.json"));
   return data.index || data.rows || [];
+}
+
+function parseFullSourceForWrite_(sourceUrl, sport) {
+  const html = fetchText_(sourceUrl);
+  const title = extractPageTitle_(html) || normalizeTitleFromLink_(titleFromChecklistCenterHref_(sourceUrl));
+  const resolvedSport = normalize_(sport) || inferSport_(title + " " + sourceUrl);
+  const product = buildProductPreview_(title, resolvedSport, sourceUrl);
+  return parseChecklistCenterArticle_(html, product);
+}
+
+function requireOperatorKey_(providedKey) {
+  const expected = PropertiesService.getScriptProperties().getProperty(CM_OPERATOR_KEY_PROPERTY);
+  if (!expected) {
+    throw new Error("Missing Script Property " + CM_OPERATOR_KEY_PROPERTY + ". Set it before enabling sheet writes.");
+  }
+
+  if (safeString_(providedKey) !== expected) {
+    throw new Error("Invalid operator key.");
+  }
+}
+
+function getChecklistSpreadsheetId_(sport, bucket) {
+  const s = normalize_(sport);
+  const key = safeString_(bucket || "").trim();
+  const map = CM_CHECKLIST_SOURCE_MAP[s] || {};
+
+  if (key && map[key]) return map[key];
+  if (map.current) return map.current;
+  return "";
+}
+
+function productToSheetObject_(product) {
+  return {
+    code: product.code || "",
+    display_name: product.display_name || "",
+    year: product.year || "",
+    sport: product.sport || "",
+    manufacturer: product.manufacturer || "",
+    product: product.product || "",
+    keywords: product.keywords || ""
+  };
+}
+
+function upsertProducts_(ss, code, productObj) {
+  const sh = ensureSheetWithHeaders_(ss, CM_PRODUCTS_SHEET, [
+    "code", "display_name", "year", "sport", "manufacturer", "product", "keywords"
+  ]);
+  const headers = getHeaders_(sh);
+  const values = sh.getDataRange().getValues();
+  const rowValues = headers.map(function(header) {
+    return safeString_(productObj[header] || "");
+  });
+  let rowIndex = -1;
+
+  for (let i = 1; i < values.length; i++) {
+    if (safeString_(values[i][0]).trim() === code) {
+      rowIndex = i + 1;
+      break;
+    }
+  }
+
+  if (rowIndex > -1) {
+    sh.getRange(rowIndex, 1, 1, rowValues.length).setValues([rowValues]);
+  } else {
+    sh.appendRow(rowValues);
+  }
+}
+
+function replaceRowsByCode_(ss, sheetName, code, objects, defaultHeaders) {
+  const sh = ensureSheetWithHeaders_(ss, sheetName, defaultHeaders);
+  const headers = getHeaders_(sh);
+  const values = sh.getDataRange().getValues();
+  const kept = values.length ? [fitRowToWidth_(values[0], headers.length)] : [headers];
+
+  for (let i = 1; i < values.length; i++) {
+    if (safeString_(values[i][0]).trim() !== code) {
+      kept.push(fitRowToWidth_(values[i], headers.length));
+    }
+  }
+
+  objects.forEach(function(obj) {
+    kept.push(headers.map(function(header) {
+      return safeString_(obj[header] || "");
+    }));
+  });
+
+  sh.clearContents();
+  sh.getRange(1, 1, kept.length, headers.length).setNumberFormat("@");
+  sh.getRange(1, 1, kept.length, headers.length).setValues(kept);
+}
+
+function fitRowToWidth_(row, width) {
+  const out = [];
+  for (let i = 0; i < width; i++) {
+    out.push(row && row[i] !== undefined ? row[i] : "");
+  }
+  return out;
+}
+
+function validateWrittenProduct_(ss, code) {
+  const productCount = countRowsByFirstColumn_(ss.getSheetByName(CM_PRODUCTS_SHEET), code);
+  const rowCount = countRowsByFirstColumn_(ss.getSheetByName(CM_CHECKLIST_ROWS_SHEET), code);
+  const parallelCount = countRowsByFirstColumn_(ss.getSheetByName(CM_PARALLELS_SHEET), code);
+
+  return {
+    product_rows: productCount,
+    checklist_rows: rowCount,
+    parallel_rows: parallelCount,
+    ok: productCount === 1 && rowCount > 0
+  };
+}
+
+function countRowsByFirstColumn_(sh, code) {
+  if (!sh) return 0;
+  const values = sh.getDataRange().getValues();
+  let count = 0;
+  for (let i = 1; i < values.length; i++) {
+    if (safeString_(values[i][0]).trim() === code) count++;
+  }
+  return count;
+}
+
+function ensureSheetWithHeaders_(ss, sheetName, defaultHeaders) {
+  let sh = ss.getSheetByName(sheetName);
+  if (!sh) sh = ss.insertSheet(sheetName);
+
+  if (sh.getLastRow() === 0) {
+    sh.getRange(1, 1, 1, defaultHeaders.length).setValues([defaultHeaders]);
+  }
+
+  return sh;
+}
+
+function getHeaders_(sh) {
+  const lastColumn = Math.max(sh.getLastColumn(), 1);
+  return sh.getRange(1, 1, 1, lastColumn).getValues()[0].map(function(header) {
+    return safeString_(header).trim();
+  }).filter(Boolean);
+}
+
+function getPublishRecommendation_(sport, bucket) {
+  const s = normalize_(sport);
+  const b = safeString_(bucket || "").trim();
+  if (s === "soccer" && b === "2025-26") return "publishCurrentSoccerChecklistToGitHub";
+  if (s === "basketball" && b === "2025-26") return "publishCurrentBasketballChecklistToGitHub";
+  if (s === "football" && b === "2026") return "publishCurrentFootballChecklistToGitHub";
+  if (s === "baseball" && b === "2026") return "publishCurrentBaseballChecklistToGitHub";
+  if (s === "hockey" && b === "2025") return "publishCurrentHockeyChecklistToGitHub";
+
+  return "Run the matching publish function for " + s + " " + b + ", then rebuild the checklist index if this is a new product.";
+}
+
+function publishChecklistAfterImport_(product, key) {
+  const exporterUrl = PropertiesService.getScriptProperties().getProperty(CM_STATIC_EXPORTER_URL_PROPERTY);
+  if (!exporterUrl) {
+    return {
+      ok: false,
+      skipped: true,
+      error: "Missing Script Property " + CM_STATIC_EXPORTER_URL_PROPERTY + ". Sheet write completed, but publish was not run."
+    };
+  }
+
+  const url = exporterUrl
+    + (exporterUrl.indexOf("?") > -1 ? "&" : "?")
+    + "action=publishChecklistAfterImport"
+    + "&sport=" + encodeURIComponent(product.sport || "")
+    + "&bucket=" + encodeURIComponent(product.target_bucket || product.year || "")
+    + "&code=" + encodeURIComponent(product.code || "")
+    + "&key=" + encodeURIComponent(key || "");
+
+  const res = UrlFetchApp.fetch(url, {
+    method: "get",
+    muteHttpExceptions: true
+  });
+
+  const status = res.getResponseCode();
+  const text = res.getContentText();
+  let data = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch (err) {
+    data = { raw: text };
+  }
+
+  if (status < 200 || status >= 300) {
+    return {
+      ok: false,
+      status_code: status,
+      error: "Static Data Exporter publish call failed with " + status,
+      response: data
+    };
+  }
+
+  return data;
 }
 
 function buildProductPreview_(title, sport, sourceUrl) {

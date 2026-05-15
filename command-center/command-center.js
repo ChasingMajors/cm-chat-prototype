@@ -6,6 +6,7 @@
   const APPROVAL_KEY = "cm_command_center_opportunity_status_v1";
   const TASK_KEY = "cm_command_center_operator_tasks_v1";
   const OPERATOR_ENDPOINT_KEY = "cm_command_center_operator_endpoint_v1";
+  const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
 
   const state = {
     opportunities: [],
@@ -23,6 +24,7 @@
     sourceTitleInput: document.getElementById("sourceTitleInput"),
     sourceSportInput: document.getElementById("sourceSportInput"),
     operatorEndpointInput: document.getElementById("operatorEndpointInput"),
+    operatorKeyInput: document.getElementById("operatorKeyInput"),
     typeFilter: document.getElementById("typeFilter"),
     systemState: document.getElementById("systemState"),
     opportunityCount: document.getElementById("opportunityCount"),
@@ -77,6 +79,20 @@
   function writeOperatorEndpoint(value) {
     try {
       localStorage.setItem(OPERATOR_ENDPOINT_KEY, String(value || "").trim());
+    } catch (err) {}
+  }
+
+  function readOperatorKey() {
+    try {
+      return String(localStorage.getItem(OPERATOR_WRITE_KEY) || "").trim();
+    } catch (err) {
+      return "";
+    }
+  }
+
+  function writeOperatorKey(value) {
+    try {
+      localStorage.setItem(OPERATOR_WRITE_KEY, String(value || "").trim());
     } catch (err) {}
   }
 
@@ -918,6 +934,36 @@
     }
   }
 
+  async function executeSourceImport(sourceUrl, sport) {
+    const endpoint = readOperatorEndpoint();
+    const key = readOperatorKey();
+
+    if (!endpoint) {
+      renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before writing to Sheets.", "warning");
+      return;
+    }
+
+    if (!key) {
+      renderSourceCheckMessage("Admin write key needed", "Enter and save the admin write key before writing to Google Sheets.", "warning");
+      return;
+    }
+
+    renderSourceCheckMessage("Writing to Google Sheet", "The Operator Backend is updating the mapped source sheet and validating the result.", "info");
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=executeSourceImport"
+        + "&sourceUrl=" + encodeURIComponent(sourceUrl)
+        + "&sport=" + encodeURIComponent(sport || "")
+        + "&key=" + encodeURIComponent(key);
+      const data = await fetchJson(url);
+      renderExecuteResult(data);
+    } catch (err) {
+      renderSourceCheckMessage("Sheet write failed", err && err.message ? err.message : String(err), "critical");
+    }
+  }
+
   function renderBackendValidationResult(data) {
     if (!data || !data.ok) {
       renderSourceCheckMessage("Validation failed", data && data.error ? data.error : "Unknown backend response.", "critical");
@@ -1097,7 +1143,62 @@
             ${parallels.length ? parallels.map(renderPreviewParallel).join("") : `<p>No sample parallels parsed.</p>`}
           </div>
         </div>
-        <div class="task-guardrail">Preview only. Sheet write is not enabled until the approved execution action is built and tested.</div>
+        <div class="task-guardrail">Review the sample rows before writing. This action replaces existing rows for this product code in the mapped Google Sheet.</div>
+        <div class="opp-actions">
+          <button class="action-btn approve" type="button" data-execute-import="${escapeHtml(data.source_url || "")}" data-execute-sport="${escapeHtml(product.sport || "")}">Write to Google Sheet</button>
+        </div>
+      </div>
+    `;
+
+    els.sourceCheckResult.querySelectorAll("[data-execute-import]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        executeSourceImport(btn.dataset.executeImport, btn.dataset.executeSport || "");
+      });
+    });
+  }
+
+  function renderExecuteResult(data) {
+    if (!data || !data.ok) {
+      renderSourceCheckMessage("Sheet write failed", data && data.error ? data.error : "Unknown backend response.", "critical");
+      return;
+    }
+
+    const product = data.product || {};
+    const validation = data.validation || {};
+    const publish = data.publish || {};
+    const publishValidation = publish.validation || {};
+    const publicValidation = publishValidation.public || {};
+    const checklistVault = publishValidation.checklist_vault || {};
+    const chatbot = publishValidation.chatbot || {};
+
+    els.sourceCheckResult.innerHTML = `
+      <div class="source-result-card covered">
+        <div class="opp-top">
+          <div>
+            <h3>${publish.ok ? "Sheet Updated, JSON Published" : "Google Sheet Updated"}</h3>
+            <p>${escapeHtml(product.display_name || "")}</p>
+          </div>
+          <span class="badge ${(validation.ok && publish.ok) ? "opportunity" : "warning"}">${(validation.ok && publish.ok) ? "validated" : "review"}</span>
+        </div>
+        <div class="opp-meta">
+          <span class="pill">Target: ${escapeHtml(data.target_bucket || "")}</span>
+          <span class="pill">Product rows: ${formatNumber(validation.product_rows || 0)}</span>
+          <span class="pill">Checklist rows: ${formatNumber(validation.checklist_rows || 0)}</span>
+          <span class="pill">Parallels: ${formatNumber(validation.parallel_rows || 0)}</span>
+        </div>
+        <div class="opp-meta">
+          <span class="pill">Publish: ${publish.ok ? "Complete" : "Needs review"}</span>
+          <span class="pill">Public rows: ${formatNumber(publicValidation.row_count || 0)}</span>
+          <span class="pill">Public parallels: ${formatNumber(publicValidation.parallel_count || 0)}</span>
+          <span class="pill">CV: ${checklistVault.ok ? "Passed" : "Review"}</span>
+          <span class="pill">ChatBot: ${chatbot.ok ? "Passed" : "Review"}</span>
+        </div>
+        ${publish.error ? `<div class="task-guardrail">${escapeHtml(publish.error)}</div>` : ""}
+        <p>${escapeHtml(data.next_step || "Validate Checklist Vault and ChatBot search.")}</p>
+        <div class="opp-actions">
+          ${publish.checklist_url ? `<a class="action-btn approve" href="${escapeHtml(publish.checklist_url)}" target="_blank" rel="noopener noreferrer">Open Checklist Vault Test</a>` : ""}
+          ${publish.chatbot_url ? `<a class="action-btn" href="${escapeHtml(publish.chatbot_url)}" target="_blank" rel="noopener noreferrer">Open ChatBot Test</a>` : ""}
+        </div>
       </div>
     `;
   }
@@ -1533,7 +1634,8 @@
   els.sourceWatchBtn.addEventListener("click", runSourceWatchWithBackend);
   els.saveEndpointBtn.addEventListener("click", () => {
     writeOperatorEndpoint(els.operatorEndpointInput.value || "");
-    renderSourceCheckMessage("Endpoint saved", "Command Center will use this Operator Backend URL for Source Watch and backend validation.", "info");
+    writeOperatorKey(els.operatorKeyInput.value || "");
+    renderSourceCheckMessage("Endpoint saved", "Command Center will use this Operator Backend URL and admin key for approved operator actions.", "info");
   });
   els.sourceTitleInput.addEventListener("keydown", event => {
     if (event.key === "Enter") {
@@ -1542,6 +1644,7 @@
     }
   });
   els.operatorEndpointInput.value = readOperatorEndpoint();
+  els.operatorKeyInput.value = readOperatorKey();
   els.typeFilter.addEventListener("change", renderOpportunities);
   runAudit();
 })();

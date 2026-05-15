@@ -6,34 +6,49 @@ window.CMChat.config = {
   LOG_EXEC_URL: "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0VmnUeJqP0OcFL5qCe-MUjN0JonJ8QTlfpMsf0XRKZzCwLdFdiF/exec",
   RELEASE_SCHEDULE_EXEC_URL: "https://script.google.com/macros/s/AKfycbzWRkmn2xhvsaqvlMxx4AJmqvpyDTR6wKmd9rvpr4ttzXOkH9vH4qPxk59YlEHVMInlHw/exec",
 
+  STATIC_DATA_BASE: "/data/v1",
+  RELEASE_SCHEDULE_JSON_URL: "/data/v2/releases/schedule.json",
+
   get PLAYER_META_URL() {
     return `${this.CHECKLIST_EXEC_URL}?action=playerMetaIndex`;
   },
 
-  PLAYER_STATS_JSON_URL: "https://cdn.jsdelivr.net/gh/ChasingMajors/cm-mlb-stats@main/data/public/player_summaries.json",
+  PLAYER_STATS_JSON_URL: "/data/v1/players/mlb-stats.json",
 
   CHECKLIST_BASE_URL: "/checklists/",
   VAULT_BASE_URL: "/vault/",
 
-  CL_INDEX_KEY: "cm_chat_cl_index_v20",
-  PRV_INDEX_KEY: "cm_chat_prv_index_v9",
-  CL_INDEX_TS_KEY: "cm_chat_cl_index_ts_v20",
-  PRV_INDEX_TS_KEY: "cm_chat_prv_index_ts_v9",
+  CL_INDEX_KEY: "cm_chat_cl_index_v21_static",
+  PRV_INDEX_KEY: "cm_chat_prv_index_v10_static",
+  CL_INDEX_TS_KEY: "cm_chat_cl_index_ts_v21_static",
+  PRV_INDEX_TS_KEY: "cm_chat_prv_index_ts_v10_static",
   INDEX_TTL_MS: 1000 * 60 * 30,
 
   PLAYER_META_KEY: "cm_chat_player_meta_v3",
-  PLAYER_STATS_KEY: "cm_chat_player_stats_v1",
+  PLAYER_STATS_KEY: "cm_chat_player_stats_v2_static",
   PLAYER_META_TS_KEY: "cm_chat_player_meta_ts_v3",
-  PLAYER_STATS_TS_KEY: "cm_chat_player_stats_ts_v1",
+  PLAYER_STATS_TS_KEY: "cm_chat_player_stats_ts_v2_static",
   PLAYER_DATA_TTL_MS: 1000 * 60 * 60 * 6,
 
-  RELEASE_SCHEDULE_KEY: "cm_chat_release_schedule_v1",
-  RELEASE_SCHEDULE_TS_KEY: "cm_chat_release_schedule_ts_v1",
+  RELEASE_SCHEDULE_KEY: "cm_chat_release_schedule_v2_static",
+  RELEASE_SCHEDULE_TS_KEY: "cm_chat_release_schedule_ts_v2_static",
   RELEASE_SCHEDULE_TTL_MS: 1000 * 60 * 15,
 
   EXAMPLES: [],
 
   SEARCH_HELP_EXAMPLES: [
+    "Show me all the rookie autos in 2025 Topps Chrome Baseball",
+    "What are the lowest numbered parallels in Prizm Football?",
+    "How rare is a Gold Wave Refractor?",
+    "What products have Elly De La Cruz rookie autos?",
+    "Show serial numbered parallels only",
+    "What are the SSPs in this set?",
+    "What are the key rookies in this release?",
+    "Show me all the case hits",
+    "Show me all the rookie patch autos",
+    "What are the odds for a Superfractor?",
+    "What is the difference between Refractors and X-Fractors?",
+    "Which baseball products release this month?",
     "2026 Topps Series 1 Baseball",
     "2026 Topps Series 1 Baseball Checklist",
     "2026 Topps Series 1 Baseball Print Run",
@@ -93,9 +108,9 @@ window.CMChat.config = {
 
   PLAYER_SEARCH_NON_NAME_WORDS: null,
   PLAYER_SEARCH_FILLER_WORDS: new Set([
-    "show","me","find","give","pull","get","tell","about","looking","look","up",
-    "is","are","was","were","does","do","did","in","from","for","all",
-    "card","cards","rookie","rookies","have","has"
+    "show","me","find","give","pull","get","tell","about","looking","look","up","what","which","key","best",
+    "is","are","was","were","does","do","did","in","from","for","all","the","a","an",
+    "card","cards","product","products","rookie","rookies","have","has","stats","stat","statistics","profile"
   ]),
 
   PLAYER_ALIAS_MAP: {
@@ -138,5 +153,6 @@ window.CMChat.config.PLAYER_SEARCH_NON_NAME_WORDS = new Set([
   "revolution","silhouette","collegiate","university","cfl",
   "checklist","print","run","parallels","parallel","autographs","autograph","autos",
   "auto","relics","relic","variations","variation","inserts","insert","base",
-  "number","high","mega","box","jumbo","blaster","hanger","choice","mini"
+  "number","high","mega","box","jumbo","blaster","hanger","choice","mini",
+  "stats","stat","statistics","profile"
 ]);

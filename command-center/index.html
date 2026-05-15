@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#080808" />
+  <title>Chasing Majors Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <div class="kicker">Internal sandbox</div>
+        <h1>Chasing Majors Command Center</h1>
+        <p class="lede">AI operating partner for data health, opportunity scouting, and approval-ready fixes.</p>
+      </div>
+      <div class="top-actions">
+        <button id="refreshBtn" class="primary-btn" type="button">Run Audit</button>
+        <a class="ghost-btn" href="../index.html">Open ChatBot</a>
+      </div>
+    </header>
+
+    <section class="status-strip" id="statusStrip">
+      <div class="status-card">
+        <span class="status-label">System</span>
+        <strong id="systemState">Loading</strong>
+      </div>
+      <div class="status-card">
+        <span class="status-label">Opportunities</span>
+        <strong id="opportunityCount">-</strong>
+      </div>
+      <div class="status-card">
+        <span class="status-label">Critical</span>
+        <strong id="criticalCount">-</strong>
+      </div>
+      <div class="status-card">
+        <span class="status-label">Last Audit</span>
+        <strong id="lastAudit">-</strong>
+      </div>
+    </section>
+
+    <section class="grid two-col">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Admin Brief</h2>
+            <p>What needs your attention first.</p>
+          </div>
+        </div>
+        <div id="briefList" class="brief-list">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line short"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Opportunity Engine</h2>
+            <p>Scout, analyst, and operator queue.</p>
+          </div>
+          <select id="typeFilter" class="filter-select" aria-label="Filter opportunities">
+            <option value="all">All</option>
+            <option value="critical">Critical</option>
+            <option value="data_gap">Data gaps</option>
+            <option value="trend_signal">Trend signals</option>
+            <option value="chatbot_intent">ChatBot intent</option>
+            <option value="source_watch">Source watch</option>
+          </select>
+        </div>
+        <div id="opportunityList" class="opportunity-list">
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid three-col">
+      <div class="panel compact">
+        <h2>Data Health</h2>
+        <div id="dataHealthStats" class="metric-list"></div>
+      </div>
+      <div class="panel compact">
+        <h2>Edge Signals</h2>
+        <div id="edgeSignals" class="signal-list"></div>
+      </div>
+      <div class="panel compact">
+        <h2>Next Build Targets</h2>
+        <div id="buildTargets" class="target-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <script defer src="./command-center.js"></script>
+</body>
+</html>

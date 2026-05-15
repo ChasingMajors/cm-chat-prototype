@@ -35,6 +35,7 @@ Before using `Write to Google Sheet`, add a Script Property.
 
 Use that same value in Command Center as the `Admin write key`.
 
+<<<<<<< HEAD
 ## Connect Static Data Exporter Publishing
 
 The Command Center Operator writes the Google Sheet. The Static Data Exporter publishes GitHub JSON and validates the public files.
@@ -59,6 +60,8 @@ After this is configured, approved imports run:
 
 `Preview -> Sheet write -> publish JSON -> rebuild index -> validate public Checklist Vault and ChatBot data`
 
+=======
+>>>>>>> 7105eee24f15c3e99ce9f6c319c32b36639f5fed
 ## Create The Apps Script Project
 
 1. Go to:
@@ -151,6 +154,7 @@ Import preview:
 
 ## Important Safety Note
 
+<<<<<<< HEAD
 Approved execution writes to Google Sheets, publishes GitHub JSON through Static Data Exporter, rebuilds the checklist index, and validates public JSON.
 
 Current flow:
@@ -160,3 +164,14 @@ Current flow:
 Next phase:
 
 `Find source update -> preview import -> admin clicks Write -> update Sheet -> publish JSON -> validate live app page rendering`
+=======
+Approved execution writes to Google Sheets, but it does not publish GitHub JSON yet.
+
+Current flow:
+
+`Find source update -> preview import -> admin clicks Write -> update Sheet -> validate Sheet counts -> run recommended publish function`
+
+Next phase:
+
+`Find source update -> preview import -> admin clicks Write -> update Sheet -> publish JSON -> validate live app result`
+>>>>>>> 7105eee24f15c3e99ce9f6c319c32b36639f5fed

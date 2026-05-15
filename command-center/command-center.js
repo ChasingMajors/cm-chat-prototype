@@ -17,6 +17,7 @@
     opportunityCount: document.getElementById("opportunityCount"),
     criticalCount: document.getElementById("criticalCount"),
     lastAudit: document.getElementById("lastAudit"),
+    nextActionList: document.getElementById("nextActionList"),
     briefList: document.getElementById("briefList"),
     opportunityList: document.getElementById("opportunityList"),
     dataHealthStats: document.getElementById("dataHealthStats"),
@@ -437,6 +438,147 @@
     return items;
   }
 
+  function getActionStatus(id) {
+    return state.approvals[id] || "new";
+  }
+
+  function makeNextAction(input) {
+    const id = [
+      "next",
+      input.kind || "",
+      input.title || ""
+    ].map(normalize).join("|");
+
+    return {
+      id,
+      rank: input.rank || 99,
+      kind: input.kind || "operator",
+      title: input.title || "Next action",
+      summary: input.summary || "",
+      why: input.why || "",
+      now: input.now || "",
+      approval: input.approval || "",
+      afterApproval: input.afterApproval || "",
+      relatedType: input.relatedType || "",
+      severity: input.severity || "info"
+    };
+  }
+
+  function buildNextActions(opportunities, audit) {
+    const critical = opportunities.filter(o => o.severity === "critical");
+    const missingMappings = audit && audit.checklistStats ? Number(audit.checklistStats.missingManifest || 0) : 0;
+    const emptyRows = audit && audit.checklistStats ? Number(audit.checklistStats.emptyRows || 0) : 0;
+    const missingVault = audit && audit.releaseStats ? Number(audit.releaseStats.missingVault || 0) : 0;
+    const missingChecklist = audit && audit.releaseStats ? Number(audit.releaseStats.missingChecklist || 0) : 0;
+    const edgeSignals = audit && audit.earlySignals
+      ? (Array.isArray(audit.earlySignals.signals) ? audit.earlySignals.signals : Array.isArray(audit.earlySignals.players) ? audit.earlySignals.players : [])
+      : [];
+
+    const actions = [];
+
+    if (critical.length) {
+      actions.push(makeNextAction({
+        rank: 1,
+        kind: "operator",
+        severity: "critical",
+        title: "Fix user-facing data gaps first",
+        summary: `${critical.length} critical product-loader issues can break searches or checklist answers.`,
+        why: "These issues can affect live UX. Fixing them should come before adding new features.",
+        now: `Review the first ${Math.min(critical.length, 5)} critical items in the Opportunity Engine.`,
+        approval: "Approve a repair pass for the affected checklist products.",
+        afterApproval: "Republish the affected checklist source files, rebuild the product index, and retest the exact product queries in sandbox.",
+        relatedType: "data_gap"
+      }));
+    } else {
+      actions.push(makeNextAction({
+        rank: 1,
+        kind: "operator",
+        severity: "opportunity",
+        title: "Core data loader is healthy enough for the next build",
+        summary: "No critical product-loader issues were detected in this audit.",
+        why: "That gives us room to work on higher-value discovery and decision features.",
+        now: "Move to source monitoring or Early Edge card-target mapping.",
+        approval: "Approve the next feature lane you want prioritized.",
+        afterApproval: "Build in sandbox, run known-query tests, then promote only after review.",
+        relatedType: "trend_signal"
+      }));
+    }
+
+    if (missingMappings || emptyRows) {
+      actions.push(makeNextAction({
+        rank: 2,
+        kind: "data steward",
+        severity: "warning",
+        title: "Rebuild checklist publishing confidence",
+        summary: `${missingMappings} missing bundle mappings and ${emptyRows} empty checklist products were found.`,
+        why: "This is exactly the kind of issue that causes users to find a product but not get useful results.",
+        now: "Use this list as the publish QA queue after spreadsheet updates.",
+        approval: "Approve turning this into a repeatable pre-live checklist audit.",
+        afterApproval: "Add a one-click report that says which publish function to run and which products to retest.",
+        relatedType: "data_gap"
+      }));
+    }
+
+    if (missingVault || missingChecklist) {
+      actions.push(makeNextAction({
+        rank: 3,
+        kind: "scout",
+        severity: "warning",
+        title: "Clean up release schedule routing gaps",
+        summary: `${missingChecklist} releases need Checklist review and ${missingVault} likely PRV candidates need review.`,
+        why: "Release Schedule should become a discovery engine that routes users into the right tool without dead ends.",
+        now: "Prioritize upcoming Topps/Bowman products first.",
+        approval: "Approve a release-to-product matching pass.",
+        afterApproval: "Create aliases or missing product rows, publish data, and retest release links.",
+        relatedType: "data_gap"
+      }));
+    }
+
+    if (edgeSignals.length) {
+      const names = edgeSignals.slice(0, 3).map(p => p.playerName || p.name || p.player).filter(Boolean).join(", ");
+      actions.push(makeNextAction({
+        rank: 4,
+        kind: "analyst",
+        severity: "opportunity",
+        title: "Turn Early Edge into card-buy targets",
+        summary: `${edgeSignals.length} MLB Early Edge signals are available${names ? `, led by ${names}` : ""}.`,
+        why: "The tool should not only show a hot player. It should tell collectors which RC autos and low-numbered cards to research first.",
+        now: "Map each signal to RC year, rookie autos, SSP/low-numbered cards, and matching product pages.",
+        approval: "Approve an Early Edge detail-card prototype.",
+        afterApproval: "Build the sandbox view, validate with known young players, then decide whether to add it to ChatBot.",
+        relatedType: "trend_signal"
+      }));
+    }
+
+    actions.push(makeNextAction({
+      rank: 5,
+      kind: "assistant",
+      severity: "opportunity",
+      title: "Teach the ChatBot buyer-language searches",
+      summary: "Add eBay-style collector queries like PSA 10, rookie auto, 1/1, Superfractor, case hit, and numbered rookies.",
+      why: "Users will not always ask database-perfect questions. The assistant needs to translate collector language into Chasing Majors data paths.",
+      now: "Build the sandbox query test set before touching live ChatBot files.",
+      approval: "Approve the buyer-intent training pass.",
+      afterApproval: "Add responses, run regression tests, and promote only when product, player, and checklist searches still pass.",
+      relatedType: "chatbot_intent"
+    }));
+
+    actions.push(makeNextAction({
+      rank: 6,
+      kind: "scout",
+      severity: "opportunity",
+      title: "Start source-watch as review-only",
+      summary: "WaxMetrix and Checklist Center should create approval items before anything edits Sheets or GitHub.",
+      why: "This moves you toward AI operations without risking unauthorized live-data changes.",
+      now: "Create a watch queue that records source, product, claimed data, and confidence.",
+      approval: "Approve source-watch design work only. No automatic live edits yet.",
+      afterApproval: "Build review cards, then later connect spreadsheet writes behind explicit approval.",
+      relatedType: "source_watch"
+    }));
+
+    return actions.sort((a, b) => a.rank - b.rank).slice(0, 6);
+  }
+
   async function runAudit() {
     setLoading();
 
@@ -506,6 +648,7 @@
     els.opportunityCount.textContent = "-";
     els.criticalCount.textContent = "-";
     els.lastAudit.textContent = "-";
+    els.nextActionList.innerHTML = `<div class="skeleton-card"></div>`;
     els.briefList.innerHTML = `<div class="skeleton-line"></div><div class="skeleton-line short"></div>`;
     els.opportunityList.innerHTML = `<div class="skeleton-card"></div><div class="skeleton-card"></div>`;
   }
@@ -538,10 +681,77 @@
     els.lastAudit.textContent = state.audit.generatedAt.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
 
     renderBrief();
+    renderNextActions();
     renderOpportunities();
     renderDataHealth();
     renderEdgeSignals();
     renderBuildTargets();
+  }
+
+  function renderNextActions() {
+    const actions = buildNextActions(state.opportunities, state.audit);
+
+    els.nextActionList.innerHTML = actions.map(action => {
+      const status = getActionStatus(action.id);
+      const badgeClass = action.severity === "critical"
+        ? "critical"
+        : action.severity === "warning"
+          ? "warning"
+          : action.severity === "opportunity"
+            ? "opportunity"
+            : "info";
+
+      return `
+        <article class="next-action-card">
+          <div class="next-rank">${action.rank}</div>
+          <div class="next-body">
+            <div class="opp-top">
+              <div>
+                <div class="next-kind">${escapeHtml(action.kind)}</div>
+                <h3>${escapeHtml(action.title)}</h3>
+                <p>${escapeHtml(action.summary)}</p>
+              </div>
+              <span class="badge ${badgeClass}">${escapeHtml(action.severity)}</span>
+            </div>
+            <div class="next-plan">
+              <div>
+                <strong>Why it matters</strong>
+                <span>${escapeHtml(action.why)}</span>
+              </div>
+              <div>
+                <strong>Do now</strong>
+                <span>${escapeHtml(action.now)}</span>
+              </div>
+              <div>
+                <strong>Needs your approval</strong>
+                <span>${escapeHtml(action.approval)}</span>
+              </div>
+              <div>
+                <strong>After approval</strong>
+                <span>${escapeHtml(action.afterApproval)}</span>
+              </div>
+            </div>
+            <div class="opp-meta">
+              <span class="pill">Status: ${escapeHtml(titleCase(status))}</span>
+              ${action.relatedType ? `<span class="pill">Queue: ${escapeHtml(action.relatedType)}</span>` : ""}
+            </div>
+            <div class="opp-actions">
+              <button class="action-btn approve" type="button" data-id="${escapeHtml(action.id)}" data-action="approved">Approve Next Step</button>
+              <button class="action-btn" type="button" data-id="${escapeHtml(action.id)}" data-action="review">Needs Review</button>
+              <button class="action-btn ignore" type="button" data-id="${escapeHtml(action.id)}" data-action="ignored">Skip For Now</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    els.nextActionList.querySelectorAll("[data-action]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.approvals[btn.dataset.id] = btn.dataset.action;
+        writeApprovals();
+        renderNextActions();
+      });
+    });
   }
 
   function renderBrief() {

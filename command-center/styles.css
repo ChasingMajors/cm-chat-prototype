@@ -171,6 +171,11 @@ a {
     var(--panel);
 }
 
+.operator-panel {
+  margin-top: 14px;
+  border-color: rgba(57,160,255,0.24);
+}
+
 .two-col {
   grid-template-columns: 0.85fr 1.15fr;
 }
@@ -225,6 +230,7 @@ h2 {
 .brief-list,
 .opportunity-list,
 .next-action-list,
+.operator-task-list,
 .metric-list,
 .signal-list,
 .target-list {
@@ -236,6 +242,7 @@ h2 {
 .brief-item,
 .opportunity-card,
 .next-action-card,
+.operator-task-card,
 .metric-row,
 .signal-row,
 .target-row {
@@ -247,6 +254,7 @@ h2 {
 
 .brief-item strong,
 .next-action-card h3,
+.operator-task-card h3,
 .opportunity-card h3 {
   display: block;
   font-size: 15px;
@@ -255,6 +263,7 @@ h2 {
 
 .brief-item span,
 .next-action-card p,
+.operator-task-card p,
 .opportunity-card p,
 .metric-row span,
 .signal-row span,
@@ -267,6 +276,12 @@ h2 {
 .opportunity-card {
   display: grid;
   gap: 10px;
+}
+
+.operator-task-card {
+  display: grid;
+  gap: 11px;
+  background: linear-gradient(180deg, rgba(57,160,255,0.08), rgba(255,255,255,0.035));
 }
 
 .next-action-card {
@@ -328,6 +343,50 @@ h2 {
 }
 
 .next-plan span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.task-guardrail {
+  border: 1px solid rgba(255,174,66,0.26);
+  background: rgba(255,174,66,0.08);
+  color: rgba(255,255,255,0.82);
+  border-radius: 12px;
+  padding: 10px;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 800;
+}
+
+.task-steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.task-step {
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.045);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.task-step strong {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(57,160,255,0.16);
+  color: var(--blue);
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+.task-step span {
   display: block;
   color: var(--muted);
   font-size: 12px;
@@ -439,7 +498,8 @@ h2 {
   .status-strip,
   .two-col,
   .three-col,
-  .next-plan {
+  .next-plan,
+  .task-steps {
     grid-template-columns: 1fr;
   }
 

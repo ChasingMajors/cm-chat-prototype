@@ -3,21 +3,25 @@
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
   const APPROVAL_KEY = "cm_command_center_opportunity_status_v1";
+  const TASK_KEY = "cm_command_center_operator_tasks_v1";
 
   const state = {
     opportunities: [],
     audit: null,
-    approvals: readApprovals()
+    approvals: readApprovals(),
+    tasks: readTasks()
   };
 
   const els = {
     refreshBtn: document.getElementById("refreshBtn"),
+    clearDoneBtn: document.getElementById("clearDoneBtn"),
     typeFilter: document.getElementById("typeFilter"),
     systemState: document.getElementById("systemState"),
     opportunityCount: document.getElementById("opportunityCount"),
     criticalCount: document.getElementById("criticalCount"),
     lastAudit: document.getElementById("lastAudit"),
     nextActionList: document.getElementById("nextActionList"),
+    operatorTaskList: document.getElementById("operatorTaskList"),
     briefList: document.getElementById("briefList"),
     opportunityList: document.getElementById("opportunityList"),
     dataHealthStats: document.getElementById("dataHealthStats"),
@@ -36,6 +40,20 @@
   function writeApprovals() {
     try {
       localStorage.setItem(APPROVAL_KEY, JSON.stringify(state.approvals));
+    } catch (err) {}
+  }
+
+  function readTasks() {
+    try {
+      return JSON.parse(localStorage.getItem(TASK_KEY) || "[]");
+    } catch (err) {
+      return [];
+    }
+  }
+
+  function writeTasks() {
+    try {
+      localStorage.setItem(TASK_KEY, JSON.stringify(state.tasks));
     } catch (err) {}
   }
 
@@ -579,6 +597,101 @@
     return actions.sort((a, b) => a.rank - b.rank).slice(0, 6);
   }
 
+  function buildTaskSteps(action) {
+    const type = action.relatedType || action.kind || "";
+
+    if (type === "data_gap") {
+      return [
+        "Identify the affected product codes from the audit evidence.",
+        "Confirm the source Google Sheet has matching product codes and row data.",
+        "Run the correct publish function for the affected sport/year/source.",
+        "Rebuild the checklist index if products were added or renamed.",
+        "Retest the exact product query in the sandbox ChatBot and live tool after propagation."
+      ];
+    }
+
+    if (type === "trend_signal") {
+      return [
+        "Open the latest MLB Early Edge JSON and identify the top player signals.",
+        "Map each player to RC years and checklist products.",
+        "Find rookie autos, SSP tags, and serial-numbered cards under /100.",
+        "Build a sandbox detail card for one player before expanding the model.",
+        "Review the result before adding any user-facing ChatBot answer."
+      ];
+    }
+
+    if (type === "chatbot_intent") {
+      return [
+        "Create a sandbox test list for PSA 10, rookie auto, 1/1, Superfractor, case hit, and numbered rookie queries.",
+        "Map each buyer phrase to the right data path: checklist rows, parallels, PRV, or guidance.",
+        "Run product, player, and checklist regression searches after every change.",
+        "Keep live ChatBot untouched until the sandbox passes known-good searches.",
+        "Prepare a short promotion checklist before moving files live."
+      ];
+    }
+
+    if (type === "source_watch") {
+      return [
+        "Define trusted source fields: source, product, sport, claim, date, confidence, and link.",
+        "Create review-only source-watch cards in the Command Center.",
+        "Compare source claims against current PRV or Checklist Vault data.",
+        "Require admin approval before writing to Sheets or publishing JSON.",
+        "Log every approved change for later audit."
+      ];
+    }
+
+    return [
+      "Clarify the desired outcome.",
+      "Build the smallest safe sandbox version.",
+      "Test known user flows.",
+      "Ask for admin approval before live promotion."
+    ];
+  }
+
+  function createOperatorTask(action) {
+    const existing = state.tasks.find(task => task.sourceId === action.id);
+    if (existing) {
+      existing.status = existing.status === "done" ? "queued" : existing.status;
+      existing.updatedAt = new Date().toISOString();
+      writeTasks();
+      return existing;
+    }
+
+    const task = {
+      id: `task_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+      sourceId: action.id,
+      title: action.title,
+      kind: action.kind,
+      severity: action.severity,
+      status: "queued",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      why: action.why,
+      objective: action.afterApproval || action.now,
+      steps: buildTaskSteps(action),
+      guardrail: "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
+    };
+
+    state.tasks.unshift(task);
+    writeTasks();
+    return task;
+  }
+
+  function setTaskStatus(taskId, status) {
+    const task = state.tasks.find(item => item.id === taskId);
+    if (!task) return;
+    task.status = status;
+    task.updatedAt = new Date().toISOString();
+    writeTasks();
+    renderOperatorTasks();
+  }
+
+  function clearDoneTasks() {
+    state.tasks = state.tasks.filter(task => task.status !== "done");
+    writeTasks();
+    renderOperatorTasks();
+  }
+
   async function runAudit() {
     setLoading();
 
@@ -682,6 +795,7 @@
 
     renderBrief();
     renderNextActions();
+    renderOperatorTasks();
     renderOpportunities();
     renderDataHealth();
     renderEdgeSignals();
@@ -748,8 +862,66 @@
     els.nextActionList.querySelectorAll("[data-action]").forEach(btn => {
       btn.addEventListener("click", () => {
         state.approvals[btn.dataset.id] = btn.dataset.action;
+        if (btn.dataset.action === "approved") {
+          const action = actions.find(item => item.id === btn.dataset.id);
+          if (action) createOperatorTask(action);
+        }
         writeApprovals();
         renderNextActions();
+        renderOperatorTasks();
+      });
+    });
+  }
+
+  function renderOperatorTasks() {
+    if (!state.tasks.length) {
+      els.operatorTaskList.innerHTML = `
+        <div class="brief-item">
+          <strong>No approved tasks yet</strong>
+          <span>Approve a next step to create the first operator task.</span>
+        </div>
+      `;
+      return;
+    }
+
+    els.operatorTaskList.innerHTML = state.tasks.map(task => {
+      const badgeClass = task.status === "done"
+        ? "opportunity"
+        : task.status === "ready"
+          ? "warning"
+          : "info";
+
+      return `
+        <article class="operator-task-card">
+          <div class="opp-top">
+            <div>
+              <div class="next-kind">${escapeHtml(task.kind || "operator")}</div>
+              <h3>${escapeHtml(task.title)}</h3>
+              <p>${escapeHtml(task.objective || "")}</p>
+            </div>
+            <span class="badge ${badgeClass}">${escapeHtml(task.status)}</span>
+          </div>
+          <div class="task-guardrail">${escapeHtml(task.guardrail)}</div>
+          <div class="task-steps">
+            ${task.steps.map((step, idx) => `
+              <div class="task-step">
+                <strong>${idx + 1}</strong>
+                <span>${escapeHtml(step)}</span>
+              </div>
+            `).join("")}
+          </div>
+          <div class="opp-actions">
+            <button class="action-btn" type="button" data-task-id="${escapeHtml(task.id)}" data-task-status="ready">Mark Ready For Build</button>
+            <button class="action-btn approve" type="button" data-task-id="${escapeHtml(task.id)}" data-task-status="done">Mark Done</button>
+            <button class="action-btn ignore" type="button" data-task-id="${escapeHtml(task.id)}" data-task-status="queued">Back To Queue</button>
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    els.operatorTaskList.querySelectorAll("[data-task-status]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        setTaskStatus(btn.dataset.taskId, btn.dataset.taskStatus);
       });
     });
   }
@@ -894,6 +1066,7 @@
   }
 
   els.refreshBtn.addEventListener("click", runAudit);
+  els.clearDoneBtn.addEventListener("click", clearDoneTasks);
   els.typeFilter.addEventListener("change", renderOpportunities);
   runAudit();
 })();

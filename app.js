@@ -82,6 +82,63 @@ let pendingProductMatchChoice = null;
 let pendingPlayerMatchChoice = null;
 let pendingCollectorProductChoice = null;
 
+function getSessionId() {
+  try {
+    const key = "cm_session_id";
+    let val = localStorage.getItem(key);
+    if (!val) {
+      val = "cm_" + Date.now() + "_" + Math.random().toString(36).slice(2, 10);
+      localStorage.setItem(key, val);
+    }
+    return val;
+  } catch (err) {
+    return "cm_" + Date.now();
+  }
+}
+
+function getResultRouteTarget(res) {
+  if (!res) return "chatbot";
+  if (res.type === "prv") return "vault";
+  if (res.type === "checklist_table") return "checklists";
+  if (res.type === "release_schedule") return "release_schedule";
+  if (res.type === "player_stats") return "player_stats";
+  return "chatbot";
+}
+
+function getResultCount(res) {
+  if (Array.isArray(res?.rows)) return res.rows.length;
+  if (Array.isArray(res?.rawRows)) return res.rawRows.length;
+  return "";
+}
+
+function buildChatLogPayload(eventType, query, res = null, extra = {}) {
+  const product = res?.product || {};
+
+  return Object.assign({
+    app: "chatbot",
+    page: "chatbot",
+    event_type: eventType,
+    query: query || "",
+    query_normalized: normalize(query || ""),
+    selected_name: product.name || res?.title || "",
+    selected_code: product.code || "",
+    selected_type: extra.selected_type || res?.badge || "",
+    sport: product.sport || "",
+    year: product.year || "",
+    route_target: extra.route_target || getResultRouteTarget(res),
+    session_id: getSessionId(),
+    result_count: getResultCount(res),
+    status_note: extra.status_note || "",
+    status: extra.status || "ok",
+    source: extra.source || "chatbot",
+    metadata_1: extra.metadata_1 || "",
+    metadata_2: extra.metadata_2 || "",
+    referrer: document.referrer || "",
+    url: location.href,
+    user_agent: navigator.userAgent || ""
+  }, extra || {});
+}
+
 const PRODUCT_VARIANT_TERMS = [
   "black",
   "chrome black",
@@ -228,7 +285,7 @@ async function buildDirectChecklistResponse(action) {
     sport: indexedProduct.sport
   };
 
-  const summary = await getChecklistSummary(product.code);
+  const summary = await hydrateChecklistSummaryCounts(product, await getChecklistSummary(product.code));
 
   product.name = product.name || summary.name || "";
   product.year = product.year || summary.year || "";
@@ -385,7 +442,11 @@ function splitPlayerSearchQuery(query) {
       "variation",
       "variations",
       "relic",
-      "relics"
+      "relics",
+      "insert",
+      "inserts",
+      "patch",
+      "rpa"
     ].includes(token);
 
   let stopIdx = candidateNorms.length;
@@ -444,6 +505,174 @@ function isProductRookieQuery(query) {
   return isRookieCardIntent(query);
 }
 
+function isAutographQuery(query) {
+  const n = normalize(query);
+  return /\bautos?\b/.test(n) || /\bautographs?\b/.test(n);
+}
+
+function isRookieAutoQuery(query) {
+  const n = normalize(query);
+  const hasRookie = isRookieCardIntent(query);
+  const hasAuto = /\bautos?\b/.test(n) || /\bautographs?\b/.test(n);
+  return hasRookie && hasAuto;
+}
+
+function isSspQuery(query) {
+  const n = normalize(query);
+  return /\bssps?\b/.test(n) || n.includes("super short print") || /\bshort prints?\b/.test(n);
+}
+
+function isSerialOnlyProductQuestion(query) {
+  const n = normalize(query);
+  return (
+    n.includes("serial numbered") ||
+    n.includes("serial-numbered") ||
+    n.includes("serial number") ||
+    n.includes("numbered parallels") ||
+    n.includes("numbered parallel")
+  ) && (
+    n.includes("only") ||
+    n.includes("parallels") ||
+    n.includes("parallel")
+  );
+}
+
+function isLowestNumberedProductQuestion(query) {
+  const n = normalize(query);
+  return (
+    n.includes("lowest numbered") ||
+    n.includes("lowest serial") ||
+    n.includes("lowest-numbered") ||
+    n.includes("lowest serial-numbered")
+  );
+}
+
+function isRarestParallelQuestion(query) {
+  const n = normalize(query);
+  return (
+    n.includes("rarest parallel") ||
+    n.includes("rarest parallels") ||
+    n.includes("rare parallels") ||
+    n.includes("rare parallel")
+  );
+}
+
+function isParallelRarityQuestion(query) {
+  const n = normalize(query);
+  return (
+    n.includes("how rare") ||
+    n.includes("rarity") ||
+    n.includes("rarest") ||
+    n.includes("rare is") ||
+    n.includes("rare are")
+  ) && (
+    n.includes("parallel") ||
+    n.includes("refractor") ||
+    n.includes("wave") ||
+    n.includes("gold") ||
+    n.includes("ssp") ||
+    n.includes("short print")
+  );
+}
+
+function isParallelCompareQuestion(query) {
+  const n = normalize(query);
+  return /\bcompare\b/.test(n) && (
+    /\bparallels?\b/.test(n) ||
+    n.includes("topps chrome") ||
+    n.includes("topps finest")
+  );
+}
+
+function isCaseHitQuery(query) {
+  const n = normalize(query);
+  return n.includes("case hit") || n.includes("case hits");
+}
+
+function isShortPrintQuery(query) {
+  const n = normalize(query);
+  return isSspQuery(query) || /\bshort prints?\b/.test(n) || /\bsps?\b/.test(n);
+}
+
+function isRookiePatchAutoQuery(query) {
+  const n = normalize(query);
+  return isRookieAutoQuery(query) && (
+    /\brpa\b/.test(n) ||
+    n.includes("patch auto") ||
+    n.includes("patch autograph") ||
+    n.includes("rookie patch")
+  );
+}
+
+function isOnCardAutoQuery(query) {
+  const n = normalize(query);
+  return (/\bon card\b/.test(n) || /\bon-card\b/.test(n)) && (
+    /\bautos?\b/.test(n) || /\bautographs?\b/.test(n)
+  );
+}
+
+function isExclusiveQuery(query) {
+  const n = normalize(query);
+  return (
+    n.includes("exclusive") ||
+    n.includes("blaster") ||
+    n.includes("retail") ||
+    n.includes("hanger") ||
+    n.includes("mega box")
+  );
+}
+
+function isChaseCardsQuery(query) {
+  const n = normalize(query);
+  return (
+    n.includes("chase card") ||
+    n.includes("chase cards") ||
+    n.includes("biggest cards") ||
+    n.includes("best cards") ||
+    n.includes("best rookie") ||
+    n.includes("best rookies")
+  );
+}
+
+function isHardestPullQuery(query) {
+  const n = normalize(query);
+  return (
+    n.includes("hardest card to pull") ||
+    n.includes("hardest to pull") ||
+    n.includes("toughest pull") ||
+    n.includes("hardest pull")
+  );
+}
+
+function isBestRookieClassQuery(query) {
+  const n = normalize(query);
+  return n.includes("best rookie class") || n.includes("best rookie classes");
+}
+
+function isSuperfractorOddsQuery(query) {
+  const n = normalize(query);
+  return n.includes("superfractor") && (n.includes("odds") || n.includes("pull"));
+}
+
+function isRefractorEducationQuery(query) {
+  const n = normalize(query);
+  return (
+    n.includes("difference between") &&
+    n.includes("refractor") &&
+    (n.includes("x fractor") || n.includes("x-fractor"))
+  );
+}
+
+function isEveryParallelForCardQuery(query) {
+  const n = normalize(query);
+  return (
+    n.includes("every parallel for this card") ||
+    n.includes("all parallels for this card") ||
+    n.includes("parallel for this card") ||
+    n.includes("parallels for this card")
+  );
+}
+
 function stripProductRookieWords(query) {
   let out = normalize(query || "");
 
@@ -454,6 +683,7 @@ function stripProductRookieWords(query) {
     "rc",
     "show",
     "me",
+    "key",
     "find",
     "give",
     "pull",
@@ -468,9 +698,114 @@ function stripProductRookieWords(query) {
   return out.replace(/\s+/g, " ").trim();
 }
 
+function stripProductCollectorFilterWords(query) {
+  let out = stripProductRookieWords(query || "");
+
+  [
+    "autograph",
+    "autographs",
+    "auto",
+    "autos",
+    "show",
+    "me",
+    "all",
+    "the",
+    "a",
+    "an",
+    "in",
+    "of",
+    "for",
+    "which",
+    "parallel",
+    "parallels",
+    "serial numbered",
+    "serial-numbered",
+    "serial number",
+    "numbered",
+    "lowest numbered",
+    "lowest serial",
+    "lowest",
+    "ssp",
+    "ssps",
+    "super short print",
+    "short print",
+    "short prints",
+    "case hit",
+    "case hits",
+    "on card",
+    "on-card",
+    "patch",
+    "rpa",
+    "exclusive",
+    "blaster",
+    "retail",
+    "hanger",
+    "mega box",
+    "chase",
+    "biggest",
+    "best",
+    "rarest",
+    "rare",
+    "hardest",
+    "toughest",
+    "pull",
+    "only",
+    "what",
+    "are",
+    "key",
+    "this",
+    "release",
+    "set"
+  ].forEach(phrase => {
+    out = out.replace(new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
+  });
+
+  return out.replace(/\s+/g, " ").trim();
+}
+
 function detectPlayerRowFilterIntent(query) {
   const n = normalize(query);
   const section = detectChecklistSectionIntent(query);
+
+  if (isRookiePatchAutoQuery(query)) {
+    return {
+      key: "rookie_patch_autos",
+      label: "Rookie Patch Autographs",
+      terms: ["rookie", "rc", "rpa", "patch", "autograph", "auto"]
+    };
+  }
+
+  if (isRookieAutoQuery(query)) {
+    return {
+      key: "rookie_autos",
+      label: "Rookie Autographs",
+      terms: ["rookie", "rc", "autograph", "autographs", "auto", "autos"]
+    };
+  }
+
+  if (isOnCardAutoQuery(query)) {
+    return {
+      key: "on_card_autos",
+      label: "On-Card Autographs",
+      terms: ["on card", "on-card", "autograph", "auto"]
+    };
+  }
+
+  if (isSspQuery(query)) {
+    return {
+      key: "ssp",
+      label: "SSPs",
+      terms: ["ssp", "ssps", "super short print", "short print"]
+    };
+  }
+
+  if (isRookieCardIntent(query)) {
+    return {
+      key: "rookies",
+      label: "Rookies",
+      terms: ["rookie", "rookies", "rc"]
+    };
+  }
 
   if (/\brefractors?\b/.test(n)) {
     return {
@@ -504,6 +839,14 @@ function detectPlayerRowFilterIntent(query) {
     };
   }
 
+  if (section === "inserts") {
+    return {
+      key: "inserts",
+      label: "Inserts",
+      terms: ["insert", "inserts"]
+    };
+  }
+
   if (section === "parallels") {
     return {
       key: "parallels",
@@ -521,6 +864,32 @@ function rowMatchesPlayerFilter(row, filter) {
   const cells = Array.isArray(row) ? row : [];
   const haystack = normalize(cells.join(" "));
   const tokens = tokenize(haystack);
+
+  if (filter.key === "rookie_autos") {
+    const hasRookie = tokens.includes("rc") || haystack.includes("rookie");
+    const hasAuto = tokens.includes("auto") || tokens.includes("autos") || haystack.includes("autograph");
+    return hasRookie && hasAuto;
+  }
+
+  if (filter.key === "rookie_patch_autos") {
+    const hasRookie = tokens.includes("rc") || haystack.includes("rookie");
+    const hasAuto = tokens.includes("auto") || tokens.includes("autos") || haystack.includes("autograph");
+    const hasPatch = tokens.includes("rpa") || tokens.includes("patch") || haystack.includes("patch auto") || haystack.includes("patch autograph");
+    return hasRookie && hasAuto && hasPatch;
+  }
+
+  if (filter.key === "rookies") {
+    return tokens.includes("rc") || haystack.includes("rookie");
+  }
+
+  if (filter.key === "on_card_autos") {
+    const hasAuto = tokens.includes("auto") || tokens.includes("autos") || haystack.includes("autograph");
+    return hasAuto && (haystack.includes("on card") || haystack.includes("on-card"));
+  }
+
+  if (filter.key === "ssp") {
+    return tokens.includes("ssp") || tokens.includes("ssps") || haystack.includes("super short print") || haystack.includes("short print");
+  }
 
   return (filter.terms || []).some(term => {
     const t = normalize(term);
@@ -684,7 +1053,7 @@ function buildPlayerAliasOption(targetName, preferredSport = "") {
 
 async function getClarifyPlayerAliasOptions(playerReq) {
   if (!playerReq?.playerName) return null;
-  await loadPlayerMeta();
+  await loadPlayerMeta().catch(() => []);
 
   const key = normalizePlayerAliasKey(playerReq.playerName);
   const targets = config.PLAYER_ALIAS_CLARIFY_MAP?.[key] || null;
@@ -706,7 +1075,7 @@ async function getClarifyPlayerAliasOptions(playerReq) {
 
 async function applySafePlayerAliasToRequest(playerReq) {
   if (!playerReq?.playerName) return playerReq;
-  await loadPlayerMeta();
+  await loadPlayerMeta().catch(() => []);
 
   const key = normalizePlayerAliasKey(playerReq.playerName);
   const target = config.PLAYER_ALIAS_MAP?.[key] || "";
@@ -823,10 +1192,12 @@ function scorePlayerMetaOption(meta, playerQuery) {
 }
 
 async function getPlayerMatchOptions(playerQuery, sport = "", limit = 5) {
-  await loadPlayerMeta();
-
   const qTokens = tokenize(playerQuery);
   if (!qTokens.length) return [];
+
+  if (!Array.isArray(store.playerMetaIndex) || !store.playerMetaIndex.length) {
+    return [];
+  }
 
   const seen = new Set();
 
@@ -884,7 +1255,7 @@ async function resolveRookiePlayerRequest(playerReq) {
   if (!playerReq || !isRookieCardIntent(playerReq.originalQuery || "")) return null;
   if (playerReq.year || playerReq.code) return null;
 
-  await loadPlayerMeta();
+  await loadPlayerMeta().catch(() => []);
 
   const meta = getPlayerMetaEntry(playerReq.playerName);
   const rcYear = getRcYearForPlayerRequest(playerReq, meta);
@@ -944,6 +1315,8 @@ function getSerialSearchLabel(numberedReq) {
   if (
     n.includes("low numbered") ||
     n.includes("low serial") ||
+    n.includes("lowest numbered") ||
+    n.includes("lowest serial") ||
     n.includes("short print") ||
     n.includes("ssp")
   ) {
@@ -1004,6 +1377,8 @@ function isNumberedSearchQuery(query) {
     n.includes("numbered /") ||
     n.includes("low numbered") ||
     n.includes("low serial") ||
+    n.includes("lowest numbered") ||
+    n.includes("lowest serial") ||
     n.includes("short print") ||
     n.includes("ssp") ||
     /\bnumbered\s+\d{1,4}\b/.test(n) ||
@@ -1021,6 +1396,8 @@ function stripNumberedSearchWords(query) {
     "serial numbers",
     "low numbered",
     "low serial",
+    "lowest numbered",
+    "lowest serial",
     "low print run",
     "short print",
     "serial",
@@ -1264,7 +1641,9 @@ function isExplicitProductSerialQuery(query) {
     n.includes("serial-numbered") ||
     n.includes("serial number") ||
     n.includes("low numbered") ||
-    n.includes("low serial")
+    n.includes("low serial") ||
+    n.includes("lowest numbered") ||
+    n.includes("lowest serial")
   );
 }
 
@@ -1440,6 +1819,9 @@ function isReleaseScheduleQuestion(query) {
     n.includes("when does") ||
     n.includes("when is") ||
     n.includes("when will") ||
+    /\breleases?\b.*\bthis month\b/.test(n) ||
+    /\brelease\b.*\bthis month\b/.test(n) ||
+    /\bproducts?\b.*\brelease\b/.test(n) ||
     n === "schedule" ||
     n === "calendar" ||
     n.includes("upcoming baseball releases") ||
@@ -1448,6 +1830,11 @@ function isReleaseScheduleQuestion(query) {
     n.includes("upcoming hockey releases") ||
     n.includes("upcoming soccer releases")
   );
+}
+
+function isThisMonthReleaseQuery(query) {
+  const n = normalize(query);
+  return n.includes("this month") && (n.includes("release") || n.includes("releases") || n.includes("products"));
 }
 
 function normalizeReleaseRow(row) {
@@ -1483,6 +1870,17 @@ function filterReleaseScheduleRows(rows, query) {
     });
   }
 
+  if (isThisMonthReleaseQuery(query)) {
+    const now = new Date();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+    filtered = filtered.filter(r => {
+      const d = parseDateSafe(r.releaseDate);
+      return d && d >= monthStart && d <= monthEnd;
+    });
+  }
+
   if (
     n.includes("upcoming") ||
     n.includes("coming") ||
@@ -1490,6 +1888,8 @@ function filterReleaseScheduleRows(rows, query) {
     n.includes("release schedule") ||
     n.includes("release calendar") ||
     n.includes("releasing soon") ||
+    n.includes("release this month") ||
+    n.includes("releases this month") ||
     n === "schedule" ||
     n === "calendar"
   ) {
@@ -1951,6 +2351,15 @@ function normalizeBaseProductName(text) {
   return out.replace(/\s+/g, " ").trim();
 }
 
+function normalizeProductFamilyName(text) {
+  return normalize(text || "")
+    .replace(/\b(19|20)\d{2}(?:-\d{2})?\b/g, " ")
+    .replace(/\bchecklists?\b/g, " ")
+    .replace(/\bcards?\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function hasProductVariantTerm(text) {
   const normalizedText = normalize(text || "");
   return PRODUCT_VARIANT_TERMS.some(term => {
@@ -2058,7 +2467,7 @@ function findBestProduct(list, query, targetIntent) {
   return { ...best, score: bestScore, matchType: "fuzzy" };
 }
 
-function getProductMatchOptions(list, query, targetIntent, limit = 4) {
+function getProductMatchOptions(list, query, targetIntent, limit = 10) {
   const cleaned = stripIntentWords(query || "");
   const cleanedNorm = normalize(cleaned);
   const qNorm = normalize(query || "");
@@ -2066,7 +2475,7 @@ function getProductMatchOptions(list, query, targetIntent, limit = 4) {
   const year = extractYear(query);
   const seen = new Set();
 
-  return (list || [])
+  let options = (list || [])
     .map(item => {
       const product = mapProduct(item);
       if (!product.name) return null;
@@ -2097,8 +2506,20 @@ function getProductMatchOptions(list, query, targetIntent, limit = 4) {
       if (!key || seen.has(key)) return false;
       seen.add(key);
       return true;
-    })
-    .slice(0, limit);
+    });
+
+  if (!year) {
+    const queryFamily = normalizeProductFamilyName(cleanedNorm || qNorm);
+    const familyMatches = options.filter(product =>
+      normalizeProductFamilyName(product.name) === queryFamily
+    );
+
+    if (familyMatches.length >= 2) {
+      options = familyMatches;
+    }
+  }
+
+  return options.slice(0, limit);
 }
 
 function shouldClarifyProductMatch(options) {
@@ -2329,6 +2750,61 @@ function getPlayerYearOptions(playerName, fallbackYears = []) {
   }));
 }
 
+function sortYearsDesc(years) {
+  return uniq((years || []).map(y => String(y || "").trim()).filter(Boolean))
+    .sort((a, b) => {
+      const aStart = parseInt(a.slice(0, 4), 10) || 0;
+      const bStart = parseInt(b.slice(0, 4), 10) || 0;
+      return bStart - aStart;
+    });
+}
+
+async function getStaticPlayerCoverage(playerReq) {
+  if (!playerReq?.playerName) {
+    return { years: [], rcYear: "", productCount: 0 };
+  }
+
+  try {
+    const data = await Promise.race([
+      getPlayerCards(playerReq.playerName, playerReq.sport || "baseball", "", ""),
+      new Promise(resolve => setTimeout(() => resolve(null), 4500))
+    ]);
+
+    const columns = data?.columns || [];
+    const rows = Array.isArray(data?.rows) ? data.rows : [];
+    if (!rows.length) return { years: [], rcYear: "", productCount: 0 };
+
+    const years = [];
+    const rcYears = [];
+    const products = new Set();
+
+    rows.forEach(row => {
+      const year = getRowCell(row, columns, "Year");
+      const productName = getRowCell(row, columns, "Product");
+      const tag = normalize(getRowCell(row, columns, "Tag"));
+      const subset = normalize(getRowCell(row, columns, "Subset"));
+
+      if (year) years.push(year);
+      if (productName) products.add(`${year}|${productName}`);
+      if (year && (tag.includes("rc") || tag.includes("rookie") || subset.includes("rookie"))) {
+        rcYears.push(year);
+      }
+    });
+
+    const sortedYears = sortYearsDesc(years);
+    const sortedRcYearsAsc = sortYearsDesc(rcYears).reverse();
+
+    return {
+      years: sortedYears,
+      rcYear: sortedRcYearsAsc[0] || "",
+      productCount: products.size
+    };
+  } catch (err) {
+    console.warn("Static player coverage failed", err);
+    return { years: [], rcYear: "", productCount: 0 };
+  }
+}
+
 function buildPlayerFollowups(playerName, fallbackYears = [], includeStats = true, includeAllCards = true) {
   const yearOptions = getPlayerYearOptions(playerName, fallbackYears);
   const labels = yearOptions.map(y => y.label);
@@ -2436,6 +2912,7 @@ function buildProductChecklistFollowups(product, summary = null, context = {}) {
   const canShowPrintRun = !mentionsRestrictedPrintRunBrand(product.name || "");
 
   return uniq([
+    currentSection !== "all" && hasSection("all") ? "Entire Checklist" : "",
     currentSection !== "parallels" && hasSection("parallels") ? "Parallels" : "",
     currentSection !== "autographs" && hasSection("autographs") ? "Autographs" : "",
     currentSection !== "variations" && hasSection("variations") ? "Variations" : "",
@@ -2450,7 +2927,7 @@ function buildProductNoResultFollowups(product, context = {}) {
   if (!product?.name) return [];
 
   return uniq([
-    `Show full ${product.name} checklist`,
+    "Entire Checklist",
     `Show ${product.name} serial numbered under 100`,
     `Show ${product.name} serial numbered less than 50`,
     !mentionsRestrictedPrintRunBrand(product.name || "") ? `Show me ${product.name} print run` : "",
@@ -2729,12 +3206,13 @@ async function buildReleaseScheduleResponse(query) {
 
   if (sport) {
     rows = sortReleaseScheduleRows(rows, sport).map(enrichReleaseRowForUi);
+    const monthPhrase = isThisMonthReleaseQuery(query) ? " this month" : "";
 
     return {
       type: "release_schedule",
       badge: "Release Schedule",
       title: `${titleCase(sport)} Release Schedule`,
-      summary: `Showing upcoming ${sport} releases. Announced products without firm dates are listed after dated releases.`,
+      summary: `Showing upcoming ${sport} releases${monthPhrase}. Announced products without firm dates are listed after dated releases.`,
       metadata: buildReleaseScheduleMetadata(rows),
       rows,
       isSportSpecific: true,
@@ -2898,7 +3376,7 @@ function buildProductProfileFollowups(product, summary = null, printRunProduct =
   const hasSection = key => available.includes(key);
 
   return uniq([
-    `Show full ${product.name} checklist`,
+    hasSection("all") ? "Entire Checklist" : "",
     "Rookies",
     hasSection("autographs") ? "Autographs" : "",
     hasSection("parallels") ? "Parallels" : "",
@@ -2922,6 +3400,60 @@ function buildChecklistCoverageStats(summary) {
     { label: "Variations", value: counts.variations ? formatNumber(counts.variations) : "-" },
     { label: "Parallels", value: counts.parallels ? formatNumber(counts.parallels) : "-" }
   ];
+}
+
+function hasUsableChecklistCounts(summary) {
+  const counts = summary?.counts || {};
+  return !!(
+    counts.all ||
+    counts.base ||
+    counts.inserts ||
+    counts.autographs ||
+    counts.relics ||
+    counts.variations ||
+    counts.parallels
+  );
+}
+
+async function hydrateChecklistSummaryCounts(product, summary) {
+  if (!product?.code || hasUsableChecklistCounts(summary)) return summary;
+
+  const sections = ["all", "base", "inserts", "autographs", "relics", "variations"];
+  const results = await Promise.allSettled([
+    ...sections.map(section => getChecklistSection(product.code, section)),
+    getChecklistParallels(product.code)
+  ]);
+
+  const countFor = idx => {
+    const value = results[idx]?.value;
+    return Array.isArray(value?.rows) ? value.rows.length : 0;
+  };
+
+  const counts = {
+    all: countFor(0),
+    base: countFor(1),
+    inserts: countFor(2),
+    autographs: countFor(3),
+    relics: countFor(4),
+    variations: countFor(5),
+    parallels: countFor(6)
+  };
+
+  const availableSections = ["all"];
+  ["base", "inserts", "autographs", "relics", "variations", "parallels"].forEach(section => {
+    if (counts[section] > 0) availableSections.push(section);
+  });
+
+  return {
+    ...(summary || {}),
+    ok: true,
+    code: summary?.code || product.code,
+    name: summary?.name || product.name,
+    year: summary?.year || product.year,
+    sport: summary?.sport || product.sport,
+    counts,
+    available_sections: availableSections
+  };
 }
 
 function getChecklistColumnIndex(columns, name) {
@@ -2948,22 +3480,70 @@ function checklistRowMatchesRookie(row, columns) {
   );
 }
 
-async function buildProductRookieChecklistResponse(productInput) {
+function checklistRowMatchesAutograph(row) {
+  const haystack = normalize((Array.isArray(row) ? row : []).join(" "));
+  const tokens = tokenize(haystack);
+  return tokens.includes("auto") || tokens.includes("autos") || haystack.includes("autograph");
+}
+
+function checklistRowMatchesRookieAuto(row, columns) {
+  return checklistRowMatchesRookie(row, columns) && checklistRowMatchesAutograph(row);
+}
+
+function checklistRowMatchesRookiePatchAuto(row, columns) {
+  const haystack = normalize((Array.isArray(row) ? row : []).join(" "));
+  const tokens = tokenize(haystack);
+  const hasPatch = tokens.includes("rpa") || tokens.includes("patch") || haystack.includes("patch auto") || haystack.includes("patch autograph");
+  return checklistRowMatchesRookieAuto(row, columns) && hasPatch;
+}
+
+function checklistRowMatchesOnCardAuto(row) {
+  const haystack = normalize((Array.isArray(row) ? row : []).join(" "));
+  return checklistRowMatchesAutograph(row) && (haystack.includes("on card") || haystack.includes("on-card"));
+}
+
+function checklistRowMatchesSsp(row) {
+  const haystack = normalize((Array.isArray(row) ? row : []).join(" "));
+  const tokens = tokenize(haystack);
+  return tokens.includes("ssp") || tokens.includes("ssps") || haystack.includes("super short print") || haystack.includes("short print");
+}
+
+function checklistRowMatchesCaseHit(row) {
+  const haystack = normalize((Array.isArray(row) ? row : []).join(" "));
+  return haystack.includes("case hit") || haystack.includes("case-hit");
+}
+
+function checklistRowMatchesExclusive(row) {
+  const haystack = normalize((Array.isArray(row) ? row : []).join(" "));
+  return (
+    haystack.includes("exclusive") ||
+    haystack.includes("blaster") ||
+    haystack.includes("retail") ||
+    haystack.includes("hanger") ||
+    haystack.includes("mega box")
+  );
+}
+
+async function buildProductFilteredChecklistResponse(productInput, options) {
   const product = findEquivalentProduct(getChecklistIndex(), productInput) || productInput;
+  const label = options?.label || "Checklist";
+  const sectionKey = options?.sectionKey || "product_filtered";
+  const filterFn = typeof options?.filterFn === "function" ? options.filterFn : () => true;
+  const noResultSummary = options?.noResultSummary || `I searched the checklist rows and did not find ${label.toLowerCase()} for this product.`;
 
   if (!product?.code) {
     return {
       type: "standard",
-      badge: "Rookies",
-      title: product?.name || "Rookies",
-      summary: "I could not verify a checklist product for that rookie-card search."
+      badge: label,
+      title: product?.name || label,
+      summary: `I could not verify a checklist product for that ${label.toLowerCase()} search.`
     };
   }
 
-  const summary = await getChecklistSummary(product.code);
+  const summary = await hydrateChecklistSummaryCounts(product, await getChecklistSummary(product.code));
   const data = await getChecklistSection(product.code, "all");
   const columns = data.columns || ["Subset", "Card No.", "Player", "Team", "Tag"];
-  const rows = (data.rows || []).filter(row => checklistRowMatchesRookie(row, columns));
+  const rows = (data.rows || []).filter(row => filterFn(row, columns));
 
   pendingChecklistChoice = {
     product,
@@ -2973,11 +3553,11 @@ async function buildProductRookieChecklistResponse(productInput) {
   if (!rows.length) {
     return {
       type: "standard",
-      badge: "Rookies",
+      badge: label,
       title: product.name,
-      summary: "I searched the checklist rows and did not find rookie-card tags for this product.",
+      summary: noResultSummary,
       metadata: buildProductSearchMetadata(product, {
-        filterLabel: "Rookies"
+        filterLabel: label
       }),
       followups: buildProductNoResultFollowups(product, { year: product.year })
     };
@@ -2986,19 +3566,82 @@ async function buildProductRookieChecklistResponse(productInput) {
   return {
     type: "checklist_table",
     product,
-    sectionKey: "product_rookies",
-    sectionLabel: "Rookies",
+    sectionKey,
+    sectionLabel: label,
     rows: rows.map(r => ({ cells: r })),
     columns,
     metadata: uniq([
       `Rows: ${formatNumber(rows.length)}`,
       product.year ? `Year: ${product.year}` : "",
       product.sport ? `Sport: ${titleCase(product.sport)}` : "",
-      "Filter: Rookies"
+      `Filter: ${label}`
     ]),
     sectionOptions: checklistSectionOptionsFromSummary(summary),
-    followups: buildProductChecklistFollowups(product, summary, { section: "rookies" })
+    followups: buildProductChecklistFollowups(product, summary, { section: sectionKey })
   };
+}
+
+async function buildProductRookieChecklistResponse(productInput) {
+  return buildProductFilteredChecklistResponse(productInput, {
+    label: "Rookies",
+    sectionKey: "product_rookies",
+    filterFn: checklistRowMatchesRookie,
+    noResultSummary: "I searched the checklist rows and did not find rookie-card tags for this product."
+  });
+}
+
+async function buildProductRookieAutoResponse(productInput) {
+  return buildProductFilteredChecklistResponse(productInput, {
+    label: "Rookie Autographs",
+    sectionKey: "product_rookie_autos",
+    filterFn: checklistRowMatchesRookieAuto,
+    noResultSummary: "I searched the checklist rows and did not find cards tagged as both rookie cards and autographs for this product."
+  });
+}
+
+async function buildProductRookiePatchAutoResponse(productInput) {
+  return buildProductFilteredChecklistResponse(productInput, {
+    label: "Rookie Patch Autographs",
+    sectionKey: "product_rookie_patch_autos",
+    filterFn: checklistRowMatchesRookiePatchAuto,
+    noResultSummary: "I searched the checklist rows and did not find rookie patch autos tagged for this product."
+  });
+}
+
+async function buildProductOnCardAutoResponse(productInput) {
+  return buildProductFilteredChecklistResponse(productInput, {
+    label: "On-Card Autographs",
+    sectionKey: "product_on_card_autos",
+    filterFn: checklistRowMatchesOnCardAuto,
+    noResultSummary: "I searched the checklist rows and did not find on-card autograph tags for this product. Some sets do not label sticker vs. on-card status in the checklist data."
+  });
+}
+
+async function buildProductSspResponse(productInput) {
+  return buildProductFilteredChecklistResponse(productInput, {
+    label: "SSPs",
+    sectionKey: "product_ssps",
+    filterFn: checklistRowMatchesSsp,
+    noResultSummary: "I searched the checklist rows and did not find SSP or short-print tags for this product."
+  });
+}
+
+async function buildProductCaseHitResponse(productInput) {
+  return buildProductFilteredChecklistResponse(productInput, {
+    label: "Case Hits",
+    sectionKey: "product_case_hits",
+    filterFn: checklistRowMatchesCaseHit,
+    noResultSummary: "I searched the checklist rows and did not find case-hit tags for this product."
+  });
+}
+
+async function buildProductExclusiveResponse(productInput) {
+  return buildProductFilteredChecklistResponse(productInput, {
+    label: "Retail Exclusives",
+    sectionKey: "product_exclusives",
+    filterFn: checklistRowMatchesExclusive,
+    noResultSummary: "I searched the checklist rows and did not find blaster, retail, hanger, mega box, or exclusive tags for this product."
+  });
 }
 
 async function buildProductProfileResponse(productMatch, query = "") {
@@ -3032,6 +3675,7 @@ async function buildProductProfileResponse(productMatch, query = "") {
   if (checklistProduct?.code) {
     try {
       summary = await getChecklistSummary(checklistProduct.code);
+      summary = await hydrateChecklistSummaryCounts(checklistProduct, summary);
     } catch (err) {
       console.warn("Product profile summary failed", err);
     }
@@ -3289,7 +3933,8 @@ async function buildProductSerialResponse(numberedReq) {
         value
       };
     })
-    .filter(r => r.value > 0 && r.value <= numberedReq.serialMax);
+    .filter(r => r.value > 0 && r.value <= numberedReq.serialMax)
+    .sort((a, b) => a.value - b.value || String(a.parallelName || "").localeCompare(String(b.parallelName || "")));
 
   if (!filteredRows.length) {
     return {
@@ -3341,6 +3986,489 @@ async function buildProductSerialResponse(numberedReq) {
   };
 }
 
+async function buildProductSerialOnlyResponse(productInput, options = {}) {
+  const product = findEquivalentProduct(getChecklistIndex(), productInput) || productInput;
+  const label = options.lowestOnly ? "Lowest Numbered Parallels" : "Serial Numbered Parallels";
+
+  pendingProductNumberedChoice = null;
+  pendingProductChoice = null;
+  pendingChecklistChoice = product?.code
+    ? { product, summary: await hydrateChecklistSummaryCounts(product, await getChecklistSummary(product.code)) }
+    : null;
+  pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+  awaitingCatalogSport = false;
+
+  if (!product?.code) {
+    return {
+      type: "standard",
+      badge: "Serial Numbered",
+      title: "Product not available",
+      summary: "I could not verify a checklist product for that serial-numbered parallel search."
+    };
+  }
+
+  const data = await getChecklistParallels(product.code);
+  const rows = Array.isArray(data?.rows) ? data.rows : [];
+  const filteredRows = rows
+    .map(r => {
+      const appliesTo = Array.isArray(r) ? (r[0] || "") : (r.applies_to || "");
+      const parallelName = Array.isArray(r) ? (r[1] || "") : (r.parallel_name || "");
+      const serialNo = Array.isArray(r) ? (r[2] || "") : (r.serial_no || "");
+      const value = getSerialLimitValue(serialNo);
+
+      return {
+        appliesTo,
+        parallelName,
+        serialNo,
+        value
+      };
+    })
+    .filter(r => r.value > 0)
+    .sort((a, b) => a.value - b.value || String(a.parallelName || "").localeCompare(String(b.parallelName || "")));
+
+  if (!filteredRows.length) {
+    return {
+      type: "standard",
+      badge: "Serial Numbered",
+      title: product.name,
+      summary: "I found the checklist product, but no serial-numbered parallels are listed for it yet.",
+      metadata: buildProductSearchMetadata(product, {
+        filterLabel: label
+      }),
+      followups: buildProductNoResultFollowups(product, { year: product.year })
+    };
+  }
+
+  return {
+    type: "checklist_table",
+    badge: "Serial Numbered",
+    product: { name: product.name },
+    sectionKey: options.lowestOnly ? "product_lowest_serial" : "product_serial_only",
+    sectionLabel: label,
+    rows: filteredRows.map(r => ({
+      cells: [
+        product.year || "",
+        product.name || "",
+        r.appliesTo || "",
+        "",
+        "",
+        r.parallelName || "",
+        r.serialNo || ""
+      ]
+    })),
+    columns: [
+      "Year",
+      "Product",
+      "Applies To",
+      "Card No.",
+      "Player",
+      "Parallel",
+      "Serial No."
+    ],
+    metadata: uniq([
+      `Rows: ${formatNumber(filteredRows.length)}`,
+      product.year ? `Year: ${product.year}` : "",
+      product.sport ? `Sport: ${titleCase(product.sport)}` : "",
+      `Filter: ${label}`
+    ]),
+    sectionOptions: [],
+    followups: buildProductChecklistFollowups(product, pendingChecklistChoice?.summary || null, { section: "parallels" })
+  };
+}
+
+async function buildProductOneOfOneResponse(productInput) {
+  const product = findEquivalentProduct(getChecklistIndex(), productInput) || productInput;
+
+  if (!product?.code) {
+    return buildCollectorNeedsProductResponse("Hardest Pulls", "");
+  }
+
+  const data = await getChecklistParallels(product.code);
+  const rows = Array.isArray(data?.rows) ? data.rows : [];
+  const oneOfOneRows = rows
+    .map(r => {
+      const appliesTo = Array.isArray(r) ? (r[0] || "") : (r.applies_to || "");
+      const parallelName = Array.isArray(r) ? (r[1] || "") : (r.parallel_name || "");
+      const serialNo = Array.isArray(r) ? (r[2] || "") : (r.serial_no || "");
+      const value = getSerialLimitValue(serialNo);
+
+      return {
+        appliesTo,
+        parallelName,
+        serialNo,
+        value
+      };
+    })
+    .filter(r => r.value === 1)
+    .sort((a, b) => String(a.parallelName || "").localeCompare(String(b.parallelName || "")));
+
+  if (!oneOfOneRows.length) {
+    return buildProductChaseGuidanceResponse(product, { label: "Hardest Pulls" });
+  }
+
+  return {
+    type: "checklist_table",
+    badge: "Hardest Pulls",
+    product: { name: product.name },
+    sectionKey: "product_one_of_ones",
+    sectionLabel: "Listed 1-of-1 Parallels",
+    rows: oneOfOneRows.map(r => ({
+      cells: [
+        product.year || "",
+        product.name || "",
+        r.appliesTo || "",
+        "",
+        "",
+        r.parallelName || "",
+        r.serialNo || ""
+      ]
+    })),
+    columns: [
+      "Year",
+      "Product",
+      "Applies To",
+      "Card No.",
+      "Player",
+      "Parallel",
+      "Serial No."
+    ],
+    metadata: uniq([
+      `Rows: ${formatNumber(oneOfOneRows.length)}`,
+      product.year ? `Year: ${product.year}` : "",
+      product.sport ? `Sport: ${titleCase(product.sport)}` : "",
+      "Basis: listed /1 parallels"
+    ]),
+    sectionOptions: [],
+    followups: [
+      `Show ${product.name} serial numbered under 25`,
+      `Show ${product.name} SSPs`,
+      `Show chase cards in ${product.name}`
+    ]
+  };
+}
+
+function stripParallelRarityWords(query) {
+  let out = normalize(query || "");
+
+  [
+    "how rare is",
+    "how rare are",
+    "rare is",
+    "rare are",
+    "rarity",
+    "parallel",
+    "parallels",
+    "in this set",
+    "this set",
+    "what is",
+    "what are",
+    "a",
+    "an",
+    "the"
+  ].forEach(phrase => {
+    out = out.replace(new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), " ");
+  });
+
+  return out.replace(/\s+/g, " ").trim();
+}
+
+function describeSerialRarity(serialValue) {
+  if (!serialValue) return "Rarity depends on whether the checklist lists it as serial numbered, SSP, SP, or an unnumbered parallel.";
+  if (serialValue <= 1) return "This is among the rarest listed parallels because it is a 1-of-1.";
+  if (serialValue <= 5) return `This is extremely rare because it is serial numbered to /${serialValue}.`;
+  if (serialValue <= 10) return `This is very rare because it is serial numbered to /${serialValue}.`;
+  if (serialValue <= 25) return `This is a low-numbered parallel at /${serialValue}.`;
+  if (serialValue <= 99) return `This is serial numbered to /${serialValue}, which is meaningfully scarcer than common unnumbered parallels.`;
+  return `This is serial numbered to /${serialValue}. It is scarcer than unnumbered parallels, but not one of the lowest-numbered versions.`;
+}
+
+async function buildParallelRarityResponse(query) {
+  const product = pendingChecklistChoice?.product || null;
+  const target = stripParallelRarityWords(query);
+
+  if (!product?.code) {
+    return {
+      type: "standard",
+      badge: "Rarity",
+      title: target ? titleCase(target) : "Parallel rarity",
+      summary: "I can explain a named parallel best when I know the exact product. Search the set first, then ask about the parallel name.",
+      followups: [
+        "2026 Topps Series 1 Baseball parallels",
+        "How rare is Gold parallel?",
+        "Show serial numbered parallels only"
+      ]
+    };
+  }
+
+  const data = await getChecklistParallels(product.code);
+  const rows = Array.isArray(data?.rows) ? data.rows : [];
+  const targetTokens = meaningfulTokens(target);
+  const matches = rows
+    .map(r => {
+      const appliesTo = Array.isArray(r) ? (r[0] || "") : (r.applies_to || "");
+      const parallelName = Array.isArray(r) ? (r[1] || "") : (r.parallel_name || "");
+      const serialNo = Array.isArray(r) ? (r[2] || "") : (r.serial_no || "");
+      const value = getSerialLimitValue(serialNo);
+      const haystack = normalize([parallelName, serialNo, appliesTo].join(" "));
+      const score = targetTokens.reduce((sum, token) => sum + (haystack.includes(token) ? 1 : 0), 0);
+
+      return {
+        appliesTo,
+        parallelName,
+        serialNo,
+        value,
+        score
+      };
+    })
+    .filter(r => !targetTokens.length || r.score > 0)
+    .sort((a, b) => b.score - a.score || a.value - b.value || String(a.parallelName || "").localeCompare(String(b.parallelName || "")))
+    .slice(0, 5);
+
+  if (!matches.length) {
+    return {
+      type: "standard",
+      badge: "Rarity",
+      title: product.name,
+      summary: `I searched the listed parallels for ${target ? `"${target}"` : "that parallel"} and did not find a match in this product.`,
+      metadata: buildProductSearchMetadata(product, {
+        filterLabel: "Parallel rarity"
+      }),
+      followups: buildProductChecklistFollowups(product, pendingChecklistChoice?.summary || null, { section: "parallels" })
+    };
+  }
+
+  const best = matches[0];
+
+  return {
+    type: "standard",
+    badge: "Rarity",
+    title: best.parallelName || titleCase(target),
+    summary: describeSerialRarity(best.value),
+    metadata: uniq([
+      product.name ? `Product: ${product.name}` : "",
+      best.appliesTo ? `Applies To: ${best.appliesTo}` : "",
+      best.serialNo ? `Serial: ${best.serialNo}` : "Serial: Not listed",
+      matches.length > 1 ? `Similar Matches: ${matches.length}` : ""
+    ]),
+    followups: [
+      "Show serial numbered parallels only",
+      `Show ${product.name} parallels`,
+      `What are the SSPs in this set?`
+    ]
+  };
+}
+
+async function buildProductChaseGuidanceResponse(productInput, options = {}) {
+  const product = findEquivalentProduct(getChecklistIndex(), productInput) || productInput;
+  const label = options.label || "Chase Cards";
+
+  if (!product?.code) {
+    return {
+      type: "standard",
+      badge: label,
+      title: "Which product should I use?",
+      summary: "I can help identify likely chase categories, but I need the exact product first.",
+      followups: [
+        "2025 Topps Chrome Baseball chase cards",
+        "2025 Bowman Baseball key rookies",
+        "2024 Prizm Football rarest parallels"
+      ]
+    };
+  }
+
+  const summary = await hydrateChecklistSummaryCounts(product, await getChecklistSummary(product.code));
+  pendingChecklistChoice = {
+    product,
+    summary
+  };
+
+  const data = await getChecklistParallels(product.code).catch(() => null);
+  const serialRows = (Array.isArray(data?.rows) ? data.rows : [])
+    .map(r => {
+      const parallelName = Array.isArray(r) ? (r[1] || "") : (r.parallel_name || "");
+      const serialNo = Array.isArray(r) ? (r[2] || "") : (r.serial_no || "");
+      const value = getSerialLimitValue(serialNo);
+      return { parallelName, serialNo, value };
+    })
+    .filter(r => r.value > 0)
+    .sort((a, b) => a.value - b.value || String(a.parallelName || "").localeCompare(String(b.parallelName || "")))
+    .slice(0, 5);
+
+  const chaseItems = uniq([
+    summary?.counts?.base ? "Rookie cards and base RCs, when tagged in the checklist." : "",
+    summary?.counts?.autographs ? "Autographs, especially rookie autographs." : "",
+    summary?.counts?.variations ? "Variations, SSPs, and short prints when listed." : "",
+    summary?.counts?.parallels ? "Low-numbered parallels and 1-of-1s." : "",
+    ...serialRows.map(r => `${r.parallelName}${r.serialNo ? ` (${r.serialNo})` : ""}`)
+  ].filter(Boolean));
+
+  return {
+    type: "standard",
+    badge: label,
+    title: product.name,
+    summary: "I can’t rank market value from checklist data alone, but these are the categories collectors usually check first.",
+    listItems: chaseItems.length ? chaseItems : [
+      "Rookie cards",
+      "Autographs",
+      "SSPs or short prints",
+      "Lowest-numbered parallels"
+    ],
+    metadata: uniq([
+      product.year ? `Year: ${product.year}` : "",
+      product.sport ? `Sport: ${titleCase(product.sport)}` : "",
+      summary?.counts?.all ? `Checklist Rows: ${formatNumber(summary.counts.all)}` : ""
+    ]),
+    followups: uniq([
+      `Show key rookies in ${product.name}`,
+      `Show ${product.name} rookie autos`,
+      `Show ${product.name} SSPs`,
+      `Show ${product.name} lowest numbered parallels`
+    ])
+  };
+}
+
+async function buildHardestPullResponse(productInput) {
+  const product = findEquivalentProduct(getChecklistIndex(), productInput) || productInput;
+  if (!product?.code) {
+    return buildProductChaseGuidanceResponse(productInput, { label: "Hardest Pulls" });
+  }
+
+  return buildProductOneOfOneResponse(product);
+}
+
+function buildCollectorNeedsProductResponse(label, query) {
+  pendingProductChoice = null;
+  pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+
+  return {
+    type: "standard",
+    badge: label,
+    title: "Which product should I use?",
+    summary: "I can answer that once I know the exact set. Include the year, product name, and sport for the best match.",
+    followups: [
+      "2025 Topps Chrome Baseball",
+      "2025 Bowman Baseball",
+      "2024 Prizm Football"
+    ]
+  };
+}
+
+function buildParallelCompareResponse(query) {
+  pendingProductChoice = null;
+  pendingPlayerChoice = null;
+  pendingNumberedChoice = null;
+
+  return {
+    type: "standard",
+    badge: "Compare",
+    title: "Comparison tools are coming",
+    summary: "Product and player comparisons are planned for a future release. For now, search one exact product at a time and I can show its checklist, parallels, rookies, autos, and print run data.",
+    followups: [
+      "Show 2025 Topps Chrome Baseball parallels",
+      "Show 2025 Topps Finest Baseball parallels",
+      "Show 2025 Topps Chrome Baseball rookie cards"
+    ]
+  };
+}
+
+function buildSuperfractorOddsResponse(query) {
+  const product = pendingChecklistChoice?.product || null;
+
+  return {
+    type: "standard",
+    badge: "Odds",
+    title: "Superfractor odds",
+    summary: "Pack odds are not being shared publicly in the tool yet. I can show checklist rarity signals, and when a Superfractor is listed as serial numbered 1/1, it is one of the hardest cards to pull in that product.",
+    followups: uniq([
+      product?.name ? `Show ${product.name} lowest numbered parallels` : "",
+      product?.name ? `Show ${product.name} parallels` : "",
+      "How rare is a Superfractor?"
+    ].filter(Boolean))
+  };
+}
+
+function buildOnCardKnowledgeResponse() {
+  return {
+    type: "standard",
+    badge: "Autographs",
+    title: "On-card autograph data is not ready yet",
+    summary: "We do not currently have reliable knowledge for which cards are sticker autographs versus on-card autographs. That needs a dedicated tag before I can answer it safely.",
+    followups: [
+      "Show rookie autos",
+      "Show all autographs",
+      "Show rookie patch autos"
+    ]
+  };
+}
+
+function buildRefractorEducationResponse() {
+  return {
+    type: "standard",
+    badge: "Collector Guide",
+    title: "Refractors vs. X-Fractors",
+    summary: "A Refractor is a chrome-style parallel with a rainbow shine. An X-Fractor is a specific Refractor pattern with an X-like/checkered finish. In most products, X-Fractors are a separate parallel from standard Refractors, and rarity depends on the exact set and whether the parallel is serial numbered.",
+    followups: [
+      "Show serial numbered parallels only",
+      "How rare is an X-Fractor?",
+      "Show Topps Chrome parallels"
+    ]
+  };
+}
+
+function buildEveryParallelForCardResponse() {
+  const product = pendingChecklistChoice?.product || null;
+
+  return {
+    type: "standard",
+    badge: "Parallels",
+    title: "Card-level parallel mapping",
+    summary: "I can show the product’s full parallel list, but I cannot yet guarantee which parallels apply to one exact card unless the checklist data says that directly.",
+    followups: uniq([
+      product?.name ? `Show ${product.name} parallels` : "Show product parallels",
+      product?.name ? `Show serial numbered parallels only` : "",
+      product?.name ? `What are the rarest parallels in this set?` : ""
+    ].filter(Boolean))
+  };
+}
+
+function buildBestRookieClassResponse() {
+  return {
+    type: "standard",
+    badge: "Rookie Class",
+    title: "Best rookie class",
+    summary: "I don’t rank rookie classes yet because that would need an editorial or market-value layer. I can help compare checklist depth by showing rookies, rookie autos, and chase categories for specific products.",
+    followups: [
+      "Show key rookies in 2025 Bowman Baseball",
+      "Show rookie autos in 2025 Topps Chrome Baseball",
+      "Show 2025 baseball products"
+    ]
+  };
+}
+
+async function buildCollectorProductIntentResponse(query, product) {
+  if (!product) return null;
+
+  if (isHardestPullQuery(query)) return buildHardestPullResponse(product);
+  if (isChaseCardsQuery(query)) return buildProductChaseGuidanceResponse(product, { label: "Chase Cards" });
+  if (isSerialOnlyProductQuestion(query) || isLowestNumberedProductQuestion(query) || isRarestParallelQuestion(query)) {
+    return buildProductSerialOnlyResponse(product, {
+      lowestOnly: isLowestNumberedProductQuestion(query) || isRarestParallelQuestion(query) || isHardestPullQuery(query)
+    });
+  }
+  if (isCaseHitQuery(query)) return buildProductCaseHitResponse(product);
+  if (isExclusiveQuery(query)) return buildProductExclusiveResponse(product);
+  if (isRookiePatchAutoQuery(query)) return buildProductRookiePatchAutoResponse(product);
+  if (isOnCardAutoQuery(query)) return buildOnCardKnowledgeResponse();
+  if (isShortPrintQuery(query)) return buildProductSspResponse(product);
+  if (isRookieAutoQuery(query)) return buildProductRookieAutoResponse(product);
+  if (isProductRookieQuery(query)) return buildProductRookieChecklistResponse(product);
+  if (isAutographQuery(query)) return buildChecklistSummaryResponse(product.name + " autographs");
+
+  return null;
+}
+
 async function buildProductNumberedPrintRunResponse(numberedReq) {
   const product = numberedReq.printRunProduct || numberedReq.product;
 
@@ -3352,7 +4480,7 @@ async function buildProductNumberedPrintRunResponse(numberedReq) {
 }
 
 async function buildPlayerSerialYearChoiceResponse(numberedReq) {
-  await loadPlayerMeta();
+  await loadPlayerMeta().catch(() => []);
 
   const meta = getPlayerMetaEntry(numberedReq.playerName);
   let fallbackYears = [];
@@ -3361,8 +4489,6 @@ async function buildPlayerSerialYearChoiceResponse(numberedReq) {
     fallbackYears = meta.checklist_years.map(y =>
       typeof y === "object" && y !== null ? String(y.year || "").trim() : String(y || "").trim()
     ).filter(Boolean);
-  } else {
-    fallbackYears = await getPlayerYears(numberedReq.playerName, numberedReq.sport || "baseball");
   }
 
   const yearOptions = getPlayerYearOptions(numberedReq.playerName, fallbackYears);
@@ -3754,7 +4880,7 @@ async function buildPlayerChoiceResponse(playerReq) {
 }
 
 async function buildPlayerStatsPlaceholderResponse(playerReq) {
-  await loadPlayerMeta();
+  await loadPlayerMeta().catch(() => []);
   await loadPlayerStats().catch(() => {});
 
   const stats = getPlayerStatsEntry(playerReq.playerName);
@@ -3768,8 +4894,18 @@ async function buildPlayerStatsPlaceholderResponse(playerReq) {
     fallbackYears = meta.checklist_years.map(y =>
       typeof y === "object" && y !== null ? String(y.year || "").trim() : String(y || "").trim()
     ).filter(Boolean);
-  } else {
-    fallbackYears = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
+  }
+
+  const coverage = fallbackYears.length
+    ? {
+      years: sortYearsDesc(fallbackYears),
+      rcYear: String(meta?.rc_year || "").trim(),
+      productCount: 0
+    }
+    : await getStaticPlayerCoverage({ ...playerReq, sport });
+
+  if (!fallbackYears.length && coverage.years.length) {
+    fallbackYears = coverage.years;
   }
 
   const followups = buildPlayerProfileFollowups({ ...playerReq, sport }, fallbackYears);
@@ -3783,8 +4919,8 @@ async function buildPlayerStatsPlaceholderResponse(playerReq) {
   const yearOptions = getPlayerYearOptions(playerReq.playerName, fallbackYears);
   const yearLabels = yearOptions.map(y => y.label || y.year).filter(Boolean);
   const currentYear = yearOptions[0]?.year || "";
-  const sportYearProducts = currentYear && sport ? getProductsForSportYear(sport, currentYear) : [];
-  const rcYear = String(meta?.rc_year || "").trim();
+  const productCount = coverage.productCount || 0;
+  const rcYear = String(meta?.rc_year || coverage.rcYear || "").trim();
 
   if (!shouldUseStats) {
     return {
@@ -3798,7 +4934,7 @@ async function buildPlayerStatsPlaceholderResponse(playerReq) {
         sport ? `Sport: ${sportLabel}` : "",
         rcYear ? `RC Year: ${rcYear}` : "",
         yearOptions.length ? `Checklist Years: ${yearOptions.length}` : "",
-        sportYearProducts.length ? `${currentYear} Products: ${sportYearProducts.length}` : ""
+        productCount ? `Products: ${productCount}` : ""
       ]),
       currentTitle: "Checklist Coverage",
       currentSummary: yearLabels.length
@@ -3808,7 +4944,7 @@ async function buildPlayerStatsPlaceholderResponse(playerReq) {
         Sport: sportLabel,
         "RC Year": rcYear || "-",
         "Years": yearOptions.length || "-",
-        "Products": sportYearProducts.length || "-"
+        "Products": productCount || "-"
       }, ["Sport", "RC Year", "Years", "Products"]),
       careerTitle: "",
       careerSummary: "",
@@ -3817,14 +4953,18 @@ async function buildPlayerStatsPlaceholderResponse(playerReq) {
     };
   }
 
+  const statOrder = stats.player_type === "pitcher"
+    ? ["ERA", "SV", "IP", "SO", "WHIP"]
+    : ["H", "HR", "RBI", "BA", "OPS"];
+
   const currentStats = buildStatEntries(
     stats.current_season?.stat_card,
-    ["AB", "H", "HR", "BA", "R", "RBI", "SB", "OBP", "SLG", "OPS"]
+    statOrder
   );
 
   const careerStats = buildStatEntries(
     stats.career?.stat_card,
-    ["H", "HR", "BA", "R", "RBI", "SB", "OBP", "SLG", "OPS"]
+    statOrder
   );
 
   return {
@@ -3837,8 +4977,9 @@ async function buildPlayerStatsPlaceholderResponse(playerReq) {
     metadata: uniq([
       stats.team ? `Team: ${stats.team}` : "",
       sport ? `Sport: ${sportLabel}` : "",
-      meta?.rc_year ? `RC Year: ${meta.rc_year}` : "",
-      Array.isArray(meta?.checklist_years) ? `Checklist Years: ${meta.checklist_years.length}` : ""
+      rcYear ? `RC Year: ${rcYear}` : "",
+      yearOptions.length ? `Checklist Years: ${yearOptions.length}` : "",
+      productCount ? `Products: ${productCount}` : ""
     ]),
     currentTitle: "Checklist Coverage",
     currentSummary: yearLabels.length
@@ -3848,7 +4989,7 @@ async function buildPlayerStatsPlaceholderResponse(playerReq) {
       Sport: sportLabel,
       "RC Year": rcYear || "-",
       "Years": yearOptions.length || "-",
-      "Products": sportYearProducts.length || "-"
+      "Products": productCount || "-"
     }, ["Sport", "RC Year", "Years", "Products"]),
     extraSections: [
       {
@@ -3865,7 +5006,7 @@ async function buildPlayerStatsPlaceholderResponse(playerReq) {
 }
 
 async function buildPlayerChecklistResponse(playerReq) {
-  await loadPlayerMeta();
+  await loadPlayerMeta().catch(() => []);
 
   pendingProductChoice = null;
   pendingChecklistChoice = null;
@@ -3877,8 +5018,6 @@ async function buildPlayerChecklistResponse(playerReq) {
     fallbackYears = meta.checklist_years.map(y =>
       typeof y === "object" && y !== null ? String(y.year || "").trim() : String(y || "").trim()
     ).filter(Boolean);
-  } else {
-    fallbackYears = await getPlayerYears(playerReq.playerName, playerReq.sport || "baseball");
   }
 
   const yearOptions = getPlayerYearOptions(playerReq.playerName, fallbackYears);
@@ -4122,16 +5261,17 @@ async function buildChecklistSummaryResponse(query) {
   }
 
   const summary = await getChecklistSummary(product.code);
+  const hydratedSummary = await hydrateChecklistSummaryCounts(product, summary);
 
   pendingChecklistChoice = {
     product,
-    summary
+    summary: hydratedSummary
   };
 
   const directSection = detectChecklistSectionIntent(query);
   if (directSection) return buildChecklistSectionResponse(directSection);
 
-  const countsLine = summarizeChecklistCounts(summary);
+  const countsLine = summarizeChecklistCounts(hydratedSummary);
 
   return {
     type: "standard",
@@ -4139,11 +5279,11 @@ async function buildChecklistSummaryResponse(query) {
     title: product.name,
     summary: `I found a matching checklist.${countsLine ? ` ${countsLine}.` : ""} Are you looking for the entire checklist or a checklist for base, inserts, autographs, relics, variations, or parallels?`,
     metadata: uniq([
-      summary.counts?.all ? `Rows: ${formatNumber(summary.counts.all)}` : "",
+      hydratedSummary.counts?.all ? `Rows: ${formatNumber(hydratedSummary.counts.all)}` : "",
       product.year ? `Year: ${product.year}` : "",
       product.sport ? `Sport: ${titleCase(product.sport)}` : ""
     ]),
-    followups: buildProductChecklistFollowups(product, summary)
+    followups: buildProductChecklistFollowups(product, hydratedSummary)
   };
 }
 
@@ -4195,6 +5335,35 @@ async function buildSearchResponse(query) {
   if (isCatalogCoverageQuestion(query)) return buildAskSportResponse();
   if (isPricingQuestion(query)) return buildPricingResponse();
   if (isDataSourceQuestion(query)) return buildDataSourceResponse();
+  if (isSuperfractorOddsQuery(query)) return buildSuperfractorOddsResponse(query);
+  if (isRefractorEducationQuery(query)) return buildRefractorEducationResponse();
+  if (isEveryParallelForCardQuery(query)) return buildEveryParallelForCardResponse();
+  if (isBestRookieClassQuery(query)) return buildBestRookieClassResponse();
+  if (isOnCardAutoQuery(query)) return buildOnCardKnowledgeResponse();
+
+  if (!pendingChecklistChoice?.product && !isShortPrintQuery(query) && isNumberedSearchQuery(query) && !stripProductCollectorFilterWords(query)) {
+    return buildCollectorNeedsProductResponse("Serial Numbered", query);
+  }
+
+  if (pendingChecklistChoice?.product) {
+    const contextSerialMax = extractNumberedThreshold(query);
+    if (contextSerialMax && !isShortPrintQuery(query) && (isSerialOnlyProductQuestion(query) || isNumberedSearchQuery(query))) {
+      return buildProductSerialResponse({
+        product: pendingChecklistChoice.product,
+        checklistProduct: pendingChecklistChoice.product,
+        serialMax: contextSerialMax,
+        thresholdLabel: getThresholdLabel(query, contextSerialMax),
+        mode: "serial",
+        originalQuery: query
+      });
+    }
+
+    const collectorContextResponse = await buildCollectorProductIntentResponse(query, pendingChecklistChoice.product);
+    if (collectorContextResponse) return collectorContextResponse;
+  }
+
+  if (isParallelRarityQuestion(query)) return buildParallelRarityResponse(query);
+  if (isParallelCompareQuestion(query)) return buildParallelCompareResponse(query);
 
   const numberedReq = detectNumberedPlayerSearchRequest(query);
   if (numberedReq) {
@@ -4216,7 +5385,7 @@ async function buildSearchResponse(query) {
     let resolvedNumberedReq = resolvePlayerRequestFromOptions(aliasNumberedReq, playerOptions);
 
     if (isRookieCardIntent(resolvedNumberedReq.originalQuery || "") && !resolvedNumberedReq.year) {
-      await loadPlayerMeta();
+      await loadPlayerMeta().catch(() => []);
 
       const meta = getPlayerMetaEntry(resolvedNumberedReq.playerName);
       const rcYear = getRcYearForPlayerRequest(resolvedNumberedReq, meta);
@@ -4254,6 +5423,23 @@ async function buildSearchResponse(query) {
     return buildProductSerialResponse(productNumberedReq);
   }
 
+  const productSectionIntent = detectChecklistSectionIntent(query);
+  if (productSectionIntent) {
+    const cleanedSectionProductQuery = stripProductCollectorFilterWords(query) || stripIntentWords(query) || query;
+    const product =
+      findBestProduct(getChecklistIndex(), cleanedSectionProductQuery, "checklist") ||
+      findBestProduct(getChecklistIndex(), query, "checklist") ||
+      findBestProduct(getChecklistIndex(), stripIntentWords(query), "checklist");
+
+    if (product?.code) {
+      pendingChecklistChoice = {
+        product,
+        summary: await hydrateChecklistSummaryCounts(product, await getChecklistSummary(product.code))
+      };
+      return buildChecklistSectionResponse(productSectionIntent);
+    }
+  }
+
   const playerReq = detectPlayerSearchRequest(query);
   if (playerReq) {
     const aliasClarification = await getClarifyPlayerAliasOptions(playerReq);
@@ -4274,8 +5460,8 @@ async function buildSearchResponse(query) {
     const resolvedPlayerReq = resolvePlayerRequestFromOptions(aliasPlayerReq, playerOptions);
     let productSeedPlayerReq = resolvedPlayerReq;
 
-    if (isRookieCardIntent(productSeedPlayerReq.originalQuery || "") && !productSeedPlayerReq.year && !productSeedPlayerReq.code) {
-      await loadPlayerMeta();
+    if (!detectPlayerRowFilterIntent(productSeedPlayerReq.originalQuery || "") && isRookieCardIntent(productSeedPlayerReq.originalQuery || "") && !productSeedPlayerReq.year && !productSeedPlayerReq.code) {
+      await loadPlayerMeta().catch(() => []);
 
       const meta = getPlayerMetaEntry(productSeedPlayerReq.playerName);
       const rcYear = getRcYearForPlayerRequest(productSeedPlayerReq, meta);
@@ -4302,8 +5488,8 @@ async function buildSearchResponse(query) {
         filter: rowFilter
       };
 
-      if (isRookieCardIntent(filteredPlayerReq.originalQuery || "") && !filteredPlayerReq.year && !filteredPlayerReq.code) {
-        await loadPlayerMeta();
+      if (!["rookies", "rookie_autos", "rookie_patch_autos"].includes(rowFilter.key) && isRookieCardIntent(filteredPlayerReq.originalQuery || "") && !filteredPlayerReq.year && !filteredPlayerReq.code) {
+        await loadPlayerMeta().catch(() => []);
 
         const meta = getPlayerMetaEntry(filteredPlayerReq.playerName);
         const rcYear = getRcYearForPlayerRequest(filteredPlayerReq, meta);
@@ -4330,8 +5516,35 @@ async function buildSearchResponse(query) {
     return buildPlayerChoiceResponse(productAwarePlayerReq);
   }
 
-  const productMatchQuery = isProductRookieQuery(query)
-    ? (stripProductRookieWords(query) || query)
+  const isProductCollectorFilterQuery =
+    isProductRookieQuery(query) ||
+    isShortPrintQuery(query) ||
+    isSerialOnlyProductQuestion(query) ||
+    isLowestNumberedProductQuestion(query) ||
+    isRarestParallelQuestion(query) ||
+    isCaseHitQuery(query) ||
+    isExclusiveQuery(query) ||
+    isOnCardAutoQuery(query) ||
+    isRookiePatchAutoQuery(query) ||
+    isChaseCardsQuery(query) ||
+    isHardestPullQuery(query);
+  if (isProductCollectorFilterQuery && !stripProductCollectorFilterWords(query)) {
+    return buildCollectorNeedsProductResponse(
+      isHardestPullQuery(query) ? "Hardest Pulls" :
+      isChaseCardsQuery(query) ? "Chase Cards" :
+      isCaseHitQuery(query) ? "Case Hits" :
+      isExclusiveQuery(query) ? "Retail Exclusives" :
+      isOnCardAutoQuery(query) ? "On-Card Autographs" :
+      isRookiePatchAutoQuery(query) ? "Rookie Patch Autographs" :
+      isRookieAutoQuery(query) ? "Rookie Autographs" :
+      isShortPrintQuery(query) ? "Short Prints" :
+      isRarestParallelQuestion(query) ? "Rarest Parallels" :
+      "Collector Search",
+      query
+    );
+  }
+  const productMatchQuery = isProductCollectorFilterQuery
+    ? (stripProductCollectorFilterWords(query) || query)
     : query;
   const directBaseProduct = findDirectBaseProductMatch(productMatchQuery);
   if (directBaseProduct) {
@@ -4345,9 +5558,8 @@ async function buildSearchResponse(query) {
       return buildChecklistSummaryResponse(directBaseProduct.name);
     }
 
-    if (isProductRookieQuery(query)) {
-      return buildProductRookieChecklistResponse(directBaseProduct);
-    }
+    const collectorResponse = await buildCollectorProductIntentResponse(query, directBaseProduct);
+    if (collectorResponse) return collectorResponse;
 
     return buildProductProfileResponse(directBaseProduct, query);
   }
@@ -4396,9 +5608,8 @@ async function buildSearchResponse(query) {
       return buildChecklistSummaryResponse(preferredBaseOption.name);
     }
 
-    if (isProductRookieQuery(query)) {
-      return buildProductRookieChecklistResponse(preferredBaseOption);
-    }
+    const collectorResponse = await buildCollectorProductIntentResponse(query, preferredBaseOption);
+    if (collectorResponse) return collectorResponse;
 
     return buildProductProfileResponse(preferredBaseOption, query);
   }
@@ -4416,9 +5627,8 @@ async function buildSearchResponse(query) {
     return buildChecklistSummaryResponse(query);
   }
 
-  if (isProductRookieQuery(query)) {
-    return buildProductRookieChecklistResponse(matches.winner);
-  }
+  const collectorResponse = await buildCollectorProductIntentResponse(query, matches.winner);
+  if (collectorResponse) return collectorResponse;
 
   if (shouldOpenProductProfile(matches)) {
     return buildProductProfileResponse(matches.winner, query);
@@ -4485,7 +5695,7 @@ async function buildResponse(query) {
         };
 
         if (isRookieCardIntent(numberedReq.originalQuery || "") && !numberedReq.year) {
-          await loadPlayerMeta();
+          await loadPlayerMeta().catch(() => []);
 
           const meta = getPlayerMetaEntry(numberedReq.playerName);
           const rcYear = getRcYearForPlayerRequest(numberedReq, meta);
@@ -4520,8 +5730,8 @@ async function buildResponse(query) {
         sport: selectedPlayer.sport || selectedRequest.sport || "baseball"
       };
 
-      if (isRookieCardIntent(playerReq.originalQuery || "") && !playerReq.year && !playerReq.code) {
-        await loadPlayerMeta();
+      if (!detectPlayerRowFilterIntent(playerReq.originalQuery || "") && isRookieCardIntent(playerReq.originalQuery || "") && !playerReq.year && !playerReq.code) {
+        await loadPlayerMeta().catch(() => []);
 
         const meta = getPlayerMetaEntry(playerReq.playerName);
         const rcYear = getRcYearForPlayerRequest(playerReq, meta);
@@ -4580,9 +5790,8 @@ async function buildResponse(query) {
         return buildPrintRunResponse(selectedProduct.name);
       }
 
-      if (isProductRookieQuery(selectedOriginalQuery)) {
-        return buildProductRookieChecklistResponse(selectedProduct);
-      }
+      const collectorResponse = await buildCollectorProductIntentResponse(selectedOriginalQuery, selectedProduct);
+      if (collectorResponse) return collectorResponse;
 
       return buildProductProfileResponse(selectedProduct, selectedProduct.name);
     }
@@ -4722,7 +5931,10 @@ async function submitQuery(text) {
   ], 1500);
 
   try {
-    await bootstrapData();
+    await Promise.race([
+      bootstrapData(),
+      new Promise(resolve => setTimeout(resolve, 2200))
+    ]);
     const res = await buildResponse(val);
     const selectedType =
       res.type === "prv" ? "Print Run" :
@@ -4751,18 +5963,11 @@ async function submitQuery(text) {
       ui.addStandardAnswerCard(res);
     }
 
-    logEvent({
-      app: "chat_demo",
-      page: "fake_chatbot",
-      event_type: "chat_query",
-      query: lastSubmittedQuery,
-      selected_name: res.product?.name || res.title || "",
+    logEvent(buildChatLogPayload("search_submit", lastSubmittedQuery, res, {
       selected_type: selectedType,
-      route_target:
-        res.type === "prv" ? "vault" :
-        res.type === "checklist_table" ? "checklists" :
-        res.type === "release_schedule" ? "release_schedule" : ""
-    });
+      metadata_1: res.type || "",
+      metadata_2: res.sectionLabel || ""
+    }));
   } catch (err) {
     console.error(err);
 
@@ -4773,6 +5978,13 @@ async function submitQuery(text) {
       title: "Something went wrong",
       summary: "The chat could not load data right now. Please try again."
     });
+
+    logEvent(buildChatLogPayload("search_submit", lastSubmittedQuery, null, {
+      selected_type: "Error",
+      route_target: "chatbot",
+      status: "error",
+      status_note: err && err.message ? err.message : String(err || "Unknown error")
+    }));
   }
 }
 
@@ -4783,8 +5995,8 @@ function initChat() {
   ui.setSubmitHandler(submitQuery);
   ui.setErrorReportHandler(async ({ details }) => {
     return submitErrorReport({
-      app: "chat_demo",
-      page: "fake_chatbot",
+      app: "chatbot",
+      page: "chatbot",
       query: lastSubmittedQuery || "",
       details: String(details || "").trim(),
       user_agent: navigator.userAgent || ""
@@ -4792,8 +6004,8 @@ function initChat() {
   });
   ui.setResultFeedbackHandler(async ({ feedback, query, result_title, result_type }) => {
     return submitResultFeedback({
-      app: "chat_demo",
-      page: "fake_chatbot",
+      app: "chatbot",
+      page: "chatbot",
       query: query || lastSubmittedQuery || "",
       feedback: feedback || "",
       result_title: result_title || "",
@@ -4801,9 +6013,14 @@ function initChat() {
     });
   });
 
-  requestAnimationFrame(() => ui.addWelcomeMessage(true));
+  const urlQuery = new URLSearchParams(window.location.search).get("q") || "";
+  requestAnimationFrame(() => ui.addWelcomeMessage(!urlQuery));
 
   bootstrapData().catch(err => console.warn("Bootstrap failed", err));
+
+  if (urlQuery) {
+    setTimeout(() => submitQuery(urlQuery), 250);
+  }
 
   setTimeout(() => {
     preloadPlayerDataInBackground();

@@ -28,8 +28,13 @@ window.CMChat.store = window.CMChat.store || {};
         return ns.checklistIndex;
       }
 
-      const data = await api.postJson(config.CHECKLIST_EXEC_URL, { action: "index" });
-      ns.checklistIndex = Array.isArray(data?.index) ? data.index : [];
+      try {
+        ns.checklistIndex = await api.loadChecklistIndexStatic();
+      } catch (err) {
+        console.warn("Static checklist index failed; falling back", err);
+        const data = await api.postJson(config.CHECKLIST_EXEC_URL, { action: "index" });
+        ns.checklistIndex = Array.isArray(data?.index) ? data.index : [];
+      }
       cache.setCached(config.CL_INDEX_KEY, config.CL_INDEX_TS_KEY, ns.checklistIndex);
       return ns.checklistIndex;
     })();
@@ -48,8 +53,13 @@ window.CMChat.store = window.CMChat.store || {};
         return ns.printRunIndex;
       }
 
-      const data = await api.postJson(config.VAULT_EXEC_URL, { action: "index" });
-      ns.printRunIndex = Array.isArray(data?.index) ? data.index : (Array.isArray(data?.products) ? data.products : []);
+      try {
+        ns.printRunIndex = await api.loadVaultIndexStatic();
+      } catch (err) {
+        console.warn("Static print run index failed; falling back", err);
+        const data = await api.postJson(config.VAULT_EXEC_URL, { action: "index" });
+        ns.printRunIndex = Array.isArray(data?.index) ? data.index : (Array.isArray(data?.products) ? data.products : []);
+      }
       cache.setCached(config.PRV_INDEX_KEY, config.PRV_INDEX_TS_KEY, ns.printRunIndex);
       return ns.printRunIndex;
     })();
@@ -62,6 +72,10 @@ window.CMChat.store = window.CMChat.store || {};
     if (ns.playerMetaPromise) return ns.playerMetaPromise;
 
     ns.playerMetaPromise = (async () => {
+      ns.playerMetaIndex = [];
+      ns.playerMetaByName = {};
+      return ns.playerMetaIndex;
+
       const cached = cache.getCachedWithTtl(config.PLAYER_META_KEY, config.PLAYER_META_TS_KEY, config.PLAYER_DATA_TTL_MS);
       if (cached) {
         ns.playerMetaIndex = Array.isArray(cached?.players) ? cached.players : (Array.isArray(cached) ? cached : []);
@@ -73,8 +87,24 @@ window.CMChat.store = window.CMChat.store || {};
         return ns.playerMetaIndex;
       }
 
-      const res = await fetch(config.PLAYER_META_URL, { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      let res;
+      try {
+        res = await fetchWithTimeout(config.PLAYER_META_URL, {
+          cache: "no-store"
+        }, 4500);
+      } catch (err) {
+        console.warn("Player meta index unavailable; continuing with static search data", err);
+        ns.playerMetaIndex = [];
+        ns.playerMetaByName = {};
+        return ns.playerMetaIndex;
+      }
+
+      if (!res.ok) {
+        console.warn("Player meta index unavailable; continuing with static search data", `HTTP ${res.status}`);
+        ns.playerMetaIndex = [];
+        ns.playerMetaByName = {};
+        return ns.playerMetaIndex;
+      }
 
       const data = await res.json();
       ns.playerMetaIndex = Array.isArray(data?.players) ? data.players : [];
@@ -107,11 +137,11 @@ window.CMChat.store = window.CMChat.store || {};
         return ns.playerStatsData;
       }
 
-      const res = await fetch(config.PLAYER_STATS_JSON_URL, { cache: "no-store" });
+      const res = await fetchWithTimeout(config.PLAYER_STATS_JSON_URL, { cache: "force-cache" }, 6500);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const data = await res.json();
-      ns.playerStatsData = data || { players: [] };
+      ns.playerStatsData = normalizePlayerStatsData(data || { players: [] });
       ns.playerStatsByName = {};
       (ns.playerStatsData.players || []).forEach(p => {
         const key = utils.normalize(p.player_name || "");
@@ -152,6 +182,74 @@ window.CMChat.store = window.CMChat.store || {};
     })();
 
     return ns.releaseSchedulePromise;
+  }
+
+  async function fetchWithTimeout(url, options, timeoutMs) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs || 5000);
+
+    try {
+      return await fetch(url, {
+        ...(options || {}),
+        signal: controller.signal
+      });
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  function normalizeStatValue(value) {
+    if (value === null || value === undefined || value === "") return "";
+    return String(value);
+  }
+
+  function normalizeMlbStatCard(stats, playerType) {
+    const raw = stats || {};
+    if (playerType === "pitcher") {
+      return {
+        ERA: normalizeStatValue(raw.era),
+        SV: normalizeStatValue(raw.sv),
+        IP: normalizeStatValue(raw.ip),
+        SO: normalizeStatValue(raw.so),
+        WHIP: normalizeStatValue(raw.whip)
+      };
+    }
+
+    return {
+      H: normalizeStatValue(raw.h),
+      HR: normalizeStatValue(raw.hr),
+      RBI: normalizeStatValue(raw.rbi),
+      BA: normalizeStatValue(raw.ba),
+      OPS: normalizeStatValue(raw.ops)
+    };
+  }
+
+  function normalizePlayerStatsData(data) {
+    const players = Array.isArray(data?.players) ? data.players : [];
+
+    return {
+      ok: data?.ok !== false,
+      source: data?.source || "static",
+      generated_at: data?.generated_at || "",
+      players: players.map(player => {
+        const playerType = player.player_type || player.type || "hitter";
+        return {
+          ...player,
+          player_name: player.player_name || player.player || player.name || "",
+          player_type: playerType,
+          sport: player.sport || "baseball",
+          current_season: player.current_season || {
+            season: player.season_year || player.year || "",
+            stat_card: normalizeMlbStatCard(player.season, playerType)
+          },
+          career: player.career && player.career.stat_card
+            ? player.career
+            : {
+              stat_card: normalizeMlbStatCard(player.career, playerType)
+            }
+        };
+      }).filter(player => player.player_name)
+    };
   }
 
   async function bootstrapData() {

@@ -176,6 +176,34 @@ a {
   border-color: rgba(57,160,255,0.24);
 }
 
+.source-check-panel {
+  margin-top: 14px;
+}
+
+.source-check-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 170px auto;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.source-check-form input {
+  min-width: 0;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+  padding: 0 12px;
+  font: inherit;
+  font-weight: 800;
+  outline: none;
+}
+
+.source-check-result {
+  margin-top: 10px;
+}
+
 .two-col {
   grid-template-columns: 0.85fr 1.15fr;
 }
@@ -282,6 +310,25 @@ h2 {
   display: grid;
   gap: 11px;
   background: linear-gradient(180deg, rgba(57,160,255,0.08), rgba(255,255,255,0.035));
+}
+
+.source-result-card {
+  border: 1px solid var(--line);
+  background: var(--panel2);
+  border-radius: 14px;
+  padding: 13px;
+  display: grid;
+  gap: 10px;
+}
+
+.source-result-card.covered {
+  border-color: rgba(51,209,122,0.28);
+  background: linear-gradient(180deg, rgba(51,209,122,0.08), rgba(255,255,255,0.035));
+}
+
+.source-result-card.missing {
+  border-color: rgba(255,174,66,0.30);
+  background: linear-gradient(180deg, rgba(255,174,66,0.08), rgba(255,255,255,0.035));
 }
 
 .next-action-card {
@@ -498,6 +545,7 @@ h2 {
   .status-strip,
   .two-col,
   .three-col,
+  .source-check-form,
   .next-plan,
   .task-steps {
     grid-template-columns: 1fr;

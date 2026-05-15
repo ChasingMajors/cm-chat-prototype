@@ -2,6 +2,7 @@
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
+  const BLOCKED_SOURCE_TERMS = ["mma", "ufc", "wwe", "wrestling", "racing", "nascar", "f1", "formula 1", "pokemon", "marvel", "disney", "star wars"];
   const APPROVAL_KEY = "cm_command_center_opportunity_status_v1";
   const TASK_KEY = "cm_command_center_operator_tasks_v1";
 
@@ -15,6 +16,9 @@
   const els = {
     refreshBtn: document.getElementById("refreshBtn"),
     clearDoneBtn: document.getElementById("clearDoneBtn"),
+    sourceCheckBtn: document.getElementById("sourceCheckBtn"),
+    sourceTitleInput: document.getElementById("sourceTitleInput"),
+    sourceSportInput: document.getElementById("sourceSportInput"),
     typeFilter: document.getElementById("typeFilter"),
     systemState: document.getElementById("systemState"),
     opportunityCount: document.getElementById("opportunityCount"),
@@ -22,6 +26,7 @@
     lastAudit: document.getElementById("lastAudit"),
     nextActionList: document.getElementById("nextActionList"),
     operatorTaskList: document.getElementById("operatorTaskList"),
+    sourceCheckResult: document.getElementById("sourceCheckResult"),
     briefList: document.getElementById("briefList"),
     opportunityList: document.getElementById("opportunityList"),
     dataHealthStats: document.getElementById("dataHealthStats"),
@@ -94,6 +99,23 @@
 
   function getProductSport(item) {
     return normalize(item && item.sport);
+  }
+
+  function getProductSearchText(item) {
+    return normalize([
+      item && (item.DisplayName || item.displayName || item.display_name || item.name),
+      item && (item.Keywords || item.keywords),
+      item && (item.Code || item.code)
+    ].filter(Boolean).join(" "));
+  }
+
+  function isAllowedSport(value) {
+    return SPORTS.includes(normalize(value));
+  }
+
+  function hasBlockedSourceTerm(value) {
+    const text = normalize(value);
+    return BLOCKED_SOURCE_TERMS.some(term => text.includes(normalize(term)));
   }
 
   async function fetchJson(url) {
@@ -677,6 +699,146 @@
     return task;
   }
 
+  function createSourceImportTask(sourceTitle, sport) {
+    const action = {
+      id: `source|${normalize(sport)}|${normalize(sourceTitle)}`,
+      title: `Import missing source product: ${sourceTitle}`,
+      kind: "operator",
+      severity: "warning",
+      relatedType: "data_gap",
+      why: "A supported source product was not found in the current Chasing Majors static checklist data.",
+      now: "Review the source page, import rows into the correct Google Sheet, publish JSON, and retest search.",
+      afterApproval: `Prepare an import task for the ${titleCase(sport)} checklist source and validate the product after publishing.`
+    };
+
+    return createOperatorTask(action);
+  }
+
+  function findSourceProductMatch(sourceTitle, sport) {
+    if (!state.audit || !Array.isArray(state.audit.checklistIndex)) return null;
+
+    const sourceNorm = normalize(sourceTitle);
+    const sourceCompact = sourceNorm.replace(/\s+/g, "");
+    const candidates = state.audit.checklistIndex
+      .filter(item => getProductSport(item) === normalize(sport))
+      .map(item => {
+        const text = getProductSearchText(item);
+        const display = getProductName(item);
+        const displayNorm = normalize(display);
+        const displayCompact = displayNorm.replace(/\s+/g, "");
+        let score = 0;
+
+        if (displayNorm === sourceNorm) score += 200;
+        if (displayCompact === sourceCompact) score += 180;
+        if (text.includes(sourceNorm)) score += 120;
+        if (sourceNorm.includes(displayNorm) && displayNorm.length > 8) score += 80;
+
+        sourceNorm.split(" ").filter(Boolean).forEach(token => {
+          if (text.includes(token)) score += 4;
+        });
+
+        return { item, score };
+      })
+      .filter(result => result.score >= 70)
+      .sort((a, b) => b.score - a.score);
+
+    return candidates[0] || null;
+  }
+
+  function getChecklistProductPayload(code, sport) {
+    const productsBySport = state.audit && state.audit.productsBySport;
+    return productsBySport && productsBySport[sport] && productsBySport[sport][code];
+  }
+
+  function validateSourceProduct() {
+    const sourceTitle = String(els.sourceTitleInput.value || "").trim();
+    const sport = normalize(els.sourceSportInput.value || "");
+
+    if (!state.audit || !Array.isArray(state.audit.checklistIndex)) {
+      renderSourceCheckMessage("Audit still loading", "Wait for System to show Ready, then validate the source again.", "warning");
+      return;
+    }
+
+    if (!sourceTitle) {
+      renderSourceCheckMessage("Missing source title", "Enter the product title from the source page.", "warning");
+      return;
+    }
+
+    if (!isAllowedSport(sport)) {
+      renderSourceCheckMessage("Unsupported sport", "Only baseball, football, basketball, hockey, and soccer are supported.", "critical");
+      return;
+    }
+
+    if (hasBlockedSourceTerm(sourceTitle)) {
+      renderSourceCheckMessage("Ignored source category", "This looks like MMA, WWE, racing, entertainment, or another blocked category. No task created.", "warning");
+      return;
+    }
+
+    const match = findSourceProductMatch(sourceTitle, sport);
+
+    if (match && match.item) {
+      const code = getProductCode(match.item);
+      const payload = getChecklistProductPayload(code, sport) || {};
+      const rows = Array.isArray(payload.rows) ? payload.rows.length : 0;
+      const parallels = Array.isArray(payload.parallels) ? payload.parallels.length : 0;
+
+      els.sourceCheckResult.innerHTML = `
+        <div class="source-result-card covered">
+          <div class="opp-top">
+            <div>
+              <h3>Already covered</h3>
+              <p>${escapeHtml(getProductName(match.item))}</p>
+            </div>
+            <span class="badge opportunity">covered</span>
+          </div>
+          <div class="opp-meta">
+            <span class="pill">Sport: ${escapeHtml(titleCase(sport))}</span>
+            <span class="pill">Code: ${escapeHtml(code)}</span>
+            <span class="pill">Rows: ${formatNumber(rows)}</span>
+            <span class="pill">Parallels: ${formatNumber(parallels)}</span>
+          </div>
+          <p>No Google Sheet update is needed unless the source has newer rows or parallel details than Chasing Majors currently has.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const task = createSourceImportTask(sourceTitle, sport);
+    renderOperatorTasks();
+
+    els.sourceCheckResult.innerHTML = `
+      <div class="source-result-card missing">
+        <div class="opp-top">
+          <div>
+            <h3>Missing from Chasing Majors</h3>
+            <p>${escapeHtml(sourceTitle)}</p>
+          </div>
+          <span class="badge warning">task created</span>
+        </div>
+        <p>This supported product was not found in live checklist data. I created an Operator Task for review and import planning.</p>
+        <div class="opp-meta">
+          <span class="pill">Sport: ${escapeHtml(titleCase(sport))}</span>
+          <span class="pill">Task: ${escapeHtml(task.status)}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderSourceCheckMessage(title, detail, severity) {
+    const badgeClass = severity === "critical" ? "critical" : severity === "warning" ? "warning" : "info";
+    els.sourceCheckResult.innerHTML = `
+      <div class="source-result-card">
+        <div class="opp-top">
+          <div>
+            <h3>${escapeHtml(title)}</h3>
+            <p>${escapeHtml(detail)}</p>
+          </div>
+          <span class="badge ${badgeClass}">${escapeHtml(severity || "info")}</span>
+        </div>
+      </div>
+    `;
+  }
+
   function setTaskStatus(taskId, status) {
     const task = state.tasks.find(item => item.id === taskId);
     if (!task) return;
@@ -741,6 +903,8 @@
         checklistCount: checklistIndex.length,
         vaultCount: vaultIndex.length,
         releaseCount: releaseRows.length,
+        checklistIndex,
+        productsBySport: bundleData.productsBySport,
         bundleErrors: bundleData.errors.length,
         vaultErrors: vaultData.errors.length,
         checklistStats: checklistAudit.stats,
@@ -1067,6 +1231,13 @@
 
   els.refreshBtn.addEventListener("click", runAudit);
   els.clearDoneBtn.addEventListener("click", clearDoneTasks);
+  els.sourceCheckBtn.addEventListener("click", validateSourceProduct);
+  els.sourceTitleInput.addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      validateSourceProduct();
+    }
+  });
   els.typeFilter.addEventListener("change", renderOpportunities);
   runAudit();
 })();

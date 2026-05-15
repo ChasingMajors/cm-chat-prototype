@@ -6,32 +6,32 @@ window.CMChat.config = {
   LOG_EXEC_URL: "https://script.google.com/macros/s/AKfycbyuTmGksD9ZF89Ij0VmnUeJqP0OcFL5qCe-MUjN0JonJ8QTlfpMsf0XRKZzCwLdFdiF/exec",
   RELEASE_SCHEDULE_EXEC_URL: "https://script.google.com/macros/s/AKfycbzWRkmn2xhvsaqvlMxx4AJmqvpyDTR6wKmd9rvpr4ttzXOkH9vH4qPxk59YlEHVMInlHw/exec",
 
-  STATIC_DATA_BASE: "/data/v1",
-  RELEASE_SCHEDULE_JSON_URL: "/data/v2/releases/schedule.json",
+  STATIC_DATA_BASE: "https://app.chasingmajors.com/data/v1",
+  RELEASE_SCHEDULE_JSON_URL: "https://app.chasingmajors.com/data/v2/releases/schedule.json",
 
   get PLAYER_META_URL() {
     return `${this.CHECKLIST_EXEC_URL}?action=playerMetaIndex`;
   },
 
-  PLAYER_STATS_JSON_URL: "/data/v1/players/mlb-stats.json",
+  PLAYER_STATS_JSON_URL: "https://app.chasingmajors.com/data/v1/players/mlb-stats.json",
 
-  CHECKLIST_BASE_URL: "/checklists/",
-  VAULT_BASE_URL: "/vault/",
+  CHECKLIST_BASE_URL: "https://app.chasingmajors.com/checklists/",
+  VAULT_BASE_URL: "https://app.chasingmajors.com/vault/",
 
-  CL_INDEX_KEY: "cm_chat_cl_index_v21_static",
-  PRV_INDEX_KEY: "cm_chat_prv_index_v10_static",
-  CL_INDEX_TS_KEY: "cm_chat_cl_index_ts_v21_static",
-  PRV_INDEX_TS_KEY: "cm_chat_prv_index_ts_v10_static",
+  CL_INDEX_KEY: "cm_chat_sandbox_cl_index_v1_static",
+  PRV_INDEX_KEY: "cm_chat_sandbox_prv_index_v1_static",
+  CL_INDEX_TS_KEY: "cm_chat_sandbox_cl_index_ts_v1_static",
+  PRV_INDEX_TS_KEY: "cm_chat_sandbox_prv_index_ts_v1_static",
   INDEX_TTL_MS: 1000 * 60 * 30,
 
-  PLAYER_META_KEY: "cm_chat_player_meta_v3",
-  PLAYER_STATS_KEY: "cm_chat_player_stats_v2_static",
-  PLAYER_META_TS_KEY: "cm_chat_player_meta_ts_v3",
-  PLAYER_STATS_TS_KEY: "cm_chat_player_stats_ts_v2_static",
+  PLAYER_META_KEY: "cm_chat_sandbox_player_meta_v1",
+  PLAYER_STATS_KEY: "cm_chat_sandbox_player_stats_v1_static",
+  PLAYER_META_TS_KEY: "cm_chat_sandbox_player_meta_ts_v1",
+  PLAYER_STATS_TS_KEY: "cm_chat_sandbox_player_stats_ts_v1_static",
   PLAYER_DATA_TTL_MS: 1000 * 60 * 60 * 6,
 
-  RELEASE_SCHEDULE_KEY: "cm_chat_release_schedule_v2_static",
-  RELEASE_SCHEDULE_TS_KEY: "cm_chat_release_schedule_ts_v2_static",
+  RELEASE_SCHEDULE_KEY: "cm_chat_sandbox_release_schedule_v1_static",
+  RELEASE_SCHEDULE_TS_KEY: "cm_chat_sandbox_release_schedule_ts_v1_static",
   RELEASE_SCHEDULE_TTL_MS: 1000 * 60 * 15,
 
   EXAMPLES: [],

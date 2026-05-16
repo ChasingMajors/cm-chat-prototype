@@ -22,6 +22,7 @@
 const CM_OPERATOR_VERSION = "2026-05-15-operator-v2";
 const CM_APP_DATA_BASE = "https://app.chasingmajors.com/data/v1";
 const CM_CHECKLISTCENTER_HOME = "https://www.checklistcenter.com/";
+const CM_CHECKLISTCENTER_POSTS_API = "https://www.checklistcenter.com/wp-json/wp/v2/posts?per_page=20&_fields=link,title,date,slug";
 const CM_ALLOWED_SPORTS = ["baseball", "football", "basketball", "hockey", "soccer"];
 const CM_PRODUCTS_SHEET = "Products";
 const CM_CHECKLIST_ROWS_SHEET = "ChecklistRows";
@@ -380,6 +381,37 @@ function validateSourceProduct_(input) {
 }
 
 function fetchRecentChecklistCenterItems_() {
+  const wpItems = fetchRecentChecklistCenterItemsFromApi_();
+  const homeItems = fetchRecentChecklistCenterItemsFromHome_();
+  return mergeSourceItems_(wpItems.concat(homeItems)).slice(0, 40);
+}
+
+function fetchRecentChecklistCenterItemsFromApi_() {
+  try {
+    const posts = JSON.parse(fetchText_(CM_CHECKLISTCENTER_POSTS_API));
+    if (!Array.isArray(posts)) return [];
+
+    return posts.map(function(post) {
+      const titleRaw = post && post.title && post.title.rendered ? post.title.rendered : "";
+      const title = normalizeTitleFromLink_(titleRaw || titleFromChecklistCenterHref_(post && post.link));
+      const url = absoluteChecklistCenterUrl_(post && post.link);
+      const sport = inferSport_(title + " " + url);
+
+      return {
+        title: title,
+        sport: sport,
+        url: url,
+        source_text: stripHtml_(titleRaw),
+        discovery_source: "wordpress_api",
+        published_at: safeString_(post && post.date)
+      };
+    }).filter(isUsableSourceItem_);
+  } catch (err) {
+    return [];
+  }
+}
+
+function fetchRecentChecklistCenterItemsFromHome_() {
   const html = fetchText_(CM_CHECKLISTCENTER_HOME);
   const links = extractChecklistCenterLinks_(html);
   const deduped = {};
@@ -395,16 +427,29 @@ function fetchRecentChecklistCenterItems_() {
       title: title,
       sport: sport,
       url: url,
-      source_text: link.text || ""
+      source_text: link.text || "",
+      discovery_source: "homepage_html"
     };
   });
 
   return Object.keys(deduped)
     .map(function(key) { return deduped[key]; })
-    .filter(function(item) {
-      return item.title && (isAllowedSport_(item.sport) || hasBlockedTerm_(item.title) || item.url);
-    })
+    .filter(isUsableSourceItem_)
     .slice(0, 40);
+}
+
+function mergeSourceItems_(items) {
+  const deduped = {};
+  (items || []).forEach(function(item) {
+    const key = normalize_(item && item.url) || normalize_(item && item.title);
+    if (!key || deduped[key]) return;
+    deduped[key] = item;
+  });
+  return Object.keys(deduped).map(function(key) { return deduped[key]; });
+}
+
+function isUsableSourceItem_(item) {
+  return !!(item && item.title && (isAllowedSport_(item.sport) || hasBlockedTerm_(item.title) || item.url));
 }
 
 function extractChecklistCenterLinks_(html) {
@@ -479,6 +524,7 @@ function classifySourceItem_(item, indexRows) {
         sheet_row_count: Number(match.row_count || 0),
         sheet_parallel_count: Number(match.parallel_count || 0),
         comparison_source: match.comparison_source || "google_sheets",
+        discovery_source: item.discovery_source || "",
         recommended_action: "Product row exists in Google Sheets, but source Google Sheet has no checklist rows. Import or rebuild this product before calling it covered."
       };
     }
@@ -494,6 +540,7 @@ function classifySourceItem_(item, indexRows) {
       sheet_row_count: Number(match.row_count || 0),
       sheet_parallel_count: Number(match.parallel_count || 0),
       comparison_source: match.comparison_source || "google_sheets",
+      discovery_source: item.discovery_source || "",
       recommended_action: "No import needed unless source has newer rows/parallels than the source Google Sheet."
     };
   }
@@ -510,6 +557,7 @@ function classifySourceItem_(item, indexRows) {
       sheet_row_count: Number(match.row_count || 0),
       sheet_parallel_count: Number(match.parallel_count || 0),
       comparison_source: match.comparison_source || "google_sheets",
+      discovery_source: item.discovery_source || "",
       recommended_action: "Review naming/alias match before import."
     };
   }
@@ -519,6 +567,7 @@ function classifySourceItem_(item, indexRows) {
     title: title,
     sport: sport,
     source_url: item.url || "",
+    discovery_source: item.discovery_source || "",
     recommended_action: buildMissingRecommendedAction_(title, sport)
   };
 }

@@ -1099,6 +1099,7 @@
         <div class="opp-meta">
           <span class="pill">Sport: ${escapeHtml(titleCase(item.sport || ""))}</span>
           ${item.matched_code ? `<span class="pill">Code: ${escapeHtml(item.matched_code)}</span>` : ""}
+          ${item.discovery_source ? `<span class="pill">Found: ${escapeHtml(item.discovery_source)}</span>` : ""}
           ${item.comparison_source ? `<span class="pill">Checked: ${escapeHtml(item.comparison_source)}</span>` : ""}
           ${typeof item.sheet_row_count !== "undefined" ? `<span class="pill">Rows: ${formatNumber(item.sheet_row_count)}</span>` : ""}
           ${typeof item.sheet_parallel_count !== "undefined" ? `<span class="pill">Parallels: ${formatNumber(item.sheet_parallel_count)}</span>` : ""}

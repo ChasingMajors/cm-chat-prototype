@@ -13,9 +13,11 @@
  * - validateSourceProduct
  * - previewSourceImport
  * - executeSourceImport
+ * - dispatchVisualProductTest
  *
  * Current safety:
  * - Sheet writes require Script Property CM_OPERATOR_KEY.
+ * - GitHub workflow dispatch requires CM_OPERATOR_KEY and CM_GITHUB_TOKEN.
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
@@ -29,6 +31,11 @@ const CM_CHECKLIST_ROWS_SHEET = "ChecklistRows";
 const CM_PARALLELS_SHEET = "Parallels";
 const CM_OPERATOR_KEY_PROPERTY = "CM_OPERATOR_KEY";
 const CM_STATIC_EXPORTER_URL_PROPERTY = "CM_STATIC_EXPORTER_URL";
+const CM_GITHUB_TOKEN_PROPERTY = "CM_GITHUB_TOKEN";
+const CM_VISUAL_TEST_OWNER = "ChasingMajors";
+const CM_VISUAL_TEST_REPO = "cm-chat-prototype";
+const CM_VISUAL_TEST_WORKFLOW = "visual-product-test.yml";
+const CM_VISUAL_TEST_BRANCH = "main";
 const CM_CHECKLIST_SOURCE_MAP = {
   baseball: {
     current: "1knoZy155nQOw-_9o5ragmoBS_FaxwoZ3lEQ4YGgeSeg",
@@ -124,10 +131,19 @@ function doGet(e) {
       }));
     }
 
+    if (action === "dispatchVisualProductTest") {
+      return json_(dispatchVisualProductTest_({
+        productName: p.productName || p.product_name || "",
+        sport: p.sport || "",
+        code: p.code || p.productCode || p.product_code || "",
+        key: p.key || ""
+      }));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport"]
+      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest"]
     });
   } catch (err) {
     return json_({
@@ -156,10 +172,14 @@ function doPost(e) {
       return json_(executeSourceImport_(body));
     }
 
+    if (action === "dispatchVisualProductTest") {
+      return json_(dispatchVisualProductTest_(body));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport"]
+      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest"]
     });
   } catch (err) {
     return json_({
@@ -964,6 +984,102 @@ function publishChecklistAfterImport_(product, key) {
   }
 
   return data;
+}
+
+function dispatchVisualProductTest_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const productName = safeString_(input && (input.productName || input.product_name)).trim();
+  const sport = normalize_(input && input.sport);
+  const code = safeString_(input && (input.code || input.productCode || input.product_code)).trim();
+
+  if (!productName) {
+    return {
+      ok: false,
+      error: "Missing productName"
+    };
+  }
+
+  if (!isAllowedSport_(sport)) {
+    return {
+      ok: false,
+      error: "Unsupported or missing sport"
+    };
+  }
+
+  const token = PropertiesService.getScriptProperties().getProperty(CM_GITHUB_TOKEN_PROPERTY);
+  if (!token) {
+    return {
+      ok: false,
+      error: "Missing Script Property " + CM_GITHUB_TOKEN_PROPERTY + ". Add a GitHub token with Actions workflow permission."
+    };
+  }
+
+  const apiUrl = "https://api.github.com/repos/"
+    + encodeURIComponent(CM_VISUAL_TEST_OWNER)
+    + "/"
+    + encodeURIComponent(CM_VISUAL_TEST_REPO)
+    + "/actions/workflows/"
+    + encodeURIComponent(CM_VISUAL_TEST_WORKFLOW)
+    + "/dispatches";
+
+  const payload = {
+    ref: CM_VISUAL_TEST_BRANCH,
+    inputs: {
+      product_name: productName,
+      sport: sport,
+      product_code: code,
+      app_base: "https://app.chasingmajors.com"
+    }
+  };
+
+  const res = UrlFetchApp.fetch(apiUrl, {
+    method: "post",
+    contentType: "application/json",
+    muteHttpExceptions: true,
+    headers: {
+      Authorization: "Bearer " + token,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28"
+    },
+    payload: JSON.stringify(payload)
+  });
+
+  const status = res.getResponseCode();
+  const text = res.getContentText();
+  let response = {};
+  try {
+    response = text ? JSON.parse(text) : {};
+  } catch (err) {
+    response = { raw: text };
+  }
+
+  if (status < 200 || status >= 300) {
+    return {
+      ok: false,
+      status_code: status,
+      error: "GitHub workflow dispatch failed with " + status,
+      response: response
+    };
+  }
+
+  const workflowUrl = "https://github.com/"
+    + CM_VISUAL_TEST_OWNER
+    + "/"
+    + CM_VISUAL_TEST_REPO
+    + "/actions/workflows/"
+    + CM_VISUAL_TEST_WORKFLOW;
+
+  return {
+    ok: true,
+    status: "queued",
+    product_name: productName,
+    sport: sport,
+    product_code: code,
+    workflow_url: workflowUrl,
+    actions_url: "https://github.com/" + CM_VISUAL_TEST_OWNER + "/" + CM_VISUAL_TEST_REPO + "/actions",
+    note: "Visual product test queued. GitHub may take a few seconds to show the new run."
+  };
 }
 
 function buildProductPreview_(title, sport, sourceUrl) {

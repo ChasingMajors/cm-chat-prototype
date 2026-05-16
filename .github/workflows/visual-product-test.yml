@@ -31,6 +31,8 @@ jobs:
   visual-product-test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Check out repo
@@ -55,6 +57,15 @@ jobs:
           CM_APP_BASE: ${{ inputs.app_base }}
           OUT_DIR: visual-test-results
         run: npm run test:visual-product
+
+      - name: Publish visual test summary
+        if: always()
+        run: |
+          if [ -f visual-test-results/visual-product-test.md ]; then
+            cat visual-test-results/visual-product-test.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No visual test report was generated." >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Upload visual test results
         if: always()

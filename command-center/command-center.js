@@ -7,7 +7,6 @@
   const TASK_KEY = "cm_command_center_operator_tasks_v1";
   const OPERATOR_ENDPOINT_KEY = "cm_command_center_operator_endpoint_v1";
   const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
-  const VISUAL_TEST_WORKFLOW_URL = "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml";
 
   const state = {
     opportunities: [],
@@ -1211,7 +1210,7 @@
         </div>
         <div class="task-guardrail">This is a visual behavior check. JSON validation remains the source-of-truth data check.</div>
         <div class="opp-actions">
-          <a class="action-btn approve" href="${VISUAL_TEST_WORKFLOW_URL}" target="_blank" rel="noopener noreferrer">Run Agent Visual Test</a>
+          <button class="action-btn approve" type="button" data-run-agent-visual="1">Run Agent Visual Test</button>
         </div>
         <div class="visual-runner-copy">
           <span><strong>product_name</strong>${escapeHtml(plan.productName || "")}</span>
@@ -1252,6 +1251,77 @@
             ${plan.expectedChecklist.map(itemText => `<span>${escapeHtml(itemText)}</span>`).join("")}
           </div>
         </div>
+      </div>
+    `;
+
+    const runBtn = els.sourceCheckResult.querySelector("[data-run-agent-visual]");
+    if (runBtn) {
+      runBtn.addEventListener("click", () => runAgentVisualTest(plan));
+    }
+  }
+
+  async function runAgentVisualTest(plan) {
+    const endpoint = readOperatorEndpoint();
+    const key = readOperatorKey();
+
+    if (!endpoint) {
+      renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before running agent visual tests.", "warning");
+      return;
+    }
+
+    if (!key) {
+      renderSourceCheckMessage("Admin write key needed", "Enter and save the admin write key before running agent visual tests.", "warning");
+      return;
+    }
+
+    renderSourceCheckMessage("Queuing agent visual test", "The Operator Backend is starting the GitHub Actions CV/ChatBot test for this product.", "info");
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=dispatchVisualProductTest"
+        + "&productName=" + encodeURIComponent(plan.productName || "")
+        + "&sport=" + encodeURIComponent(plan.sport || "")
+        + "&code=" + encodeURIComponent(plan.code || "")
+        + "&key=" + encodeURIComponent(key);
+
+      const data = await fetchJson(url);
+      renderVisualDispatchResult(data, plan);
+    } catch (err) {
+      renderSourceCheckMessage("Agent visual test failed", err && err.message ? err.message : String(err), "critical");
+    }
+  }
+
+  function renderVisualDispatchResult(data, plan) {
+    if (!data || !data.ok) {
+      renderSourceCheckMessage(
+        "Agent visual test failed",
+        data && data.error ? data.error : "Unknown backend response.",
+        "critical"
+      );
+      return;
+    }
+
+    els.sourceCheckResult.innerHTML = `
+      <div class="visual-test-card">
+        <div class="opp-top">
+          <div>
+            <h3>Agent Visual Test Queued</h3>
+            <p>${escapeHtml(data.product_name || plan.productName || "")}</p>
+          </div>
+          <span class="badge opportunity">queued</span>
+        </div>
+        <div class="opp-meta">
+          <span class="pill">Sport: ${escapeHtml(titleCase(data.sport || plan.sport || ""))}</span>
+          ${data.product_code || plan.code ? `<span class="pill">Code: ${escapeHtml(data.product_code || plan.code || "")}</span>` : ""}
+          <span class="pill">GitHub Actions</span>
+        </div>
+        <p>${escapeHtml(data.note || "GitHub may take a few seconds to show the new run.")}</p>
+        <div class="opp-actions">
+          ${data.workflow_url ? `<a class="action-btn approve" href="${escapeHtml(data.workflow_url)}" target="_blank" rel="noopener noreferrer">Open Workflow Run</a>` : ""}
+          ${data.actions_url ? `<a class="action-btn" href="${escapeHtml(data.actions_url)}" target="_blank" rel="noopener noreferrer">Open Actions</a>` : ""}
+        </div>
+        <div class="task-guardrail">The artifact will include a pass/fail report and screenshots if CV or ChatBot behavior breaks.</div>
       </div>
     `;
   }

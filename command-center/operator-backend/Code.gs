@@ -1032,7 +1032,7 @@ function dispatchVisualProductTest_(input) {
       sport: sport,
       product_code: code,
       app_base: "https://app.chasingmajors.com",
-      chatbot_base: getScriptPropertyWithDefault_(CM_VISUAL_TEST_CHATBOT_BASE_PROPERTY, "https://chasingmajors.github.io/cm-chat-prototype"),
+      chatbot_base: getScriptPropertyWithDefault_(CM_VISUAL_TEST_CHATBOT_BASE_PROPERTY, "https://app.chasingmajors.com/ChatBot"),
       checklist_base: getScriptPropertyWithDefault_(CM_VISUAL_TEST_CHECKLIST_BASE_PROPERTY, "https://app.chasingmajors.com")
     }
   };

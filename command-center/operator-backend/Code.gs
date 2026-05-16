@@ -27,10 +27,7 @@ const CM_PRODUCTS_SHEET = "Products";
 const CM_CHECKLIST_ROWS_SHEET = "ChecklistRows";
 const CM_PARALLELS_SHEET = "Parallels";
 const CM_OPERATOR_KEY_PROPERTY = "CM_OPERATOR_KEY";
-<<<<<<< HEAD
 const CM_STATIC_EXPORTER_URL_PROPERTY = "CM_STATIC_EXPORTER_URL";
-=======
->>>>>>> 7105eee24f15c3e99ce9f6c319c32b36639f5fed
 const CM_CHECKLIST_SOURCE_MAP = {
   baseball: {
     current: "1knoZy155nQOw-_9o5ragmoBS_FaxwoZ3lEQ4YGgeSeg",
@@ -277,19 +274,12 @@ function executeSourceImport_(input) {
 
   const validation = validateWrittenProduct_(ss, product.code);
 
-<<<<<<< HEAD
   const publishResult = publishChecklistAfterImport_(product, input && input.key);
 
   return {
     ok: true,
     status: publishResult && publishResult.ok ? "written_published_validated" : "written_publish_needs_review",
     mode: "sheet_write_publish_validate",
-=======
-  return {
-    ok: true,
-    status: "written",
-    mode: "sheet_write",
->>>>>>> 7105eee24f15c3e99ce9f6c319c32b36639f5fed
     source_url: input.sourceUrl || input.url || "",
     target_spreadsheet_id: targetSpreadsheetId,
     target_bucket: product.target_bucket || product.year || "",
@@ -300,16 +290,11 @@ function executeSourceImport_(input) {
       parallels: parallels.length
     },
     validation: validation,
-<<<<<<< HEAD
     publish: publishResult,
     publish_next: getPublishRecommendation_(sport, product.target_bucket || product.year),
     next_step: publishResult && publishResult.ok
       ? "Published and validated. Open Checklist Vault and ChatBot test links for final human review."
       : "Sheet write succeeded, but publish/live validation needs review.",
-=======
-    publish_next: getPublishRecommendation_(sport, product.target_bucket || product.year),
-    next_step: "Run the recommended publish function, then validate the product in Checklist Vault search.",
->>>>>>> 7105eee24f15c3e99ce9f6c319c32b36639f5fed
     updated_at: new Date().toISOString()
   };
 }
@@ -639,19 +624,12 @@ function replaceRowsByCode_(ss, sheetName, code, objects, defaultHeaders) {
   const sh = ensureSheetWithHeaders_(ss, sheetName, defaultHeaders);
   const headers = getHeaders_(sh);
   const values = sh.getDataRange().getValues();
-<<<<<<< HEAD
   const kept = values.length ? [fitRowToWidth_(values[0], headers.length)] : [headers];
 
   for (let i = 1; i < values.length; i++) {
     if (safeString_(values[i][0]).trim() !== code) {
       kept.push(fitRowToWidth_(values[i], headers.length));
     }
-=======
-  const kept = values.length ? [values[0]] : [headers];
-
-  for (let i = 1; i < values.length; i++) {
-    if (safeString_(values[i][0]).trim() !== code) kept.push(values[i]);
->>>>>>> 7105eee24f15c3e99ce9f6c319c32b36639f5fed
   }
 
   objects.forEach(function(obj) {
@@ -665,7 +643,6 @@ function replaceRowsByCode_(ss, sheetName, code, objects, defaultHeaders) {
   sh.getRange(1, 1, kept.length, headers.length).setValues(kept);
 }
 
-<<<<<<< HEAD
 function fitRowToWidth_(row, width) {
   const out = [];
   for (let i = 0; i < width; i++) {
@@ -674,8 +651,6 @@ function fitRowToWidth_(row, width) {
   return out;
 }
 
-=======
->>>>>>> 7105eee24f15c3e99ce9f6c319c32b36639f5fed
 function validateWrittenProduct_(ss, code) {
   const productCount = countRowsByFirstColumn_(ss.getSheetByName(CM_PRODUCTS_SHEET), code);
   const rowCount = countRowsByFirstColumn_(ss.getSheetByName(CM_CHECKLIST_ROWS_SHEET), code);
@@ -729,7 +704,6 @@ function getPublishRecommendation_(sport, bucket) {
   return "Run the matching publish function for " + s + " " + b + ", then rebuild the checklist index if this is a new product.";
 }
 
-<<<<<<< HEAD
 function publishChecklistAfterImport_(product, key) {
   const exporterUrl = PropertiesService.getScriptProperties().getProperty(CM_STATIC_EXPORTER_URL_PROPERTY);
   if (!exporterUrl) {
@@ -774,8 +748,6 @@ function publishChecklistAfterImport_(product, key) {
   return data;
 }
 
-=======
->>>>>>> 7105eee24f15c3e99ce9f6c319c32b36639f5fed
 function buildProductPreview_(title, sport, sourceUrl) {
   const cleanTitle = cleanProductTitle_(title);
   const yearMatch = cleanTitle.match(/\b(19|20)\d{2}(?:-\d{2})?\b/);
@@ -877,6 +849,7 @@ function splitArticleIntoH3Sections_(articleHtml) {
 
 function htmlToLines_(html) {
   return decodeEntities_(safeString_(html))
+    .replace(/[\u2013\u2014]/g, " - ")
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<iframe[\s\S]*?<\/iframe>/gi, " ")
@@ -891,28 +864,41 @@ function htmlToLines_(html) {
 }
 
 function isLikelyChecklistRow_(line) {
-  const raw = safeString_(line).trim();
+  const raw = normalizeChecklistLineText_(line);
   if (!raw) return false;
   if (/^(Parallels?|Hobby|Configuration|Cards?\b|Serial Numbered|Find |Checklistcenter)/i.test(raw)) return false;
   if (/^\d+\s+Cards?\b/i.test(raw)) return false;
-  return /^[A-Z]{0,8}[-A-Z0-9]*\d[A-Z0-9-]*\s+.+\s+-\s+.+/.test(raw);
+  if (/^[A-Z]{0,8}[-A-Z0-9]*\d[A-Z0-9-]*\s+.+\s+-\s+.+/.test(raw)) return true;
+  return /^[^-]+\s+-\s+.+(?:#\/\d+|#\/\d+\s*or\s*less|1\/1|\*)/i.test(raw);
 }
 
 function parseChecklistLine_(line, product, section, subset) {
-  const raw = safeString_(line).trim();
-  const m = raw.match(/^([A-Z]{0,8}[-A-Z0-9]*\d[A-Z0-9-]*)\s+(.+?)\s+-\s+(.+)$/);
-  if (!m) return null;
+  const raw = normalizeChecklistLineText_(line);
+  const numbered = raw.match(/^([A-Z]{0,8}[-A-Z0-9]*\d[A-Z0-9-]*)\s+(.+?)\s+-\s+(.+)$/);
+  const unnumbered = numbered ? null : raw.match(/^(.+?)\s+-\s+(.+)$/);
+  if (!numbered && !unnumbered) return null;
+
+  const cardNo = numbered ? numbered[1].trim() : "";
+  const player = numbered ? numbered[2] : unnumbered[1];
+  const team = numbered ? numbered[3] : unnumbered[2];
 
   return {
     code: product.code,
     sport: product.sport,
     section: section,
     subset: subset,
-    card_no: m[1].trim(),
-    player: cleanPlayerName_(m[2]),
-    team: cleanTeamName_(m[3]),
-    tag: inferRowTag_(section, subset, m[2])
+    card_no: cardNo,
+    player: cleanPlayerName_(player),
+    team: cleanTeamName_(team),
+    tag: inferRowTag_(section, subset, player)
   };
+}
+
+function normalizeChecklistLineText_(line) {
+  return decodeEntities_(safeString_(line))
+    .replace(/[\u2013\u2014]/g, " - ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function extractParallelRows_(html, product, section, subset) {

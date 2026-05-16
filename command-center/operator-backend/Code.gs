@@ -1084,15 +1084,17 @@ function htmlToLines_(html) {
 function isLikelyChecklistRow_(line) {
   const raw = normalizeChecklistLineText_(line);
   if (!raw) return false;
-  if (/^(Parallels?|Hobby|Configuration|Cards?\b|Serial Numbered|Find |Checklistcenter)/i.test(raw)) return false;
+  if (/^(Parallels?|Versions?|Hobby|Configuration|Cards?\b|Serial Numbered|Find |Checklistcenter)/i.test(raw)) return false;
   if (/^\d+\s+Cards?\b/i.test(raw)) return false;
   if (/^[A-Z]{0,8}[-A-Z0-9]*\d[A-Z0-9-]*\s+.+\s+-\s+.+/.test(raw)) return true;
+  if (/^[A-Z]{1,8}-[A-Z0-9]{1,12}\s+.+\s+-\s+.+/.test(raw)) return true;
   return /^[^-]+\s+-\s+.+(?:#\/\d+|#\/\d+\s*or\s*less|1\/1|\*)/i.test(raw);
 }
 
 function parseChecklistLine_(line, product, section, subset) {
   const raw = normalizeChecklistLineText_(line);
-  const numbered = raw.match(/^([A-Z]{0,8}[-A-Z0-9]*\d[A-Z0-9-]*)\s+(.+?)\s+-\s+(.+)$/);
+  const numbered = raw.match(/^([A-Z]{0,8}[-A-Z0-9]*\d[A-Z0-9-]*)\s+(.+?)\s+-\s+(.+)$/)
+    || raw.match(/^([A-Z]{1,8}-[A-Z0-9]{1,12})\s+(.+?)\s+-\s+(.+)$/);
   const unnumbered = numbered ? null : raw.match(/^(.+?)\s+-\s+(.+)$/);
   if (!numbered && !unnumbered) return null;
 
@@ -1122,7 +1124,7 @@ function normalizeChecklistLineText_(line) {
 function extractParallelRows_(html, product, section, subset) {
   const out = [];
   const text = decodeEntities_(safeString_(html)).replace(/\s+/g, " ");
-  const re = /<strong>\s*Parallels:\s*<\/strong>\s*([^<]+)/gi;
+  const re = /<strong>\s*(?:Parallels|Versions):\s*<\/strong>\s*([^<]+)/gi;
   let match;
 
   while ((match = re.exec(text)) !== null) {

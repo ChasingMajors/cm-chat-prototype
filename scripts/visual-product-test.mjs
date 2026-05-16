@@ -77,6 +77,7 @@ async function testChatbotQuery(context, item) {
     await waitForSettledChatbot(page);
 
     const bodyText = await page.locator("body").innerText({ timeout: 10000 });
+    result.text_excerpt = buildTextExcerpt(bodyText);
     const checks = [];
 
     if (item.kind === "ambiguous") {
@@ -122,6 +123,7 @@ async function testChecklistUrl(context, item) {
     await waitForChecklist(page);
 
     const bodyText = await page.locator("body").innerText({ timeout: 10000 });
+    result.text_excerpt = buildTextExcerpt(bodyText);
     const checks = [
       assertIncludes(bodyText, PRODUCT_NAME, "Expected product title or dropdown result"),
       assertAnyIncludes(bodyText, ["Base", "Insert", "Autograph", "Parallel", "Checklist"], "Expected checklist content"),
@@ -195,9 +197,13 @@ async function writeReport(results) {
     lines.push(`| ${escapePipe(result.name)} | ${result.ok ? "PASS" : "FAIL"} | ${result.url} |`);
     if (result.error) lines.push(`| ${escapePipe(result.name + " error")} | ${escapePipe(result.error)} | |`);
     (result.checks || []).forEach(check => {
-      lines.push(`| ${escapePipe(" - " + check.label)} | ${check.ok ? "PASS" : "FAIL"} | |`);
+      const detail = check.ok
+        ? ""
+        : escapePipe(check.expected ? `Expected: ${check.expected}` : check.unwanted ? `Unwanted: ${check.unwanted}` : "");
+      lines.push(`| ${escapePipe(" - " + check.label)} | ${check.ok ? "PASS" : "FAIL"} | ${detail} |`);
     });
     if (result.screenshot) lines.push(`| ${escapePipe(" - screenshot")} | ${result.screenshot} | |`);
+    if (!result.ok && result.text_excerpt) lines.push(`| ${escapePipe(" - page excerpt")} | ${escapePipe(result.text_excerpt)} | |`);
   });
 
   await fs.writeFile(markdownPath, lines.join("\n") + "\n");
@@ -263,6 +269,13 @@ function unique(items) {
 
 function normalizeText(value) {
   return String(value || "").toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function buildTextExcerpt(value) {
+  return String(value || "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 700);
 }
 
 function cleanEnv(key) {

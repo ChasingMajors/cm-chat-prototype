@@ -5260,6 +5260,11 @@ async function buildChecklistSummaryResponse(query) {
     };
   }
 
+  const directSection = detectChecklistSectionIntent(query);
+  if (!directSection && isGenericProductChecklistIntent(query)) {
+    return buildProductProfileResponse(product, query);
+  }
+
   const summary = await getChecklistSummary(product.code);
   const hydratedSummary = await hydrateChecklistSummaryCounts(product, summary);
 
@@ -5268,7 +5273,6 @@ async function buildChecklistSummaryResponse(query) {
     summary: hydratedSummary
   };
 
-  const directSection = detectChecklistSectionIntent(query);
   if (directSection) return buildChecklistSectionResponse(directSection);
 
   const countsLine = summarizeChecklistCounts(hydratedSummary);
@@ -5285,6 +5289,14 @@ async function buildChecklistSummaryResponse(query) {
     ]),
     followups: buildProductChecklistFollowups(product, hydratedSummary)
   };
+}
+
+function isGenericProductChecklistIntent(query) {
+  const n = normalize(query);
+  if (!/\bchecklists?\b/.test(n)) return false;
+  if (/\b(full|entire|all cards|every card)\b/.test(n)) return false;
+  if (/\b(base|inserts?|autographs?|autos?|auto|relics?|variations?|parallels?|rookies?|rc|serial|numbered|ssp|short print|case hit)\b/.test(n)) return false;
+  return true;
 }
 
 async function buildChecklistSectionResponse(sectionKey) {

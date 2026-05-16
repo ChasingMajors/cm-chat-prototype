@@ -623,32 +623,40 @@ function upsertProducts_(ss, code, productObj) {
 function replaceRowsByCode_(ss, sheetName, code, objects, defaultHeaders) {
   const sh = ensureSheetWithHeaders_(ss, sheetName, defaultHeaders);
   const headers = getHeaders_(sh);
-  const values = sh.getDataRange().getValues();
-  const kept = values.length ? [fitRowToWidth_(values[0], headers.length)] : [headers];
-
-  for (let i = 1; i < values.length; i++) {
-    if (safeString_(values[i][0]).trim() !== code) {
-      kept.push(fitRowToWidth_(values[i], headers.length));
-    }
-  }
-
-  objects.forEach(function(obj) {
-    kept.push(headers.map(function(header) {
+  const rowsToWrite = objects.map(function(obj) {
+    return headers.map(function(header) {
       return safeString_(obj[header] || "");
-    }));
+    });
   });
 
-  sh.clearContents();
-  sh.getRange(1, 1, kept.length, headers.length).setNumberFormat("@");
-  sh.getRange(1, 1, kept.length, headers.length).setValues(kept);
+  validateSheetWriteRows_(rowsToWrite, headers.length, sheetName);
+  deleteRowsByFirstColumnValue_(sh, code);
+
+  if (rowsToWrite.length) {
+    const startRow = sh.getLastRow() + 1;
+    sh.getRange(startRow, 1, rowsToWrite.length, headers.length).setNumberFormat("@");
+    sh.getRange(startRow, 1, rowsToWrite.length, headers.length).setValues(rowsToWrite);
+  }
 }
 
-function fitRowToWidth_(row, width) {
-  const out = [];
-  for (let i = 0; i < width; i++) {
-    out.push(row && row[i] !== undefined ? row[i] : "");
+function validateSheetWriteRows_(rows, width, sheetName) {
+  rows.forEach(function(row, index) {
+    if (!Array.isArray(row) || row.length !== width) {
+      throw new Error("Prepared row width mismatch for " + sheetName + " at row " + (index + 1) + ".");
+    }
+  });
+}
+
+function deleteRowsByFirstColumnValue_(sh, code) {
+  const lastRow = sh.getLastRow();
+  if (lastRow < 2) return;
+
+  const values = sh.getRange(2, 1, lastRow - 1, 1).getValues();
+  for (let i = values.length - 1; i >= 0; i--) {
+    if (safeString_(values[i][0]).trim() === code) {
+      sh.deleteRow(i + 2);
+    }
   }
-  return out;
 }
 
 function validateWrittenProduct_(ss, code) {

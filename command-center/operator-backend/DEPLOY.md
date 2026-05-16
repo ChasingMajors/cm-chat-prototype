@@ -35,7 +35,6 @@ Before using `Write to Google Sheet`, add a Script Property.
 
 Use that same value in Command Center as the `Admin write key`.
 
-<<<<<<< HEAD
 ## Connect Static Data Exporter Publishing
 
 The Command Center Operator writes the Google Sheet. The Static Data Exporter publishes GitHub JSON and validates the public files.
@@ -60,8 +59,6 @@ After this is configured, approved imports run:
 
 `Preview -> Sheet write -> publish JSON -> rebuild index -> validate public Checklist Vault and ChatBot data`
 
-=======
->>>>>>> 7105eee24f15c3e99ce9f6c319c32b36639f5fed
 ## Create The Apps Script Project
 
 1. Go to:
@@ -128,9 +125,13 @@ After this is configured, approved imports run:
 
    `Save Endpoint`
 
-5. Click:
+5. Click one of the Source Watch buttons:
 
-   `Run Source Watch`
+   `Quick JSON Source Watch`
+
+   or
+
+   `Deep Sheets Source Watch`
 
 ## Test URLs
 
@@ -144,6 +145,14 @@ Source watch:
 
 `YOUR_WEB_APP_URL?action=sourceWatch`
 
+Quick JSON source watch:
+
+`YOUR_WEB_APP_URL?action=sourceWatch&mode=quick_json`
+
+Deep Google Sheets source watch:
+
+`YOUR_WEB_APP_URL?action=sourceWatch&mode=deep_sheets`
+
 Single product validation:
 
 `YOUR_WEB_APP_URL?action=validateSourceProduct&title=2025-26%20Topps%20Merlin%20Premier%20League%20Soccer&sport=soccer`
@@ -154,8 +163,9 @@ Import preview:
 
 ## Important Safety Note
 
-<<<<<<< HEAD
-Approved execution writes to Google Sheets, publishes GitHub JSON through Static Data Exporter, rebuilds the checklist index, and validates public JSON.
+Approved execution updates matching product-code rows in Google Sheets, appends new rows, publishes GitHub JSON through Static Data Exporter, rebuilds the checklist index, and validates public JSON.
+
+The operator must not clear whole sheets or delete unrelated product data.
 
 Current flow:
 
@@ -164,14 +174,3 @@ Current flow:
 Next phase:
 
 `Find source update -> preview import -> admin clicks Write -> update Sheet -> publish JSON -> validate live app page rendering`
-=======
-Approved execution writes to Google Sheets, but it does not publish GitHub JSON yet.
-
-Current flow:
-
-`Find source update -> preview import -> admin clicks Write -> update Sheet -> validate Sheet counts -> run recommended publish function`
-
-Next phase:
-
-`Find source update -> preview import -> admin clicks Write -> update Sheet -> publish JSON -> validate live app result`
->>>>>>> 7105eee24f15c3e99ce9f6c319c32b36639f5fed

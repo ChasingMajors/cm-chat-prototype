@@ -19,7 +19,8 @@
     refreshBtn: document.getElementById("refreshBtn"),
     clearDoneBtn: document.getElementById("clearDoneBtn"),
     sourceCheckBtn: document.getElementById("sourceCheckBtn"),
-    sourceWatchBtn: document.getElementById("sourceWatchBtn"),
+    sourceWatchQuickBtn: document.getElementById("sourceWatchQuickBtn"),
+    sourceWatchDeepBtn: document.getElementById("sourceWatchDeepBtn"),
     saveEndpointBtn: document.getElementById("saveEndpointBtn"),
     sourceTitleInput: document.getElementById("sourceTitleInput"),
     sourceSportInput: document.getElementById("sourceSportInput"),
@@ -888,22 +889,33 @@
     }
   }
 
-  async function runSourceWatchWithBackend() {
+  async function runSourceWatchWithBackend(mode) {
     const endpoint = readOperatorEndpoint();
+    const auditMode = mode === "quick_json" ? "quick_json" : "deep_sheets";
+    const modeLabel = auditMode === "quick_json" ? "Quick JSON Source Watch" : "Deep Sheets Source Watch";
 
     if (!endpoint) {
       renderSourceCheckMessage(
         "Operator Backend needed",
-        "Paste and save the Apps Script Operator Backend URL before running full source watch. Single-product Source Check still works without it.",
+        "Paste and save the Apps Script Operator Backend URL before running Source Watch. Single-product Source Check still works without it.",
         "warning"
       );
       return;
     }
 
-    renderSourceCheckMessage("Running source watch", "The Operator Backend is checking recent Checklistcenter items against Chasing Majors.", "info");
+    renderSourceCheckMessage(
+      `Running ${modeLabel}`,
+      auditMode === "quick_json"
+        ? "The Operator Backend is checking recent Checklistcenter items against public JSON files."
+        : "The Operator Backend is checking recent Checklistcenter items against source Google Sheets.",
+      "info"
+    );
 
     try {
-      const url = endpoint + (endpoint.indexOf("?") > -1 ? "&" : "?") + "action=sourceWatch";
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=sourceWatch"
+        + "&mode=" + encodeURIComponent(auditMode);
       const data = await fetchJson(url);
       renderSourceWatchResults(data);
     } catch (err) {
@@ -1029,14 +1041,16 @@
       <div class="source-watch-summary">
         <div class="opp-top">
           <div>
-            <h3>Source Watch Complete</h3>
+            <h3>${escapeHtml(data.mode === "quick_json" ? "Quick JSON Source Watch Complete" : "Deep Sheets Source Watch Complete")}</h3>
             <p>${escapeHtml(data.fetched_count || 0)} source items checked. ${escapeHtml(actionable.length)} need review.</p>
           </div>
           <span class="badge info">review</span>
         </div>
         <div class="opp-meta">
+          <span class="pill">Coverage: ${escapeHtml(data.coverage_source || "unknown")}</span>
           ${Object.keys(data.summary || {}).map(key => `<span class="pill">${escapeHtml(key)}: ${escapeHtml(data.summary[key])}</span>`).join("")}
         </div>
+        ${data.next_step ? `<p>${escapeHtml(data.next_step)}</p>` : ""}
       </div>
       <div class="source-watch-list">
         ${items.slice(0, 20).map(renderSourceWatchItem).join("")}
@@ -1085,6 +1099,9 @@
         <div class="opp-meta">
           <span class="pill">Sport: ${escapeHtml(titleCase(item.sport || ""))}</span>
           ${item.matched_code ? `<span class="pill">Code: ${escapeHtml(item.matched_code)}</span>` : ""}
+          ${item.comparison_source ? `<span class="pill">Checked: ${escapeHtml(item.comparison_source)}</span>` : ""}
+          ${typeof item.sheet_row_count !== "undefined" ? `<span class="pill">Rows: ${formatNumber(item.sheet_row_count)}</span>` : ""}
+          ${typeof item.sheet_parallel_count !== "undefined" ? `<span class="pill">Parallels: ${formatNumber(item.sheet_parallel_count)}</span>` : ""}
           ${item.source_url ? `<a class="pill source-link" href="${escapeHtml(item.source_url)}" target="_blank" rel="noopener noreferrer">Source</a>` : ""}
         </div>
         ${canTask ? `
@@ -1143,7 +1160,7 @@
             ${parallels.length ? parallels.map(renderPreviewParallel).join("") : `<p>No sample parallels parsed.</p>`}
           </div>
         </div>
-        <div class="task-guardrail">Review the sample rows before writing. This action replaces existing rows for this product code in the mapped Google Sheet.</div>
+        <div class="task-guardrail">Review the sample rows before writing. This action updates matching rows for this product code and appends new rows. It does not delete unrelated sheet data.</div>
         <div class="opp-actions">
           <button class="action-btn approve" type="button" data-execute-import="${escapeHtml(data.source_url || "")}" data-execute-sport="${escapeHtml(product.sport || "")}">Write to Google Sheet</button>
         </div>
@@ -1636,7 +1653,8 @@
   els.refreshBtn.addEventListener("click", runAudit);
   els.clearDoneBtn.addEventListener("click", clearDoneTasks);
   els.sourceCheckBtn.addEventListener("click", validateSourceProductWithBackend);
-  els.sourceWatchBtn.addEventListener("click", runSourceWatchWithBackend);
+  els.sourceWatchQuickBtn.addEventListener("click", () => runSourceWatchWithBackend("quick_json"));
+  els.sourceWatchDeepBtn.addEventListener("click", () => runSourceWatchWithBackend("deep_sheets"));
   els.saveEndpointBtn.addEventListener("click", () => {
     writeOperatorEndpoint(els.operatorEndpointInput.value || "");
     writeOperatorKey(els.operatorKeyInput.value || "");

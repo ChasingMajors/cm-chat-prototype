@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=cc9" />
+  <link rel="stylesheet" href="./styles.css?v=cc10" />
 </head>
 <body>
   <main class="shell">
@@ -19,7 +19,7 @@
         <p class="lede">AI operating partner for data health, opportunity scouting, and approval-ready fixes.</p>
       </div>
       <div class="top-actions">
-        <button id="refreshBtn" class="primary-btn" type="button">Run Audit</button>
+        <button id="refreshBtn" class="primary-btn" type="button">Run Fast JSON Audit</button>
         <a class="ghost-btn" href="../index.html">Open ChatBot</a>
       </div>
     </header>
@@ -75,7 +75,7 @@
       <div class="panel-head">
         <div>
           <h2>Source Check</h2>
-          <p>Validate a Checklist Center or WaxMetrix product before creating an update task.</p>
+          <p>Run quick public JSON checks for daily triage or deeper Google Sheets checks before approved updates.</p>
         </div>
       </div>
       <div class="source-check-form">
@@ -93,7 +93,8 @@
         <input id="operatorEndpointInput" type="url" placeholder="Optional Apps Script Operator Backend URL" aria-label="Operator Backend URL" />
         <input id="operatorKeyInput" type="password" placeholder="Admin write key" aria-label="Admin write key" />
         <button id="saveEndpointBtn" class="ghost-btn" type="button">Save Endpoint</button>
-        <button id="sourceWatchBtn" class="primary-btn" type="button">Run Source Watch</button>
+        <button id="sourceWatchQuickBtn" class="ghost-btn" type="button">Quick JSON Source Watch</button>
+        <button id="sourceWatchDeepBtn" class="primary-btn" type="button">Deep Sheets Source Watch</button>
       </div>
       <div id="sourceCheckResult" class="source-check-result">
         <div class="brief-item">
@@ -155,6 +156,6 @@
     </section>
   </main>
 
-  <script defer src="./command-center.js?v=cc9"></script>
+  <script defer src="./command-center.js?v=cc10"></script>
 </body>
 </html>

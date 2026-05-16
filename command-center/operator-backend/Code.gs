@@ -99,7 +99,7 @@ function doGet(e) {
       updated_at: new Date().toISOString()
     });
 
-    if (action === "sourceWatch") return json_(runSourceWatch_());
+    if (action === "sourceWatch") return json_(runSourceWatch_(p.mode || ""));
 
     if (action === "validateSourceProduct") {
       return json_(validateSourceProduct_({
@@ -141,7 +141,7 @@ function doPost(e) {
   const action = safeString_(body.action).trim();
 
   try {
-    if (action === "sourceWatch") return json_(runSourceWatch_());
+    if (action === "sourceWatch") return json_(runSourceWatch_(body.mode || ""));
 
     if (action === "validateSourceProduct") {
       return json_(validateSourceProduct_(body));
@@ -299,8 +299,9 @@ function executeSourceImport_(input) {
   };
 }
 
-function runSourceWatch_() {
-  const indexRows = fetchChecklistIndex_();
+function runSourceWatch_(mode) {
+  const auditMode = normalizeSourceWatchMode_(mode);
+  const indexRows = fetchChecklistIndex_(auditMode);
   const sourceItems = fetchRecentChecklistCenterItems_();
 
   const results = sourceItems.map(function(item) {
@@ -314,16 +315,26 @@ function runSourceWatch_() {
 
   return {
     ok: true,
-    mode: "review_only",
+    mode: auditMode,
+    coverage_source: auditMode === "quick_json" ? "public_json" : "google_sheets",
     source: "checklistcenter",
     source_url: CM_CHECKLISTCENTER_HOME,
     fetched_count: sourceItems.length,
     supported_count: results.filter(function(r) { return r.status !== "ignored"; }).length,
     summary: summary,
     items: results,
-    next_step: "Missing or possible_update items should become approval tasks before any sheet write.",
+    next_step: auditMode === "quick_json"
+      ? "Quick JSON review is for daily triage. Use Deep Sheets Audit before any approved sheet write."
+      : "Deep Sheets Audit checks source Google Sheets. Missing or needs_review items should become approval tasks before any sheet write.",
     updated_at: new Date().toISOString()
   };
+}
+
+function normalizeSourceWatchMode_(mode) {
+  const raw = normalize_(mode || "");
+  if (raw === "quick" || raw === "json" || raw === "quick_json") return "quick_json";
+  if (raw === "deep" || raw === "sheets" || raw === "google_sheets" || raw === "deep_sheets") return "deep_sheets";
+  return "deep_sheets";
 }
 
 function validateSourceProduct_(input) {
@@ -576,8 +587,23 @@ function looseProductKey_(value) {
     .replace(/[^a-z0-9]/g, "");
 }
 
-function fetchChecklistIndex_() {
+function fetchChecklistIndex_(mode) {
+  const auditMode = normalizeSourceWatchMode_(mode || "deep_sheets");
+  if (auditMode === "quick_json") return fetchChecklistPublicJsonRows_();
   return fetchChecklistSourceRows_();
+}
+
+function fetchChecklistPublicJsonRows_() {
+  const data = JSON.parse(fetchText_(CM_APP_DATA_BASE + "/checklists/index.json"));
+  const rows = data.index || data.rows || [];
+
+  return rows.map(function(row) {
+    return Object.assign({}, row, {
+      comparison_source: "public_json",
+      row_count: Number(row.row_count || row.checklist_row_count || 1),
+      parallel_count: Number(row.parallel_count || row.parallel_row_count || 0)
+    });
+  });
 }
 
 function fetchChecklistSourceRows_() {

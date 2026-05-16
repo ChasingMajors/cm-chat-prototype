@@ -1167,9 +1167,11 @@
     const validation = data.validation || {};
     const publish = data.publish || {};
     const publishValidation = publish.validation || {};
+    const githubValidation = publishValidation.github || {};
     const publicValidation = publishValidation.public || {};
     const checklistVault = publishValidation.checklist_vault || {};
     const chatbot = publishValidation.chatbot || {};
+    const publicPassed = !!(checklistVault.ok && chatbot.ok);
 
     els.sourceCheckResult.innerHTML = `
       <div class="source-result-card covered">
@@ -1178,7 +1180,7 @@
             <h3>${publish.ok ? "Sheet Updated, JSON Published" : "Google Sheet Updated"}</h3>
             <p>${escapeHtml(product.display_name || "")}</p>
           </div>
-          <span class="badge ${(validation.ok && publish.ok) ? "opportunity" : "warning"}">${(validation.ok && publish.ok) ? "validated" : "review"}</span>
+          <span class="badge ${(validation.ok && publish.ok && publicPassed) ? "opportunity" : "warning"}">${(validation.ok && publish.ok && publicPassed) ? "validated" : "review"}</span>
         </div>
         <div class="opp-meta">
           <span class="pill">Target: ${escapeHtml(data.target_bucket || "")}</span>
@@ -1187,13 +1189,16 @@
           <span class="pill">Parallels: ${formatNumber(validation.parallel_rows || 0)}</span>
         </div>
         <div class="opp-meta">
-          <span class="pill">Publish: ${publish.ok ? "Complete" : "Needs review"}</span>
+          <span class="pill">GitHub publish: ${publish.ok ? "Complete" : "Needs review"}</span>
+          <span class="pill">GitHub rows: ${formatNumber(githubValidation.row_count || 0)}</span>
+          <span class="pill">GitHub parallels: ${formatNumber(githubValidation.parallel_count || 0)}</span>
           <span class="pill">Public rows: ${formatNumber(publicValidation.row_count || 0)}</span>
           <span class="pill">Public parallels: ${formatNumber(publicValidation.parallel_count || 0)}</span>
           <span class="pill">CV: ${checklistVault.ok ? "Passed" : "Review"}</span>
           <span class="pill">ChatBot: ${chatbot.ok ? "Passed" : "Review"}</span>
         </div>
         ${publish.error ? `<div class="task-guardrail">${escapeHtml(publish.error)}</div>` : ""}
+        ${(publish.ok && !publicPassed) ? `<div class="task-guardrail">GitHub JSON is published. GitHub Pages may still be deploying, so public CV and ChatBot validation can lag behind the repo by a few minutes.</div>` : ""}
         <p>${escapeHtml(data.next_step || "Validate Checklist Vault and ChatBot search.")}</p>
         <div class="opp-actions">
           ${publish.checklist_url ? `<a class="action-btn approve" href="${escapeHtml(publish.checklist_url)}" target="_blank" rel="noopener noreferrer">Open Checklist Vault Test</a>` : ""}

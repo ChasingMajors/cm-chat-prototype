@@ -342,7 +342,8 @@ h2 {
 
 .source-watch-summary,
 .source-watch-item,
-.import-preview-card {
+.import-preview-card,
+.visual-test-card {
   border: 1px solid var(--line);
   background: var(--panel2);
   border-radius: 14px;
@@ -368,10 +369,62 @@ h2 {
   gap: 10px;
 }
 
-.preview-grid h4 {
+.preview-grid h4,
+.visual-test-grid h4,
+.visual-expectations h4 {
   margin: 0 0 8px;
   font-size: 13px;
   line-height: 1.2;
+}
+
+.visual-test-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.test-link {
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  padding: 9px;
+  margin-bottom: 7px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.test-link strong {
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.test-link span {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.visual-expectations {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.visual-expectations > div {
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.04);
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.visual-expectations span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+  margin-top: 6px;
 }
 
 .preview-row {
@@ -619,6 +672,8 @@ h2 {
   .next-plan,
   .task-steps,
   .preview-grid,
+  .visual-test-grid,
+  .visual-expectations,
   .preview-row {
     grid-template-columns: 1fr;
   }

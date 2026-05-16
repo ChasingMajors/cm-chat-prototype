@@ -144,6 +144,73 @@
     ].filter(Boolean).join(" "));
   }
 
+  function stripYearFromProductName(value) {
+    return String(value || "")
+      .replace(/\b(19|20)\d{2}(?:-\d{2})?\b/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function buildShortProductQuery(name) {
+    const withoutYear = stripYearFromProductName(name);
+    const withoutMaker = withoutYear
+      .replace(/\b(Topps|Panini|Upper Deck|Bowman|Leaf)\b/i, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    const year = String(name || "").match(/\b(19|20)\d{2}(?:-\d{2})?\b/);
+    return [year ? year[0] : "", withoutMaker].filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
+  }
+
+  function buildVisualTestPlan(item) {
+    const productName = String(item.matched_name || item.title || "").trim();
+    const code = String(item.matched_code || "").trim();
+    const sport = normalize(item.sport || "");
+    const shortQuery = buildShortProductQuery(productName);
+    const ambiguousQuery = stripYearFromProductName(productName);
+    const chatbotQueries = [
+      productName,
+      shortQuery,
+      `Show me ${productName} checklist`,
+      `${productName} details`,
+      ambiguousQuery
+    ].filter(Boolean).filter((query, index, arr) => arr.indexOf(query) === index);
+    const checklistQueries = [
+      {
+        label: "Checklist Vault - All Sports",
+        url: `https://app.chasingmajors.com/checklists/?refresh=1&q=${encodeURIComponent(productName)}`
+      },
+      {
+        label: `Checklist Vault - ${titleCase(sport || "Sport")} Filter`,
+        url: `https://app.chasingmajors.com/checklists/?refresh=1&sport=${encodeURIComponent(sport)}&q=${encodeURIComponent(productName)}`
+      }
+    ];
+
+    return {
+      productName,
+      code,
+      sport,
+      chatbotQueries,
+      checklistQueries,
+      expectedExact: [
+        "Product Profile appears",
+        productName + " appears",
+        "No error card appears",
+        "No stuck Thinking state"
+      ],
+      expectedAmbiguous: [
+        "If multiple years exist, ChatBot asks which product to use",
+        "Choices include the current product and nearby years when available",
+        "If this is the only backend match, direct product profile is acceptable"
+      ],
+      expectedChecklist: [
+        "Dropdown finds the product",
+        "Selected product loads Checklist Vault",
+        "Checklist sections appear when data exists",
+        "No broken loading state or unexpected No rows found message"
+      ]
+    };
+  }
+
   function isAllowedSport(value) {
     return SPORTS.includes(normalize(value));
   }
@@ -1074,6 +1141,15 @@
         previewSourceImport(btn.dataset.previewImport, btn.dataset.previewSport || "");
       });
     });
+
+    els.sourceCheckResult.querySelectorAll("[data-visual-test]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const idx = Number(btn.dataset.visualTest || -1);
+        const item = items[idx];
+        if (!item) return;
+        renderVisualTestPlan(item);
+      });
+    });
   }
 
   function renderSourceWatchItem(item, idx) {
@@ -1105,13 +1181,69 @@
           ${typeof item.sheet_parallel_count !== "undefined" ? `<span class="pill">Parallels: ${formatNumber(item.sheet_parallel_count)}</span>` : ""}
           ${item.source_url ? `<a class="pill source-link" href="${escapeHtml(item.source_url)}" target="_blank" rel="noopener noreferrer">Source</a>` : ""}
         </div>
-        ${canTask ? `
-          <div class="opp-actions">
+        <div class="opp-actions">
+          <button class="action-btn" type="button" data-visual-test="${idx}">Test CV/ChatBot</button>
+          ${canTask ? `
             <button class="action-btn approve" type="button" data-preview-import="${escapeHtml(item.source_url || "")}" data-preview-sport="${escapeHtml(item.sport || "")}">Preview Import</button>
             <button class="action-btn" type="button" data-source-task="${idx}">Create Operator Task</button>
-          </div>
-        ` : ""}
+          ` : ""}
+        </div>
       </article>
+    `;
+  }
+
+  function renderVisualTestPlan(item) {
+    const plan = buildVisualTestPlan(item);
+    els.sourceCheckResult.innerHTML = `
+      <div class="visual-test-card">
+        <div class="opp-top">
+          <div>
+            <h3>CV / ChatBot Visual Test</h3>
+            <p>${escapeHtml(plan.productName || "Untitled product")}</p>
+          </div>
+          <span class="badge info">manual test</span>
+        </div>
+        <div class="opp-meta">
+          ${plan.code ? `<span class="pill">Code: ${escapeHtml(plan.code)}</span>` : ""}
+          ${plan.sport ? `<span class="pill">Sport: ${escapeHtml(titleCase(plan.sport))}</span>` : ""}
+          <span class="pill">Run after JSON publish has propagated</span>
+        </div>
+        <div class="task-guardrail">This is a visual behavior check. JSON validation remains the source-of-truth data check.</div>
+        <div class="visual-test-grid">
+          <div>
+            <h4>ChatBot Queries</h4>
+            ${plan.chatbotQueries.map((query, index) => `
+              <a class="test-link" href="https://app.chasingmajors.com/ChatBot/?q=${encodeURIComponent(query)}" target="_blank" rel="noopener noreferrer">
+                <strong>${escapeHtml(index === plan.chatbotQueries.length - 1 ? "Ambiguity check" : "Product check")}</strong>
+                <span>${escapeHtml(query)}</span>
+              </a>
+            `).join("")}
+          </div>
+          <div>
+            <h4>Checklist Vault Checks</h4>
+            ${plan.checklistQueries.map(check => `
+              <a class="test-link" href="${escapeHtml(check.url)}" target="_blank" rel="noopener noreferrer">
+                <strong>${escapeHtml(check.label)}</strong>
+                <span>${escapeHtml(plan.productName)}</span>
+              </a>
+            `).join("")}
+          </div>
+        </div>
+        <div class="visual-expectations">
+          <div>
+            <h4>Expected ChatBot Result</h4>
+            ${plan.expectedExact.map(itemText => `<span>${escapeHtml(itemText)}</span>`).join("")}
+          </div>
+          <div>
+            <h4>Expected Ambiguity Result</h4>
+            ${plan.expectedAmbiguous.map(itemText => `<span>${escapeHtml(itemText)}</span>`).join("")}
+          </div>
+          <div>
+            <h4>Expected CV Result</h4>
+            ${plan.expectedChecklist.map(itemText => `<span>${escapeHtml(itemText)}</span>`).join("")}
+          </div>
+        </div>
+      </div>
     `;
   }
 

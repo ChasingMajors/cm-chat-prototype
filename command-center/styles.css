@@ -618,6 +618,33 @@ h2 {
   background: rgba(255,255,255,0.055);
 }
 
+.visual-runner-copy {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.visual-runner-copy span {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.045);
+  color: var(--muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.visual-runner-copy strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text);
+  font-size: 11px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
 .metric-row {
   display: flex;
   align-items: center;
@@ -674,6 +701,7 @@ h2 {
   .preview-grid,
   .visual-test-grid,
   .visual-expectations,
+  .visual-runner-copy,
   .preview-row {
     grid-template-columns: 1fr;
   }

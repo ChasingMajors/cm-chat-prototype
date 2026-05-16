@@ -1,0 +1,64 @@
+name: Visual Product Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      product_name:
+        description: "Product display name, for example 2025 Topps Finest Football"
+        required: true
+        type: string
+      sport:
+        description: "Sport slug"
+        required: true
+        type: choice
+        options:
+          - baseball
+          - basketball
+          - football
+          - hockey
+          - soccer
+      product_code:
+        description: "Optional product code"
+        required: false
+        type: string
+      app_base:
+        description: "App base URL"
+        required: false
+        default: "https://app.chasingmajors.com"
+        type: string
+
+jobs:
+  visual-product-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run visual product test
+        env:
+          PRODUCT_NAME: ${{ inputs.product_name }}
+          SPORT: ${{ inputs.sport }}
+          PRODUCT_CODE: ${{ inputs.product_code }}
+          CM_APP_BASE: ${{ inputs.app_base }}
+          OUT_DIR: visual-test-results
+        run: npm run test:visual-product
+
+      - name: Upload visual test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-product-test-results
+          path: visual-test-results

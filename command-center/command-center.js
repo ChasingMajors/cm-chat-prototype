@@ -7,6 +7,7 @@
   const TASK_KEY = "cm_command_center_operator_tasks_v1";
   const OPERATOR_ENDPOINT_KEY = "cm_command_center_operator_endpoint_v1";
   const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
+  const VISUAL_TEST_WORKFLOW_URL = "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml";
 
   const state = {
     opportunities: [],
@@ -1209,6 +1210,14 @@
           <span class="pill">Run after JSON publish has propagated</span>
         </div>
         <div class="task-guardrail">This is a visual behavior check. JSON validation remains the source-of-truth data check.</div>
+        <div class="opp-actions">
+          <a class="action-btn approve" href="${VISUAL_TEST_WORKFLOW_URL}" target="_blank" rel="noopener noreferrer">Run Agent Visual Test</a>
+        </div>
+        <div class="visual-runner-copy">
+          <span><strong>product_name</strong>${escapeHtml(plan.productName || "")}</span>
+          <span><strong>sport</strong>${escapeHtml(plan.sport || "")}</span>
+          <span><strong>product_code</strong>${escapeHtml(plan.code || "")}</span>
+        </div>
         <div class="visual-test-grid">
           <div>
             <h4>ChatBot Queries</h4>

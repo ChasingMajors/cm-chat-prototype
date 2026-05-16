@@ -898,7 +898,7 @@ function parseChecklistLine_(line, product, section, subset) {
     card_no: cardNo,
     player: cleanPlayerName_(player),
     team: cleanTeamName_(team),
-    tag: inferRowTag_(section, subset, player)
+    tag: inferRowTag_(section, subset, player, team)
   };
 }
 
@@ -1012,22 +1012,33 @@ function simplifySubsetName_(heading, displayName) {
 
 function inferChecklistSection_(heading) {
   const h = normalize_(heading);
-  if (/auto|autograph|signature|scripts|ink|endorsed|spotlight signatures/.test(h)) return "Autographs";
-  if (/relic|material|memorabilia|patch|jumbo|swatch/.test(h)) return "Relics";
-  if (/variation|short print|ssp|sp\b/.test(h)) return "Variations";
-  if (/insert|night moves|sneaker|color blast|downtown|stained glass|features|framed|vintage/.test(h)) return "Inserts";
+  if (/auto|autograph|signature|scripts|ink|endorsed|spotlight signatures/.test(h)) return "Autograph";
+  if (/relic|material|memorabilia|patch|jumbo|swatch/.test(h)) return "Relic";
+  if (/variation|short print|ssp|sp\b/.test(h)) return "Variation";
+  if (/insert|night moves|sneaker|color blast|downtown|stained glass|features|framed|vintage/.test(h)) return "Insert";
   if (/base/.test(h)) return "Base";
-  return "Inserts";
+  return "Insert";
 }
 
-function inferRowTag_(section, subset, player) {
-  const hay = normalize_([section, subset, player].join(" "));
+function inferRowTag_(section, subset, player, team) {
+  const rawHay = [section, subset, player, team].join(" ");
+  const hay = normalize_(rawHay);
   const tags = [];
   if (/rookie| rc\b/.test(hay)) tags.push("RC");
-  if (/auto|autograph|signature|scripts|ink/.test(hay)) tags.push("AUTO");
-  if (/relic|material|memorabilia|patch|swatch/.test(hay)) tags.push("RELIC");
-  if (/ssp|short print/.test(hay)) tags.push("SSP");
+  const serial = extractSerialTag_(rawHay);
+  if (serial) tags.push(serial);
   return tags.join(", ");
+}
+
+function extractSerialTag_(value) {
+  const raw = decodeEntities_(safeString_(value));
+  if (/\b1\s*\/\s*1\b/i.test(raw)) return "1/1";
+
+  let m = raw.match(/#?\s*\/\s*(\d+)(?:\s*or\s*less)?/i);
+  if (m) {
+    return raw.match(/or\s*less/i) ? "/" + m[1] + " or less" : "/" + m[1];
+  }
+  return "";
 }
 
 function cleanPlayerName_(value) {
@@ -1035,7 +1046,11 @@ function cleanPlayerName_(value) {
 }
 
 function cleanTeamName_(value) {
-  return decodeEntities_(safeString_(value)).replace(/\s+/g, " ").trim();
+  return decodeEntities_(safeString_(value))
+    .replace(/\b1\s*\/\s*1\b/gi, "")
+    .replace(/#?\s*\/\s*\d+(?:\s*or\s*less)?/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function inferManufacturer_(title) {

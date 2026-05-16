@@ -456,6 +456,22 @@ function classifySourceItem_(item, indexRows) {
 
   const match = findChecklistIndexMatch_(title, sport, indexRows);
   if (match && match.score >= 140) {
+    if (Number(match.row_count || 0) <= 0) {
+      return {
+        status: "needs_review",
+        title: title,
+        sport: sport,
+        source_url: item.url || "",
+        matched_name: match.name,
+        matched_code: match.code,
+        match_score: match.score,
+        sheet_row_count: Number(match.row_count || 0),
+        sheet_parallel_count: Number(match.parallel_count || 0),
+        comparison_source: match.comparison_source || "google_sheets",
+        recommended_action: "Product row exists in Google Sheets, but source Google Sheet has no checklist rows. Import or rebuild this product before calling it covered."
+      };
+    }
+
     return {
       status: "covered",
       title: title,
@@ -464,7 +480,10 @@ function classifySourceItem_(item, indexRows) {
       matched_name: match.name,
       matched_code: match.code,
       match_score: match.score,
-      recommended_action: "No import needed unless source has newer rows/parallels than Chasing Majors."
+      sheet_row_count: Number(match.row_count || 0),
+      sheet_parallel_count: Number(match.parallel_count || 0),
+      comparison_source: match.comparison_source || "google_sheets",
+      recommended_action: "No import needed unless source has newer rows/parallels than the source Google Sheet."
     };
   }
 
@@ -477,6 +496,9 @@ function classifySourceItem_(item, indexRows) {
       matched_name: match.name,
       matched_code: match.code,
       match_score: match.score,
+      sheet_row_count: Number(match.row_count || 0),
+      sheet_parallel_count: Number(match.parallel_count || 0),
+      comparison_source: match.comparison_source || "google_sheets",
       recommended_action: "Review naming/alias match before import."
     };
   }
@@ -525,7 +547,12 @@ function findChecklistIndexMatch_(title, sport, indexRows) {
       best = {
         score: score,
         name: name,
-        code: code
+        code: code,
+        row_count: Number(row.row_count || row.checklist_row_count || 0),
+        parallel_count: Number(row.parallel_count || row.parallel_row_count || 0),
+        comparison_source: row.comparison_source || "google_sheets",
+        spreadsheet_id: row.spreadsheet_id || "",
+        source_key: row.source_key || ""
       };
     }
   });
@@ -550,8 +577,106 @@ function looseProductKey_(value) {
 }
 
 function fetchChecklistIndex_() {
-  const data = JSON.parse(fetchText_(CM_APP_DATA_BASE + "/checklists/index.json"));
-  return data.index || data.rows || [];
+  return fetchChecklistSourceRows_();
+}
+
+function fetchChecklistSourceRows_() {
+  const out = [];
+  const seenSpreadsheets = {};
+
+  Object.keys(CM_CHECKLIST_SOURCE_MAP || {}).forEach(function(sport) {
+    const sourceMap = CM_CHECKLIST_SOURCE_MAP[sport] || {};
+
+    Object.keys(sourceMap).forEach(function(sourceKey) {
+      const spreadsheetId = sourceMap[sourceKey];
+      if (!spreadsheetId || seenSpreadsheets[spreadsheetId]) return;
+      seenSpreadsheets[spreadsheetId] = true;
+
+      const ss = SpreadsheetApp.openById(spreadsheetId);
+      const checklistCounts = countRowsByCodeMap_(ss.getSheetByName(CM_CHECKLIST_ROWS_SHEET));
+      const parallelCounts = countRowsByCodeMap_(ss.getSheetByName(CM_PARALLELS_SHEET));
+      const products = readSheetObjects_(ss.getSheetByName(CM_PRODUCTS_SHEET));
+
+      products.forEach(function(row) {
+        const code = safeString_(pickField_(row, ["code", "Code"])).trim();
+        if (!code) return;
+
+        out.push({
+          Code: code,
+          DisplayName: safeString_(pickField_(row, ["display_name", "displayName", "DisplayName", "name"])).trim(),
+          Keywords: safeString_(pickField_(row, ["keywords", "Keywords"])).trim(),
+          year: safeString_(pickField_(row, ["year", "Year"])).trim(),
+          sport: normalize_(pickField_(row, ["sport", "Sport"]) || sport),
+          manufacturer: safeString_(pickField_(row, ["manufacturer", "Manufacturer"])).trim(),
+          product: safeString_(pickField_(row, ["product", "Product"])).trim(),
+          row_count: checklistCounts[code] || 0,
+          parallel_count: parallelCounts[code] || 0,
+          spreadsheet_id: spreadsheetId,
+          source_key: sourceKey,
+          comparison_source: "google_sheets"
+        });
+      });
+    });
+  });
+
+  return out;
+}
+
+function readSheetObjects_(sh) {
+  if (!sh) return [];
+  const values = sh.getDataRange().getDisplayValues();
+  if (!values || values.length < 2) return [];
+
+  const headers = values[0].map(function(header) {
+    return safeString_(header).trim();
+  });
+
+  return values.slice(1)
+    .filter(function(row) {
+      return row.some(function(cell) {
+        return safeString_(cell).trim() !== "";
+      });
+    })
+    .map(function(row) {
+      const obj = {};
+      headers.forEach(function(header, index) {
+        if (!header) return;
+        obj[header] = row[index];
+        obj[normalizeHeader_(header)] = row[index];
+      });
+      return obj;
+    });
+}
+
+function pickField_(obj, candidates) {
+  for (let i = 0; i < candidates.length; i++) {
+    const key = safeString_(candidates[i]);
+    const normalizedKey = normalizeHeader_(key);
+    if (Object.prototype.hasOwnProperty.call(obj || {}, key)) return obj[key];
+    if (Object.prototype.hasOwnProperty.call(obj || {}, normalizedKey)) return obj[normalizedKey];
+  }
+  return "";
+}
+
+function normalizeHeader_(header) {
+  return safeString_(header)
+    .trim()
+    .toLowerCase()
+    .replace(/[^\w]+/g, "");
+}
+
+function countRowsByCodeMap_(sh) {
+  const out = {};
+  if (!sh) return out;
+
+  const values = sh.getDataRange().getDisplayValues();
+  for (let i = 1; i < values.length; i++) {
+    const code = safeString_(values[i][0]).trim();
+    if (!code) continue;
+    out[code] = (out[code] || 0) + 1;
+  }
+
+  return out;
 }
 
 function parseFullSourceForWrite_(sourceUrl, sport) {
@@ -630,12 +755,20 @@ function replaceRowsByCode_(ss, sheetName, code, objects, defaultHeaders) {
   });
 
   validateSheetWriteRows_(rowsToWrite, headers.length, sheetName);
-  deleteRowsByFirstColumnValue_(sh, code);
 
-  if (rowsToWrite.length) {
+  const existingRowNumbers = getRowNumbersByFirstColumnValue_(sh, code);
+  const updateCount = Math.min(existingRowNumbers.length, rowsToWrite.length);
+
+  for (let i = 0; i < updateCount; i++) {
+    sh.getRange(existingRowNumbers[i], 1, 1, headers.length).setNumberFormat("@");
+    sh.getRange(existingRowNumbers[i], 1, 1, headers.length).setValues([rowsToWrite[i]]);
+  }
+
+  const rowsToAppend = rowsToWrite.slice(updateCount);
+  if (rowsToAppend.length) {
     const startRow = sh.getLastRow() + 1;
-    sh.getRange(startRow, 1, rowsToWrite.length, headers.length).setNumberFormat("@");
-    sh.getRange(startRow, 1, rowsToWrite.length, headers.length).setValues(rowsToWrite);
+    sh.getRange(startRow, 1, rowsToAppend.length, headers.length).setNumberFormat("@");
+    sh.getRange(startRow, 1, rowsToAppend.length, headers.length).setValues(rowsToAppend);
   }
 }
 
@@ -647,16 +780,18 @@ function validateSheetWriteRows_(rows, width, sheetName) {
   });
 }
 
-function deleteRowsByFirstColumnValue_(sh, code) {
+function getRowNumbersByFirstColumnValue_(sh, code) {
+  const out = [];
   const lastRow = sh.getLastRow();
-  if (lastRow < 2) return;
+  if (lastRow < 2) return out;
 
   const values = sh.getRange(2, 1, lastRow - 1, 1).getValues();
-  for (let i = values.length - 1; i >= 0; i--) {
+  for (let i = 0; i < values.length; i++) {
     if (safeString_(values[i][0]).trim() === code) {
-      sh.deleteRow(i + 2);
+      out.push(i + 2);
     }
   }
+  return out;
 }
 
 function validateWrittenProduct_(ss, code) {

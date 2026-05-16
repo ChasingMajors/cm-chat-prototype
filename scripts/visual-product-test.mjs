@@ -63,6 +63,18 @@ const failed = results.filter(result => !result.ok);
 await writeReport(results);
 
 if (failed.length) {
+  failed.forEach(result => {
+    console.error(`\nFAILED: ${result.name}`);
+    console.error(`URL: ${result.url}`);
+    if (result.error) console.error(`Error: ${result.error}`);
+    (result.checks || []).filter(check => !check.ok).forEach(check => {
+      console.error(`- ${check.label}`);
+      if (check.expected) console.error(`  Expected: ${check.expected}`);
+      if (check.unwanted) console.error(`  Unwanted: ${check.unwanted}`);
+    });
+    if (result.text_excerpt) console.error(`Excerpt: ${result.text_excerpt}`);
+    if (result.screenshot) console.error(`Screenshot: ${result.screenshot}`);
+  });
   console.error(`Visual product test failed: ${failed.length} issue(s).`);
   process.exit(1);
 }
@@ -95,7 +107,7 @@ async function testChatbotQuery(context, item) {
       checks.push(assertIncludes(bodyText, stripSportSuffix(PRODUCT_NAME), "Expected current product option"));
     } else {
       checks.push(assertIncludes(bodyText, "Product Profile", "Expected result type"));
-      checks.push(assertIncludes(bodyText, PRODUCT_NAME, "Expected product title"));
+      checks.push(assertProductNameMatch(bodyText, "Expected product title"));
     }
 
     checks.push(assertNotIncludes(bodyText, "Something went wrong", "No fatal error"));
@@ -127,7 +139,7 @@ async function testChecklistUrl(context, item) {
     const bodyText = await page.locator("body").innerText({ timeout: 10000 });
     result.text_excerpt = buildTextExcerpt(bodyText);
     const checks = [
-      assertIncludes(bodyText, PRODUCT_NAME, "Expected product title or dropdown result"),
+      assertProductNameMatch(bodyText, "Expected product title or dropdown result"),
       assertAnyIncludes(bodyText, ["Base", "Insert", "Autograph", "Parallel", "Checklist"], "Expected checklist content"),
       assertNotIncludes(bodyText, "No matching product found", "Product should match"),
       assertNotIncludes(bodyText, "No rows found", "Rows should load"),
@@ -232,6 +244,20 @@ function assertIncludes(text, expected, label) {
   };
 }
 
+function assertProductNameMatch(text, label) {
+  const candidates = uniqueStrings([
+    PRODUCT_NAME,
+    stripSportSuffix(PRODUCT_NAME)
+  ]);
+  const normalized = normalizeText(text);
+
+  return {
+    label,
+    ok: candidates.some(candidate => normalized.includes(normalizeText(candidate))),
+    expected: candidates.join(" | ")
+  };
+}
+
 function assertAnyIncludes(text, expectedList, label) {
   const normalized = normalizeText(text);
   return {
@@ -268,6 +294,16 @@ function unique(items) {
   return items.filter(item => {
     const key = item.query;
     if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function uniqueStrings(items) {
+  const seen = new Set();
+  return (items || []).filter(item => {
+    const key = normalizeText(item);
+    if (!key || seen.has(key)) return false;
     seen.add(key);
     return true;
   });

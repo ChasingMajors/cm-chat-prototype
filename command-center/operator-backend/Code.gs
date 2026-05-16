@@ -1172,9 +1172,9 @@ function dedupeParallelRows_(rows) {
 function extractSerialText_(label) {
   const raw = safeString_(label);
   let m = raw.match(/#?\/\s*(\d+)/);
-  if (m) return "#/" + m[1];
-  if (/1\/1/.test(raw)) return "1/1";
-  if (/one\s*of\s*one/i.test(raw)) return "1/1";
+  if (m) return "/" + m[1];
+  if (/1\/1/.test(raw)) return "/1";
+  if (/one\s*of\s*one/i.test(raw)) return "/1";
   return "";
 }
 
@@ -1193,6 +1193,7 @@ function cleanProductTitle_(title) {
     .replace(/\s*-\s*Checklistcenter\.com\s*$/i, "")
     .replace(/\s*[-–]\s*(Baseball|Basketball|Football|Hockey|Soccer)\s*Card\s*Checklist\s*$/i, " $1")
     .replace(/\s*Card\s*Checklist\s*$/i, "")
+    .replace(/\b(Baseball|Basketball|Football|Hockey|Soccer)\s+\1\b$/i, "$1")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -1217,6 +1218,7 @@ function simplifySubsetName_(heading, displayName) {
   subset = subset.replace(/\bPanini\b|\bTopps\b|\bUpper Deck\b|\bBowman\b/gi, "");
   subset = subset.replace(/\bNoir\b|\bRoad to FIFA\b|\bWorld Cup 26\b|\bSoccer\b/gi, "");
   subset = subset.replace(/[–-]/g, " ");
+  subset = subset.replace(/\s+Set\s*$/i, "");
   subset = subset.replace(/\s+/g, " ").trim();
 
   return subset || heading;
@@ -1244,7 +1246,7 @@ function inferRowTag_(section, subset, player, team) {
 
 function extractSerialTag_(value) {
   const raw = decodeEntities_(safeString_(value));
-  if (/\b1\s*\/\s*1\b/i.test(raw)) return "1/1";
+  if (/\b1\s*\/\s*1\b/i.test(raw)) return "/1";
 
   let m = raw.match(/#?\s*\/\s*(\d+)(?:\s*or\s*less)?/i);
   if (m) {
@@ -1333,6 +1335,7 @@ function normalizeTitleFromLink_(value) {
     .replace(/\s*[-–]\s*Hockey Card Checklist\s*$/i, " Hockey")
     .replace(/\s*Card Checklist\s*$/i, "")
     .replace(/\s*Checklist\s*$/i, "")
+    .replace(/\b(Baseball|Basketball|Football|Hockey|Soccer)\s+\1\b$/i, "$1")
     .replace(/\s+/g, " ")
     .trim();
 

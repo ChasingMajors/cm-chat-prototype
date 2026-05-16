@@ -3,6 +3,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 const APP_BASE = cleanEnv("CM_APP_BASE") || "https://app.chasingmajors.com";
+const CHATBOT_BASE = cleanEnv("CM_CHATBOT_BASE") || `${trimTrailingSlash(APP_BASE)}/ChatBot`;
+const CHECKLIST_BASE = cleanEnv("CM_CHECKLIST_BASE") || APP_BASE;
 const PRODUCT_NAME = cleanEnv("PRODUCT_NAME");
 const SPORT = cleanEnv("SPORT");
 const CODE = cleanEnv("PRODUCT_CODE");
@@ -27,11 +29,11 @@ const chatbotQueries = unique([
 const checklistChecks = [
   {
     label: "Checklist Vault - All Sports",
-    url: `${APP_BASE}/checklists/?refresh=1&q=${encodeURIComponent(PRODUCT_NAME)}`
+    url: `${trimTrailingSlash(CHECKLIST_BASE)}/checklists/?refresh=1&q=${encodeURIComponent(PRODUCT_NAME)}`
   },
   {
     label: `Checklist Vault - ${titleCase(SPORT || "Sport")} Filter`,
-    url: `${APP_BASE}/checklists/?refresh=1&sport=${encodeURIComponent(SPORT || "")}&q=${encodeURIComponent(PRODUCT_NAME)}`
+    url: `${trimTrailingSlash(CHECKLIST_BASE)}/checklists/?refresh=1&sport=${encodeURIComponent(SPORT || "")}&q=${encodeURIComponent(PRODUCT_NAME)}`
   }
 ];
 
@@ -69,7 +71,7 @@ console.log("Visual product test passed.");
 
 async function testChatbotQuery(context, item) {
   const page = await context.newPage();
-  const url = `${APP_BASE}/ChatBot/?q=${encodeURIComponent(item.query)}`;
+  const url = `${trimTrailingSlash(CHATBOT_BASE)}/?q=${encodeURIComponent(item.query)}`;
   const result = baseResult(`ChatBot - ${item.label}`, url);
 
   try {
@@ -178,6 +180,8 @@ async function writeReport(results) {
     product_code: CODE,
     sport: SPORT,
     app_base: APP_BASE,
+    chatbot_base: CHATBOT_BASE,
+    checklist_base: CHECKLIST_BASE,
     generated_at: new Date().toISOString(),
     results
   }, null, 2));
@@ -188,6 +192,8 @@ async function writeReport(results) {
     `Product: ${PRODUCT_NAME}`,
     CODE ? `Code: ${CODE}` : "",
     SPORT ? `Sport: ${SPORT}` : "",
+    `ChatBot base: ${CHATBOT_BASE}`,
+    `Checklist base: ${CHECKLIST_BASE}`,
     ``,
     `| Check | Status | URL |`,
     `|---|---:|---|`
@@ -280,6 +286,10 @@ function buildTextExcerpt(value) {
 
 function cleanEnv(key) {
   return String(process.env[key] || "").trim();
+}
+
+function trimTrailingSlash(value) {
+  return String(value || "").replace(/\/+$/g, "");
 }
 
 function titleCase(value) {

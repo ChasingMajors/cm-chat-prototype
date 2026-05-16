@@ -32,6 +32,8 @@ const CM_PARALLELS_SHEET = "Parallels";
 const CM_OPERATOR_KEY_PROPERTY = "CM_OPERATOR_KEY";
 const CM_STATIC_EXPORTER_URL_PROPERTY = "CM_STATIC_EXPORTER_URL";
 const CM_GITHUB_TOKEN_PROPERTY = "CM_GITHUB_TOKEN";
+const CM_VISUAL_TEST_CHATBOT_BASE_PROPERTY = "CM_VISUAL_TEST_CHATBOT_BASE";
+const CM_VISUAL_TEST_CHECKLIST_BASE_PROPERTY = "CM_VISUAL_TEST_CHECKLIST_BASE";
 const CM_VISUAL_TEST_OWNER = "ChasingMajors";
 const CM_VISUAL_TEST_REPO = "cm-chat-prototype";
 const CM_VISUAL_TEST_WORKFLOW = "visual-product-test.yml";
@@ -1029,7 +1031,9 @@ function dispatchVisualProductTest_(input) {
       product_name: productName,
       sport: sport,
       product_code: code,
-      app_base: "https://app.chasingmajors.com"
+      app_base: "https://app.chasingmajors.com",
+      chatbot_base: getScriptPropertyWithDefault_(CM_VISUAL_TEST_CHATBOT_BASE_PROPERTY, "https://chasingmajors.github.io/cm-chat-prototype"),
+      checklist_base: getScriptPropertyWithDefault_(CM_VISUAL_TEST_CHECKLIST_BASE_PROPERTY, "https://app.chasingmajors.com")
     }
   };
 
@@ -1080,6 +1084,11 @@ function dispatchVisualProductTest_(input) {
     actions_url: "https://github.com/" + CM_VISUAL_TEST_OWNER + "/" + CM_VISUAL_TEST_REPO + "/actions",
     note: "Visual product test queued. GitHub may take a few seconds to show the new run."
   };
+}
+
+function getScriptPropertyWithDefault_(key, fallback) {
+  const value = PropertiesService.getScriptProperties().getProperty(key);
+  return safeString_(value).trim() || fallback;
 }
 
 function buildProductPreview_(title, sport, sourceUrl) {

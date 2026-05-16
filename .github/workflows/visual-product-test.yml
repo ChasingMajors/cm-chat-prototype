@@ -22,7 +22,17 @@ on:
         required: false
         type: string
       app_base:
-        description: "App base URL"
+        description: "Legacy app base URL"
+        required: false
+        default: "https://app.chasingmajors.com"
+        type: string
+      chatbot_base:
+        description: "ChatBot base URL"
+        required: false
+        default: "https://chasingmajors.github.io/cm-chat-prototype"
+        type: string
+      checklist_base:
+        description: "Checklist Vault app base URL"
         required: false
         default: "https://app.chasingmajors.com"
         type: string
@@ -55,6 +65,8 @@ jobs:
           SPORT: ${{ inputs.sport }}
           PRODUCT_CODE: ${{ inputs.product_code }}
           CM_APP_BASE: ${{ inputs.app_base }}
+          CM_CHATBOT_BASE: ${{ inputs.chatbot_base }}
+          CM_CHECKLIST_BASE: ${{ inputs.checklist_base }}
           OUT_DIR: visual-test-results
         run: npm run test:visual-product
 

@@ -51,7 +51,8 @@
     knownIssues: readJsonStore(KNOWN_ISSUE_KEY, {}),
     backendMemorySaveTimer: null,
     backendMemorySaving: false,
-    backendMemorySuspendAutoSave: false
+    backendMemorySuspendAutoSave: false,
+    backendMemoryAutoLoaded: false
   };
 
   const els = {
@@ -2105,6 +2106,16 @@
     };
   }
 
+  function hasLocalAgentMemory() {
+    return !!(
+      (state.agentActions || []).length ||
+      (state.activityLog || []).length ||
+      (state.tasks || []).length ||
+      Object.keys(state.visualTests || {}).length ||
+      Object.keys(state.knownIssues || {}).length
+    );
+  }
+
   function updateMemoryStatus(message, status) {
     if (!els.memoryStatus) return;
     const counts = [
@@ -2302,6 +2313,19 @@
     } catch (err) {
       state.backendMemorySuspendAutoSave = false;
       updateMemoryStatus(err && err.message ? err.message : "Backend memory load failed.", "error");
+    }
+  }
+
+  async function autoLoadBackendAgentMemoryIfEmpty() {
+    if (state.backendMemoryAutoLoaded || hasLocalAgentMemory()) return;
+    if (!readOperatorEndpoint() || !readOperatorKey()) return;
+
+    state.backendMemoryAutoLoaded = true;
+    try {
+      await loadBackendAgentMemory();
+      updateMemoryStatus("Backend memory auto-loaded.", "startup sync");
+    } catch (err) {
+      updateMemoryStatus(err && err.message ? err.message : "Backend memory auto-load failed.", "error");
     }
   }
 
@@ -3174,4 +3198,5 @@
   els.autonomyState.textContent = getAutonomyLabel(state.autonomyMode);
   els.typeFilter.addEventListener("change", renderOpportunities);
   runAudit();
+  autoLoadBackendAgentMemoryIfEmpty();
 })();

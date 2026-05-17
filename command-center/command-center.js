@@ -48,7 +48,9 @@
     activityLog: readJsonStore(ACTIVITY_LOG_KEY, []),
     autonomyMode: readAutonomyMode(),
     visualTests: readJsonStore(VISUAL_TEST_KEY, {}),
-    knownIssues: readJsonStore(KNOWN_ISSUE_KEY, {})
+    knownIssues: readJsonStore(KNOWN_ISSUE_KEY, {}),
+    backendMemorySaveTimer: null,
+    backendMemorySaving: false
   };
 
   const els = {
@@ -371,6 +373,7 @@
     state.activityLog.unshift(entry);
     state.activityLog = state.activityLog.slice(0, 80);
     writeActivityLog();
+    if (!input.noAutoSave) scheduleBackendMemorySave();
     return entry;
   }
 
@@ -2034,12 +2037,21 @@
     task.status = status;
     task.updatedAt = new Date().toISOString();
     writeTasks();
+    logActivity({
+      type: "operator_task",
+      status: status,
+      product: task.title || "",
+      source: "admin",
+      title: "Operator task updated",
+      detail: `${task.title || "Task"} marked ${titleCase(status)}.`
+    });
     renderOperatorTasks();
   }
 
   function clearDoneTasks() {
     state.tasks = state.tasks.filter(task => task.status !== "done");
     writeTasks();
+    scheduleBackendMemorySave();
     renderOperatorTasks();
   }
 
@@ -2173,15 +2185,37 @@
   }
 
   async function saveBackendAgentMemory() {
+    return saveBackendAgentMemoryNow({ silent: false });
+  }
+
+  function scheduleBackendMemorySave() {
+    const endpoint = readOperatorEndpoint();
+    const key = readOperatorKey();
+    if (!endpoint || !key) return;
+
+    if (state.backendMemorySaveTimer) {
+      clearTimeout(state.backendMemorySaveTimer);
+    }
+
+    state.backendMemorySaveTimer = setTimeout(() => {
+      state.backendMemorySaveTimer = null;
+      saveBackendAgentMemoryNow({ silent: true });
+    }, 1600);
+  }
+
+  async function saveBackendAgentMemoryNow(options) {
+    const opts = options || {};
     const endpoint = readOperatorEndpoint();
     const key = readOperatorKey();
     if (!endpoint || !key) {
-      updateMemoryStatus("Backend save needs Operator Backend URL and admin key.", "missing setup");
+      if (!opts.silent) updateMemoryStatus("Backend save needs Operator Backend URL and admin key.", "missing setup");
       return;
     }
+    if (state.backendMemorySaving) return;
 
     try {
-      updateMemoryStatus("Saving backend memory...", "working");
+      state.backendMemorySaving = true;
+      if (!opts.silent) updateMemoryStatus("Saving backend memory...", "working");
       const data = await postOperatorJson(endpoint, {
         action: "saveAgentMemory",
         key: key,
@@ -2194,12 +2228,15 @@
         status: "saved",
         source: "operator_backend",
         title: "Backend memory saved",
-        detail: data.path ? `Saved to ${data.path}.` : "Agent memory saved through Operator Backend."
+        detail: data.path ? `Saved to ${data.path}.` : "Agent memory saved through Operator Backend.",
+        noAutoSave: true
       });
       renderActivityLog();
-      updateMemoryStatus("Backend memory saved.", data.sha ? `sha ${String(data.sha).slice(0, 7)}` : "saved");
+      updateMemoryStatus(opts.silent ? "Backend memory auto-saved." : "Backend memory saved.", data.sha ? `sha ${String(data.sha).slice(0, 7)}` : "saved");
     } catch (err) {
       updateMemoryStatus(err && err.message ? err.message : "Backend memory save failed.", "error");
+    } finally {
+      state.backendMemorySaving = false;
     }
   }
 
@@ -2230,7 +2267,8 @@
         status: "loaded",
         source: "operator_backend",
         title: "Backend memory loaded",
-        detail: data.path ? `Loaded from ${data.path}.` : "Agent memory loaded from Operator Backend."
+        detail: data.path ? `Loaded from ${data.path}.` : "Agent memory loaded from Operator Backend.",
+        noAutoSave: true
       });
       renderActivityLog();
       updateMemoryStatus("Backend memory loaded.", data.sha ? `sha ${String(data.sha).slice(0, 7)}` : "loaded");
@@ -2268,7 +2306,8 @@
       status: "cleared",
       source: "admin",
       title: "Local memory cleared",
-      detail: "Browser-only queue, log, approvals, known issues, and visual statuses were reset."
+      detail: "Browser-only queue, log, approvals, known issues, and visual statuses were reset.",
+      noAutoSave: true
     });
 
     render();

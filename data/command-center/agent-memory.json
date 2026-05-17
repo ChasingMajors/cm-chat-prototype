@@ -2,12 +2,144 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-17T18:40:49.801Z",
+  "exported_at": "2026-05-17T18:55:56.523Z",
   "autonomy_mode": "approval_required",
-  "approvals": {},
-  "tasks": [],
-  "agent_actions": [],
-  "activity_log": [],
+  "approvals": {
+    "next|scout|start source-watch as review-only": "approved"
+  },
+  "tasks": [
+    {
+      "id": "task_1779043558195_z1mhe0",
+      "sourceId": "next|scout|start source-watch as review-only",
+      "title": "Start source-watch as review-only",
+      "kind": "scout",
+      "severity": "opportunity",
+      "status": "ready",
+      "createdAt": "2026-05-17T18:45:58.195Z",
+      "updatedAt": "2026-05-17T18:46:25.094Z",
+      "why": "This moves you toward AI operations without risking unauthorized live-data changes.",
+      "objective": "Build review cards, then later connect spreadsheet writes behind explicit approval.",
+      "steps": [
+        "Define trusted source fields: source, product, sport, claim, date, confidence, and link.",
+        "Create review-only source-watch cards in the Command Center.",
+        "Compare source claims against current PRV or Checklist Vault data.",
+        "Require admin approval before writing to Sheets or publishing JSON.",
+        "Log every approved change for later audit."
+      ],
+      "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
+    }
+  ],
+  "agent_actions": [
+    {
+      "id": "next|scout|start source-watch as review-only",
+      "type": "source_watch",
+      "source": "audit",
+      "product": "Start source-watch as review-only",
+      "sport": "",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approved",
+      "recommendedAction": "Build review cards, then later connect spreadsheet writes behind explicit approval.",
+      "adminDecision": "approved",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "createdAt": "2026-05-17T18:45:58.196Z",
+      "updatedAt": "2026-05-17T18:48:27.703Z"
+    }
+  ],
+  "activity_log": [
+    {
+      "id": "log_1779044154921_ax8fll",
+      "ts": "2026-05-17T18:55:54.921Z",
+      "type": "autonomy",
+      "title": "Autonomy mode changed",
+      "detail": "Mode set to Approval required.",
+      "status": "approval_required",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779043988747_8kuswh",
+      "ts": "2026-05-17T18:53:08.747Z",
+      "type": "autonomy",
+      "title": "Autonomy mode changed",
+      "detail": "Mode set to Review only.",
+      "status": "review_only",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779043920693_zf8nqr",
+      "ts": "2026-05-17T18:52:00.693Z",
+      "type": "autonomy",
+      "title": "Autonomy mode changed",
+      "detail": "Mode set to Approval required.",
+      "status": "approval_required",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779043834275_vbnikp",
+      "ts": "2026-05-17T18:50:34.275Z",
+      "type": "autonomy",
+      "title": "Autonomy mode changed",
+      "detail": "Mode set to Review only.",
+      "status": "review_only",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779043707703_llv00v",
+      "ts": "2026-05-17T18:48:27.703Z",
+      "type": "agent_action",
+      "title": "Agent action updated",
+      "detail": "Start source-watch as review-only marked Approved.",
+      "status": "approved",
+      "product": "Start source-watch as review-only",
+      "source": "audit"
+    },
+    {
+      "id": "log_1779043620533_0hjehb",
+      "ts": "2026-05-17T18:47:00.533Z",
+      "type": "agent_action",
+      "title": "Agent action updated",
+      "detail": "Start source-watch as review-only marked Approved.",
+      "status": "approved",
+      "product": "Start source-watch as review-only",
+      "source": "audit"
+    },
+    {
+      "id": "log_1779043558196_tsn55t",
+      "ts": "2026-05-17T18:45:58.196Z",
+      "type": "approval",
+      "title": "Admin approved next step",
+      "detail": "Build review cards, then later connect spreadsheet writes behind explicit approval.",
+      "status": "approved",
+      "product": "Start source-watch as review-only",
+      "source": "audit"
+    },
+    {
+      "id": "log_1779043290796_1r9pdl",
+      "ts": "2026-05-17T18:41:30.796Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779043290785_5566ny",
+      "ts": "2026-05-17T18:41:30.785Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    }
+  ],
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -35,6 +167,6 @@
   },
   "known_issues": {},
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-17T18:40:50.927Z",
+  "saved_at": "2026-05-17T18:55:58.504Z",
   "saved_by": "cm_command_center_operator"
 }

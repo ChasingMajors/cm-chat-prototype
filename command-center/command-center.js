@@ -12,6 +12,32 @@
   const KNOWN_ISSUE_KEY = "cm_command_center_known_issues_v1";
   const OPERATOR_ENDPOINT_KEY = "cm_command_center_operator_endpoint_v1";
   const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
+  const AUTOMATION_GUARDRAILS = [
+    {
+      title: "Product-scoped writes only",
+      detail: "Sheet writes must target one product code and may append/update matching rows only. No whole-sheet replacement."
+    },
+    {
+      title: "No delete-first workflows",
+      detail: "The agent must not clear tabs, delete unrelated rows, or rewrite entire files unless the admin explicitly approves a destructive maintenance task."
+    },
+    {
+      title: "Source and sport filter required",
+      detail: "Imports must come from approved sports-card sources and only baseball, football, basketball, hockey, or soccer."
+    },
+    {
+      title: "Google Sheets before public JSON",
+      detail: "Source-of-truth Sheets must validate row counts and section names before JSON publish is considered complete."
+    },
+    {
+      title: "Publish must validate",
+      detail: "After a write, the agent must publish JSON and validate Checklist Vault and ChatBot behavior, allowing for GitHub Pages propagation."
+    },
+    {
+      title: "Known issues stay visible",
+      detail: "Failures can be marked as known issues, but they stay in the queue until fixed or intentionally deferred."
+    }
+  ];
 
   const state = {
     opportunities: [],
@@ -55,6 +81,7 @@
     runSummaryList: document.getElementById("runSummaryList"),
     readyExecuteList: document.getElementById("readyExecuteList"),
     reviewHoldList: document.getElementById("reviewHoldList"),
+    guardrailList: document.getElementById("guardrailList"),
     operatorTaskList: document.getElementById("operatorTaskList"),
     sourceCheckResult: document.getElementById("sourceCheckResult"),
     briefList: document.getElementById("briefList"),
@@ -2281,6 +2308,7 @@
     renderRunSummary();
     updateMemoryStatus("Local memory active.", "browser storage");
     renderOperatorTasks();
+    renderGuardrails();
     renderOpportunities();
     renderDataHealth();
     renderEdgeSignals();
@@ -2432,6 +2460,20 @@
         setTaskStatus(btn.dataset.taskId, btn.dataset.taskStatus);
       });
     });
+  }
+
+  function renderGuardrails() {
+    if (!els.guardrailList) return;
+
+    els.guardrailList.innerHTML = AUTOMATION_GUARDRAILS.map((rule, idx) => `
+      <div class="guardrail-card">
+        <strong>${idx + 1}</strong>
+        <div>
+          <h3>${escapeHtml(rule.title)}</h3>
+          <span>${escapeHtml(rule.detail)}</span>
+        </div>
+      </div>
+    `).join("");
   }
 
   function renderAgentActions() {

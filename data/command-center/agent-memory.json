@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-17T19:26:04.926Z",
+  "exported_at": "2026-05-17T19:26:09.925Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -31,57 +31,6 @@
   ],
   "agent_actions": [
     {
-      "id": "source_watch|soccer|2025-26 topps simplicidad uefa club competitions soccer",
-      "type": "source_import",
-      "source": "scheduled_deep_sheets",
-      "product": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
-      "sport": "soccer",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "https://www.checklistcenter.com/2025-26-topps-simplicidad-uefa-club-competitions-soccer-card-checklist/",
-      "createdAt": "2026-05-17T19:26:08.151Z",
-      "updatedAt": "2026-05-17T19:26:08.151Z"
-    },
-    {
-      "id": "source_watch|hockey|2026 upper deck spring expo hockey",
-      "type": "source_import",
-      "source": "scheduled_deep_sheets",
-      "product": "2026 Upper Deck Spring Expo Hockey",
-      "sport": "hockey",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "https://www.checklistcenter.com/2026-upper-deck-spring-expo-hockey-card-checklist/",
-      "createdAt": "2026-05-17T19:26:08.151Z",
-      "updatedAt": "2026-05-17T19:26:08.151Z"
-    },
-    {
-      "id": "source_watch|baseball|2026 leaf baseball nation baseball",
-      "type": "source_import",
-      "source": "scheduled_deep_sheets",
-      "product": "2026 Leaf Baseball Nation Baseball",
-      "sport": "baseball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "https://www.checklistcenter.com/2026-leaf-baseball-nation-baseball-card-checklist/",
-      "createdAt": "2026-05-17T19:26:08.151Z",
-      "updatedAt": "2026-05-17T19:26:08.151Z"
-    },
-    {
       "id": "next|scout|start source-watch as review-only",
       "type": "source_watch",
       "source": "audit",
@@ -101,12 +50,12 @@
   ],
   "activity_log": [
     {
-      "id": "log_1779045968151",
-      "ts": "2026-05-17T19:26:08.151Z",
-      "type": "source_watch",
-      "title": "Scheduled Source Watch complete",
-      "detail": "3 actionable source items found from google_sheets.",
-      "status": "needs_review",
+      "id": "log_1779045968224_t1uyo2",
+      "ts": "2026-05-17T19:26:08.224Z",
+      "type": "memory",
+      "title": "Backend memory auto-saved",
+      "detail": "Saved to data/command-center/agent-memory.json.",
+      "status": "saved",
       "product": "",
       "source": "operator_backend"
     },
@@ -588,6 +537,6 @@
   },
   "known_issues": {},
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-17T19:26:08.242Z",
+  "saved_at": "2026-05-17T19:26:11.403Z",
   "saved_by": "cm_command_center_operator"
 }

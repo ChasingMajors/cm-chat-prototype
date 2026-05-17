@@ -72,6 +72,7 @@
     typeFilter: document.getElementById("typeFilter"),
     systemState: document.getElementById("systemState"),
     autonomyState: document.getElementById("autonomyState"),
+    autonomyReadiness: document.getElementById("autonomyReadiness"),
     opportunityCount: document.getElementById("opportunityCount"),
     criticalCount: document.getElementById("criticalCount"),
     lastAudit: document.getElementById("lastAudit"),
@@ -2295,6 +2296,7 @@
 
     els.systemState.textContent = "Ready";
     els.autonomyState.textContent = getAutonomyLabel(state.autonomyMode);
+    renderAutonomyReadiness();
     els.opportunityCount.textContent = formatNumber(opportunities.length);
     els.criticalCount.textContent = formatNumber(critical.length);
     els.lastAudit.textContent = state.audit && state.audit.generatedAt
@@ -2637,6 +2639,61 @@
     `;
   }
 
+  function getAutonomyReadiness() {
+    const actions = state.agentActions || [];
+    const critical = (state.opportunities || []).filter(item => item.severity === "critical");
+    const blockers = actions.filter(action => {
+      const status = String(action.status || "").toLowerCase();
+      return status === "failed" || status === "blocked";
+    });
+    const knownIssues = actions.filter(action => String(action.status || "").toLowerCase() === "known_issue");
+    const needsAdmin = actions.filter(action => {
+      const status = String(action.status || "").toLowerCase();
+      return status === "needs_admin" || status === "approval_required";
+    });
+    const validated = actions.filter(action => String(action.status || "").toLowerCase() === "validated");
+
+    if (critical.length || blockers.length) {
+      return {
+        label: "Hold",
+        detail: `${formatNumber(critical.length)} critical audit items and ${formatNumber(blockers.length)} blocked actions.`,
+        className: "critical"
+      };
+    }
+
+    if (needsAdmin.length || knownIssues.length) {
+      return {
+        label: "Review",
+        detail: `${formatNumber(needsAdmin.length)} actions need admin review and ${formatNumber(knownIssues.length)} known issues are open.`,
+        className: "warning"
+      };
+    }
+
+    if (validated.length >= 1 && state.autonomyMode === "guarded_auto") {
+      return {
+        label: "Guarded",
+        detail: "Guarded auto has validation proof and no active blockers.",
+        className: "opportunity"
+      };
+    }
+
+    return {
+      label: "Manual",
+      detail: "Approval-required mode is safest until more validated runs are logged.",
+      className: "info"
+    };
+  }
+
+  function renderAutonomyReadiness() {
+    const readiness = getAutonomyReadiness();
+    if (els.autonomyReadiness) {
+      els.autonomyReadiness.textContent = readiness.label;
+      els.autonomyReadiness.className = `readiness-value ${readiness.className}`;
+      els.autonomyReadiness.title = readiness.detail;
+    }
+    return readiness;
+  }
+
   function renderActionLanes() {
     if (!els.readyExecuteList || !els.reviewHoldList) return;
 
@@ -2711,12 +2768,18 @@
     const latestSuccess = getLatestActivityByStatus(["validated", "completed", "imported", "exported", "queued"]);
     const nextAction = pending[0] || actions.find(action => String(action.status || "").toLowerCase() === "needs_admin") || null;
     const mode = getAutonomyLabel(state.autonomyMode);
+    const readiness = renderAutonomyReadiness();
 
     const cards = [
       {
         title: "Operating Mode",
         detail: `${mode}. ${state.autonomyMode === "full_auto" ? "Agent can run approved guardrail-safe work." : "Admin approval remains required before meaningful changes."}`,
         badge: state.autonomyMode === "full_auto" ? "full auto" : "guarded"
+      },
+      {
+        title: "Autonomy Readiness",
+        detail: readiness.detail,
+        badge: readiness.label
       },
       {
         title: "Current Queue",

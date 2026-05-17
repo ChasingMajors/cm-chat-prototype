@@ -131,7 +131,7 @@ a {
 
 .status-strip {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 12px;
   margin: 14px 0;
 }
@@ -160,6 +160,22 @@ a {
 
 .status-card strong {
   font-size: 24px;
+}
+
+.readiness-value.info {
+  color: var(--blue);
+}
+
+.readiness-value.warning {
+  color: var(--orange);
+}
+
+.readiness-value.critical {
+  color: var(--red);
+}
+
+.readiness-value.opportunity {
+  color: var(--green);
 }
 
 .grid {

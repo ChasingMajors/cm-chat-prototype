@@ -600,6 +600,43 @@ h2 {
   text-transform: uppercase;
 }
 
+.agent-posture {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+}
+
+.agent-posture strong {
+  font-size: 11px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.agent-posture span {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.agent-posture.ready,
+.agent-posture.complete {
+  border-color: rgba(51,209,122,0.26);
+  background: rgba(51,209,122,0.07);
+}
+
+.agent-posture.review {
+  border-color: rgba(255,174,66,0.24);
+  background: rgba(255,174,66,0.06);
+}
+
+.agent-posture.hold {
+  border-color: rgba(255,88,88,0.26);
+  background: rgba(255,88,88,0.07);
+}
+
 .validation-checklist {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

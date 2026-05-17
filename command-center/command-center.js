@@ -2765,6 +2765,72 @@
     `;
   }
 
+  function getActionExecutionPosture(action) {
+    const status = String(action && action.status || "").toLowerCase();
+    const type = String(action && action.type || "").toLowerCase();
+    const hasAdminApproval = status === "approved" || status === "validated";
+    const hasSource = type !== "source_import" || !!(action.sourceUrl || action.runUrl);
+    const hasTarget = !!(action.product || action.code);
+    const hasExecutionProof = !!action.executionResult;
+    const hasValidationProof = !!action.validationResult;
+
+    if (status === "known_issue" || status === "blocked" || status === "failed") {
+      return {
+        label: "Hold",
+        className: "hold",
+        detail: "Do not execute until the known issue or blocker is resolved."
+      };
+    }
+
+    if (!hasSource || !hasTarget) {
+      return {
+        label: "Hold",
+        className: "hold",
+        detail: "Missing source or target detail. Review before approval."
+      };
+    }
+
+    if (!hasAdminApproval) {
+      return {
+        label: "Needs Admin",
+        className: "review",
+        detail: "Ready for review, but no admin approval has been recorded."
+      };
+    }
+
+    if (!hasExecutionProof) {
+      return {
+        label: "Ready",
+        className: "ready",
+        detail: "Approved and scoped. Execute the prepared step, then validate."
+      };
+    }
+
+    if (!hasValidationProof) {
+      return {
+        label: "Validate",
+        className: "review",
+        detail: "Execution proof exists. CV/ChatBot validation still needs proof."
+      };
+    }
+
+    return {
+      label: "Complete",
+      className: "complete",
+      detail: "Execution and validation proof are recorded."
+    };
+  }
+
+  function renderActionExecutionPosture(action) {
+    const posture = getActionExecutionPosture(action);
+    return `
+      <div class="agent-posture ${escapeHtml(posture.className)}">
+        <strong>${escapeHtml(posture.label)}</strong>
+        <span>${escapeHtml(posture.detail)}</span>
+      </div>
+    `;
+  }
+
   function renderAgentActions() {
     if (!state.agentActions.length) {
       els.agentActionList.innerHTML = `
@@ -2800,6 +2866,7 @@
               ${action.validationResult ? `<span><strong>Validation</strong>${escapeHtml(action.validationResult)}</span>` : ""}
             </div>
           ` : ""}
+          ${renderActionExecutionPosture(action)}
           ${renderValidationChecklist(action)}
           <div class="opp-actions">
             ${action.type === "source_import" && (action.sourceUrl || action.runUrl) ? `

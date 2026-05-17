@@ -17,6 +17,7 @@
  * - getVisualProductTestStatus
  * - loadAgentMemory
  * - saveAgentMemory
+ * - runScheduledSourceWatch
  *
  * Current safety:
  * - Sheet writes require Script Property CM_OPERATOR_KEY.
@@ -161,10 +162,17 @@ function doGet(e) {
       return json_(loadAgentMemory_({ key: p.key || "" }));
     }
 
+    if (action === "runScheduledSourceWatch") {
+      return json_(runScheduledSourceWatch_({
+        mode: p.mode || "",
+        key: p.key || ""
+      }));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory"]
+      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -209,10 +217,14 @@ function doPost(e) {
       return json_(saveAgentMemory_(body));
     }
 
+    if (action === "runScheduledSourceWatch") {
+      return json_(runScheduledSourceWatch_(body));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory"]
+      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -1273,6 +1285,112 @@ function saveAgentMemory_(input) {
     commit: result.commit || "",
     saved_at: payload.saved_at
   };
+}
+
+function runScheduledSourceWatch_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const mode = input && input.mode ? input.mode : "deep_sheets";
+  const watch = runSourceWatch_(mode);
+  const actionable = (watch.items || []).filter(function(item) {
+    return item.status === "missing" || item.status === "needs_review" || item.status === "possible_update";
+  });
+  const memory = loadOrCreateAgentMemoryForSchedule_(input && input.key);
+  const now = new Date().toISOString();
+
+  memory.agent_actions = mergeScheduledSourceActions_(memory.agent_actions || [], actionable, now, watch.mode);
+  memory.activity_log = prependMemoryActivity_(memory.activity_log || [], {
+    id: "log_" + Date.now(),
+    ts: now,
+    type: "source_watch",
+    title: "Scheduled Source Watch complete",
+    detail: actionable.length + " actionable source items found from " + watch.coverage_source + ".",
+    status: actionable.length ? "needs_review" : "clear",
+    product: "",
+    source: "operator_backend"
+  });
+  memory.saved_at = now;
+
+  const saveResult = saveAgentMemory_({
+    key: input && input.key,
+    memory: memory
+  });
+
+  return {
+    ok: true,
+    mode: watch.mode,
+    coverage_source: watch.coverage_source,
+    fetched_count: watch.fetched_count,
+    actionable_count: actionable.length,
+    summary: watch.summary || {},
+    memory_path: saveResult.path,
+    memory_sha: saveResult.sha,
+    updated_at: now
+  };
+}
+
+function loadOrCreateAgentMemoryForSchedule_(key) {
+  const loaded = loadAgentMemory_({ key: key });
+  if (loaded && loaded.has_memory && loaded.memory) return loaded.memory;
+
+  return {
+    ok: true,
+    app: "chasing_majors_command_center",
+    schema: "agent_memory_v1",
+    autonomy_mode: "approval_required",
+    approvals: {},
+    tasks: [],
+    agent_actions: [],
+    activity_log: [],
+    visual_tests: {},
+    known_issues: {},
+    operator_endpoint: ""
+  };
+}
+
+function mergeScheduledSourceActions_(existingActions, sourceItems, now, mode) {
+  const out = Array.isArray(existingActions) ? existingActions.slice() : [];
+  const byId = {};
+
+  out.forEach(function(action) {
+    if (action && action.id) byId[action.id] = action;
+  });
+
+  sourceItems.forEach(function(item) {
+    const id = "source_watch|" + normalize_(item.sport || "") + "|" + normalize_(item.matched_code || item.title || "");
+    const existing = byId[id];
+    const patch = {
+      id: id,
+      type: "source_import",
+      source: "scheduled_" + mode,
+      product: item.matched_name || item.title || "",
+      sport: item.sport || "",
+      code: item.matched_code || "",
+      riskLevel: item.status === "missing" ? "medium" : "low",
+      status: "approval_required",
+      recommendedAction: item.recommended_action || "Review source item, preview import, then approve product-scoped write.",
+      adminDecision: "",
+      executionResult: "",
+      validationResult: "",
+      runUrl: item.url || item.source_url || "",
+      createdAt: existing && existing.createdAt ? existing.createdAt : now,
+      updatedAt: now
+    };
+
+    if (existing) Object.assign(existing, patch);
+    else {
+      byId[id] = patch;
+      out.unshift(patch);
+    }
+  });
+
+  return out.slice(0, 80);
+}
+
+function prependMemoryActivity_(activityLog, entry) {
+  const out = Array.isArray(activityLog) ? activityLog.slice() : [];
+  out.unshift(entry);
+  return out.slice(0, 80);
 }
 
 function githubApiUrl_(path) {

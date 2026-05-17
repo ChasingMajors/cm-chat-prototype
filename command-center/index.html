@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=cc20" />
+  <link rel="stylesheet" href="./styles.css?v=cc21" />
 </head>
 <body>
   <main class="shell">
@@ -185,6 +185,10 @@
         <strong>Local memory active</strong>
         <span>Agent state is stored in this browser until exported or connected to backend persistence.</span>
       </div>
+      <div class="memory-branch-note">
+        <strong>Branch split</strong>
+        <span>Code ships from <b>main</b>. Agent memory saves to <b>command-center-memory</b>. Do not open PRs from the memory branch.</span>
+      </div>
     </section>
 
     <section class="panel run-summary-panel">
@@ -287,6 +291,6 @@
     </section>
   </main>
 
-  <script defer src="./command-center.js?v=cc20"></script>
+  <script defer src="./command-center.js?v=cc21"></script>
 </body>
 </html>

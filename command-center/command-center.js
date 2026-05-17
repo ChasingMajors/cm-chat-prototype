@@ -2126,7 +2126,7 @@
     ];
     els.memoryStatus.innerHTML = `
       <strong>${escapeHtml(message || "Local memory active")}</strong>
-      <span>${escapeHtml(counts.join(" | "))}${status ? ` | ${escapeHtml(status)}` : ""}</span>
+      <span>${escapeHtml(counts.join(" | "))}${status ? ` | ${escapeHtml(status)}` : ""} | memory branch: command-center-memory</span>
     `;
   }
 

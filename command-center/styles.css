@@ -255,6 +255,30 @@ a {
   font-size: 13px;
 }
 
+.memory-branch-note {
+  margin-top: 10px;
+  padding: 12px 13px;
+  border: 1px solid rgba(57,160,255,0.22);
+  border-radius: 14px;
+  background: rgba(57,160,255,0.07);
+}
+
+.memory-branch-note strong,
+.memory-branch-note span {
+  display: block;
+}
+
+.memory-branch-note span {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.memory-branch-note b {
+  color: var(--text);
+}
+
 .run-summary-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

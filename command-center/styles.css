@@ -560,6 +560,53 @@ h2 {
   text-transform: uppercase;
 }
 
+.validation-checklist {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.validation-checklist span {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.validation-checklist span.pass {
+  border-color: rgba(51,209,122,0.24);
+  background: rgba(51,209,122,0.07);
+}
+
+.validation-checklist span.wait {
+  border-color: rgba(255,174,66,0.22);
+  background: rgba(255,174,66,0.06);
+}
+
+.validation-checklist strong,
+.validation-checklist em {
+  display: block;
+}
+
+.validation-checklist strong {
+  margin-bottom: 4px;
+  color: var(--text);
+  font-size: 11px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.validation-checklist em {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+}
+
 .activity-log-row {
   display: grid;
   gap: 5px;
@@ -1014,6 +1061,7 @@ h2 {
   .next-plan,
   .task-steps,
   .agent-action-results,
+  .validation-checklist,
   .preview-grid,
   .visual-test-grid,
   .visual-expectations,

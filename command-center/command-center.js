@@ -2476,6 +2476,69 @@
     `).join("");
   }
 
+  function buildValidationChecklist(action) {
+    const type = String(action && action.type || "").toLowerCase();
+    const status = String(action && action.status || "").toLowerCase();
+    const execution = String(action && action.executionResult || "").toLowerCase();
+    const validation = String(action && action.validationResult || "").toLowerCase();
+
+    const checks = [
+      {
+        label: "Admin state",
+        ok: status === "approved" || status === "validated",
+        note: status === "approved" || status === "validated" ? "Approved or validated" : "Needs approval or review"
+      },
+      {
+        label: "Scoped target",
+        ok: !!(action && (action.code || action.product)),
+        note: action && action.code ? action.code : "Product name only"
+      },
+      {
+        label: "Execution proof",
+        ok: !!execution,
+        note: action && action.executionResult ? action.executionResult : "No execution proof yet"
+      },
+      {
+        label: "Validation proof",
+        ok: status === "validated" || validation.includes("passed") || validation.includes("complete"),
+        note: action && action.validationResult ? action.validationResult : "No validation proof yet"
+      }
+    ];
+
+    if (type === "checklist_publish" || type === "source_import") {
+      checks.push({
+        label: "CV / ChatBot",
+        ok: validation.includes("cv") && (validation.includes("passed") || validation.includes("chatbot")),
+        note: validation ? action.validationResult : "Public app validation pending"
+      });
+    }
+
+    if (type === "visual_test") {
+      checks.push({
+        label: "Visual report",
+        ok: status === "validated" || validation.includes("passed"),
+        note: action && action.runUrl ? "Run link available" : "No visual run link yet"
+      });
+    }
+
+    return checks;
+  }
+
+  function renderValidationChecklist(action) {
+    const checks = buildValidationChecklist(action);
+    return `
+      <div class="validation-checklist">
+        ${checks.map(check => `
+          <span class="${check.ok ? "pass" : "wait"}">
+            <strong>${check.ok ? "Pass" : "Wait"}</strong>
+            ${escapeHtml(check.label)}
+            <em>${escapeHtml(check.note)}</em>
+          </span>
+        `).join("")}
+      </div>
+    `;
+  }
+
   function renderAgentActions() {
     if (!state.agentActions.length) {
       els.agentActionList.innerHTML = `
@@ -2511,6 +2574,7 @@
               ${action.validationResult ? `<span><strong>Validation</strong>${escapeHtml(action.validationResult)}</span>` : ""}
             </div>
           ` : ""}
+          ${renderValidationChecklist(action)}
           <div class="opp-actions">
             <button class="action-btn approve" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="approved">Approve</button>
             <button class="action-btn" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="needs_admin">Needs Admin</button>

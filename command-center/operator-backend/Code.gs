@@ -41,6 +41,7 @@ const CM_VISUAL_TEST_OWNER = "ChasingMajors";
 const CM_VISUAL_TEST_REPO = "cm-chat-prototype";
 const CM_VISUAL_TEST_WORKFLOW = "visual-product-test.yml";
 const CM_VISUAL_TEST_BRANCH = "main";
+const CM_AGENT_MEMORY_BRANCH = "command-center-memory";
 const CM_AGENT_MEMORY_PATH = "data/command-center/agent-memory.json";
 const CM_CHECKLIST_SOURCE_MAP = {
   baseball: {
@@ -1219,7 +1220,7 @@ function loadAgentMemory_(input) {
   const token = PropertiesService.getScriptProperties().getProperty(CM_GITHUB_TOKEN_PROPERTY);
   if (!token) throw new Error("Missing Script Property " + CM_GITHUB_TOKEN_PROPERTY + ".");
 
-  const existing = getGitHubContentFile_(CM_AGENT_MEMORY_PATH, token);
+  const existing = getGitHubContentFile_(CM_AGENT_MEMORY_PATH, token, CM_AGENT_MEMORY_BRANCH);
   if (!existing.exists) {
     return {
       ok: true,
@@ -1262,7 +1263,8 @@ function saveAgentMemory_(input) {
   payload.saved_at = new Date().toISOString();
   payload.saved_by = "cm_command_center_operator";
 
-  const result = putGitHubContentJson_(CM_AGENT_MEMORY_PATH, payload, token, "Save Command Center agent memory");
+  ensureGitHubBranch_(CM_AGENT_MEMORY_BRANCH, token);
+  const result = putGitHubContentJson_(CM_AGENT_MEMORY_PATH, payload, token, "Save Command Center agent memory", CM_AGENT_MEMORY_BRANCH);
 
   return {
     ok: true,
@@ -1294,8 +1296,44 @@ function githubFetch_(url, token, options) {
   }));
 }
 
-function getGitHubContentFile_(path, token) {
-  const url = githubApiUrl_("/contents/" + path + "?ref=" + encodeURIComponent(CM_VISUAL_TEST_BRANCH));
+function ensureGitHubBranch_(branch, token) {
+  const targetBranch = safeString_(branch || CM_VISUAL_TEST_BRANCH).trim();
+  const branchRefUrl = githubApiUrl_("/git/ref/heads/" + encodeURIComponent(targetBranch));
+  const branchRes = githubFetch_(branchRefUrl, token, { method: "get" });
+  if (branchRes.getResponseCode() >= 200 && branchRes.getResponseCode() < 300) return;
+  if (branchRes.getResponseCode() !== 404) {
+    throw new Error("GitHub branch lookup failed with " + branchRes.getResponseCode() + ": " + branchRes.getContentText());
+  }
+
+  const mainRefUrl = githubApiUrl_("/git/ref/heads/" + encodeURIComponent(CM_VISUAL_TEST_BRANCH));
+  const mainRes = githubFetch_(mainRefUrl, token, { method: "get" });
+  const mainStatus = mainRes.getResponseCode();
+  const mainText = mainRes.getContentText();
+  if (mainStatus < 200 || mainStatus >= 300) {
+    throw new Error("GitHub main branch lookup failed with " + mainStatus + ": " + mainText);
+  }
+
+  const mainData = JSON.parse(mainText || "{}");
+  const sha = mainData && mainData.object && mainData.object.sha;
+  if (!sha) throw new Error("Could not resolve main branch SHA for memory branch.");
+
+  const createRes = githubFetch_(githubApiUrl_("/git/refs"), token, {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify({
+      ref: "refs/heads/" + targetBranch,
+      sha: sha
+    })
+  });
+  const createStatus = createRes.getResponseCode();
+  if (createStatus < 200 || createStatus >= 300) {
+    throw new Error("GitHub memory branch create failed with " + createStatus + ": " + createRes.getContentText());
+  }
+}
+
+function getGitHubContentFile_(path, token, branch) {
+  const targetBranch = safeString_(branch || CM_VISUAL_TEST_BRANCH).trim();
+  const url = githubApiUrl_("/contents/" + path + "?ref=" + encodeURIComponent(targetBranch));
   const res = githubFetch_(url, token, { method: "get" });
   const status = res.getResponseCode();
   const text = res.getContentText();
@@ -1326,13 +1364,14 @@ function getGitHubContentFile_(path, token) {
   };
 }
 
-function putGitHubContentJson_(path, obj, token, message) {
-  const existing = getGitHubContentFile_(path, token);
+function putGitHubContentJson_(path, obj, token, message, branch) {
+  const targetBranch = safeString_(branch || CM_VISUAL_TEST_BRANCH).trim();
+  const existing = getGitHubContentFile_(path, token, targetBranch);
   const text = JSON.stringify(obj, null, 2);
   const payload = {
     message: message || "Update " + path,
     content: Utilities.base64Encode(Utilities.newBlob(text).getBytes()),
-    branch: CM_VISUAL_TEST_BRANCH
+    branch: targetBranch
   };
   if (existing.exists && existing.sha) payload.sha = existing.sha;
 

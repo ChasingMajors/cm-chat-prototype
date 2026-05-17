@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-17T21:37:10.235Z",
+  "exported_at": "2026-05-17T21:42:03.103Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -31,6 +31,74 @@
   ],
   "agent_actions": [
     {
+      "id": "source_import|wordpress_api|2025-26 topps simplicidad uefa club competitions soccer",
+      "type": "source_import",
+      "source": "wordpress_api",
+      "product": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "https://www.checklistcenter.com/2025-26-topps-simplicidad-uefa-club-competitions-soccer-card-checklist/",
+      "createdAt": "2026-05-17T21:42:01.499Z",
+      "updatedAt": "2026-05-17T21:42:01.499Z"
+    },
+    {
+      "id": "source_import|wordpress_api|2026 upper deck spring expo hockey",
+      "type": "source_import",
+      "source": "wordpress_api",
+      "product": "2026 Upper Deck Spring Expo Hockey",
+      "sport": "hockey",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "https://www.checklistcenter.com/2026-upper-deck-spring-expo-hockey-card-checklist/",
+      "createdAt": "2026-05-17T21:42:01.499Z",
+      "updatedAt": "2026-05-17T21:42:01.499Z"
+    },
+    {
+      "id": "source_import|wordpress_api|2025-26 panini noir road to fifa world cup 26 soccer",
+      "type": "source_import",
+      "source": "wordpress_api",
+      "product": "2025-26 Panini Noir Road to FIFA World Cup 26 Soccer",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "https://www.checklistcenter.com/2025-26-panini-noir-road-to-fifa-world-cup-26-soccer-card-checklist/",
+      "createdAt": "2026-05-17T21:42:01.499Z",
+      "updatedAt": "2026-05-17T21:42:01.499Z"
+    },
+    {
+      "id": "source_import|wordpress_api|2026 leaf baseball nation baseball",
+      "type": "source_import",
+      "source": "wordpress_api",
+      "product": "2026 Leaf Baseball Nation Baseball",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "https://www.checklistcenter.com/2026-leaf-baseball-nation-baseball-card-checklist/",
+      "createdAt": "2026-05-17T21:42:01.498Z",
+      "updatedAt": "2026-05-17T21:42:01.498Z"
+    },
+    {
       "id": "next|scout|start source-watch as review-only",
       "type": "source_watch",
       "source": "audit",
@@ -49,6 +117,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779054121500_56nf9v",
+      "ts": "2026-05-17T21:42:01.500Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch complete",
+      "detail": "20 source items checked. 4 need review. 4 review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779054121499_2rozbc",
+      "ts": "2026-05-17T21:42:01.499Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "4 findings are now visible in the Agent Action Queue for admin review.",
+      "status": "queued",
+      "product": "",
+      "source": "quick_json"
+    },
     {
       "id": "log_1779053828632_9abw75",
       "ts": "2026-05-17T21:37:08.632Z",
@@ -137,6 +225,6 @@
   },
   "known_issues": {},
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-17T21:37:11.438Z",
+  "saved_at": "2026-05-17T21:42:04.302Z",
   "saved_by": "cm_command_center_operator"
 }

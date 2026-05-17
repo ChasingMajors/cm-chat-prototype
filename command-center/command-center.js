@@ -5,6 +5,8 @@
   const BLOCKED_SOURCE_TERMS = ["mma", "ufc", "wwe", "wrestling", "racing", "nascar", "f1", "formula 1", "pokemon", "marvel", "disney", "star wars"];
   const APPROVAL_KEY = "cm_command_center_opportunity_status_v1";
   const TASK_KEY = "cm_command_center_operator_tasks_v1";
+  const VISUAL_TEST_KEY = "cm_command_center_visual_tests_v1";
+  const KNOWN_ISSUE_KEY = "cm_command_center_known_issues_v1";
   const OPERATOR_ENDPOINT_KEY = "cm_command_center_operator_endpoint_v1";
   const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
 
@@ -12,7 +14,9 @@
     opportunities: [],
     audit: null,
     approvals: readApprovals(),
-    tasks: readTasks()
+    tasks: readTasks(),
+    visualTests: readJsonStore(VISUAL_TEST_KEY, {}),
+    knownIssues: readJsonStore(KNOWN_ISSUE_KEY, {})
   };
 
   const els = {
@@ -42,11 +46,7 @@
   };
 
   function readApprovals() {
-    try {
-      return JSON.parse(localStorage.getItem(APPROVAL_KEY) || "{}");
-    } catch (err) {
-      return {};
-    }
+    return readJsonStore(APPROVAL_KEY, {});
   }
 
   function writeApprovals() {
@@ -56,16 +56,32 @@
   }
 
   function readTasks() {
-    try {
-      return JSON.parse(localStorage.getItem(TASK_KEY) || "[]");
-    } catch (err) {
-      return [];
-    }
+    return readJsonStore(TASK_KEY, []);
   }
 
   function writeTasks() {
     try {
       localStorage.setItem(TASK_KEY, JSON.stringify(state.tasks));
+    } catch (err) {}
+  }
+
+  function readJsonStore(key, fallback) {
+    try {
+      return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+    } catch (err) {
+      return fallback;
+    }
+  }
+
+  function writeVisualTests() {
+    try {
+      localStorage.setItem(VISUAL_TEST_KEY, JSON.stringify(state.visualTests));
+    } catch (err) {}
+  }
+
+  function writeKnownIssues() {
+    try {
+      localStorage.setItem(KNOWN_ISSUE_KEY, JSON.stringify(state.knownIssues));
     } catch (err) {}
   }
 
@@ -126,6 +142,56 @@
 
   function getProductCode(item) {
     return item && (item.Code || item.code || "");
+  }
+
+  function getVisualProductKey(planOrItem) {
+    const sport = normalize(planOrItem && (planOrItem.sport || planOrItem.selected_sport || ""));
+    const code = String(planOrItem && (planOrItem.code || planOrItem.Code || planOrItem.matched_code || "") || "").trim();
+    const name = normalize(planOrItem && (planOrItem.productName || planOrItem.name || planOrItem.matched_name || planOrItem.title || ""));
+    return [sport, code || name].filter(Boolean).join("|");
+  }
+
+  function getVisualStatusLabel(record) {
+    if (!record) return "Not run";
+    if (record.knownIssue) return "Known issue";
+    const result = String(record.result || record.conclusion || record.status || "").toLowerCase();
+    if (result === "passed" || result === "success") return "Passed";
+    if (result === "failed" || result === "failure") return "Failed";
+    if (result === "completed") return record.conclusion ? titleCase(record.conclusion) : "Completed";
+    if (result === "in_progress" || result === "running") return "Running";
+    if (result === "queued") return "Queued";
+    return titleCase(result || "Not run");
+  }
+
+  function getVisualStatusClass(record) {
+    if (!record) return "info";
+    if (record.knownIssue) return "warning";
+    const result = String(record.result || record.conclusion || record.status || "").toLowerCase();
+    if (result === "passed" || result === "success") return "opportunity";
+    if (result === "failed" || result === "failure") return "critical";
+    if (result === "queued" || result === "in_progress" || result === "running") return "info";
+    return "info";
+  }
+
+  function saveVisualRecord(plan, patch) {
+    const key = getVisualProductKey(plan);
+    if (!key) return null;
+
+    const existing = state.visualTests[key] || {};
+    const known = state.knownIssues[key] || null;
+    const record = Object.assign({}, existing, patch || {}, {
+      key,
+      productName: plan.productName || existing.productName || "",
+      sport: plan.sport || existing.sport || "",
+      code: plan.code || existing.code || "",
+      updatedAt: new Date().toISOString(),
+      knownIssue: !!known,
+      knownIssueNote: known ? known.note || "" : ""
+    });
+
+    state.visualTests[key] = record;
+    writeVisualTests();
+    return record;
   }
 
   function getProductName(item) {
@@ -1162,6 +1228,12 @@
           ? "info"
           : "warning";
     const canTask = status === "missing" || status === "needs_review" || status === "possible_update";
+    const visualPlan = buildVisualTestPlan(item);
+    const visualKey = getVisualProductKey(visualPlan);
+    const visualRecord = state.visualTests[visualKey] || null;
+    const knownIssue = state.knownIssues[visualKey] || null;
+    const visualLabel = knownIssue ? "Known issue" : getVisualStatusLabel(visualRecord);
+    const visualClass = knownIssue ? "warning" : getVisualStatusClass(visualRecord);
 
     return `
       <article class="source-watch-item">
@@ -1175,6 +1247,7 @@
         <div class="opp-meta">
           <span class="pill">Sport: ${escapeHtml(titleCase(item.sport || ""))}</span>
           ${item.matched_code ? `<span class="pill">Code: ${escapeHtml(item.matched_code)}</span>` : ""}
+          <span class="pill visual-status-pill ${escapeHtml(visualClass)}">Visual: ${escapeHtml(visualLabel)}</span>
           ${item.discovery_source ? `<span class="pill">Found: ${escapeHtml(item.discovery_source)}</span>` : ""}
           ${item.comparison_source ? `<span class="pill">Checked: ${escapeHtml(item.comparison_source)}</span>` : ""}
           ${typeof item.sheet_row_count !== "undefined" ? `<span class="pill">Rows: ${formatNumber(item.sheet_row_count)}</span>` : ""}
@@ -1194,6 +1267,9 @@
 
   function renderVisualTestPlan(item) {
     const plan = buildVisualTestPlan(item);
+    const visualKey = getVisualProductKey(plan);
+    const currentRecord = state.visualTests[visualKey] || null;
+    const knownIssue = state.knownIssues[visualKey] || null;
     els.sourceCheckResult.innerHTML = `
       <div class="visual-test-card">
         <div class="opp-top">
@@ -1201,7 +1277,7 @@
             <h3>CV / ChatBot Visual Test</h3>
             <p>${escapeHtml(plan.productName || "Untitled product")}</p>
           </div>
-          <span class="badge info">manual test</span>
+          <span class="badge ${escapeHtml(knownIssue ? "warning" : getVisualStatusClass(currentRecord))}">${escapeHtml(knownIssue ? "known issue" : getVisualStatusLabel(currentRecord))}</span>
         </div>
         <div class="opp-meta">
           ${plan.code ? `<span class="pill">Code: ${escapeHtml(plan.code)}</span>` : ""}
@@ -1209,8 +1285,11 @@
           <span class="pill">Run after JSON publish has propagated</span>
         </div>
         <div class="task-guardrail">This is a visual behavior check. JSON validation remains the source-of-truth data check.</div>
+        ${renderVisualStatusPanel(plan, currentRecord, knownIssue)}
         <div class="opp-actions">
           <button class="action-btn approve" type="button" data-run-agent-visual="1">Run Agent Visual Test</button>
+          <button class="action-btn" type="button" data-refresh-agent-visual="1">Refresh Test Status</button>
+          <button class="action-btn ignore" type="button" data-known-agent-visual="1">${knownIssue ? "Clear Known Issue" : "Mark Known Issue"}</button>
         </div>
         <div class="visual-runner-copy">
           <span><strong>product_name</strong>${escapeHtml(plan.productName || "")}</span>
@@ -1258,6 +1337,47 @@
     if (runBtn) {
       runBtn.addEventListener("click", () => runAgentVisualTest(plan));
     }
+
+    const refreshBtn = els.sourceCheckResult.querySelector("[data-refresh-agent-visual]");
+    if (refreshBtn) {
+      refreshBtn.addEventListener("click", () => refreshAgentVisualTestStatus(plan));
+    }
+
+    const knownBtn = els.sourceCheckResult.querySelector("[data-known-agent-visual]");
+    if (knownBtn) {
+      knownBtn.addEventListener("click", () => toggleKnownVisualIssue(plan));
+    }
+  }
+
+  function renderVisualStatusPanel(plan, record, knownIssue) {
+    const label = knownIssue ? "Known issue" : getVisualStatusLabel(record);
+    const statusClass = knownIssue ? "warning" : getVisualStatusClass(record);
+    const updated = record?.updatedAt ? new Date(record.updatedAt).toLocaleString() : "Never";
+
+    return `
+      <div class="visual-status-panel ${escapeHtml(statusClass)}">
+        <div>
+          <strong>Agent status</strong>
+          <span>${escapeHtml(label)}</span>
+        </div>
+        <div>
+          <strong>Last checked</strong>
+          <span>${escapeHtml(updated)}</span>
+        </div>
+        ${record?.runUrl ? `
+          <div>
+            <strong>GitHub run</strong>
+            <a href="${escapeHtml(record.runUrl)}" target="_blank" rel="noopener noreferrer">Open report</a>
+          </div>
+        ` : ""}
+        ${knownIssue ? `
+          <div class="visual-known-note">
+            <strong>Hold note</strong>
+            <span>${escapeHtml(knownIssue.note || "Known issue. Hold fix for later.")}</span>
+          </div>
+        ` : ""}
+      </div>
+    `;
   }
 
   async function runAgentVisualTest(plan) {
@@ -1292,6 +1412,67 @@
     }
   }
 
+  async function refreshAgentVisualTestStatus(plan) {
+    const endpoint = readOperatorEndpoint();
+    const key = readOperatorKey();
+    const existing = state.visualTests[getVisualProductKey(plan)] || {};
+
+    if (!endpoint) {
+      renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before refreshing visual test status.", "warning");
+      return;
+    }
+
+    if (!key) {
+      renderSourceCheckMessage("Admin write key needed", "Enter and save the admin write key before refreshing visual test status.", "warning");
+      return;
+    }
+
+    renderSourceCheckMessage("Checking visual test status", "The Operator Backend is reading the latest GitHub Actions result for this product.", "info");
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=getVisualProductTestStatus"
+        + "&productName=" + encodeURIComponent(plan.productName || "")
+        + "&sport=" + encodeURIComponent(plan.sport || "")
+        + "&code=" + encodeURIComponent(plan.code || "")
+        + "&startedAt=" + encodeURIComponent(existing.startedAt || "")
+        + "&key=" + encodeURIComponent(key);
+
+      const data = await fetchJson(url);
+      renderVisualStatusResult(data, plan);
+    } catch (err) {
+      renderSourceCheckMessage("Visual status check failed", err && err.message ? err.message : String(err), "critical");
+    }
+  }
+
+  function toggleKnownVisualIssue(plan) {
+    const key = getVisualProductKey(plan);
+    if (!key) return;
+
+    if (state.knownIssues[key]) {
+      delete state.knownIssues[key];
+    } else {
+      state.knownIssues[key] = {
+        productName: plan.productName || "",
+        sport: plan.sport || "",
+        code: plan.code || "",
+        note: "Known issue. Hold fix for later.",
+        createdAt: new Date().toISOString()
+      };
+    }
+
+    writeKnownIssues();
+
+    if (state.visualTests[key]) {
+      state.visualTests[key].knownIssue = !!state.knownIssues[key];
+      state.visualTests[key].knownIssueNote = state.knownIssues[key]?.note || "";
+      writeVisualTests();
+    }
+
+    renderVisualTestPlan(plan);
+  }
+
   function renderVisualDispatchResult(data, plan) {
     if (!data || !data.ok) {
       renderSourceCheckMessage(
@@ -1302,6 +1483,17 @@
       return;
     }
 
+    const record = saveVisualRecord(plan, {
+      status: data.status || "queued",
+      result: data.result || data.status || "queued",
+      conclusion: data.conclusion || "",
+      startedAt: data.started_at || new Date().toISOString(),
+      runUrl: data.run_url || "",
+      workflowUrl: data.workflow_url || "",
+      actionsUrl: data.actions_url || "",
+      trackingKey: data.tracking_key || getVisualProductKey(plan)
+    });
+
     els.sourceCheckResult.innerHTML = `
       <div class="visual-test-card">
         <div class="opp-top">
@@ -1309,7 +1501,7 @@
             <h3>Agent Visual Test Queued</h3>
             <p>${escapeHtml(data.product_name || plan.productName || "")}</p>
           </div>
-          <span class="badge opportunity">queued</span>
+          <span class="badge ${escapeHtml(getVisualStatusClass(record))}">${escapeHtml(getVisualStatusLabel(record))}</span>
         </div>
         <div class="opp-meta">
           <span class="pill">Sport: ${escapeHtml(titleCase(data.sport || plan.sport || ""))}</span>
@@ -1320,10 +1512,44 @@
         <div class="opp-actions">
           ${data.workflow_url ? `<a class="action-btn approve" href="${escapeHtml(data.workflow_url)}" target="_blank" rel="noopener noreferrer">Open Workflow Run</a>` : ""}
           ${data.actions_url ? `<a class="action-btn" href="${escapeHtml(data.actions_url)}" target="_blank" rel="noopener noreferrer">Open Actions</a>` : ""}
+          <button class="action-btn" type="button" data-refresh-agent-visual="1">Refresh Test Status</button>
+          <button class="action-btn ignore" type="button" data-known-agent-visual="1">Mark Known Issue</button>
         </div>
         <div class="task-guardrail">The artifact will include a pass/fail report and screenshots if CV or ChatBot behavior breaks.</div>
       </div>
     `;
+
+    const refreshBtn = els.sourceCheckResult.querySelector("[data-refresh-agent-visual]");
+    if (refreshBtn) refreshBtn.addEventListener("click", () => refreshAgentVisualTestStatus(plan));
+
+    const knownBtn = els.sourceCheckResult.querySelector("[data-known-agent-visual]");
+    if (knownBtn) knownBtn.addEventListener("click", () => toggleKnownVisualIssue(plan));
+  }
+
+  function renderVisualStatusResult(data, plan) {
+    if (!data || !data.ok) {
+      renderSourceCheckMessage(
+        "Visual status check failed",
+        data && data.error ? data.error : "Unknown backend response.",
+        "critical"
+      );
+      return;
+    }
+
+    saveVisualRecord(plan, {
+      status: data.status || "",
+      result: data.result || data.conclusion || data.status || "",
+      conclusion: data.conclusion || "",
+      runId: data.run_id || "",
+      runNumber: data.run_number || "",
+      runUrl: data.run_url || "",
+      displayTitle: data.display_title || "",
+      headSha: data.head_sha || "",
+      createdAt: data.created_at || "",
+      checkedAt: new Date().toISOString()
+    });
+
+    renderVisualTestPlan(plan);
   }
 
   function renderImportPreview(data) {

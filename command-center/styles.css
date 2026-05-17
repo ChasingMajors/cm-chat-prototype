@@ -427,6 +427,67 @@ h2 {
   margin-top: 6px;
 }
 
+.visual-status-panel {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 2px 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.045);
+}
+
+.visual-status-panel.opportunity {
+  border-color: rgba(51,209,122,0.32);
+  background: rgba(51,209,122,0.08);
+}
+
+.visual-status-panel.critical {
+  border-color: rgba(255,91,91,0.34);
+  background: rgba(255,91,91,0.08);
+}
+
+.visual-status-panel.warning {
+  border-color: rgba(245,197,66,0.34);
+  background: rgba(245,197,66,0.08);
+}
+
+.visual-status-panel strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text);
+  font-size: 11px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.visual-status-panel span,
+.visual-status-panel a {
+  color: var(--muted);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.visual-known-note {
+  grid-column: 1 / -1;
+}
+
+.visual-status-pill.opportunity {
+  border-color: rgba(51,209,122,0.32);
+  background: rgba(51,209,122,0.10);
+}
+
+.visual-status-pill.critical {
+  border-color: rgba(255,91,91,0.34);
+  background: rgba(255,91,91,0.10);
+}
+
+.visual-status-pill.warning {
+  border-color: rgba(245,197,66,0.34);
+  background: rgba(245,197,66,0.10);
+}
+
 .preview-row {
   display: grid;
   grid-template-columns: 72px minmax(0, 1fr) minmax(0, 0.8fr);
@@ -701,6 +762,7 @@ h2 {
   .preview-grid,
   .visual-test-grid,
   .visual-expectations,
+  .visual-status-panel,
   .visual-runner-copy,
   .preview-row {
     grid-template-columns: 1fr;

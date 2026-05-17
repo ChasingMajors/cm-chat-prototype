@@ -14,6 +14,7 @@
  * - previewSourceImport
  * - executeSourceImport
  * - dispatchVisualProductTest
+ * - getVisualProductTestStatus
  *
  * Current safety:
  * - Sheet writes require Script Property CM_OPERATOR_KEY.
@@ -142,10 +143,20 @@ function doGet(e) {
       }));
     }
 
+    if (action === "getVisualProductTestStatus") {
+      return json_(getVisualProductTestStatus_({
+        productName: p.productName || p.product_name || "",
+        sport: p.sport || "",
+        code: p.code || p.productCode || p.product_code || "",
+        startedAt: p.startedAt || p.started_at || "",
+        key: p.key || ""
+      }));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest"]
+      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest", "getVisualProductTestStatus"]
     });
   } catch (err) {
     return json_({
@@ -178,10 +189,14 @@ function doPost(e) {
       return json_(dispatchVisualProductTest_(body));
     }
 
+    if (action === "getVisualProductTestStatus") {
+      return json_(getVisualProductTestStatus_(body));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest"]
+      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest", "getVisualProductTestStatus"]
     });
   } catch (err) {
     return json_({
@@ -994,6 +1009,7 @@ function dispatchVisualProductTest_(input) {
   const productName = safeString_(input && (input.productName || input.product_name)).trim();
   const sport = normalize_(input && input.sport);
   const code = safeString_(input && (input.code || input.productCode || input.product_code)).trim();
+  const startedAt = new Date().toISOString();
 
   if (!productName) {
     return {
@@ -1017,13 +1033,7 @@ function dispatchVisualProductTest_(input) {
     };
   }
 
-  const apiUrl = "https://api.github.com/repos/"
-    + encodeURIComponent(CM_VISUAL_TEST_OWNER)
-    + "/"
-    + encodeURIComponent(CM_VISUAL_TEST_REPO)
-    + "/actions/workflows/"
-    + encodeURIComponent(CM_VISUAL_TEST_WORKFLOW)
-    + "/dispatches";
+  const apiUrl = githubApiUrl_("/actions/workflows/" + encodeURIComponent(CM_VISUAL_TEST_WORKFLOW) + "/dispatches");
 
   const payload = {
     ref: CM_VISUAL_TEST_BRANCH,
@@ -1037,15 +1047,9 @@ function dispatchVisualProductTest_(input) {
     }
   };
 
-  const res = UrlFetchApp.fetch(apiUrl, {
+  const res = githubFetch_(apiUrl, token, {
     method: "post",
     contentType: "application/json",
-    muteHttpExceptions: true,
-    headers: {
-      Authorization: "Bearer " + token,
-      Accept: "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28"
-    },
     payload: JSON.stringify(payload)
   });
 
@@ -1080,10 +1084,139 @@ function dispatchVisualProductTest_(input) {
     product_name: productName,
     sport: sport,
     product_code: code,
+    started_at: startedAt,
+    tracking_key: buildVisualProductTrackingKey_(productName, sport, code),
     workflow_url: workflowUrl,
     actions_url: "https://github.com/" + CM_VISUAL_TEST_OWNER + "/" + CM_VISUAL_TEST_REPO + "/actions",
     note: "Visual product test queued. GitHub may take a few seconds to show the new run."
   };
+}
+
+function getVisualProductTestStatus_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const productName = safeString_(input && (input.productName || input.product_name)).trim();
+  const sport = normalize_(input && input.sport);
+  const code = safeString_(input && (input.code || input.productCode || input.product_code)).trim();
+  const startedAt = safeString_(input && (input.startedAt || input.started_at)).trim();
+
+  if (!productName) {
+    return {
+      ok: false,
+      error: "Missing productName"
+    };
+  }
+
+  const token = PropertiesService.getScriptProperties().getProperty(CM_GITHUB_TOKEN_PROPERTY);
+  if (!token) {
+    return {
+      ok: false,
+      error: "Missing Script Property " + CM_GITHUB_TOKEN_PROPERTY + ". Add a GitHub token with Actions workflow permission."
+    };
+  }
+
+  const apiUrl = githubApiUrl_("/actions/workflows/" + encodeURIComponent(CM_VISUAL_TEST_WORKFLOW) + "/runs?event=workflow_dispatch&per_page=25");
+  const res = githubFetch_(apiUrl, token, { method: "get" });
+  const status = res.getResponseCode();
+  const text = res.getContentText();
+  let data = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch (err) {
+    data = { raw: text };
+  }
+
+  if (status < 200 || status >= 300) {
+    return {
+      ok: false,
+      status_code: status,
+      error: "GitHub workflow status lookup failed with " + status,
+      response: data
+    };
+  }
+
+  const run = findVisualProductRun_(data.workflow_runs || [], productName, startedAt);
+  if (!run) {
+    return {
+      ok: true,
+      status: "queued",
+      conclusion: "",
+      product_name: productName,
+      sport: sport,
+      product_code: code,
+      tracking_key: buildVisualProductTrackingKey_(productName, sport, code),
+      note: "No matching GitHub run is visible yet."
+    };
+  }
+
+  return {
+    ok: true,
+    status: run.status || "",
+    conclusion: run.conclusion || "",
+    result: run.conclusion === "success"
+      ? "passed"
+      : run.conclusion === "failure"
+        ? "failed"
+        : (run.status || "running"),
+    product_name: productName,
+    sport: sport,
+    product_code: code,
+    tracking_key: buildVisualProductTrackingKey_(productName, sport, code),
+    run_id: run.id || "",
+    run_number: run.run_number || "",
+    run_url: run.html_url || "",
+    created_at: run.created_at || "",
+    updated_at: run.updated_at || "",
+    head_sha: run.head_sha || "",
+    display_title: run.display_title || run.name || ""
+  };
+}
+
+function findVisualProductRun_(runs, productName, startedAt) {
+  const target = normalize_(productName);
+  const startedMs = startedAt ? Date.parse(startedAt) : 0;
+
+  const matches = (runs || []).filter(function(run) {
+    const title = normalize_(run.display_title || run.name || "");
+    if (target && title.indexOf(target) === -1) return false;
+
+    if (startedMs) {
+      const createdMs = Date.parse(run.created_at || "");
+      if (Number.isFinite(createdMs) && createdMs < startedMs - 120000) return false;
+    }
+
+    return true;
+  });
+
+  return matches.length ? matches[0] : null;
+}
+
+function buildVisualProductTrackingKey_(productName, sport, code) {
+  return [
+    normalize_(sport || ""),
+    safeString_(code || "").trim() || normalize_(productName || "")
+  ].filter(Boolean).join("|");
+}
+
+function githubApiUrl_(path) {
+  return "https://api.github.com/repos/"
+    + encodeURIComponent(CM_VISUAL_TEST_OWNER)
+    + "/"
+    + encodeURIComponent(CM_VISUAL_TEST_REPO)
+    + path;
+}
+
+function githubFetch_(url, token, options) {
+  const opts = options || {};
+  const headers = opts.headers || {};
+  headers.Authorization = "Bearer " + token;
+  headers.Accept = "application/vnd.github+json";
+  headers["X-GitHub-Api-Version"] = "2022-11-28";
+
+  return UrlFetchApp.fetch(url, Object.assign({}, opts, {
+    muteHttpExceptions: true,
+    headers: headers
+  }));
 }
 
 function getScriptPropertyWithDefault_(key, fallback) {

@@ -50,7 +50,8 @@
     visualTests: readJsonStore(VISUAL_TEST_KEY, {}),
     knownIssues: readJsonStore(KNOWN_ISSUE_KEY, {}),
     backendMemorySaveTimer: null,
-    backendMemorySaving: false
+    backendMemorySaving: false,
+    backendMemorySuspendAutoSave: false
   };
 
   const els = {
@@ -104,6 +105,7 @@
     try {
       localStorage.setItem(APPROVAL_KEY, JSON.stringify(state.approvals));
     } catch (err) {}
+    scheduleBackendMemorySave();
   }
 
   function readTasks() {
@@ -114,6 +116,7 @@
     try {
       localStorage.setItem(TASK_KEY, JSON.stringify(state.tasks));
     } catch (err) {}
+    scheduleBackendMemorySave();
   }
 
   function readAutonomyMode() {
@@ -129,6 +132,7 @@
     try {
       localStorage.setItem(AUTONOMY_MODE_KEY, state.autonomyMode);
     } catch (err) {}
+    scheduleBackendMemorySave();
   }
 
   function readJsonStore(key, fallback) {
@@ -143,24 +147,28 @@
     try {
       localStorage.setItem(VISUAL_TEST_KEY, JSON.stringify(state.visualTests));
     } catch (err) {}
+    scheduleBackendMemorySave();
   }
 
   function writeKnownIssues() {
     try {
       localStorage.setItem(KNOWN_ISSUE_KEY, JSON.stringify(state.knownIssues));
     } catch (err) {}
+    scheduleBackendMemorySave();
   }
 
   function writeAgentActions() {
     try {
       localStorage.setItem(AGENT_ACTION_KEY, JSON.stringify(state.agentActions));
     } catch (err) {}
+    scheduleBackendMemorySave();
   }
 
   function writeActivityLog() {
     try {
       localStorage.setItem(ACTIVITY_LOG_KEY, JSON.stringify(state.activityLog.slice(0, 80)));
     } catch (err) {}
+    scheduleBackendMemorySave();
   }
 
   function writeAllAgentMemory() {
@@ -2189,6 +2197,7 @@
   }
 
   function scheduleBackendMemorySave() {
+    if (state.backendMemorySuspendAutoSave) return;
     const endpoint = readOperatorEndpoint();
     const key = readOperatorKey();
     if (!endpoint || !key) return;
@@ -2261,7 +2270,9 @@
         return;
       }
 
+      state.backendMemorySuspendAutoSave = true;
       importAgentMemoryPayload(data.memory);
+      state.backendMemorySuspendAutoSave = false;
       logActivity({
         type: "memory",
         status: "loaded",
@@ -2273,6 +2284,7 @@
       renderActivityLog();
       updateMemoryStatus("Backend memory loaded.", data.sha ? `sha ${String(data.sha).slice(0, 7)}` : "loaded");
     } catch (err) {
+      state.backendMemorySuspendAutoSave = false;
       updateMemoryStatus(err && err.message ? err.message : "Backend memory load failed.", "error");
     }
   }
@@ -2280,6 +2292,8 @@
   function clearLocalAgentMemory() {
     const confirmed = window.confirm("Clear local Command Center memory in this browser? This does not change GitHub, Google Sheets, or live app data.");
     if (!confirmed) return;
+
+    state.backendMemorySuspendAutoSave = true;
 
     [
       APPROVAL_KEY,
@@ -2312,6 +2326,7 @@
 
     render();
     updateMemoryStatus("Local memory cleared.", "reset");
+    state.backendMemorySuspendAutoSave = false;
   }
 
   async function runAudit() {

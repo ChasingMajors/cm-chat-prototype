@@ -52,6 +52,7 @@
     nextActionList: document.getElementById("nextActionList"),
     agentActionList: document.getElementById("agentActionList"),
     activityLogList: document.getElementById("activityLogList"),
+    runSummaryList: document.getElementById("runSummaryList"),
     operatorTaskList: document.getElementById("operatorTaskList"),
     sourceCheckResult: document.getElementById("sourceCheckResult"),
     briefList: document.getElementById("briefList"),
@@ -2267,6 +2268,7 @@
     renderNextActions();
     renderAgentActions();
     renderActivityLog();
+    renderRunSummary();
     updateMemoryStatus("Local memory active.", "browser storage");
     renderOperatorTasks();
     renderOpportunities();
@@ -2497,6 +2499,7 @@
           <span>Agent events will appear here.</span>
         </div>
       `;
+      renderRunSummary();
       return;
     }
 
@@ -2510,6 +2513,79 @@
         </div>
       `;
     }).join("");
+    renderRunSummary();
+  }
+
+  function getLatestActivityByStatus(statuses) {
+    const wanted = (statuses || []).map(s => String(s).toLowerCase());
+    return (state.activityLog || []).find(entry => wanted.includes(String(entry.status || "").toLowerCase()));
+  }
+
+  function renderRunSummary() {
+    if (!els.runSummaryList) return;
+
+    const actions = state.agentActions || [];
+    const pending = actions.filter(action => {
+      const status = String(action.status || "").toLowerCase();
+      return status === "queued" || status === "approval_required" || status === "approved" || status === "needs_admin" || status === "running";
+    });
+    const validated = actions.filter(action => String(action.status || "").toLowerCase() === "validated");
+    const blocked = actions.filter(action => {
+      const status = String(action.status || "").toLowerCase();
+      return status === "failed" || status === "blocked" || status === "known_issue";
+    });
+    const critical = (state.opportunities || []).filter(item => item.severity === "critical");
+    const latestFailure = getLatestActivityByStatus(["failed", "needs_review", "blocked"]);
+    const latestSuccess = getLatestActivityByStatus(["validated", "completed", "imported", "exported", "queued"]);
+    const nextAction = pending[0] || actions.find(action => String(action.status || "").toLowerCase() === "needs_admin") || null;
+    const mode = getAutonomyLabel(state.autonomyMode);
+
+    const cards = [
+      {
+        title: "Operating Mode",
+        detail: `${mode}. ${state.autonomyMode === "full_auto" ? "Agent can run approved guardrail-safe work." : "Admin approval remains required before meaningful changes."}`,
+        badge: state.autonomyMode === "full_auto" ? "full auto" : "guarded"
+      },
+      {
+        title: "Current Queue",
+        detail: `${formatNumber(pending.length)} pending actions, ${formatNumber(validated.length)} validated, ${formatNumber(blocked.length)} blocked or known issues.`,
+        badge: pending.length ? "action needed" : "clear"
+      },
+      {
+        title: "Audit Pressure",
+        detail: critical.length
+          ? `${formatNumber(critical.length)} critical items are active in the audit queue.`
+          : "No critical audit items detected in the current run.",
+        badge: critical.length ? "critical" : "healthy"
+      },
+      {
+        title: "Last Good Signal",
+        detail: latestSuccess ? `${latestSuccess.title}: ${latestSuccess.detail || latestSuccess.status}` : "No successful agent activity logged yet.",
+        badge: latestSuccess ? latestSuccess.status || "ok" : "none"
+      },
+      {
+        title: "Last Concern",
+        detail: latestFailure ? `${latestFailure.title}: ${latestFailure.detail || latestFailure.status}` : "No logged failures or review holds.",
+        badge: latestFailure ? latestFailure.status || "review" : "none"
+      },
+      {
+        title: "Recommended Next Move",
+        detail: nextAction
+          ? `${nextAction.product || nextAction.type}: ${nextAction.recommendedAction || "Review and approve the prepared action."}`
+          : "Run Source Watch or approve the top ranked next step to create executable work.",
+        badge: nextAction ? getAgentActionStatusLabel(nextAction.status) : "ready"
+      }
+    ];
+
+    els.runSummaryList.innerHTML = cards.map(card => `
+      <div class="run-summary-card">
+        <div>
+          <strong>${escapeHtml(card.title)}</strong>
+          <span>${escapeHtml(card.detail)}</span>
+        </div>
+        <em>${escapeHtml(card.badge)}</em>
+      </div>
+    `).join("");
   }
 
   function renderBrief() {

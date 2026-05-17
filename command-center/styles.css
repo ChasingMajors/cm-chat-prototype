@@ -186,6 +186,11 @@ a {
   border-color: rgba(245,197,66,0.22);
 }
 
+.run-summary-panel {
+  margin-top: 14px;
+  border-color: rgba(51,209,122,0.22);
+}
+
 .memory-actions {
   display: flex;
   flex-wrap: wrap;
@@ -232,6 +237,52 @@ a {
   margin-top: 4px;
   color: var(--muted);
   font-size: 13px;
+}
+
+.run-summary-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.run-summary-card {
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel2);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.run-summary-card strong,
+.run-summary-card span {
+  display: block;
+}
+
+.run-summary-card span {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.42;
+}
+
+.run-summary-card em {
+  flex: 0 0 auto;
+  max-width: 120px;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--gold);
+  background: rgba(245,197,66,0.08);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1.2;
 }
 
 .source-check-panel {
@@ -865,6 +916,7 @@ h2 {
   .three-col,
   .source-check-form,
   .source-watch-actions,
+  .run-summary-list,
   .next-plan,
   .task-steps,
   .agent-action-results,

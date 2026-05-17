@@ -124,9 +124,14 @@ a {
   border: 1px solid var(--line);
 }
 
+.ghost-btn.danger {
+  border-color: rgba(255,93,93,0.32);
+  color: #ffdada;
+}
+
 .status-strip {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 12px;
   margin: 14px 0;
 }
@@ -174,6 +179,59 @@ a {
 .operator-panel {
   margin-top: 14px;
   border-color: rgba(57,160,255,0.24);
+}
+
+.agent-memory-panel {
+  margin-top: 14px;
+  border-color: rgba(245,197,66,0.22);
+}
+
+.memory-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.file-import-btn {
+  min-height: 42px;
+  padding: 0 15px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.1);
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+}
+
+#importMemoryInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.memory-status {
+  margin-top: 12px;
+  padding: 12px 13px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel2);
+}
+
+.memory-status strong,
+.memory-status span {
+  display: block;
+}
+
+.memory-status span {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .source-check-panel {

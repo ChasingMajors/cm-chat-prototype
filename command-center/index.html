@@ -115,6 +115,25 @@
       </div>
     </section>
 
+    <section class="panel agent-memory-panel">
+      <div class="panel-head">
+        <div>
+          <h2>Agent Memory</h2>
+          <p>Backup, move, or restore the current queue, log, approvals, known issues, and visual-test status.</p>
+        </div>
+      </div>
+      <div class="memory-actions">
+        <button id="exportMemoryBtn" class="primary-btn" type="button">Export Memory</button>
+        <label class="file-import-btn" for="importMemoryInput">Import Memory</label>
+        <input id="importMemoryInput" type="file" accept="application/json,.json" />
+        <button id="clearMemoryBtn" class="ghost-btn danger" type="button">Clear Local Memory</button>
+      </div>
+      <div id="memoryStatus" class="memory-status">
+        <strong>Local memory active</strong>
+        <span>Agent state is stored in this browser until exported or connected to backend persistence.</span>
+      </div>
+    </section>
+
     <section class="panel source-check-panel">
       <div class="panel-head">
         <div>

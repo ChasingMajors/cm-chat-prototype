@@ -30,6 +30,10 @@
     clearDoneBtn: document.getElementById("clearDoneBtn"),
     clearResolvedAgentActionsBtn: document.getElementById("clearResolvedAgentActionsBtn"),
     clearActivityLogBtn: document.getElementById("clearActivityLogBtn"),
+    exportMemoryBtn: document.getElementById("exportMemoryBtn"),
+    importMemoryInput: document.getElementById("importMemoryInput"),
+    clearMemoryBtn: document.getElementById("clearMemoryBtn"),
+    memoryStatus: document.getElementById("memoryStatus"),
     autonomyModeSelect: document.getElementById("autonomyModeSelect"),
     sourceCheckBtn: document.getElementById("sourceCheckBtn"),
     sourceWatchQuickBtn: document.getElementById("sourceWatchQuickBtn"),
@@ -122,6 +126,16 @@
     try {
       localStorage.setItem(ACTIVITY_LOG_KEY, JSON.stringify(state.activityLog.slice(0, 80)));
     } catch (err) {}
+  }
+
+  function writeAllAgentMemory() {
+    writeApprovals();
+    writeTasks();
+    writeAgentActions();
+    writeActivityLog();
+    writeVisualTests();
+    writeKnownIssues();
+    writeAutonomyMode(state.autonomyMode);
   }
 
   function readOperatorEndpoint() {
@@ -2000,6 +2014,147 @@
     state.activityLog = [];
     writeActivityLog();
     renderActivityLog();
+    updateMemoryStatus("Activity log cleared.", "cleaned");
+  }
+
+  function buildAgentMemoryPayload() {
+    return {
+      ok: true,
+      app: "chasing_majors_command_center",
+      schema: "agent_memory_v1",
+      exported_at: new Date().toISOString(),
+      autonomy_mode: state.autonomyMode,
+      approvals: state.approvals || {},
+      tasks: state.tasks || [],
+      agent_actions: state.agentActions || [],
+      activity_log: state.activityLog || [],
+      visual_tests: state.visualTests || {},
+      known_issues: state.knownIssues || {},
+      operator_endpoint: readOperatorEndpoint()
+    };
+  }
+
+  function updateMemoryStatus(message, status) {
+    if (!els.memoryStatus) return;
+    const counts = [
+      `${formatNumber((state.agentActions || []).length)} actions`,
+      `${formatNumber((state.activityLog || []).length)} log entries`,
+      `${formatNumber(Object.keys(state.knownIssues || {}).length)} known issues`,
+      `${formatNumber(Object.keys(state.visualTests || {}).length)} visual statuses`
+    ];
+    els.memoryStatus.innerHTML = `
+      <strong>${escapeHtml(message || "Local memory active")}</strong>
+      <span>${escapeHtml(counts.join(" | "))}${status ? ` | ${escapeHtml(status)}` : ""}</span>
+    `;
+  }
+
+  function exportAgentMemory() {
+    const payload = buildAgentMemoryPayload();
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const stamp = new Date().toISOString().slice(0, 19).replace(/[-:T]/g, "");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `chasing-majors-agent-memory-${stamp}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+
+    logActivity({
+      type: "memory",
+      status: "exported",
+      source: "admin",
+      title: "Agent memory exported",
+      detail: "Queue, log, approvals, known issues, and visual status were saved to JSON."
+    });
+    renderActivityLog();
+    updateMemoryStatus("Agent memory exported.", "backup ready");
+  }
+
+  function importAgentMemoryPayload(payload) {
+    if (!payload || payload.schema !== "agent_memory_v1") {
+      throw new Error("This file is not a Command Center agent memory export.");
+    }
+
+    state.autonomyMode = payload.autonomy_mode || "approval_required";
+    state.approvals = payload.approvals && typeof payload.approvals === "object" ? payload.approvals : {};
+    state.tasks = Array.isArray(payload.tasks) ? payload.tasks : [];
+    state.agentActions = Array.isArray(payload.agent_actions) ? payload.agent_actions : [];
+    state.activityLog = Array.isArray(payload.activity_log) ? payload.activity_log : [];
+    state.visualTests = payload.visual_tests && typeof payload.visual_tests === "object" ? payload.visual_tests : {};
+    state.knownIssues = payload.known_issues && typeof payload.known_issues === "object" ? payload.known_issues : {};
+
+    writeAllAgentMemory();
+    if (payload.operator_endpoint) writeOperatorEndpoint(payload.operator_endpoint);
+    if (els.autonomyModeSelect) els.autonomyModeSelect.value = state.autonomyMode;
+    if (els.operatorEndpointInput) els.operatorEndpointInput.value = readOperatorEndpoint();
+
+    logActivity({
+      type: "memory",
+      status: "imported",
+      source: "admin",
+      title: "Agent memory imported",
+      detail: "Queue, log, approvals, known issues, and visual status were restored."
+    });
+
+    render();
+    updateMemoryStatus("Agent memory imported.", "restored");
+  }
+
+  function importAgentMemoryFile(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        importAgentMemoryPayload(JSON.parse(String(reader.result || "{}")));
+      } catch (err) {
+        updateMemoryStatus(err && err.message ? err.message : "Import failed.", "error");
+      } finally {
+        if (els.importMemoryInput) els.importMemoryInput.value = "";
+      }
+    };
+    reader.onerror = () => {
+      updateMemoryStatus("Import failed. Could not read the selected file.", "error");
+      if (els.importMemoryInput) els.importMemoryInput.value = "";
+    };
+    reader.readAsText(file);
+  }
+
+  function clearLocalAgentMemory() {
+    const confirmed = window.confirm("Clear local Command Center memory in this browser? This does not change GitHub, Google Sheets, or live app data.");
+    if (!confirmed) return;
+
+    [
+      APPROVAL_KEY,
+      TASK_KEY,
+      AGENT_ACTION_KEY,
+      ACTIVITY_LOG_KEY,
+      VISUAL_TEST_KEY,
+      KNOWN_ISSUE_KEY
+    ].forEach(key => {
+      try {
+        localStorage.removeItem(key);
+      } catch (err) {}
+    });
+
+    state.approvals = {};
+    state.tasks = [];
+    state.agentActions = [];
+    state.activityLog = [];
+    state.visualTests = {};
+    state.knownIssues = {};
+
+    logActivity({
+      type: "memory",
+      status: "cleared",
+      source: "admin",
+      title: "Local memory cleared",
+      detail: "Browser-only queue, log, approvals, known issues, and visual statuses were reset."
+    });
+
+    render();
+    updateMemoryStatus("Local memory cleared.", "reset");
   }
 
   async function runAudit() {
@@ -2104,12 +2259,15 @@
     els.autonomyState.textContent = getAutonomyLabel(state.autonomyMode);
     els.opportunityCount.textContent = formatNumber(opportunities.length);
     els.criticalCount.textContent = formatNumber(critical.length);
-    els.lastAudit.textContent = state.audit.generatedAt.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    els.lastAudit.textContent = state.audit && state.audit.generatedAt
+      ? state.audit.generatedAt.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
+      : "-";
 
     renderBrief();
     renderNextActions();
     renderAgentActions();
     renderActivityLog();
+    updateMemoryStatus("Local memory active.", "browser storage");
     renderOperatorTasks();
     renderOpportunities();
     renderDataHealth();
@@ -2433,6 +2591,16 @@
 
   function renderDataHealth() {
     const audit = state.audit;
+    if (!audit) {
+      els.dataHealthStats.innerHTML = `
+        <div class="metric-row">
+          <span>Audit status</span>
+          <strong>Loading</strong>
+        </div>
+      `;
+      return;
+    }
+
     const rows = [
       ["Checklist products", audit.checklistCount],
       ["PRV products", audit.vaultCount],
@@ -2451,6 +2619,16 @@
   }
 
   function renderEdgeSignals() {
+    if (!state.audit) {
+      els.edgeSignals.innerHTML = `
+        <div class="signal-row">
+          <strong>Loading Early Edge data</strong>
+          <span>Signals will appear after the audit finishes.</span>
+        </div>
+      `;
+      return;
+    }
+
     const payload = state.audit.earlySignals || {};
     const signals = Array.isArray(payload.signals) ? payload.signals : Array.isArray(payload.players) ? payload.players : [];
 
@@ -2497,6 +2675,11 @@
   els.clearDoneBtn.addEventListener("click", clearDoneTasks);
   els.clearResolvedAgentActionsBtn.addEventListener("click", clearResolvedAgentActions);
   els.clearActivityLogBtn.addEventListener("click", clearActivityLog);
+  els.exportMemoryBtn.addEventListener("click", exportAgentMemory);
+  els.importMemoryInput.addEventListener("change", event => {
+    importAgentMemoryFile(event.target.files && event.target.files[0]);
+  });
+  els.clearMemoryBtn.addEventListener("click", clearLocalAgentMemory);
   els.autonomyModeSelect.addEventListener("change", () => {
     writeAutonomyMode(els.autonomyModeSelect.value || "approval_required");
     els.autonomyState.textContent = getAutonomyLabel(state.autonomyMode);

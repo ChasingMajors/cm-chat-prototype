@@ -2804,6 +2804,7 @@
     const status = String(action && action.status || "").toLowerCase();
     const execution = String(action && action.executionResult || "").toLowerCase();
     const validation = String(action && action.validationResult || "").toLowerCase();
+    const validationPassed = hasPositiveValidationProof(action);
 
     const checks = [
       {
@@ -2823,7 +2824,7 @@
       },
       {
         label: "Validation proof",
-        ok: status === "validated" || validation.includes("passed") || validation.includes("complete"),
+        ok: validationPassed,
         note: action && action.validationResult ? action.validationResult : "No validation proof yet"
       }
     ];
@@ -2831,7 +2832,7 @@
     if (type === "checklist_publish" || type === "source_import") {
       checks.push({
         label: "CV / ChatBot",
-        ok: validation.includes("cv") && (validation.includes("passed") || validation.includes("chatbot")),
+        ok: validationPassed && validation.includes("cv") && validation.includes("chatbot"),
         note: validation ? action.validationResult : "Public app validation pending"
       });
     }
@@ -2862,6 +2863,27 @@
     `;
   }
 
+  function hasPositiveValidationProof(action) {
+    const status = String(action && action.status || "").toLowerCase();
+    const validation = String(action && action.validationResult || "").toLowerCase();
+    if (status === "validated") return true;
+    if (!validation) return false;
+    if (
+      validation.includes("needs review") ||
+      validation.includes("pending") ||
+      validation.includes("failed") ||
+      validation.includes("error") ||
+      validation.includes("missing")
+    ) {
+      return false;
+    }
+    return (
+      validation.includes("passed") ||
+      validation.includes("validated") ||
+      validation.includes("complete")
+    );
+  }
+
   function getActionExecutionPosture(action) {
     const status = String(action && action.status || "").toLowerCase();
     const type = String(action && action.type || "").toLowerCase();
@@ -2869,7 +2891,7 @@
     const hasSource = type !== "source_import" || !!(action.sourceUrl || action.runUrl);
     const hasTarget = !!(action.product || action.code);
     const hasExecutionProof = !!action.executionResult;
-    const hasValidationProof = !!action.validationResult;
+    const hasValidationProof = hasPositiveValidationProof(action);
 
     if (status === "known_issue" || status === "blocked" || status === "failed") {
       return {

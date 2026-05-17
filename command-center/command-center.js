@@ -359,6 +359,42 @@
     return base;
   }
 
+  function queueSourceWatchActions(items, auditMode) {
+    const actionable = (Array.isArray(items) ? items : []).filter(item => (
+      item.status === "missing" ||
+      item.status === "needs_review" ||
+      item.status === "possible_update"
+    ));
+
+    let createdOrUpdated = 0;
+    actionable.forEach(item => {
+      const action = upsertAgentAction({
+        type: "source_import",
+        source: item.discovery_source || auditMode || "source_watch",
+        product: item.matched_name || item.title || "Untitled source item",
+        sport: item.sport || "",
+        code: item.matched_code || "",
+        riskLevel: item.status === "missing" ? "medium" : "low",
+        status: "approval_required",
+        recommendedAction: item.recommended_action || "Preview source import, write product-scoped rows, publish JSON, validate CV/ChatBot.",
+        runUrl: item.source_url || item.url || ""
+      });
+      if (action) createdOrUpdated += 1;
+    });
+
+    if (createdOrUpdated) {
+      logActivity({
+        type: "source_watch",
+        status: "queued",
+        source: auditMode || "source_watch",
+        title: "Source Watch actions queued",
+        detail: `${createdOrUpdated} findings are now visible in the Agent Action Queue for admin review.`
+      });
+    }
+
+    return createdOrUpdated;
+  }
+
   function updateAgentAction(id, patch) {
     const action = state.agentActions.find(item => item.id === id);
     if (!action) return null;
@@ -1254,14 +1290,17 @@
       const data = await fetchJson(url);
       const items = Array.isArray(data.items) ? data.items : [];
       const actionable = items.filter(item => item.status === "missing" || item.status === "needs_review" || item.status === "possible_update");
+      const queuedCount = queueSourceWatchActions(items, auditMode);
       logActivity({
         type: "source_watch",
         status: data.ok ? "completed" : "failed",
         source: auditMode,
         title: `${modeLabel} complete`,
-        detail: `${items.length} source items checked. ${actionable.length} need review.`
+        detail: `${items.length} source items checked. ${actionable.length} need review. ${queuedCount} review cards queued.`
       });
       renderSourceWatchResults(data);
+      renderAgentActions();
+      renderActionLanes();
       renderActivityLog();
     } catch (err) {
       renderSourceCheckMessage("Source watch failed", err && err.message ? err.message : String(err), "critical");

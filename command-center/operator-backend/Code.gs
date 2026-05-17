@@ -15,6 +15,8 @@
  * - executeSourceImport
  * - dispatchVisualProductTest
  * - getVisualProductTestStatus
+ * - loadAgentMemory
+ * - saveAgentMemory
  *
  * Current safety:
  * - Sheet writes require Script Property CM_OPERATOR_KEY.
@@ -39,6 +41,7 @@ const CM_VISUAL_TEST_OWNER = "ChasingMajors";
 const CM_VISUAL_TEST_REPO = "cm-chat-prototype";
 const CM_VISUAL_TEST_WORKFLOW = "visual-product-test.yml";
 const CM_VISUAL_TEST_BRANCH = "main";
+const CM_AGENT_MEMORY_PATH = "data/command-center/agent-memory.json";
 const CM_CHECKLIST_SOURCE_MAP = {
   baseball: {
     current: "1knoZy155nQOw-_9o5ragmoBS_FaxwoZ3lEQ4YGgeSeg",
@@ -153,10 +156,14 @@ function doGet(e) {
       }));
     }
 
+    if (action === "loadAgentMemory") {
+      return json_(loadAgentMemory_({ key: p.key || "" }));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest", "getVisualProductTestStatus"]
+      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory"]
     });
   } catch (err) {
     return json_({
@@ -193,10 +200,18 @@ function doPost(e) {
       return json_(getVisualProductTestStatus_(body));
     }
 
+    if (action === "loadAgentMemory") {
+      return json_(loadAgentMemory_(body));
+    }
+
+    if (action === "saveAgentMemory") {
+      return json_(saveAgentMemory_(body));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest", "getVisualProductTestStatus"]
+      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory"]
     });
   } catch (err) {
     return json_({
@@ -1198,6 +1213,66 @@ function buildVisualProductTrackingKey_(productName, sport, code) {
   ].filter(Boolean).join("|");
 }
 
+function loadAgentMemory_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const token = PropertiesService.getScriptProperties().getProperty(CM_GITHUB_TOKEN_PROPERTY);
+  if (!token) throw new Error("Missing Script Property " + CM_GITHUB_TOKEN_PROPERTY + ".");
+
+  const existing = getGitHubContentFile_(CM_AGENT_MEMORY_PATH, token);
+  if (!existing.exists) {
+    return {
+      ok: true,
+      has_memory: false,
+      memory: null,
+      path: CM_AGENT_MEMORY_PATH,
+      updated_at: new Date().toISOString()
+    };
+  }
+
+  let memory = {};
+  try {
+    memory = JSON.parse(existing.text || "{}");
+  } catch (err) {
+    throw new Error("Saved agent memory JSON could not be parsed.");
+  }
+
+  return {
+    ok: true,
+    has_memory: true,
+    memory: memory,
+    path: CM_AGENT_MEMORY_PATH,
+    sha: existing.sha || "",
+    updated_at: new Date().toISOString()
+  };
+}
+
+function saveAgentMemory_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const memory = input && input.memory;
+  if (!memory || memory.schema !== "agent_memory_v1") {
+    throw new Error("Missing valid agent memory payload.");
+  }
+
+  const token = PropertiesService.getScriptProperties().getProperty(CM_GITHUB_TOKEN_PROPERTY);
+  if (!token) throw new Error("Missing Script Property " + CM_GITHUB_TOKEN_PROPERTY + ".");
+
+  const payload = shallowClone_(memory);
+  payload.saved_at = new Date().toISOString();
+  payload.saved_by = "cm_command_center_operator";
+
+  const result = putGitHubContentJson_(CM_AGENT_MEMORY_PATH, payload, token, "Save Command Center agent memory");
+
+  return {
+    ok: true,
+    path: CM_AGENT_MEMORY_PATH,
+    sha: result.sha || "",
+    commit: result.commit || "",
+    saved_at: payload.saved_at
+  };
+}
+
 function githubApiUrl_(path) {
   return "https://api.github.com/repos/"
     + encodeURIComponent(CM_VISUAL_TEST_OWNER)
@@ -1217,6 +1292,73 @@ function githubFetch_(url, token, options) {
     muteHttpExceptions: true,
     headers: headers
   }));
+}
+
+function getGitHubContentFile_(path, token) {
+  const url = githubApiUrl_("/contents/" + path + "?ref=" + encodeURIComponent(CM_VISUAL_TEST_BRANCH));
+  const res = githubFetch_(url, token, { method: "get" });
+  const status = res.getResponseCode();
+  const text = res.getContentText();
+
+  if (status === 404) {
+    return { exists: false };
+  }
+
+  let data = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch (err) {
+    data = {};
+  }
+
+  if (status < 200 || status >= 300) {
+    throw new Error("GitHub content lookup failed with " + status + ": " + text);
+  }
+
+  const content = safeString_(data.content || "").replace(/\s/g, "");
+  const bytes = content ? Utilities.base64Decode(content) : [];
+  const decoded = bytes.length ? Utilities.newBlob(bytes).getDataAsString("UTF-8") : "";
+
+  return {
+    exists: true,
+    sha: data.sha || "",
+    text: decoded
+  };
+}
+
+function putGitHubContentJson_(path, obj, token, message) {
+  const existing = getGitHubContentFile_(path, token);
+  const text = JSON.stringify(obj, null, 2);
+  const payload = {
+    message: message || "Update " + path,
+    content: Utilities.base64Encode(Utilities.newBlob(text).getBytes()),
+    branch: CM_VISUAL_TEST_BRANCH
+  };
+  if (existing.exists && existing.sha) payload.sha = existing.sha;
+
+  const url = githubApiUrl_("/contents/" + path);
+  const res = githubFetch_(url, token, {
+    method: "put",
+    contentType: "application/json",
+    payload: JSON.stringify(payload)
+  });
+  const status = res.getResponseCode();
+  const body = res.getContentText();
+  let data = {};
+  try {
+    data = body ? JSON.parse(body) : {};
+  } catch (err) {
+    data = { raw: body };
+  }
+
+  if (status < 200 || status >= 300) {
+    throw new Error("GitHub content save failed with " + status + ": " + body);
+  }
+
+  return {
+    sha: data.content && data.content.sha ? data.content.sha : "",
+    commit: data.commit && data.commit.sha ? data.commit.sha : ""
+  };
 }
 
 function getScriptPropertyWithDefault_(key, fallback) {
@@ -1710,6 +1852,14 @@ function parseBody_(e) {
 function safeString_(value) {
   if (value === null || value === undefined) return "";
   return String(value);
+}
+
+function shallowClone_(obj) {
+  const out = {};
+  Object.keys(obj || {}).forEach(function(key) {
+    out[key] = obj[key];
+  });
+  return out;
 }
 
 function json_(obj) {

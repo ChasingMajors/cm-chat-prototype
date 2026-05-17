@@ -58,6 +58,8 @@
     clearActivityLogBtn: document.getElementById("clearActivityLogBtn"),
     exportMemoryBtn: document.getElementById("exportMemoryBtn"),
     importMemoryInput: document.getElementById("importMemoryInput"),
+    saveBackendMemoryBtn: document.getElementById("saveBackendMemoryBtn"),
+    loadBackendMemoryBtn: document.getElementById("loadBackendMemoryBtn"),
     clearMemoryBtn: document.getElementById("clearMemoryBtn"),
     memoryStatus: document.getElementById("memoryStatus"),
     autonomyModeSelect: document.getElementById("autonomyModeSelect"),
@@ -467,6 +469,16 @@
   async function fetchJson(url) {
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error(`${res.status} ${url}`);
+    return res.json();
+  }
+
+  async function postOperatorJson(endpoint, payload) {
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload || {})
+    });
+    if (!res.ok) throw new Error(`${res.status} ${endpoint}`);
     return res.json();
   }
 
@@ -2160,6 +2172,73 @@
     reader.readAsText(file);
   }
 
+  async function saveBackendAgentMemory() {
+    const endpoint = readOperatorEndpoint();
+    const key = readOperatorKey();
+    if (!endpoint || !key) {
+      updateMemoryStatus("Backend save needs Operator Backend URL and admin key.", "missing setup");
+      return;
+    }
+
+    try {
+      updateMemoryStatus("Saving backend memory...", "working");
+      const data = await postOperatorJson(endpoint, {
+        action: "saveAgentMemory",
+        key: key,
+        memory: buildAgentMemoryPayload()
+      });
+      if (!data || !data.ok) throw new Error(data && data.error ? data.error : "Backend save failed.");
+
+      logActivity({
+        type: "memory",
+        status: "saved",
+        source: "operator_backend",
+        title: "Backend memory saved",
+        detail: data.path ? `Saved to ${data.path}.` : "Agent memory saved through Operator Backend."
+      });
+      renderActivityLog();
+      updateMemoryStatus("Backend memory saved.", data.sha ? `sha ${String(data.sha).slice(0, 7)}` : "saved");
+    } catch (err) {
+      updateMemoryStatus(err && err.message ? err.message : "Backend memory save failed.", "error");
+    }
+  }
+
+  async function loadBackendAgentMemory() {
+    const endpoint = readOperatorEndpoint();
+    const key = readOperatorKey();
+    if (!endpoint || !key) {
+      updateMemoryStatus("Backend load needs Operator Backend URL and admin key.", "missing setup");
+      return;
+    }
+
+    try {
+      updateMemoryStatus("Loading backend memory...", "working");
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=loadAgentMemory"
+        + "&key=" + encodeURIComponent(key);
+      const data = await fetchJson(url);
+      if (!data || !data.ok) throw new Error(data && data.error ? data.error : "Backend load failed.");
+      if (!data.has_memory || !data.memory) {
+        updateMemoryStatus("No backend memory has been saved yet.", "empty");
+        return;
+      }
+
+      importAgentMemoryPayload(data.memory);
+      logActivity({
+        type: "memory",
+        status: "loaded",
+        source: "operator_backend",
+        title: "Backend memory loaded",
+        detail: data.path ? `Loaded from ${data.path}.` : "Agent memory loaded from Operator Backend."
+      });
+      renderActivityLog();
+      updateMemoryStatus("Backend memory loaded.", data.sha ? `sha ${String(data.sha).slice(0, 7)}` : "loaded");
+    } catch (err) {
+      updateMemoryStatus(err && err.message ? err.message : "Backend memory load failed.", "error");
+    }
+  }
+
   function clearLocalAgentMemory() {
     const confirmed = window.confirm("Clear local Command Center memory in this browser? This does not change GitHub, Google Sheets, or live app data.");
     if (!confirmed) return;
@@ -2990,6 +3069,8 @@
   els.importMemoryInput.addEventListener("change", event => {
     importAgentMemoryFile(event.target.files && event.target.files[0]);
   });
+  els.saveBackendMemoryBtn.addEventListener("click", saveBackendAgentMemory);
+  els.loadBackendMemoryBtn.addEventListener("click", loadBackendAgentMemory);
   els.clearMemoryBtn.addEventListener("click", clearLocalAgentMemory);
   els.autonomyModeSelect.addEventListener("change", () => {
     writeAutonomyMode(els.autonomyModeSelect.value || "approval_required");

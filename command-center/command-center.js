@@ -2250,15 +2250,17 @@
       });
       if (!data || !data.ok) throw new Error(data && data.error ? data.error : "Backend save failed.");
 
-      logActivity({
-        type: "memory",
-        status: "saved",
-        source: "operator_backend",
-        title: opts.silent ? "Backend memory auto-saved" : "Backend memory saved",
-        detail: data.path ? `Saved to ${data.path}.` : "Agent memory saved through Operator Backend.",
-        noAutoSave: true
-      });
-      renderActivityLog();
+      if (!opts.silent) {
+        logActivity({
+          type: "memory",
+          status: "saved",
+          source: "operator_backend",
+          title: "Backend memory saved",
+          detail: data.path ? `Saved to ${data.path}.` : "Agent memory saved through Operator Backend.",
+          noAutoSave: true
+        });
+        renderActivityLog();
+      }
       updateMemoryStatus(opts.silent ? "Backend memory auto-saved." : "Backend memory saved.", data.sha ? `sha ${String(data.sha).slice(0, 7)}` : "saved");
     } catch (err) {
       logActivity({

@@ -1400,15 +1400,33 @@
     if (!action) return;
 
     if (!endpoint) {
+      updateAgentAction(actionId, {
+        status: "needs_admin",
+        validationResult: "Coverage recheck blocked: Operator Backend URL is missing."
+      });
+      renderAgentActions();
+      renderActionLanes();
       renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before rechecking coverage.", "warning");
       return;
     }
 
     if (!action.product) {
+      updateAgentAction(actionId, {
+        status: "needs_admin",
+        validationResult: "Coverage recheck blocked: product name is missing."
+      });
+      renderAgentActions();
+      renderActionLanes();
       renderSourceCheckMessage("Product missing", "This action does not have a product name to recheck.", "warning");
       return;
     }
 
+    updateAgentAction(actionId, {
+      status: "running",
+      validationResult: "Coverage recheck started..."
+    });
+    renderAgentActions();
+    renderActionLanes();
     renderSourceCheckMessage("Rechecking public coverage", "The Operator Backend is checking the product against the current public checklist index.", "info");
 
     try {
@@ -1423,7 +1441,7 @@
       const parallelCount = Number(data && data.sheet_parallel_count || 0);
 
       updateAgentAction(actionId, {
-        status: covered && rowCount > 0 ? "needs_admin" : "needs_admin",
+        status: "needs_admin",
         code: action.code || (data && data.matched_code) || "",
         validationResult: covered
           ? `Public JSON covered: ${formatNumber(rowCount)} rows, ${formatNumber(parallelCount)} parallels. Visual CV/ChatBot proof still pending.`

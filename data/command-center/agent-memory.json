@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-17T22:19:16.116Z",
+  "exported_at": "2026-05-17T22:29:23.017Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -74,14 +74,14 @@
       "sport": "hockey",
       "code": "2026_upper_deck_spring_expo_hockey",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "approved",
       "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "Public JSON covered: 100 rows, 0 parallels. Visual CV/ChatBot proof still pending.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "createdAt": "2026-05-17T21:42:01.499Z",
-      "updatedAt": "2026-05-17T22:12:14.319Z",
+      "updatedAt": "2026-05-17T22:29:21.414Z",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-spring-expo-hockey-card-checklist/"
     },
     {
@@ -166,6 +166,6 @@
   },
   "known_issues": {},
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-17T22:19:17.238Z",
+  "saved_at": "2026-05-17T22:29:24.168Z",
   "saved_by": "cm_command_center_operator"
 }

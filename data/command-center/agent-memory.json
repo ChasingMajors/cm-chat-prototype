@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-17T19:32:20.135Z",
+  "exported_at": "2026-05-17T21:33:18.820Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -48,7 +48,28 @@
       "updatedAt": "2026-05-17T18:48:27.703Z"
     }
   ],
-  "activity_log": [],
+  "activity_log": [
+    {
+      "id": "log_1779053597217_hl09ql",
+      "ts": "2026-05-17T21:33:17.217Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779053597194_sqjfln",
+      "ts": "2026-05-17T21:33:17.195Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    }
+  ],
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -76,6 +97,6 @@
   },
   "known_issues": {},
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-17T19:32:20.969Z",
+  "saved_at": "2026-05-17T21:33:19.962Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -1394,6 +1394,68 @@
     }
   }
 
+  async function recheckActionCoverage(actionId) {
+    const endpoint = readOperatorEndpoint();
+    const action = state.agentActions.find(item => item.id === actionId);
+    if (!action) return;
+
+    if (!endpoint) {
+      renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before rechecking coverage.", "warning");
+      return;
+    }
+
+    if (!action.product) {
+      renderSourceCheckMessage("Product missing", "This action does not have a product name to recheck.", "warning");
+      return;
+    }
+
+    renderSourceCheckMessage("Rechecking public coverage", "The Operator Backend is checking the product against the current public checklist index.", "info");
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=validateSourceProduct"
+        + "&title=" + encodeURIComponent(action.product || "")
+        + "&sport=" + encodeURIComponent(action.sport || "");
+      const data = await fetchJson(url);
+      const covered = data && data.ok && data.status === "covered";
+      const rowCount = Number(data && data.sheet_row_count || 0);
+      const parallelCount = Number(data && data.sheet_parallel_count || 0);
+
+      updateAgentAction(actionId, {
+        status: covered && rowCount > 0 ? "needs_admin" : "needs_admin",
+        code: action.code || (data && data.matched_code) || "",
+        validationResult: covered
+          ? `Public JSON covered: ${formatNumber(rowCount)} rows, ${formatNumber(parallelCount)} parallels. Visual CV/ChatBot proof still pending.`
+          : `Coverage recheck needs review: ${(data && (data.recommended_action || data.reason || data.status)) || "unknown result"}.`
+      });
+
+      logActivity({
+        type: "validation",
+        status: covered ? "covered" : "needs_review",
+        product: action.product || "",
+        source: "operator_backend",
+        title: "Coverage rechecked",
+        detail: covered
+          ? `${formatNumber(rowCount)} public rows and ${formatNumber(parallelCount)} parallels found.`
+          : "Public coverage still needs review."
+      });
+
+      renderBackendValidationResult(data);
+      renderAgentActions();
+      renderActionLanes();
+      renderActivityLog();
+    } catch (err) {
+      updateAgentAction(actionId, {
+        status: "failed",
+        validationResult: err && err.message ? err.message : String(err)
+      });
+      renderAgentActions();
+      renderActionLanes();
+      renderSourceCheckMessage("Coverage recheck failed", err && err.message ? err.message : String(err), "critical");
+    }
+  }
+
   function renderBackendValidationResult(data) {
     if (!data || !data.ok) {
       renderSourceCheckMessage("Validation failed", data && data.error ? data.error : "Unknown backend response.", "critical");
@@ -2916,6 +2978,9 @@
             ${action.type === "source_import" && action.product ? `
               <button class="action-btn" type="button" data-action-visual-test="${escapeHtml(action.id)}">Test CV/ChatBot</button>
             ` : ""}
+            ${action.product && (action.type === "source_import" || action.type === "checklist_publish") ? `
+              <button class="action-btn" type="button" data-action-recheck-coverage="${escapeHtml(action.id)}">Recheck Coverage</button>
+            ` : ""}
             ${canExecuteSourceImport ? `
               <button class="action-btn approve" type="button" data-action-execute-import="${escapeHtml(action.id)}">Write to Google Sheets</button>
             ` : ""}
@@ -2960,6 +3025,12 @@
           return;
         }
         executeSourceImport(sourceUrl, action.sport || "", action.id);
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-recheck-coverage]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        recheckActionCoverage(btn.dataset.actionRecheckCoverage);
       });
     });
 

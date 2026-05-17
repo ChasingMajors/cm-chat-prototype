@@ -1425,8 +1425,17 @@
       status: "running",
       validationResult: "Coverage recheck started..."
     });
+    logActivity({
+      type: "validation",
+      status: "running",
+      product: action.product || "",
+      source: "operator_backend",
+      title: "Coverage recheck started",
+      detail: "Checking current public checklist coverage for this product."
+    });
     renderAgentActions();
     renderActionLanes();
+    renderActivityLog();
     renderSourceCheckMessage("Rechecking public coverage", "The Operator Backend is checking the product against the current public checklist index.", "info");
 
     try {
@@ -1468,8 +1477,17 @@
         status: "failed",
         validationResult: err && err.message ? err.message : String(err)
       });
+      logActivity({
+        type: "validation",
+        status: "failed",
+        product: action.product || "",
+        source: "operator_backend",
+        title: "Coverage recheck failed",
+        detail: err && err.message ? err.message : String(err)
+      });
       renderAgentActions();
       renderActionLanes();
+      renderActivityLog();
       renderSourceCheckMessage("Coverage recheck failed", err && err.message ? err.message : String(err), "critical");
     }
   }

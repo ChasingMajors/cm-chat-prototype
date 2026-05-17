@@ -1372,7 +1372,8 @@ function mergeScheduledSourceActions_(existingActions, sourceItems, now, mode) {
       adminDecision: "",
       executionResult: "",
       validationResult: "",
-      runUrl: item.url || item.source_url || "",
+      runUrl: "",
+      sourceUrl: item.url || item.source_url || "",
       createdAt: existing && existing.createdAt ? existing.createdAt : now,
       updatedAt: now
     };

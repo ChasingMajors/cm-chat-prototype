@@ -340,6 +340,7 @@
       executionResult: input.executionResult || "",
       validationResult: input.validationResult || "",
       runUrl: input.runUrl || "",
+      sourceUrl: input.sourceUrl || "",
       createdAt: now,
       updatedAt: now
     };
@@ -377,7 +378,7 @@
         riskLevel: item.status === "missing" ? "medium" : "low",
         status: "approval_required",
         recommendedAction: item.recommended_action || "Preview source import, write product-scoped rows, publish JSON, validate CV/ChatBot.",
-        runUrl: item.source_url || item.url || ""
+        sourceUrl: item.source_url || item.url || ""
       });
       if (action) createdOrUpdated += 1;
     });
@@ -456,8 +457,8 @@
   }
 
   function buildVisualTestPlan(item) {
-    const productName = String(item.matched_name || item.title || "").trim();
-    const code = String(item.matched_code || "").trim();
+    const productName = String(item.matched_name || item.productName || item.title || "").trim();
+    const code = String(item.matched_code || item.code || "").trim();
     const sport = normalize(item.sport || "");
     const shortQuery = buildShortProductQuery(productName);
     const ambiguousQuery = stripYearFromProductName(productName);
@@ -503,6 +504,15 @@
         "No broken loading state or unexpected No rows found message"
       ]
     };
+  }
+
+  function buildVisualTestPlanFromAction(action) {
+    return buildVisualTestPlan({
+      matched_name: action && action.product,
+      title: action && action.product,
+      matched_code: action && action.code,
+      sport: action && action.sport
+    });
   }
 
   function isAllowedSport(value) {
@@ -2792,15 +2802,43 @@
           ` : ""}
           ${renderValidationChecklist(action)}
           <div class="opp-actions">
+            ${action.type === "source_import" && (action.sourceUrl || action.runUrl) ? `
+              <button class="action-btn approve" type="button" data-action-preview-import="${escapeHtml(action.id)}">Preview Import</button>
+              <a class="action-btn" href="${escapeHtml(action.sourceUrl || action.runUrl)}" target="_blank" rel="noopener noreferrer">Open Source</a>
+            ` : ""}
+            ${action.type === "source_import" && action.product ? `
+              <button class="action-btn" type="button" data-action-visual-test="${escapeHtml(action.id)}">Test CV/ChatBot</button>
+            ` : ""}
             <button class="action-btn approve" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="approved">Approve</button>
             <button class="action-btn" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="needs_admin">Needs Admin</button>
             <button class="action-btn" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="validated">Mark Validated</button>
             <button class="action-btn ignore" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="known_issue">Known Issue</button>
-            ${action.runUrl ? `<a class="action-btn" href="${escapeHtml(action.runUrl)}" target="_blank" rel="noopener noreferrer">Open Run</a>` : ""}
+            ${action.runUrl && action.type !== "source_import" ? `<a class="action-btn" href="${escapeHtml(action.runUrl)}" target="_blank" rel="noopener noreferrer">Open Run</a>` : ""}
           </div>
         </article>
       `;
     }).join("");
+
+    els.agentActionList.querySelectorAll("[data-action-preview-import]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const action = state.agentActions.find(item => item.id === btn.dataset.actionPreviewImport);
+        if (!action) return;
+        const sourceUrl = action.sourceUrl || action.runUrl || "";
+        if (!sourceUrl) {
+          renderSourceCheckMessage("Source URL missing", "This queue card does not have a source URL to preview.", "warning");
+          return;
+        }
+        previewSourceImport(sourceUrl, action.sport || "");
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-visual-test]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const action = state.agentActions.find(item => item.id === btn.dataset.actionVisualTest);
+        if (!action) return;
+        renderVisualTestPlan(buildVisualTestPlanFromAction(action));
+      });
+    });
 
     els.agentActionList.querySelectorAll("[data-agent-status]").forEach(btn => {
       btn.addEventListener("click", () => {

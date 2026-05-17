@@ -1348,7 +1348,7 @@
     }
   }
 
-  async function executeSourceImport(sourceUrl, sport) {
+  async function executeSourceImport(sourceUrl, sport, actionId) {
     const endpoint = readOperatorEndpoint();
     const key = readOperatorKey();
 
@@ -1363,6 +1363,14 @@
     }
 
     renderSourceCheckMessage("Writing to Google Sheet", "The Operator Backend is updating the mapped source sheet and validating the result.", "info");
+    if (actionId) {
+      updateAgentAction(actionId, {
+        status: "running",
+        executionResult: "Sheet write started through Operator Backend."
+      });
+      renderAgentActions();
+      renderActionLanes();
+    }
 
     try {
       const url = endpoint
@@ -1372,8 +1380,16 @@
         + "&sport=" + encodeURIComponent(sport || "")
         + "&key=" + encodeURIComponent(key);
       const data = await fetchJson(url);
-      renderExecuteResult(data);
+      renderExecuteResult(data, actionId);
     } catch (err) {
+      if (actionId) {
+        updateAgentAction(actionId, {
+          status: "failed",
+          executionResult: err && err.message ? err.message : String(err)
+        });
+        renderAgentActions();
+        renderActionLanes();
+      }
       renderSourceCheckMessage("Sheet write failed", err && err.message ? err.message : String(err), "critical");
     }
   }
@@ -1979,8 +1995,16 @@
     });
   }
 
-  function renderExecuteResult(data) {
+  function renderExecuteResult(data, actionId) {
     if (!data || !data.ok) {
+      if (actionId) {
+        updateAgentAction(actionId, {
+          status: "failed",
+          executionResult: data && data.error ? data.error : "Unknown backend response."
+        });
+        renderAgentActions();
+        renderActionLanes();
+      }
       renderSourceCheckMessage("Sheet write failed", data && data.error ? data.error : "Unknown backend response.", "critical");
       return;
     }
@@ -1994,6 +2018,17 @@
     const checklistVault = publishValidation.checklist_vault || {};
     const chatbot = publishValidation.chatbot || {};
     const publicPassed = !!(checklistVault.ok && chatbot.ok);
+    if (actionId) {
+      updateAgentAction(actionId, {
+        status: (validation.ok && publish.ok && publicPassed) ? "validated" : "needs_admin",
+        product: product.display_name || "",
+        sport: product.sport || "",
+        code: product.code || "",
+        executionResult: publish.ok ? "Sheet write completed and JSON published." : "Sheet write completed; publish needs review.",
+        validationResult: publicPassed ? "CV and ChatBot passed." : "CV/ChatBot validation needs review.",
+        runUrl: publish.checklist_url || publish.chatbot_url || ""
+      });
+    }
     upsertAgentAction({
       type: "checklist_publish",
       source: "operator_backend",
@@ -2844,6 +2879,11 @@
 
     els.agentActionList.innerHTML = state.agentActions.slice(0, 12).map(action => {
       const badgeClass = getAgentActionBadgeClass(action);
+      const status = String(action.status || "").toLowerCase();
+      const canExecuteSourceImport = action.type === "source_import" &&
+        (status === "approved" || status === "ready") &&
+        !!(action.sourceUrl || action.runUrl) &&
+        !!(action.sport || action.code || action.product);
       return `
         <article class="agent-action-card">
           <div class="opp-top">
@@ -2876,6 +2916,9 @@
             ${action.type === "source_import" && action.product ? `
               <button class="action-btn" type="button" data-action-visual-test="${escapeHtml(action.id)}">Test CV/ChatBot</button>
             ` : ""}
+            ${canExecuteSourceImport ? `
+              <button class="action-btn approve" type="button" data-action-execute-import="${escapeHtml(action.id)}">Write to Google Sheets</button>
+            ` : ""}
             <button class="action-btn approve" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="approved">Approve</button>
             <button class="action-btn" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="needs_admin">Needs Admin</button>
             <button class="action-btn" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="validated">Mark Validated</button>
@@ -2904,6 +2947,19 @@
         const action = state.agentActions.find(item => item.id === btn.dataset.actionVisualTest);
         if (!action) return;
         renderVisualTestPlan(buildVisualTestPlanFromAction(action));
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-execute-import]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const action = state.agentActions.find(item => item.id === btn.dataset.actionExecuteImport);
+        if (!action) return;
+        const sourceUrl = action.sourceUrl || action.runUrl || "";
+        if (!sourceUrl) {
+          renderSourceCheckMessage("Source URL missing", "This approved action does not have a source URL to write from.", "warning");
+          return;
+        }
+        executeSourceImport(sourceUrl, action.sport || "", action.id);
       });
     });
 

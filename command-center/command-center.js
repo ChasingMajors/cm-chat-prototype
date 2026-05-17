@@ -5,6 +5,9 @@
   const BLOCKED_SOURCE_TERMS = ["mma", "ufc", "wwe", "wrestling", "racing", "nascar", "f1", "formula 1", "pokemon", "marvel", "disney", "star wars"];
   const APPROVAL_KEY = "cm_command_center_opportunity_status_v1";
   const TASK_KEY = "cm_command_center_operator_tasks_v1";
+  const AGENT_ACTION_KEY = "cm_command_center_agent_actions_v1";
+  const ACTIVITY_LOG_KEY = "cm_command_center_activity_log_v1";
+  const AUTONOMY_MODE_KEY = "cm_command_center_autonomy_mode_v1";
   const VISUAL_TEST_KEY = "cm_command_center_visual_tests_v1";
   const KNOWN_ISSUE_KEY = "cm_command_center_known_issues_v1";
   const OPERATOR_ENDPOINT_KEY = "cm_command_center_operator_endpoint_v1";
@@ -15,6 +18,9 @@
     audit: null,
     approvals: readApprovals(),
     tasks: readTasks(),
+    agentActions: readJsonStore(AGENT_ACTION_KEY, []),
+    activityLog: readJsonStore(ACTIVITY_LOG_KEY, []),
+    autonomyMode: readAutonomyMode(),
     visualTests: readJsonStore(VISUAL_TEST_KEY, {}),
     knownIssues: readJsonStore(KNOWN_ISSUE_KEY, {})
   };
@@ -22,6 +28,9 @@
   const els = {
     refreshBtn: document.getElementById("refreshBtn"),
     clearDoneBtn: document.getElementById("clearDoneBtn"),
+    clearResolvedAgentActionsBtn: document.getElementById("clearResolvedAgentActionsBtn"),
+    clearActivityLogBtn: document.getElementById("clearActivityLogBtn"),
+    autonomyModeSelect: document.getElementById("autonomyModeSelect"),
     sourceCheckBtn: document.getElementById("sourceCheckBtn"),
     sourceWatchQuickBtn: document.getElementById("sourceWatchQuickBtn"),
     sourceWatchDeepBtn: document.getElementById("sourceWatchDeepBtn"),
@@ -32,10 +41,13 @@
     operatorKeyInput: document.getElementById("operatorKeyInput"),
     typeFilter: document.getElementById("typeFilter"),
     systemState: document.getElementById("systemState"),
+    autonomyState: document.getElementById("autonomyState"),
     opportunityCount: document.getElementById("opportunityCount"),
     criticalCount: document.getElementById("criticalCount"),
     lastAudit: document.getElementById("lastAudit"),
     nextActionList: document.getElementById("nextActionList"),
+    agentActionList: document.getElementById("agentActionList"),
+    activityLogList: document.getElementById("activityLogList"),
     operatorTaskList: document.getElementById("operatorTaskList"),
     sourceCheckResult: document.getElementById("sourceCheckResult"),
     briefList: document.getElementById("briefList"),
@@ -65,6 +77,21 @@
     } catch (err) {}
   }
 
+  function readAutonomyMode() {
+    try {
+      return String(localStorage.getItem(AUTONOMY_MODE_KEY) || "approval_required").trim() || "approval_required";
+    } catch (err) {
+      return "approval_required";
+    }
+  }
+
+  function writeAutonomyMode(value) {
+    state.autonomyMode = String(value || "approval_required").trim() || "approval_required";
+    try {
+      localStorage.setItem(AUTONOMY_MODE_KEY, state.autonomyMode);
+    } catch (err) {}
+  }
+
   function readJsonStore(key, fallback) {
     try {
       return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
@@ -82,6 +109,18 @@
   function writeKnownIssues() {
     try {
       localStorage.setItem(KNOWN_ISSUE_KEY, JSON.stringify(state.knownIssues));
+    } catch (err) {}
+  }
+
+  function writeAgentActions() {
+    try {
+      localStorage.setItem(AGENT_ACTION_KEY, JSON.stringify(state.agentActions));
+    } catch (err) {}
+  }
+
+  function writeActivityLog() {
+    try {
+      localStorage.setItem(ACTIVITY_LOG_KEY, JSON.stringify(state.activityLog.slice(0, 80)));
     } catch (err) {}
   }
 
@@ -192,6 +231,100 @@
     state.visualTests[key] = record;
     writeVisualTests();
     return record;
+  }
+
+  function getAgentActionStatusLabel(status) {
+    return titleCase(String(status || "queued").replace(/_/g, " "));
+  }
+
+  function getAgentActionBadgeClass(action) {
+    const status = String(action && action.status || "").toLowerCase();
+    if (status === "validated" || status === "done" || status === "fixed") return "opportunity";
+    if (status === "failed" || status === "blocked") return "critical";
+    if (status === "known_issue" || status === "needs_admin" || status === "approval_required") return "warning";
+    return "info";
+  }
+
+  function getAutonomyLabel(mode) {
+    const labels = {
+      review_only: "Review only",
+      approval_required: "Approval required",
+      guarded_auto: "Guarded auto",
+      full_auto: "Full auto"
+    };
+    return labels[mode] || labels.approval_required;
+  }
+
+  function buildAgentActionId(input) {
+    return [
+      normalize(input.type || "action"),
+      normalize(input.source || ""),
+      normalize(input.product || input.title || ""),
+      normalize(input.code || "")
+    ].filter(Boolean).join("|").slice(0, 180);
+  }
+
+  function upsertAgentAction(input) {
+    const now = new Date().toISOString();
+    const id = input.id || buildAgentActionId(input);
+    const existing = state.agentActions.find(item => item.id === id);
+    const base = {
+      id,
+      type: input.type || "operator",
+      source: input.source || "command_center",
+      product: input.product || "",
+      sport: input.sport || "",
+      code: input.code || "",
+      riskLevel: input.riskLevel || "medium",
+      status: input.status || "queued",
+      recommendedAction: input.recommendedAction || "",
+      adminDecision: input.adminDecision || "",
+      executionResult: input.executionResult || "",
+      validationResult: input.validationResult || "",
+      runUrl: input.runUrl || "",
+      createdAt: now,
+      updatedAt: now
+    };
+
+    if (existing) {
+      Object.assign(existing, base, {
+        createdAt: existing.createdAt || now,
+        updatedAt: now
+      });
+      writeAgentActions();
+      return existing;
+    }
+
+    state.agentActions.unshift(base);
+    state.agentActions = state.agentActions.slice(0, 80);
+    writeAgentActions();
+    return base;
+  }
+
+  function updateAgentAction(id, patch) {
+    const action = state.agentActions.find(item => item.id === id);
+    if (!action) return null;
+    Object.assign(action, patch || {}, { updatedAt: new Date().toISOString() });
+    writeAgentActions();
+    return action;
+  }
+
+  function logActivity(input) {
+    const entry = {
+      id: "log_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8),
+      ts: new Date().toISOString(),
+      type: input.type || "info",
+      title: input.title || "Agent activity",
+      detail: input.detail || "",
+      status: input.status || "",
+      product: input.product || "",
+      source: input.source || ""
+    };
+
+    state.activityLog.unshift(entry);
+    state.activityLog = state.activityLog.slice(0, 80);
+    writeActivityLog();
+    return entry;
   }
 
   function getProductName(item) {
@@ -1050,9 +1183,27 @@
         + "action=sourceWatch"
         + "&mode=" + encodeURIComponent(auditMode);
       const data = await fetchJson(url);
+      const items = Array.isArray(data.items) ? data.items : [];
+      const actionable = items.filter(item => item.status === "missing" || item.status === "needs_review" || item.status === "possible_update");
+      logActivity({
+        type: "source_watch",
+        status: data.ok ? "completed" : "failed",
+        source: auditMode,
+        title: `${modeLabel} complete`,
+        detail: `${items.length} source items checked. ${actionable.length} need review.`
+      });
       renderSourceWatchResults(data);
+      renderActivityLog();
     } catch (err) {
       renderSourceCheckMessage("Source watch failed", err && err.message ? err.message : String(err), "critical");
+      logActivity({
+        type: "source_watch",
+        status: "failed",
+        source: auditMode,
+        title: `${modeLabel} failed`,
+        detail: err && err.message ? err.message : String(err)
+      });
+      renderActivityLog();
     }
   }
 
@@ -1196,7 +1347,27 @@
         const item = items[idx];
         if (!item) return;
         createSourceImportTask(item.title || "Untitled source item", item.sport || "");
+        upsertAgentAction({
+          type: "source_import",
+          source: item.discovery_source || "source_watch",
+          product: item.matched_name || item.title || "Untitled source item",
+          sport: item.sport || "",
+          code: item.matched_code || "",
+          riskLevel: item.status === "missing" ? "medium" : "low",
+          status: "approval_required",
+          recommendedAction: item.recommended_action || "Preview source import, write product-scoped rows, publish JSON, validate CV/ChatBot."
+        });
+        logActivity({
+          type: "agent_action",
+          status: "created",
+          product: item.matched_name || item.title || "",
+          source: item.discovery_source || "source_watch",
+          title: "Agent action created from Source Watch",
+          detail: item.recommended_action || item.reason || ""
+        });
         renderOperatorTasks();
+        renderAgentActions();
+        renderActivityLog();
         btn.textContent = "Task Created";
         btn.disabled = true;
       });
@@ -1452,6 +1623,14 @@
 
     if (state.knownIssues[key]) {
       delete state.knownIssues[key];
+      logActivity({
+        type: "known_issue",
+        status: "cleared",
+        product: plan.productName || "",
+        source: "admin",
+        title: "Known issue cleared",
+        detail: "Product visual test is back in the active queue."
+      });
     } else {
       state.knownIssues[key] = {
         productName: plan.productName || "",
@@ -1460,6 +1639,24 @@
         note: "Known issue. Hold fix for later.",
         createdAt: new Date().toISOString()
       };
+      upsertAgentAction({
+        type: "known_issue",
+        source: "admin",
+        product: plan.productName || "",
+        sport: plan.sport || "",
+        code: plan.code || "",
+        riskLevel: "medium",
+        status: "known_issue",
+        recommendedAction: "Hold fix for later, but keep issue visible in the queue."
+      });
+      logActivity({
+        type: "known_issue",
+        status: "held",
+        product: plan.productName || "",
+        source: "admin",
+        title: "Known issue marked",
+        detail: "Issue remains visible without blocking the current workflow."
+      });
     }
 
     writeKnownIssues();
@@ -1471,6 +1668,8 @@
     }
 
     renderVisualTestPlan(plan);
+    renderAgentActions();
+    renderActivityLog();
   }
 
   function renderVisualDispatchResult(data, plan) {
@@ -1492,6 +1691,26 @@
       workflowUrl: data.workflow_url || "",
       actionsUrl: data.actions_url || "",
       trackingKey: data.tracking_key || getVisualProductKey(plan)
+    });
+    upsertAgentAction({
+      type: "visual_test",
+      source: "github_actions",
+      product: plan.productName || data.product_name || "",
+      sport: plan.sport || data.sport || "",
+      code: plan.code || data.product_code || "",
+      riskLevel: "low",
+      status: "queued",
+      recommendedAction: "Run CV and ChatBot visual checks after publish.",
+      executionResult: "GitHub Actions visual test queued.",
+      runUrl: data.workflow_url || data.actions_url || ""
+    });
+    logActivity({
+      type: "visual_test",
+      status: "queued",
+      product: plan.productName || data.product_name || "",
+      source: "github_actions",
+      title: "Visual test queued",
+      detail: "CV/ChatBot behavior check started."
     });
 
     els.sourceCheckResult.innerHTML = `
@@ -1524,6 +1743,8 @@
 
     const knownBtn = els.sourceCheckResult.querySelector("[data-known-agent-visual]");
     if (knownBtn) knownBtn.addEventListener("click", () => toggleKnownVisualIssue(plan));
+    renderAgentActions();
+    renderActivityLog();
   }
 
   function renderVisualStatusResult(data, plan) {
@@ -1548,8 +1769,32 @@
       createdAt: data.created_at || "",
       checkedAt: new Date().toISOString()
     });
+    upsertAgentAction({
+      type: "visual_test",
+      source: "github_actions",
+      product: plan.productName || data.product_name || "",
+      sport: plan.sport || data.sport || "",
+      code: plan.code || data.product_code || "",
+      riskLevel: data.result === "failed" ? "medium" : "low",
+      status: data.result === "passed" ? "validated" : data.result === "failed" ? "failed" : data.result || "running",
+      recommendedAction: data.result === "failed"
+        ? "Review failed visual report and prepare a product/query-specific fix."
+        : "Visual validation complete.",
+      validationResult: data.result || data.status || "",
+      runUrl: data.run_url || ""
+    });
+    logActivity({
+      type: "visual_test",
+      status: data.result || data.status || "",
+      product: plan.productName || data.product_name || "",
+      source: "github_actions",
+      title: "Visual test status updated",
+      detail: data.run_url ? "GitHub Actions run linked in the Agent Action Queue." : "No GitHub run visible yet."
+    });
 
     renderVisualTestPlan(plan);
+    renderAgentActions();
+    renderActivityLog();
   }
 
   function renderImportPreview(data) {
@@ -1627,6 +1872,27 @@
     const checklistVault = publishValidation.checklist_vault || {};
     const chatbot = publishValidation.chatbot || {};
     const publicPassed = !!(checklistVault.ok && chatbot.ok);
+    upsertAgentAction({
+      type: "checklist_publish",
+      source: "operator_backend",
+      product: product.display_name || "",
+      sport: product.sport || "",
+      code: product.code || "",
+      riskLevel: publicPassed ? "low" : "medium",
+      status: (validation.ok && publish.ok && publicPassed) ? "validated" : "needs_admin",
+      recommendedAction: "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      executionResult: publish.ok ? "JSON published." : "Sheet write completed; publish needs review.",
+      validationResult: publicPassed ? "CV and ChatBot passed." : "CV/ChatBot validation needs review.",
+      runUrl: publish.checklist_url || publish.chatbot_url || ""
+    });
+    logActivity({
+      type: "checklist_publish",
+      status: (validation.ok && publish.ok && publicPassed) ? "validated" : "needs_review",
+      product: product.display_name || "",
+      source: "operator_backend",
+      title: publish.ok ? "Checklist data written and published" : "Checklist data written",
+      detail: `${formatNumber(validation.checklist_rows || 0)} checklist rows and ${formatNumber(validation.parallel_rows || 0)} parallels validated in the source sheet.`
+    });
 
     els.sourceCheckResult.innerHTML = `
       <div class="source-result-card covered">
@@ -1711,6 +1977,29 @@
     state.tasks = state.tasks.filter(task => task.status !== "done");
     writeTasks();
     renderOperatorTasks();
+  }
+
+  function clearResolvedAgentActions() {
+    state.agentActions = state.agentActions.filter(action => {
+      const status = String(action.status || "").toLowerCase();
+      return !(status === "validated" || status === "done" || status === "fixed");
+    });
+    writeAgentActions();
+    logActivity({
+      type: "agent_action",
+      status: "cleaned",
+      source: "admin",
+      title: "Resolved agent actions cleared",
+      detail: "Validated and done actions were removed from the active queue."
+    });
+    renderAgentActions();
+    renderActivityLog();
+  }
+
+  function clearActivityLog() {
+    state.activityLog = [];
+    writeActivityLog();
+    renderActivityLog();
   }
 
   async function runAudit() {
@@ -1812,12 +2101,15 @@
     const critical = opportunities.filter(o => o.severity === "critical");
 
     els.systemState.textContent = "Ready";
+    els.autonomyState.textContent = getAutonomyLabel(state.autonomyMode);
     els.opportunityCount.textContent = formatNumber(opportunities.length);
     els.criticalCount.textContent = formatNumber(critical.length);
     els.lastAudit.textContent = state.audit.generatedAt.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
 
     renderBrief();
     renderNextActions();
+    renderAgentActions();
+    renderActivityLog();
     renderOperatorTasks();
     renderOpportunities();
     renderDataHealth();
@@ -1887,10 +2179,32 @@
         state.approvals[btn.dataset.id] = btn.dataset.action;
         if (btn.dataset.action === "approved") {
           const action = actions.find(item => item.id === btn.dataset.id);
-          if (action) createOperatorTask(action);
+          if (action) {
+            createOperatorTask(action);
+            upsertAgentAction({
+              id: action.id,
+              type: action.relatedType || action.kind || "next_action",
+              source: "audit",
+              product: action.title,
+              riskLevel: action.severity === "critical" ? "high" : "medium",
+              status: "approved",
+              recommendedAction: action.afterApproval || action.now || action.summary || "",
+              adminDecision: "approved"
+            });
+            logActivity({
+              type: "approval",
+              status: "approved",
+              product: action.title,
+              source: "audit",
+              title: "Admin approved next step",
+              detail: action.afterApproval || action.summary || ""
+            });
+          }
         }
         writeApprovals();
         renderNextActions();
+        renderAgentActions();
+        renderActivityLog();
         renderOperatorTasks();
       });
     });
@@ -1947,6 +2261,97 @@
         setTaskStatus(btn.dataset.taskId, btn.dataset.taskStatus);
       });
     });
+  }
+
+  function renderAgentActions() {
+    if (!state.agentActions.length) {
+      els.agentActionList.innerHTML = `
+        <div class="brief-item">
+          <strong>No agent actions yet</strong>
+          <span>Run an audit, source watch, or approve a next step to create actions.</span>
+        </div>
+      `;
+      return;
+    }
+
+    els.agentActionList.innerHTML = state.agentActions.slice(0, 12).map(action => {
+      const badgeClass = getAgentActionBadgeClass(action);
+      return `
+        <article class="agent-action-card">
+          <div class="opp-top">
+            <div>
+              <div class="next-kind">${escapeHtml(action.type || "agent_action")}</div>
+              <h3>${escapeHtml(action.product || action.recommendedAction || "Agent action")}</h3>
+              <p>${escapeHtml(action.recommendedAction || "")}</p>
+            </div>
+            <span class="badge ${badgeClass}">${escapeHtml(getAgentActionStatusLabel(action.status))}</span>
+          </div>
+          <div class="opp-meta">
+            <span class="pill">Risk: ${escapeHtml(titleCase(action.riskLevel || "medium"))}</span>
+            ${action.sport ? `<span class="pill">Sport: ${escapeHtml(titleCase(action.sport))}</span>` : ""}
+            ${action.code ? `<span class="pill">Code: ${escapeHtml(action.code)}</span>` : ""}
+            ${action.source ? `<span class="pill">Source: ${escapeHtml(action.source)}</span>` : ""}
+          </div>
+          ${action.executionResult || action.validationResult ? `
+            <div class="agent-action-results">
+              ${action.executionResult ? `<span><strong>Execution</strong>${escapeHtml(action.executionResult)}</span>` : ""}
+              ${action.validationResult ? `<span><strong>Validation</strong>${escapeHtml(action.validationResult)}</span>` : ""}
+            </div>
+          ` : ""}
+          <div class="opp-actions">
+            <button class="action-btn approve" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="approved">Approve</button>
+            <button class="action-btn" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="needs_admin">Needs Admin</button>
+            <button class="action-btn" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="validated">Mark Validated</button>
+            <button class="action-btn ignore" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="known_issue">Known Issue</button>
+            ${action.runUrl ? `<a class="action-btn" href="${escapeHtml(action.runUrl)}" target="_blank" rel="noopener noreferrer">Open Run</a>` : ""}
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    els.agentActionList.querySelectorAll("[data-agent-status]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const action = updateAgentAction(btn.dataset.agentActionId, {
+          status: btn.dataset.agentStatus,
+          adminDecision: btn.dataset.agentStatus
+        });
+        if (action) {
+          logActivity({
+            type: "agent_action",
+            status: action.status,
+            product: action.product,
+            source: action.source,
+            title: "Agent action updated",
+            detail: `${action.product || action.type} marked ${getAgentActionStatusLabel(action.status)}.`
+          });
+        }
+        renderAgentActions();
+        renderActivityLog();
+      });
+    });
+  }
+
+  function renderActivityLog() {
+    if (!state.activityLog.length) {
+      els.activityLogList.innerHTML = `
+        <div class="brief-item">
+          <strong>No activity yet</strong>
+          <span>Agent events will appear here.</span>
+        </div>
+      `;
+      return;
+    }
+
+    els.activityLogList.innerHTML = state.activityLog.slice(0, 18).map(entry => {
+      const time = entry.ts ? new Date(entry.ts).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "";
+      return `
+        <div class="activity-log-row">
+          <strong>${escapeHtml(entry.title || "Activity")}</strong>
+          <span>${escapeHtml(entry.detail || "")}</span>
+          <em>${escapeHtml([time, entry.status, entry.source].filter(Boolean).join(" | "))}</em>
+        </div>
+      `;
+    }).join("");
   }
 
   function renderBrief() {
@@ -2090,6 +2495,20 @@
 
   els.refreshBtn.addEventListener("click", runAudit);
   els.clearDoneBtn.addEventListener("click", clearDoneTasks);
+  els.clearResolvedAgentActionsBtn.addEventListener("click", clearResolvedAgentActions);
+  els.clearActivityLogBtn.addEventListener("click", clearActivityLog);
+  els.autonomyModeSelect.addEventListener("change", () => {
+    writeAutonomyMode(els.autonomyModeSelect.value || "approval_required");
+    els.autonomyState.textContent = getAutonomyLabel(state.autonomyMode);
+    logActivity({
+      type: "autonomy",
+      status: state.autonomyMode,
+      source: "admin",
+      title: "Autonomy mode changed",
+      detail: `Mode set to ${getAutonomyLabel(state.autonomyMode)}.`
+    });
+    renderActivityLog();
+  });
   els.sourceCheckBtn.addEventListener("click", validateSourceProductWithBackend);
   els.sourceWatchQuickBtn.addEventListener("click", () => runSourceWatchWithBackend("quick_json"));
   els.sourceWatchDeepBtn.addEventListener("click", () => runSourceWatchWithBackend("deep_sheets"));
@@ -2106,6 +2525,8 @@
   });
   els.operatorEndpointInput.value = readOperatorEndpoint();
   els.operatorKeyInput.value = readOperatorKey();
+  els.autonomyModeSelect.value = state.autonomyMode;
+  els.autonomyState.textContent = getAutonomyLabel(state.autonomyMode);
   els.typeFilter.addEventListener("change", renderOpportunities);
   runAudit();
 })();

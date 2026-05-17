@@ -19,6 +19,12 @@
         <p class="lede">AI operating partner for data health, opportunity scouting, and approval-ready fixes.</p>
       </div>
       <div class="top-actions">
+        <select id="autonomyModeSelect" class="filter-select" aria-label="Autonomy mode">
+          <option value="review_only">Review only</option>
+          <option value="approval_required">Approval required</option>
+          <option value="guarded_auto">Guarded auto</option>
+          <option value="full_auto">Full auto</option>
+        </select>
         <button id="refreshBtn" class="primary-btn" type="button">Run Fast JSON Audit</button>
         <a class="ghost-btn" href="../index.html">Open ChatBot</a>
       </div>
@@ -41,6 +47,10 @@
         <span class="status-label">Last Audit</span>
         <strong id="lastAudit">-</strong>
       </div>
+      <div class="status-card">
+        <span class="status-label">Autonomy</span>
+        <strong id="autonomyState">-</strong>
+      </div>
     </section>
 
     <section class="panel next-panel">
@@ -52,6 +62,40 @@
       </div>
       <div id="nextActionList" class="next-action-list">
         <div class="skeleton-card"></div>
+      </div>
+    </section>
+
+    <section class="grid two-col">
+      <div class="panel agent-action-panel">
+        <div class="panel-head">
+          <div>
+            <h2>Agent Action Queue</h2>
+            <p>Approval-ready work with risk, status, validation, and proof of completion.</p>
+          </div>
+          <button id="clearResolvedAgentActionsBtn" class="ghost-btn" type="button">Clear Resolved</button>
+        </div>
+        <div id="agentActionList" class="agent-action-list">
+          <div class="brief-item">
+            <strong>No agent actions yet</strong>
+            <span>Run an audit, source watch, or approve a next step to create actions.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel activity-log-panel">
+        <div class="panel-head">
+          <div>
+            <h2>Activity Log</h2>
+            <p>What the agent found, prepared, changed, validated, or held.</p>
+          </div>
+          <button id="clearActivityLogBtn" class="ghost-btn" type="button">Clear Log</button>
+        </div>
+        <div id="activityLogList" class="activity-log-list">
+          <div class="brief-item">
+            <strong>No activity yet</strong>
+            <span>Agent events will appear here.</span>
+          </div>
+        </div>
       </div>
     </section>
 

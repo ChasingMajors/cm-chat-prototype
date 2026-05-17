@@ -268,6 +268,8 @@ h2 {
 .opportunity-list,
 .next-action-list,
 .operator-task-list,
+.agent-action-list,
+.activity-log-list,
 .metric-list,
 .signal-list,
 .target-list {
@@ -280,6 +282,8 @@ h2 {
 .opportunity-card,
 .next-action-card,
 .operator-task-card,
+.agent-action-card,
+.activity-log-row,
 .metric-row,
 .signal-row,
 .target-row {
@@ -292,6 +296,7 @@ h2 {
 .brief-item strong,
 .next-action-card h3,
 .operator-task-card h3,
+.agent-action-card h3,
 .opportunity-card h3 {
   display: block;
   font-size: 15px;
@@ -301,6 +306,7 @@ h2 {
 .brief-item span,
 .next-action-card p,
 .operator-task-card p,
+.agent-action-card p,
 .opportunity-card p,
 .metric-row span,
 .signal-row span,
@@ -319,6 +325,50 @@ h2 {
   display: grid;
   gap: 11px;
   background: linear-gradient(180deg, rgba(57,160,255,0.08), rgba(255,255,255,0.035));
+}
+
+.agent-action-card {
+  display: grid;
+  gap: 11px;
+  background: linear-gradient(180deg, rgba(245,197,66,0.08), rgba(255,255,255,0.035));
+}
+
+.agent-action-results {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.agent-action-results span {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.agent-action-results strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text);
+  font-size: 11px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.activity-log-row {
+  display: grid;
+  gap: 5px;
+}
+
+.activity-log-row em {
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: .03em;
 }
 
 .source-result-card {
@@ -759,6 +809,7 @@ h2 {
   .source-watch-actions,
   .next-plan,
   .task-steps,
+  .agent-action-results,
   .preview-grid,
   .visual-test-grid,
   .visual-expectations,

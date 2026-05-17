@@ -2200,12 +2200,16 @@
     if (state.backendMemorySuspendAutoSave) return;
     const endpoint = readOperatorEndpoint();
     const key = readOperatorKey();
-    if (!endpoint || !key) return;
+    if (!endpoint || !key) {
+      updateMemoryStatus("Backend auto-save is idle.", "endpoint/key missing");
+      return;
+    }
 
     if (state.backendMemorySaveTimer) {
       clearTimeout(state.backendMemorySaveTimer);
     }
 
+    updateMemoryStatus("Backend memory auto-save queued.", "pending");
     state.backendMemorySaveTimer = setTimeout(() => {
       state.backendMemorySaveTimer = null;
       saveBackendAgentMemoryNow({ silent: true });
@@ -2220,11 +2224,14 @@
       if (!opts.silent) updateMemoryStatus("Backend save needs Operator Backend URL and admin key.", "missing setup");
       return;
     }
-    if (state.backendMemorySaving) return;
+    if (state.backendMemorySaving) {
+      if (!opts.silent) updateMemoryStatus("Backend memory save already running.", "working");
+      return;
+    }
 
     try {
       state.backendMemorySaving = true;
-      if (!opts.silent) updateMemoryStatus("Saving backend memory...", "working");
+      updateMemoryStatus(opts.silent ? "Backend memory auto-saving..." : "Saving backend memory...", "working");
       const data = await postOperatorJson(endpoint, {
         action: "saveAgentMemory",
         key: key,
@@ -2236,13 +2243,22 @@
         type: "memory",
         status: "saved",
         source: "operator_backend",
-        title: "Backend memory saved",
+        title: opts.silent ? "Backend memory auto-saved" : "Backend memory saved",
         detail: data.path ? `Saved to ${data.path}.` : "Agent memory saved through Operator Backend.",
         noAutoSave: true
       });
       renderActivityLog();
       updateMemoryStatus(opts.silent ? "Backend memory auto-saved." : "Backend memory saved.", data.sha ? `sha ${String(data.sha).slice(0, 7)}` : "saved");
     } catch (err) {
+      logActivity({
+        type: "memory",
+        status: "failed",
+        source: "operator_backend",
+        title: opts.silent ? "Backend memory auto-save failed" : "Backend memory save failed",
+        detail: err && err.message ? err.message : "Backend memory save failed.",
+        noAutoSave: true
+      });
+      renderActivityLog();
       updateMemoryStatus(err && err.message ? err.message : "Backend memory save failed.", "error");
     } finally {
       state.backendMemorySaving = false;

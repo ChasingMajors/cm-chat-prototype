@@ -1483,6 +1483,10 @@ function getGitHubContentFile_(path, token, branch) {
 }
 
 function putGitHubContentJson_(path, obj, token, message, branch) {
+  return putGitHubContentJsonAttempt_(path, obj, token, message, branch, 0);
+}
+
+function putGitHubContentJsonAttempt_(path, obj, token, message, branch, attempt) {
   const targetBranch = safeString_(branch || CM_VISUAL_TEST_BRANCH).trim();
   const existing = getGitHubContentFile_(path, token, targetBranch);
   const text = JSON.stringify(obj, null, 2);
@@ -1509,6 +1513,10 @@ function putGitHubContentJson_(path, obj, token, message, branch) {
   }
 
   if (status < 200 || status >= 300) {
+    if (status === 409 && attempt < 2) {
+      Utilities.sleep(350 * (attempt + 1));
+      return putGitHubContentJsonAttempt_(path, obj, token, message, branch, attempt + 1);
+    }
     throw new Error("GitHub content save failed with " + status + ": " + body);
   }
 

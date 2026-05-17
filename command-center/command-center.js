@@ -53,6 +53,8 @@
     agentActionList: document.getElementById("agentActionList"),
     activityLogList: document.getElementById("activityLogList"),
     runSummaryList: document.getElementById("runSummaryList"),
+    readyExecuteList: document.getElementById("readyExecuteList"),
+    reviewHoldList: document.getElementById("reviewHoldList"),
     operatorTaskList: document.getElementById("operatorTaskList"),
     sourceCheckResult: document.getElementById("sourceCheckResult"),
     briefList: document.getElementById("briefList"),
@@ -1382,6 +1384,7 @@
         });
         renderOperatorTasks();
         renderAgentActions();
+        renderActionLanes();
         renderActivityLog();
         btn.textContent = "Task Created";
         btn.disabled = true;
@@ -1684,6 +1687,7 @@
 
     renderVisualTestPlan(plan);
     renderAgentActions();
+    renderActionLanes();
     renderActivityLog();
   }
 
@@ -1759,6 +1763,7 @@
     const knownBtn = els.sourceCheckResult.querySelector("[data-known-agent-visual]");
     if (knownBtn) knownBtn.addEventListener("click", () => toggleKnownVisualIssue(plan));
     renderAgentActions();
+    renderActionLanes();
     renderActivityLog();
   }
 
@@ -1809,6 +1814,7 @@
 
     renderVisualTestPlan(plan);
     renderAgentActions();
+    renderActionLanes();
     renderActivityLog();
   }
 
@@ -1908,6 +1914,9 @@
       title: publish.ok ? "Checklist data written and published" : "Checklist data written",
       detail: `${formatNumber(validation.checklist_rows || 0)} checklist rows and ${formatNumber(validation.parallel_rows || 0)} parallels validated in the source sheet.`
     });
+    renderAgentActions();
+    renderActionLanes();
+    renderActivityLog();
 
     els.sourceCheckResult.innerHTML = `
       <div class="source-result-card covered">
@@ -2008,6 +2017,7 @@
       detail: "Validated and done actions were removed from the active queue."
     });
     renderAgentActions();
+    renderActionLanes();
     renderActivityLog();
   }
 
@@ -2364,6 +2374,7 @@
         writeApprovals();
         renderNextActions();
         renderAgentActions();
+        renderActionLanes();
         renderActivityLog();
         renderOperatorTasks();
       });
@@ -2486,9 +2497,64 @@
           });
         }
         renderAgentActions();
+        renderActionLanes();
         renderActivityLog();
       });
     });
+  }
+
+  function isReadyAction(action) {
+    const status = String(action && action.status || "").toLowerCase();
+    return status === "approved" || status === "queued" || status === "ready";
+  }
+
+  function isHoldAction(action) {
+    const status = String(action && action.status || "").toLowerCase();
+    return status === "needs_admin" || status === "approval_required" || status === "failed" || status === "blocked" || status === "known_issue";
+  }
+
+  function renderActionLaneCard(action, lane) {
+    const badgeClass = getAgentActionBadgeClass(action);
+    const nextStep = lane === "ready"
+      ? "Next: execute the prepared step, then validate CV/ChatBot and log proof."
+      : "Next: admin review or product-specific fix before execution.";
+    return `
+      <article class="lane-action-card">
+        <div>
+          <div class="next-kind">${escapeHtml(action.type || "agent_action")}</div>
+          <h3>${escapeHtml(action.product || action.recommendedAction || "Agent action")}</h3>
+          <p>${escapeHtml(action.recommendedAction || nextStep)}</p>
+          <span>${escapeHtml(nextStep)}</span>
+        </div>
+        <span class="badge ${badgeClass}">${escapeHtml(getAgentActionStatusLabel(action.status))}</span>
+      </article>
+    `;
+  }
+
+  function renderActionLanes() {
+    if (!els.readyExecuteList || !els.reviewHoldList) return;
+
+    const actions = state.agentActions || [];
+    const ready = actions.filter(isReadyAction).slice(0, 6);
+    const holds = actions.filter(isHoldAction).slice(0, 6);
+
+    els.readyExecuteList.innerHTML = ready.length
+      ? ready.map(action => renderActionLaneCard(action, "ready")).join("")
+      : `
+        <div class="brief-item">
+          <strong>No ready actions yet</strong>
+          <span>Approve a next step or run Source Watch to prepare executable work.</span>
+        </div>
+      `;
+
+    els.reviewHoldList.innerHTML = holds.length
+      ? holds.map(action => renderActionLaneCard(action, "hold")).join("")
+      : `
+        <div class="brief-item">
+          <strong>No holds yet</strong>
+          <span>Known issues, failed visual tests, and review-required items will appear here.</span>
+        </div>
+      `;
   }
 
   function renderActivityLog() {

@@ -379,6 +379,8 @@ h2 {
 .operator-task-list,
 .agent-action-list,
 .activity-log-list,
+.ready-execute-list,
+.review-hold-list,
 .metric-list,
 .signal-list,
 .target-list {
@@ -393,6 +395,7 @@ h2 {
 .operator-task-card,
 .agent-action-card,
 .activity-log-row,
+.lane-action-card,
 .metric-row,
 .signal-row,
 .target-row {
@@ -440,6 +443,45 @@ h2 {
   display: grid;
   gap: 11px;
   background: linear-gradient(180deg, rgba(245,197,66,0.08), rgba(255,255,255,0.035));
+}
+
+.ready-execute-panel {
+  border-color: rgba(51,209,122,0.24);
+}
+
+.review-hold-panel {
+  border-color: rgba(255,174,66,0.26);
+}
+
+.lane-action-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.035));
+}
+
+.lane-action-card h3,
+.lane-action-card p,
+.lane-action-card span {
+  display: block;
+}
+
+.lane-action-card h3 {
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.lane-action-card p,
+.lane-action-card span {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.42;
+  margin-top: 4px;
+}
+
+.lane-action-card .badge {
+  flex: 0 0 auto;
 }
 
 .agent-action-results {

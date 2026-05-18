@@ -342,6 +342,19 @@
     return "info";
   }
 
+  function isResolvedAgentAction(action) {
+    const status = String(action && action.status || "").toLowerCase();
+    return status === "validated" || status === "done" || status === "fixed";
+  }
+
+  function getActiveAgentActions() {
+    return (state.agentActions || []).filter(action => !isResolvedAgentAction(action));
+  }
+
+  function getResolvedAgentActions() {
+    return (state.agentActions || []).filter(isResolvedAgentAction);
+  }
+
   function getAutonomyLabel(mode) {
     const labels = {
       review_only: "Review only",
@@ -3131,6 +3144,9 @@
   }
 
   function renderAgentActions() {
+    const activeActions = getActiveAgentActions();
+    const resolvedActions = getResolvedAgentActions();
+
     if (!state.agentActions.length) {
       els.agentActionList.innerHTML = `
         <div class="brief-item">
@@ -3141,7 +3157,18 @@
       return;
     }
 
-    els.agentActionList.innerHTML = state.agentActions.slice(0, 12).map(action => {
+    if (!activeActions.length) {
+      els.agentActionList.innerHTML = `
+        <div class="brief-item resolved-summary">
+          <strong>All active actions are clear</strong>
+          <span>${formatNumber(resolvedActions.length)} resolved action${resolvedActions.length === 1 ? "" : "s"} have proof recorded. Failures and new approvals will appear here.</span>
+        </div>
+        ${resolvedActions.slice(0, 3).map(renderResolvedActionProof).join("")}
+      `;
+      return;
+    }
+
+    const activeHtml = activeActions.slice(0, 12).map(action => {
       const badgeClass = getAgentActionBadgeClass(action);
       const status = String(action.status || "").toLowerCase();
       const canTestProduct = action.product && (action.type === "source_import" || action.type === "checklist_publish");
@@ -3196,6 +3223,17 @@
         </article>
       `;
     }).join("");
+
+    const resolvedHtml = resolvedActions.length
+      ? `
+        <div class="brief-item resolved-summary">
+          <strong>${formatNumber(resolvedActions.length)} resolved action${resolvedActions.length === 1 ? "" : "s"} hidden</strong>
+          <span>Use Clear Resolved when you are ready to remove completed proof from active memory.</span>
+        </div>
+      `
+      : "";
+
+    els.agentActionList.innerHTML = activeHtml + resolvedHtml;
 
     els.agentActionList.querySelectorAll("[data-action-preview-import]").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -3275,6 +3313,16 @@
         renderActivityLog();
       });
     });
+  }
+
+  function renderResolvedActionProof(action) {
+    const proof = action.validationResult || action.executionResult || "Resolved proof recorded.";
+    return `
+      <div class="brief-item resolved-proof">
+        <strong>${escapeHtml(action.product || action.type || "Resolved action")}</strong>
+        <span>${escapeHtml(proof)}</span>
+      </div>
+    `;
   }
 
   function isReadyAction(action) {
@@ -3363,7 +3411,7 @@
   function renderActionLanes() {
     if (!els.readyExecuteList || !els.reviewHoldList) return;
 
-    const actions = state.agentActions || [];
+    const actions = getActiveAgentActions();
     const ready = actions.filter(isReadyAction).slice(0, 6);
     const holds = actions.filter(isHoldAction).slice(0, 6);
 
@@ -3419,12 +3467,12 @@
   function renderRunSummary() {
     if (!els.runSummaryList) return;
 
-    const actions = state.agentActions || [];
+    const actions = getActiveAgentActions();
+    const resolved = getResolvedAgentActions();
     const pending = actions.filter(action => {
       const status = String(action.status || "").toLowerCase();
       return status === "queued" || status === "approval_required" || status === "approved" || status === "needs_admin" || status === "running";
     });
-    const validated = actions.filter(action => String(action.status || "").toLowerCase() === "validated");
     const blocked = actions.filter(action => {
       const status = String(action.status || "").toLowerCase();
       return status === "failed" || status === "blocked" || status === "known_issue";
@@ -3449,7 +3497,7 @@
       },
       {
         title: "Current Queue",
-        detail: `${formatNumber(pending.length)} pending actions, ${formatNumber(validated.length)} validated, ${formatNumber(blocked.length)} blocked or known issues.`,
+        detail: `${formatNumber(pending.length)} pending actions, ${formatNumber(resolved.length)} resolved with proof, ${formatNumber(blocked.length)} blocked or known issues.`,
         badge: pending.length ? "action needed" : "clear"
       },
       {
@@ -3473,7 +3521,9 @@
         title: "Recommended Next Move",
         detail: nextAction
           ? `${nextAction.product || nextAction.type}: ${nextAction.recommendedAction || "Review and approve the prepared action."}`
-          : "Run Source Watch or approve the top ranked next step to create executable work.",
+          : blocked.length
+            ? "Review the top failed or held item and decide whether to fix, defer, or mark as known."
+            : "No active work needs attention. Run Source Watch when you want the agent to look for the next opportunity.",
         badge: nextAction ? getAgentActionStatusLabel(nextAction.status) : "ready"
       }
     ];

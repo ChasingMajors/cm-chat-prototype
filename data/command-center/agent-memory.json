@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-18T12:39:47.850Z",
+  "exported_at": "2026-05-18T12:46:37.020Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -74,14 +74,14 @@
       "sport": "soccer",
       "code": "",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "approval_required",
       "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "approved",
-      "executionResult": "Sheet write started through Operator Backend.",
+      "adminDecision": "",
+      "executionResult": "",
       "validationResult": "",
       "runUrl": "",
       "createdAt": "2026-05-17T21:42:01.499Z",
-      "updatedAt": "2026-05-18T12:39:46.249Z",
+      "updatedAt": "2026-05-18T12:46:35.417Z",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-simplicidad-uefa-club-competitions-soccer-card-checklist/"
     },
     {
@@ -90,16 +90,16 @@
       "source": "wordpress_api",
       "product": "2026 Upper Deck Spring Expo Hockey",
       "sport": "hockey",
-      "code": "2026_upper_deck_spring_expo_hockey",
+      "code": "",
       "riskLevel": "medium",
-      "status": "validated",
-      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
-      "adminDecision": "approved",
-      "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "CV and ChatBot passed via visual test.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26011175327",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
       "createdAt": "2026-05-17T21:42:01.499Z",
-      "updatedAt": "2026-05-18T03:02:39.194Z",
+      "updatedAt": "2026-05-18T12:46:35.417Z",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-spring-expo-hockey-card-checklist/"
     },
     {
@@ -117,7 +117,7 @@
       "validationResult": "",
       "runUrl": "",
       "createdAt": "2026-05-17T21:42:01.499Z",
-      "updatedAt": "2026-05-17T21:57:25.435Z",
+      "updatedAt": "2026-05-18T12:46:35.417Z",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-noir-road-to-fifa-world-cup-26-soccer-card-checklist/"
     },
     {
@@ -135,7 +135,7 @@
       "validationResult": "",
       "runUrl": "",
       "createdAt": "2026-05-17T21:42:01.498Z",
-      "updatedAt": "2026-05-17T21:57:25.433Z",
+      "updatedAt": "2026-05-18T12:46:35.416Z",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-baseball-nation-baseball-card-checklist/"
     },
     {
@@ -157,6 +157,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779108395418_3tahwi",
+      "ts": "2026-05-18T12:46:35.418Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch complete",
+      "detail": "20 source items checked. 4 need review. 4 review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779108395418_46cu04",
+      "ts": "2026-05-18T12:46:35.418Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "4 findings are now visible in the Agent Action Queue for admin review.",
+      "status": "queued",
+      "product": "",
+      "source": "quick_json"
+    },
     {
       "id": "log_1779107986247_xscpuo",
       "ts": "2026-05-18T12:39:46.247Z",
@@ -238,6 +258,6 @@
   },
   "known_issues": {},
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-18T12:39:49.048Z",
+  "saved_at": "2026-05-18T12:46:38.289Z",
   "saved_by": "cm_command_center_operator"
 }

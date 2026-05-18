@@ -336,15 +336,15 @@
     const status = String(action && action.status || "").toLowerCase();
     const posture = typeof getActionExecutionPosture === "function" ? getActionExecutionPosture(action) : null;
     if (posture && posture.label === "Validate") return "warning";
-    if (status === "validated" || status === "done" || status === "fixed") return "opportunity";
+    if (status === "validated" || status === "done") return "opportunity";
     if (status === "failed" || status === "blocked") return "critical";
-    if (status === "known_issue" || status === "needs_admin" || status === "approval_required") return "warning";
+    if (status === "known_issue" || status === "needs_admin" || status === "approval_required" || status === "fix_queued" || status === "fix_applied") return "warning";
     return "info";
   }
 
   function isResolvedAgentAction(action) {
     const status = String(action && action.status || "").toLowerCase();
-    return status === "validated" || status === "done" || status === "fixed";
+    return status === "validated" || status === "done";
   }
 
   function getActiveAgentActions() {
@@ -1246,6 +1246,11 @@
       existing.status = existing.status === "done" ? "queued" : existing.status;
       existing.updatedAt = new Date().toISOString();
       writeTasks();
+      updateAgentAction(action.id, {
+        status: "fix_queued",
+        recommendedAction: "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
+        validationResult: action.validationResult || action.executionResult || "Fix task queued."
+      });
       return existing;
     }
 
@@ -1272,6 +1277,11 @@
 
     state.tasks.unshift(task);
     writeTasks();
+    updateAgentAction(action.id, {
+      status: "fix_queued",
+      recommendedAction: "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
+      validationResult: action.validationResult || action.executionResult || "Fix task queued."
+    });
     return task;
   }
 
@@ -2402,6 +2412,23 @@
     task.status = status;
     task.updatedAt = new Date().toISOString();
     writeTasks();
+
+    if (task.kind === "fix" && task.sourceId) {
+      if (status === "done") {
+        updateAgentAction(task.sourceId, {
+          status: "fix_applied",
+          recommendedAction: "Fix task completed. Rerun CV/ChatBot validation before marking this complete.",
+          executionResult: "Fix task completed in Operator Tasks.",
+          validationResult: "Fix applied. Validation rerun required."
+        });
+      } else {
+        updateAgentAction(task.sourceId, {
+          status: "fix_queued",
+          recommendedAction: "Fix task is queued in Operator Tasks. Complete it, then rerun validation."
+        });
+      }
+    }
+
     logActivity({
       type: "operator_task",
       status: status,
@@ -2411,6 +2438,9 @@
       detail: `${task.title || "Task"} marked ${titleCase(status)}.`
     });
     renderOperatorTasks();
+    renderAgentActions();
+    renderActionLanes();
+    renderActivityLog();
   }
 
   function clearDoneTasks() {
@@ -2423,7 +2453,7 @@
   function clearResolvedAgentActions() {
     state.agentActions = state.agentActions.filter(action => {
       const status = String(action.status || "").toLowerCase();
-      return !(status === "validated" || status === "done" || status === "fixed");
+      return !(status === "validated" || status === "done");
     });
     writeAgentActions();
     logActivity({
@@ -3113,6 +3143,16 @@
     const hasValidationProof = hasPositiveValidationProof(action);
     const hasCoverageProof = hasPublicCoverageProof(action);
 
+    if (status === "fix_queued" || status === "fix_applied") {
+      return {
+        label: status === "fix_applied" ? "Retest Needed" : "Fix Queued",
+        className: "review",
+        detail: status === "fix_applied"
+          ? "A repair task was completed. Rerun validation before marking this resolved."
+          : "A repair task has been created. Complete the task, then rerun validation."
+      };
+    }
+
     if (status === "known_issue" || status === "blocked" || status === "failed") {
       return {
         label: "Hold",
@@ -3206,7 +3246,7 @@
     const activeHtml = activeActions.slice(0, 12).map(action => {
       const badgeClass = getAgentActionBadgeClass(action);
       const status = String(action.status || "").toLowerCase();
-      const canTestProduct = action.product && (action.type === "source_import" || action.type === "checklist_publish");
+      const canTestProduct = action.product && (action.type === "source_import" || action.type === "checklist_publish" || action.type === "visual_test");
       const fixPlan = buildAgentActionFixPlan(action);
       const canCreateFixTask = !!fixPlan.steps.length && (status === "failed" || status === "blocked" || status === "known_issue");
       const canExecuteSourceImport = action.type === "source_import" &&
@@ -3398,7 +3438,7 @@
 
   function isHoldAction(action) {
     const status = String(action && action.status || "").toLowerCase();
-    return status === "needs_admin" || status === "approval_required" || status === "failed" || status === "blocked" || status === "known_issue";
+    return status === "needs_admin" || status === "approval_required" || status === "failed" || status === "blocked" || status === "known_issue" || status === "fix_queued" || status === "fix_applied";
   }
 
   function renderActionLaneCard(action, lane) {
@@ -3473,6 +3513,30 @@
           "Decide whether this is data, search, UI, or test expectation work.",
           "Patch in sandbox and document the affected product/query.",
           "Run the product visual test before clearing the known issue."
+        ]
+      };
+    }
+
+    if (status === "fix_queued") {
+      return {
+        summary: "Repair task is already queued. Complete it, then rerun the affected validation.",
+        steps: [
+          "Open the matching Operator Task.",
+          "Complete the listed repair steps in sandbox.",
+          "Rerun the same product validation.",
+          "Mark done only after the fix has been applied."
+        ]
+      };
+    }
+
+    if (status === "fix_applied") {
+      return {
+        summary: "Fix task is complete. Rerun CV/ChatBot validation before resolving this item.",
+        steps: [
+          "Rerun Test CV/ChatBot for the same product.",
+          "Confirm the product returns a passed visual status.",
+          "Let the Command Center update the card from the visual proof.",
+          "Only mark manually validated if you have equivalent proof."
         ]
       };
     }

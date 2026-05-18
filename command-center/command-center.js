@@ -295,8 +295,17 @@
     return titleCase(String(status || "queued").replace(/_/g, " "));
   }
 
+  function getAgentActionDisplayStatus(action) {
+    const posture = getActionExecutionPosture(action);
+    const status = String(action && action.status || "").toLowerCase();
+    if (posture.label === "Validate" && status !== "validated") return "Validate";
+    return getAgentActionStatusLabel(status || "queued");
+  }
+
   function getAgentActionBadgeClass(action) {
     const status = String(action && action.status || "").toLowerCase();
+    const posture = typeof getActionExecutionPosture === "function" ? getActionExecutionPosture(action) : null;
+    if (posture && posture.label === "Validate") return "warning";
     if (status === "validated" || status === "done" || status === "fixed") return "opportunity";
     if (status === "failed" || status === "blocked") return "critical";
     if (status === "known_issue" || status === "needs_admin" || status === "approval_required") return "warning";
@@ -2920,6 +2929,15 @@
     );
   }
 
+  function hasPublicCoverageProof(action) {
+    const validation = String(action && action.validationResult || "").toLowerCase();
+    return validation.includes("public json covered") && !(
+      validation.includes("failed") ||
+      validation.includes("error") ||
+      validation.includes("missing")
+    );
+  }
+
   function getActionExecutionPosture(action) {
     const status = String(action && action.status || "").toLowerCase();
     const type = String(action && action.type || "").toLowerCase();
@@ -2928,6 +2946,7 @@
     const hasTarget = !!(action.product || action.code);
     const hasExecutionProof = !!action.executionResult;
     const hasValidationProof = hasPositiveValidationProof(action);
+    const hasCoverageProof = hasPublicCoverageProof(action);
 
     if (status === "known_issue" || status === "blocked" || status === "failed") {
       return {
@@ -2942,6 +2961,14 @@
         label: "Hold",
         className: "hold",
         detail: "Missing source or target detail. Review before approval."
+      };
+    }
+
+    if (hasExecutionProof && hasCoverageProof && !hasValidationProof) {
+      return {
+        label: "Validate",
+        className: "review",
+        detail: "Public JSON is covered. Run CV/ChatBot visual validation or mark validated after manual proof."
       };
     }
 
@@ -3000,6 +3027,7 @@
     els.agentActionList.innerHTML = state.agentActions.slice(0, 12).map(action => {
       const badgeClass = getAgentActionBadgeClass(action);
       const status = String(action.status || "").toLowerCase();
+      const canTestProduct = action.product && (action.type === "source_import" || action.type === "checklist_publish");
       const canExecuteSourceImport = action.type === "source_import" &&
         (status === "approved" || status === "ready") &&
         !!(action.sourceUrl || action.runUrl) &&
@@ -3012,7 +3040,7 @@
               <h3>${escapeHtml(action.product || action.recommendedAction || "Agent action")}</h3>
               <p>${escapeHtml(action.recommendedAction || "")}</p>
             </div>
-            <span class="badge ${badgeClass}">${escapeHtml(getAgentActionStatusLabel(action.status))}</span>
+            <span class="badge ${badgeClass}">${escapeHtml(getAgentActionDisplayStatus(action))}</span>
           </div>
           <div class="opp-meta">
             <span class="pill">Risk: ${escapeHtml(titleCase(action.riskLevel || "medium"))}</span>
@@ -3033,7 +3061,7 @@
               <button class="action-btn approve" type="button" data-action-preview-import="${escapeHtml(action.id)}">Preview Import</button>
               <a class="action-btn" href="${escapeHtml(action.sourceUrl || action.runUrl)}" target="_blank" rel="noopener noreferrer">Open Source</a>
             ` : ""}
-            ${action.type === "source_import" && action.product ? `
+            ${canTestProduct ? `
               <button class="action-btn" type="button" data-action-visual-test="${escapeHtml(action.id)}">Test CV/ChatBot</button>
             ` : ""}
             ${action.product && (action.type === "source_import" || action.type === "checklist_publish") ? `

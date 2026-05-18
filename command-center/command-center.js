@@ -174,6 +174,22 @@
     scheduleBackendMemorySave();
   }
 
+  function focusSourceCheckResult() {
+    if (!els.sourceCheckResult) return;
+    setTimeout(() => {
+      els.sourceCheckResult.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+      els.sourceCheckResult.classList.remove("source-check-focus");
+      void els.sourceCheckResult.offsetWidth;
+      els.sourceCheckResult.classList.add("source-check-focus");
+      setTimeout(() => {
+        if (els.sourceCheckResult) els.sourceCheckResult.classList.remove("source-check-focus");
+      }, 1800);
+    }, 60);
+  }
+
   function writeAllAgentMemory() {
     writeApprovals();
     writeTasks();
@@ -1699,6 +1715,7 @@
           <p>${escapeHtml(data.recommended_action || "No import needed unless source details are newer.")}</p>
         </div>
       `;
+      focusSourceCheckResult();
       return;
     }
 
@@ -1721,6 +1738,7 @@
           </div>
         </div>
       `;
+      focusSourceCheckResult();
       return;
     }
 
@@ -1803,6 +1821,7 @@
         renderVisualTestPlan(item);
       });
     });
+    focusSourceCheckResult();
   }
 
   function renderSourceWatchItem(item, idx) {
@@ -1934,6 +1953,7 @@
     if (knownBtn) {
       knownBtn.addEventListener("click", () => toggleKnownVisualIssue(plan));
     }
+    focusSourceCheckResult();
   }
 
   function renderVisualStatusPanel(plan, record, knownIssue) {
@@ -2170,6 +2190,7 @@
     const knownBtn = els.sourceCheckResult.querySelector("[data-known-agent-visual]");
     if (knownBtn) knownBtn.addEventListener("click", () => toggleKnownVisualIssue(plan));
     scheduleVisualStatusPoll(plan, 1);
+    focusSourceCheckResult();
     renderAgentActions();
     renderActionLanes();
     renderActivityLog();
@@ -2288,6 +2309,7 @@
         executeSourceImport(btn.dataset.executeImport, btn.dataset.executeSport || "");
       });
     });
+    focusSourceCheckResult();
   }
 
   function renderExecuteResult(data, actionId) {
@@ -2400,6 +2422,7 @@
         </div>
       </div>
     `;
+    focusSourceCheckResult();
   }
 
   function renderPreviewRow(row) {
@@ -2435,6 +2458,7 @@
         </div>
       </div>
     `;
+    focusSourceCheckResult();
   }
 
   function setTaskStatus(taskId, status) {

@@ -1240,6 +1240,41 @@
     return task;
   }
 
+  function createFixTaskFromAgentAction(action) {
+    const existing = state.tasks.find(task => task.sourceId === action.id && task.kind === "fix");
+    if (existing) {
+      existing.status = existing.status === "done" ? "queued" : existing.status;
+      existing.updatedAt = new Date().toISOString();
+      writeTasks();
+      return existing;
+    }
+
+    const fixPlan = buildAgentActionFixPlan(action);
+    const task = {
+      id: `task_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+      sourceId: action.id,
+      title: `Fix: ${action.product || action.type || "agent action"}`,
+      kind: "fix",
+      severity: action.status === "failed" ? "critical" : "warning",
+      status: "queued",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      why: action.validationResult || action.executionResult || action.recommendedAction || "Agent action needs repair before it can be validated.",
+      objective: fixPlan.summary || "Repair the held action, rerun validation, and record proof.",
+      steps: fixPlan.steps.length ? fixPlan.steps : [
+        "Confirm the issue still reproduces.",
+        "Patch the smallest safe sandbox fix.",
+        "Run the affected validation again.",
+        "Record proof before marking the action validated."
+      ],
+      guardrail: "Fix in sandbox first. Do not mark validated until JSON coverage or CV/ChatBot visual proof passes."
+    };
+
+    state.tasks.unshift(task);
+    writeTasks();
+    return task;
+  }
+
   function createSourceImportTask(sourceTitle, sport) {
     const action = {
       id: `source|${normalize(sport)}|${normalize(sourceTitle)}`,
@@ -3172,6 +3207,8 @@
       const badgeClass = getAgentActionBadgeClass(action);
       const status = String(action.status || "").toLowerCase();
       const canTestProduct = action.product && (action.type === "source_import" || action.type === "checklist_publish");
+      const fixPlan = buildAgentActionFixPlan(action);
+      const canCreateFixTask = !!fixPlan.steps.length && (status === "failed" || status === "blocked" || status === "known_issue");
       const canExecuteSourceImport = action.type === "source_import" &&
         (status === "approved" || status === "ready") &&
         !!(action.sourceUrl || action.runUrl) &&
@@ -3199,6 +3236,12 @@
             </div>
           ` : ""}
           ${renderActionExecutionPosture(action)}
+          ${fixPlan.summary ? `
+            <div class="agent-fix-plan">
+              <strong>Agent fix plan</strong>
+              <span>${escapeHtml(fixPlan.summary)}</span>
+            </div>
+          ` : ""}
           ${renderValidationChecklist(action)}
           <div class="opp-actions">
             ${action.type === "source_import" && (action.sourceUrl || action.runUrl) ? `
@@ -3213,6 +3256,9 @@
             ` : ""}
             ${canExecuteSourceImport ? `
               <button class="action-btn approve" type="button" data-action-execute-import="${escapeHtml(action.id)}">Write to Google Sheets</button>
+            ` : ""}
+            ${canCreateFixTask ? `
+              <button class="action-btn approve" type="button" data-action-create-fix-task="${escapeHtml(action.id)}">Create Fix Task</button>
             ` : ""}
             <button class="action-btn approve" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="approved">Approve</button>
             <button class="action-btn" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="needs_admin">Needs Admin</button>
@@ -3292,6 +3338,26 @@
       });
     });
 
+    els.agentActionList.querySelectorAll("[data-action-create-fix-task]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const action = state.agentActions.find(item => item.id === btn.dataset.actionCreateFixTask);
+        if (!action) return;
+        const task = createFixTaskFromAgentAction(action);
+        logActivity({
+          type: "operator_task",
+          status: "queued",
+          product: action.product || "",
+          source: "agent_action_queue",
+          title: "Fix task created",
+          detail: `${task.title} is ready in Operator Tasks.`
+        });
+        renderOperatorTasks();
+        renderAgentActions();
+        renderActionLanes();
+        renderActivityLog();
+      });
+    });
+
     els.agentActionList.querySelectorAll("[data-agent-status]").forEach(btn => {
       btn.addEventListener("click", () => {
         const action = updateAgentAction(btn.dataset.agentActionId, {
@@ -3337,9 +3403,10 @@
 
   function renderActionLaneCard(action, lane) {
     const badgeClass = getAgentActionBadgeClass(action);
+    const fixPlan = buildAgentActionFixPlan(action);
     const nextStep = lane === "ready"
       ? "Next: execute the prepared step, then validate CV/ChatBot and log proof."
-      : "Next: admin review or product-specific fix before execution.";
+      : fixPlan.summary || "Next: admin review or product-specific fix before execution.";
     return `
       <article class="lane-action-card">
         <div>
@@ -3351,6 +3418,81 @@
         <span class="badge ${badgeClass}">${escapeHtml(getAgentActionStatusLabel(action.status))}</span>
       </article>
     `;
+  }
+
+  function buildAgentActionFixPlan(action) {
+    const status = String(action && action.status || "").toLowerCase();
+    const type = String(action && action.type || "").toLowerCase();
+    const validation = String(action && action.validationResult || "").toLowerCase();
+    const execution = String(action && action.executionResult || "").toLowerCase();
+
+    if (status === "failed" && type === "visual_test") {
+      return {
+        summary: "Open the visual report, identify the failing query or page, patch sandbox behavior, then rerun CV/ChatBot validation.",
+        steps: [
+          "Open the GitHub Actions visual report and note the failing test label.",
+          "Identify whether the failure is ChatBot query routing, Checklist Vault product loading, or expected-test wording.",
+          "Patch the sandbox file only, then run syntax checks.",
+          "Push the fix and rerun the same product visual test.",
+          "Mark validated only after the visual test passes."
+        ]
+      };
+    }
+
+    if (status === "failed" && validation.includes("visual")) {
+      return {
+        summary: "Treat this as a product-specific app behavior failure and use the visual report as proof.",
+        steps: [
+          "Open the visual report linked on the card.",
+          "Compare the failing query with the product code and public JSON coverage.",
+          "Fix the broken route, search alias, or ChatBot intent in sandbox.",
+          "Rerun Test CV/ChatBot from this product card.",
+          "Keep the item in Review/Hold until the rerun passes."
+        ]
+      };
+    }
+
+    if (status === "failed" && (validation.includes("coverage") || execution.includes("publish"))) {
+      return {
+        summary: "Recheck publish coverage before touching UI code.",
+        steps: [
+          "Run Recheck Coverage for this product.",
+          "If public rows are missing, rerun the correct sport/year publish function.",
+          "If the product is new, rebuild the checklist index.",
+          "Wait for GitHub Pages propagation, then recheck coverage.",
+          "Run CV/ChatBot visual validation after JSON coverage is confirmed."
+        ]
+      };
+    }
+
+    if (status === "known_issue") {
+      return {
+        summary: "Known issue is intentionally held; convert it to a fix task when ready.",
+        steps: [
+          "Confirm the issue still reproduces.",
+          "Decide whether this is data, search, UI, or test expectation work.",
+          "Patch in sandbox and document the affected product/query.",
+          "Run the product visual test before clearing the known issue."
+        ]
+      };
+    }
+
+    if (status === "needs_admin" || status === "approval_required") {
+      return {
+        summary: "Admin decision needed before the agent can continue.",
+        steps: [
+          "Review the source, sport, product code, and target sheet.",
+          "Preview import if this is source data.",
+          "Approve only if the scope is one product and no delete-first workflow is involved.",
+          "After approval, write, publish, recheck coverage, and run CV/ChatBot validation."
+        ]
+      };
+    }
+
+    return {
+      summary: "",
+      steps: []
+    };
   }
 
   function getAutonomyReadiness() {

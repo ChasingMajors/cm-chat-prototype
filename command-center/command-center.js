@@ -1554,15 +1554,26 @@
       const data = await fetchJson(url);
       renderExecuteResult(data, actionId);
     } catch (err) {
+      const detail = err && err.message ? err.message : String(err);
       if (actionId) {
         updateAgentAction(actionId, {
           status: "failed",
-          executionResult: err && err.message ? err.message : String(err)
+          executionResult: detail,
+          validationResult: "Import request failed before write confirmation.",
+          recommendedAction: "Review backend connectivity, then rerun preview/import. Create a fix task if this repeats."
+        });
+        logActivity({
+          type: "source_import",
+          status: "failed",
+          source: "operator_backend",
+          title: "Import request failed",
+          detail: detail
         });
         renderAgentActions();
         renderActionLanes();
+        renderActivityLog();
       }
-      renderSourceCheckMessage("Sheet write failed", err && err.message ? err.message : String(err), "critical");
+      renderSourceCheckMessage("Import request failed", detail, "critical");
     }
   }
 
@@ -2281,15 +2292,33 @@
 
   function renderExecuteResult(data, actionId) {
     if (!data || !data.ok) {
+      const preview = data && data.preview ? data.preview : {};
+      const rowCount = Number(preview.row_count || 0);
+      const parallelCount = Number(preview.parallel_count || 0);
+      const baseError = data && data.error ? data.error : "Unknown backend response.";
+      const detail = rowCount || parallelCount
+        ? `${baseError} Preview parsed ${formatNumber(rowCount)} rows and ${formatNumber(parallelCount)} parallels.`
+        : `${baseError} No sheet write was made. Preview or parser review is required before import.`;
       if (actionId) {
         updateAgentAction(actionId, {
           status: "failed",
-          executionResult: data && data.error ? data.error : "Unknown backend response."
+          executionResult: detail,
+          validationResult: "Import did not write to Google Sheets.",
+          recommendedAction: "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping."
+        });
+        logActivity({
+          type: "source_import",
+          status: "failed",
+          product: preview.product && preview.product.display_name ? preview.product.display_name : "",
+          source: "operator_backend",
+          title: "Import blocked before sheet write",
+          detail: detail
         });
         renderAgentActions();
         renderActionLanes();
+        renderActivityLog();
       }
-      renderSourceCheckMessage("Sheet write failed", data && data.error ? data.error : "Unknown backend response.", "critical");
+      renderSourceCheckMessage("Import blocked before sheet write", detail, "critical");
       return;
     }
 
@@ -3451,6 +3480,16 @@
   function getAgentCycleStep() {
     const active = getActiveAgentActions();
 
+    const running = active.find(action => String(action.status || "").toLowerCase() === "running");
+    if (running) {
+      return {
+        kind: "wait",
+        action: running,
+        title: "Wait for active work",
+        detail: `${running.product || running.type} is currently running. Let it finish or refresh status before starting another cycle.`
+      };
+    }
+
     const retest = active.find(action => String(action.status || "").toLowerCase() === "fix_applied" && action.product);
     if (retest) {
       return {
@@ -3592,6 +3631,11 @@
     }
 
     if (step.kind === "needs_admin") {
+      renderAgentCycleMessage(step.title, step.detail, "warning");
+      return;
+    }
+
+    if (step.kind === "wait") {
       renderAgentCycleMessage(step.title, step.detail, "warning");
       return;
     }

@@ -527,50 +527,74 @@
   }
 
   function findRelatedProductAction(plan) {
+    const matches = findRelatedProductActions(plan);
+    return matches.find(action => action.type === "checklist_publish") || matches[0] || null;
+  }
+
+  function findRelatedProductActions(plan) {
+    let direct = null;
     if (plan && plan.sourceActionId) {
-      const direct = state.agentActions.find(action => action.id === plan.sourceActionId);
-      if (direct) return direct;
+      direct = state.agentActions.find(action => action.id === plan.sourceActionId) || null;
     }
 
     const sport = normalize(plan && plan.sport);
     const code = String(plan && plan.code || "").trim();
     const product = normalize(plan && plan.productName);
-    const candidates = state.agentActions.filter(action => {
+    const matches = state.agentActions.filter(action => {
       const type = String(action.type || "").toLowerCase();
-      if (type !== "source_import" && type !== "checklist_publish") return false;
+      if (type !== "source_import" && type !== "checklist_publish" && type !== "visual_test") return false;
       if (sport && normalize(action.sport) !== sport) return false;
       if (code && String(action.code || "").trim() === code) return true;
       return product && normalize(action.product) === product;
     });
 
-    return candidates.find(action => action.type === "checklist_publish") || candidates[0] || null;
+    if (direct && !matches.some(action => action.id === direct.id)) matches.unshift(direct);
+    return matches;
   }
 
   function updateRelatedProductActionFromVisual(plan, result, runUrl) {
-    const action = findRelatedProductAction(plan);
-    if (!action) return null;
+    const actions = findRelatedProductActions(plan);
+    if (!actions.length) return null;
 
     const normalized = String(result || "").toLowerCase();
     const isPassed = normalized === "passed" || normalized === "success";
     const isFailed = normalized === "failed" || normalized === "failure";
-    const priorValidation = String(action.validationResult || "");
-    const hasCoverage = priorValidation.toLowerCase().includes("public json covered");
-    const pendingPrefix = hasCoverage ? priorValidation.replace(/\s*Visual CV\/ChatBot proof still pending\.?/i, "").trim() : "";
 
-    const validationResult = isPassed
-      ? "CV and ChatBot passed via visual test."
-      : isFailed
-        ? `${pendingPrefix ? pendingPrefix + " " : ""}CV/ChatBot visual test failed. Review the GitHub Actions report.`
-        : `${pendingPrefix ? pendingPrefix + " " : ""}CV/ChatBot visual test queued or running.`;
+    actions.forEach(action => {
+      const priorValidation = String(action.validationResult || "");
+      const hasCoverage = priorValidation.toLowerCase().includes("public json covered");
+      const pendingPrefix = hasCoverage ? priorValidation.replace(/\s*Visual CV\/ChatBot proof still pending\.?/i, "").trim() : "";
 
-    return updateAgentAction(action.id, {
-      status: isPassed ? "validated" : isFailed ? "failed" : "needs_admin",
-      validationResult: validationResult,
-      recommendedAction: isFailed
-        ? "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix."
-        : action.recommendedAction,
-      runUrl: runUrl || action.runUrl || ""
+      const validationResult = isPassed
+        ? `${pendingPrefix ? pendingPrefix + " " : ""}CV and ChatBot passed via visual test.`.trim()
+        : isFailed
+          ? `${pendingPrefix ? pendingPrefix + " " : ""}CV/ChatBot visual test failed. Review the GitHub Actions report.`
+          : `${pendingPrefix ? pendingPrefix + " " : ""}CV/ChatBot visual test queued or running.`;
+
+      updateAgentAction(action.id, {
+        status: isPassed ? "validated" : isFailed ? "failed" : "needs_admin",
+        validationResult: validationResult,
+        recommendedAction: isFailed
+          ? "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix."
+          : isPassed
+            ? "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete."
+            : action.recommendedAction,
+        runUrl: runUrl || action.runUrl || ""
+      });
     });
+
+    if (isPassed) {
+      logActivity({
+        type: "agent_action",
+        status: "validated",
+        product: plan.productName || "",
+        source: "github_actions",
+        title: "Product action validated",
+        detail: `${actions.length} matching queue item${actions.length === 1 ? "" : "s"} now have visual proof.`
+      });
+    }
+
+    return actions;
   }
 
   function isAllowedSport(value) {

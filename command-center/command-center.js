@@ -69,6 +69,7 @@
     memoryStatus: document.getElementById("memoryStatus"),
     autonomyModeSelect: document.getElementById("autonomyModeSelect"),
     sourceCheckBtn: document.getElementById("sourceCheckBtn"),
+    agentCycleBtn: document.getElementById("agentCycleBtn"),
     sourceWatchQuickBtn: document.getElementById("sourceWatchQuickBtn"),
     sourceWatchDeepBtn: document.getElementById("sourceWatchDeepBtn"),
     saveEndpointBtn: document.getElementById("saveEndpointBtn"),
@@ -3447,6 +3448,158 @@
     return status === "needs_admin" || status === "approval_required" || status === "failed" || status === "blocked" || status === "known_issue" || status === "fix_queued" || status === "fix_applied";
   }
 
+  function getAgentCycleStep() {
+    const active = getActiveAgentActions();
+
+    const retest = active.find(action => String(action.status || "").toLowerCase() === "fix_applied" && action.product);
+    if (retest) {
+      return {
+        kind: "retest",
+        action: retest,
+        title: "Run validation retest",
+        detail: `${retest.product || retest.type} has a completed fix task and needs proof.`
+      };
+    }
+
+    const readyImport = active.find(action => {
+      const status = String(action.status || "").toLowerCase();
+      return action.type === "source_import" &&
+        (status === "approved" || status === "ready") &&
+        !!(action.sourceUrl || action.runUrl);
+    });
+    if (readyImport) {
+      return {
+        kind: "execute_import",
+        action: readyImport,
+        title: "Execute approved import",
+        detail: `${readyImport.product || "Approved source"} is approved and ready for a product-scoped sheet write.`
+      };
+    }
+
+    const visualReady = active.find(action => {
+      const status = String(action.status || "").toLowerCase();
+      if (!action.product) return false;
+      if (status === "running" || status === "fix_queued") return false;
+      const posture = getActionExecutionPosture(action);
+      return posture.label === "Validate";
+    });
+    if (visualReady) {
+      return {
+        kind: "visual_test",
+        action: visualReady,
+        title: "Run CV/ChatBot validation",
+        detail: `${visualReady.product || visualReady.type} has execution or coverage proof and needs app behavior proof.`
+      };
+    }
+
+    const failed = active.find(action => {
+      const status = String(action.status || "").toLowerCase();
+      return status === "failed" || status === "blocked" || status === "known_issue";
+    });
+    if (failed) {
+      return {
+        kind: "create_fix_task",
+        action: failed,
+        title: "Create repair task",
+        detail: `${failed.product || failed.type} is blocked and needs a fix path.`
+      };
+    }
+
+    const approval = active.find(action => {
+      const status = String(action.status || "").toLowerCase();
+      return status === "needs_admin" || status === "approval_required";
+    });
+    if (approval) {
+      return {
+        kind: "needs_admin",
+        action: approval,
+        title: "Admin decision required",
+        detail: `${approval.product || approval.type} needs approval before the agent can continue.`
+      };
+    }
+
+    return {
+      kind: "source_watch",
+      action: null,
+      title: "Run source watch",
+      detail: "No active queue item needs execution. The agent can scan for the next source opportunity."
+    };
+  }
+
+  function renderAgentCycleMessage(title, detail, severity) {
+    renderSourceCheckMessage(title, detail, severity || "info");
+    logActivity({
+      type: "agent_cycle",
+      status: severity === "critical" ? "blocked" : "started",
+      source: "command_center",
+      title,
+      detail
+    });
+    renderActivityLog();
+  }
+
+  function runVisualTestForAction(action, isRetest) {
+    const plan = buildVisualTestPlanFromAction(action);
+    updateAgentAction(action.id, {
+      status: "running",
+      validationResult: isRetest ? "CV/ChatBot retest requested after fix..." : "CV/ChatBot visual test requested..."
+    });
+    logActivity({
+      type: "visual_test",
+      status: "requested",
+      product: action.product || "",
+      source: "agent_cycle",
+      title: isRetest ? "Retest requested" : "Visual test requested",
+      detail: isRetest ? "Agent cycle started the required retest." : "Agent cycle started CV/ChatBot validation."
+    });
+    renderAgentActions();
+    renderActionLanes();
+    renderActivityLog();
+    renderVisualTestPlan(plan);
+    runAgentVisualTest(plan);
+  }
+
+  function runAgentCycle() {
+    const step = getAgentCycleStep();
+
+    if (step.kind === "retest") {
+      renderAgentCycleMessage(step.title, step.detail, "info");
+      runVisualTestForAction(step.action, true);
+      return;
+    }
+
+    if (step.kind === "execute_import") {
+      const sourceUrl = step.action.sourceUrl || step.action.runUrl || "";
+      renderAgentCycleMessage(step.title, step.detail, "info");
+      executeSourceImport(sourceUrl, step.action.sport || "", step.action.id);
+      return;
+    }
+
+    if (step.kind === "visual_test") {
+      renderAgentCycleMessage(step.title, step.detail, "info");
+      runVisualTestForAction(step.action, false);
+      return;
+    }
+
+    if (step.kind === "create_fix_task") {
+      const task = createFixTaskFromAgentAction(step.action);
+      renderAgentCycleMessage(step.title, `${step.detail} Created ${task.title}.`, "warning");
+      renderOperatorTasks();
+      renderAgentActions();
+      renderActionLanes();
+      renderActivityLog();
+      return;
+    }
+
+    if (step.kind === "needs_admin") {
+      renderAgentCycleMessage(step.title, step.detail, "warning");
+      return;
+    }
+
+    renderAgentCycleMessage(step.title, step.detail, "info");
+    runSourceWatchWithBackend("quick_json");
+  }
+
   function renderActionLaneCard(action, lane) {
     const badgeClass = getAgentActionBadgeClass(action);
     const fixPlan = buildAgentActionFixPlan(action);
@@ -3695,6 +3848,7 @@
     const nextAction = pending[0] || actions.find(action => String(action.status || "").toLowerCase() === "needs_admin") || null;
     const mode = getAutonomyLabel(state.autonomyMode);
     const readiness = renderAutonomyReadiness();
+    const cycleStep = getAgentCycleStep();
 
     const cards = [
       {
@@ -3730,13 +3884,9 @@
         badge: latestFailure ? latestFailure.status || "review" : "none"
       },
       {
-        title: "Recommended Next Move",
-        detail: nextAction
-          ? `${nextAction.product || nextAction.type}: ${nextAction.recommendedAction || "Review and approve the prepared action."}`
-          : blocked.length
-            ? "Review the top failed or held item and decide whether to fix, defer, or mark as known."
-            : "No active work needs attention. Run Source Watch when you want the agent to look for the next opportunity.",
-        badge: nextAction ? getAgentActionStatusLabel(nextAction.status) : "ready"
+        title: "Agent Cycle",
+        detail: `${cycleStep.title}: ${cycleStep.detail}`,
+        badge: cycleStep.kind.replace(/_/g, " ")
       }
     ];
 
@@ -3911,6 +4061,7 @@
   }
 
   els.refreshBtn.addEventListener("click", runAudit);
+  els.agentCycleBtn.addEventListener("click", runAgentCycle);
   els.clearDoneBtn.addEventListener("click", clearDoneTasks);
   els.clearResolvedAgentActionsBtn.addEventListener("click", clearResolvedAgentActions);
   els.clearActivityLogBtn.addEventListener("click", clearActivityLog);

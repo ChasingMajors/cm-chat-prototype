@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-18T02:04:01.228Z",
+  "exported_at": "2026-05-18T02:10:55.786Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -56,15 +56,15 @@
       "sport": "hockey",
       "code": "2026_upper_deck_spring_expo_hockey",
       "riskLevel": "medium",
-      "status": "failed",
+      "status": "running",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26009491013",
       "sourceUrl": "",
       "createdAt": "2026-05-17T22:02:27.440Z",
-      "updatedAt": "2026-05-18T02:03:59.626Z"
+      "updatedAt": "2026-05-18T02:10:54.181Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps simplicidad uefa club competitions soccer",
@@ -157,6 +157,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779070254183_go2gga",
+      "ts": "2026-05-18T02:10:54.183Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2026 Upper Deck Spring Expo Hockey",
+      "source": "agent_action_queue"
+    },
     {
       "id": "log_1779069839626_iicdlw",
       "ts": "2026-05-18T02:03:59.626Z",
@@ -268,6 +278,6 @@
   },
   "known_issues": {},
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-18T02:04:02.227Z",
+  "saved_at": "2026-05-18T02:10:56.878Z",
   "saved_by": "cm_command_center_operator"
 }

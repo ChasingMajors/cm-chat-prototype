@@ -3145,7 +3145,24 @@
       btn.addEventListener("click", () => {
         const action = state.agentActions.find(item => item.id === btn.dataset.actionVisualTest);
         if (!action) return;
-        renderVisualTestPlan(buildVisualTestPlanFromAction(action));
+        const plan = buildVisualTestPlanFromAction(action);
+        updateAgentAction(action.id, {
+          status: "running",
+          validationResult: "CV/ChatBot visual test requested..."
+        });
+        logActivity({
+          type: "visual_test",
+          status: "requested",
+          product: action.product || "",
+          source: "agent_action_queue",
+          title: "Visual test requested",
+          detail: "Queue card requested CV/ChatBot validation."
+        });
+        renderAgentActions();
+        renderActionLanes();
+        renderActivityLog();
+        renderVisualTestPlan(plan);
+        runAgentVisualTest(plan);
       });
     });
 

@@ -49,6 +49,7 @@
     autonomyMode: readAutonomyMode(),
     visualTests: readJsonStore(VISUAL_TEST_KEY, {}),
     knownIssues: readJsonStore(KNOWN_ISSUE_KEY, {}),
+    visualPollTimers: {},
     backendMemorySaveTimer: null,
     backendMemorySaving: false,
     backendMemorySuspendAutoSave: false,
@@ -270,6 +271,11 @@
     return "info";
   }
 
+  function isTerminalVisualRecord(record) {
+    const result = String(record && (record.result || record.conclusion || record.status) || "").toLowerCase();
+    return result === "passed" || result === "success" || result === "failed" || result === "failure";
+  }
+
   function saveVisualRecord(plan, patch) {
     const key = getVisualProductKey(plan);
     if (!key) return null;
@@ -289,6 +295,30 @@
     state.visualTests[key] = record;
     writeVisualTests();
     return record;
+  }
+
+  function scheduleVisualStatusPoll(plan, attempt) {
+    const key = getVisualProductKey(plan);
+    if (!key) return;
+
+    const record = state.visualTests[key] || {};
+    if (isTerminalVisualRecord(record)) return;
+
+    const nextAttempt = Number(attempt || 1);
+    if (nextAttempt > 10) return;
+
+    if (state.visualPollTimers[key]) {
+      clearTimeout(state.visualPollTimers[key]);
+    }
+
+    const delayMs = nextAttempt === 1 ? 15000 : 25000;
+    state.visualPollTimers[key] = setTimeout(() => {
+      delete state.visualPollTimers[key];
+      refreshAgentVisualTestStatus(plan, {
+        silent: true,
+        pollAttempt: nextAttempt
+      });
+    }, delayMs);
   }
 
   function getAgentActionStatusLabel(status) {
@@ -1898,10 +1928,11 @@
     }
   }
 
-  async function refreshAgentVisualTestStatus(plan) {
+  async function refreshAgentVisualTestStatus(plan, options) {
     const endpoint = readOperatorEndpoint();
     const key = readOperatorKey();
     const existing = state.visualTests[getVisualProductKey(plan)] || {};
+    const opts = options || {};
 
     if (!endpoint) {
       renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before refreshing visual test status.", "warning");
@@ -1913,7 +1944,9 @@
       return;
     }
 
-    renderSourceCheckMessage("Checking visual test status", "The Operator Backend is reading the latest GitHub Actions result for this product.", "info");
+    if (!opts.silent) {
+      renderSourceCheckMessage("Checking visual test status", "The Operator Backend is reading the latest GitHub Actions result for this product.", "info");
+    }
 
     try {
       const url = endpoint
@@ -1927,8 +1960,13 @@
 
       const data = await fetchJson(url);
       renderVisualStatusResult(data, plan);
+      if (!isTerminalVisualRecord(data)) {
+        scheduleVisualStatusPoll(plan, (opts.pollAttempt || 1) + 1);
+      }
     } catch (err) {
-      renderSourceCheckMessage("Visual status check failed", err && err.message ? err.message : String(err), "critical");
+      if (!opts.silent) {
+        renderSourceCheckMessage("Visual status check failed", err && err.message ? err.message : String(err), "critical");
+      }
     }
   }
 
@@ -2060,6 +2098,7 @@
 
     const knownBtn = els.sourceCheckResult.querySelector("[data-known-agent-visual]");
     if (knownBtn) knownBtn.addEventListener("click", () => toggleKnownVisualIssue(plan));
+    scheduleVisualStatusPoll(plan, 1);
     renderAgentActions();
     renderActionLanes();
     renderActivityLog();
@@ -2117,6 +2156,7 @@
     renderAgentActions();
     renderActionLanes();
     renderActivityLog();
+    if (!isTerminalVisualRecord(data)) scheduleVisualStatusPoll(plan, 1);
   }
 
   function renderImportPreview(data) {

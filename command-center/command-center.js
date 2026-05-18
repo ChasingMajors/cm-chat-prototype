@@ -560,12 +560,15 @@
     const validationResult = isPassed
       ? "CV and ChatBot passed via visual test."
       : isFailed
-        ? "CV/ChatBot visual test failed. Review the GitHub Actions report."
+        ? `${pendingPrefix ? pendingPrefix + " " : ""}CV/ChatBot visual test failed. Review the GitHub Actions report.`
         : `${pendingPrefix ? pendingPrefix + " " : ""}CV/ChatBot visual test queued or running.`;
 
     return updateAgentAction(action.id, {
       status: isPassed ? "validated" : isFailed ? "failed" : "needs_admin",
       validationResult: validationResult,
+      recommendedAction: isFailed
+        ? "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix."
+        : action.recommendedAction,
       runUrl: runUrl || action.runUrl || ""
     });
   }
@@ -2081,7 +2084,9 @@
       product: plan.productName || data.product_name || "",
       source: "github_actions",
       title: "Visual test status updated",
-      detail: data.run_url ? "GitHub Actions run linked in the Agent Action Queue." : "No GitHub run visible yet."
+      detail: data.result === "failed"
+        ? "Visual test failed. Open the report and review screenshots/errors before marking validated."
+        : data.run_url ? "GitHub Actions run linked in the Agent Action Queue." : "No GitHub run visible yet."
     });
 
     renderVisualTestPlan(plan);

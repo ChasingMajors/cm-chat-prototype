@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-18T02:56:04.236Z",
+  "exported_at": "2026-05-18T02:56:24.870Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -38,15 +38,15 @@
       "sport": "hockey",
       "code": "2026_upper_deck_spring_expo_hockey",
       "riskLevel": "low",
-      "status": "validated",
+      "status": "needs_admin",
       "recommendedAction": "Visual validation complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "passed",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26010322678",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26011040459",
       "sourceUrl": "",
       "createdAt": "2026-05-18T01:57:49.056Z",
-      "updatedAt": "2026-05-18T02:50:34.951Z"
+      "updatedAt": "2026-05-18T02:56:23.266Z"
     },
     {
       "id": "checklist_publish|operator_backend|2026 upper deck spring expo hockey|2026_upper_deck_spring_expo_hockey",
@@ -56,15 +56,15 @@
       "sport": "hockey",
       "code": "2026_upper_deck_spring_expo_hockey",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26010322678",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26011040459",
       "sourceUrl": "",
       "createdAt": "2026-05-17T22:02:27.440Z",
-      "updatedAt": "2026-05-18T02:56:02.633Z"
+      "updatedAt": "2026-05-18T02:56:23.266Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps simplicidad uefa club competitions soccer",
@@ -97,9 +97,9 @@
       "adminDecision": "approved",
       "executionResult": "Sheet write completed; publish needs review.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26010159186",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26011040459",
       "createdAt": "2026-05-17T21:42:01.499Z",
-      "updatedAt": "2026-05-18T02:23:53.232Z",
+      "updatedAt": "2026-05-18T02:56:23.267Z",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-spring-expo-hockey-card-checklist/"
     },
     {
@@ -157,6 +157,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779072983267_zj9b5p",
+      "ts": "2026-05-18T02:56:23.267Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2026 Upper Deck Spring Expo Hockey",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1779072965309_a6dnog",
+      "ts": "2026-05-18T02:56:05.309Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2026 Upper Deck Spring Expo Hockey",
+      "source": "github_actions"
+    },
     {
       "id": "log_1779072962634_pfjehl",
       "ts": "2026-05-18T02:56:02.634Z",
@@ -413,11 +433,11 @@
       "checkedAt": "2026-05-17T14:55:48.239Z"
     },
     "hockey|2026_upper_deck_spring_expo_hockey": {
-      "status": "completed",
-      "result": "passed",
-      "conclusion": "success",
-      "startedAt": "2026-05-18T02:29:34.438Z",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26010322678",
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-05-18T02:56:03.790Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26011040459",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "hockey|2026_upper_deck_spring_expo_hockey",
@@ -425,19 +445,19 @@
       "productName": "2026 Upper Deck Spring Expo Hockey",
       "sport": "hockey",
       "code": "2026_upper_deck_spring_expo_hockey",
-      "updatedAt": "2026-05-18T02:50:34.945Z",
+      "updatedAt": "2026-05-18T02:56:23.265Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 26010322678,
-      "runNumber": 13,
+      "runId": 26011040459,
+      "runNumber": 14,
       "displayTitle": "Visual Product Test - 2026 Upper Deck Spring Expo Hockey",
-      "headSha": "a88222329b7a60900a6ee5814e085555d6ac027c",
-      "createdAt": "2026-05-18T02:29:35Z",
-      "checkedAt": "2026-05-18T02:50:34.944Z"
+      "headSha": "df21c47cf11ab76d8ce098eb4cc28ef47ed7c7dd",
+      "createdAt": "2026-05-18T02:56:04Z",
+      "checkedAt": "2026-05-18T02:56:23.265Z"
     }
   },
   "known_issues": {},
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-18T02:56:05.362Z",
+  "saved_at": "2026-05-18T02:56:26.814Z",
   "saved_by": "cm_command_center_operator"
 }

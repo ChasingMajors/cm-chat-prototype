@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-18T12:39:37.182Z",
+  "exported_at": "2026-05-18T12:39:47.850Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -74,14 +74,14 @@
       "sport": "soccer",
       "code": "",
       "riskLevel": "medium",
-      "status": "approved",
+      "status": "running",
       "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "approved",
-      "executionResult": "",
+      "executionResult": "Sheet write started through Operator Backend.",
       "validationResult": "",
       "runUrl": "",
       "createdAt": "2026-05-17T21:42:01.499Z",
-      "updatedAt": "2026-05-18T12:39:35.579Z",
+      "updatedAt": "2026-05-18T12:39:46.249Z",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-simplicidad-uefa-club-competitions-soccer-card-checklist/"
     },
     {
@@ -158,6 +158,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1779107986247_xscpuo",
+      "ts": "2026-05-18T12:39:46.247Z",
+      "type": "agent_cycle",
+      "title": "Execute approved import",
+      "detail": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer is approved and ready for a product-scoped sheet write.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
       "id": "log_1779107975580_yr961l",
       "ts": "2026-05-18T12:39:35.580Z",
       "type": "agent_action",
@@ -228,6 +238,6 @@
   },
   "known_issues": {},
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-18T12:39:38.452Z",
+  "saved_at": "2026-05-18T12:39:49.048Z",
   "saved_by": "cm_command_center_operator"
 }

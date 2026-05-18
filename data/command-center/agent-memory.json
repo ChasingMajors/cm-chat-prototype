@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-18T02:24:29.765Z",
+  "exported_at": "2026-05-18T02:25:15.780Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -37,16 +37,16 @@
       "product": "2026 Upper Deck Spring Expo Hockey",
       "sport": "hockey",
       "code": "2026_upper_deck_spring_expo_hockey",
-      "riskLevel": "low",
-      "status": "in_progress",
-      "recommendedAction": "Visual validation complete.",
+      "riskLevel": "medium",
+      "status": "failed",
+      "recommendedAction": "Review failed visual report and prepare a product/query-specific fix.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "in_progress",
+      "validationResult": "failed",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26010159186",
       "sourceUrl": "",
       "createdAt": "2026-05-18T01:57:49.056Z",
-      "updatedAt": "2026-05-18T02:24:28.160Z"
+      "updatedAt": "2026-05-18T02:25:14.177Z"
     },
     {
       "id": "checklist_publish|operator_backend|2026 upper deck spring expo hockey|2026_upper_deck_spring_expo_hockey",
@@ -56,15 +56,15 @@
       "sport": "hockey",
       "code": "2026_upper_deck_spring_expo_hockey",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "failed",
       "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26010159186",
       "sourceUrl": "",
       "createdAt": "2026-05-17T22:02:27.440Z",
-      "updatedAt": "2026-05-18T02:24:28.161Z"
+      "updatedAt": "2026-05-18T02:25:14.178Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps simplicidad uefa club competitions soccer",
@@ -157,6 +157,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779071114178_5ctv08",
+      "ts": "2026-05-18T02:25:14.178Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "Visual test failed. Open the report and review screenshots/errors before marking validated.",
+      "status": "failed",
+      "product": "2026 Upper Deck Spring Expo Hockey",
+      "source": "github_actions"
+    },
     {
       "id": "log_1779071068162_fq2be1",
       "ts": "2026-05-18T02:24:28.162Z",
@@ -363,9 +373,9 @@
       "checkedAt": "2026-05-17T14:55:48.239Z"
     },
     "hockey|2026_upper_deck_spring_expo_hockey": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "failed",
+      "conclusion": "failure",
       "startedAt": "2026-05-18T02:23:36.543Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26010159186",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -375,7 +385,7 @@
       "productName": "2026 Upper Deck Spring Expo Hockey",
       "sport": "hockey",
       "code": "2026_upper_deck_spring_expo_hockey",
-      "updatedAt": "2026-05-18T02:24:28.159Z",
+      "updatedAt": "2026-05-18T02:25:14.176Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 26010159186,
@@ -383,11 +393,11 @@
       "displayTitle": "Visual Product Test - 2026 Upper Deck Spring Expo Hockey",
       "headSha": "3c5daedff22dfcb4d1ab495e57df6a5a9c67c6a8",
       "createdAt": "2026-05-18T02:23:37Z",
-      "checkedAt": "2026-05-18T02:24:28.159Z"
+      "checkedAt": "2026-05-18T02:25:14.176Z"
     }
   },
   "known_issues": {},
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-18T02:24:31.275Z",
+  "saved_at": "2026-05-18T02:25:16.771Z",
   "saved_by": "cm_command_center_operator"
 }

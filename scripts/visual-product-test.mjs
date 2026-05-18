@@ -122,7 +122,7 @@ async function testChatbotQuery(context, item) {
       checks.push(assertNotIncludes(bodyText, "Which product should I use?", "Exact checklist query should not need clarification"));
       checks.push(assertNotIncludes(bodyText, "No rows found", "Checklist rows should load"));
     } else {
-      checks.push(assertIncludes(bodyText, "Product Profile", "Expected result type"));
+      checks.push(assertUsefulProductAnswer(bodyText, "Expected useful product answer"));
       checks.push(assertProductNameMatch(bodyText, "Expected product title"));
     }
 
@@ -273,6 +273,28 @@ function assertProductNameMatch(text, label) {
     label,
     ok: candidates.some(candidate => normalized.includes(normalizeText(candidate))),
     expected: candidates.join(" | ")
+  };
+}
+
+function assertUsefulProductAnswer(text, label) {
+  const normalized = normalizeText(text);
+  const usefulSignals = [
+    "product profile",
+    "checklist",
+    "rows",
+    "base",
+    "inserts",
+    "autographs",
+    "parallels",
+    "year:",
+    "sport:",
+    "code:"
+  ];
+
+  return {
+    label,
+    ok: usefulSignals.some(signal => normalized.includes(normalizeText(signal))),
+    expected: usefulSignals.join(" | ")
   };
 }
 

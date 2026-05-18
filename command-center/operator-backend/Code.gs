@@ -1654,7 +1654,29 @@ function isLikelyChecklistRow_(line) {
   if (/^\d+\s+Cards?\b/i.test(raw)) return false;
   if (/^[A-Z]{0,8}[-A-Z0-9]*\d[A-Z0-9-]*\s+.+\s+-\s+.+/.test(raw)) return true;
   if (/^[A-Z]{1,8}-[A-Z0-9]{1,12}\s+.+\s+-\s+.+/.test(raw)) return true;
+  if (isLikelyUnnumberedPlayerTeamLine_(raw)) return true;
   return /^[^-]+\s+-\s+.+(?:#\/\d+|#\/\d+\s*or\s*less|1\/1|\*)/i.test(raw);
+}
+
+function isLikelyUnnumberedPlayerTeamLine_(line) {
+  const raw = normalizeChecklistLineText_(line);
+  if (!raw || raw.indexOf(" - ") === -1) return false;
+  if (/^(Release Date|Price|Configuration|Box Break|Parallels?|Versions?|Cards?)\b/i.test(raw)) return false;
+  if (/<|>/.test(raw)) return false;
+
+  const pieces = raw.split(/\s+-\s+/);
+  if (pieces.length !== 2) return false;
+
+  const player = pieces[0].trim();
+  const team = pieces[1].trim();
+  if (!player || !team) return false;
+  if (player.length < 2 || team.length < 2) return false;
+  if (player.length > 80 || team.length > 90) return false;
+  if (/^\d/.test(player)) return false;
+  if (/^(Blue|Green|Purple|Orange|Black|Red|Gold|Silver|Bronze|Pink|Aqua|Yellow|White)\b/i.test(player)) return false;
+  if (/\b#?\s*\/\s*\d+\b|1\/1/i.test(team)) return false;
+
+  return true;
 }
 
 function parseChecklistLine_(line, product, section, subset) {

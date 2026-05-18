@@ -21,7 +21,7 @@ const ambiguousQuery = stripYear(PRODUCT_NAME);
 const chatbotQueries = unique([
   { label: "Exact product", query: PRODUCT_NAME, kind: "exact" },
   { label: "Short product", query: shortQuery, kind: "exact" },
-  { label: "Checklist intent", query: `Show me ${PRODUCT_NAME} checklist`, kind: "exact" },
+  { label: "Checklist intent", query: `Show me ${PRODUCT_NAME} checklist`, kind: "checklist" },
   { label: "Details intent", query: `${PRODUCT_NAME} details`, kind: "exact" },
   { label: "Ambiguity", query: ambiguousQuery, kind: "ambiguous" }
 ].filter(item => item.query));
@@ -105,6 +105,11 @@ async function testChatbotQuery(context, item) {
         expected: "Clarify list or Product Profile"
       });
       checks.push(assertIncludes(bodyText, stripSportSuffix(PRODUCT_NAME), "Expected current product option"));
+    } else if (item.kind === "checklist") {
+      checks.push(assertAnyIncludes(bodyText, ["Checklist", "Rows", "Base", "Autograph", "Insert", "Parallel"], "Expected checklist response"));
+      checks.push(assertProductNameMatch(bodyText, "Expected product title"));
+      checks.push(assertNotIncludes(bodyText, "Which product should I use?", "Exact checklist query should not need clarification"));
+      checks.push(assertNotIncludes(bodyText, "No rows found", "Checklist rows should load"));
     } else {
       checks.push(assertIncludes(bodyText, "Product Profile", "Expected result type"));
       checks.push(assertProductNameMatch(bodyText, "Expected product title"));
@@ -164,7 +169,7 @@ async function waitForSettledChatbot(page) {
   await page.waitForLoadState("networkidle", { timeout: 45000 }).catch(() => {});
   await page.waitForFunction(() => {
     const text = document.body.innerText || "";
-    return /Product Profile|Which product should I use\?|Something went wrong|Try another search/i.test(text);
+    return /Product Profile|Checklist|Rows|Which product should I use\?|Something went wrong|Try another search/i.test(text);
   }, { timeout: 60000 });
   await page.waitForTimeout(750);
 }

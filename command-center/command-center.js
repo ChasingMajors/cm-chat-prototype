@@ -329,6 +329,7 @@
     const posture = getActionExecutionPosture(action);
     const status = String(action && action.status || "").toLowerCase();
     if (posture.label === "Validate" && status !== "validated") return "Validate";
+    if (status === "fix_applied") return "Retest Needed";
     return getAgentActionStatusLabel(status || "queued");
   }
 
@@ -3248,6 +3249,7 @@
       const status = String(action.status || "").toLowerCase();
       const canTestProduct = action.product && (action.type === "source_import" || action.type === "checklist_publish" || action.type === "visual_test");
       const fixPlan = buildAgentActionFixPlan(action);
+      const retestNeeded = status === "fix_applied";
       const canCreateFixTask = !!fixPlan.steps.length && (status === "failed" || status === "blocked" || status === "known_issue");
       const canExecuteSourceImport = action.type === "source_import" &&
         (status === "approved" || status === "ready") &&
@@ -3284,11 +3286,14 @@
           ` : ""}
           ${renderValidationChecklist(action)}
           <div class="opp-actions">
+            ${retestNeeded ? `
+              <button class="action-btn approve primary-next" type="button" data-action-visual-test="${escapeHtml(action.id)}">Run Retest</button>
+            ` : ""}
             ${action.type === "source_import" && (action.sourceUrl || action.runUrl) ? `
               <button class="action-btn approve" type="button" data-action-preview-import="${escapeHtml(action.id)}">Preview Import</button>
               <a class="action-btn" href="${escapeHtml(action.sourceUrl || action.runUrl)}" target="_blank" rel="noopener noreferrer">Open Source</a>
             ` : ""}
-            ${canTestProduct ? `
+            ${canTestProduct && !retestNeeded ? `
               <button class="action-btn" type="button" data-action-visual-test="${escapeHtml(action.id)}">Test CV/ChatBot</button>
             ` : ""}
             ${action.product && (action.type === "source_import" || action.type === "checklist_publish") ? `
@@ -3339,17 +3344,18 @@
         const action = state.agentActions.find(item => item.id === btn.dataset.actionVisualTest);
         if (!action) return;
         const plan = buildVisualTestPlanFromAction(action);
+        const wasRetest = String(action.status || "").toLowerCase() === "fix_applied";
         updateAgentAction(action.id, {
           status: "running",
-          validationResult: "CV/ChatBot visual test requested..."
+          validationResult: wasRetest ? "CV/ChatBot retest requested after fix..." : "CV/ChatBot visual test requested..."
         });
         logActivity({
           type: "visual_test",
           status: "requested",
           product: action.product || "",
           source: "agent_action_queue",
-          title: "Visual test requested",
-          detail: "Queue card requested CV/ChatBot validation."
+          title: wasRetest ? "Retest requested" : "Visual test requested",
+          detail: wasRetest ? "Fix has been applied; queue card requested CV/ChatBot retest." : "Queue card requested CV/ChatBot validation."
         });
         renderAgentActions();
         renderActionLanes();

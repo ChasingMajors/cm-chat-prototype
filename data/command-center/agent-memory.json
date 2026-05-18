@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-18T02:23:37.076Z",
+  "exported_at": "2026-05-18T02:23:39.792Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -37,16 +37,16 @@
       "product": "2026 Upper Deck Spring Expo Hockey",
       "sport": "hockey",
       "code": "2026_upper_deck_spring_expo_hockey",
-      "riskLevel": "medium",
-      "status": "failed",
-      "recommendedAction": "Review failed visual report and prepare a product/query-specific fix.",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "failed",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26009831879",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "createdAt": "2026-05-18T01:57:49.056Z",
-      "updatedAt": "2026-05-18T02:13:26.790Z"
+      "updatedAt": "2026-05-18T02:23:38.188Z"
     },
     {
       "id": "checklist_publish|operator_backend|2026 upper deck spring expo hockey|2026_upper_deck_spring_expo_hockey",
@@ -92,14 +92,14 @@
       "sport": "hockey",
       "code": "2026_upper_deck_spring_expo_hockey",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "approved",
       "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "createdAt": "2026-05-17T21:42:01.499Z",
-      "updatedAt": "2026-05-18T02:23:35.472Z",
+      "updatedAt": "2026-05-18T02:23:38.188Z",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-spring-expo-hockey-card-checklist/"
     },
     {
@@ -157,6 +157,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779071018189_aegtpf",
+      "ts": "2026-05-18T02:23:38.189Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2026 Upper Deck Spring Expo Hockey",
+      "source": "github_actions"
+    },
     {
       "id": "log_1779071015473_8om3yn",
       "ts": "2026-05-18T02:23:35.473Z",
@@ -333,11 +343,11 @@
       "checkedAt": "2026-05-17T14:55:48.239Z"
     },
     "hockey|2026_upper_deck_spring_expo_hockey": {
-      "status": "completed",
-      "result": "failed",
-      "conclusion": "failure",
-      "startedAt": "2026-05-18T02:10:55.384Z",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26009831879",
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-05-18T02:23:36.543Z",
+      "runUrl": "",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "hockey|2026_upper_deck_spring_expo_hockey",
@@ -345,7 +355,7 @@
       "productName": "2026 Upper Deck Spring Expo Hockey",
       "sport": "hockey",
       "code": "2026_upper_deck_spring_expo_hockey",
-      "updatedAt": "2026-05-18T02:13:26.789Z",
+      "updatedAt": "2026-05-18T02:23:38.187Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 26009831879,
@@ -358,6 +368,6 @@
   },
   "known_issues": {},
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-18T02:23:38.053Z",
+  "saved_at": "2026-05-18T02:23:40.792Z",
   "saved_by": "cm_command_center_operator"
 }

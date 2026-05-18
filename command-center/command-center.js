@@ -516,11 +516,57 @@
   }
 
   function buildVisualTestPlanFromAction(action) {
-    return buildVisualTestPlan({
+    const plan = buildVisualTestPlan({
       matched_name: action && action.product,
       title: action && action.product,
       matched_code: action && action.code,
       sport: action && action.sport
+    });
+    plan.sourceActionId = action && action.id ? action.id : "";
+    return plan;
+  }
+
+  function findRelatedProductAction(plan) {
+    if (plan && plan.sourceActionId) {
+      const direct = state.agentActions.find(action => action.id === plan.sourceActionId);
+      if (direct) return direct;
+    }
+
+    const sport = normalize(plan && plan.sport);
+    const code = String(plan && plan.code || "").trim();
+    const product = normalize(plan && plan.productName);
+    const candidates = state.agentActions.filter(action => {
+      const type = String(action.type || "").toLowerCase();
+      if (type !== "source_import" && type !== "checklist_publish") return false;
+      if (sport && normalize(action.sport) !== sport) return false;
+      if (code && String(action.code || "").trim() === code) return true;
+      return product && normalize(action.product) === product;
+    });
+
+    return candidates.find(action => action.type === "checklist_publish") || candidates[0] || null;
+  }
+
+  function updateRelatedProductActionFromVisual(plan, result, runUrl) {
+    const action = findRelatedProductAction(plan);
+    if (!action) return null;
+
+    const normalized = String(result || "").toLowerCase();
+    const isPassed = normalized === "passed" || normalized === "success";
+    const isFailed = normalized === "failed" || normalized === "failure";
+    const priorValidation = String(action.validationResult || "");
+    const hasCoverage = priorValidation.toLowerCase().includes("public json covered");
+    const pendingPrefix = hasCoverage ? priorValidation.replace(/\s*Visual CV\/ChatBot proof still pending\.?/i, "").trim() : "";
+
+    const validationResult = isPassed
+      ? "CV and ChatBot passed via visual test."
+      : isFailed
+        ? "CV/ChatBot visual test failed. Review the GitHub Actions report."
+        : `${pendingPrefix ? pendingPrefix + " " : ""}CV/ChatBot visual test queued or running.`;
+
+    return updateAgentAction(action.id, {
+      status: isPassed ? "validated" : isFailed ? "failed" : "needs_admin",
+      validationResult: validationResult,
+      runUrl: runUrl || action.runUrl || ""
     });
   }
 
@@ -1947,6 +1993,7 @@
       executionResult: "GitHub Actions visual test queued.",
       runUrl: data.workflow_url || data.actions_url || ""
     });
+    updateRelatedProductActionFromVisual(plan, "queued", data.workflow_url || data.actions_url || "");
     logActivity({
       type: "visual_test",
       status: "queued",
@@ -2027,6 +2074,7 @@
       validationResult: data.result || data.status || "",
       runUrl: data.run_url || ""
     });
+    updateRelatedProductActionFromVisual(plan, data.result || data.conclusion || data.status || "", data.run_url || "");
     logActivity({
       type: "visual_test",
       status: data.result || data.status || "",

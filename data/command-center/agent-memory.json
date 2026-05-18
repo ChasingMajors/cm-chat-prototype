@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-18T01:57:47.534Z",
+  "exported_at": "2026-05-18T01:57:50.660Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -31,6 +31,24 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2026 upper deck spring expo hockey|2026_upper_deck_spring_expo_hockey",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2026 Upper Deck Spring Expo Hockey",
+      "sport": "hockey",
+      "code": "2026_upper_deck_spring_expo_hockey",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "sourceUrl": "",
+      "createdAt": "2026-05-18T01:57:49.056Z",
+      "updatedAt": "2026-05-18T01:57:49.056Z"
+    },
+    {
       "id": "checklist_publish|operator_backend|2026 upper deck spring expo hockey|2026_upper_deck_spring_expo_hockey",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -38,15 +56,15 @@
       "sport": "hockey",
       "code": "2026_upper_deck_spring_expo_hockey",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "createdAt": "2026-05-17T22:02:27.440Z",
-      "updatedAt": "2026-05-18T01:57:45.929Z"
+      "updatedAt": "2026-05-18T01:57:49.057Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps simplicidad uefa club competitions soccer",
@@ -140,6 +158,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1779069469057_winsrz",
+      "ts": "2026-05-18T01:57:49.057Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2026 Upper Deck Spring Expo Hockey",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1779069465930_f0snqa",
       "ts": "2026-05-18T01:57:45.930Z",
       "type": "visual_test",
@@ -203,10 +231,27 @@
       "headSha": "2a069851b9bde5b55756198cdc2d0660c838bdd7",
       "createdAt": "2026-05-17T13:40:42Z",
       "checkedAt": "2026-05-17T14:55:48.239Z"
+    },
+    "hockey|2026_upper_deck_spring_expo_hockey": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-05-18T01:57:47.106Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "hockey|2026_upper_deck_spring_expo_hockey",
+      "key": "hockey|2026_upper_deck_spring_expo_hockey",
+      "productName": "2026 Upper Deck Spring Expo Hockey",
+      "sport": "hockey",
+      "code": "2026_upper_deck_spring_expo_hockey",
+      "updatedAt": "2026-05-18T01:57:49.055Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-18T01:57:48.537Z",
+  "saved_at": "2026-05-18T01:57:51.888Z",
   "saved_by": "cm_command_center_operator"
 }

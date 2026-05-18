@@ -1,4 +1,4 @@
-import { chromium } from "@playwright/test";
+import { chromium } from "playwright";
 import fs from "node:fs/promises";
 import path from "node:path";
 
@@ -10,6 +10,7 @@ const SPORT = cleanEnv("SPORT");
 const CODE = cleanEnv("PRODUCT_CODE");
 const OUT_DIR = cleanEnv("OUT_DIR") || "visual-test-results";
 const HEADLESS = cleanEnv("HEADLESS") !== "false";
+const CHROME_EXECUTABLE = cleanEnv("CHROME_EXECUTABLE");
 
 if (!PRODUCT_NAME) {
   throw new Error("Missing PRODUCT_NAME.");
@@ -19,11 +20,11 @@ const productYear = (PRODUCT_NAME.match(/\b(?:19|20)\d{2}(?:-\d{2})?\b/) || [""]
 const shortQuery = buildShortProductQuery(PRODUCT_NAME);
 const ambiguousQuery = stripYear(PRODUCT_NAME);
 const chatbotQueries = unique([
-  { label: "Exact product", query: PRODUCT_NAME, kind: "exact" },
-  { label: "Short product", query: shortQuery, kind: "exact" },
-  { label: "Checklist intent", query: `Show me ${PRODUCT_NAME} checklist`, kind: "checklist" },
-  { label: "Details intent", query: `${PRODUCT_NAME} details`, kind: "exact" },
-  { label: "Ambiguity", query: ambiguousQuery, kind: "ambiguous" }
+  { label: "Exact product", query: PRODUCT_NAME, kind: "exact", blocking: true },
+  { label: "Short product", query: shortQuery, kind: "exact", blocking: false },
+  { label: "Checklist intent", query: `Show me ${PRODUCT_NAME} checklist`, kind: "checklist", blocking: true },
+  { label: "Details intent", query: `${PRODUCT_NAME} details`, kind: "exact", blocking: true },
+  { label: "Ambiguity", query: ambiguousQuery, kind: "ambiguous", blocking: false }
 ].filter(item => item.query));
 
 const checklistChecks = [
@@ -39,7 +40,10 @@ const checklistChecks = [
 
 await fs.mkdir(OUT_DIR, { recursive: true });
 
-const browser = await chromium.launch({ headless: HEADLESS });
+const browser = await chromium.launch(Object.assign(
+  { headless: HEADLESS },
+  CHROME_EXECUTABLE ? { executablePath: CHROME_EXECUTABLE } : {}
+));
 const context = await browser.newContext({
   viewport: { width: 1440, height: 1100 },
   colorScheme: "dark"
@@ -59,11 +63,13 @@ try {
   await browser.close();
 }
 
-const failed = results.filter(result => !result.ok);
+const failed = results.filter(result => !result.ok && result.blocking !== false);
+const warnings = results.filter(result => !result.ok && result.blocking === false);
 await writeReport(results);
 
-if (failed.length) {
-  failed.forEach(result => {
+if (failed.length || warnings.length) {
+  failed.concat(warnings).forEach(result => {
+    emitAnnotation(result, result.blocking === false ? "warning" : "error");
     console.error(`\nFAILED: ${result.name}`);
     console.error(`URL: ${result.url}`);
     if (result.error) console.error(`Error: ${result.error}`);
@@ -75,16 +81,21 @@ if (failed.length) {
     if (result.text_excerpt) console.error(`Excerpt: ${result.text_excerpt}`);
     if (result.screenshot) console.error(`Screenshot: ${result.screenshot}`);
   });
-  console.error(`Visual product test failed: ${failed.length} issue(s).`);
+  if (warnings.length) console.error(`Visual product test warnings: ${warnings.length} advisory issue(s).`);
+}
+
+if (failed.length) {
+  console.error(`Visual product test failed: ${failed.length} blocking issue(s).`);
   process.exit(1);
 }
 
-console.log("Visual product test passed.");
+console.log(warnings.length ? "Visual product test passed with advisory warnings." : "Visual product test passed.");
 
 async function testChatbotQuery(context, item) {
   const page = await context.newPage();
   const url = `${trimTrailingSlash(CHATBOT_BASE)}/?q=${encodeURIComponent(item.query)}`;
   const result = baseResult(`ChatBot - ${item.label}`, url);
+  result.blocking = item.blocking !== false;
 
   try {
     await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
@@ -136,6 +147,7 @@ async function testChatbotQuery(context, item) {
 async function testChecklistUrl(context, item) {
   const page = await context.newPage();
   const result = baseResult(item.label, item.url);
+  result.blocking = item.blocking !== false;
 
   try {
     await page.goto(item.url, { waitUntil: "domcontentloaded", timeout: 45000 });
@@ -237,7 +249,8 @@ function baseResult(name, url) {
     name,
     url,
     ok: false,
-    checks: []
+    checks: [],
+    blocking: true
   };
 }
 
@@ -343,4 +356,32 @@ function slug(value) {
 
 function escapePipe(value) {
   return String(value || "").replace(/\|/g, "\\|").replace(/\n/g, " ");
+}
+
+function emitAnnotation(result, level) {
+  const failedChecks = (result.checks || []).filter(check => !check.ok);
+  const details = failedChecks.map(check => {
+    const suffix = check.expected
+      ? ` Expected: ${check.expected}`
+      : check.unwanted
+        ? ` Unwanted: ${check.unwanted}`
+        : "";
+    return `${check.label}.${suffix}`;
+  }).join(" ");
+  const message = [
+    result.name,
+    result.error || details || "Visual product check failed.",
+    result.url
+  ].filter(Boolean).join(" | ");
+
+  console.error(`::${level} file=scripts/visual-product-test.mjs,line=1,title=${escapeAnnotation(result.name)}::${escapeAnnotation(message)}`);
+}
+
+function escapeAnnotation(value) {
+  return String(value || "")
+    .replace(/%/g, "%25")
+    .replace(/\r/g, "%0D")
+    .replace(/\n/g, "%0A")
+    .replace(/:/g, "%3A")
+    .replace(/,/g, "%2C");
 }

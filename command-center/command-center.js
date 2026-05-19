@@ -416,10 +416,61 @@
     ].filter(Boolean).join("|").slice(0, 180);
   }
 
+  function sameProductAction(action, input) {
+    if (!action || !input) return false;
+    const actionSport = normalize(action.sport || "");
+    const inputSport = normalize(input.sport || "");
+    if (actionSport && inputSport && actionSport !== inputSport) return false;
+
+    const actionCode = String(action.code || "").trim();
+    const inputCode = String(input.code || input.matched_code || "").trim();
+    if (actionCode && inputCode && actionCode === inputCode) return true;
+
+    const actionProduct = normalize(action.product || "");
+    const inputProduct = normalize(input.product || input.title || input.matched_name || "");
+    return !!(actionProduct && inputProduct && actionProduct === inputProduct);
+  }
+
+  function findProductAction(input, preferredType) {
+    const matches = (state.agentActions || []).filter(action => sameProductAction(action, input));
+    if (preferredType) {
+      const preferred = matches.find(action => action.type === preferredType);
+      if (preferred) return preferred;
+    }
+    return matches[0] || null;
+  }
+
+  function pruneDuplicateProductActions(primaryAction) {
+    if (!primaryAction) return;
+    const primaryId = primaryAction.id;
+    const before = state.agentActions.length;
+    state.agentActions = (state.agentActions || []).filter(action => {
+      if (!action || action.id === primaryId) return true;
+      if (!sameProductAction(action, primaryAction)) return true;
+      const primaryType = String(primaryAction.type || "");
+      const actionType = String(action.type || "");
+      return !(primaryType === "checklist_publish" && actionType === "source_import");
+    });
+    if (state.agentActions.length !== before) writeAgentActions();
+  }
+
+  function collapseDuplicateAgentActions() {
+    const publishActions = (state.agentActions || []).filter(action => action && action.type === "checklist_publish");
+    if (!publishActions.length) return;
+
+    const before = state.agentActions.length;
+    state.agentActions = state.agentActions.filter(action => {
+      if (!action || action.type !== "source_import") return true;
+      return !publishActions.some(publishAction => sameProductAction(publishAction, action));
+    });
+    if (state.agentActions.length !== before) writeAgentActions();
+  }
+
   function upsertAgentAction(input) {
     const now = new Date().toISOString();
     const id = input.id || buildAgentActionId(input);
-    const existing = state.agentActions.find(item => item.id === id);
+    const existing = state.agentActions.find(item => item.id === id) ||
+      (input.type === "source_import" ? findProductAction(input, "checklist_publish") : null);
     const base = {
       id,
       type: input.type || "operator",
@@ -438,6 +489,16 @@
       createdAt: now,
       updatedAt: now
     };
+
+    if (existing && input.type === "source_import" && existing.type === "checklist_publish") {
+      Object.assign(existing, {
+        sourceUrl: existing.sourceUrl || input.sourceUrl || "",
+        runUrl: existing.runUrl || input.runUrl || "",
+        updatedAt: now
+      });
+      writeAgentActions();
+      return existing;
+    }
 
     if (existing) {
       Object.assign(existing, base, {
@@ -1516,6 +1577,15 @@
     }
 
     renderSourceCheckMessage("Validating source", "Calling the Operator Backend now.", "info");
+    logActivity({
+      type: "source_check",
+      status: "started",
+      product: title,
+      source: "admin",
+      title: "Source Check started",
+      detail: `Checking ${title} against ${sport ? titleCase(sport) : "all supported sports"}.`
+    });
+    renderActivityLog();
 
     try {
       const url = endpoint
@@ -1525,8 +1595,26 @@
         + "&sport=" + encodeURIComponent(sport);
       const data = await fetchJson(url);
       renderBackendValidationResult(data);
+      logActivity({
+        type: "source_check",
+        status: data && data.status ? data.status : data && data.ok ? "completed" : "failed",
+        product: data && (data.matched_name || data.title) ? (data.matched_name || data.title) : title,
+        source: "operator_backend",
+        title: "Source Check completed",
+        detail: data && data.recommended_action ? data.recommended_action : "Source validation completed."
+      });
+      renderActivityLog();
     } catch (err) {
       renderSourceCheckMessage("Backend validation failed", err && err.message ? err.message : String(err), "critical");
+      logActivity({
+        type: "source_check",
+        status: "failed",
+        product: title,
+        source: "operator_backend",
+        title: "Source Check failed",
+        detail: err && err.message ? err.message : String(err)
+      });
+      renderActivityLog();
     }
   }
 
@@ -1551,6 +1639,16 @@
         : "The Operator Backend is checking recent Checklistcenter items against source Google Sheets.",
       "info"
     );
+    logActivity({
+      type: "source_watch",
+      status: "started",
+      source: auditMode,
+      title: `${modeLabel} started`,
+      detail: auditMode === "quick_json"
+        ? "Checking recent Checklistcenter items against public JSON."
+        : "Checking recent Checklistcenter items against source Google Sheets."
+    });
+    renderActivityLog();
 
     try {
       const url = endpoint
@@ -1585,7 +1683,7 @@
     }
   }
 
-  async function previewSourceImport(sourceUrl, sport) {
+  async function previewSourceImport(sourceUrl, sport, actionId) {
     const endpoint = readOperatorEndpoint();
 
     if (!endpoint) {
@@ -1594,6 +1692,16 @@
     }
 
     renderSourceCheckMessage("Building import preview", "The Operator Backend is parsing the source page into Chasing Majors rows.", "info");
+    const action = actionId ? state.agentActions.find(item => item.id === actionId) : null;
+    logActivity({
+      type: "source_import",
+      status: "started",
+      product: action && action.product ? action.product : "",
+      source: "admin",
+      title: "Import preview started",
+      detail: "Parsing source checklist rows and parallels before any sheet write."
+    });
+    renderActivityLog();
 
     try {
       const url = endpoint
@@ -1603,8 +1711,26 @@
         + "&sport=" + encodeURIComponent(sport || "");
       const data = await fetchJson(url);
       renderImportPreview(data);
+      logActivity({
+        type: "source_import",
+        status: data && data.status ? data.status : data && data.ok ? "preview_ready" : "failed",
+        product: data && data.product && data.product.display_name ? data.product.display_name : action && action.product ? action.product : "",
+        source: "operator_backend",
+        title: "Import preview completed",
+        detail: `${formatNumber(data && data.row_count || 0)} rows and ${formatNumber(data && data.parallel_count || 0)} parallels parsed.`
+      });
+      renderActivityLog();
     } catch (err) {
       renderSourceCheckMessage("Import preview failed", err && err.message ? err.message : String(err), "critical");
+      logActivity({
+        type: "source_import",
+        status: "failed",
+        product: action && action.product ? action.product : "",
+        source: "operator_backend",
+        title: "Import preview failed",
+        detail: err && err.message ? err.message : String(err)
+      });
+      renderActivityLog();
     }
   }
 
@@ -1623,6 +1749,16 @@
     }
 
     renderSourceCheckMessage("Writing to Google Sheet", "The Operator Backend is updating the mapped source sheet and validating the result.", "info");
+    const action = actionId ? state.agentActions.find(item => item.id === actionId) : null;
+    logActivity({
+      type: "source_import",
+      status: "started",
+      product: action && action.product ? action.product : "",
+      source: "admin",
+      title: "Sheet write started",
+      detail: "Admin requested product-scoped write to Google Sheets."
+    });
+    renderActivityLog();
     if (actionId) {
       updateAgentAction(actionId, {
         status: "running",
@@ -2425,8 +2561,11 @@
     const checklistVault = publishValidation.checklist_vault || {};
     const chatbot = publishValidation.chatbot || {};
     const publicPassed = !!(checklistVault.ok && chatbot.ok);
+    let primaryAction = null;
     if (actionId) {
-      updateAgentAction(actionId, {
+      primaryAction = updateAgentAction(actionId, {
+        type: "checklist_publish",
+        source: "operator_backend",
         status: (validation.ok && publish.ok && publicPassed) ? "validated" : "needs_admin",
         product: product.display_name || "",
         sport: product.sport || "",
@@ -2436,19 +2575,22 @@
         runUrl: publish.checklist_url || publish.chatbot_url || ""
       });
     }
-    upsertAgentAction({
-      type: "checklist_publish",
-      source: "operator_backend",
-      product: product.display_name || "",
-      sport: product.sport || "",
-      code: product.code || "",
-      riskLevel: publicPassed ? "low" : "medium",
-      status: (validation.ok && publish.ok && publicPassed) ? "validated" : "needs_admin",
-      recommendedAction: "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
-      executionResult: publish.ok ? "JSON published." : "Sheet write completed; publish needs review.",
-      validationResult: publicPassed ? "CV and ChatBot passed." : "CV/ChatBot validation needs review.",
-      runUrl: publish.checklist_url || publish.chatbot_url || ""
-    });
+    if (!primaryAction) {
+      primaryAction = upsertAgentAction({
+        type: "checklist_publish",
+        source: "operator_backend",
+        product: product.display_name || "",
+        sport: product.sport || "",
+        code: product.code || "",
+        riskLevel: publicPassed ? "low" : "medium",
+        status: (validation.ok && publish.ok && publicPassed) ? "validated" : "needs_admin",
+        recommendedAction: "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+        executionResult: publish.ok ? "JSON published." : "Sheet write completed; publish needs review.",
+        validationResult: publicPassed ? "CV and ChatBot passed." : "CV/ChatBot validation needs review.",
+        runUrl: publish.checklist_url || publish.chatbot_url || ""
+      });
+    }
+    pruneDuplicateProductActions(primaryAction);
     logActivity({
       type: "checklist_publish",
       status: (validation.ok && publish.ok && publicPassed) ? "validated" : "needs_review",
@@ -3369,6 +3511,7 @@
   }
 
   function renderAgentActions() {
+    collapseDuplicateAgentActions();
     const activeActions = getActiveAgentActions();
     const resolvedActions = getResolvedAgentActions();
 
@@ -3487,7 +3630,7 @@
           renderSourceCheckMessage("Source URL missing", "This queue card does not have a source URL to preview.", "warning");
           return;
         }
-        previewSourceImport(sourceUrl, action.sport || "");
+        previewSourceImport(sourceUrl, action.sport || "", action.id);
       });
     });
 
@@ -4281,6 +4424,7 @@
   els.autonomyModeSelect.value = state.autonomyMode;
   els.autonomyState.textContent = getAutonomyLabel(state.autonomyMode);
   els.typeFilter.addEventListener("change", renderOpportunities);
-  runAudit();
+  render();
   autoLoadBackendAgentMemoryIfEmpty();
+  setTimeout(runAudit, 250);
 })();

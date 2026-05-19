@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-19T23:59:28.560Z",
+  "exported_at": "2026-05-19T23:59:56.913Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -74,15 +74,15 @@
       "sport": "football",
       "code": "2025_topps_chrome_sapphire_football",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
-      "executionResult": "Source page found. Import preview started.",
-      "validationResult": "Public JSON covered: 732 rows, 1 parallels. Visual CV/ChatBot proof still pending.",
-      "runUrl": "https://www.checklistcenter.com/2025-topps-chrome-sapphire-football-football-card-checklist/",
-      "sourceUrl": "https://www.checklistcenter.com/2025-topps-chrome-sapphire-football-football-card-checklist/",
+      "executionResult": "Sheet write completed; publish needs review.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
+      "sourceUrl": "",
       "createdAt": "2026-05-19T20:39:51.659Z",
-      "updatedAt": "2026-05-19T23:59:20.048Z"
+      "updatedAt": "2026-05-19T23:59:55.304Z"
     },
     {
       "id": "visual_test|github_actions|2026 upper deck spring expo hockey|2026_upper_deck_spring_expo_hockey",
@@ -175,6 +175,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779235195311_j7v8vi",
+      "ts": "2026-05-19T23:59:55.311Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779235195305_5ql9hn",
+      "ts": "2026-05-19T23:59:55.305Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "732 checklist rows and 48 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779235166954_daatie",
       "ts": "2026-05-19T23:59:26.954Z",
@@ -632,6 +652,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-19T23:59:30.175Z",
+  "saved_at": "2026-05-19T23:59:58.022Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -6,7 +6,7 @@
  *   URLFetchApp, Google Sheets access, Script Properties, and later
  *   approved publish functions.
  * - Keep the public GitHub Pages Command Center free of secrets.
- *
+ *œ
  * Current actions:
  * - health
  * - sourceWatch

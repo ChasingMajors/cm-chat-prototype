@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc38-render-guard-2026-05-19";
+  const COMMAND_CENTER_VERSION = "cc39-operator-timeouts-2026-05-19";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -1688,7 +1688,7 @@
         + "action=validateSourceProduct"
         + "&title=" + encodeURIComponent(title)
         + "&sport=" + encodeURIComponent(sport);
-      const data = await fetchJson(url);
+      const data = await fetchJson(url, { timeoutMs: 60000 });
       renderBackendValidationResult(data);
       logActivity({
         type: "source_check",
@@ -1750,7 +1750,7 @@
         + (endpoint.indexOf("?") > -1 ? "&" : "?")
         + "action=sourceWatch"
         + "&mode=" + encodeURIComponent(auditMode);
-      const data = await fetchJson(url);
+      const data = await fetchJson(url, { timeoutMs: auditMode === "deep_sheets" ? 180000 : 60000 });
       const items = Array.isArray(data.items) ? data.items : [];
       const actionable = items.filter(item => item.status === "missing" || item.status === "needs_review" || item.status === "possible_update");
       const queuedCount = queueSourceWatchActions(items, auditMode);
@@ -1804,7 +1804,7 @@
         + "action=previewSourceImport"
         + "&sourceUrl=" + encodeURIComponent(sourceUrl)
         + "&sport=" + encodeURIComponent(sport || "");
-      const data = await fetchJson(url);
+      const data = await fetchJson(url, { timeoutMs: 90000 });
       renderImportPreview(data);
       logActivity({
         type: "source_import",
@@ -1870,7 +1870,7 @@
         + "&sourceUrl=" + encodeURIComponent(sourceUrl)
         + "&sport=" + encodeURIComponent(sport || "")
         + "&key=" + encodeURIComponent(key);
-      const data = await fetchJson(url);
+      const data = await fetchJson(url, { timeoutMs: 240000 });
       renderExecuteResult(data, actionId);
     } catch (err) {
       const detail = err && err.message ? err.message : String(err);
@@ -1946,7 +1946,7 @@
         + "action=validateSourceProduct"
         + "&title=" + encodeURIComponent(action.product || "")
         + "&sport=" + encodeURIComponent(action.sport || "");
-      const data = await fetchJson(url);
+      const data = await fetchJson(url, { timeoutMs: 90000 });
       const covered = data && data.ok && data.status === "covered";
       const rowCount = Number(data && data.sheet_row_count || 0);
       const parallelCount = Number(data && data.sheet_parallel_count || 0);
@@ -2315,7 +2315,7 @@
         + "&code=" + encodeURIComponent(plan.code || "")
         + "&key=" + encodeURIComponent(key);
 
-      const data = await fetchJson(url);
+      const data = await fetchJson(url, { timeoutMs: 60000 });
       renderVisualDispatchResult(data, plan);
     } catch (err) {
       renderSourceCheckMessage("Agent visual test failed", err && err.message ? err.message : String(err), "critical");
@@ -2352,7 +2352,7 @@
         + "&startedAt=" + encodeURIComponent(existing.startedAt || "")
         + "&key=" + encodeURIComponent(key);
 
-      const data = await fetchJson(url);
+      const data = await fetchJson(url, { timeoutMs: 60000 });
       renderVisualStatusResult(data, plan);
       if (!isTerminalVisualRecord(data)) {
         scheduleVisualStatusPoll(plan, (opts.pollAttempt || 1) + 1);
@@ -3046,7 +3046,7 @@
         + (endpoint.indexOf("?") > -1 ? "&" : "?")
         + "action=loadAgentMemory"
         + "&key=" + encodeURIComponent(key);
-      const data = await fetchJson(url);
+      const data = await fetchJson(url, { timeoutMs: 60000 });
       if (!data || !data.ok) throw new Error(data && data.error ? data.error : "Backend load failed.");
       if (!data.has_memory || !data.memory) {
         updateMemoryStatus("No backend memory has been saved yet.", "empty");

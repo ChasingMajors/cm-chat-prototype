@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=cc22" />
+  <link rel="stylesheet" href="./styles.css?v=cc35" />
 </head>
 <body>
   <main class="shell">
@@ -58,17 +58,18 @@
       </div>
     </section>
 
-    <section class="panel next-panel">
-      <div class="panel-head">
+    <details class="panel next-panel next-panel-collapsed">
+      <summary class="next-panel-summary">
         <div>
           <h2>What’s Next</h2>
-          <p>The agent’s ranked action plan. Start here before reading the full audit queue.</p>
+          <p>Agent-ranked ideas and future build lanes. Expand when you want the longer planning view.</p>
         </div>
-      </div>
+        <span>Open</span>
+      </summary>
       <div id="nextActionList" class="next-action-list">
         <div class="skeleton-card"></div>
       </div>
-    </section>
+    </details>
 
     <section class="grid two-col">
       <div class="panel agent-action-panel">

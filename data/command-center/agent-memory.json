@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-19T23:44:50.129Z",
+  "exported_at": "2026-05-19T23:47:08.372Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -30,6 +30,24 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "checklist_publish|operator_backend|2025-26 topps simplicidad uefa club competitions soccer|2025_26_topps_simplicidad_uefa_club_competitions_soccer",
+      "type": "checklist_publish",
+      "source": "operator_backend",
+      "product": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_simplicidad_uefa_club_competitions_soccer",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "adminDecision": "",
+      "executionResult": "Sheet write completed; publish needs review.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_topps_simplicidad_uefa_club_competitions_soccer&sport=soccer&type=product",
+      "sourceUrl": "",
+      "createdAt": "2026-05-19T23:47:06.765Z",
+      "updatedAt": "2026-05-19T23:47:06.765Z"
+    },
     {
       "id": "checklist_publish|operator_backend|2025 topps chrome sapphire football|2025_topps_chrome_sapphire_football",
       "type": "checklist_publish",
@@ -83,24 +101,6 @@
       "sourceUrl": "",
       "createdAt": "2026-05-17T22:02:27.440Z",
       "updatedAt": "2026-05-18T03:02:39.194Z"
-    },
-    {
-      "id": "source_import|wordpress_api|2025-26 topps simplicidad uefa club competitions soccer",
-      "type": "source_import",
-      "source": "wordpress_api",
-      "product": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
-      "sport": "soccer",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "createdAt": "2026-05-17T21:42:01.499Z",
-      "updatedAt": "2026-05-18T12:46:35.417Z",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-simplicidad-uefa-club-competitions-soccer-card-checklist/"
     },
     {
       "id": "source_import|wordpress_api|2025-26 panini noir road to fifa world cup 26 soccer",
@@ -157,6 +157,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779234426770_k5yzm0",
+      "ts": "2026-05-19T23:47:06.770Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "304 checklist rows and 135 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779234288527_gjhrzm",
       "ts": "2026-05-19T23:44:48.527Z",
@@ -466,6 +476,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-19T23:44:51.171Z",
+  "saved_at": "2026-05-19T23:47:09.373Z",
   "saved_by": "cm_command_center_operator"
 }

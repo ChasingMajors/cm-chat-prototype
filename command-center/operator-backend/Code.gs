@@ -136,6 +136,16 @@ function doGet(e) {
       return json_(executeSourceImport_({
         sourceUrl: p.sourceUrl || p.url || "",
         sport: p.sport || "",
+        key: p.key || "",
+        publish: p.publish || ""
+      }));
+    }
+
+    if (action === "publishImportedChecklist") {
+      return json_(publishImportedChecklist_({
+        sport: p.sport || "",
+        bucket: p.bucket || p.year || "",
+        code: p.code || "",
         key: p.key || ""
       }));
     }
@@ -173,7 +183,7 @@ function doGet(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -202,6 +212,10 @@ function doPost(e) {
       return json_(executeSourceImport_(body));
     }
 
+    if (action === "publishImportedChecklist") {
+      return json_(publishImportedChecklist_(body));
+    }
+
     if (action === "dispatchVisualProductTest") {
       return json_(dispatchVisualProductTest_(body));
     }
@@ -225,7 +239,7 @@ function doPost(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -317,6 +331,7 @@ function executeSourceImport_(input) {
 
   const product = preview.product || {};
   const sport = normalize_(product.sport);
+  const shouldPublish = shouldPublishAfterImport_(input && input.publish);
   const targetSpreadsheetId = getChecklistSpreadsheetId_(sport, product.target_bucket || product.year);
   if (!targetSpreadsheetId) {
     return {
@@ -341,7 +356,13 @@ function executeSourceImport_(input) {
 
   const validation = validateWrittenProduct_(ss, product.code);
 
-  const publishResult = publishChecklistAfterImport_(product, input && input.key);
+  const publishResult = shouldPublish
+    ? publishChecklistAfterImport_(product, input && input.key)
+    : {
+      ok: false,
+      skipped: true,
+      reason: "Publish skipped for phased import. Run publishImportedChecklist next."
+    };
 
   return {
     ok: true,
@@ -364,6 +385,11 @@ function executeSourceImport_(input) {
       : "Sheet write succeeded, but publish/live validation needs review.",
     updated_at: new Date().toISOString()
   };
+}
+
+function shouldPublishAfterImport_(value) {
+  const raw = safeString_(value).trim().toLowerCase();
+  return !(raw === "0" || raw === "false" || raw === "no" || raw === "skip");
 }
 
 function runSourceWatch_(mode) {
@@ -1074,6 +1100,33 @@ function publishChecklistAfterImport_(product, key) {
   }
 
   return data;
+}
+
+function publishImportedChecklist_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const product = {
+    sport: normalize_(input && input.sport),
+    target_bucket: safeString_(input && (input.bucket || input.year)).trim(),
+    year: safeString_(input && (input.bucket || input.year)).trim(),
+    code: safeString_(input && input.code).trim()
+  };
+
+  if (!product.sport || !product.target_bucket || !product.code) {
+    return {
+      ok: false,
+      error: "Missing sport, bucket, or code for publishImportedChecklist."
+    };
+  }
+
+  const publish = publishChecklistAfterImport_(product, input && input.key);
+  return {
+    ok: !!(publish && publish.ok),
+    status: publish && publish.ok ? "published" : "publish_needs_review",
+    product: product,
+    publish: publish,
+    updated_at: new Date().toISOString()
+  };
 }
 
 function dispatchVisualProductTest_(input) {

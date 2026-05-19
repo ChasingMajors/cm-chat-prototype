@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc41-exact-coverage-2026-05-19";
+  const COMMAND_CENTER_VERSION = "cc42-phased-import-2026-05-19";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -1870,9 +1870,13 @@
         + "action=executeSourceImport"
         + "&sourceUrl=" + encodeURIComponent(sourceUrl)
         + "&sport=" + encodeURIComponent(sport || "")
-        + "&key=" + encodeURIComponent(key);
+        + "&key=" + encodeURIComponent(key)
+        + "&publish=0";
       const data = await fetchJson(url, { timeoutMs: 240000 });
       renderExecuteResult(data, actionId);
+      if (data && data.ok && data.publish && data.publish.skipped) {
+        publishImportedChecklist(data, actionId);
+      }
     } catch (err) {
       const detail = err && err.message ? err.message : String(err);
       if (actionId) {
@@ -1894,6 +1898,74 @@
         renderActivityLog();
       }
       renderSourceCheckMessage("Import request failed", detail, "critical");
+    }
+  }
+
+  async function publishImportedChecklist(writeData, actionId) {
+    const endpoint = readOperatorEndpoint();
+    const key = readOperatorKey();
+    const product = writeData && writeData.product ? writeData.product : {};
+
+    if (!endpoint || !key || !product.code || !product.sport || !(writeData.target_bucket || product.target_bucket || product.year)) return;
+
+    logActivity({
+      type: "checklist_publish",
+      status: "started",
+      product: product.display_name || "",
+      source: "operator_backend",
+      title: "JSON publish started",
+      detail: "Sheet write is complete. Publishing product-scoped JSON as a separate phase."
+    });
+    if (actionId) {
+      updateAgentAction(actionId, {
+        status: "running",
+        executionResult: "Sheet write completed. JSON publish started."
+      });
+      renderAgentActions();
+      renderActionLanes();
+    }
+    renderActivityLog();
+
+    try {
+      const bucket = writeData.target_bucket || product.target_bucket || product.year || "";
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=publishImportedChecklist"
+        + "&sport=" + encodeURIComponent(product.sport || "")
+        + "&bucket=" + encodeURIComponent(bucket)
+        + "&code=" + encodeURIComponent(product.code || "")
+        + "&key=" + encodeURIComponent(key);
+      const publishData = await fetchJson(url, { timeoutMs: 240000 });
+      const merged = Object.assign({}, writeData, {
+        publish: publishData && publishData.publish ? publishData.publish : publishData,
+        status: publishData && publishData.ok ? "written_published_validated" : "written_publish_needs_review",
+        next_step: publishData && publishData.ok
+          ? "Published. Recheck coverage after GitHub Pages has propagated."
+          : "Sheet write succeeded, but publish/live validation needs review."
+      });
+      renderExecuteResult(merged, actionId);
+    } catch (err) {
+      const detail = err && err.message ? err.message : String(err);
+      if (actionId) {
+        updateAgentAction(actionId, {
+          status: "needs_admin",
+          executionResult: "Sheet write completed; JSON publish request failed.",
+          validationResult: detail,
+          recommendedAction: "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy."
+        });
+        renderAgentActions();
+        renderActionLanes();
+      }
+      logActivity({
+        type: "checklist_publish",
+        status: "failed",
+        product: product.display_name || "",
+        source: "operator_backend",
+        title: "JSON publish failed",
+        detail: detail
+      });
+      renderActivityLog();
+      renderSourceCheckMessage("Publish request failed", detail, "critical");
     }
   }
 

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-19T20:24:13.552Z",
+  "exported_at": "2026-05-19T20:35:23.202Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -30,6 +30,24 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "source_import|wordpress_api|2025 topps chrome sapphire football",
+      "type": "source_import",
+      "source": "wordpress_api",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "sport": "football",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Football source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2025-topps-chrome-sapphire-football-football-card-checklist/",
+      "createdAt": "2026-05-19T20:35:21.597Z",
+      "updatedAt": "2026-05-19T20:35:21.597Z"
+    },
     {
       "id": "visual_test|github_actions|2026 upper deck spring expo hockey|2026_upper_deck_spring_expo_hockey",
       "type": "visual_test",
@@ -99,7 +117,7 @@
       "validationResult": "",
       "runUrl": "",
       "createdAt": "2026-05-17T21:42:01.499Z",
-      "updatedAt": "2026-05-18T12:46:35.417Z",
+      "updatedAt": "2026-05-19T20:35:21.599Z",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-spring-expo-hockey-card-checklist/"
     },
     {
@@ -117,7 +135,7 @@
       "validationResult": "",
       "runUrl": "",
       "createdAt": "2026-05-17T21:42:01.499Z",
-      "updatedAt": "2026-05-18T12:46:35.417Z",
+      "updatedAt": "2026-05-19T20:35:21.599Z",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-noir-road-to-fifa-world-cup-26-soccer-card-checklist/"
     },
     {
@@ -135,7 +153,7 @@
       "validationResult": "",
       "runUrl": "",
       "createdAt": "2026-05-17T21:42:01.498Z",
-      "updatedAt": "2026-05-18T12:46:35.416Z",
+      "updatedAt": "2026-05-19T20:35:21.598Z",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-baseball-nation-baseball-card-checklist/"
     },
     {
@@ -157,6 +175,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779222921600_5iuikb",
+      "ts": "2026-05-19T20:35:21.600Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch complete",
+      "detail": "20 source items checked. 4 need review. 4 review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779222921600_3efwt7",
+      "ts": "2026-05-19T20:35:21.600Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "4 findings are now visible in the Agent Action Queue for admin review.",
+      "status": "queued",
+      "product": "",
+      "source": "quick_json"
+    },
     {
       "id": "log_1779222251948_33gaag",
       "ts": "2026-05-19T20:24:11.948Z",
@@ -268,6 +306,6 @@
   },
   "known_issues": {},
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-19T20:24:17.260Z",
+  "saved_at": "2026-05-19T20:35:24.560Z",
   "saved_by": "cm_command_center_operator"
 }

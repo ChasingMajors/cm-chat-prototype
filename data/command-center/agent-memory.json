@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-19T23:48:03.425Z",
+  "exported_at": "2026-05-19T23:48:53.285Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -128,14 +128,14 @@
       "sport": "soccer",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "ignored",
       "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "adminDecision": "ignored",
+      "executionResult": "Admin ignored this exact source product. Future Source Watch runs will omit it unless source ignores are cleared.",
+      "validationResult": "No app change needed.",
       "runUrl": "",
       "createdAt": "2026-05-17T21:42:01.499Z",
-      "updatedAt": "2026-05-19T20:35:21.599Z",
+      "updatedAt": "2026-05-19T23:48:51.681Z",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-noir-road-to-fifa-world-cup-26-soccer-card-checklist/"
     },
     {
@@ -175,6 +175,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779234531681_yk5z10",
+      "ts": "2026-05-19T23:48:51.681Z",
+      "type": "source_watch",
+      "title": "Source product ignored",
+      "detail": "2025-26 Panini Noir Road to FIFA World Cup 26 Soccer will be skipped in future Source Watch queues.",
+      "status": "ignored",
+      "product": "2025-26 Panini Noir Road to FIFA World Cup 26 Soccer",
+      "source": "admin"
+    },
     {
       "id": "log_1779234481824_fjvzfm",
       "ts": "2026-05-19T23:48:01.824Z",
@@ -541,9 +551,17 @@
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-baseball-nation-baseball-card-checklist/",
       "reason": "Admin marked this exact source product as fringe or intentionally skipped.",
       "ignoredAt": "2026-05-19T20:45:53.454Z"
+    },
+    "soccer|https www checklistcenter com 2025-26-panini-noir-road-to-fifa-world-cup-26-soccer-card-checklist": {
+      "product": "2025-26 Panini Noir Road to FIFA World Cup 26 Soccer",
+      "sport": "soccer",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-noir-road-to-fifa-world-cup-26-soccer-card-checklist/",
+      "reason": "Admin marked this exact source product as fringe or intentionally skipped.",
+      "ignoredAt": "2026-05-19T23:48:51.680Z"
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-19T23:48:04.435Z",
+  "saved_at": "2026-05-19T23:48:54.636Z",
   "saved_by": "cm_command_center_operator"
 }

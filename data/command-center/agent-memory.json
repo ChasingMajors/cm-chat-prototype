@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-19T22:12:45.148Z",
+  "exported_at": "2026-05-19T22:18:59.655Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -38,15 +38,15 @@
       "sport": "football",
       "code": "2025_topps_chrome_sapphire_football",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "Public JSON covered: 1 rows, 0 parallels. Visual CV/ChatBot proof still pending.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_topps_chrome_sapphire_football&sport=football&type=product",
       "sourceUrl": "",
       "createdAt": "2026-05-19T20:39:51.659Z",
-      "updatedAt": "2026-05-19T22:12:43.546Z"
+      "updatedAt": "2026-05-19T22:18:58.049Z"
     },
     {
       "id": "visual_test|github_actions|2026 upper deck spring expo hockey|2026_upper_deck_spring_expo_hockey",
@@ -157,6 +157,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779229138050_n0pz89",
+      "ts": "2026-05-19T22:18:58.050Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779228763547_zoyqrv",
       "ts": "2026-05-19T22:12:43.547Z",
@@ -416,6 +426,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-19T22:12:46.377Z",
+  "saved_at": "2026-05-19T22:19:00.919Z",
   "saved_by": "cm_command_center_operator"
 }

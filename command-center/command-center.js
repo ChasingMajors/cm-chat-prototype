@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc37-loader-2026-05-19";
+  const COMMAND_CENTER_VERSION = "cc38-render-guard-2026-05-19";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -105,6 +105,35 @@
     edgeSignals: document.getElementById("edgeSignals"),
     buildTargets: document.getElementById("buildTargets")
   };
+
+  if (els.buildVersion) els.buildVersion.textContent = COMMAND_CENTER_VERSION;
+
+  window.addEventListener("error", event => {
+    const detail = event && event.message ? event.message : "Unknown Command Center runtime error.";
+    if (els.systemState) els.systemState.textContent = "Error";
+    if (els.briefList) {
+      els.briefList.innerHTML = `
+        <div class="brief-item">
+          <strong>Command Center runtime error</strong>
+          <span>${escapeHtml(detail)}</span>
+        </div>
+      `;
+    }
+  });
+
+  window.addEventListener("unhandledrejection", event => {
+    const reason = event && event.reason;
+    const detail = reason && reason.message ? reason.message : String(reason || "Unknown async error.");
+    if (els.systemState) els.systemState.textContent = "Error";
+    if (els.briefList) {
+      els.briefList.innerHTML = `
+        <div class="brief-item">
+          <strong>Command Center async error</strong>
+          <span>${escapeHtml(detail)}</span>
+        </div>
+      `;
+    }
+  });
 
   function readApprovals() {
     return readJsonStore(APPROVAL_KEY, {});
@@ -1178,6 +1207,20 @@
     const source = opportunities.find(o => o.type === "source_watch");
 
     const items = [];
+
+    if (!audit) {
+      items.push({
+        title: "Fast audit starting",
+        detail: "Command Center is loading lightweight index and manifest data now."
+      });
+      if (source) {
+        items.push({
+          title: "Source-watch connectors are ready",
+          detail: "Use Scan New Checklists for live Checklist Center review while the dashboard audit loads."
+        });
+      }
+      return items;
+    }
 
     if (audit.auditErrors && audit.auditErrors.length) {
       items.push({

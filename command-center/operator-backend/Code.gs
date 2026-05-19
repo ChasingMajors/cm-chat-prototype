@@ -1775,7 +1775,7 @@ function normalizeChecklistLineText_(line) {
 function extractParallelRows_(html, product, section, subset) {
   const out = [];
   const text = decodeEntities_(safeString_(html)).replace(/\s+/g, " ");
-  const re = /<strong>\s*(?:Parallels|Versions):\s*<\/strong>\s*([^<]+)/gi;
+  const re = /<strong>\s*(?:(?:[A-Za-z0-9' -]+)\s+)?(?:Parallels|Versions):\s*<\/strong>\s*([^<]+)/gi;
   let match;
 
   while ((match = re.exec(text)) !== null) {
@@ -1791,13 +1791,21 @@ function extractParallelRows_(html, product, section, subset) {
         sport: product.sport,
         applies_to_section: section,
         applies_to_subset: subset,
-        parallel_name: label.replace(/\s*#?\/?\d+\s*$/g, "").replace(/\s*1\/1\s*$/i, "").trim() || label,
+        parallel_name: cleanParallelName_(label),
         serial_no: extractSerialText_(label)
       });
     });
   }
 
   return out;
+}
+
+function cleanParallelName_(label) {
+  let out = safeString_(label).trim();
+  out = out.replace(/\s*\([^)]*\)\s*$/g, "").trim();
+  out = out.replace(/\s*\b1\s*\/\s*1\b\s*$/i, "").trim();
+  out = out.replace(/\s*#?\s*\/\s*\d+\s*$/g, "").trim();
+  return out || safeString_(label).trim();
 }
 
 function dedupeParallelRows_(rows) {

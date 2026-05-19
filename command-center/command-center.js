@@ -800,36 +800,66 @@
     return BLOCKED_SOURCE_TERMS.some(term => text.includes(normalize(term)));
   }
 
-  async function fetchJson(url) {
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error(`${res.status} ${url}`);
-    return res.json();
+  async function fetchJson(url, options) {
+    const opts = options || {};
+    const controller = new AbortController();
+    const timeoutMs = Number(opts.timeoutMs || 15000);
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      const res = await fetch(url, {
+        cache: opts.cache || "default",
+        signal: controller.signal
+      });
+      if (!res.ok) throw new Error(`${res.status} ${url}`);
+      return await res.json();
+    } catch (err) {
+      if (err && err.name === "AbortError") throw new Error(`Timed out after ${Math.round(timeoutMs / 1000)}s: ${url}`);
+      throw err;
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
-  async function postOperatorJson(endpoint, payload) {
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload || {})
-    });
-    if (!res.ok) throw new Error(`${res.status} ${endpoint}`);
-    return res.json();
+  async function postOperatorJson(endpoint, payload, options) {
+    const opts = options || {};
+    const controller = new AbortController();
+    const timeoutMs = Number(opts.timeoutMs || 60000);
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload || {}),
+        signal: controller.signal
+      });
+      if (!res.ok) throw new Error(`${res.status} ${endpoint}`);
+      return await res.json();
+    } catch (err) {
+      if (err && err.name === "AbortError") throw new Error(`Timed out after ${Math.round(timeoutMs / 1000)}s: ${endpoint}`);
+      throw err;
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
-  async function fetchProductBundles() {
+  async function fetchProductBundles(options) {
+    const opts = options || {};
     const manifests = {};
     const productsBySport = {};
     const errors = [];
 
     await Promise.all(SPORTS.map(async sport => {
       try {
-        const manifest = await fetchJson(`${DATA_BASE}/checklists/products/${sport}.json`);
+        const manifest = await fetchJson(`${DATA_BASE}/checklists/products/${sport}.json`, { timeoutMs: 10000 });
         manifests[sport] = manifest;
         productsBySport[sport] = {};
+        if (opts.manifestOnly) return;
 
         const shardNames = Array.from(new Set(Object.values(manifest.product_map || manifest.productMap || {}))).filter(Boolean);
         const shardResults = await Promise.allSettled(shardNames.map(async shard => {
-          const data = await fetchJson(`${DATA_BASE}/checklists/products/${shard}`);
+          const data = await fetchJson(`${DATA_BASE}/checklists/products/${shard}`, { timeoutMs: 10000 });
           return { shard, data };
         }));
 
@@ -850,18 +880,29 @@
       }
     }));
 
-    return { manifests, productsBySport, errors };
+    return { manifests, productsBySport, errors, manifestOnly: !!opts.manifestOnly };
   }
 
-  async function fetchVaultProducts() {
-    const manifest = await fetchJson(`${DATA_BASE}/vault/products/all.json`);
+  async function fetchVaultProducts(options) {
+    const opts = options || {};
+    const manifest = await fetchJson(`${DATA_BASE}/vault/products/all.json`, { timeoutMs: 10000 });
     const productMap = manifest.product_map || manifest.productMap || {};
     const products = {};
     const errors = [];
     const shardNames = Array.from(new Set(Object.values(productMap))).filter(Boolean);
 
+    if (opts.manifestOnly) {
+      return {
+        manifest,
+        products,
+        productMap,
+        errors,
+        manifestOnly: true
+      };
+    }
+
     const results = await Promise.allSettled(shardNames.map(async shard => {
-      const data = await fetchJson(`${DATA_BASE}/vault/products/${shard}`);
+      const data = await fetchJson(`${DATA_BASE}/vault/products/${shard}`, { timeoutMs: 10000 });
       return { shard, data };
     }));
 
@@ -873,7 +914,7 @@
       }
     });
 
-    return { manifest, products, errors };
+    return { manifest, products, productMap, errors, manifestOnly: false };
   }
 
   function makeOpportunity(input) {
@@ -913,7 +954,7 @@
       const manifest = bundleData.manifests[sport] || {};
       const productMap = manifest.product_map || manifest.productMap || {};
       const shard = productMap[code];
-      const product = bundleData.productsBySport[sport] && bundleData.productsBySport[sport][code];
+      const product = bundleData.manifestOnly ? null : bundleData.productsBySport[sport] && bundleData.productsBySport[sport][code];
 
       if (!shard) {
         missingManifest.push(item);
@@ -930,6 +971,8 @@
         }));
         return;
       }
+
+      if (bundleData.manifestOnly) return;
 
       if (!product) {
         missingBundle.push(item);
@@ -987,9 +1030,9 @@
       opportunities,
       stats: {
         missingManifest: missingManifest.length,
-        missingBundle: missingBundle.length,
-        emptyRows: emptyRows.length,
-        noParallels: noParallels.length
+        missingBundle: bundleData.manifestOnly ? "Deep only" : missingBundle.length,
+        emptyRows: bundleData.manifestOnly ? "Deep only" : emptyRows.length,
+        noParallels: bundleData.manifestOnly ? "Deep only" : noParallels.length
       }
     };
   }
@@ -1133,6 +1176,13 @@
     const source = opportunities.find(o => o.type === "source_watch");
 
     const items = [];
+
+    if (audit.auditErrors && audit.auditErrors.length) {
+      items.push({
+        title: "Fast audit loaded with partial data",
+        detail: audit.auditErrors.slice(0, 2).join(" | ")
+      });
+    }
 
     if (critical.length) {
       items.push({
@@ -3053,28 +3103,32 @@
     setLoading();
 
     try {
-      const [
-        checklistIndexPayload,
-        bundleData,
-        vaultData,
-        releasePayload,
-        earlySignalsPayload
-      ] = await Promise.all([
-        fetchJson(`${DATA_BASE}/checklists/index.json`),
-        fetchProductBundles(),
-        fetchVaultProducts(),
-        fetchJson(RELEASE_URL),
-        fetchJson(`${DATA_BASE}/players/mlb-early-signals.json`).catch(() => ({ signals: [] }))
+      const results = await Promise.allSettled([
+        fetchJson(`${DATA_BASE}/checklists/index.json`, { timeoutMs: 12000 }),
+        fetchProductBundles({ manifestOnly: true }),
+        fetchVaultProducts({ manifestOnly: true }),
+        fetchJson(RELEASE_URL, { timeoutMs: 10000 }),
+        fetchJson(`${DATA_BASE}/players/mlb-early-signals.json`, { timeoutMs: 10000 })
       ]);
+
+      const checklistIndexPayload = results[0].status === "fulfilled" ? results[0].value : { index: [] };
+      const bundleData = results[1].status === "fulfilled" ? results[1].value : { manifests: {}, productsBySport: {}, errors: [{ message: results[1].reason && results[1].reason.message ? results[1].reason.message : "Checklist manifests failed." }], manifestOnly: true };
+      const vaultData = results[2].status === "fulfilled" ? results[2].value : { manifest: {}, products: {}, productMap: {}, errors: [{ message: results[2].reason && results[2].reason.message ? results[2].reason.message : "Vault manifest failed." }], manifestOnly: true };
+      const releasePayload = results[3].status === "fulfilled" ? results[3].value : { rows: [] };
+      const earlySignalsPayload = results[4].status === "fulfilled" ? results[4].value : { signals: [] };
+      const auditErrors = results
+        .filter(result => result.status === "rejected")
+        .map(result => result.reason && result.reason.message ? result.reason.message : String(result.reason));
 
       const checklistIndex = checklistIndexPayload.index || checklistIndexPayload.rows || [];
       const releaseRows = releasePayload.rows || [];
-      const vaultIndex = Object.keys(vaultData.products || {}).map(code => {
-        const product = vaultData.products[code] || {};
+      const vaultSource = vaultData.manifestOnly ? (vaultData.productMap || {}) : (vaultData.products || {});
+      const vaultIndex = Object.keys(vaultSource).map(code => {
+        const product = vaultData.manifestOnly ? {} : vaultData.products[code] || {};
         const meta = product.meta || product;
         return {
           code,
-          name: meta.displayName || meta.display_name || meta.name || product.displayName || product.name || code,
+          name: meta.displayName || meta.display_name || meta.name || product.displayName || product.name || code.replace(/[_-]+/g, " "),
           sport: meta.sport || product.sport || ""
         };
       });
@@ -3100,8 +3154,10 @@
         releaseCount: releaseRows.length,
         checklistIndex,
         productsBySport: bundleData.productsBySport,
+        manifestOnly: bundleData.manifestOnly,
         bundleErrors: bundleData.errors.length,
         vaultErrors: vaultData.errors.length,
+        auditErrors,
         checklistStats: checklistAudit.stats,
         releaseStats: releaseAudit.stats,
         earlySignals: earlySignalsPayload

@@ -10,6 +10,7 @@
   const AUTONOMY_MODE_KEY = "cm_command_center_autonomy_mode_v1";
   const VISUAL_TEST_KEY = "cm_command_center_visual_tests_v1";
   const KNOWN_ISSUE_KEY = "cm_command_center_known_issues_v1";
+  const SOURCE_IGNORE_KEY = "cm_command_center_source_ignores_v1";
   const OPERATOR_ENDPOINT_KEY = "cm_command_center_operator_endpoint_v1";
   const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
   const AUTOMATION_GUARDRAILS = [
@@ -49,6 +50,7 @@
     autonomyMode: readAutonomyMode(),
     visualTests: readJsonStore(VISUAL_TEST_KEY, {}),
     knownIssues: readJsonStore(KNOWN_ISSUE_KEY, {}),
+    sourceIgnores: readJsonStore(SOURCE_IGNORE_KEY, {}),
     visualPollTimers: {},
     backendMemorySaveTimer: null,
     backendMemorySaving: false,
@@ -65,6 +67,7 @@
     importMemoryInput: document.getElementById("importMemoryInput"),
     saveBackendMemoryBtn: document.getElementById("saveBackendMemoryBtn"),
     loadBackendMemoryBtn: document.getElementById("loadBackendMemoryBtn"),
+    clearSourceIgnoresBtn: document.getElementById("clearSourceIgnoresBtn"),
     clearMemoryBtn: document.getElementById("clearMemoryBtn"),
     memoryStatus: document.getElementById("memoryStatus"),
     autonomyModeSelect: document.getElementById("autonomyModeSelect"),
@@ -161,6 +164,13 @@
     scheduleBackendMemorySave();
   }
 
+  function writeSourceIgnores() {
+    try {
+      localStorage.setItem(SOURCE_IGNORE_KEY, JSON.stringify(state.sourceIgnores));
+    } catch (err) {}
+    scheduleBackendMemorySave();
+  }
+
   function writeAgentActions() {
     try {
       localStorage.setItem(AGENT_ACTION_KEY, JSON.stringify(state.agentActions));
@@ -198,6 +208,7 @@
     writeActivityLog();
     writeVisualTests();
     writeKnownIssues();
+    writeSourceIgnores();
     writeAutonomyMode(state.autonomyMode);
   }
 
@@ -265,6 +276,18 @@
     const code = String(planOrItem && (planOrItem.code || planOrItem.Code || planOrItem.matched_code || "") || "").trim();
     const name = normalize(planOrItem && (planOrItem.productName || planOrItem.name || planOrItem.matched_name || planOrItem.title || ""));
     return [sport, code || name].filter(Boolean).join("|");
+  }
+
+  function buildSourceIgnoreKey(input) {
+    const sport = normalize(input && input.sport);
+    const sourceUrl = normalize(input && (input.sourceUrl || input.source_url || input.url || input.runUrl || ""));
+    const product = normalize(input && (input.product || input.title || input.matched_name || ""));
+    return [sport, sourceUrl || product].filter(Boolean).join("|");
+  }
+
+  function isSourceIgnored(input) {
+    const key = buildSourceIgnoreKey(input);
+    return !!(key && state.sourceIgnores && state.sourceIgnores[key]);
   }
 
   function getVisualStatusLabel(record) {
@@ -363,7 +386,7 @@
 
   function isResolvedAgentAction(action) {
     const status = String(action && action.status || "").toLowerCase();
-    return status === "validated" || status === "done";
+    return status === "validated" || status === "done" || status === "ignored";
   }
 
   function getActiveAgentActions() {
@@ -432,10 +455,14 @@
   }
 
   function queueSourceWatchActions(items, auditMode) {
+    const skippedIgnored = (Array.isArray(items) ? items : []).filter(isSourceIgnored).length;
     const actionable = (Array.isArray(items) ? items : []).filter(item => (
-      item.status === "missing" ||
-      item.status === "needs_review" ||
-      item.status === "possible_update"
+      !isSourceIgnored(item) &&
+      (
+        item.status === "missing" ||
+        item.status === "needs_review" ||
+        item.status === "possible_update"
+      )
     ));
 
     let createdOrUpdated = 0;
@@ -460,7 +487,15 @@
         status: "queued",
         source: auditMode || "source_watch",
         title: "Source Watch actions queued",
-        detail: `${createdOrUpdated} findings are now visible in the Agent Action Queue for admin review.`
+        detail: `${createdOrUpdated} findings are now visible in the Agent Action Queue for admin review.${skippedIgnored ? " " + skippedIgnored + " admin-ignored source item(s) were skipped." : ""}`
+      });
+    } else if (skippedIgnored) {
+      logActivity({
+        type: "source_watch",
+        status: "ignored",
+        source: auditMode || "source_watch",
+        title: "Source Watch ignored items skipped",
+        detail: `${skippedIgnored} admin-ignored source item(s) were omitted from the queue.`
       });
     }
 
@@ -472,6 +507,42 @@
     if (!action) return null;
     Object.assign(action, patch || {}, { updatedAt: new Date().toISOString() });
     writeAgentActions();
+    return action;
+  }
+
+  function ignoreFutureSourceAction(id) {
+    const action = state.agentActions.find(item => item.id === id);
+    if (!action) return null;
+
+    const key = buildSourceIgnoreKey(action);
+    if (!key) return action;
+
+    state.sourceIgnores[key] = {
+      product: action.product || "",
+      sport: action.sport || "",
+      code: action.code || "",
+      sourceUrl: action.sourceUrl || action.runUrl || "",
+      reason: "Admin marked this exact source product as fringe or intentionally skipped.",
+      ignoredAt: new Date().toISOString()
+    };
+    writeSourceIgnores();
+
+    updateAgentAction(id, {
+      status: "ignored",
+      adminDecision: "ignored",
+      executionResult: "Admin ignored this exact source product. Future Source Watch runs will omit it unless source ignores are cleared.",
+      validationResult: "No app change needed."
+    });
+
+    logActivity({
+      type: "source_watch",
+      status: "ignored",
+      product: action.product,
+      source: "admin",
+      title: "Source product ignored",
+      detail: `${action.product || "Source product"} will be skipped in future Source Watch queues.`
+    });
+
     return action;
   }
 
@@ -2544,6 +2615,7 @@
       activity_log: state.activityLog || [],
       visual_tests: state.visualTests || {},
       known_issues: state.knownIssues || {},
+      source_ignores: state.sourceIgnores || {},
       operator_endpoint: readOperatorEndpoint()
     };
   }
@@ -2554,7 +2626,8 @@
       (state.activityLog || []).length ||
       (state.tasks || []).length ||
       Object.keys(state.visualTests || {}).length ||
-      Object.keys(state.knownIssues || {}).length
+      Object.keys(state.knownIssues || {}).length ||
+      Object.keys(state.sourceIgnores || {}).length
     );
   }
 
@@ -2564,6 +2637,7 @@
       `${formatNumber((state.agentActions || []).length)} actions`,
       `${formatNumber((state.activityLog || []).length)} log entries`,
       `${formatNumber(Object.keys(state.knownIssues || {}).length)} known issues`,
+      `${formatNumber(Object.keys(state.sourceIgnores || {}).length)} source ignores`,
       `${formatNumber(Object.keys(state.visualTests || {}).length)} visual statuses`
     ];
     els.memoryStatus.innerHTML = `
@@ -2608,6 +2682,7 @@
     state.activityLog = Array.isArray(payload.activity_log) ? payload.activity_log : [];
     state.visualTests = payload.visual_tests && typeof payload.visual_tests === "object" ? payload.visual_tests : {};
     state.knownIssues = payload.known_issues && typeof payload.known_issues === "object" ? payload.known_issues : {};
+    state.sourceIgnores = payload.source_ignores && typeof payload.source_ignores === "object" ? payload.source_ignores : {};
 
     writeAllAgentMemory();
     if (payload.operator_endpoint) writeOperatorEndpoint(payload.operator_endpoint);
@@ -2785,7 +2860,8 @@
       AGENT_ACTION_KEY,
       ACTIVITY_LOG_KEY,
       VISUAL_TEST_KEY,
-      KNOWN_ISSUE_KEY
+      KNOWN_ISSUE_KEY,
+      SOURCE_IGNORE_KEY
     ].forEach(key => {
       try {
         localStorage.removeItem(key);
@@ -2798,6 +2874,7 @@
     state.activityLog = [];
     state.visualTests = {};
     state.knownIssues = {};
+    state.sourceIgnores = {};
 
     logActivity({
       type: "memory",
@@ -2811,6 +2888,23 @@
     render();
     updateMemoryStatus("Local memory cleared.", "reset");
     state.backendMemorySuspendAutoSave = false;
+  }
+
+  function clearSourceIgnores() {
+    const confirmed = window.confirm("Clear all Source Watch ignore rules? Previously skipped products can appear again on the next scan.");
+    if (!confirmed) return;
+
+    state.sourceIgnores = {};
+    writeSourceIgnores();
+    logActivity({
+      type: "source_watch",
+      status: "cleared",
+      source: "admin",
+      title: "Source ignores cleared",
+      detail: "Future Source Watch scans can queue products that were previously ignored."
+    });
+    renderActivityLog();
+    updateMemoryStatus("Source ignores cleared.", "admin rule");
   }
 
   async function runAudit() {
@@ -3363,6 +3457,9 @@
             <button class="action-btn approve" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="approved">Approve</button>
             <button class="action-btn" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="needs_admin">Needs Admin</button>
             <button class="action-btn" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="validated">Mark Validated</button>
+            ${action.type === "source_import" ? `
+              <button class="action-btn ignore" type="button" data-action-ignore-future="${escapeHtml(action.id)}">Ignore Future</button>
+            ` : ""}
             <button class="action-btn ignore" type="button" data-agent-action-id="${escapeHtml(action.id)}" data-agent-status="known_issue">Known Issue</button>
             ${action.runUrl && action.type !== "source_import" ? `<a class="action-btn" href="${escapeHtml(action.runUrl)}" target="_blank" rel="noopener noreferrer">Open Run</a>` : ""}
           </div>
@@ -3456,6 +3553,16 @@
         renderAgentActions();
         renderActionLanes();
         renderActivityLog();
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-ignore-future]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        ignoreFutureSourceAction(btn.dataset.actionIgnoreFuture);
+        renderAgentActions();
+        renderActionLanes();
+        renderActivityLog();
+        updateMemoryStatus("Source ignore saved.", "admin rule");
       });
     });
 
@@ -4141,6 +4248,7 @@
   });
   els.saveBackendMemoryBtn.addEventListener("click", saveBackendAgentMemory);
   els.loadBackendMemoryBtn.addEventListener("click", loadBackendAgentMemory);
+  els.clearSourceIgnoresBtn.addEventListener("click", clearSourceIgnores);
   els.clearMemoryBtn.addEventListener("click", clearLocalAgentMemory);
   els.autonomyModeSelect.addEventListener("change", () => {
     writeAutonomyMode(els.autonomyModeSelect.value || "approval_required");

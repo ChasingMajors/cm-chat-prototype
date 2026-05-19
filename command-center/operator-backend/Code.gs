@@ -691,7 +691,7 @@ function looseProductKey_(value) {
     .replace(/\b(19|20)(\d{2})-(\d{2})\b/g, "$1$2$3")
     .replace(/\bo\s+pee\s+chee\b/g, "opeechee")
     .replace(/\beuro\s+league\b/g, "euroleague")
-    .replace(/\bworld\s+cup\s+26\b/g, "worldcup26")
+    .replace(/\bworld\s+cup\s+26\b/g, "worldcup")
     .replace(/\bfifa\b/g, "fifa")
     .replace(/\buefa\b/g, "uefa")
     .replace(/\bwnba\b/g, "wnba")
@@ -1292,10 +1292,15 @@ function runScheduledSourceWatch_(input) {
 
   const mode = input && input.mode ? input.mode : "deep_sheets";
   const watch = runSourceWatch_(mode);
+  const memory = loadOrCreateAgentMemoryForSchedule_(input && input.key);
+  const sourceIgnores = memory.source_ignores || {};
+  const skippedIgnored = (watch.items || []).filter(function(item) {
+    return isMemorySourceIgnored_(item, sourceIgnores);
+  }).length;
   const actionable = (watch.items || []).filter(function(item) {
+    if (isMemorySourceIgnored_(item, sourceIgnores)) return false;
     return item.status === "missing" || item.status === "needs_review" || item.status === "possible_update";
   });
-  const memory = loadOrCreateAgentMemoryForSchedule_(input && input.key);
   const now = new Date().toISOString();
 
   memory.agent_actions = mergeScheduledSourceActions_(memory.agent_actions || [], actionable, now, watch.mode);
@@ -1304,7 +1309,7 @@ function runScheduledSourceWatch_(input) {
     ts: now,
     type: "source_watch",
     title: "Scheduled Source Watch complete",
-    detail: actionable.length + " actionable source items found from " + watch.coverage_source + ".",
+    detail: actionable.length + " actionable source items found from " + watch.coverage_source + "." + (skippedIgnored ? " " + skippedIgnored + " admin-ignored source item(s) skipped." : ""),
     status: actionable.length ? "needs_review" : "clear",
     product: "",
     source: "operator_backend"
@@ -1344,8 +1349,21 @@ function loadOrCreateAgentMemoryForSchedule_(key) {
     activity_log: [],
     visual_tests: {},
     known_issues: {},
+    source_ignores: {},
     operator_endpoint: ""
   };
+}
+
+function buildMemorySourceIgnoreKey_(item) {
+  const sport = normalize_(item && item.sport);
+  const sourceUrl = normalize_(item && (item.source_url || item.url || item.sourceUrl || item.runUrl || ""));
+  const product = normalize_(item && (item.matched_name || item.title || item.product || ""));
+  return [sport, sourceUrl || product].filter(Boolean).join("|");
+}
+
+function isMemorySourceIgnored_(item, sourceIgnores) {
+  const key = buildMemorySourceIgnoreKey_(item);
+  return !!(key && sourceIgnores && sourceIgnores[key]);
 }
 
 function mergeScheduledSourceActions_(existingActions, sourceItems, now, mode) {

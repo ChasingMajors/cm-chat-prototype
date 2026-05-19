@@ -132,6 +132,13 @@ function doGet(e) {
       }));
     }
 
+    if (action === "findChecklistCenterSource") {
+      return json_(findChecklistCenterSource_({
+        title: p.title || p.product || "",
+        sport: p.sport || ""
+      }));
+    }
+
     if (action === "executeSourceImport") {
       return json_(executeSourceImport_({
         sourceUrl: p.sourceUrl || p.url || "",
@@ -183,7 +190,7 @@ function doGet(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -206,6 +213,10 @@ function doPost(e) {
 
     if (action === "previewSourceImport") {
       return json_(previewSourceImport_(body));
+    }
+
+    if (action === "findChecklistCenterSource") {
+      return json_(findChecklistCenterSource_(body));
     }
 
     if (action === "executeSourceImport") {
@@ -239,7 +250,7 @@ function doPost(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -312,6 +323,88 @@ function previewSourceImport_(input) {
     warnings: parsed.warnings,
     next_step: "Review preview counts and samples. Sheet write is intentionally not enabled yet."
   };
+}
+
+function findChecklistCenterSource_(input) {
+  const title = safeString_(input && (input.title || input.product)).trim();
+  const sport = normalize_(input && input.sport);
+
+  if (!title) {
+    return {
+      ok: false,
+      error: "Missing title"
+    };
+  }
+
+  if (!isAllowedSport_(sport)) {
+    return {
+      ok: false,
+      error: "Unsupported sport"
+    };
+  }
+
+  const url = "https://www.checklistcenter.com/wp-json/wp/v2/search?per_page=10&search="
+    + encodeURIComponent(title);
+  const items = JSON.parse(fetchText_(url));
+  const candidates = (Array.isArray(items) ? items : [])
+    .map(function(item) {
+      const sourceTitle = normalizeTitleFromLink_(item && item.title ? item.title : titleFromChecklistCenterHref_(item && item.url));
+      const sourceUrl = absoluteChecklistCenterUrl_(item && item.url);
+      const sourceSport = inferSport_(sourceTitle + " " + sourceUrl);
+
+      return {
+        title: sourceTitle,
+        sport: sourceSport,
+        source_url: sourceUrl,
+        score: scoreSourceTitleMatch_(title, sourceTitle, sport, sourceSport)
+      };
+    })
+    .filter(function(item) {
+      return item.source_url &&
+        item.sport === sport &&
+        isProductChecklistHref_(item.source_url) &&
+        !hasBlockedTerm_(item.title) &&
+        item.score >= 80;
+    })
+    .sort(function(a, b) { return b.score - a.score; });
+
+  if (!candidates.length) {
+    return {
+      ok: false,
+      status: "not_found",
+      title: title,
+      sport: sport,
+      error: "No matching Checklistcenter source page found."
+    };
+  }
+
+  return {
+    ok: true,
+    status: "found",
+    title: title,
+    sport: sport,
+    match: candidates[0],
+    candidates: candidates.slice(0, 5)
+  };
+}
+
+function scoreSourceTitleMatch_(targetTitle, sourceTitle, targetSport, sourceSport) {
+  const targetNorm = normalize_(targetTitle);
+  const sourceNorm = normalize_(sourceTitle);
+  const targetLoose = looseProductKey_(targetTitle);
+  const sourceLoose = looseProductKey_(sourceTitle);
+  let score = targetSport === sourceSport ? 40 : 0;
+
+  if (targetNorm === sourceNorm) score += 300;
+  if (targetLoose && targetLoose === sourceLoose) score += 240;
+  if (sourceNorm.includes(targetNorm)) score += 160;
+  if (targetNorm.includes(sourceNorm) && sourceNorm.length > 10) score += 120;
+
+  targetNorm.split(" ").filter(Boolean).forEach(function(token) {
+    if (sourceNorm.includes(token)) score += 8;
+  });
+
+  return score;
 }
 
 function executeSourceImport_(input) {

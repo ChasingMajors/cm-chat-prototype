@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc42-phased-import-2026-05-19";
+  const COMMAND_CENTER_VERSION = "cc43-source-recovery-2026-05-19";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -1827,6 +1827,83 @@
         detail: err && err.message ? err.message : String(err)
       });
       renderActivityLog();
+    }
+  }
+
+  async function findSourceAndPreviewImport(actionId) {
+    const endpoint = readOperatorEndpoint();
+    const action = state.agentActions.find(item => item.id === actionId);
+    if (!action) return;
+
+    if (!endpoint) {
+      renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before finding the source page.", "warning");
+      return;
+    }
+
+    updateAgentAction(actionId, {
+      status: "running",
+      executionResult: "Finding Checklist Center source page before import preview."
+    });
+    logActivity({
+      type: "source_import",
+      status: "started",
+      product: action.product || "",
+      source: "operator_backend",
+      title: "Source lookup started",
+      detail: "Finding the Checklist Center page so the agent can rebuild product-scoped rows/parallels."
+    });
+    renderAgentActions();
+    renderActionLanes();
+    renderActivityLog();
+    renderSourceCheckMessage("Finding source page", "Looking up the matching Checklist Center source page, then opening an import preview.", "info");
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=findChecklistCenterSource"
+        + "&title=" + encodeURIComponent(action.product || "")
+        + "&sport=" + encodeURIComponent(action.sport || "");
+      const data = await fetchJson(url, { timeoutMs: 60000 });
+      if (!data || !data.ok || !data.match || !data.match.source_url) {
+        throw new Error(data && data.error ? data.error : "No matching Checklist Center source page found.");
+      }
+
+      updateAgentAction(actionId, {
+        sourceUrl: data.match.source_url,
+        runUrl: data.match.source_url,
+        executionResult: "Source page found. Import preview started."
+      });
+      logActivity({
+        type: "source_import",
+        status: "found",
+        product: action.product || "",
+        source: "operator_backend",
+        title: "Source page found",
+        detail: data.match.source_url
+      });
+      renderAgentActions();
+      renderActionLanes();
+      renderActivityLog();
+      previewSourceImport(data.match.source_url, action.sport || data.match.sport || "", actionId);
+    } catch (err) {
+      const detail = err && err.message ? err.message : String(err);
+      updateAgentAction(actionId, {
+        status: "needs_admin",
+        executionResult: detail,
+        recommendedAction: "Paste the source URL into Source Check or rerun Deep Sheets Source Watch."
+      });
+      logActivity({
+        type: "source_import",
+        status: "failed",
+        product: action.product || "",
+        source: "operator_backend",
+        title: "Source lookup failed",
+        detail: detail
+      });
+      renderAgentActions();
+      renderActionLanes();
+      renderActivityLog();
+      renderSourceCheckMessage("Source lookup failed", detail, "critical");
     }
   }
 
@@ -3761,6 +3838,9 @@
               <button class="action-btn approve" type="button" data-action-preview-import="${escapeHtml(action.id)}">Preview Import</button>
               <a class="action-btn" href="${escapeHtml(action.sourceUrl || action.runUrl)}" target="_blank" rel="noopener noreferrer">Open Source</a>
             ` : ""}
+            ${action.type === "checklist_publish" && action.product ? `
+              <button class="action-btn approve" type="button" data-action-find-source-preview="${escapeHtml(action.id)}">Find Source / Preview Import</button>
+            ` : ""}
             ${canTestProduct && !retestNeeded ? `
               <button class="action-btn" type="button" data-action-visual-test="${escapeHtml(action.id)}">Test CV/ChatBot</button>
             ` : ""}
@@ -3807,6 +3887,12 @@
           return;
         }
         previewSourceImport(sourceUrl, action.sport || "", action.id);
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-find-source-preview]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        findSourceAndPreviewImport(btn.dataset.actionFindSourcePreview);
       });
     });
 

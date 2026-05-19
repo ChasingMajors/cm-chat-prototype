@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-19T20:35:23.202Z",
+  "exported_at": "2026-05-19T20:39:53.261Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -30,6 +30,24 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "checklist_publish|operator_backend|2025 topps chrome sapphire football|2025_topps_chrome_sapphire_football",
+      "type": "checklist_publish",
+      "source": "operator_backend",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "sport": "football",
+      "code": "2025_topps_chrome_sapphire_football",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "adminDecision": "",
+      "executionResult": "Sheet write completed; publish needs review.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_topps_chrome_sapphire_football&sport=football&type=product",
+      "sourceUrl": "",
+      "createdAt": "2026-05-19T20:39:51.659Z",
+      "updatedAt": "2026-05-19T20:39:51.659Z"
+    },
     {
       "id": "source_import|wordpress_api|2025 topps chrome sapphire football",
       "type": "source_import",
@@ -176,6 +194,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1779223191660_6g01jn",
+      "ts": "2026-05-19T20:39:51.660Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "732 checklist rows and 1 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1779222921600_5iuikb",
       "ts": "2026-05-19T20:35:21.600Z",
       "type": "source_watch",
@@ -306,6 +334,6 @@
   },
   "known_issues": {},
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-19T20:35:24.560Z",
+  "saved_at": "2026-05-19T20:39:54.515Z",
   "saved_by": "cm_command_center_operator"
 }

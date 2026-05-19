@@ -69,6 +69,7 @@
     memoryStatus: document.getElementById("memoryStatus"),
     autonomyModeSelect: document.getElementById("autonomyModeSelect"),
     sourceCheckBtn: document.getElementById("sourceCheckBtn"),
+    scanSourcesBtn: document.getElementById("scanSourcesBtn"),
     agentCycleBtn: document.getElementById("agentCycleBtn"),
     sourceWatchQuickBtn: document.getElementById("sourceWatchQuickBtn"),
     sourceWatchDeepBtn: document.getElementById("sourceWatchDeepBtn"),
@@ -3655,7 +3656,7 @@
     }
 
     if (step.kind === "needs_admin") {
-      renderAgentCycleMessage(step.title, step.detail, "warning");
+      renderAgentCycleMessage(step.title, `${step.detail} Use Scan New Checklists if you want a fresh source scan without advancing this queue item.`, "warning");
       return;
     }
 
@@ -4129,6 +4130,7 @@
   }
 
   els.refreshBtn.addEventListener("click", runAudit);
+  els.scanSourcesBtn.addEventListener("click", () => runSourceWatchWithBackend("quick_json"));
   els.agentCycleBtn.addEventListener("click", runAgentCycle);
   els.clearDoneBtn.addEventListener("click", clearDoneTasks);
   els.clearResolvedAgentActionsBtn.addEventListener("click", clearResolvedAgentActions);

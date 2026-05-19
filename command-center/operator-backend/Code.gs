@@ -120,7 +120,8 @@ function doGet(e) {
     if (action === "validateSourceProduct") {
       return json_(validateSourceProduct_({
         title: p.title || "",
-        sport: p.sport || ""
+        sport: p.sport || "",
+        mode: p.mode || ""
       }));
     }
 
@@ -406,6 +407,7 @@ function normalizeSourceWatchMode_(mode) {
 function validateSourceProduct_(input) {
   const title = safeString_(input && input.title).trim();
   const sport = normalize_(input && input.sport);
+  const auditMode = normalizeSourceWatchMode_(input && input.mode ? input.mode : "quick_json");
 
   if (!title) {
     return {
@@ -435,14 +437,18 @@ function validateSourceProduct_(input) {
     };
   }
 
-  const indexRows = fetchChecklistIndex_();
+  const indexRows = fetchChecklistIndex_(auditMode);
   const item = {
     title: title,
     sport: sport,
     url: ""
   };
 
-  return Object.assign({ ok: true }, classifySourceItem_(item, indexRows));
+  return Object.assign({
+    ok: true,
+    mode: auditMode,
+    coverage_source: auditMode === "quick_json" ? "public_json" : "google_sheets"
+  }, classifySourceItem_(item, indexRows));
 }
 
 function fetchRecentChecklistCenterItems_() {

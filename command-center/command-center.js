@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc39-operator-timeouts-2026-05-19";
+  const COMMAND_CENTER_VERSION = "cc40-public-coverage-2026-05-19";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -1687,7 +1687,8 @@
         + (endpoint.indexOf("?") > -1 ? "&" : "?")
         + "action=validateSourceProduct"
         + "&title=" + encodeURIComponent(title)
-        + "&sport=" + encodeURIComponent(sport);
+        + "&sport=" + encodeURIComponent(sport)
+        + "&mode=quick_json";
       const data = await fetchJson(url, { timeoutMs: 60000 });
       renderBackendValidationResult(data);
       logActivity({
@@ -1945,8 +1946,9 @@
         + (endpoint.indexOf("?") > -1 ? "&" : "?")
         + "action=validateSourceProduct"
         + "&title=" + encodeURIComponent(action.product || "")
-        + "&sport=" + encodeURIComponent(action.sport || "");
-      const data = await fetchJson(url, { timeoutMs: 90000 });
+        + "&sport=" + encodeURIComponent(action.sport || "")
+        + "&mode=quick_json";
+      const data = await fetchJson(url, { timeoutMs: 30000 });
       const covered = data && data.ok && data.status === "covered";
       const rowCount = Number(data && data.sheet_row_count || 0);
       const parallelCount = Number(data && data.sheet_parallel_count || 0);

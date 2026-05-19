@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-19T23:41:48.617Z",
+  "exported_at": "2026-05-19T23:44:46.414Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -31,24 +31,6 @@
   ],
   "agent_actions": [
     {
-      "id": "source_import|wordpress_api|2026 donruss baseball",
-      "type": "source_import",
-      "source": "wordpress_api",
-      "product": "2026 Donruss Baseball",
-      "sport": "baseball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-donruss-baseball-card-checklist/",
-      "createdAt": "2026-05-19T23:38:50.090Z",
-      "updatedAt": "2026-05-19T23:38:50.090Z"
-    },
-    {
       "id": "checklist_publish|operator_backend|2025 topps chrome sapphire football|2025_topps_chrome_sapphire_football",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -64,7 +46,7 @@
       "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_topps_chrome_sapphire_football&sport=football&type=product",
       "sourceUrl": "",
       "createdAt": "2026-05-19T20:39:51.659Z",
-      "updatedAt": "2026-05-19T23:37:53.727Z"
+      "updatedAt": "2026-05-19T22:19:00.220Z"
     },
     {
       "id": "visual_test|github_actions|2026 upper deck spring expo hockey|2026_upper_deck_spring_expo_hockey",
@@ -174,7 +156,228 @@
       "updatedAt": "2026-05-17T18:48:27.703Z"
     }
   ],
-  "activity_log": [],
+  "activity_log": [
+    {
+      "id": "log_1779234284808_2px0xu",
+      "ts": "2026-05-19T23:44:44.808Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779229140220_7v3a9n",
+      "ts": "2026-05-19T22:19:00.220Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "732 public rows and 1 parallels found.",
+      "status": "covered",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779229138050_n0pz89",
+      "ts": "2026-05-19T22:18:58.050Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779228763547_zoyqrv",
+      "ts": "2026-05-19T22:12:43.547Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "1 public rows and 0 parallels found.",
+      "status": "covered",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779228760507_4mtjq1",
+      "ts": "2026-05-19T22:12:40.507Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779228555620_usbt86",
+      "ts": "2026-05-19T22:09:15.620Z",
+      "type": "validation",
+      "title": "Coverage recheck failed",
+      "detail": "Timed out after 90s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=validateSourceProduct&title=2025%20Topps%20Chrome%20Sapphire%20Football&sport=football",
+      "status": "failed",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779228465610_ezxnb5",
+      "ts": "2026-05-19T22:07:45.610Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779226717536_kouyrs",
+      "ts": "2026-05-19T21:38:37.536Z",
+      "type": "validation",
+      "title": "Coverage recheck failed",
+      "detail": "Timed out after 15s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=validateSourceProduct&title=2025%20Topps%20Chrome%20Sapphire%20Football&sport=football",
+      "status": "failed",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779226702521_o6bnih",
+      "ts": "2026-05-19T21:38:22.521Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779223553455_j2dj7w",
+      "ts": "2026-05-19T20:45:53.455Z",
+      "type": "source_watch",
+      "title": "Source product ignored",
+      "detail": "2026 Leaf Baseball Nation Baseball will be skipped in future Source Watch queues.",
+      "status": "ignored",
+      "product": "2026 Leaf Baseball Nation Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779223539792_xjkkin",
+      "ts": "2026-05-19T20:45:39.792Z",
+      "type": "source_watch",
+      "title": "Source product ignored",
+      "detail": "2026 Upper Deck Spring Expo Hockey will be skipped in future Source Watch queues.",
+      "status": "ignored",
+      "product": "2026 Upper Deck Spring Expo Hockey",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779223497737_s952ws",
+      "ts": "2026-05-19T20:44:57.737Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch complete",
+      "detail": "20 source items checked. 1 need review. 1 review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779223497736_gxe2dk",
+      "ts": "2026-05-19T20:44:57.736Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "1 findings are now visible in the Agent Action Queue for admin review.",
+      "status": "queued",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779223191660_6g01jn",
+      "ts": "2026-05-19T20:39:51.660Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "732 checklist rows and 1 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779222921600_5iuikb",
+      "ts": "2026-05-19T20:35:21.600Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch complete",
+      "detail": "20 source items checked. 4 need review. 4 review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779222921600_3efwt7",
+      "ts": "2026-05-19T20:35:21.600Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "4 findings are now visible in the Agent Action Queue for admin review.",
+      "status": "queued",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779222251948_33gaag",
+      "ts": "2026-05-19T20:24:11.948Z",
+      "type": "agent_cycle",
+      "title": "Admin decision required",
+      "detail": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer needs approval before the agent can continue.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1779108395418_3tahwi",
+      "ts": "2026-05-18T12:46:35.418Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch complete",
+      "detail": "20 source items checked. 4 need review. 4 review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779108395418_46cu04",
+      "ts": "2026-05-18T12:46:35.418Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "4 findings are now visible in the Agent Action Queue for admin review.",
+      "status": "queued",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779107986247_xscpuo",
+      "ts": "2026-05-18T12:39:46.247Z",
+      "type": "agent_cycle",
+      "title": "Execute approved import",
+      "detail": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer is approved and ready for a product-scoped sheet write.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1779107975580_yr961l",
+      "ts": "2026-05-18T12:39:35.580Z",
+      "type": "agent_action",
+      "title": "Agent action updated",
+      "detail": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer marked Approved.",
+      "status": "approved",
+      "product": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
+      "source": "wordpress_api"
+    },
+    {
+      "id": "log_1779107879908_ea0mek",
+      "ts": "2026-05-18T12:37:59.908Z",
+      "type": "agent_cycle",
+      "title": "Admin decision required",
+      "detail": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer needs approval before the agent can continue.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    }
+  ],
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -243,6 +446,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-19T23:41:49.850Z",
+  "saved_at": "2026-05-19T23:44:47.403Z",
   "saved_by": "cm_command_center_operator"
 }

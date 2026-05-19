@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-19T23:59:17.789Z",
+  "exported_at": "2026-05-19T23:59:21.657Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -77,12 +77,12 @@
       "status": "running",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
-      "executionResult": "Finding Checklist Center source page before import preview.",
+      "executionResult": "Source page found. Import preview started.",
       "validationResult": "Public JSON covered: 732 rows, 1 parallels. Visual CV/ChatBot proof still pending.",
-      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_topps_chrome_sapphire_football&sport=football&type=product",
-      "sourceUrl": "",
+      "runUrl": "https://www.checklistcenter.com/2025-topps-chrome-sapphire-football-football-card-checklist/",
+      "sourceUrl": "https://www.checklistcenter.com/2025-topps-chrome-sapphire-football-football-card-checklist/",
       "createdAt": "2026-05-19T20:39:51.659Z",
-      "updatedAt": "2026-05-19T23:59:16.186Z"
+      "updatedAt": "2026-05-19T23:59:20.048Z"
     },
     {
       "id": "visual_test|github_actions|2026 upper deck spring expo hockey|2026_upper_deck_spring_expo_hockey",
@@ -175,6 +175,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779235160056_vmmlwo",
+      "ts": "2026-05-19T23:59:20.056Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779235160049_gtt5zt",
+      "ts": "2026-05-19T23:59:20.049Z",
+      "type": "source_import",
+      "title": "Source page found",
+      "detail": "https://www.checklistcenter.com/2025-topps-chrome-sapphire-football-football-card-checklist/",
+      "status": "found",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779235156187_xgjv4a",
       "ts": "2026-05-19T23:59:16.187Z",
@@ -592,6 +612,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-19T23:59:19.000Z",
+  "saved_at": "2026-05-19T23:59:22.797Z",
   "saved_by": "cm_command_center_operator"
 }

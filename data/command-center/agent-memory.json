@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-19T23:38:48.873Z",
+  "exported_at": "2026-05-19T23:39:25.051Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -30,6 +30,24 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "source_import|wordpress_api|2026 donruss baseball",
+      "type": "source_import",
+      "source": "wordpress_api",
+      "product": "2026 Donruss Baseball",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-donruss-baseball-card-checklist/",
+      "createdAt": "2026-05-19T23:38:50.090Z",
+      "updatedAt": "2026-05-19T23:38:50.090Z"
+    },
     {
       "id": "checklist_publish|operator_backend|2025 topps chrome sapphire football|2025_topps_chrome_sapphire_football",
       "type": "checklist_publish",
@@ -157,6 +175,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779233963447_fsc0l1",
+      "ts": "2026-05-19T23:39:23.447Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2026 Donruss Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779233930091_vlh74z",
+      "ts": "2026-05-19T23:38:50.091Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch complete",
+      "detail": "20 source items checked. 2 need review. 1 review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779233930091_9rhtrr",
+      "ts": "2026-05-19T23:38:50.091Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "1 findings are now visible in the Agent Action Queue for admin review. 2 admin-ignored source item(s) were skipped.",
+      "status": "queued",
+      "product": "",
+      "source": "quick_json"
+    },
     {
       "id": "log_1779233927271_jzqxaf",
       "ts": "2026-05-19T23:38:47.271Z",
@@ -466,6 +514,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-19T23:38:50.059Z",
+  "saved_at": "2026-05-19T23:39:26.168Z",
   "saved_by": "cm_command_center_operator"
 }

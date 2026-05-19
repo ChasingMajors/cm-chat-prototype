@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-19T22:07:47.215Z",
+  "exported_at": "2026-05-19T22:09:17.221Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -38,15 +38,15 @@
       "sport": "football",
       "code": "2025_topps_chrome_sapphire_football",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "failed",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "Coverage recheck started...",
+      "validationResult": "Timed out after 90s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=validateSourceProduct&title=2025%20Topps%20Chrome%20Sapphire%20Football&sport=football",
       "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_topps_chrome_sapphire_football&sport=football&type=product",
       "sourceUrl": "",
       "createdAt": "2026-05-19T20:39:51.659Z",
-      "updatedAt": "2026-05-19T22:07:45.610Z"
+      "updatedAt": "2026-05-19T22:09:15.618Z"
     },
     {
       "id": "visual_test|github_actions|2026 upper deck spring expo hockey|2026_upper_deck_spring_expo_hockey",
@@ -157,6 +157,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779228555620_usbt86",
+      "ts": "2026-05-19T22:09:15.620Z",
+      "type": "validation",
+      "title": "Coverage recheck failed",
+      "detail": "Timed out after 90s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=validateSourceProduct&title=2025%20Topps%20Chrome%20Sapphire%20Football&sport=football",
+      "status": "failed",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779228465610_ezxnb5",
       "ts": "2026-05-19T22:07:45.610Z",
@@ -386,6 +396,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-19T22:07:48.198Z",
+  "saved_at": "2026-05-19T22:09:20.439Z",
   "saved_by": "cm_command_center_operator"
 }

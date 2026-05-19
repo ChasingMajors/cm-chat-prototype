@@ -443,12 +443,24 @@ function validateSourceProduct_(input) {
     sport: sport,
     url: ""
   };
+  const classified = classifySourceItem_(item, indexRows);
+
+  if (auditMode === "quick_json" && classified && classified.matched_code) {
+    const counts = fetchPublicChecklistProductCounts_(sport, classified.matched_code);
+    if (counts && counts.found) {
+      classified.sheet_row_count = counts.row_count;
+      classified.sheet_parallel_count = counts.parallel_count;
+      classified.public_row_count = counts.row_count;
+      classified.public_parallel_count = counts.parallel_count;
+      classified.public_shard = counts.shard;
+    }
+  }
 
   return Object.assign({
     ok: true,
     mode: auditMode,
     coverage_source: auditMode === "quick_json" ? "public_json" : "google_sheets"
-  }, classifySourceItem_(item, indexRows));
+  }, classified);
 }
 
 function fetchRecentChecklistCenterItems_() {
@@ -724,6 +736,33 @@ function fetchChecklistPublicJsonRows_() {
       parallel_count: Number(row.parallel_count || row.parallel_row_count || 0)
     });
   });
+}
+
+function fetchPublicChecklistProductCounts_(sport, code) {
+  const s = normalize_(sport);
+  const c = safeString_(code).trim();
+  if (!s || !c) return null;
+
+  try {
+    const manifest = JSON.parse(fetchText_(CM_APP_DATA_BASE + "/checklists/products/" + encodeURIComponent(s) + ".json"));
+    const productMap = manifest.product_map || manifest.productMap || {};
+    const shard = productMap[c];
+    if (!shard) return null;
+
+    const shardData = JSON.parse(fetchText_(CM_APP_DATA_BASE + "/checklists/products/" + encodeURIComponent(shard)));
+    const products = shardData.products || {};
+    const product = products[c] || null;
+    if (!product) return null;
+
+    return {
+      found: true,
+      shard: shard,
+      row_count: Array.isArray(product.rows) ? product.rows.length : 0,
+      parallel_count: Array.isArray(product.parallels) ? product.parallels.length : 0
+    };
+  } catch (err) {
+    return null;
+  }
 }
 
 function fetchChecklistSourceRows_() {

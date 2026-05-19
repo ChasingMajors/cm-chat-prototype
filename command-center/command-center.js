@@ -1,4 +1,5 @@
 (function () {
+  const COMMAND_CENTER_VERSION = "cc37-loader-2026-05-19";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -85,6 +86,7 @@
     systemState: document.getElementById("systemState"),
     autonomyState: document.getElementById("autonomyState"),
     autonomyReadiness: document.getElementById("autonomyReadiness"),
+    buildVersion: document.getElementById("buildVersion"),
     opportunityCount: document.getElementById("opportunityCount"),
     criticalCount: document.getElementById("criticalCount"),
     lastAudit: document.getElementById("lastAudit"),
@@ -3203,6 +3205,7 @@
     const opportunities = state.opportunities;
     const critical = opportunities.filter(o => o.severity === "critical");
 
+    if (els.buildVersion) els.buildVersion.textContent = COMMAND_CENTER_VERSION;
     els.systemState.textContent = "Ready";
     els.autonomyState.textContent = getAutonomyLabel(state.autonomyMode);
     renderAutonomyReadiness();

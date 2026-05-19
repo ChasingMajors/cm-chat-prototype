@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-19T23:59:21.657Z",
+  "exported_at": "2026-05-19T23:59:28.560Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -175,6 +175,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779235166954_daatie",
+      "ts": "2026-05-19T23:59:26.954Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779235161784_f3ldzc",
+      "ts": "2026-05-19T23:59:21.784Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "732 rows and 48 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779235160056_vmmlwo",
       "ts": "2026-05-19T23:59:20.056Z",
@@ -612,6 +632,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-19T23:59:22.797Z",
+  "saved_at": "2026-05-19T23:59:30.175Z",
   "saved_by": "cm_command_center_operator"
 }

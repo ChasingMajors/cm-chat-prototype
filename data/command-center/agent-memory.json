@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-19T23:44:46.414Z",
+  "exported_at": "2026-05-19T23:44:50.129Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -157,6 +157,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779234288527_gjhrzm",
+      "ts": "2026-05-19T23:44:48.527Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779234286474_pnrj0m",
+      "ts": "2026-05-19T23:44:46.474Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "304 rows and 135 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779234284808_2px0xu",
       "ts": "2026-05-19T23:44:44.808Z",
@@ -446,6 +466,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-19T23:44:47.403Z",
+  "saved_at": "2026-05-19T23:44:51.171Z",
   "saved_by": "cm_command_center_operator"
 }

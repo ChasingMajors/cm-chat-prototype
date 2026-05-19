@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-19T20:45:41.393Z",
+  "exported_at": "2026-05-19T20:45:55.057Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -164,14 +164,14 @@
       "sport": "baseball",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "ignored",
       "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "adminDecision": "ignored",
+      "executionResult": "Admin ignored this exact source product. Future Source Watch runs will omit it unless source ignores are cleared.",
+      "validationResult": "No app change needed.",
       "runUrl": "",
       "createdAt": "2026-05-17T21:42:01.498Z",
-      "updatedAt": "2026-05-19T20:44:57.732Z",
+      "updatedAt": "2026-05-19T20:45:53.454Z",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-baseball-nation-baseball-card-checklist/"
     },
     {
@@ -193,6 +193,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779223553455_j2dj7w",
+      "ts": "2026-05-19T20:45:53.455Z",
+      "type": "source_watch",
+      "title": "Source product ignored",
+      "detail": "2026 Leaf Baseball Nation Baseball will be skipped in future Source Watch queues.",
+      "status": "ignored",
+      "product": "2026 Leaf Baseball Nation Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1779223539792_xjkkin",
       "ts": "2026-05-19T20:45:39.792Z",
@@ -371,9 +381,17 @@
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-spring-expo-hockey-card-checklist/",
       "reason": "Admin marked this exact source product as fringe or intentionally skipped.",
       "ignoredAt": "2026-05-19T20:45:39.791Z"
+    },
+    "baseball|https www checklistcenter com 2026-leaf-baseball-nation-baseball-card-checklist": {
+      "product": "2026 Leaf Baseball Nation Baseball",
+      "sport": "baseball",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-baseball-nation-baseball-card-checklist/",
+      "reason": "Admin marked this exact source product as fringe or intentionally skipped.",
+      "ignoredAt": "2026-05-19T20:45:53.454Z"
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-19T20:45:42.908Z",
+  "saved_at": "2026-05-19T20:45:56.172Z",
   "saved_by": "cm_command_center_operator"
 }

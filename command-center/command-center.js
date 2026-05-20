@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc45-prv-source-watch-2026-05-19";
+  const COMMAND_CENTER_VERSION = "cc46-prv-top-action-2026-05-19";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -74,6 +74,7 @@
     autonomyModeSelect: document.getElementById("autonomyModeSelect"),
     sourceCheckBtn: document.getElementById("sourceCheckBtn"),
     scanSourcesBtn: document.getElementById("scanSourcesBtn"),
+    scanPrvSourcesBtn: document.getElementById("scanPrvSourcesBtn"),
     agentCycleBtn: document.getElementById("agentCycleBtn"),
     sourceWatchQuickBtn: document.getElementById("sourceWatchQuickBtn"),
     sourceWatchDeepBtn: document.getElementById("sourceWatchDeepBtn"),
@@ -4773,6 +4774,7 @@
 
   els.refreshBtn.addEventListener("click", runAudit);
   els.scanSourcesBtn.addEventListener("click", () => runSourceWatchWithBackend("quick_json"));
+  els.scanPrvSourcesBtn.addEventListener("click", () => runPrvSourceWatchWithBackend());
   els.agentCycleBtn.addEventListener("click", runAgentCycle);
   els.clearDoneBtn.addEventListener("click", clearDoneTasks);
   els.clearResolvedAgentActionsBtn.addEventListener("click", clearResolvedAgentActions);

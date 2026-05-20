@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T22:45:16.175Z",
+  "exported_at": "2026-05-20T22:45:34.367Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -221,15 +221,15 @@
       "sport": "basketball",
       "code": "2025_26_bowman_s_best_university_basketball",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Review PRV sheet rows, then publish PRV JSON when ready.",
+      "status": "needs_admin",
+      "recommendedAction": "Run PRV public recheck after GitHub Pages propagation.",
       "adminDecision": "approved",
-      "executionResult": "PRV sheet write completed. PRV JSON publish started.",
-      "validationResult": "21 PRV rows found in Products.",
+      "executionResult": "PRV JSON publish needs review.",
+      "validationResult": "Publish returned without public validation.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
       "createdAt": "2026-05-20T00:30:18.943Z",
-      "updatedAt": "2026-05-20T22:45:14.571Z"
+      "updatedAt": "2026-05-20T22:45:17.851Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 topps chrome sapphire football",
@@ -311,15 +311,15 @@
       "sport": "soccer",
       "code": "2025_26_topps_simplicidad_uefa_club_competitions_soccer",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed; publish needs review.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "CV/ChatBot validation needs review.",
       "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_topps_simplicidad_uefa_club_competitions_soccer&sport=soccer&type=product",
       "sourceUrl": "",
       "createdAt": "2026-05-19T23:47:06.765Z",
-      "updatedAt": "2026-05-19T23:47:06.765Z"
+      "updatedAt": "2026-05-20T22:45:32.764Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps chrome sapphire football|2025_topps_chrome_sapphire_football",
@@ -430,6 +430,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779317132764_rrs6ut",
+      "ts": "2026-05-20T22:45:32.764Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779317117859_pqqebt",
+      "ts": "2026-05-20T22:45:17.859Z",
+      "type": "prv_publish",
+      "title": "PRV JSON publish needs review",
+      "detail": "Publish returned without public validation.",
+      "status": "needs_review",
+      "product": "2025/26 Bowman’s Best University Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779317114569_wm1fxr",
       "ts": "2026-05-20T22:45:14.569Z",
@@ -1273,6 +1293,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T22:45:17.441Z",
+  "saved_at": "2026-05-20T22:45:35.589Z",
   "saved_by": "cm_command_center_operator"
 }

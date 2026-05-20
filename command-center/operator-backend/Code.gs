@@ -720,7 +720,7 @@ function upsertPrvIndex_(ss, product) {
     cmurl: product.source_url || ""
   };
   const rowValues = headers.map(function(header) {
-    return safeString_(obj[header] || "");
+    return safeString_(objectValueForHeader_(obj, header));
   });
   const values = sh.getDataRange().getValues();
   let rowIndex = -1;
@@ -945,7 +945,10 @@ function extractPrvProductYear_(value) {
 }
 
 function buildPrvProductCode_(name, sport) {
-  return safeString_(name + " " + sport)
+  const rawName = safeString_(name);
+  const s = normalize_(sport);
+  const base = normalize_(rawName).indexOf(s) > -1 ? rawName : rawName + " " + sport;
+  return safeString_(base)
     .toLowerCase()
     .replace(/\b(19|20)(\d{2})-(\d{2})\b/g, "$1$2_$3")
     .replace(/\s+/g, "_")
@@ -1650,7 +1653,7 @@ function upsertProducts_(ss, code, productObj) {
   const headers = getHeaders_(sh);
   const values = sh.getDataRange().getValues();
   const rowValues = headers.map(function(header) {
-    return safeString_(productObj[header] || "");
+    return safeString_(objectValueForHeader_(productObj, header));
   });
   let rowIndex = -1;
 
@@ -1673,7 +1676,7 @@ function replaceRowsByCode_(ss, sheetName, code, objects, defaultHeaders) {
   const headers = getHeaders_(sh);
   const rowsToWrite = objects.map(function(obj) {
     return headers.map(function(header) {
-      return safeString_(obj[header] || "");
+      return safeString_(objectValueForHeader_(obj, header));
     });
   });
 
@@ -1756,6 +1759,22 @@ function getHeaders_(sh) {
   return sh.getRange(1, 1, 1, lastColumn).getValues()[0].map(function(header) {
     return safeString_(header).trim();
   }).filter(Boolean);
+}
+
+function objectValueForHeader_(obj, header) {
+  const source = obj || {};
+  const direct = safeString_(header);
+  if (Object.prototype.hasOwnProperty.call(source, direct)) return source[direct];
+
+  const normalized = normalizeHeader_(direct);
+  if (Object.prototype.hasOwnProperty.call(source, normalized)) return source[normalized];
+
+  const keys = Object.keys(source);
+  for (let i = 0; i < keys.length; i++) {
+    if (normalizeHeader_(keys[i]) === normalized) return source[keys[i]];
+  }
+
+  return "";
 }
 
 function getPublishRecommendation_(sport, bucket) {

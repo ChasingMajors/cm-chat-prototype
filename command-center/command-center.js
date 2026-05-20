@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc43-source-recovery-2026-05-19";
+  const COMMAND_CENTER_VERSION = "cc44-publish-retry-2026-05-19";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -287,6 +287,19 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#39;");
+  }
+
+  function inferChecklistBucket(productName, sport) {
+    const raw = String(productName || "");
+    const season = raw.match(/\b(20\d{2})\s*-\s*(\d{2})\b/);
+    if (season) return `${season[1]}-${season[2]}`;
+
+    const year = raw.match(/\b(19|20)\d{2}\b/);
+    if (year) return year[0];
+
+    const s = normalize(sport);
+    if (s === "basketball" || s === "soccer") return "";
+    return "";
   }
 
   function titleCase(value) {
@@ -2044,6 +2057,47 @@
       renderActivityLog();
       renderSourceCheckMessage("Publish request failed", detail, "critical");
     }
+  }
+
+  async function publishChecklistAction(actionId) {
+    const action = state.agentActions.find(item => item.id === actionId);
+    if (!action) return;
+
+    const bucket = action.bucket || action.targetBucket || inferChecklistBucket(action.product || "", action.sport || "");
+    if (!action.code || !action.sport || !bucket) {
+      renderSourceCheckMessage("Publish details missing", "This card needs product code, sport, and year/season before JSON can be published.", "warning");
+      logActivity({
+        type: "checklist_publish",
+        status: "failed",
+        product: action.product || "",
+        source: "command_center",
+        title: "JSON publish blocked",
+        detail: "Missing product code, sport, or year/season."
+      });
+      renderActivityLog();
+      return;
+    }
+
+    updateAgentAction(actionId, {
+      status: "running",
+      executionResult: "JSON publish started from the checklist publish card."
+    });
+    renderAgentActions();
+    renderActionLanes();
+
+    publishImportedChecklist({
+      target_bucket: bucket,
+      product: {
+        display_name: action.product || "",
+        sport: action.sport || "",
+        code: action.code || "",
+        year: bucket,
+        target_bucket: bucket
+      },
+      validation: {
+        ok: true
+      }
+    }, actionId);
   }
 
   async function recheckActionCoverage(actionId) {
@@ -3840,6 +3894,7 @@
             ` : ""}
             ${action.type === "checklist_publish" && action.product ? `
               <button class="action-btn approve" type="button" data-action-find-source-preview="${escapeHtml(action.id)}">Find Source / Preview Import</button>
+              <button class="action-btn approve" type="button" data-action-publish-json="${escapeHtml(action.id)}">Publish JSON</button>
             ` : ""}
             ${canTestProduct && !retestNeeded ? `
               <button class="action-btn" type="button" data-action-visual-test="${escapeHtml(action.id)}">Test CV/ChatBot</button>
@@ -3893,6 +3948,12 @@
     els.agentActionList.querySelectorAll("[data-action-find-source-preview]").forEach(btn => {
       btn.addEventListener("click", () => {
         findSourceAndPreviewImport(btn.dataset.actionFindSourcePreview);
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-publish-json]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        publishChecklistAction(btn.dataset.actionPublishJson);
       });
     });
 

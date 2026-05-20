@@ -2,12 +2,32 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T00:31:25.680Z",
+  "exported_at": "2026-05-20T00:32:53.433Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
   "tasks": [
+    {
+      "id": "task_1779237171820_p6mdjb",
+      "sourceId": "source|football|2025 topps chrome sapphire football",
+      "title": "Import missing source product: 2025 Topps Chrome Sapphire Football",
+      "kind": "operator",
+      "severity": "warning",
+      "status": "queued",
+      "createdAt": "2026-05-20T00:32:51.820Z",
+      "updatedAt": "2026-05-20T00:32:51.820Z",
+      "why": "A supported source product was not found in the current Chasing Majors static checklist data.",
+      "objective": "Prepare an import task for the Football checklist source and validate the product after publishing.",
+      "steps": [
+        "Identify the affected product codes from the audit evidence.",
+        "Confirm the source Google Sheet has matching product codes and row data.",
+        "Run the correct publish function for the affected sport/year/source.",
+        "Rebuild the checklist index if products were added or renamed.",
+        "Retest the exact product query in the sandbox ChatBot and live tool after propagation."
+      ],
+      "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
+    },
     {
       "id": "task_1779043558195_z1mhe0",
       "sourceId": "next|scout|start source-watch as review-only",
@@ -46,7 +66,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-club-competitions",
       "createdAt": "2026-05-20T00:30:18.946Z",
-      "updatedAt": "2026-05-20T00:30:18.946Z"
+      "updatedAt": "2026-05-20T00:31:25.909Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 topps chrome football|2025_topps_chrome_football",
@@ -64,7 +84,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-chrome-nfl-analysis-and",
       "createdAt": "2026-05-20T00:30:18.945Z",
-      "updatedAt": "2026-05-20T00:30:18.946Z"
+      "updatedAt": "2026-05-20T00:31:25.909Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 bowman basketball",
@@ -82,7 +102,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowman-basketball-analysis",
       "createdAt": "2026-05-20T00:30:18.945Z",
-      "updatedAt": "2026-05-20T00:30:18.945Z"
+      "updatedAt": "2026-05-20T00:31:25.908Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 bowman basketball case hit breakdown",
@@ -100,7 +120,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowman-basketball-case-hit",
       "createdAt": "2026-05-20T00:30:18.945Z",
-      "updatedAt": "2026-05-20T00:30:18.945Z"
+      "updatedAt": "2026-05-20T00:31:25.907Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2026 bowman baseball|2026-bowman-baseball",
@@ -118,7 +138,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-bowman-baseball-analysis-and",
       "createdAt": "2026-05-20T00:30:18.945Z",
-      "updatedAt": "2026-05-20T00:30:18.945Z"
+      "updatedAt": "2026-05-20T00:31:25.906Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps hoops basketball",
@@ -136,7 +156,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
       "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-20T00:30:18.944Z"
+      "updatedAt": "2026-05-20T00:31:25.906Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps signature class basketball pre-analysis plus",
@@ -154,7 +174,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-signature-class-nba",
       "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-20T00:30:18.944Z"
+      "updatedAt": "2026-05-20T00:31:25.906Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps chrome cactus jack basketball basketball",
@@ -172,7 +192,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-cactus-jack-nba",
       "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-20T00:30:18.944Z"
+      "updatedAt": "2026-05-20T00:31:25.905Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 bowman s best university basketball baby",
@@ -190,7 +210,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
       "createdAt": "2026-05-20T00:30:18.943Z",
-      "updatedAt": "2026-05-20T00:30:18.943Z"
+      "updatedAt": "2026-05-20T00:31:25.905Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 topps chrome sapphire football",
@@ -208,7 +228,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-chrome-sapphire-nfl-analysis",
       "createdAt": "2026-05-20T00:30:18.943Z",
-      "updatedAt": "2026-05-20T00:30:18.943Z"
+      "updatedAt": "2026-05-20T00:32:51.828Z"
     },
     {
       "id": "visual_test|github_actions|2026 donruss baseball|2026_donruss_baseball",
@@ -392,6 +412,36 @@
   ],
   "activity_log": [
     {
+      "id": "log_1779237171829_08s3kp",
+      "ts": "2026-05-20T00:32:51.829Z",
+      "type": "agent_action",
+      "title": "Agent action created from Source Watch",
+      "detail": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "status": "created",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "slabsquatch_substack"
+    },
+    {
+      "id": "log_1779237085910_de3su3",
+      "ts": "2026-05-20T00:31:25.910Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch complete",
+      "detail": "11 SlabSquatch items checked. 11 need review. 11 PRV review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1779237085910_6n4xd0",
+      "ts": "2026-05-20T00:31:25.910Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "11 findings are now visible in the Agent Action Queue for admin review.",
+      "status": "queued",
+      "product": "",
+      "source": "prv_source_watch"
+    },
+    {
       "id": "log_1779237084075_78of3r",
       "ts": "2026-05-20T00:31:24.075Z",
       "type": "prv_source_watch",
@@ -554,6 +604,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T00:31:26.651Z",
+  "saved_at": "2026-05-20T00:32:54.692Z",
   "saved_by": "cm_command_center_operator"
 }

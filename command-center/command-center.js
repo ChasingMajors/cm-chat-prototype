@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc52-action-progress-2026-05-20";
+  const COMMAND_CENTER_VERSION = "cc53-prv-manual-sync-2026-05-20";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -62,6 +62,7 @@
   const els = {
     refreshBtn: document.getElementById("refreshBtn"),
     clearDoneBtn: document.getElementById("clearDoneBtn"),
+    syncPrvJsonBtn: document.getElementById("syncPrvJsonBtn"),
     clearResolvedAgentActionsBtn: document.getElementById("clearResolvedAgentActionsBtn"),
     clearActivityLogBtn: document.getElementById("clearActivityLogBtn"),
     exportMemoryBtn: document.getElementById("exportMemoryBtn"),
@@ -2027,10 +2028,12 @@
     }
   }
 
-  async function publishPrvVaultData(code, actionId) {
+  async function publishPrvVaultData(code, actionId, options) {
+    options = options || {};
     const endpoint = readOperatorEndpoint();
     const key = readOperatorKey();
     const action = actionId ? state.agentActions.find(item => item.id === actionId) : null;
+    const isFullSync = !!options.fullSync;
 
     if (!endpoint) {
       renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before publishing PRV JSON.", "warning");
@@ -2042,19 +2045,27 @@
       return;
     }
 
-    if (!code) {
+    if (!code && !isFullSync) {
       renderSourceCheckMessage("PRV code missing", "This PRV publish action needs a product code.", "warning");
       return;
     }
 
-    renderSourceCheckMessage("Publishing PRV JSON", "The Operator Backend is asking Static Data Exporter to publish Print Run Vault static data.", "info");
+    renderSourceCheckMessage(
+      isFullSync ? "Syncing PRV JSON" : "Publishing PRV JSON",
+      isFullSync
+        ? "The Operator Backend is publishing the full Print Run Vault JSON from the current Google Sheet data."
+        : "The Operator Backend is asking Static Data Exporter to publish Print Run Vault static data.",
+      "info"
+    );
     logActivity({
       type: "prv_publish",
       status: "started",
-      product: action && action.product ? action.product : code,
+      product: isFullSync ? "Print Run Vault" : action && action.product ? action.product : code,
       source: "operator_backend",
-      title: "PRV JSON publish started",
-      detail: "Publishing Print Run Vault static JSON after approved sheet write."
+      title: isFullSync ? "Manual PRV JSON sync started" : "PRV JSON publish started",
+      detail: isFullSync
+        ? "Publishing Print Run Vault static JSON after manual Google Sheet changes."
+        : "Publishing Print Run Vault static JSON after approved sheet write."
     });
     if (actionId) {
       updateAgentAction(actionId, {
@@ -2073,7 +2084,7 @@
         + "&code=" + encodeURIComponent(code)
         + "&key=" + encodeURIComponent(key);
       const data = await fetchJson(url, { timeoutMs: 240000 });
-      renderPrvPublishResult(data, actionId);
+      renderPrvPublishResult(data, actionId, { fullSync: isFullSync });
     } catch (err) {
       const detail = err && err.message ? err.message : String(err);
       if (actionId) {
@@ -2089,9 +2100,9 @@
       logActivity({
         type: "prv_publish",
         status: "failed",
-        product: action && action.product ? action.product : code,
+        product: isFullSync ? "Print Run Vault" : action && action.product ? action.product : code,
         source: "operator_backend",
-        title: "PRV JSON publish failed",
+        title: isFullSync ? "Manual PRV JSON sync failed" : "PRV JSON publish failed",
         detail: detail
       });
       renderActivityLog();
@@ -3269,19 +3280,23 @@
     focusSourceCheckResult();
   }
 
-  function renderPrvPublishResult(data, actionId) {
+  function renderPrvPublishResult(data, actionId, options) {
+    options = options || {};
     const publish = data && data.publish ? data.publish : {};
     const validation = publish && publish.validation ? publish.validation : {};
     const publishOk = !!(data && data.ok);
     const ok = !!(publishOk && validation && validation.ok);
     const code = data && data.code ? data.code : publish.code || "";
     const productName = actionId ? (state.agentActions.find(item => item.id === actionId) || {}).product : "";
+    const isFullSync = !!options.fullSync || !code;
     const validationDetail = validation && validation.ok
       ? `${formatNumber(validation.row_count || 0)} public PRV rows validated.`
       : validation && validation.error
         ? validation.error
         : publishOk
-          ? "PRV JSON publish completed. Public validation is pending GitHub Pages propagation."
+          ? isFullSync
+            ? "Full PRV JSON sync completed. Product-level public validation can be run from a PRV action card when needed."
+            : "PRV JSON publish completed. Public validation is pending GitHub Pages propagation."
           : data && data.error
             ? data.error
             : "Publish returned without public validation.";
@@ -3301,9 +3316,11 @@
     logActivity({
       type: "prv_publish",
       status: ok ? "validated" : "needs_review",
-      product: productName || code,
+      product: isFullSync ? "Print Run Vault" : productName || code,
       source: "operator_backend",
-      title: ok ? "PRV JSON published and validated" : publishOk ? "PRV JSON published, validation pending" : "PRV JSON publish needs review",
+      title: isFullSync
+        ? publishOk ? "Manual PRV JSON sync completed" : "Manual PRV JSON sync needs review"
+        : ok ? "PRV JSON published and validated" : publishOk ? "PRV JSON published, validation pending" : "PRV JSON publish needs review",
       detail: validationDetail
     });
     renderActivityLog();
@@ -3313,21 +3330,25 @@
         <div class="opp-top">
           <div>
             <h3>${ok ? "PRV JSON Published" : publishOk ? "PRV Published, Recheck Needed" : "PRV Publish Needs Review"}</h3>
-            <p>${escapeHtml(productName || code)}</p>
+            <p>${escapeHtml(isFullSync ? "Full Print Run Vault sync" : productName || code)}</p>
           </div>
           <span class="badge ${ok ? "opportunity" : "warning"}">${escapeHtml(data && data.status ? data.status : ok ? "published" : "review")}</span>
         </div>
         <div class="opp-meta">
-          <span class="pill">Code: ${escapeHtml(code)}</span>
+          <span class="pill">${isFullSync ? "Scope: All PRV data" : "Code: " + escapeHtml(code)}</span>
           <span class="pill">Files: ${formatNumber(publish && publish.publish ? publish.publish.files_published || 0 : 0)}</span>
           <span class="pill">Public rows: ${formatNumber(validation && validation.row_count || 0)}</span>
           <span class="pill">Validation: ${validation && validation.ok ? "Passed" : "Review"}</span>
         </div>
         ${data && data.error ? `<div class="task-guardrail">${escapeHtml(data.error)}</div>` : ""}
         <p>${escapeHtml(validationDetail)}</p>
-        <div class="opp-actions">
-          <button class="action-btn approve" type="button" data-recheck-prv-code="${escapeHtml(code)}">Recheck PRV Public JSON</button>
-        </div>
+        ${isFullSync ? `
+          <div class="task-guardrail">Full sync is complete when GitHub publish succeeds. Use a product card recheck when you need product-level public validation.</div>
+        ` : `
+          <div class="opp-actions">
+            <button class="action-btn approve" type="button" data-recheck-prv-code="${escapeHtml(code)}">Recheck PRV Public JSON</button>
+          </div>
+        `}
       </div>
     `;
     els.sourceCheckResult.querySelectorAll("[data-recheck-prv-code]").forEach(btn => {
@@ -3336,6 +3357,10 @@
       });
     });
     focusSourceCheckResult();
+  }
+
+  function syncPrvJsonOnDemand() {
+    publishPrvVaultData("", null, { fullSync: true });
   }
 
   function renderPrvPublicValidationResult(data, actionId) {
@@ -5428,6 +5453,7 @@
   }
 
   els.refreshBtn.addEventListener("click", runAudit);
+  els.syncPrvJsonBtn.addEventListener("click", syncPrvJsonOnDemand);
   els.scanSourcesBtn.addEventListener("click", () => runSourceWatchWithBackend("quick_json"));
   els.scanPrvSourcesBtn.addEventListener("click", () => runPrvSourceWatchWithBackend());
   els.agentCycleBtn.addEventListener("click", runAgentCycle);

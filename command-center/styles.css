@@ -498,6 +498,13 @@ a {
   margin-bottom: 14px;
 }
 
+.panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 h2 {
   font-size: 22px;
   line-height: 1.1;
@@ -947,6 +954,13 @@ h2 {
 .action-btn.primary-next {
   border-color: rgba(51,209,122,0.42);
   box-shadow: 0 0 0 3px rgba(51,209,122,0.12);
+}
+
+.primary-ghost {
+  border-color: rgba(57,160,255,0.36);
+  background: rgba(57,160,255,0.14);
+  color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(57,160,255,0.08);
 }
 
 .validation-checklist {

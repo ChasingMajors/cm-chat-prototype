@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=cc52" />
+  <link rel="stylesheet" href="./styles.css?v=cc53" />
 </head>
 <body>
   <main class="shell">
@@ -16,7 +16,7 @@
       <div>
         <div class="kicker">Internal sandbox</div>
         <h1>Chasing Majors Command Center</h1>
-        <div class="build-version">HTML cc52-action-progress-2026-05-20</div>
+        <div class="build-version">HTML cc53-prv-manual-sync-2026-05-20</div>
         <p class="lede">AI operating partner for data health, opportunity scouting, and approval-ready fixes.</p>
       </div>
       <div class="top-actions">
@@ -61,7 +61,7 @@
       </div>
       <div class="status-card version-card">
         <span class="status-label">Build</span>
-        <strong id="buildVersion">HTML cc52</strong>
+        <strong id="buildVersion">HTML cc53</strong>
       </div>
     </section>
 
@@ -85,7 +85,10 @@
             <h2>Agent Action Queue</h2>
             <p>Approval-ready work with risk, status, validation, and proof of completion.</p>
           </div>
-          <button id="clearResolvedAgentActionsBtn" class="ghost-btn" type="button">Clear Resolved</button>
+          <div class="panel-actions">
+            <button id="syncPrvJsonBtn" class="ghost-btn primary-ghost" type="button">Sync PRV JSON</button>
+            <button id="clearResolvedAgentActionsBtn" class="ghost-btn" type="button">Clear Resolved</button>
+          </div>
         </div>
         <div id="agentActionList" class="agent-action-list">
           <div class="brief-item">
@@ -302,6 +305,6 @@
     </section>
   </main>
 
-  <script defer src="./command-center.js?v=cc52"></script>
+  <script defer src="./command-center.js?v=cc53"></script>
 </body>
 </html>

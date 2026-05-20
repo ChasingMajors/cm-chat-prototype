@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T22:47:38.614Z",
+  "exported_at": "2026-05-20T22:56:33.831Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -448,6 +448,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779317792229_t4cn9k",
+      "ts": "2026-05-20T22:56:32.229Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync started",
+      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
+      "status": "started",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779317257012_9m4b22",
       "ts": "2026-05-20T22:47:37.012Z",
@@ -1237,16 +1247,6 @@
       "status": "started",
       "product": "2025 Topps Chrome Football",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779237171829_08s3kp",
-      "ts": "2026-05-20T00:32:51.829Z",
-      "type": "agent_action",
-      "title": "Agent action created from Source Watch",
-      "detail": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
-      "status": "created",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "slabsquatch_substack"
     }
   ],
   "visual_tests": {
@@ -1379,6 +1379,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T22:47:39.511Z",
+  "saved_at": "2026-05-20T22:56:34.931Z",
   "saved_by": "cm_command_center_operator"
 }

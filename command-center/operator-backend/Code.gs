@@ -185,6 +185,12 @@ function doGet(e) {
       }));
     }
 
+    if (action === "validatePrvVaultProduct") {
+      return json_(validatePrvVaultProduct_({
+        code: p.code || ""
+      }));
+    }
+
     if (action === "dispatchVisualProductTest") {
       return json_(dispatchVisualProductTest_({
         productName: p.productName || p.product_name || "",
@@ -218,7 +224,7 @@ function doGet(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["health", "sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -269,6 +275,10 @@ function doPost(e) {
       return json_(publishPrvVaultStaticData_(body));
     }
 
+    if (action === "validatePrvVaultProduct") {
+      return json_(validatePrvVaultProduct_(body));
+    }
+
     if (action === "dispatchVisualProductTest") {
       return json_(dispatchVisualProductTest_(body));
     }
@@ -292,7 +302,7 @@ function doPost(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -1125,6 +1135,52 @@ function fetchVaultPublicIndexRows_() {
   }).filter(function(row) {
     return row.code && row.name;
   });
+}
+
+function validatePrvVaultProduct_(input) {
+  const code = safeString_(input && input.code).trim();
+  if (!code) {
+    return {
+      ok: false,
+      error: "Missing PRV product code."
+    };
+  }
+
+  try {
+    const manifest = JSON.parse(fetchText_(CM_APP_DATA_BASE + "/vault/products/all.json"));
+    const productMap = manifest.product_map || manifest.productMap || {};
+    const shard = productMap[code];
+    if (!shard) {
+      return {
+        ok: false,
+        code: code,
+        row_count: 0,
+        error: "Product code not found in public PRV product manifest yet."
+      };
+    }
+
+    const shardPayload = JSON.parse(fetchText_(CM_APP_DATA_BASE + "/vault/products/" + shard));
+    const products = shardPayload && shardPayload.data && shardPayload.data.products ? shardPayload.data.products : {};
+    const product = products[code] || null;
+    const rows = product && Array.isArray(product.rows) ? product.rows : [];
+
+    return {
+      ok: rows.length > 0,
+      code: code,
+      shard: shard,
+      row_count: rows.length,
+      display_name: product && product.meta ? product.meta.displayName || product.meta.display_name || "" : "",
+      updated_at: new Date().toISOString()
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      code: code,
+      row_count: 0,
+      error: err && err.message ? err.message : String(err),
+      updated_at: new Date().toISOString()
+    };
+  }
 }
 
 function findVaultIndexMatch_(title, sport, rows) {

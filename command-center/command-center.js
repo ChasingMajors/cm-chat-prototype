@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc44-publish-retry-2026-05-19";
+  const COMMAND_CENTER_VERSION = "cc45-prv-source-watch-2026-05-19";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -77,6 +77,7 @@
     agentCycleBtn: document.getElementById("agentCycleBtn"),
     sourceWatchQuickBtn: document.getElementById("sourceWatchQuickBtn"),
     sourceWatchDeepBtn: document.getElementById("sourceWatchDeepBtn"),
+    prvSourceWatchBtn: document.getElementById("prvSourceWatchBtn"),
     saveEndpointBtn: document.getElementById("saveEndpointBtn"),
     sourceTitleInput: document.getElementById("sourceTitleInput"),
     sourceSportInput: document.getElementById("sourceSportInput"),
@@ -572,15 +573,18 @@
 
     let createdOrUpdated = 0;
     actionable.forEach(item => {
+      const isPrv = item.target_tool === "prv";
       const action = upsertAgentAction({
-        type: "source_import",
+        type: isPrv ? "prv_source_review" : "source_import",
         source: item.discovery_source || auditMode || "source_watch",
         product: item.matched_name || item.title || "Untitled source item",
         sport: item.sport || "",
         code: item.matched_code || "",
         riskLevel: item.status === "missing" ? "medium" : "low",
         status: "approval_required",
-        recommendedAction: item.recommended_action || "Preview source import, write product-scoped rows, publish JSON, validate CV/ChatBot.",
+        recommendedAction: item.recommended_action || (isPrv
+          ? "Review source post, compare against PRV, then prepare update/build task if numbers are missing or stale."
+          : "Preview source import, write product-scoped rows, publish JSON, validate CV/ChatBot."),
         sourceUrl: item.source_url || item.url || ""
       });
       if (action) createdOrUpdated += 1;
@@ -1792,6 +1796,65 @@
     }
   }
 
+  async function runPrvSourceWatchWithBackend() {
+    const endpoint = readOperatorEndpoint();
+
+    if (!endpoint) {
+      renderSourceCheckMessage(
+        "Operator Backend needed",
+        "Paste and save the Apps Script Operator Backend URL before running PRV Source Watch.",
+        "warning"
+      );
+      return;
+    }
+
+    renderSourceCheckMessage(
+      "Running PRV Source Watch",
+      "The Operator Backend is checking recent SlabSquatch Substack posts against public Print Run Vault JSON.",
+      "info"
+    );
+    logActivity({
+      type: "prv_source_watch",
+      status: "started",
+      source: "slabsquatch",
+      title: "PRV Source Watch started",
+      detail: "Checking SlabSquatch posts against Print Run Vault coverage."
+    });
+    renderActivityLog();
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=prvSourceWatch"
+        + "&mode=quick_json";
+      const data = await fetchJson(url, { timeoutMs: 60000 });
+      const items = Array.isArray(data.items) ? data.items : [];
+      const actionable = items.filter(item => item.status === "missing" || item.status === "needs_review" || item.status === "possible_update");
+      const queuedCount = queueSourceWatchActions(items, "prv_source_watch");
+      logActivity({
+        type: "prv_source_watch",
+        status: data.ok ? "completed" : "failed",
+        source: "slabsquatch",
+        title: "PRV Source Watch complete",
+        detail: `${items.length} SlabSquatch items checked. ${actionable.length} need review. ${queuedCount} PRV review cards queued.`
+      });
+      renderSourceWatchResults(data);
+      renderAgentActions();
+      renderActionLanes();
+      renderActivityLog();
+    } catch (err) {
+      renderSourceCheckMessage("PRV Source Watch failed", err && err.message ? err.message : String(err), "critical");
+      logActivity({
+        type: "prv_source_watch",
+        status: "failed",
+        source: "slabsquatch",
+        title: "PRV Source Watch failed",
+        detail: err && err.message ? err.message : String(err)
+      });
+      renderActivityLog();
+    }
+  }
+
   async function previewSourceImport(sourceUrl, sport, actionId) {
     const endpoint = readOperatorEndpoint();
 
@@ -2266,7 +2329,7 @@
       <div class="source-watch-summary">
         <div class="opp-top">
           <div>
-            <h3>${escapeHtml(data.mode === "quick_json" ? "Quick JSON Source Watch Complete" : "Deep Sheets Source Watch Complete")}</h3>
+            <h3>${escapeHtml(data.source === "slabsquatch" ? "PRV Source Watch Complete" : data.mode === "quick_json" ? "Quick JSON Source Watch Complete" : "Deep Sheets Source Watch Complete")}</h3>
             <p>${escapeHtml(data.fetched_count || 0)} source items checked. ${escapeHtml(actionable.length)} need review.</p>
           </div>
           <span class="badge info">review</span>
@@ -2287,16 +2350,20 @@
         const idx = Number(btn.dataset.sourceTask || -1);
         const item = items[idx];
         if (!item) return;
+        const isPrv = item.target_tool === "prv";
         createSourceImportTask(item.title || "Untitled source item", item.sport || "");
         upsertAgentAction({
-          type: "source_import",
+          type: isPrv ? "prv_source_review" : "source_import",
           source: item.discovery_source || "source_watch",
           product: item.matched_name || item.title || "Untitled source item",
           sport: item.sport || "",
           code: item.matched_code || "",
           riskLevel: item.status === "missing" ? "medium" : "low",
           status: "approval_required",
-          recommendedAction: item.recommended_action || "Preview source import, write product-scoped rows, publish JSON, validate CV/ChatBot."
+          recommendedAction: item.recommended_action || (isPrv
+            ? "Review source post, compare against PRV, then prepare update/build task if numbers are missing or stale."
+            : "Preview source import, write product-scoped rows, publish JSON, validate CV/ChatBot."),
+          sourceUrl: item.source_url || item.url || ""
         });
         logActivity({
           type: "agent_action",
@@ -2342,6 +2409,7 @@
           ? "info"
           : "warning";
     const canTask = status === "missing" || status === "needs_review" || status === "possible_update";
+    const isPrv = item.target_tool === "prv";
     const visualPlan = buildVisualTestPlan(item);
     const visualKey = getVisualProductKey(visualPlan);
     const visualRecord = state.visualTests[visualKey] || null;
@@ -2363,6 +2431,7 @@
           ${item.matched_code ? `<span class="pill">Code: ${escapeHtml(item.matched_code)}</span>` : ""}
           <span class="pill visual-status-pill ${escapeHtml(visualClass)}">Visual: ${escapeHtml(visualLabel)}</span>
           ${item.discovery_source ? `<span class="pill">Found: ${escapeHtml(item.discovery_source)}</span>` : ""}
+          ${isPrv ? `<span class="pill">Tool: PRV</span>` : ""}
           ${item.comparison_source ? `<span class="pill">Checked: ${escapeHtml(item.comparison_source)}</span>` : ""}
           ${typeof item.sheet_row_count !== "undefined" ? `<span class="pill">Rows: ${formatNumber(item.sheet_row_count)}</span>` : ""}
           ${typeof item.sheet_parallel_count !== "undefined" ? `<span class="pill">Parallels: ${formatNumber(item.sheet_parallel_count)}</span>` : ""}
@@ -2371,7 +2440,7 @@
         <div class="opp-actions">
           <button class="action-btn" type="button" data-visual-test="${idx}">Test CV/ChatBot</button>
           ${canTask ? `
-            <button class="action-btn approve" type="button" data-preview-import="${escapeHtml(item.source_url || "")}" data-preview-sport="${escapeHtml(item.sport || "")}">Preview Import</button>
+            ${isPrv ? "" : `<button class="action-btn approve" type="button" data-preview-import="${escapeHtml(item.source_url || "")}" data-preview-sport="${escapeHtml(item.sport || "")}">Preview Import</button>`}
             <button class="action-btn" type="button" data-source-task="${idx}">Create Operator Task</button>
           ` : ""}
         </div>
@@ -4731,6 +4800,7 @@
   els.sourceCheckBtn.addEventListener("click", validateSourceProductWithBackend);
   els.sourceWatchQuickBtn.addEventListener("click", () => runSourceWatchWithBackend("quick_json"));
   els.sourceWatchDeepBtn.addEventListener("click", () => runSourceWatchWithBackend("deep_sheets"));
+  els.prvSourceWatchBtn.addEventListener("click", () => runPrvSourceWatchWithBackend());
   els.saveEndpointBtn.addEventListener("click", () => {
     writeOperatorEndpoint(els.operatorEndpointInput.value || "");
     writeOperatorKey(els.operatorKeyInput.value || "");

@@ -29,6 +29,7 @@ const CM_OPERATOR_VERSION = "2026-05-15-operator-v2";
 const CM_APP_DATA_BASE = "https://app.chasingmajors.com/data/v1";
 const CM_CHECKLISTCENTER_HOME = "https://www.checklistcenter.com/";
 const CM_CHECKLISTCENTER_POSTS_API = "https://www.checklistcenter.com/wp-json/wp/v2/posts?per_page=20&_fields=link,title,date,slug";
+const CM_SLABSQUATCH_ARCHIVE_API = "https://slabsquatch.substack.com/api/v1/archive?sort=new&search=&offset=0&limit=20";
 const CM_ALLOWED_SPORTS = ["baseball", "football", "basketball", "hockey", "soccer"];
 const CM_PRODUCTS_SHEET = "Products";
 const CM_CHECKLIST_ROWS_SHEET = "ChecklistRows";
@@ -117,6 +118,8 @@ function doGet(e) {
 
     if (action === "sourceWatch") return json_(runSourceWatch_(p.mode || ""));
 
+    if (action === "prvSourceWatch") return json_(runPrvSourceWatch_(p.mode || ""));
+
     if (action === "validateSourceProduct") {
       return json_(validateSourceProduct_({
         title: p.title || "",
@@ -190,7 +193,7 @@ function doGet(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["health", "sourceWatch", "prvSourceWatch", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -206,6 +209,8 @@ function doPost(e) {
 
   try {
     if (action === "sourceWatch") return json_(runSourceWatch_(body.mode || ""));
+
+    if (action === "prvSourceWatch") return json_(runPrvSourceWatch_(body.mode || ""));
 
     if (action === "validateSourceProduct") {
       return json_(validateSourceProduct_(body));
@@ -250,7 +255,7 @@ function doPost(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["sourceWatch", "prvSourceWatch", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -514,6 +519,207 @@ function runSourceWatch_(mode) {
       : "Deep Sheets Audit checks source Google Sheets. Missing or needs_review items should become approval tasks before any sheet write.",
     updated_at: new Date().toISOString()
   };
+}
+
+function runPrvSourceWatch_(mode) {
+  const auditMode = normalizeSourceWatchMode_(mode || "quick_json");
+  const vaultRows = fetchVaultPublicIndexRows_();
+  const sourceItems = fetchRecentSlabSquatchItems_();
+
+  const results = sourceItems.map(function(item) {
+    return classifyPrvSourceItem_(item, vaultRows);
+  });
+
+  const summary = results.reduce(function(out, item) {
+    out[item.status] = (out[item.status] || 0) + 1;
+    return out;
+  }, {});
+
+  return {
+    ok: true,
+    mode: auditMode,
+    coverage_source: "public_vault_json",
+    source: "slabsquatch",
+    source_url: "https://substack.com/@slabsquatch",
+    fetched_count: sourceItems.length,
+    supported_count: results.filter(function(r) { return r.status !== "ignored"; }).length,
+    summary: summary,
+    items: results,
+    next_step: "Review SlabSquatch posts against Print Run Vault. Missing or possible_update items should become PRV review tasks before any sheet write.",
+    updated_at: new Date().toISOString()
+  };
+}
+
+function fetchRecentSlabSquatchItems_() {
+  try {
+    const posts = JSON.parse(fetchText_(CM_SLABSQUATCH_ARCHIVE_API));
+    if (!Array.isArray(posts)) return [];
+
+    return posts.map(function(post) {
+      const title = decodeEntities_(safeString_(post && post.title)).trim();
+      const url = safeString_(post && (post.canonical_url || post.url || post.post_url)).trim();
+      const sport = inferSport_(title + " " + safeString_(post && post.subtitle));
+
+      return {
+        title: normalizePrvSourceTitle_(title),
+        raw_title: title,
+        sport: sport,
+        url: url,
+        source_url: url,
+        source_text: safeString_(post && post.subtitle),
+        discovery_source: "slabsquatch_substack",
+        published_at: safeString_(post && post.post_date),
+        target_tool: "prv"
+      };
+    }).filter(isUsablePrvSourceItem_);
+  } catch (err) {
+    return [];
+  }
+}
+
+function isUsablePrvSourceItem_(item) {
+  if (!item || !item.title || !item.url) return false;
+  if (!isAllowedSport_(item.sport)) return false;
+  if (hasBlockedTerm_(item.title)) return false;
+  const text = normalize_(item.title + " " + item.source_text);
+  return /analysis|deep dive|odds|print run|numbers|base|value|mega|sapphire|chrome|bowman|topps|panini|donruss|prizm|finest/.test(text);
+}
+
+function classifyPrvSourceItem_(item, vaultRows) {
+  const title = safeString_(item && item.title).trim();
+  const sport = normalize_(item && item.sport);
+
+  if (!isAllowedSport_(sport)) {
+    return {
+      status: "ignored",
+      title: title,
+      sport: sport,
+      source_url: item.url || "",
+      target_tool: "prv",
+      reason: "Unsupported or unknown sport."
+    };
+  }
+
+  const match = findVaultIndexMatch_(title, sport, vaultRows);
+  if (match && match.score >= 140) {
+    return {
+      status: "possible_update",
+      title: title,
+      sport: sport,
+      source_url: item.url || "",
+      matched_name: match.name,
+      matched_code: match.code,
+      match_score: match.score,
+      comparison_source: "public_vault_json",
+      discovery_source: item.discovery_source || "slabsquatch_substack",
+      target_tool: "prv",
+      published_at: item.published_at || "",
+      recommended_action: "SlabSquatch has a recent print-run/odds analysis for a PRV-covered product. Compare source numbers against PRV and flag discrepancies before updating."
+    };
+  }
+
+  if (match && match.score >= 85) {
+    return {
+      status: "needs_review",
+      title: title,
+      sport: sport,
+      source_url: item.url || "",
+      matched_name: match.name,
+      matched_code: match.code,
+      match_score: match.score,
+      comparison_source: "public_vault_json",
+      discovery_source: item.discovery_source || "slabsquatch_substack",
+      target_tool: "prv",
+      published_at: item.published_at || "",
+      recommended_action: "Review naming/alias match before using this SlabSquatch post for PRV validation."
+    };
+  }
+
+  return {
+    status: "missing",
+    title: title,
+    sport: sport,
+    source_url: item.url || "",
+    discovery_source: item.discovery_source || "slabsquatch_substack",
+    target_tool: "prv",
+    published_at: item.published_at || "",
+    recommended_action: "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data."
+  };
+}
+
+function fetchVaultPublicIndexRows_() {
+  const payload = JSON.parse(fetchText_(CM_APP_DATA_BASE + "/vault/index.json"));
+  const rows = payload && (payload.index || payload.rows);
+  return (Array.isArray(rows) ? rows : []).map(function(row) {
+    return {
+      code: safeString_(row.Code || row.code),
+      name: safeString_(row.DisplayName || row.displayName || row.display_name),
+      keywords: safeString_(row.Keywords || row.keywords),
+      year: safeString_(row.year),
+      sport: normalize_(row.sport),
+      manufacturer: safeString_(row.manufacturer),
+      product: safeString_(row.product)
+    };
+  }).filter(function(row) {
+    return row.code && row.name;
+  });
+}
+
+function findVaultIndexMatch_(title, sport, rows) {
+  const titleNorm = normalize_(title);
+  const titleLoose = looseProductKey_(title);
+  let best = null;
+
+  (rows || []).forEach(function(row) {
+    if (normalize_(row.sport) !== sport) return;
+
+    const nameNorm = normalize_(row.name);
+    const text = normalize_([
+      row.name,
+      row.keywords,
+      row.year,
+      row.sport,
+      row.manufacturer,
+      row.product,
+      row.code
+    ].join(" "));
+    const nameLoose = looseProductKey_(row.name);
+    let score = 0;
+
+    if (nameNorm === titleNorm) score += 240;
+    if (nameLoose && titleLoose && nameLoose === titleLoose) score += 220;
+    if (text.indexOf(titleNorm) > -1) score += 140;
+    if (titleNorm.indexOf(nameNorm) > -1 && nameNorm.length > 8) score += 120;
+
+    titleNorm.split(" ").filter(Boolean).forEach(function(token) {
+      if (text.indexOf(token) > -1) score += 6;
+    });
+
+    if (!best || score > best.score) {
+      best = {
+        code: row.code,
+        name: row.name,
+        score: score
+      };
+    }
+  });
+
+  return best;
+}
+
+function normalizePrvSourceTitle_(title) {
+  return safeString_(title)
+    .replace(/\bNFL\b/gi, "Football")
+    .replace(/\bNBA\b/gi, "Basketball")
+    .replace(/\bMLB\b/gi, "Baseball")
+    .replace(/\bNHL\b/gi, "Hockey")
+    .replace(/\s+Analysis(?:\s*&\s*Deep Dive)?\s*$/i, "")
+    .replace(/\s+Deep Dive\s*$/i, "")
+    .replace(/\s+Baby Deep Dive\s*$/i, "")
+    .replace(/\s+and Updated Base Numbers\s*$/i, "")
+    .replace(/\s+Value Boxes Analysis\s*$/i, " Value Box")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function normalizeSourceWatchMode_(mode) {

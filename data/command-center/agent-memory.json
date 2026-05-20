@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T22:46:39.115Z",
+  "exported_at": "2026-05-20T22:46:53.913Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -69,6 +69,24 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "source_import|wordpress_api|2026 leaf optichrome football",
+      "type": "source_import",
+      "source": "wordpress_api",
+      "product": "2026 Leaf Optichrome Football",
+      "sport": "football",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Football source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-optichrome-football-card-checklist/",
+      "createdAt": "2026-05-20T22:46:39.732Z",
+      "updatedAt": "2026-05-20T22:46:39.732Z"
+    },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps chrome uefa club competitions",
       "type": "prv_source_review",
@@ -311,15 +329,15 @@
       "sport": "soccer",
       "code": "2025_26_topps_simplicidad_uefa_club_competitions_soccer",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "status": "failed",
+      "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "validationResult": "Import did not write to Google Sheets.",
       "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_topps_simplicidad_uefa_club_competitions_soccer&sport=soccer&type=product",
       "sourceUrl": "",
       "createdAt": "2026-05-19T23:47:06.765Z",
-      "updatedAt": "2026-05-20T22:45:32.764Z"
+      "updatedAt": "2026-05-20T22:46:52.311Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps chrome sapphire football|2025_topps_chrome_sapphire_football",
@@ -430,6 +448,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779317212311_h4qjxp",
+      "ts": "2026-05-20T22:46:52.311Z",
+      "type": "source_import",
+      "title": "Import blocked before sheet write",
+      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779317199733_pdc3si",
+      "ts": "2026-05-20T22:46:39.733Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch complete",
+      "detail": "20 source items checked. 2 need review. 1 review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779317199732_emodha",
+      "ts": "2026-05-20T22:46:39.733Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "1 findings are now visible in the Agent Action Queue for admin review. 2 admin-ignored source item(s) were skipped.",
+      "status": "queued",
+      "product": "",
+      "source": "quick_json"
+    },
     {
       "id": "log_1779317197509_xc1d1h",
       "ts": "2026-05-20T22:46:37.509Z",
@@ -1199,26 +1247,6 @@
       "status": "completed",
       "product": "",
       "source": "slabsquatch"
-    },
-    {
-      "id": "log_1779237018946_fsltb9",
-      "ts": "2026-05-20T00:30:18.946Z",
-      "type": "source_watch",
-      "title": "Source Watch actions queued",
-      "detail": "11 findings are now visible in the Agent Action Queue for admin review.",
-      "status": "queued",
-      "product": "",
-      "source": "prv_source_watch"
-    },
-    {
-      "id": "log_1779237017173_7vmiix",
-      "ts": "2026-05-20T00:30:17.173Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch started",
-      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
-      "status": "started",
-      "product": "",
-      "source": "slabsquatch"
     }
   ],
   "visual_tests": {
@@ -1343,6 +1371,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T22:46:40.335Z",
+  "saved_at": "2026-05-20T22:46:55.098Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T12:46:53.175Z",
+  "exported_at": "2026-05-20T12:53:47.172Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -239,15 +239,15 @@
       "sport": "football",
       "code": "2025_topps_chrome_sapphire_football",
       "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "Wait for propagation, then recheck again.",
+      "status": "validated",
+      "recommendedAction": "PRV public JSON is live. Open PRV for final human check.",
       "adminDecision": "approved",
       "executionResult": "PRV JSON publish needs review.",
-      "validationResult": "Public PRV validation did not pass yet.",
+      "validationResult": "7 public PRV rows found.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-chrome-sapphire-nfl-analysis",
       "createdAt": "2026-05-20T00:30:18.943Z",
-      "updatedAt": "2026-05-20T12:43:12.464Z"
+      "updatedAt": "2026-05-20T12:46:54.779Z"
     },
     {
       "id": "visual_test|github_actions|2026 donruss baseball|2026_donruss_baseball",
@@ -430,6 +430,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779281625569_dynj32",
+      "ts": "2026-05-20T12:53:45.569Z",
+      "type": "prv_source_review",
+      "title": "PRV preview started",
+      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
+      "status": "started",
+      "product": "2025/26 Bowman’s Best University Basketball Baby",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779281214784_b3zx2x",
+      "ts": "2026-05-20T12:46:54.784Z",
+      "type": "prv_publish",
+      "title": "PRV public validation passed",
+      "detail": "7 public PRV rows found.",
+      "status": "validated",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779281211572_c8t12l",
       "ts": "2026-05-20T12:46:51.572Z",
@@ -993,6 +1013,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T12:46:54.560Z",
+  "saved_at": "2026-05-20T12:53:48.283Z",
   "saved_by": "cm_command_center_operator"
 }

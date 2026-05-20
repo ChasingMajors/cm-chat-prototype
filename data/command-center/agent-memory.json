@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T22:44:59.193Z",
+  "exported_at": "2026-05-20T22:45:16.175Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -221,15 +221,15 @@
       "sport": "basketball",
       "code": "2025_26_bowman_s_best_university_basketball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Review PRV sheet rows, then publish PRV JSON when ready.",
       "adminDecision": "approved",
-      "executionResult": "PRV Index and Products rows written.",
+      "executionResult": "PRV sheet write completed. PRV JSON publish started.",
       "validationResult": "21 PRV rows found in Products.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
       "createdAt": "2026-05-20T00:30:18.943Z",
-      "updatedAt": "2026-05-20T22:44:57.586Z"
+      "updatedAt": "2026-05-20T22:45:14.571Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 topps chrome sapphire football",
@@ -430,6 +430,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779317114569_wm1fxr",
+      "ts": "2026-05-20T22:45:14.569Z",
+      "type": "prv_publish",
+      "title": "PRV JSON publish started",
+      "detail": "Publishing Print Run Vault static JSON after approved sheet write.",
+      "status": "started",
+      "product": "2025/26 Bowman’s Best University Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779317097591_0ihc7u",
       "ts": "2026-05-20T22:44:57.591Z",
@@ -1263,6 +1273,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T22:45:00.271Z",
+  "saved_at": "2026-05-20T22:45:17.441Z",
   "saved_by": "cm_command_center_operator"
 }

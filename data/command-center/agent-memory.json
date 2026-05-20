@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T00:09:32.192Z",
+  "exported_at": "2026-05-20T00:11:08.811Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -211,6 +211,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779235867206_o1lx4t",
+      "ts": "2026-05-20T00:11:07.206Z",
+      "type": "checklist_publish",
+      "title": "JSON publish failed",
+      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=publishImportedChecklist&sport=baseball&bucket=2026&code=2026_donruss_baseball&key=JD",
+      "status": "failed",
+      "product": "2026 Donruss Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779235770591_8l9685",
       "ts": "2026-05-20T00:09:30.591Z",
@@ -1004,6 +1014,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T00:09:33.419Z",
+  "saved_at": "2026-05-20T00:11:10.770Z",
   "saved_by": "cm_command_center_operator"
 }

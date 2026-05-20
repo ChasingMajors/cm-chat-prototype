@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T00:08:16.836Z",
+  "exported_at": "2026-05-20T00:08:20.437Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -31,6 +31,24 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2026 donruss baseball|2026_donruss_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2026 Donruss Baseball",
+      "sport": "baseball",
+      "code": "2026_donruss_baseball",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "sourceUrl": "",
+      "createdAt": "2026-05-20T00:08:18.833Z",
+      "updatedAt": "2026-05-20T00:08:18.833Z"
+    },
+    {
       "id": "checklist_publish|operator_backend|2026 donruss baseball|2026_donruss_baseball",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -38,15 +56,15 @@
       "sport": "baseball",
       "code": "2026_donruss_baseball",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "approved",
       "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "createdAt": "2026-05-20T00:07:07.188Z",
-      "updatedAt": "2026-05-20T00:08:15.231Z"
+      "updatedAt": "2026-05-20T00:08:18.834Z"
     },
     {
       "id": "visual_test|github_actions|2025 topps chrome sapphire football|2025_topps_chrome_sapphire_football",
@@ -193,6 +211,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779235698834_iktnki",
+      "ts": "2026-05-20T00:08:18.834Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2026 Donruss Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1779235695232_dydcz5",
       "ts": "2026-05-20T00:08:15.232Z",
@@ -883,6 +911,23 @@
       "headSha": "eae4647fd891a5fe69719916501c1c1526d69a01",
       "createdAt": "2026-05-20T00:04:31Z",
       "checkedAt": "2026-05-20T00:06:13.385Z"
+    },
+    "baseball|2026_donruss_baseball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-05-20T00:08:16.486Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2026_donruss_baseball",
+      "key": "baseball|2026_donruss_baseball",
+      "productName": "2026 Donruss Baseball",
+      "sport": "baseball",
+      "code": "2026_donruss_baseball",
+      "updatedAt": "2026-05-20T00:08:18.832Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -913,6 +958,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T00:08:17.860Z",
+  "saved_at": "2026-05-20T00:08:21.835Z",
   "saved_by": "cm_command_center_operator"
 }

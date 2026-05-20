@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc48-prv-parser-2026-05-19";
+  const COMMAND_CENTER_VERSION = "cc49-prv-sheet-write-2026-05-19";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -1958,6 +1958,75 @@
     }
   }
 
+  async function executePrvSourceImport(sourceUrl, sport, actionId) {
+    const endpoint = readOperatorEndpoint();
+    const key = readOperatorKey();
+
+    if (!endpoint) {
+      renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before writing PRV rows.", "warning");
+      return;
+    }
+
+    if (!key) {
+      renderSourceCheckMessage("Admin write key needed", "Enter and save the admin write key before writing PRV rows to Google Sheets.", "warning");
+      return;
+    }
+
+    const action = actionId ? state.agentActions.find(item => item.id === actionId) : null;
+    renderSourceCheckMessage("Writing PRV temp data", "The Operator Backend is updating the PRV Index and Products tabs for this product only.", "info");
+    logActivity({
+      type: "prv_source_review",
+      status: "started",
+      product: action && action.product ? action.product : "",
+      source: "admin",
+      title: "PRV sheet write started",
+      detail: "Admin requested product-scoped PRV write from SlabSquatch preview rows."
+    });
+    renderActivityLog();
+
+    if (actionId) {
+      updateAgentAction(actionId, {
+        status: "running",
+        executionResult: "PRV sheet write started through Operator Backend."
+      });
+      renderAgentActions();
+      renderActionLanes();
+    }
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=executePrvSourceImport"
+        + "&sourceUrl=" + encodeURIComponent(sourceUrl)
+        + "&sport=" + encodeURIComponent(sport || "")
+        + "&key=" + encodeURIComponent(key);
+      const data = await fetchJson(url, { timeoutMs: 180000 });
+      renderPrvExecuteResult(data, actionId);
+    } catch (err) {
+      const detail = err && err.message ? err.message : String(err);
+      if (actionId) {
+        updateAgentAction(actionId, {
+          status: "failed",
+          executionResult: detail,
+          validationResult: "PRV write request failed before sheet confirmation.",
+          recommendedAction: "Review backend connectivity, then rerun PRV preview/write."
+        });
+        renderAgentActions();
+        renderActionLanes();
+      }
+      logActivity({
+        type: "prv_source_review",
+        status: "failed",
+        product: action && action.product ? action.product : "",
+        source: "operator_backend",
+        title: "PRV sheet write failed",
+        detail: detail
+      });
+      renderActivityLog();
+      renderSourceCheckMessage("PRV sheet write failed", detail, "critical");
+    }
+  }
+
   async function findSourceAndPreviewImport(actionId) {
     const endpoint = readOperatorEndpoint();
     const action = state.agentActions.find(item => item.id === actionId);
@@ -2983,9 +3052,91 @@
           <div>
             <h4>Next Step</h4>
             <p>${escapeHtml(data.next_step || "Review these rows before PRV sheet write is enabled.")}</p>
-            <div class="task-guardrail">This is review-only. It does not write to PRV yet.</div>
+            <div class="task-guardrail">This writes only one PRV product code. It does not delete other PRV products or publish JSON.</div>
+            ${data.status === "preview_ready" ? `
+              <button class="action-btn approve" type="button" data-execute-prv-import="${escapeHtml(data.source_url || "")}" data-execute-prv-sport="${escapeHtml(product.sport || "")}">Write PRV Temp Data</button>
+            ` : ""}
           </div>
         </div>
+      </div>
+    `;
+    els.sourceCheckResult.querySelectorAll("[data-execute-prv-import]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        executePrvSourceImport(btn.dataset.executePrvImport, btn.dataset.executePrvSport || "");
+      });
+    });
+    focusSourceCheckResult();
+  }
+
+  function renderPrvExecuteResult(data, actionId) {
+    if (!data || !data.ok) {
+      const detail = data && data.error ? data.error : "Unknown backend response.";
+      if (actionId) {
+        updateAgentAction(actionId, {
+          status: "failed",
+          executionResult: detail,
+          validationResult: "PRV sheet write did not complete.",
+          recommendedAction: "Open PRV preview, confirm rows, then retry the product-scoped write."
+        });
+        renderAgentActions();
+        renderActionLanes();
+      }
+      logActivity({
+        type: "prv_source_review",
+        status: "failed",
+        source: "operator_backend",
+        title: "PRV sheet write blocked",
+        detail: detail
+      });
+      renderActivityLog();
+      renderSourceCheckMessage("PRV sheet write blocked", detail, "critical");
+      return;
+    }
+
+    const product = data.product || {};
+    const validation = data.validation || {};
+    if (actionId) {
+      updateAgentAction(actionId, {
+        type: "prv_source_review",
+        status: validation.ok ? "needs_admin" : "known_issue",
+        product: product.display_name || "",
+        sport: product.sport || "",
+        code: product.code || "",
+        executionResult: validation.ok ? "PRV Index and Products rows written." : "PRV write completed but validation needs review.",
+        validationResult: validation.ok ? `${formatNumber(validation.product_rows || 0)} PRV rows found in Products.` : "PRV row validation did not pass.",
+        recommendedAction: "Review PRV sheet rows, then run publishVaultStaticDataToGitHub when ready."
+      });
+      renderAgentActions();
+      renderActionLanes();
+    }
+
+    logActivity({
+      type: "prv_source_review",
+      status: validation.ok ? "needs_review" : "failed",
+      product: product.display_name || "",
+      source: "operator_backend",
+      title: "PRV temp data written",
+      detail: `${formatNumber(validation.index_rows || 0)} Index row and ${formatNumber(validation.product_rows || 0)} Products rows validated.`
+    });
+    renderActivityLog();
+
+    els.sourceCheckResult.innerHTML = `
+      <div class="source-result-card ${validation.ok ? "covered" : ""}">
+        <div class="opp-top">
+          <div>
+            <h3>PRV Temp Data Written</h3>
+            <p>${escapeHtml(product.display_name || "")}</p>
+          </div>
+          <span class="badge ${validation.ok ? "opportunity" : "warning"}">${validation.ok ? "review" : "needs_review"}</span>
+        </div>
+        <div class="opp-meta">
+          <span class="pill">Code: ${escapeHtml(product.code || "")}</span>
+          <span class="pill">Index rows: ${formatNumber(validation.index_rows || 0)}</span>
+          <span class="pill">Products rows: ${formatNumber(validation.product_rows || 0)}</span>
+          <span class="pill">Publish: Manual review</span>
+        </div>
+        <div class="task-guardrail">${escapeHtml(data.publish && data.publish.reason ? data.publish.reason : "Review PRV sheet rows before publishing static JSON.")}</div>
+        <p>${escapeHtml(data.next_step || "Review the PRV Google Sheet, then run publishVaultStaticDataToGitHub when ready.")}</p>
       </div>
     `;
     focusSourceCheckResult();
@@ -4079,6 +4230,7 @@
             ` : ""}
             ${action.type === "prv_source_review" && (action.sourceUrl || action.runUrl) ? `
               <button class="action-btn approve" type="button" data-action-preview-prv="${escapeHtml(action.id)}">Preview PRV Source</button>
+              <button class="action-btn approve" type="button" data-action-execute-prv="${escapeHtml(action.id)}">Write PRV Temp Data</button>
               <a class="action-btn" href="${escapeHtml(action.sourceUrl || action.runUrl)}" target="_blank" rel="noopener noreferrer">Open Source</a>
             ` : ""}
             ${canTestProduct && !retestNeeded ? `
@@ -4140,6 +4292,19 @@
           return;
         }
         previewPrvSource(sourceUrl, action.sport || "", action.id);
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-execute-prv]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const action = state.agentActions.find(item => item.id === btn.dataset.actionExecutePrv);
+        if (!action) return;
+        const sourceUrl = action.sourceUrl || action.runUrl || "";
+        if (!sourceUrl) {
+          renderSourceCheckMessage("Source URL missing", "This PRV review card does not have a source URL to write.", "warning");
+          return;
+        }
+        executePrvSourceImport(sourceUrl, action.sport || "", action.id);
       });
     });
 

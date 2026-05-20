@@ -922,7 +922,7 @@ function parseSlabSquatchPrintRunRows_(bodyHtml, sourceUrl) {
     });
   });
 
-  return rows;
+  return inferMissingPrvSubsetSizes_(rows);
 }
 
 function extractListTextItems_(html) {
@@ -966,6 +966,40 @@ function parseSlabSquatchPrintRunLine_(line, heading, setType, sourceUrl) {
     notes: "Source: SlabSquatch. Review before PRV write. " + sourceUrl,
     cmURL: sourceUrl
   };
+}
+
+function inferMissingPrvSubsetSizes_(rows) {
+  const sizeByBaseLine = {};
+
+  (rows || []).forEach(function(row) {
+    const size = Number(row && row.subSetSize || 0);
+    if (!row || !row.setLine || !size) return;
+
+    const baseKey = normalizePrvSetLineBase_(row.setLine);
+    if (!baseKey) return;
+    if (!sizeByBaseLine[baseKey]) sizeByBaseLine[baseKey] = size;
+  });
+
+  return (rows || []).map(function(row) {
+    if (!row || row.subSetSize) return row;
+
+    const baseKey = normalizePrvSetLineBase_(row.setLine);
+    const inferredSize = baseKey ? sizeByBaseLine[baseKey] : 0;
+    if (!inferredSize) return row;
+
+    const out = shallowClone_(row);
+    out.subSetSize = inferredSize;
+    out.notes = safeString_(out.notes)
+      + " Inferred CL " + inferredSize + " from matching base set name.";
+    return out;
+  });
+}
+
+function normalizePrvSetLineBase_(value) {
+  return normalize_(value)
+    .replace(/\b(refractors?|shimmers?|xfractors?|x fractors?|prisms?|silver|gold|blue|green|purple|orange|red|black|pink|aqua|atomic|mojo|wave|ice|speckle|sparkle|parallel|parallels)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function normalizePrvSetType_(heading) {

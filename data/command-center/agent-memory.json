@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T00:07:57.694Z",
+  "exported_at": "2026-05-20T00:08:16.836Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -42,11 +42,11 @@
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "approved",
       "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "Coverage recheck started...",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-05-20T00:07:07.188Z",
-      "updatedAt": "2026-05-20T00:07:56.091Z"
+      "updatedAt": "2026-05-20T00:08:15.231Z"
     },
     {
       "id": "visual_test|github_actions|2025 topps chrome sapphire football|2025_topps_chrome_sapphire_football",
@@ -193,6 +193,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779235695232_dydcz5",
+      "ts": "2026-05-20T00:08:15.232Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2026 Donruss Baseball",
+      "source": "agent_action_queue"
+    },
+    {
+      "id": "log_1779235678042_gkr45v",
+      "ts": "2026-05-20T00:07:58.042Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "1,633 public rows and 227 parallels found.",
+      "status": "covered",
+      "product": "2026 Donruss Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779235676092_t8g9b1",
       "ts": "2026-05-20T00:07:56.092Z",
@@ -893,6 +913,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T00:07:58.684Z",
+  "saved_at": "2026-05-20T00:08:17.860Z",
   "saved_by": "cm_command_center_operator"
 }

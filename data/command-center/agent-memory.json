@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T00:07:08.797Z",
+  "exported_at": "2026-05-20T00:07:35.639Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -38,15 +38,15 @@
       "sport": "baseball",
       "code": "2026_donruss_baseball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "approved",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
-      "adminDecision": "",
+      "adminDecision": "approved",
       "executionResult": "Sheet write completed; publish needs review.",
       "validationResult": "CV/ChatBot validation needs review.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-05-20T00:07:07.188Z",
-      "updatedAt": "2026-05-20T00:07:07.188Z"
+      "updatedAt": "2026-05-20T00:07:34.035Z"
     },
     {
       "id": "visual_test|github_actions|2025 topps chrome sapphire football|2025_topps_chrome_sapphire_football",
@@ -193,6 +193,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779235654036_8pvotv",
+      "ts": "2026-05-20T00:07:34.036Z",
+      "type": "agent_action",
+      "title": "Agent action updated",
+      "detail": "2026 Donruss Baseball marked Approved.",
+      "status": "approved",
+      "product": "2026 Donruss Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779235627195_whkfw4",
       "ts": "2026-05-20T00:07:07.195Z",
@@ -873,6 +883,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T00:07:09.896Z",
+  "saved_at": "2026-05-20T00:07:36.644Z",
   "saved_by": "cm_command_center_operator"
 }

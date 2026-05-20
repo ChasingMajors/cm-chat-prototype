@@ -894,8 +894,16 @@ function parseSlabSquatchPrintRunRows_(bodyHtml, sourceUrl) {
   const html = decodeEntities_(safeString_(bodyHtml));
   const marker = html.search(/Part\s*5:\s*The\s*Print\s*Runs/i);
   const target = marker > -1 ? html.slice(marker) : html;
-  const re = /<p>([^<]+):<\/p>\s*<ul>([\s\S]*?)<\/ul>/gi;
+  const directParagraphRe = /<p>\s*(?:<strong>)?([^<]*?):\s*~\s*([\d,]+)\s*ea(?:<\/strong>)?\s*<\/p>/gi;
+  const re = /<p>\s*(?:<strong>)?([\s\S]*?):\s*(?:<\/strong>)?\s*<\/p>\s*<ul>([\s\S]*?)<\/ul>/gi;
   let match;
+
+  while ((match = directParagraphRe.exec(target)) !== null) {
+    const heading = stripHtml_(match[1]).replace(/:$/, "").trim();
+    const setType = normalizePrvSetType_(heading);
+    const parsed = parseSlabSquatchPrintRunLine_("~" + match[2] + " ea", heading, setType, sourceUrl);
+    if (parsed) rows.push(parsed);
+  }
 
   while ((match = re.exec(target)) !== null) {
     sectionBlocks.push({
@@ -1236,9 +1244,10 @@ function normalizePrvSourceTitle_(title) {
     .replace(/\bMLB\b/gi, "Baseball")
     .replace(/\bNHL\b/gi, "Hockey")
     .replace(/\s+Analysis(?:\s*(?:&|and)\s*Deep Dive)?\s*$/i, "")
+    .replace(/\s+Baby Deep Dive\s*$/i, "")
     .replace(/\s+(?:&|and)\s*Deep Dive\s*$/i, "")
     .replace(/\s+Deep Dive\s*$/i, "")
-    .replace(/\s+Baby Deep Dive\s*$/i, "")
+    .replace(/\s+Baby\s*$/i, "")
     .replace(/\s+and Updated Base Numbers\s*$/i, "")
     .replace(/\s+Value Boxes Analysis\s*$/i, " Value Box")
     .replace(/\s+/g, " ")

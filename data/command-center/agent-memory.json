@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T22:47:08.527Z",
+  "exported_at": "2026-05-20T22:47:38.614Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -77,15 +77,15 @@
       "sport": "football",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "ignored",
       "recommendedAction": "Create approval task: inspect source checklist, import into Football source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "adminDecision": "ignored",
+      "executionResult": "Admin ignored this exact source product. Future Source Watch runs will omit it unless source ignores are cleared.",
+      "validationResult": "No app change needed.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-optichrome-football-card-checklist/",
       "createdAt": "2026-05-20T22:46:39.732Z",
-      "updatedAt": "2026-05-20T22:47:06.924Z"
+      "updatedAt": "2026-05-20T22:47:37.011Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps chrome uefa club competitions",
@@ -448,6 +448,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779317257012_9m4b22",
+      "ts": "2026-05-20T22:47:37.012Z",
+      "type": "source_watch",
+      "title": "Source product ignored",
+      "detail": "2026 Leaf Optichrome Football will be skipped in future Source Watch queues.",
+      "status": "ignored",
+      "product": "2026 Leaf Optichrome Football",
+      "source": "admin"
+    },
     {
       "id": "log_1779317226926_f0wsg7",
       "ts": "2026-05-20T22:47:06.926Z",
@@ -1237,16 +1247,6 @@
       "status": "created",
       "product": "2025 Topps Chrome Sapphire Football",
       "source": "slabsquatch_substack"
-    },
-    {
-      "id": "log_1779237085910_de3su3",
-      "ts": "2026-05-20T00:31:25.910Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch complete",
-      "detail": "11 SlabSquatch items checked. 11 need review. 11 PRV review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "slabsquatch"
     }
   ],
   "visual_tests": {
@@ -1368,9 +1368,17 @@
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-noir-road-to-fifa-world-cup-26-soccer-card-checklist/",
       "reason": "Admin marked this exact source product as fringe or intentionally skipped.",
       "ignoredAt": "2026-05-19T23:48:51.680Z"
+    },
+    "football|https www checklistcenter com 2026-leaf-optichrome-football-card-checklist": {
+      "product": "2026 Leaf Optichrome Football",
+      "sport": "football",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-optichrome-football-card-checklist/",
+      "reason": "Admin marked this exact source product as fringe or intentionally skipped.",
+      "ignoredAt": "2026-05-20T22:47:37.009Z"
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T22:47:09.828Z",
+  "saved_at": "2026-05-20T22:47:39.511Z",
   "saved_by": "cm_command_center_operator"
 }

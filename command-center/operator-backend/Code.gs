@@ -120,6 +120,13 @@ function doGet(e) {
 
     if (action === "prvSourceWatch") return json_(runPrvSourceWatch_(p.mode || ""));
 
+    if (action === "previewPrvSource") {
+      return json_(previewPrvSource_({
+        sourceUrl: p.sourceUrl || p.url || "",
+        sport: p.sport || ""
+      }));
+    }
+
     if (action === "validateSourceProduct") {
       return json_(validateSourceProduct_({
         title: p.title || "",
@@ -193,7 +200,7 @@ function doGet(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "prvSourceWatch", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["health", "sourceWatch", "prvSourceWatch", "previewPrvSource", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -211,6 +218,10 @@ function doPost(e) {
     if (action === "sourceWatch") return json_(runSourceWatch_(body.mode || ""));
 
     if (action === "prvSourceWatch") return json_(runPrvSourceWatch_(body.mode || ""));
+
+    if (action === "previewPrvSource") {
+      return json_(previewPrvSource_(body));
+    }
 
     if (action === "validateSourceProduct") {
       return json_(validateSourceProduct_(body));
@@ -255,7 +266,7 @@ function doPost(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "prvSourceWatch", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["sourceWatch", "prvSourceWatch", "previewPrvSource", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -548,6 +559,214 @@ function runPrvSourceWatch_(mode) {
     next_step: "Review SlabSquatch posts against Print Run Vault. Missing or possible_update items should become PRV review tasks before any sheet write.",
     updated_at: new Date().toISOString()
   };
+}
+
+function previewPrvSource_(input) {
+  const sourceUrl = safeString_(input && (input.sourceUrl || input.url)).trim();
+  const requestedSport = normalize_(input && input.sport);
+
+  if (!sourceUrl) {
+    return {
+      ok: false,
+      error: "Missing sourceUrl"
+    };
+  }
+
+  if (!/^https:\/\/slabsquatch\.substack\.com\/p\//i.test(sourceUrl)) {
+    return {
+      ok: false,
+      error: "Only SlabSquatch Substack post URLs are supported in PRV preview."
+    };
+  }
+
+  const html = fetchText_(sourceUrl);
+  const title = extractPageTitle_(html) || titleFromSubstackUrl_(sourceUrl);
+  const productName = normalizePrvSourceTitle_(title);
+  const sport = requestedSport || inferSport_(productName + " " + sourceUrl);
+
+  if (!isAllowedSport_(sport)) {
+    return {
+      ok: true,
+      status: "ignored",
+      title: productName,
+      sport: sport,
+      source_url: sourceUrl,
+      reason: "Unsupported sport."
+    };
+  }
+
+  if (hasBlockedTerm_(productName)) {
+    return {
+      ok: true,
+      status: "ignored",
+      title: productName,
+      sport: sport,
+      source_url: sourceUrl,
+      reason: "Blocked category term detected."
+    };
+  }
+
+  const bodyHtml = extractSubstackBodyHtml_(html);
+  const rows = parseSlabSquatchPrintRunRows_(bodyHtml, sourceUrl);
+  const product = buildPrvProductPreview_(productName, sport, sourceUrl);
+
+  return {
+    ok: true,
+    mode: "prv_preview_only",
+    status: rows.length ? "preview_ready" : "needs_review",
+    source_url: sourceUrl,
+    product: product,
+    row_count: rows.length,
+    rows: rows.slice(0, 200),
+    sample_rows: rows.slice(0, 12),
+    warnings: rows.length ? [] : ["No print-run rows were parsed from the source post."],
+    next_step: "Review PRV preview rows. Sheet write is intentionally not enabled yet."
+  };
+}
+
+function extractSubstackBodyHtml_(html) {
+  const raw = safeString_(html);
+  const match = raw.match(/\\"body_html\\":\\"([\s\S]*?)\\",\\"truncated_body_text\\"/);
+  if (!match) return "";
+
+  try {
+    return JSON.parse("\"" + match[1] + "\"");
+  } catch (err) {
+    return match[1]
+      .replace(/\\"/g, "\"")
+      .replace(/\\n/g, "\n")
+      .replace(/\\u003c/g, "<")
+      .replace(/\\u003e/g, ">")
+      .replace(/\\u0026/g, "&");
+  }
+}
+
+function parseSlabSquatchPrintRunRows_(bodyHtml, sourceUrl) {
+  const rows = [];
+  const sectionBlocks = [];
+  const html = decodeEntities_(safeString_(bodyHtml));
+  const marker = html.search(/Part\s*5:\s*The\s*Print\s*Runs/i);
+  const target = marker > -1 ? html.slice(marker) : html;
+  const re = /<p>([^<]+):<\/p>\s*<ul>([\s\S]*?)<\/ul>/gi;
+  let match;
+
+  while ((match = re.exec(target)) !== null) {
+    sectionBlocks.push({
+      heading: stripHtml_(match[1]),
+      listHtml: match[2]
+    });
+  }
+
+  sectionBlocks.forEach(function(block) {
+    const setType = normalizePrvSetType_(block.heading);
+    const items = extractListTextItems_(block.listHtml);
+
+    items.forEach(function(text) {
+      const parsed = parseSlabSquatchPrintRunLine_(text, block.heading, setType, sourceUrl);
+      if (parsed) rows.push(parsed);
+    });
+  });
+
+  return rows;
+}
+
+function extractListTextItems_(html) {
+  const out = [];
+  const re = /<li[^>]*>([\s\S]*?)<\/li>/gi;
+  let match;
+
+  while ((match = re.exec(safeString_(html))) !== null) {
+    const text = stripHtml_(match[1])
+      .replace(/\s+/g, " ")
+      .trim();
+    if (text) out.push(text);
+  }
+
+  return out;
+}
+
+function parseSlabSquatchPrintRunLine_(line, heading, setType, sourceUrl) {
+  const text = safeString_(line).replace(/\s+/g, " ").trim();
+  if (!text) return null;
+
+  const runMatch = text.match(/~\s*([\d,]+)\s*ea/i);
+  if (!runMatch) return null;
+
+  const cardListMatch = text.match(/\((\d+)\s*card\s*CL\)/i) ||
+    safeString_(heading).match(/\((\d+)\s*card\s*CL\)/i);
+  let setLine = text
+    .replace(/\s*-\s*~\s*[\d,]+\s*ea.*$/i, "")
+    .replace(/^~\s*[\d,]+\s*ea.*$/i, "")
+    .replace(/\(\d+\s*card\s*CL\)/i, "")
+    .trim();
+
+  if (!setLine) setLine = safeString_(heading).replace(/\(\d+\s*card\s*CL\)/i, "").replace(/:$/, "").trim();
+
+  return {
+    setType: setType,
+    setLine: setLine,
+    printRun: Number(runMatch[1].replace(/,/g, "")),
+    serial: "",
+    subSetSize: cardListMatch ? Number(cardListMatch[1]) : "",
+    notes: "Source: SlabSquatch. Review before PRV write. " + sourceUrl,
+    cmURL: sourceUrl
+  };
+}
+
+function normalizePrvSetType_(heading) {
+  const h = normalize_(heading);
+  if (h.indexOf("auto") > -1) return "Auto";
+  if (h.indexOf("insert") > -1) return "Insert";
+  if (h.indexOf("parallel") > -1) return "Parallel";
+  if (h.indexOf("base") > -1) return "Base";
+  return titleCase_(heading).replace(/\s*\(\d+\s*Card\s*Cl\)\s*$/i, "");
+}
+
+function buildPrvProductPreview_(productName, sport, sourceUrl) {
+  const year = extractPrvProductYear_(productName);
+  const cleaned = safeString_(productName).replace(/\bNFL\b/gi, "Football").trim();
+  const manufacturer = inferManufacturer_(cleaned);
+
+  return {
+    code: buildPrvProductCode_(cleaned, sport),
+    display_name: cleaned,
+    year: year,
+    sport: sport,
+    manufacturer: manufacturer,
+    product: cleaned
+      .replace(year, "")
+      .replace(new RegExp("\\b" + manufacturer + "\\b", "i"), "")
+      .replace(new RegExp("\\b" + titleCase_(sport) + "\\b", "i"), "")
+      .replace(/\s+/g, " ")
+      .trim(),
+    source_url: sourceUrl
+  };
+}
+
+function extractPrvProductYear_(value) {
+  const raw = safeString_(value);
+  const season = raw.match(/\b(19|20)\d{2}\s*[-/]\s*\d{2}\b/);
+  if (season) return season[0].replace(/\s+/g, "");
+  const year = raw.match(/\b(19|20)\d{2}\b/);
+  return year ? year[0] : "";
+}
+
+function buildPrvProductCode_(name, sport) {
+  return safeString_(name + " " + sport)
+    .toLowerCase()
+    .replace(/\b(19|20)(\d{2})-(\d{2})\b/g, "$1$2_$3")
+    .replace(/\s+/g, "_")
+    .replace(/[^a-z0-9_]/g, "_")
+    .replace(/_+/g, "_")
+    .replace(/^_|_$/g, "");
+}
+
+function titleFromSubstackUrl_(url) {
+  const slug = safeString_(url).split("/p/")[1] || "";
+  return slug.split("?")[0]
+    .replace(/-/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function fetchRecentSlabSquatchItems_() {

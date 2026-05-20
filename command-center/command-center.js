@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc46-prv-top-action-2026-05-19";
+  const COMMAND_CENTER_VERSION = "cc47-prv-preview-2026-05-19";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -1907,6 +1907,57 @@
     }
   }
 
+  async function previewPrvSource(sourceUrl, sport, actionId) {
+    const endpoint = readOperatorEndpoint();
+
+    if (!endpoint) {
+      renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before previewing PRV sources.", "warning");
+      return;
+    }
+
+    const action = actionId ? state.agentActions.find(item => item.id === actionId) : null;
+    renderSourceCheckMessage("Building PRV preview", "The Operator Backend is parsing SlabSquatch print-run rows for admin review.", "info");
+    logActivity({
+      type: "prv_source_review",
+      status: "started",
+      product: action && action.product ? action.product : "",
+      source: "operator_backend",
+      title: "PRV preview started",
+      detail: "Parsing source print-run rows before any PRV sheet write exists."
+    });
+    renderActivityLog();
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=previewPrvSource"
+        + "&sourceUrl=" + encodeURIComponent(sourceUrl)
+        + "&sport=" + encodeURIComponent(sport || "");
+      const data = await fetchJson(url, { timeoutMs: 90000 });
+      renderPrvPreview(data);
+      logActivity({
+        type: "prv_source_review",
+        status: data && data.status ? data.status : data && data.ok ? "preview_ready" : "failed",
+        product: data && data.product && data.product.display_name ? data.product.display_name : action && action.product ? action.product : "",
+        source: "operator_backend",
+        title: "PRV preview completed",
+        detail: `${formatNumber(data && data.row_count || 0)} print-run rows parsed.`
+      });
+      renderActivityLog();
+    } catch (err) {
+      renderSourceCheckMessage("PRV preview failed", err && err.message ? err.message : String(err), "critical");
+      logActivity({
+        type: "prv_source_review",
+        status: "failed",
+        product: action && action.product ? action.product : "",
+        source: "operator_backend",
+        title: "PRV preview failed",
+        detail: err && err.message ? err.message : String(err)
+      });
+      renderActivityLog();
+    }
+  }
+
   async function findSourceAndPreviewImport(actionId) {
     const endpoint = readOperatorEndpoint();
     const action = state.agentActions.find(item => item.id === actionId);
@@ -2890,6 +2941,56 @@
     focusSourceCheckResult();
   }
 
+  function renderPrvPreview(data) {
+    if (!data || !data.ok) {
+      renderSourceCheckMessage("PRV preview failed", data && data.error ? data.error : "Unknown backend response.", "critical");
+      return;
+    }
+
+    if (data.status === "ignored") {
+      renderSourceCheckMessage("Ignored PRV source", data.reason || "Unsupported source.", "warning");
+      return;
+    }
+
+    const product = data.product || {};
+    const rows = Array.isArray(data.sample_rows) ? data.sample_rows : [];
+    const warnings = Array.isArray(data.warnings) ? data.warnings : [];
+
+    els.sourceCheckResult.innerHTML = `
+      <div class="import-preview-card">
+        <div class="opp-top">
+          <div>
+            <h3>PRV Source Preview</h3>
+            <p>${escapeHtml(product.display_name || "Untitled product")}</p>
+          </div>
+          <span class="badge ${data.status === "preview_ready" ? "opportunity" : "warning"}">${escapeHtml(data.status || "preview")}</span>
+        </div>
+        <div class="opp-meta">
+          <span class="pill">Code: ${escapeHtml(product.code || "")}</span>
+          <span class="pill">Sport: ${escapeHtml(titleCase(product.sport || ""))}</span>
+          <span class="pill">Year: ${escapeHtml(product.year || "")}</span>
+          <span class="pill">Rows: ${formatNumber(data.row_count || 0)}</span>
+          <a class="pill source-link" href="${escapeHtml(data.source_url || "")}" target="_blank" rel="noopener noreferrer">Source</a>
+        </div>
+        ${warnings.length ? `
+          <div class="task-guardrail">${warnings.map(escapeHtml).join(" ")}</div>
+        ` : ""}
+        <div class="preview-grid">
+          <div>
+            <h4>Sample PRV Rows</h4>
+            ${rows.length ? rows.map(renderPrvPreviewRow).join("") : `<p>No print-run rows parsed.</p>`}
+          </div>
+          <div>
+            <h4>Next Step</h4>
+            <p>${escapeHtml(data.next_step || "Review these rows before PRV sheet write is enabled.")}</p>
+            <div class="task-guardrail">This is review-only. It does not write to PRV yet.</div>
+          </div>
+        </div>
+      </div>
+    `;
+    focusSourceCheckResult();
+  }
+
   function renderExecuteResult(data, actionId) {
     if (!data || !data.ok) {
       const preview = data && data.preview ? data.preview : {};
@@ -3025,6 +3126,16 @@
         <strong>${escapeHtml(row.parallel_name || "")}</strong>
         <span>${escapeHtml(row.applies_to_subset || "")}</span>
         <em>${escapeHtml(row.serial_no || "")}</em>
+      </div>
+    `;
+  }
+
+  function renderPrvPreviewRow(row) {
+    return `
+      <div class="preview-row">
+        <strong>${escapeHtml(row.setType || "")}</strong>
+        <span>${escapeHtml(row.setLine || "")}</span>
+        <em>${escapeHtml(row.printRun ? "~" + formatNumber(row.printRun) : "")}${row.subSetSize ? " / CL " + escapeHtml(row.subSetSize) : ""}</em>
       </div>
     `;
   }
@@ -3966,6 +4077,10 @@
               <button class="action-btn approve" type="button" data-action-find-source-preview="${escapeHtml(action.id)}">Find Source / Preview Import</button>
               <button class="action-btn approve" type="button" data-action-publish-json="${escapeHtml(action.id)}">Publish JSON</button>
             ` : ""}
+            ${action.type === "prv_source_review" && (action.sourceUrl || action.runUrl) ? `
+              <button class="action-btn approve" type="button" data-action-preview-prv="${escapeHtml(action.id)}">Preview PRV Source</button>
+              <a class="action-btn" href="${escapeHtml(action.sourceUrl || action.runUrl)}" target="_blank" rel="noopener noreferrer">Open Source</a>
+            ` : ""}
             ${canTestProduct && !retestNeeded ? `
               <button class="action-btn" type="button" data-action-visual-test="${escapeHtml(action.id)}">Test CV/ChatBot</button>
             ` : ""}
@@ -4012,6 +4127,19 @@
           return;
         }
         previewSourceImport(sourceUrl, action.sport || "", action.id);
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-preview-prv]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const action = state.agentActions.find(item => item.id === btn.dataset.actionPreviewPrv);
+        if (!action) return;
+        const sourceUrl = action.sourceUrl || action.runUrl || "";
+        if (!sourceUrl) {
+          renderSourceCheckMessage("Source URL missing", "This PRV review card does not have a source URL to preview.", "warning");
+          return;
+        }
+        previewPrvSource(sourceUrl, action.sport || "", action.id);
       });
     });
 

@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc49-prv-sheet-write-2026-05-19";
+  const COMMAND_CENTER_VERSION = "cc50-prv-publish-2026-05-20";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -2027,6 +2027,78 @@
     }
   }
 
+  async function publishPrvVaultData(code, actionId) {
+    const endpoint = readOperatorEndpoint();
+    const key = readOperatorKey();
+    const action = actionId ? state.agentActions.find(item => item.id === actionId) : null;
+
+    if (!endpoint) {
+      renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before publishing PRV JSON.", "warning");
+      return;
+    }
+
+    if (!key) {
+      renderSourceCheckMessage("Admin write key needed", "Enter and save the admin write key before publishing PRV JSON.", "warning");
+      return;
+    }
+
+    if (!code) {
+      renderSourceCheckMessage("PRV code missing", "This PRV publish action needs a product code.", "warning");
+      return;
+    }
+
+    renderSourceCheckMessage("Publishing PRV JSON", "The Operator Backend is asking Static Data Exporter to publish Print Run Vault static data.", "info");
+    logActivity({
+      type: "prv_publish",
+      status: "started",
+      product: action && action.product ? action.product : code,
+      source: "operator_backend",
+      title: "PRV JSON publish started",
+      detail: "Publishing Print Run Vault static JSON after approved sheet write."
+    });
+    if (actionId) {
+      updateAgentAction(actionId, {
+        status: "running",
+        executionResult: "PRV sheet write completed. PRV JSON publish started."
+      });
+      renderAgentActions();
+      renderActionLanes();
+    }
+    renderActivityLog();
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=publishPrvVaultStaticData"
+        + "&code=" + encodeURIComponent(code)
+        + "&key=" + encodeURIComponent(key);
+      const data = await fetchJson(url, { timeoutMs: 240000 });
+      renderPrvPublishResult(data, actionId);
+    } catch (err) {
+      const detail = err && err.message ? err.message : String(err);
+      if (actionId) {
+        updateAgentAction(actionId, {
+          status: "needs_admin",
+          executionResult: "PRV sheet write completed; PRV JSON publish request failed.",
+          validationResult: detail,
+          recommendedAction: "Retry PRV publish after confirming Static Data Exporter endpoint is healthy."
+        });
+        renderAgentActions();
+        renderActionLanes();
+      }
+      logActivity({
+        type: "prv_publish",
+        status: "failed",
+        product: action && action.product ? action.product : code,
+        source: "operator_backend",
+        title: "PRV JSON publish failed",
+        detail: detail
+      });
+      renderActivityLog();
+      renderSourceCheckMessage("PRV publish failed", detail, "critical");
+    }
+  }
+
   async function findSourceAndPreviewImport(actionId) {
     const endpoint = readOperatorEndpoint();
     const action = state.agentActions.find(item => item.id === actionId);
@@ -3103,9 +3175,9 @@
         sport: product.sport || "",
         code: product.code || "",
         executionResult: validation.ok ? "PRV Index and Products rows written." : "PRV write completed but validation needs review.",
-        validationResult: validation.ok ? `${formatNumber(validation.product_rows || 0)} PRV rows found in Products.` : "PRV row validation did not pass.",
-        recommendedAction: "Review PRV sheet rows, then run publishVaultStaticDataToGitHub when ready."
-      });
+          validationResult: validation.ok ? `${formatNumber(validation.product_rows || 0)} PRV rows found in Products.` : "PRV row validation did not pass.",
+          recommendedAction: "Review PRV sheet rows, then publish PRV JSON when ready."
+        });
       renderAgentActions();
       renderActionLanes();
     }
@@ -3137,6 +3209,69 @@
         </div>
         <div class="task-guardrail">${escapeHtml(data.publish && data.publish.reason ? data.publish.reason : "Review PRV sheet rows before publishing static JSON.")}</div>
         <p>${escapeHtml(data.next_step || "Review the PRV Google Sheet, then run publishVaultStaticDataToGitHub when ready.")}</p>
+        <div class="opp-actions">
+          <button class="action-btn approve" type="button" data-publish-prv-code="${escapeHtml(product.code || "")}">Publish PRV JSON</button>
+        </div>
+      </div>
+    `;
+    els.sourceCheckResult.querySelectorAll("[data-publish-prv-code]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        publishPrvVaultData(btn.dataset.publishPrvCode || "", actionId);
+      });
+    });
+    focusSourceCheckResult();
+  }
+
+  function renderPrvPublishResult(data, actionId) {
+    const publish = data && data.publish ? data.publish : {};
+    const validation = publish && publish.validation ? publish.validation : {};
+    const ok = !!(data && data.ok);
+    const code = data && data.code ? data.code : publish.code || "";
+    const productName = actionId ? (state.agentActions.find(item => item.id === actionId) || {}).product : "";
+
+    if (actionId) {
+      updateAgentAction(actionId, {
+        type: "prv_source_review",
+        status: ok ? "validated" : "needs_admin",
+        executionResult: ok ? "PRV JSON published." : "PRV JSON publish needs review.",
+        validationResult: validation && validation.ok
+          ? `${formatNumber(validation.row_count || 0)} public PRV rows found.`
+          : "Public PRV validation needs review or propagation time.",
+        recommendedAction: ok ? "Open PRV and confirm the product loads." : "Retry PRV publish/recheck after propagation."
+      });
+      renderAgentActions();
+      renderActionLanes();
+    }
+
+    logActivity({
+      type: "prv_publish",
+      status: ok ? "validated" : "needs_review",
+      product: productName || code,
+      source: "operator_backend",
+      title: ok ? "PRV JSON published" : "PRV JSON publish needs review",
+      detail: validation && validation.ok
+        ? `${formatNumber(validation.row_count || 0)} public PRV rows validated.`
+        : (data && data.error ? data.error : "Publish returned without public validation.")
+    });
+    renderActivityLog();
+
+    els.sourceCheckResult.innerHTML = `
+      <div class="source-result-card ${ok ? "covered" : ""}">
+        <div class="opp-top">
+          <div>
+            <h3>${ok ? "PRV JSON Published" : "PRV Publish Needs Review"}</h3>
+            <p>${escapeHtml(productName || code)}</p>
+          </div>
+          <span class="badge ${ok ? "opportunity" : "warning"}">${escapeHtml(data && data.status ? data.status : ok ? "published" : "review")}</span>
+        </div>
+        <div class="opp-meta">
+          <span class="pill">Code: ${escapeHtml(code)}</span>
+          <span class="pill">Files: ${formatNumber(publish && publish.publish ? publish.publish.files_published || 0 : 0)}</span>
+          <span class="pill">Public rows: ${formatNumber(validation && validation.row_count || 0)}</span>
+          <span class="pill">Validation: ${validation && validation.ok ? "Passed" : "Review"}</span>
+        </div>
+        ${data && data.error ? `<div class="task-guardrail">${escapeHtml(data.error)}</div>` : ""}
+        <p>${validation && validation.ok ? "PRV public JSON is live for this product." : "GitHub Pages may still be propagating. Recheck PRV after a few minutes if the app does not show it yet."}</p>
       </div>
     `;
     focusSourceCheckResult();
@@ -4231,6 +4366,7 @@
             ${action.type === "prv_source_review" && (action.sourceUrl || action.runUrl) ? `
               <button class="action-btn approve" type="button" data-action-preview-prv="${escapeHtml(action.id)}">Preview PRV Source</button>
               <button class="action-btn approve" type="button" data-action-execute-prv="${escapeHtml(action.id)}">Write PRV Temp Data</button>
+              ${action.code ? `<button class="action-btn approve" type="button" data-action-publish-prv="${escapeHtml(action.id)}">Publish PRV JSON</button>` : ""}
               <a class="action-btn" href="${escapeHtml(action.sourceUrl || action.runUrl)}" target="_blank" rel="noopener noreferrer">Open Source</a>
             ` : ""}
             ${canTestProduct && !retestNeeded ? `
@@ -4305,6 +4441,14 @@
           return;
         }
         executePrvSourceImport(sourceUrl, action.sport || "", action.id);
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-publish-prv]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const action = state.agentActions.find(item => item.id === btn.dataset.actionPublishPrv);
+        if (!action) return;
+        publishPrvVaultData(action.code || "", action.id);
       });
     });
 

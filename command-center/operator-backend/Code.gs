@@ -178,6 +178,13 @@ function doGet(e) {
       }));
     }
 
+    if (action === "publishPrvVaultStaticData") {
+      return json_(publishPrvVaultStaticData_({
+        code: p.code || "",
+        key: p.key || ""
+      }));
+    }
+
     if (action === "dispatchVisualProductTest") {
       return json_(dispatchVisualProductTest_({
         productName: p.productName || p.product_name || "",
@@ -211,7 +218,7 @@ function doGet(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["health", "sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -258,6 +265,10 @@ function doPost(e) {
       return json_(publishImportedChecklist_(body));
     }
 
+    if (action === "publishPrvVaultStaticData") {
+      return json_(publishPrvVaultStaticData_(body));
+    }
+
     if (action === "dispatchVisualProductTest") {
       return json_(dispatchVisualProductTest_(body));
     }
@@ -281,7 +292,7 @@ function doPost(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -1892,6 +1903,57 @@ function publishImportedChecklist_(input) {
     status: publish && publish.ok ? "published" : "publish_needs_review",
     product: product,
     publish: publish,
+    updated_at: new Date().toISOString()
+  };
+}
+
+function publishPrvVaultStaticData_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const code = safeString_(input && input.code).trim();
+  const exporterUrl = PropertiesService.getScriptProperties().getProperty(CM_STATIC_EXPORTER_URL_PROPERTY);
+  if (!exporterUrl) {
+    return {
+      ok: false,
+      skipped: true,
+      error: "Missing Script Property " + CM_STATIC_EXPORTER_URL_PROPERTY + ". PRV sheet write completed, but publish was not run."
+    };
+  }
+
+  const url = exporterUrl
+    + (exporterUrl.indexOf("?") > -1 ? "&" : "?")
+    + "action=publishVaultStaticDataToGitHub"
+    + "&code=" + encodeURIComponent(code)
+    + "&key=" + encodeURIComponent(input && input.key || "");
+
+  const res = UrlFetchApp.fetch(url, {
+    method: "get",
+    muteHttpExceptions: true
+  });
+  const status = res.getResponseCode();
+  const text = res.getContentText();
+  let data = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch (err) {
+    data = { raw: text };
+  }
+
+  if (status < 200 || status >= 300) {
+    return {
+      ok: false,
+      status_code: status,
+      error: "Static Data Exporter PRV publish call failed with " + status,
+      response: data
+    };
+  }
+
+  return {
+    ok: !!(data && data.ok),
+    status: data && data.status ? data.status : data && data.ok ? "published" : "publish_needs_review",
+    mode: "approved_prv_publish",
+    code: code,
+    publish: data,
     updated_at: new Date().toISOString()
   };
 }

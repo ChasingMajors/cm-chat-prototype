@@ -668,9 +668,9 @@ function executePrvSourceImport_(input) {
   const ss = SpreadsheetApp.openById(getVaultSpreadsheetId_());
   upsertPrvIndex_(ss, product);
   replaceRowsByCode_(ss, CM_PRODUCTS_SHEET, product.code, rows.map(function(row) {
-    return prvRowToSheetObject_(product.code, row);
+    return prvRowToSheetObject_(product, row);
   }), [
-    "code", "setType", "setLine", "printRun", "serial", "subSetSize", "notes", "cmURL"
+    "code", "display_name", "keywords", "year", "sport", "manufacturer", "product", "setType", "setLine", "printRun", "serial", "subSetSize", "notes", "cmURL"
   ]);
 
   const validation = validateWrittenPrvProduct_(ss, product.code);
@@ -740,16 +740,28 @@ function upsertPrvIndex_(ss, product) {
   }
 }
 
-function prvRowToSheetObject_(code, row) {
+function prvRowToSheetObject_(product, row) {
   return {
-    code: code,
+    code: product.code || "",
+    display_name: product.display_name || "",
+    displayname: product.display_name || "",
+    keywords: product.keywords || buildPrvKeywordString_(product),
+    year: product.year || "",
+    sport: titleCase_(product.sport || ""),
+    manufacturer: product.manufacturer || "",
+    product: product.product || "",
     setType: row.setType || "",
+    settype: row.setType || "",
     setLine: row.setLine || "",
+    setline: row.setLine || "",
     printRun: row.printRun || "",
+    printrun: row.printRun || "",
     serial: row.serial || "",
     subSetSize: row.subSetSize || "",
+    subsetsize: row.subSetSize || "",
     notes: row.notes || "",
-    cmURL: row.cmURL || ""
+    cmURL: row.cmURL || "",
+    cmurl: row.cmURL || ""
   };
 }
 
@@ -766,14 +778,35 @@ function validateWrittenPrvProduct_(ss, code) {
 
 function buildPrvKeywordString_(product) {
   const name = safeString_(product && product.display_name);
+  const year = safeString_(product && product.year);
+  const manufacturer = safeString_(product && product.manufacturer);
+  const line = safeString_(product && product.product);
+  const sport = titleCase_(product && product.sport);
+  const shortYear = year.match(/^\d{4}$/) ? year.slice(2) : "";
+  const sportAlias = sport === "Football" ? "NFL" :
+    sport === "Baseball" ? "MLB" :
+    sport === "Basketball" ? "NBA" :
+    sport === "Hockey" ? "NHL" : sport;
+
   return [
     name,
+    [year, manufacturer, line, sport].filter(Boolean).join(" "),
+    [year, manufacturer, line, sportAlias].filter(Boolean).join(" "),
+    [year, line, sport].filter(Boolean).join(" "),
+    [year, line, sportAlias].filter(Boolean).join(" "),
+    [shortYear, manufacturer, line, sport].filter(Boolean).join(" "),
+    [shortYear, manufacturer, line, sportAlias].filter(Boolean).join(" "),
+    [manufacturer, line, sport].filter(Boolean).join(" "),
+    [manufacturer, line, sportAlias].filter(Boolean).join(" "),
+    [line, sport].filter(Boolean).join(" "),
+    [line, sportAlias].filter(Boolean).join(" "),
     name + " print run",
     name + " production",
     name + " odds",
     name + " PRV",
-    [product.manufacturer, product.product, product.sport].filter(Boolean).join(" ")
-  ].filter(Boolean).join(", ");
+    name + " checklist",
+    [manufacturer, line, "checklist"].filter(Boolean).join(" ")
+  ].filter(Boolean).join(" ");
 }
 
 function extractSubstackBodyHtml_(html) {
@@ -919,21 +952,24 @@ function buildPrvProductPreview_(productName, sport, sourceUrl) {
   const year = extractPrvProductYear_(productName);
   const cleaned = safeString_(productName).replace(/\bNFL\b/gi, "Football").trim();
   const manufacturer = inferManufacturer_(cleaned);
-
-  return {
+  const productLine = cleaned
+    .replace(year, "")
+    .replace(new RegExp("\\b" + manufacturer + "\\b", "i"), "")
+    .replace(new RegExp("\\b" + titleCase_(sport) + "\\b", "i"), "")
+    .replace(/\s+/g, " ")
+    .trim();
+  const product = {
     code: buildPrvProductCode_(cleaned, sport),
     display_name: cleaned,
     year: year,
     sport: sport,
     manufacturer: manufacturer,
-    product: cleaned
-      .replace(year, "")
-      .replace(new RegExp("\\b" + manufacturer + "\\b", "i"), "")
-      .replace(new RegExp("\\b" + titleCase_(sport) + "\\b", "i"), "")
-      .replace(/\s+/g, " ")
-      .trim(),
+    product: productLine,
     source_url: sourceUrl
   };
+  product.keywords = buildPrvKeywordString_(product);
+
+  return product;
 }
 
 function extractPrvProductYear_(value) {

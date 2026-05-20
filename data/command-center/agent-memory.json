@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T01:06:17.707Z",
+  "exported_at": "2026-05-20T01:06:57.019Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -220,15 +220,15 @@
       "sport": "football",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "approved",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
-      "adminDecision": "",
+      "adminDecision": "approved",
       "executionResult": "",
       "validationResult": "",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-chrome-sapphire-nfl-analysis",
       "createdAt": "2026-05-20T00:30:18.943Z",
-      "updatedAt": "2026-05-20T00:32:51.828Z"
+      "updatedAt": "2026-05-20T01:06:55.415Z"
     },
     {
       "id": "visual_test|github_actions|2026 donruss baseball|2026_donruss_baseball",
@@ -411,6 +411,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779239215416_gk004a",
+      "ts": "2026-05-20T01:06:55.416Z",
+      "type": "agent_action",
+      "title": "Agent action updated",
+      "detail": "2025 Topps Chrome Sapphire Football marked Approved.",
+      "status": "approved",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "slabsquatch_substack"
+    },
+    {
+      "id": "log_1779239178195_z4a7j2",
+      "ts": "2026-05-20T01:06:18.195Z",
+      "type": "prv_source_review",
+      "title": "PRV preview completed",
+      "detail": "7 print-run rows parsed.",
+      "status": "preview_ready",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779239176103_vycf49",
       "ts": "2026-05-20T01:06:16.103Z",
@@ -634,6 +654,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T01:06:18.883Z",
+  "saved_at": "2026-05-20T01:06:58.250Z",
   "saved_by": "cm_command_center_operator"
 }

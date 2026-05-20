@@ -1160,7 +1160,11 @@ function validatePrvVaultProduct_(input) {
     }
 
     const shardPayload = JSON.parse(fetchText_(CM_APP_DATA_BASE + "/vault/products/" + shard));
-    const products = shardPayload && shardPayload.data && shardPayload.data.products ? shardPayload.data.products : {};
+    const products = shardPayload && shardPayload.products
+      ? shardPayload.products
+      : shardPayload && shardPayload.data && shardPayload.data.products
+        ? shardPayload.data.products
+        : {};
     const product = products[code] || null;
     const rows = product && Array.isArray(product.rows) ? product.rows : [];
 

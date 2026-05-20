@@ -580,7 +580,7 @@ function previewPrvSource_(input) {
   }
 
   const html = fetchText_(sourceUrl);
-  const title = extractPageTitle_(html) || titleFromSubstackUrl_(sourceUrl);
+  const title = extractSubstackPostTitle_(html) || extractPageTitle_(html) || titleFromSubstackUrl_(sourceUrl);
   const productName = normalizePrvSourceTitle_(title);
   const sport = requestedSport || inferSport_(productName + " " + sourceUrl);
 
@@ -626,8 +626,29 @@ function previewPrvSource_(input) {
 
 function extractSubstackBodyHtml_(html) {
   const raw = safeString_(html);
-  const match = raw.match(/\\"body_html\\":\\"([\s\S]*?)\\",\\"truncated_body_text\\"/);
-  if (!match) return "";
+  const patterns = [
+    /\\"body_html\\":\\"([\s\S]*?)\\",\\"truncated_body_text\\"/,
+    /"body_html":"([\s\S]*?)","truncated_body_text"/
+  ];
+  let match = null;
+
+  for (let i = 0; i < patterns.length; i++) {
+    match = raw.match(patterns[i]);
+    if (match) break;
+  }
+
+  if (!match) {
+    const marker = raw.search(/Part\\?u003c?\/?strong\\?u003e?:?\s*The\s*Print\s*Runs|Part\s*5:\s*The\s*Print\s*Runs/i);
+    if (marker < 0) return "";
+
+    const tail = raw.slice(marker, marker + 30000);
+    return tail
+      .replace(/\\"/g, "\"")
+      .replace(/\\n/g, "\n")
+      .replace(/\\u003c/g, "<")
+      .replace(/\\u003e/g, ">")
+      .replace(/\\u0026/g, "&");
+  }
 
   try {
     return JSON.parse("\"" + match[1] + "\"");
@@ -639,6 +660,26 @@ function extractSubstackBodyHtml_(html) {
       .replace(/\\u003e/g, ">")
       .replace(/\\u0026/g, "&");
   }
+}
+
+function extractSubstackPostTitle_(html) {
+  const raw = safeString_(html);
+  const og = raw.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i) ||
+    raw.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i);
+  if (og && og[1]) return cleanProductTitle_(og[1]);
+
+  const jsonLd = raw.match(/<script[^>]+application\/ld\+json[^>]*>([\s\S]*?)<\/script>/i);
+  if (jsonLd && jsonLd[1]) {
+    try {
+      const parsed = JSON.parse(stripHtml_(jsonLd[1]));
+      if (parsed && parsed.headline) return cleanProductTitle_(parsed.headline);
+    } catch (err) {}
+  }
+
+  const postH1 = raw.match(/<h1[^>]+class=["'][^"']*post-title[^"']*["'][^>]*>([\s\S]*?)<\/h1>/i);
+  if (postH1 && postH1[1]) return cleanProductTitle_(stripHtml_(postH1[1]));
+
+  return "";
 }
 
 function parseSlabSquatchPrintRunRows_(bodyHtml, sourceUrl) {
@@ -932,7 +973,8 @@ function normalizePrvSourceTitle_(title) {
     .replace(/\bNBA\b/gi, "Basketball")
     .replace(/\bMLB\b/gi, "Baseball")
     .replace(/\bNHL\b/gi, "Hockey")
-    .replace(/\s+Analysis(?:\s*&\s*Deep Dive)?\s*$/i, "")
+    .replace(/\s+Analysis(?:\s*(?:&|and)\s*Deep Dive)?\s*$/i, "")
+    .replace(/\s+(?:&|and)\s*Deep Dive\s*$/i, "")
     .replace(/\s+Deep Dive\s*$/i, "")
     .replace(/\s+Baby Deep Dive\s*$/i, "")
     .replace(/\s+and Updated Base Numbers\s*$/i, "")

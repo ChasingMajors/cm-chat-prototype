@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T04:41:16.637Z",
+  "exported_at": "2026-05-20T04:42:37.959Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -220,15 +220,15 @@
       "sport": "football",
       "code": "",
       "riskLevel": "medium",
-      "status": "approved",
+      "status": "running",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "approved",
-      "executionResult": "",
+      "executionResult": "PRV sheet write started through Operator Backend.",
       "validationResult": "",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-chrome-sapphire-nfl-analysis",
       "createdAt": "2026-05-20T00:30:18.943Z",
-      "updatedAt": "2026-05-20T01:06:55.415Z"
+      "updatedAt": "2026-05-20T04:42:36.358Z"
     },
     {
       "id": "visual_test|github_actions|2026 donruss baseball|2026_donruss_baseball",
@@ -411,6 +411,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779252156354_tdokjm",
+      "ts": "2026-05-20T04:42:36.354Z",
+      "type": "prv_source_review",
+      "title": "PRV sheet write started",
+      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
+      "status": "started",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "admin"
+    },
     {
       "id": "log_1779252075034_nbk87d",
       "ts": "2026-05-20T04:41:15.034Z",
@@ -714,6 +724,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T04:41:17.925Z",
+  "saved_at": "2026-05-20T04:42:39.090Z",
   "saved_by": "cm_command_center_operator"
 }

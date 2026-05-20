@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T04:47:21.722Z",
+  "exported_at": "2026-05-20T04:47:39.729Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -239,15 +239,15 @@
       "sport": "football",
       "code": "2025_topps_chrome_sapphire_football_football",
       "riskLevel": "medium",
-      "status": "fix_queued",
+      "status": "running",
       "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "approved",
-      "executionResult": "PRV write completed but validation needs review.",
+      "executionResult": "PRV sheet write started through Operator Backend.",
       "validationResult": "PRV row validation did not pass.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-chrome-sapphire-nfl-analysis",
       "createdAt": "2026-05-20T00:30:18.943Z",
-      "updatedAt": "2026-05-20T04:47:05.570Z"
+      "updatedAt": "2026-05-20T04:47:38.128Z"
     },
     {
       "id": "visual_test|github_actions|2026 donruss baseball|2026_donruss_baseball",
@@ -430,6 +430,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779252458126_0gyh9q",
+      "ts": "2026-05-20T04:47:38.126Z",
+      "type": "prv_source_review",
+      "title": "PRV sheet write started",
+      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
+      "status": "started",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "admin"
+    },
     {
       "id": "log_1779252440119_qewe7x",
       "ts": "2026-05-20T04:47:20.119Z",
@@ -823,6 +833,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T04:47:22.828Z",
+  "saved_at": "2026-05-20T04:47:40.835Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T00:06:47.736Z",
+  "exported_at": "2026-05-20T00:07:08.797Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -31,6 +31,24 @@
   ],
   "agent_actions": [
     {
+      "id": "checklist_publish|operator_backend|2026 donruss baseball|2026_donruss_baseball",
+      "type": "checklist_publish",
+      "source": "operator_backend",
+      "product": "2026 Donruss Baseball",
+      "sport": "baseball",
+      "code": "2026_donruss_baseball",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "adminDecision": "",
+      "executionResult": "Sheet write completed; publish needs review.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "createdAt": "2026-05-20T00:07:07.188Z",
+      "updatedAt": "2026-05-20T00:07:07.188Z"
+    },
+    {
       "id": "visual_test|github_actions|2025 topps chrome sapphire football|2025_topps_chrome_sapphire_football",
       "type": "visual_test",
       "source": "github_actions",
@@ -47,24 +65,6 @@
       "sourceUrl": "",
       "createdAt": "2026-05-20T00:04:32.403Z",
       "updatedAt": "2026-05-20T00:06:13.387Z"
-    },
-    {
-      "id": "source_import|wordpress_api|2026 donruss baseball",
-      "type": "source_import",
-      "source": "wordpress_api",
-      "product": "2026 Donruss Baseball",
-      "sport": "baseball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-donruss-baseball-card-checklist/",
-      "createdAt": "2026-05-19T23:48:01.823Z",
-      "updatedAt": "2026-05-19T23:48:01.823Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 topps simplicidad uefa club competitions soccer|2025_26_topps_simplicidad_uefa_club_competitions_soccer",
@@ -193,6 +193,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779235627195_whkfw4",
+      "ts": "2026-05-20T00:07:07.195Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2026 Donruss Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779235627190_swqjbu",
+      "ts": "2026-05-20T00:07:07.190Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "1,633 checklist rows and 227 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2026 Donruss Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779235606133_ekymnq",
       "ts": "2026-05-20T00:06:46.133Z",
@@ -853,6 +873,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T00:06:48.849Z",
+  "saved_at": "2026-05-20T00:07:09.896Z",
   "saved_by": "cm_command_center_operator"
 }

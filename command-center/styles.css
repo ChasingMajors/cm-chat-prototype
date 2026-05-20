@@ -592,8 +592,70 @@ h2 {
 
 .agent-action-card {
   display: grid;
-  gap: 11px;
-  background: linear-gradient(180deg, rgba(245,197,66,0.08), rgba(255,255,255,0.035));
+  gap: 13px;
+  padding: 16px;
+  color: #071833;
+  border-color: rgba(124,139,161,0.22);
+  background:
+    radial-gradient(circle at top left, rgba(57,160,255,0.11), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.56));
+  box-shadow: 0 16px 42px rgba(35,77,125,0.08);
+}
+
+.agent-action-card h3,
+.agent-action-card strong {
+  color: #071833;
+}
+
+.agent-action-card p,
+.agent-action-card .pill,
+.agent-action-card .action-raw-type,
+.agent-action-card .agent-posture span,
+.agent-action-card .agent-fix-plan span,
+.agent-action-card .validation-checklist span,
+.agent-action-card .agent-action-results span {
+  color: #56647a;
+}
+
+.agent-action-card .pill {
+  border-color: rgba(124,139,161,0.22);
+  background: rgba(255,255,255,0.52);
+}
+
+.agent-action-card .badge.warning,
+.agent-action-card .badge.info,
+.agent-action-card .badge.opportunity {
+  color: #071833;
+}
+
+.agent-action-kind-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+.agent-action-kind-row .next-kind {
+  color: #0b63ce;
+  background: rgba(57,160,255,0.12);
+  border: 1px solid rgba(57,160,255,0.18);
+  border-radius: 999px;
+  padding: 5px 9px;
+  line-height: 1;
+}
+
+.action-raw-type {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.agent-product-title {
+  font-size: 18px !important;
+  letter-spacing: -0.01em;
 }
 
 .resolved-summary,
@@ -702,6 +764,90 @@ h2 {
   gap: 8px;
 }
 
+.action-progress {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(57,160,255,0.15);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.58);
+}
+
+.progress-step {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+
+.progress-dot {
+  position: relative;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(124,139,161,0.28);
+  background: #fff;
+  color: #627089;
+  font-size: 12px;
+  font-weight: 900;
+  box-shadow: 0 6px 14px rgba(35,77,125,0.08);
+}
+
+.progress-line {
+  position: absolute;
+  left: 28px;
+  right: -8px;
+  top: 14px;
+  height: 2px;
+  background: rgba(124,139,161,0.2);
+  z-index: 1;
+}
+
+.progress-label {
+  min-width: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.progress-step.done .progress-dot {
+  border-color: rgba(51,209,122,0.38);
+  background: #33d17a;
+  color: #fff;
+}
+
+.progress-step.done .progress-line {
+  background: rgba(51,209,122,0.45);
+}
+
+.progress-step.current .progress-dot {
+  border-color: rgba(57,160,255,0.36);
+  background: #2488ff;
+  color: #fff;
+}
+
+.progress-step.current .progress-label {
+  color: #17477e;
+}
+
+.progress-step.issue .progress-dot {
+  border-color: rgba(255,88,88,0.38);
+  background: #ff5858;
+  color: #fff;
+}
+
+.progress-step.issue .progress-label {
+  color: #9c2f2f;
+}
+
 .agent-action-results span {
   min-width: 0;
   padding: 10px 12px;
@@ -710,6 +856,25 @@ h2 {
   background: rgba(255,255,255,0.04);
   color: var(--muted);
   font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  .action-progress {
+    grid-template-columns: 1fr;
+  }
+
+  .progress-step {
+    grid-template-columns: 30px minmax(0, 1fr);
+  }
+
+  .progress-line {
+    left: 14px;
+    right: auto;
+    top: 28px;
+    bottom: -8px;
+    width: 2px;
+    height: auto;
+  }
 }
 
 .agent-action-results strong {

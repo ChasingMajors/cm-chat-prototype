@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc51-prv-public-recheck-2026-05-20";
+  const COMMAND_CENTER_VERSION = "cc52-action-progress-2026-05-20";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -4395,6 +4395,100 @@
     `;
   }
 
+  function getAgentActionKindLabel(action) {
+    const type = String(action && action.type || "").toLowerCase();
+    if (type === "source_import") return "New Checklist Found";
+    if (type === "prv_source_review") return "New Print Run Found";
+    if (type === "checklist_publish") return "Checklist Publish";
+    if (type === "visual_test") return "Visual Validation";
+    if (type === "source_watch") return "Source Watch";
+    return titleCase(String(action && action.type || "Agent Action").replace(/_/g, " "));
+  }
+
+  function getAgentActionRawType(action) {
+    return String(action && action.type || "agent_action").replace(/_/g, " ");
+  }
+
+  function getActionProductName(action) {
+    return String(action && (action.product || action.title || action.recommendedAction || "Unknown product"));
+  }
+
+  function getActionProgressSteps(action) {
+    const type = String(action && action.type || "").toLowerCase();
+    const status = String(action && action.status || "").toLowerCase();
+    const execution = String(action && action.executionResult || "").toLowerCase();
+    const validation = String(action && action.validationResult || "").toLowerCase();
+    const hasSource = !!(action && (action.sourceUrl || action.runUrl || action.source));
+    const hasPreview = /preview|parsed|rows:|parallels:|sample/i.test(String(action && (action.executionResult || action.validationResult || "")));
+    const hasSheetWrite = /sheet write|google sheet|checklist data written|prv index and products rows written|temp data written|source sheet/i.test(String(action && action.executionResult || ""));
+    const hasPublish = /publish|json/i.test(String(action && (action.executionResult || action.validationResult || ""))) && !/publish needs review|publish pending/i.test(String(action && (action.executionResult || action.validationResult || "")));
+    const hasPublicValidation = hasPublicCoverageProof(action) || /public rows|public prv rows|public json validated|visual.*passed|all tests passed/i.test(String(action && action.validationResult || ""));
+    const isComplete = status === "validated" || hasPositiveValidationProof(action);
+    const isIssue = status === "failed" || status === "blocked" || status === "known_issue";
+
+    const checklistSteps = [
+      { key: "source", label: "Source found", done: hasSource || type === "checklist_publish" },
+      { key: "preview", label: "Preview ready", done: hasPreview || hasSheetWrite || type === "checklist_publish" },
+      { key: "sheet", label: "Sheet write", done: hasSheetWrite || type === "checklist_publish" },
+      { key: "publish", label: "JSON publish", done: hasPublish || hasPublicValidation },
+      { key: "validate", label: "CV / ChatBot test", done: isComplete }
+    ];
+
+    const prvSteps = [
+      { key: "source", label: "Source found", done: hasSource },
+      { key: "preview", label: "PRV preview", done: hasPreview || hasSheetWrite },
+      { key: "sheet", label: "PRV sheet write", done: hasSheetWrite },
+      { key: "publish", label: "PRV JSON publish", done: hasPublish || hasPublicValidation },
+      { key: "validate", label: "Public PRV test", done: isComplete || hasPublicValidation }
+    ];
+
+    const visualSteps = [
+      { key: "queue", label: "Queued", done: true },
+      { key: "run", label: "GitHub run", done: !!(action && action.runUrl) },
+      { key: "validate", label: "Behavior tested", done: isComplete }
+    ];
+
+    let steps = type === "prv_source_review"
+      ? prvSteps
+      : type === "visual_test"
+        ? visualSteps
+        : checklistSteps;
+
+    let firstOpenFound = false;
+    steps = steps.map(step => {
+      let state = step.done ? "done" : "wait";
+      if (isIssue && !step.done && !firstOpenFound) {
+        state = "issue";
+        firstOpenFound = true;
+      } else if (!step.done && !firstOpenFound) {
+        state = "current";
+        firstOpenFound = true;
+      }
+      return Object.assign({}, step, { state: state });
+    });
+
+    if (isComplete) {
+      steps = steps.map(step => Object.assign({}, step, { state: "done", done: true }));
+    }
+
+    return steps;
+  }
+
+  function renderActionProgress(action) {
+    const steps = getActionProgressSteps(action);
+    return `
+      <div class="action-progress" aria-label="Agent progress">
+        ${steps.map((step, idx) => `
+          <div class="progress-step ${escapeHtml(step.state)}">
+            <span class="progress-dot" aria-hidden="true">${step.state === "done" ? "✓" : step.state === "issue" ? "!" : idx + 1}</span>
+            ${idx < steps.length - 1 ? `<span class="progress-line" aria-hidden="true"></span>` : ""}
+            <span class="progress-label">${escapeHtml(step.label)}</span>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
   function renderAgentActions() {
     collapseDuplicateAgentActions();
     const activeActions = getActiveAgentActions();
@@ -4436,8 +4530,11 @@
         <article class="agent-action-card">
           <div class="opp-top">
             <div>
-              <div class="next-kind">${escapeHtml(action.type || "agent_action")}</div>
-              <h3>${escapeHtml(action.product || action.recommendedAction || "Agent action")}</h3>
+              <div class="agent-action-kind-row">
+                <span class="next-kind">${escapeHtml(getAgentActionKindLabel(action))}</span>
+                <span class="action-raw-type">${escapeHtml(getAgentActionRawType(action))}</span>
+              </div>
+              <h3 class="agent-product-title">${escapeHtml(getActionProductName(action))}</h3>
               <p>${escapeHtml(action.recommendedAction || "")}</p>
             </div>
             <span class="badge ${badgeClass}">${escapeHtml(getAgentActionDisplayStatus(action))}</span>
@@ -4448,6 +4545,7 @@
             ${action.code ? `<span class="pill">Code: ${escapeHtml(action.code)}</span>` : ""}
             ${action.source ? `<span class="pill">Source: ${escapeHtml(action.source)}</span>` : ""}
           </div>
+          ${renderActionProgress(action)}
           ${action.executionResult || action.validationResult ? `
             <div class="agent-action-results">
               ${action.executionResult ? `<span><strong>Execution</strong>${escapeHtml(action.executionResult)}</span>` : ""}

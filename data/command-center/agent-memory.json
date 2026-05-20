@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T12:15:31.361Z",
+  "exported_at": "2026-05-20T12:22:15.302Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -77,15 +77,15 @@
       "sport": "soccer",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "running",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "",
-      "executionResult": "",
+      "executionResult": "PRV sheet write started through Operator Backend.",
       "validationResult": "",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-club-competitions",
       "createdAt": "2026-05-20T00:30:18.946Z",
-      "updatedAt": "2026-05-20T00:31:25.909Z"
+      "updatedAt": "2026-05-20T12:22:13.700Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 topps chrome football|2025_topps_chrome_football",
@@ -430,6 +430,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779279733694_x3qkxq",
+      "ts": "2026-05-20T12:22:13.694Z",
+      "type": "prv_source_review",
+      "title": "PRV sheet write started",
+      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
+      "status": "started",
+      "product": "2025/26 Topps Chrome UEFA Club Competitions",
+      "source": "admin"
+    },
     {
       "id": "log_1779279329759_v117ze",
       "ts": "2026-05-20T12:15:29.759Z",
@@ -883,6 +893,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T12:15:34.066Z",
+  "saved_at": "2026-05-20T12:22:16.702Z",
   "saved_by": "cm_command_center_operator"
 }

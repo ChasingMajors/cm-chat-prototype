@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T00:01:43.430Z",
+  "exported_at": "2026-05-20T00:02:50.467Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -73,16 +73,16 @@
       "product": "2025 Topps Chrome Sapphire Football",
       "sport": "football",
       "code": "2025_topps_chrome_sapphire_football",
-      "riskLevel": "medium",
-      "status": "running",
+      "riskLevel": "low",
+      "status": "validated",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
-      "adminDecision": "approved",
-      "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "Coverage recheck started...",
-      "runUrl": "",
+      "adminDecision": "",
+      "executionResult": "JSON published.",
+      "validationResult": "CV and ChatBot passed.",
+      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_topps_chrome_sapphire_football&sport=football&type=product",
       "sourceUrl": "",
       "createdAt": "2026-05-19T20:39:51.659Z",
-      "updatedAt": "2026-05-20T00:01:41.827Z"
+      "updatedAt": "2026-05-20T00:02:48.863Z"
     },
     {
       "id": "visual_test|github_actions|2026 upper deck spring expo hockey|2026_upper_deck_spring_expo_hockey",
@@ -175,6 +175,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779235368864_mh1kxv",
+      "ts": "2026-05-20T00:02:48.864Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written and published",
+      "detail": "732 checklist rows and 48 parallels validated in the source sheet.",
+      "status": "validated",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779235304192_jr5u0a",
+      "ts": "2026-05-20T00:01:44.192Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "732 public rows and 1 parallels found.",
+      "status": "covered",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779235301827_m63in4",
       "ts": "2026-05-20T00:01:41.827Z",
@@ -672,6 +692,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T00:01:44.431Z",
+  "saved_at": "2026-05-20T00:02:51.456Z",
   "saved_by": "cm_command_center_operator"
 }

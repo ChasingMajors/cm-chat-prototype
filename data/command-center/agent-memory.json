@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T00:01:32.597Z",
+  "exported_at": "2026-05-20T00:01:43.430Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -74,15 +74,15 @@
       "sport": "football",
       "code": "2025_topps_chrome_sapphire_football",
       "riskLevel": "medium",
-      "status": "approved",
+      "status": "running",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "approved",
       "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-05-19T20:39:51.659Z",
-      "updatedAt": "2026-05-20T00:01:30.992Z"
+      "updatedAt": "2026-05-20T00:01:41.827Z"
     },
     {
       "id": "visual_test|github_actions|2026 upper deck spring expo hockey|2026_upper_deck_spring_expo_hockey",
@@ -175,6 +175,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779235301827_m63in4",
+      "ts": "2026-05-20T00:01:41.827Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779235290994_vudueh",
       "ts": "2026-05-20T00:01:30.994Z",
@@ -662,6 +672,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T00:01:33.662Z",
+  "saved_at": "2026-05-20T00:01:44.431Z",
   "saved_by": "cm_command_center_operator"
 }

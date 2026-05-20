@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T22:46:10.187Z",
+  "exported_at": "2026-05-20T22:46:39.115Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -221,15 +221,15 @@
       "sport": "basketball",
       "code": "2025_26_bowman_s_best_university_basketball",
       "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "Run PRV public recheck after GitHub Pages propagation.",
+      "status": "validated",
+      "recommendedAction": "PRV public JSON is live. Open PRV for final human check.",
       "adminDecision": "approved",
       "executionResult": "PRV JSON publish needs review.",
-      "validationResult": "Publish returned without public validation.",
+      "validationResult": "21 public PRV rows found.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
       "createdAt": "2026-05-20T00:30:18.943Z",
-      "updatedAt": "2026-05-20T22:46:01.337Z"
+      "updatedAt": "2026-05-20T22:46:10.545Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 topps chrome sapphire football",
@@ -430,6 +430,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779317197509_xc1d1h",
+      "ts": "2026-05-20T22:46:37.509Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch started",
+      "detail": "Checking recent Checklistcenter items against public JSON.",
+      "status": "started",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779317170551_b2feoj",
+      "ts": "2026-05-20T22:46:10.551Z",
+      "type": "prv_publish",
+      "title": "PRV public validation passed",
+      "detail": "21 public PRV rows found.",
+      "status": "validated",
+      "product": "2025/26 Bowman’s Best University Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779317168584_yb2kd9",
       "ts": "2026-05-20T22:46:08.584Z",
@@ -1323,6 +1343,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T22:46:11.247Z",
+  "saved_at": "2026-05-20T22:46:40.335Z",
   "saved_by": "cm_command_center_operator"
 }

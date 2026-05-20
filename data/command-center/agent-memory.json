@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T00:04:18.481Z",
+  "exported_at": "2026-05-20T00:04:34.006Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -30,6 +30,24 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2025 topps chrome sapphire football|2025_topps_chrome_sapphire_football",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "sport": "football",
+      "code": "2025_topps_chrome_sapphire_football",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "sourceUrl": "",
+      "createdAt": "2026-05-20T00:04:32.403Z",
+      "updatedAt": "2026-05-20T00:04:32.404Z"
+    },
     {
       "id": "source_import|wordpress_api|2026 donruss baseball",
       "type": "source_import",
@@ -74,15 +92,15 @@
       "sport": "football",
       "code": "2025_topps_chrome_sapphire_football",
       "riskLevel": "low",
-      "status": "validated",
+      "status": "needs_admin",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
       "executionResult": "JSON published.",
-      "validationResult": "CV and ChatBot passed.",
-      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_topps_chrome_sapphire_football&sport=football&type=product",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "createdAt": "2026-05-19T20:39:51.659Z",
-      "updatedAt": "2026-05-20T00:02:48.863Z"
+      "updatedAt": "2026-05-20T00:04:32.404Z"
     },
     {
       "id": "visual_test|github_actions|2026 upper deck spring expo hockey|2026_upper_deck_spring_expo_hockey",
@@ -175,6 +193,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779235472404_2b2fcx",
+      "ts": "2026-05-20T00:04:32.404Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1779235459219_sta2hp",
+      "ts": "2026-05-20T00:04:19.219Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch complete",
+      "detail": "20 source items checked. 1 need review. 0 review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779235459218_f7wo88",
+      "ts": "2026-05-20T00:04:19.218Z",
+      "type": "source_watch",
+      "title": "Source Watch ignored items skipped",
+      "detail": "3 admin-ignored source item(s) were omitted from the queue.",
+      "status": "ignored",
+      "product": "",
+      "source": "quick_json"
+    },
     {
       "id": "log_1779235456878_8htel7",
       "ts": "2026-05-20T00:04:16.878Z",
@@ -672,6 +720,23 @@
       "headSha": "df21c47cf11ab76d8ce098eb4cc28ef47ed7c7dd",
       "createdAt": "2026-05-18T03:00:57Z",
       "checkedAt": "2026-05-18T03:02:39.192Z"
+    },
+    "football|2025_topps_chrome_sapphire_football": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-05-20T00:04:30.016Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "football|2025_topps_chrome_sapphire_football",
+      "key": "football|2025_topps_chrome_sapphire_football",
+      "productName": "2025 Topps Chrome Sapphire Football",
+      "sport": "football",
+      "code": "2025_topps_chrome_sapphire_football",
+      "updatedAt": "2026-05-20T00:04:32.402Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -702,6 +767,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T00:04:19.584Z",
+  "saved_at": "2026-05-20T00:04:35.215Z",
   "saved_by": "cm_command_center_operator"
 }

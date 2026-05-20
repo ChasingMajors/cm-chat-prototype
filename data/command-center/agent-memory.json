@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T22:47:04.664Z",
+  "exported_at": "2026-05-20T22:47:08.527Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -85,7 +85,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-optichrome-football-card-checklist/",
       "createdAt": "2026-05-20T22:46:39.732Z",
-      "updatedAt": "2026-05-20T22:46:39.732Z"
+      "updatedAt": "2026-05-20T22:47:06.924Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps chrome uefa club competitions",
@@ -448,6 +448,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779317226926_f0wsg7",
+      "ts": "2026-05-20T22:47:06.926Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch complete",
+      "detail": "20 source items checked. 2 need review. 1 review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779317226925_irxeeo",
+      "ts": "2026-05-20T22:47:06.925Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "1 findings are now visible in the Agent Action Queue for admin review. 2 admin-ignored source item(s) were skipped.",
+      "status": "queued",
+      "product": "",
+      "source": "quick_json"
+    },
     {
       "id": "log_1779317223061_1p755s",
       "ts": "2026-05-20T22:47:03.061Z",
@@ -1227,26 +1247,6 @@
       "status": "completed",
       "product": "",
       "source": "slabsquatch"
-    },
-    {
-      "id": "log_1779237085910_6n4xd0",
-      "ts": "2026-05-20T00:31:25.910Z",
-      "type": "source_watch",
-      "title": "Source Watch actions queued",
-      "detail": "11 findings are now visible in the Agent Action Queue for admin review.",
-      "status": "queued",
-      "product": "",
-      "source": "prv_source_watch"
-    },
-    {
-      "id": "log_1779237084075_78of3r",
-      "ts": "2026-05-20T00:31:24.075Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch started",
-      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
-      "status": "started",
-      "product": "",
-      "source": "slabsquatch"
     }
   ],
   "visual_tests": {
@@ -1371,6 +1371,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T22:47:05.645Z",
+  "saved_at": "2026-05-20T22:47:09.828Z",
   "saved_by": "cm_command_center_operator"
 }

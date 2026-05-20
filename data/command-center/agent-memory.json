@@ -2,12 +2,31 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T04:43:55.932Z",
+  "exported_at": "2026-05-20T04:47:07.172Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
   "tasks": [
+    {
+      "id": "task_1779252425569_6idkqz",
+      "sourceId": "prv_source_review|slabsquatch_substack|2025 topps chrome sapphire football",
+      "title": "Fix: 2025 Topps Chrome Sapphire Football",
+      "kind": "fix",
+      "severity": "warning",
+      "status": "queued",
+      "createdAt": "2026-05-20T04:47:05.569Z",
+      "updatedAt": "2026-05-20T04:47:05.569Z",
+      "why": "PRV row validation did not pass.",
+      "objective": "Known issue is intentionally held; convert it to a fix task when ready.",
+      "steps": [
+        "Confirm the issue still reproduces.",
+        "Decide whether this is data, search, UI, or test expectation work.",
+        "Patch in sandbox and document the affected product/query.",
+        "Run the product visual test before clearing the known issue."
+      ],
+      "guardrail": "Fix in sandbox first. Do not mark validated until JSON coverage or CV/ChatBot visual proof passes."
+    },
     {
       "id": "task_1779237171820_p6mdjb",
       "sourceId": "source|football|2025 topps chrome sapphire football",
@@ -220,15 +239,15 @@
       "sport": "football",
       "code": "2025_topps_chrome_sapphire_football_football",
       "riskLevel": "medium",
-      "status": "known_issue",
-      "recommendedAction": "Review PRV sheet rows, then run publishVaultStaticDataToGitHub when ready.",
+      "status": "fix_queued",
+      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "approved",
       "executionResult": "PRV write completed but validation needs review.",
       "validationResult": "PRV row validation did not pass.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-chrome-sapphire-nfl-analysis",
       "createdAt": "2026-05-20T00:30:18.943Z",
-      "updatedAt": "2026-05-20T04:42:45.421Z"
+      "updatedAt": "2026-05-20T04:47:05.570Z"
     },
     {
       "id": "visual_test|github_actions|2026 donruss baseball|2026_donruss_baseball",
@@ -411,6 +430,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779252425570_3d3h3z",
+      "ts": "2026-05-20T04:47:05.570Z",
+      "type": "operator_task",
+      "title": "Fix task created",
+      "detail": "Fix: 2025 Topps Chrome Sapphire Football is ready in Operator Tasks.",
+      "status": "queued",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "agent_action_queue"
+    },
+    {
+      "id": "log_1779252236101_zaihpv",
+      "ts": "2026-05-20T04:43:56.101Z",
+      "type": "prv_source_review",
+      "title": "PRV preview completed",
+      "detail": "7 print-run rows parsed.",
+      "status": "preview_ready",
+      "product": "2025 Topps Chrome Sapphire Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779252234330_mw1h9i",
       "ts": "2026-05-20T04:43:54.330Z",
@@ -744,6 +783,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T04:43:56.821Z",
+  "saved_at": "2026-05-20T04:47:08.539Z",
   "saved_by": "cm_command_center_operator"
 }

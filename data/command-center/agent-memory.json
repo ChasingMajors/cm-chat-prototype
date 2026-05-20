@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T22:44:37.827Z",
+  "exported_at": "2026-05-20T22:44:53.935Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -221,15 +221,15 @@
       "sport": "basketball",
       "code": "",
       "riskLevel": "medium",
-      "status": "approved",
+      "status": "running",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "approved",
-      "executionResult": "",
+      "executionResult": "PRV sheet write started through Operator Backend.",
       "validationResult": "",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
       "createdAt": "2026-05-20T00:30:18.943Z",
-      "updatedAt": "2026-05-20T22:44:27.674Z"
+      "updatedAt": "2026-05-20T22:44:52.333Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 topps chrome sapphire football",
@@ -430,6 +430,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779317092330_1srexs",
+      "ts": "2026-05-20T22:44:52.330Z",
+      "type": "prv_source_review",
+      "title": "PRV sheet write started",
+      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
+      "status": "started",
+      "product": "2025/26 Bowman’s Best University Basketball Baby",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779317078036_46kmwm",
+      "ts": "2026-05-20T22:44:38.036Z",
+      "type": "prv_source_review",
+      "title": "PRV preview completed",
+      "detail": "21 print-run rows parsed.",
+      "status": "preview_ready",
+      "product": "2025/26 Bowman’s Best University Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779317076224_xy3fp5",
       "ts": "2026-05-20T22:44:36.224Z",
@@ -1233,6 +1253,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T22:44:38.975Z",
+  "saved_at": "2026-05-20T22:44:55.087Z",
   "saved_by": "cm_command_center_operator"
 }

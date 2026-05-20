@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T14:08:57.594Z",
+  "exported_at": "2026-05-20T14:13:58.419Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -221,15 +221,15 @@
       "sport": "basketball",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "approved",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
-      "adminDecision": "",
+      "adminDecision": "approved",
       "executionResult": "",
       "validationResult": "",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
       "createdAt": "2026-05-20T00:30:18.943Z",
-      "updatedAt": "2026-05-20T00:31:25.905Z"
+      "updatedAt": "2026-05-20T14:13:56.813Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 topps chrome sapphire football",
@@ -430,6 +430,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779286436816_lams9r",
+      "ts": "2026-05-20T14:13:56.816Z",
+      "type": "agent_action",
+      "title": "Agent action updated",
+      "detail": "2025/26 Bowman’s Best University Basketball Baby marked Approved.",
+      "status": "approved",
+      "product": "2025/26 Bowman’s Best University Basketball Baby",
+      "source": "slabsquatch_substack"
+    },
+    {
+      "id": "log_1779286140006_qcxego",
+      "ts": "2026-05-20T14:09:00.006Z",
+      "type": "prv_source_review",
+      "title": "PRV preview completed",
+      "detail": "21 print-run rows parsed.",
+      "status": "preview_ready",
+      "product": "2025/26 Bowman’s Best University Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779286135991_d1ppf2",
       "ts": "2026-05-20T14:08:55.991Z",
@@ -1113,6 +1133,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T14:09:00.646Z",
+  "saved_at": "2026-05-20T14:14:01.037Z",
   "saved_by": "cm_command_center_operator"
 }

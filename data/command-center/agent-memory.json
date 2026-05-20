@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T00:06:34.355Z",
+  "exported_at": "2026-05-20T00:06:47.736Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -193,6 +193,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779235606133_ekymnq",
+      "ts": "2026-05-20T00:06:46.133Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779235594571_e64j0t",
+      "ts": "2026-05-20T00:06:34.571Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "1,633 rows and 227 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2026 Donruss Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779235592751_ivjgnt",
       "ts": "2026-05-20T00:06:32.751Z",
@@ -833,6 +853,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T00:06:35.436Z",
+  "saved_at": "2026-05-20T00:06:48.849Z",
   "saved_by": "cm_command_center_operator"
 }

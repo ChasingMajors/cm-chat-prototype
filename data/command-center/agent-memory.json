@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T00:09:04.792Z",
+  "exported_at": "2026-05-20T00:09:32.192Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -38,15 +38,15 @@
       "sport": "baseball",
       "code": "2026_donruss_baseball",
       "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Visual validation complete.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26133006767",
       "sourceUrl": "",
       "createdAt": "2026-05-20T00:08:18.833Z",
-      "updatedAt": "2026-05-20T00:09:03.189Z"
+      "updatedAt": "2026-05-20T00:09:30.590Z"
     },
     {
       "id": "checklist_publish|operator_backend|2026 donruss baseball|2026_donruss_baseball",
@@ -56,15 +56,15 @@
       "sport": "baseball",
       "code": "2026_donruss_baseball",
       "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "approved",
       "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26133006767",
       "sourceUrl": "",
       "createdAt": "2026-05-20T00:07:07.188Z",
-      "updatedAt": "2026-05-20T00:09:03.189Z"
+      "updatedAt": "2026-05-20T00:09:30.590Z"
     },
     {
       "id": "visual_test|github_actions|2025 topps chrome sapphire football|2025_topps_chrome_sapphire_football",
@@ -211,6 +211,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779235770591_8l9685",
+      "ts": "2026-05-20T00:09:30.591Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2026 Donruss Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1779235770590_uawbku",
+      "ts": "2026-05-20T00:09:30.590Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2026 Donruss Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1779235743189_0in2wj",
       "ts": "2026-05-20T00:09:03.189Z",
@@ -933,9 +953,9 @@
       "checkedAt": "2026-05-20T00:06:13.385Z"
     },
     "baseball|2026_donruss_baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-05-20T00:08:16.486Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26133006767",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -945,7 +965,7 @@
       "productName": "2026 Donruss Baseball",
       "sport": "baseball",
       "code": "2026_donruss_baseball",
-      "updatedAt": "2026-05-20T00:09:03.187Z",
+      "updatedAt": "2026-05-20T00:09:30.588Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 26133006767,
@@ -953,7 +973,7 @@
       "displayTitle": "Visual Product Test - 2026 Donruss Baseball",
       "headSha": "eae4647fd891a5fe69719916501c1c1526d69a01",
       "createdAt": "2026-05-20T00:08:18Z",
-      "checkedAt": "2026-05-20T00:09:03.187Z"
+      "checkedAt": "2026-05-20T00:09:30.588Z"
     }
   },
   "known_issues": {},
@@ -984,6 +1004,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T00:09:06.006Z",
+  "saved_at": "2026-05-20T00:09:33.419Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T12:44:16.880Z",
+  "exported_at": "2026-05-21T12:44:40.541Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -241,15 +241,15 @@
       "sport": "baseball",
       "code": "2026-bowman-baseball",
       "riskLevel": "low",
-      "status": "known_issue",
-      "recommendedAction": "Open the source and review whether this post has a new layout or no extractable print-run table.",
+      "status": "validated",
+      "recommendedAction": "PRV public JSON is live. Open PRV for final human check.",
       "adminDecision": "",
       "executionResult": "Source found, but the PRV parser returned 0 print-run rows.",
-      "validationResult": "Parser review needed before this can write PRV sheet data.",
+      "validationResult": "27 public PRV rows found.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-bowman-baseball-analysis-and",
       "createdAt": "2026-05-20T00:30:18.945Z",
-      "updatedAt": "2026-05-21T12:39:42.753Z"
+      "updatedAt": "2026-05-21T12:44:17.233Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps hoops basketball",
@@ -522,6 +522,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779367478938_onecml",
+      "ts": "2026-05-21T12:44:38.938Z",
+      "type": "prv_publish",
+      "title": "PRV public recheck started",
+      "detail": "Checking whether GitHub Pages has the product rows yet.",
+      "status": "started",
+      "product": "2025 Topps Chrome Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779367457240_6hrtid",
+      "ts": "2026-05-21T12:44:17.240Z",
+      "type": "prv_publish",
+      "title": "PRV public validation passed",
+      "detail": "27 public PRV rows found.",
+      "status": "validated",
+      "product": "2026 Bowman Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779367455278_yilsm2",
       "ts": "2026-05-21T12:44:15.278Z",
@@ -1301,26 +1321,6 @@
       "status": "started",
       "product": "2025/26 Bowman’s Best University Basketball Baby",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779286089131_bgs6wx",
-      "ts": "2026-05-20T14:08:09.131Z",
-      "type": "prv_publish",
-      "title": "PRV public validation pending",
-      "detail": "Product code not found in public PRV product manifest yet.",
-      "status": "needs_review",
-      "product": "2025_26_bowman_s_best_university_basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779286082960_05ktdw",
-      "ts": "2026-05-20T14:08:02.960Z",
-      "type": "prv_publish",
-      "title": "PRV public recheck started",
-      "detail": "Checking whether GitHub Pages has the product rows yet.",
-      "status": "started",
-      "product": "2025_26_bowman_s_best_university_basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1453,6 +1453,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T12:44:18.453Z",
+  "saved_at": "2026-05-21T12:44:42.012Z",
   "saved_by": "cm_command_center_operator"
 }

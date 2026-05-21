@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-20T22:56:42.432Z",
+  "exported_at": "2026-05-21T04:35:28.620Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -448,6 +448,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779338127015_kfpyyf",
+      "ts": "2026-05-21T04:35:27.015Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync started",
+      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
+      "status": "started",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779317800828_6t8sis",
       "ts": "2026-05-20T22:56:40.828Z",
@@ -1237,16 +1247,6 @@
       "status": "started",
       "product": "2025 Topps Chrome Sapphire Football",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779237705089_k1qhvu",
-      "ts": "2026-05-20T00:41:45.089Z",
-      "type": "prv_source_review",
-      "title": "PRV preview completed",
-      "detail": "0 print-run rows parsed.",
-      "status": "needs_review",
-      "product": "2025 topps chrome Football analysis and",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1379,6 +1379,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-20T22:56:43.467Z",
+  "saved_at": "2026-05-21T04:35:29.815Z",
   "saved_by": "cm_command_center_operator"
 }

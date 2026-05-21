@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc56-prv-parser-clarity-2026-05-21";
+  const COMMAND_CENTER_VERSION = "cc57-prv-queue-hardening-2026-05-21";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -490,6 +490,15 @@
     return matches[0] || null;
   }
 
+  function findResolvedProductAction(input, preferredType) {
+    const matches = (state.agentActions || []).filter(action => isResolvedAgentAction(action) && sameProductAction(action, input));
+    if (preferredType) {
+      const preferred = matches.find(action => action.type === preferredType);
+      if (preferred) return preferred;
+    }
+    return matches[0] || null;
+  }
+
   function pruneDuplicateProductActions(primaryAction) {
     if (!primaryAction) return;
     const primaryId = primaryAction.id;
@@ -567,14 +576,36 @@
 
   function queueSourceWatchActions(items, auditMode) {
     const skippedIgnored = (Array.isArray(items) ? items : []).filter(isSourceIgnored).length;
-    const actionable = (Array.isArray(items) ? items : []).filter(item => (
-      !isSourceIgnored(item) &&
-      (
-        item.status === "missing" ||
-        item.status === "needs_review" ||
-        item.status === "possible_update"
-      )
-    ));
+    let skippedResolved = 0;
+    const actionable = (Array.isArray(items) ? items : []).filter(item => {
+      if (isSourceIgnored(item)) return false;
+      if (
+        item.status !== "missing" &&
+        item.status !== "needs_review" &&
+        item.status !== "possible_update"
+      ) {
+        return false;
+      }
+
+      const isPrv = item.target_tool === "prv";
+      const input = {
+        type: isPrv ? "prv_source_review" : "source_import",
+        product: item.matched_name || item.title || "",
+        title: item.title || "",
+        sport: item.sport || "",
+        code: item.matched_code || "",
+        matched_code: item.matched_code || "",
+        sourceUrl: item.source_url || item.url || "",
+        url: item.url || ""
+      };
+      const resolved = findResolvedProductAction(input, isPrv ? "prv_source_review" : "");
+      if (resolved) {
+        skippedResolved += 1;
+        return false;
+      }
+
+      return true;
+    });
 
     let createdOrUpdated = 0;
     actionable.forEach(item => {
@@ -601,19 +632,36 @@
         status: "queued",
         source: auditMode || "source_watch",
         title: "Source Watch actions queued",
-        detail: `${createdOrUpdated} findings are now visible in the Agent Action Queue for admin review.${skippedIgnored ? " " + skippedIgnored + " admin-ignored source item(s) were skipped." : ""}`
+        detail: `${createdOrUpdated} findings are now visible in the Agent Action Queue for admin review.${skippedIgnored ? " " + skippedIgnored + " admin-ignored source item(s) were skipped." : ""}${skippedResolved ? " " + skippedResolved + " already-resolved item(s) were skipped." : ""}`
       });
-    } else if (skippedIgnored) {
+    } else if (skippedIgnored || skippedResolved) {
       logActivity({
         type: "source_watch",
-        status: "ignored",
+        status: skippedIgnored ? "ignored" : "validated",
         source: auditMode || "source_watch",
-        title: "Source Watch ignored items skipped",
-        detail: `${skippedIgnored} admin-ignored source item(s) were omitted from the queue.`
+        title: "Source Watch skipped clean items",
+        detail: `${skippedIgnored ? skippedIgnored + " admin-ignored source item(s)" : ""}${skippedIgnored && skippedResolved ? " and " : ""}${skippedResolved ? skippedResolved + " already-resolved item(s)" : ""} were omitted from the queue.`
       });
     }
 
     return createdOrUpdated;
+  }
+
+  function rememberResolvedSourceAction(action) {
+    if (!action) return false;
+    const key = buildSourceIgnoreKey(action);
+    if (!key) return false;
+
+    state.sourceIgnores[key] = {
+      product: action.product || "",
+      sport: action.sport || "",
+      code: action.code || "",
+      sourceUrl: action.sourceUrl || action.runUrl || "",
+      reason: "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      ignoredAt: new Date().toISOString(),
+      resolved: true
+    };
+    return true;
   }
 
   function updateAgentAction(id, patch) {
@@ -3714,9 +3762,15 @@
   }
 
   function clearResolvedAgentActions() {
+    let remembered = 0;
+    (state.agentActions || []).forEach(action => {
+      if (isResolvedAgentAction(action) && rememberResolvedSourceAction(action)) remembered += 1;
+    });
+    if (remembered) writeSourceIgnores();
+
     state.agentActions = state.agentActions.filter(action => {
       const status = String(action.status || "").toLowerCase();
-      return !(status === "validated" || status === "done");
+      return !(status === "validated" || status === "done" || status === "ignored");
     });
     writeAgentActions();
     logActivity({
@@ -3724,7 +3778,7 @@
       status: "cleaned",
       source: "admin",
       title: "Resolved agent actions cleared",
-      detail: "Validated and done actions were removed from the active queue."
+      detail: `Validated, done, and ignored actions were removed from the active queue.${remembered ? " " + remembered + " source/product keys were remembered so scans do not requeue them." : ""}`
     });
     renderAgentActions();
     renderActionLanes();

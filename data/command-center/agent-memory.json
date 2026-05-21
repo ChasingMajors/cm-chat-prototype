@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T18:24:45.622Z",
+  "exported_at": "2026-05-21T18:36:38.282Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -115,15 +115,15 @@
       "sport": "basketball",
       "code": "2025_26_topps_chrome_cactus_jack_basketball_basketball",
       "riskLevel": "low",
-      "status": "approval_required",
-      "recommendedAction": "SlabSquatch has a recent print-run/odds analysis for a PRV-covered product. Compare source numbers against PRV and flag discrepancies before updating.",
+      "status": "validated",
+      "recommendedAction": "PRV public JSON is live. Open PRV for final human check.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "",
+      "validationResult": "8 public PRV rows found.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-cactus-jack-nba",
       "createdAt": "2026-05-21T18:24:07.205Z",
-      "updatedAt": "2026-05-21T18:24:07.205Z"
+      "updatedAt": "2026-05-21T18:24:46.261Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 bowman s best university basketball|2025_26_bowman_s_best_university_basketball",
@@ -232,24 +232,6 @@
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowman-basketball-analysis",
       "createdAt": "2026-05-20T00:30:18.945Z",
       "updatedAt": "2026-05-21T18:24:07.208Z"
-    },
-    {
-      "id": "prv_source_review|slabsquatch_substack|2025 26 bowman basketball case hit breakdown",
-      "type": "prv_source_review",
-      "source": "slabsquatch_substack",
-      "product": "2025/26 Bowman Basketball Case Hit Breakdown",
-      "sport": "basketball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowman-basketball-case-hit",
-      "createdAt": "2026-05-20T00:30:18.945Z",
-      "updatedAt": "2026-05-21T18:24:07.207Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2026 bowman baseball|2026-bowman-baseball",
@@ -540,6 +522,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779388596679_f6owhh",
+      "ts": "2026-05-21T18:36:36.679Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2025/26 Bowman Basketball Case Hit Breakdown was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2025/26 Bowman Basketball Case Hit Breakdown",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779387886265_fxre0c",
+      "ts": "2026-05-21T18:24:46.265Z",
+      "type": "prv_publish",
+      "title": "PRV public validation passed",
+      "detail": "8 public PRV rows found.",
+      "status": "validated",
+      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779387884021_l8ykfv",
       "ts": "2026-05-21T18:24:44.021Z",
@@ -1319,26 +1321,6 @@
       "status": "needs_review",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779317792229_t4cn9k",
-      "ts": "2026-05-20T22:56:32.229Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync started",
-      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
-      "status": "started",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779317257012_9m4b22",
-      "ts": "2026-05-20T22:47:37.012Z",
-      "type": "source_watch",
-      "title": "Source product ignored",
-      "detail": "2026 Leaf Optichrome Football will be skipped in future Source Watch queues.",
-      "status": "ignored",
-      "product": "2026 Leaf Optichrome Football",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -1468,9 +1450,27 @@
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-optichrome-football-card-checklist/",
       "reason": "Admin marked this exact source product as fringe or intentionally skipped.",
       "ignoredAt": "2026-05-20T22:47:37.009Z"
+    },
+    "basketball|https slabsquatch substack com p 202526-bowman-basketball-case-hit": {
+      "product": "2025/26 Bowman Basketball Case Hit Breakdown",
+      "sport": "basketball",
+      "code": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowman-basketball-case-hit",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-05-21T18:36:36.675Z",
+      "resolved": true
+    },
+    "basketball|2025 26 bowman basketball case hit breakdown": {
+      "product": "2025/26 Bowman Basketball Case Hit Breakdown",
+      "sport": "basketball",
+      "code": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowman-basketball-case-hit",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-05-21T18:36:36.675Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T18:24:47.133Z",
+  "saved_at": "2026-05-21T18:36:39.660Z",
   "saved_by": "cm_command_center_operator"
 }

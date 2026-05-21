@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T12:26:30.079Z",
+  "exported_at": "2026-05-21T12:27:43.879Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -241,15 +241,15 @@
       "sport": "baseball",
       "code": "2026-bowman-baseball",
       "riskLevel": "low",
-      "status": "approval_required",
-      "recommendedAction": "SlabSquatch has a recent print-run/odds analysis for a PRV-covered product. Compare source numbers against PRV and flag discrepancies before updating.",
+      "status": "validated",
+      "recommendedAction": "PRV public JSON is live. Open PRV for final human check.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "",
+      "validationResult": "27 public PRV rows found.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-bowman-baseball-analysis-and",
       "createdAt": "2026-05-20T00:30:18.945Z",
-      "updatedAt": "2026-05-21T12:22:52.792Z"
+      "updatedAt": "2026-05-21T12:26:31.910Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps hoops basketball",
@@ -522,6 +522,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779366462276_yc4go3",
+      "ts": "2026-05-21T12:27:42.276Z",
+      "type": "prv_source_review",
+      "title": "PRV preview started",
+      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
+      "status": "started",
+      "product": "2025/26 Topps Chrome UEFA Club Competitions",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779366391916_tnwm4x",
+      "ts": "2026-05-21T12:26:31.916Z",
+      "type": "prv_publish",
+      "title": "PRV public validation passed",
+      "detail": "27 public PRV rows found.",
+      "status": "validated",
+      "product": "2026 Bowman Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779366388475_j6b51k",
       "ts": "2026-05-21T12:26:28.475Z",
@@ -1301,26 +1321,6 @@
       "status": "needs_review",
       "product": "2025 Topps Chrome Sapphire Football",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779252458126_0gyh9q",
-      "ts": "2026-05-20T04:47:38.126Z",
-      "type": "prv_source_review",
-      "title": "PRV sheet write started",
-      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
-      "status": "started",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "admin"
-    },
-    {
-      "id": "log_1779252440119_qewe7x",
-      "ts": "2026-05-20T04:47:20.119Z",
-      "type": "prv_source_review",
-      "title": "PRV temp data written",
-      "detail": "1 Index row and 7 Products rows validated.",
-      "status": "needs_review",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1453,6 +1453,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T12:26:31.473Z",
+  "saved_at": "2026-05-21T12:27:45.264Z",
   "saved_by": "cm_command_center_operator"
 }

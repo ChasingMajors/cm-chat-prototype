@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc54-sentinel-cockpit-2026-05-20";
+  const COMMAND_CENTER_VERSION = "cc55-cockpit-cycle-2026-05-21";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -87,6 +87,7 @@
     operatorKeyInput: document.getElementById("operatorKeyInput"),
     sentinelCommandInput: document.getElementById("sentinelCommandInput"),
     sentinelCommandBtn: document.getElementById("sentinelCommandBtn"),
+    sentinelNotice: document.getElementById("sentinelNotice"),
     typeFilter: document.getElementById("typeFilter"),
     systemState: document.getElementById("systemState"),
     autonomyState: document.getElementById("autonomyState"),
@@ -1735,7 +1736,8 @@
     }
   }
 
-  async function runSourceWatchWithBackend(mode) {
+  async function runSourceWatchWithBackend(mode, options) {
+    options = options || {};
     const endpoint = readOperatorEndpoint();
     const auditMode = mode === "quick_json" ? "quick_json" : "deep_sheets";
     const modeLabel = auditMode === "quick_json" ? "Quick JSON Source Watch" : "Deep Sheets Source Watch";
@@ -1744,8 +1746,10 @@
       renderSourceCheckMessage(
         "Operator Backend needed",
         "Paste and save the Apps Script Operator Backend URL before running Source Watch. Single-product Source Check still works without it.",
-        "warning"
+        "warning",
+        { noFocus: !!options.noFocus }
       );
+      if (options.noFocus) renderSentinelNotice("Operator Backend needed", "Save the Operator Backend URL before Sentinel can scan source data.", "warning");
       return;
     }
 
@@ -1754,7 +1758,8 @@
       auditMode === "quick_json"
         ? "The Operator Backend is checking recent Checklistcenter items against public JSON files."
         : "The Operator Backend is checking recent Checklistcenter items against source Google Sheets.",
-      "info"
+      "info",
+      { noFocus: !!options.noFocus }
     );
     logActivity({
       type: "source_watch",
@@ -1784,11 +1789,19 @@
         detail: `${items.length} source items checked. ${actionable.length} need review. ${queuedCount} review cards queued.`
       });
       renderSourceWatchResults(data);
+      if (options.noFocus) {
+        renderSentinelNotice(
+          "Source scan complete",
+          `${items.length} source items checked. ${actionable.length} need review. ${queuedCount} review cards queued.`,
+          actionable.length ? "warning" : "success"
+        );
+      }
       renderAgentActions();
       renderActionLanes();
       renderActivityLog();
     } catch (err) {
-      renderSourceCheckMessage("Source watch failed", err && err.message ? err.message : String(err), "critical");
+      renderSourceCheckMessage("Source watch failed", err && err.message ? err.message : String(err), "critical", { noFocus: !!options.noFocus });
+      if (options.noFocus) renderSentinelNotice("Source scan failed", err && err.message ? err.message : String(err), "critical");
       logActivity({
         type: "source_watch",
         status: "failed",
@@ -3602,7 +3615,8 @@
     `;
   }
 
-  function renderSourceCheckMessage(title, detail, severity) {
+  function renderSourceCheckMessage(title, detail, severity, options) {
+    options = options || {};
     const badgeClass = severity === "critical" ? "critical" : severity === "warning" ? "warning" : "info";
     els.sourceCheckResult.innerHTML = `
       <div class="source-result-card">
@@ -3615,7 +3629,17 @@
         </div>
       </div>
     `;
-    focusSourceCheckResult();
+    if (!options.noFocus) focusSourceCheckResult();
+  }
+
+  function renderSentinelNotice(title, detail, severity) {
+    if (!els.sentinelNotice) return;
+    const className = severity === "critical" ? "critical" : severity === "warning" ? "warning" : severity === "success" ? "success" : "info";
+    els.sentinelNotice.className = `sentinel-notice ${className}`;
+    els.sentinelNotice.innerHTML = `
+      <strong>${escapeHtml(title || "Sentinel update")}</strong>
+      <span>${escapeHtml(detail || "")}</span>
+    `;
   }
 
   function setTaskStatus(taskId, status) {
@@ -4954,7 +4978,8 @@
   }
 
   function renderAgentCycleMessage(title, detail, severity) {
-    renderSourceCheckMessage(title, detail, severity || "info");
+    renderSentinelNotice(title, detail, severity || "info");
+    renderSourceCheckMessage(title, detail, severity || "info", { noFocus: true });
     logActivity({
       type: "agent_cycle",
       status: severity === "critical" ? "blocked" : "started",
@@ -5028,8 +5053,12 @@
       return;
     }
 
-    renderAgentCycleMessage(step.title, step.detail, "info");
-    runSourceWatchWithBackend("quick_json");
+    renderAgentCycleMessage(
+      "Scanning for new work",
+      "No active queue item needed action, so Sentinel is checking recent Checklist Center data now.",
+      "info"
+    );
+    runSourceWatchWithBackend("quick_json", { noFocus: true });
   }
 
   function renderActionLaneCard(action, lane) {

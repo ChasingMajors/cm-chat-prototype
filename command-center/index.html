@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=cc54" />
+  <link rel="stylesheet" href="./styles.css?v=cc55" />
 </head>
 <body>
   <div class="sentinel-app">
@@ -42,7 +42,7 @@
           <div class="kicker">CM Sentinel</div>
           <h1>Good morning, Admin.</h1>
           <p class="lede">Everything important is here: data health, missing products, approval-ready work, and the next action the agent needs.</p>
-          <div class="build-version">HTML cc54-sentinel-cockpit-2026-05-20</div>
+          <div class="build-version">HTML cc55-cockpit-cycle-2026-05-21</div>
         </div>
         <div class="hero-side">
         <div class="hero-pill">
@@ -96,7 +96,7 @@
         <div class="status-card version-card">
           <span class="status-icon teal">⌁</span>
           <span class="status-label">JSON Index</span>
-          <strong id="buildVersion">HTML cc54</strong>
+          <strong id="buildVersion">HTML cc55</strong>
           <em>Current build</em>
         </div>
       </section>
@@ -106,11 +106,11 @@
         <div class="assistant-content">
           <h2>How can I help you today?</h2>
           <div class="quick-prompts">
+            <button type="button" data-sentinel-click="agent">Run Agent Cycle</button>
             <button type="button" data-sentinel-click="syncPrv">Sync PRV JSON</button>
             <button type="button" data-sentinel-click="audit">Run health check</button>
             <button type="button" data-sentinel-click="checklists">Find new checklists</button>
             <button type="button" data-sentinel-click="prv">Find PRV updates</button>
-            <button type="button" data-sentinel-click="agent">Run agent cycle</button>
           </div>
           <div class="assistant-input-row">
             <input id="sentinelCommandInput" type="text" placeholder="Ask CM Sentinel anything..." aria-label="Ask CM Sentinel anything" />
@@ -119,7 +119,17 @@
         </div>
       </section>
 
+      <section id="sentinelNotice" class="sentinel-notice info" aria-live="polite">
+        <strong>Ready when you are.</strong>
+        <span>Start with “Run Agent Cycle” to let Sentinel choose the next useful check.</span>
+      </section>
+
       <section class="workflow-grid" aria-label="Workflows">
+        <button id="agentCycleBtn" class="workflow-tile primary-workflow" type="button">
+          <span>◇</span>
+          <strong>Run Agent Cycle</strong>
+          <em>Sentinel picks the next check</em>
+        </button>
         <button id="refreshBtn" class="workflow-tile" type="button">
           <span>⌁</span>
           <strong>Run Health Check</strong>
@@ -139,11 +149,6 @@
           <span>↥</span>
           <strong>Sync PRV JSON</strong>
           <em>Publish manual Sheet edits</em>
-        </button>
-        <button id="agentCycleBtn" class="workflow-tile" type="button">
-          <span>◇</span>
-          <strong>Run Agent Cycle</strong>
-          <em>Review next best action</em>
         </button>
         <a class="workflow-tile" href="../index.html">
           <span>◌</span>
@@ -411,6 +416,6 @@
     </main>
   </div>
 
-  <script defer src="./command-center.js?v=cc54"></script>
+  <script defer src="./command-center.js?v=cc55"></script>
 </body>
 </html>

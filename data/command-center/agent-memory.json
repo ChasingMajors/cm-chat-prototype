@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T12:39:12.781Z",
+  "exported_at": "2026-05-21T12:39:32.287Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -169,15 +169,15 @@
       "sport": "soccer",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "status": "known_issue",
+      "recommendedAction": "Open the source and review whether this post has a new layout or no extractable print-run table.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "Source found, but the PRV parser returned 0 print-run rows.",
+      "validationResult": "Parser review needed before this can write PRV sheet data.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-club-competitions",
       "createdAt": "2026-05-20T00:30:18.946Z",
-      "updatedAt": "2026-05-21T12:38:42.225Z"
+      "updatedAt": "2026-05-21T12:39:12.908Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 topps chrome football|2025_topps_chrome_football",
@@ -522,6 +522,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779367170683_0uv2d3",
+      "ts": "2026-05-21T12:39:30.684Z",
+      "type": "prv_source_review",
+      "title": "PRV preview started",
+      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
+      "status": "started",
+      "product": "2025 Topps Chrome Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779367152916_pwgf1f",
+      "ts": "2026-05-21T12:39:12.916Z",
+      "type": "prv_source_review",
+      "title": "PRV preview completed",
+      "detail": "0 print-run rows parsed.",
+      "status": "needs_review",
+      "product": "2025/26 Topps Chrome UEFA Club Competitions",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779367151178_xwcqoq",
       "ts": "2026-05-21T12:39:11.178Z",
@@ -1301,26 +1321,6 @@
       "status": "started",
       "product": "2025 Topps Chrome Sapphire Football",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779280992470_h7waj6",
-      "ts": "2026-05-20T12:43:12.470Z",
-      "type": "prv_publish",
-      "title": "PRV public validation pending",
-      "detail": "Public PRV validation did not pass yet.",
-      "status": "needs_review",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779280989123_uf1acz",
-      "ts": "2026-05-20T12:43:09.123Z",
-      "type": "prv_publish",
-      "title": "PRV public recheck started",
-      "detail": "Checking whether GitHub Pages has the product rows yet.",
-      "status": "started",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1453,6 +1453,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T12:39:14.282Z",
+  "saved_at": "2026-05-21T12:39:33.375Z",
   "saved_by": "cm_command_center_operator"
 }

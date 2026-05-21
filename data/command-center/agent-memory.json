@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T12:20:51.852Z",
+  "exported_at": "2026-05-21T12:22:08.638Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -486,6 +486,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779366127035_blmhhn",
+      "ts": "2026-05-21T12:22:07.035Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch started",
+      "detail": "Checking recent Checklistcenter items against public JSON.",
+      "status": "started",
+      "product": "",
+      "source": "quick_json"
+    },
     {
       "id": "log_1779366050247_yjv5vg",
       "ts": "2026-05-21T12:20:50.247Z",
@@ -1275,16 +1285,6 @@
       "status": "started",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1779252064873_4len50",
-      "ts": "2026-05-20T04:41:04.873Z",
-      "type": "prv_source_review",
-      "title": "PRV preview completed",
-      "detail": "7 print-run rows parsed.",
-      "status": "preview_ready",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1417,6 +1417,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T12:20:53.689Z",
+  "saved_at": "2026-05-21T12:22:09.751Z",
   "saved_by": "cm_command_center_operator"
 }

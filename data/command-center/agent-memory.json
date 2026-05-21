@@ -2,12 +2,31 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T04:36:09.274Z",
+  "exported_at": "2026-05-21T12:11:55.412Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
   "tasks": [
+    {
+      "id": "task_1779365513801_a7y9vl",
+      "sourceId": "prv_source_review|slabsquatch_substack|2025 26 topps chrome uefa club competitions",
+      "title": "Fix: 2025/26 Topps Chrome UEFA Club Competitions",
+      "kind": "fix",
+      "severity": "critical",
+      "status": "queued",
+      "createdAt": "2026-05-21T12:11:53.801Z",
+      "updatedAt": "2026-05-21T12:11:53.801Z",
+      "why": "PRV sheet write did not complete.",
+      "objective": "Repair the held action, rerun validation, and record proof.",
+      "steps": [
+        "Confirm the issue still reproduces.",
+        "Patch the smallest safe sandbox fix.",
+        "Run the affected validation again.",
+        "Record proof before marking the action validated."
+      ],
+      "guardrail": "Fix in sandbox first. Do not mark validated until JSON coverage or CV/ChatBot visual proof passes."
+    },
     {
       "id": "task_1779252425569_6idkqz",
       "sourceId": "prv_source_review|slabsquatch_substack|2025 topps chrome sapphire football",
@@ -95,15 +114,15 @@
       "sport": "soccer",
       "code": "",
       "riskLevel": "medium",
-      "status": "failed",
-      "recommendedAction": "Open PRV preview, confirm rows, then retry the product-scoped write.",
+      "status": "fix_queued",
+      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "",
       "executionResult": "PRV source preview is not ready for write.",
       "validationResult": "PRV sheet write did not complete.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-club-competitions",
       "createdAt": "2026-05-20T00:30:18.946Z",
-      "updatedAt": "2026-05-20T12:22:15.798Z"
+      "updatedAt": "2026-05-21T12:11:53.807Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 topps chrome football|2025_topps_chrome_football",
@@ -448,6 +467,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779365513809_8bq90l",
+      "ts": "2026-05-21T12:11:53.809Z",
+      "type": "agent_cycle",
+      "title": "Create repair task",
+      "detail": "2025/26 Topps Chrome UEFA Club Competitions is blocked and needs a fix path. Created Fix: 2025/26 Topps Chrome UEFA Club Competitions.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1779338171292_istnr2",
+      "ts": "2026-05-21T04:36:11.292Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync needs review",
+      "detail": "Publish returned without public validation.",
+      "status": "needs_review",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779338167671_308f29",
       "ts": "2026-05-21T04:36:07.671Z",
@@ -1227,26 +1266,6 @@
       "status": "needs_review",
       "product": "2025 Topps Chrome Football",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779252028983_jklhsg",
-      "ts": "2026-05-20T04:40:28.983Z",
-      "type": "prv_source_review",
-      "title": "PRV preview started",
-      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
-      "status": "started",
-      "product": "2025 Topps Chrome Football",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779239215416_gk004a",
-      "ts": "2026-05-20T01:06:55.416Z",
-      "type": "agent_action",
-      "title": "Agent action updated",
-      "detail": "2025 Topps Chrome Sapphire Football marked Approved.",
-      "status": "approved",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "slabsquatch_substack"
     }
   ],
   "visual_tests": {
@@ -1379,6 +1398,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T04:36:10.730Z",
+  "saved_at": "2026-05-21T12:11:56.889Z",
   "saved_by": "cm_command_center_operator"
 }

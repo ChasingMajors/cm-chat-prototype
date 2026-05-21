@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T12:39:59.194Z",
+  "exported_at": "2026-05-21T12:40:26.836Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -295,15 +295,15 @@
       "sport": "basketball",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "status": "needs_admin",
+      "recommendedAction": "Review sample rows, then write PRV temp data if the numbers look right.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "PRV source preview parsed 10 print-run rows.",
+      "validationResult": "Preview rows are ready for admin review before PRV sheet write.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-cactus-jack-nba",
       "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-21T12:38:42.222Z"
+      "updatedAt": "2026-05-21T12:39:59.941Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 bowman s best university basketball baby",
@@ -522,6 +522,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779367225233_7og4wm",
+      "ts": "2026-05-21T12:40:25.233Z",
+      "type": "prv_source_review",
+      "title": "PRV sheet write started",
+      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1779367199952_haxe7r",
+      "ts": "2026-05-21T12:39:59.952Z",
+      "type": "prv_source_review",
+      "title": "PRV preview completed",
+      "detail": "10 print-run rows parsed.",
+      "status": "preview_ready",
+      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779367197591_bmn229",
       "ts": "2026-05-21T12:39:57.591Z",
@@ -1301,26 +1321,6 @@
       "status": "started",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1779286036377_9lg133",
-      "ts": "2026-05-20T14:07:16.377Z",
-      "type": "prv_source_review",
-      "title": "PRV preview completed",
-      "detail": "21 print-run rows parsed.",
-      "status": "preview_ready",
-      "product": "2025/26 Bowman’s Best University Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779286030595_nteftb",
-      "ts": "2026-05-20T14:07:10.595Z",
-      "type": "prv_source_review",
-      "title": "PRV preview started",
-      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
-      "status": "started",
-      "product": "2025/26 Bowman’s Best University Basketball Baby",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1453,6 +1453,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T12:40:00.620Z",
+  "saved_at": "2026-05-21T12:40:28.067Z",
   "saved_by": "cm_command_center_operator"
 }

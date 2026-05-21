@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc53-prv-manual-sync-2026-05-20";
+  const COMMAND_CENTER_VERSION = "cc54-sentinel-cockpit-2026-05-20";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -85,6 +85,8 @@
     sourceSportInput: document.getElementById("sourceSportInput"),
     operatorEndpointInput: document.getElementById("operatorEndpointInput"),
     operatorKeyInput: document.getElementById("operatorKeyInput"),
+    sentinelCommandInput: document.getElementById("sentinelCommandInput"),
+    sentinelCommandBtn: document.getElementById("sentinelCommandBtn"),
     typeFilter: document.getElementById("typeFilter"),
     systemState: document.getElementById("systemState"),
     autonomyState: document.getElementById("autonomyState"),
@@ -3363,6 +3365,44 @@
     publishPrvVaultData("", null, { fullSync: true });
   }
 
+  function runSentinelCommand(command) {
+    const q = normalize(command || "");
+    if (!q) {
+      renderSourceCheckMessage("Ask Sentinel", "Type a product name or choose one of the quick prompts.", "info");
+      return;
+    }
+
+    if (q.includes("prv") && (q.includes("sync") || q.includes("publish") || q.includes("json"))) {
+      syncPrvJsonOnDemand();
+      return;
+    }
+
+    if (q.includes("new checklist") || q.includes("checklist center") || q.includes("missing checklist")) {
+      runSourceWatchWithBackend("deep_sheets");
+      return;
+    }
+
+    if (q.includes("print run") || q.includes("slabsquatch") || q.includes("prv")) {
+      runPrvSourceWatchWithBackend();
+      return;
+    }
+
+    if (q.includes("agent") || q.includes("next")) {
+      runAgentCycle();
+      return;
+    }
+
+    if (q.includes("health") || q.includes("audit") || q.includes("working")) {
+      runAudit();
+      return;
+    }
+
+    if (els.sourceTitleInput) {
+      els.sourceTitleInput.value = command;
+      validateSourceProductWithBackend();
+    }
+  }
+
   function renderPrvPublicValidationResult(data, actionId) {
     const ok = !!(data && data.ok);
     const code = data && data.code ? data.code : "";
@@ -5454,6 +5494,27 @@
 
   els.refreshBtn.addEventListener("click", runAudit);
   els.syncPrvJsonBtn.addEventListener("click", syncPrvJsonOnDemand);
+  if (els.sentinelCommandBtn) {
+    els.sentinelCommandBtn.addEventListener("click", () => runSentinelCommand(els.sentinelCommandInput && els.sentinelCommandInput.value || ""));
+  }
+  if (els.sentinelCommandInput) {
+    els.sentinelCommandInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        runSentinelCommand(els.sentinelCommandInput.value || "");
+      }
+    });
+  }
+  document.querySelectorAll("[data-sentinel-click]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const action = btn.dataset.sentinelClick || "";
+      if (action === "syncPrv") syncPrvJsonOnDemand();
+      else if (action === "audit") runAudit();
+      else if (action === "checklists") runSourceWatchWithBackend("deep_sheets");
+      else if (action === "prv") runPrvSourceWatchWithBackend();
+      else if (action === "agent") runAgentCycle();
+    });
+  });
   els.scanSourcesBtn.addEventListener("click", () => runSourceWatchWithBackend("quick_json"));
   els.scanPrvSourcesBtn.addEventListener("click", () => runPrvSourceWatchWithBackend());
   els.agentCycleBtn.addEventListener("click", runAgentCycle);

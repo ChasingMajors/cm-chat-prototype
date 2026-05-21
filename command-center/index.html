@@ -3,308 +3,414 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#080808" />
-  <title>Chasing Majors Command Center</title>
+  <meta name="theme-color" content="#f5f8ff" />
+  <title>CM Sentinel</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=cc53" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css?v=cc54" />
 </head>
 <body>
-  <main class="shell">
-    <header class="topbar">
-      <div>
-        <div class="kicker">Internal sandbox</div>
-        <h1>Chasing Majors Command Center</h1>
-        <div class="build-version">HTML cc53-prv-manual-sync-2026-05-20</div>
-        <p class="lede">AI operating partner for data health, opportunity scouting, and approval-ready fixes.</p>
+  <div class="sentinel-app">
+    <aside class="sentinel-sidebar" aria-label="CM Sentinel navigation">
+      <div class="sentinel-brand">
+        <div class="sentinel-orb" aria-hidden="true"></div>
+        <strong>CM Sentinel</strong>
+        <span>Command Intelligence</span>
       </div>
-      <div class="top-actions">
-        <select id="autonomyModeSelect" class="filter-select" aria-label="Autonomy mode">
+
+      <nav class="sentinel-nav" aria-label="Primary">
+        <a href="#commandCenter" class="active">Command Center</a>
+        <a href="#productVerifier">Product Verifier</a>
+        <a href="#prvImportBuilder">PRV Import Builder</a>
+        <a href="#dataExplorer">Data Explorer</a>
+        <a href="#alerts">Alerts</a>
+        <a href="#auditLog">Audit Log</a>
+        <a href="#settings">Settings</a>
+      </nav>
+
+      <div class="sidebar-health">
+        <span>System Health</span>
+        <strong id="systemState">Loading</strong>
+        <em id="autonomyReadiness">Checking...</em>
+      </div>
+    </aside>
+
+    <main class="shell" id="commandCenter">
+      <header class="topbar sentinel-hero">
+        <div>
+          <div class="kicker">CM Sentinel</div>
+          <h1>Good morning, Admin.</h1>
+          <p class="lede">Everything important is here: data health, missing products, approval-ready work, and the next action the agent needs.</p>
+          <div class="build-version">HTML cc54-sentinel-cockpit-2026-05-20</div>
+        </div>
+        <div class="hero-side">
+        <div class="hero-pill">
+          <span class="health-dot"></span>
+          <strong id="autonomyState">Review only</strong>
+        </div>
+        <select id="autonomyModeSelect" class="filter-select autonomy-select" aria-label="Autonomy mode">
           <option value="review_only">Review only</option>
           <option value="approval_required">Approval required</option>
           <option value="guarded_auto">Guarded auto</option>
           <option value="full_auto">Full auto</option>
         </select>
-        <button id="refreshBtn" class="primary-btn" type="button">Run Fast JSON Audit</button>
-        <button id="scanSourcesBtn" class="primary-btn source-scan-btn" type="button">Scan New Checklists</button>
-        <button id="scanPrvSourcesBtn" class="primary-btn source-scan-btn" type="button">Scan PRV Sources</button>
-        <button id="agentCycleBtn" class="primary-btn agent-cycle-btn" type="button">Run Agent Cycle</button>
-        <a class="ghost-btn" href="../index.html">Open ChatBot</a>
-      </div>
-    </header>
-
-    <section class="status-strip" id="statusStrip">
-      <div class="status-card">
-        <span class="status-label">System</span>
-        <strong id="systemState">Loading</strong>
-      </div>
-      <div class="status-card">
-        <span class="status-label">Opportunities</span>
-        <strong id="opportunityCount">-</strong>
-      </div>
-      <div class="status-card">
-        <span class="status-label">Critical</span>
-        <strong id="criticalCount">-</strong>
-      </div>
-      <div class="status-card">
-        <span class="status-label">Last Audit</span>
-        <strong id="lastAudit">-</strong>
-      </div>
-      <div class="status-card">
-        <span class="status-label">Autonomy</span>
-        <strong id="autonomyState">-</strong>
-      </div>
-      <div class="status-card">
-        <span class="status-label">Auto Ready</span>
-        <strong id="autonomyReadiness">-</strong>
-      </div>
-      <div class="status-card version-card">
-        <span class="status-label">Build</span>
-        <strong id="buildVersion">HTML cc53</strong>
-      </div>
-    </section>
-
-    <details class="panel next-panel next-panel-collapsed">
-      <summary class="next-panel-summary">
-        <div>
-          <h2>What’s Next</h2>
-          <p>Agent-ranked ideas and future build lanes. Expand when you want the longer planning view.</p>
+        <div class="hero-clock">
+            <strong id="lastAudit">-</strong>
+            <span>Last audit</span>
+          </div>
         </div>
-        <span>Open</span>
-      </summary>
-      <div id="nextActionList" class="next-action-list">
-        <div class="skeleton-card"></div>
-      </div>
-    </details>
+      </header>
 
-    <section class="grid two-col">
-      <div class="panel agent-action-panel">
+      <section class="status-strip" id="statusStrip" aria-label="System status">
+        <div class="status-card">
+          <span class="status-icon blue">▣</span>
+          <span class="status-label">Checklist Vault</span>
+          <strong id="opportunityCount">-</strong>
+          <em>Open items</em>
+        </div>
+        <div class="status-card">
+          <span class="status-icon purple">▥</span>
+          <span class="status-label">Print Run Vault</span>
+          <strong>Sync</strong>
+          <em>Manual control ready</em>
+        </div>
+        <div class="status-card">
+          <span class="status-icon green">●</span>
+          <span class="status-label">ChatBot</span>
+          <strong>Live</strong>
+          <em>Visual tests on demand</em>
+        </div>
+        <div class="status-card">
+          <span class="status-icon orange">□</span>
+          <span class="status-label">Release Schedule</span>
+          <strong>JSON</strong>
+          <em>Static feed</em>
+        </div>
+        <div class="status-card">
+          <span class="status-icon blue">≋</span>
+          <span class="status-label">Google Sheets</span>
+          <strong>Source</strong>
+          <em>Approval required</em>
+        </div>
+        <div class="status-card version-card">
+          <span class="status-icon teal">⌁</span>
+          <span class="status-label">JSON Index</span>
+          <strong id="buildVersion">HTML cc54</strong>
+          <em>Current build</em>
+        </div>
+      </section>
+
+      <section class="assistant-panel">
+        <div class="assistant-orb" aria-hidden="true"></div>
+        <div class="assistant-content">
+          <h2>How can I help you today?</h2>
+          <div class="quick-prompts">
+            <button type="button" data-sentinel-click="syncPrv">Sync PRV JSON</button>
+            <button type="button" data-sentinel-click="audit">Run health check</button>
+            <button type="button" data-sentinel-click="checklists">Find new checklists</button>
+            <button type="button" data-sentinel-click="prv">Find PRV updates</button>
+            <button type="button" data-sentinel-click="agent">Run agent cycle</button>
+          </div>
+          <div class="assistant-input-row">
+            <input id="sentinelCommandInput" type="text" placeholder="Ask CM Sentinel anything..." aria-label="Ask CM Sentinel anything" />
+            <button id="sentinelCommandBtn" type="button" aria-label="Send command">Send</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="workflow-grid" aria-label="Workflows">
+        <button id="refreshBtn" class="workflow-tile" type="button">
+          <span>⌁</span>
+          <strong>Run Health Check</strong>
+          <em>Fast JSON audit</em>
+        </button>
+        <button id="scanSourcesBtn" class="workflow-tile" type="button">
+          <span>＋</span>
+          <strong>Scan New Checklists</strong>
+          <em>Checklist Center watch</em>
+        </button>
+        <button id="scanPrvSourcesBtn" class="workflow-tile" type="button">
+          <span>▥</span>
+          <strong>Scan PRV Sources</strong>
+          <em>SlabSquatch watch</em>
+        </button>
+        <button id="syncPrvJsonBtn" class="workflow-tile primary-workflow" type="button">
+          <span>↥</span>
+          <strong>Sync PRV JSON</strong>
+          <em>Publish manual Sheet edits</em>
+        </button>
+        <button id="agentCycleBtn" class="workflow-tile" type="button">
+          <span>◇</span>
+          <strong>Run Agent Cycle</strong>
+          <em>Review next best action</em>
+        </button>
+        <a class="workflow-tile" href="../index.html">
+          <span>◌</span>
+          <strong>Open ChatBot</strong>
+          <em>Live assistant</em>
+        </a>
+      </section>
+
+      <section class="grid main-cockpit-grid">
+        <div class="panel agent-action-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Agent Action Queue</h2>
+              <p>New checklist and print-run work. Follow the progress bar, then choose the next button.</p>
+            </div>
+            <div class="panel-actions">
+              <button id="clearResolvedAgentActionsBtn" class="ghost-btn" type="button">Clear Resolved</button>
+            </div>
+          </div>
+          <div id="agentActionList" class="agent-action-list">
+            <div class="brief-item">
+              <strong>No agent actions yet</strong>
+              <span>Run a source watch or agent cycle to create approval-ready work.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="side-stack">
+          <div class="panel review-hold-panel" id="alerts">
+            <div class="panel-head">
+          <div>
+            <h2>Alerts</h2>
+            <p>Items that need review before the agent moves forward.</p>
+          </div>
+          <strong id="criticalCount" class="alert-count">-</strong>
+        </div>
+            <div id="reviewHoldList" class="review-hold-list">
+              <div class="brief-item">
+                <strong>No holds yet</strong>
+                <span>Known issues, failed tests, and review-required items will appear here.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel activity-log-panel" id="auditLog">
+            <div class="panel-head">
+              <div>
+                <h2>Recent Activity</h2>
+                <p>What the agent found, changed, validated, or held.</p>
+              </div>
+              <button id="clearActivityLogBtn" class="ghost-btn" type="button">Clear</button>
+            </div>
+            <div id="activityLogList" class="activity-log-list">
+              <div class="brief-item">
+                <strong>No activity yet</strong>
+                <span>Agent events will appear here.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel source-check-panel" id="productVerifier">
         <div class="panel-head">
           <div>
-            <h2>Agent Action Queue</h2>
-            <p>Approval-ready work with risk, status, validation, and proof of completion.</p>
-          </div>
-          <div class="panel-actions">
-            <button id="syncPrvJsonBtn" class="ghost-btn primary-ghost" type="button">Sync PRV JSON</button>
-            <button id="clearResolvedAgentActionsBtn" class="ghost-btn" type="button">Clear Resolved</button>
+            <h2>Product Verifier</h2>
+            <p>Check one product across backend coverage, public JSON, Checklist Vault, PRV, and ChatBot.</p>
           </div>
         </div>
-        <div id="agentActionList" class="agent-action-list">
-          <div class="brief-item">
-            <strong>No agent actions yet</strong>
-            <span>Run an audit, source watch, or approve a next step to create actions.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel activity-log-panel">
-        <div class="panel-head">
-          <div>
-            <h2>Activity Log</h2>
-            <p>What the agent found, prepared, changed, validated, or held.</p>
-          </div>
-          <button id="clearActivityLogBtn" class="ghost-btn" type="button">Clear Log</button>
-        </div>
-        <div id="activityLogList" class="activity-log-list">
-          <div class="brief-item">
-            <strong>No activity yet</strong>
-            <span>Agent events will appear here.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="grid two-col">
-      <div class="panel ready-execute-panel">
-        <div class="panel-head">
-          <div>
-            <h2>Ready To Execute</h2>
-            <p>Prepared actions with enough approval or guardrail status to move next.</p>
-          </div>
-        </div>
-        <div id="readyExecuteList" class="ready-execute-list">
-          <div class="brief-item">
-            <strong>No ready actions yet</strong>
-            <span>Approve a next step or run Source Watch to prepare executable work.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel review-hold-panel">
-        <div class="panel-head">
-          <div>
-            <h2>Review / Hold</h2>
-            <p>Items the agent should not move until admin review or a fix is ready.</p>
-          </div>
-        </div>
-        <div id="reviewHoldList" class="review-hold-list">
-          <div class="brief-item">
-            <strong>No holds yet</strong>
-            <span>Known issues, failed visual tests, and review-required items will appear here.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel operator-panel">
-      <div class="panel-head">
-        <div>
-          <h2>Operator Tasks</h2>
-          <p>Approved work becomes a task here. Nothing edits live data from this sandbox page.</p>
-        </div>
-        <button id="clearDoneBtn" class="ghost-btn" type="button">Clear Done</button>
-      </div>
-      <div id="operatorTaskList" class="operator-task-list">
-        <div class="brief-item">
-          <strong>No approved tasks yet</strong>
-          <span>Approve a next step to create the first operator task.</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel guardrail-panel">
-      <div class="panel-head">
-        <div>
-          <h2>Automation Guardrails</h2>
-          <p>Rules the agent must satisfy before write, publish, visual-test, or autonomy decisions are trusted.</p>
-        </div>
-      </div>
-      <div id="guardrailList" class="guardrail-list">
-        <div class="brief-item">
-          <strong>Loading guardrails</strong>
-          <span>The agent safety rules will appear after the page initializes.</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel agent-memory-panel">
-      <div class="panel-head">
-        <div>
-          <h2>Agent Memory</h2>
-          <p>Backup, move, or restore the current queue, log, approvals, known issues, and visual-test status.</p>
-        </div>
-      </div>
-      <div class="memory-actions">
-        <button id="exportMemoryBtn" class="primary-btn" type="button">Export Memory</button>
-        <label class="file-import-btn" for="importMemoryInput">Import Memory</label>
-        <input id="importMemoryInput" type="file" accept="application/json,.json" />
-        <button id="saveBackendMemoryBtn" class="ghost-btn" type="button">Save Backend Memory</button>
-        <button id="loadBackendMemoryBtn" class="ghost-btn" type="button">Load Backend Memory</button>
-        <button id="clearSourceIgnoresBtn" class="ghost-btn" type="button">Clear Source Ignores</button>
-        <button id="clearMemoryBtn" class="ghost-btn danger" type="button">Clear Local Memory</button>
-      </div>
-      <div id="memoryStatus" class="memory-status">
-        <strong>Local memory active</strong>
-        <span>Agent state is stored in this browser until exported or connected to backend persistence.</span>
-      </div>
-      <div class="memory-branch-note">
-        <strong>Branch split</strong>
-        <span>Code ships from <b>main</b>. Agent memory saves to <b>command-center-memory</b>. Do not open PRs from the memory branch.</span>
-      </div>
-    </section>
-
-    <section class="panel run-summary-panel">
-      <div class="panel-head">
-        <div>
-          <h2>Agent Run Summary</h2>
-          <p>One-page operating brief: what happened, what is blocked, and what the agent recommends next.</p>
-        </div>
-      </div>
-      <div id="runSummaryList" class="run-summary-list">
-        <div class="brief-item">
-          <strong>Waiting for audit</strong>
-          <span>Run an audit or source watch to generate the first operating summary.</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel source-check-panel">
-      <div class="panel-head">
-        <div>
-          <h2>Source Check</h2>
-          <p>Run quick public JSON checks for daily triage or deeper Google Sheets checks before approved updates.</p>
-        </div>
-      </div>
-      <div class="source-check-form">
-        <input id="sourceTitleInput" type="text" value="2025-26 Panini Select EuroLeague Basketball" aria-label="Source product title" />
-        <select id="sourceSportInput" class="filter-select" aria-label="Source sport">
-          <option value="baseball">Baseball</option>
-          <option value="basketball" selected>Basketball</option>
-          <option value="football">Football</option>
-          <option value="hockey">Hockey</option>
-          <option value="soccer">Soccer</option>
-        </select>
-        <button id="sourceCheckBtn" class="primary-btn" type="button">Validate Source</button>
-      </div>
-      <div class="source-watch-actions">
-        <input id="operatorEndpointInput" type="url" placeholder="Optional Apps Script Operator Backend URL" aria-label="Operator Backend URL" />
-        <input id="operatorKeyInput" type="password" placeholder="Admin write key" aria-label="Admin write key" />
-        <button id="saveEndpointBtn" class="ghost-btn" type="button">Save Endpoint</button>
-        <button id="sourceWatchQuickBtn" class="ghost-btn" type="button">Quick JSON Source Watch</button>
-        <button id="sourceWatchDeepBtn" class="primary-btn" type="button">Deep Sheets Source Watch</button>
-        <button id="prvSourceWatchBtn" class="primary-btn" type="button">PRV Source Watch</button>
-      </div>
-      <div id="sourceCheckResult" class="source-check-result">
-        <div class="brief-item">
-          <strong>Ready</strong>
-          <span>Enter a supported sports-card product title and validate it against live Chasing Majors data.</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="grid two-col">
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <h2>Admin Brief</h2>
-            <p>What needs your attention first.</p>
-          </div>
-        </div>
-        <div id="briefList" class="brief-list">
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line short"></div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <h2>Opportunity Engine</h2>
-            <p>Scout, analyst, and operator queue.</p>
-          </div>
-          <select id="typeFilter" class="filter-select" aria-label="Filter opportunities">
-            <option value="all">All</option>
-            <option value="critical">Critical</option>
-            <option value="data_gap">Data gaps</option>
-            <option value="trend_signal">Trend signals</option>
-            <option value="chatbot_intent">ChatBot intent</option>
-            <option value="source_watch">Source watch</option>
+        <div class="source-check-form">
+          <input id="sourceTitleInput" type="text" value="2025-26 Panini Select EuroLeague Basketball" aria-label="Source product title" />
+          <select id="sourceSportInput" class="filter-select" aria-label="Source sport">
+            <option value="baseball">Baseball</option>
+            <option value="basketball" selected>Basketball</option>
+            <option value="football">Football</option>
+            <option value="hockey">Hockey</option>
+            <option value="soccer">Soccer</option>
           </select>
+          <button id="sourceCheckBtn" class="primary-btn" type="button">Check Product</button>
         </div>
-        <div id="opportunityList" class="opportunity-list">
-          <div class="skeleton-card"></div>
-          <div class="skeleton-card"></div>
+        <div id="sourceCheckResult" class="source-check-result">
+          <div class="brief-item">
+            <strong>Ready</strong>
+            <span>Enter a supported sports-card product title and validate it against live Chasing Majors data.</span>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="grid three-col">
-      <div class="panel compact">
-        <h2>Data Health</h2>
-        <div id="dataHealthStats" class="metric-list"></div>
-      </div>
-      <div class="panel compact">
-        <h2>Edge Signals</h2>
-        <div id="edgeSignals" class="signal-list"></div>
-      </div>
-      <div class="panel compact">
-        <h2>Next Build Targets</h2>
-        <div id="buildTargets" class="target-list"></div>
-      </div>
-    </section>
-  </main>
+      <details class="advanced-operations" open>
+        <summary>
+          <strong>Advanced Operations</strong>
+          <span>Endpoint settings, source watches, memory, guardrails, and deeper reports.</span>
+        </summary>
 
-  <script defer src="./command-center.js?v=cc53"></script>
+        <section class="panel source-check-panel" id="prvImportBuilder">
+          <div class="panel-head">
+            <div>
+              <h2>Source Watch Controls</h2>
+              <p>Use these when you need direct source scans or backend settings.</p>
+            </div>
+          </div>
+          <div class="source-watch-actions">
+            <input id="operatorEndpointInput" type="url" placeholder="Optional Apps Script Operator Backend URL" aria-label="Operator Backend URL" />
+            <input id="operatorKeyInput" type="password" placeholder="Admin write key" aria-label="Admin write key" />
+            <button id="saveEndpointBtn" class="ghost-btn" type="button">Save Endpoint</button>
+            <button id="sourceWatchQuickBtn" class="ghost-btn" type="button">Quick JSON Source Watch</button>
+            <button id="sourceWatchDeepBtn" class="primary-btn" type="button">Deep Sheets Source Watch</button>
+            <button id="prvSourceWatchBtn" class="primary-btn" type="button">PRV Source Watch</button>
+          </div>
+        </section>
+
+        <section class="grid two-col">
+          <div class="panel ready-execute-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Ready To Execute</h2>
+                <p>Prepared actions with enough approval or guardrail status to move next.</p>
+              </div>
+            </div>
+            <div id="readyExecuteList" class="ready-execute-list">
+              <div class="brief-item">
+                <strong>No ready actions yet</strong>
+                <span>Approve a next step or run Source Watch to prepare executable work.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel operator-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Operator Tasks</h2>
+                <p>Approved work becomes a task here.</p>
+              </div>
+              <button id="clearDoneBtn" class="ghost-btn" type="button">Clear Done</button>
+            </div>
+            <div id="operatorTaskList" class="operator-task-list">
+              <div class="brief-item">
+                <strong>No approved tasks yet</strong>
+                <span>Approve a next step to create the first operator task.</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid two-col" id="dataExplorer">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Admin Brief</h2>
+                <p>What needs your attention first.</p>
+              </div>
+            </div>
+            <div id="briefList" class="brief-list">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Opportunity Engine</h2>
+                <p>Scout, analyst, and operator queue.</p>
+              </div>
+              <select id="typeFilter" class="filter-select" aria-label="Filter opportunities">
+                <option value="all">All</option>
+                <option value="critical">Critical</option>
+                <option value="data_gap">Data gaps</option>
+                <option value="trend_signal">Trend signals</option>
+                <option value="chatbot_intent">ChatBot intent</option>
+                <option value="source_watch">Source watch</option>
+              </select>
+            </div>
+            <div id="opportunityList" class="opportunity-list">
+              <div class="skeleton-card"></div>
+              <div class="skeleton-card"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="grid three-col">
+          <div class="panel compact">
+            <h2>Data Health</h2>
+            <div id="dataHealthStats" class="metric-list"></div>
+          </div>
+          <div class="panel compact">
+            <h2>Edge Signals</h2>
+            <div id="edgeSignals" class="signal-list"></div>
+          </div>
+          <div class="panel compact">
+            <h2>Next Build Targets</h2>
+            <div id="buildTargets" class="target-list"></div>
+          </div>
+        </section>
+
+        <section class="panel guardrail-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Automation Guardrails</h2>
+              <p>Rules the agent must satisfy before write, publish, visual-test, or autonomy decisions are trusted.</p>
+            </div>
+          </div>
+          <div id="guardrailList" class="guardrail-list">
+            <div class="brief-item">
+              <strong>Loading guardrails</strong>
+              <span>The agent safety rules will appear after the page initializes.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel agent-memory-panel" id="settings">
+          <div class="panel-head">
+            <div>
+              <h2>Agent Memory</h2>
+              <p>Backup, move, or restore the current queue, log, approvals, known issues, and visual-test status.</p>
+            </div>
+          </div>
+          <div class="memory-actions">
+            <button id="exportMemoryBtn" class="primary-btn" type="button">Export Memory</button>
+            <label class="file-import-btn" for="importMemoryInput">Import Memory</label>
+            <input id="importMemoryInput" type="file" accept="application/json,.json" />
+            <button id="saveBackendMemoryBtn" class="ghost-btn" type="button">Save Backend Memory</button>
+            <button id="loadBackendMemoryBtn" class="ghost-btn" type="button">Load Backend Memory</button>
+            <button id="clearSourceIgnoresBtn" class="ghost-btn" type="button">Clear Source Ignores</button>
+            <button id="clearMemoryBtn" class="ghost-btn danger" type="button">Clear Local Memory</button>
+          </div>
+          <div id="memoryStatus" class="memory-status">
+            <strong>Local memory active</strong>
+            <span>Agent state is stored in this browser until exported or connected to backend persistence.</span>
+          </div>
+          <div class="memory-branch-note">
+            <strong>Branch split</strong>
+            <span>Code ships from <b>main</b>. Agent memory saves to <b>command-center-memory</b>. Do not open PRs from the memory branch.</span>
+          </div>
+        </section>
+
+        <section class="panel run-summary-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Agent Run Summary</h2>
+              <p>One-page operating brief: what happened, what is blocked, and what the agent recommends next.</p>
+            </div>
+          </div>
+          <div id="runSummaryList" class="run-summary-list">
+            <div class="brief-item">
+              <strong>Waiting for audit</strong>
+              <span>Run an audit or source watch to generate the first operating summary.</span>
+            </div>
+          </div>
+        </section>
+
+        <details class="panel next-panel next-panel-collapsed">
+          <summary class="next-panel-summary">
+            <div>
+              <h2>What’s Next</h2>
+              <p>Agent-ranked ideas and future build lanes. Expand when you want the longer planning view.</p>
+            </div>
+            <span>Open</span>
+          </summary>
+          <div id="nextActionList" class="next-action-list">
+            <div class="skeleton-card"></div>
+          </div>
+        </details>
+      </details>
+    </main>
+  </div>
+
+  <script defer src="./command-center.js?v=cc54"></script>
 </body>
 </html>

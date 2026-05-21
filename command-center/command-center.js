@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc57-prv-queue-hardening-2026-05-21";
+  const COMMAND_CENTER_VERSION = "cc58-action-rail-controls-2026-05-21";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -335,9 +335,17 @@
     return [sport, sourceUrl || product].filter(Boolean).join("|");
   }
 
+  function buildSourceProductIgnoreKey(input) {
+    const sport = normalize(input && input.sport);
+    const code = normalize(input && (input.code || input.matched_code || ""));
+    const product = normalize(input && (input.product || input.title || input.matched_name || ""));
+    return [sport, code || product].filter(Boolean).join("|");
+  }
+
   function isSourceIgnored(input) {
     const key = buildSourceIgnoreKey(input);
-    return !!(key && state.sourceIgnores && state.sourceIgnores[key]);
+    const productKey = buildSourceProductIgnoreKey(input);
+    return !!(state.sourceIgnores && ((key && state.sourceIgnores[key]) || (productKey && state.sourceIgnores[productKey])));
   }
 
   function getVisualStatusLabel(record) {
@@ -649,10 +657,11 @@
 
   function rememberResolvedSourceAction(action) {
     if (!action) return false;
-    const key = buildSourceIgnoreKey(action);
-    if (!key) return false;
+    const keys = [buildSourceIgnoreKey(action), buildSourceProductIgnoreKey(action)].filter(Boolean);
+    if (!keys.length) return false;
 
-    state.sourceIgnores[key] = {
+    keys.forEach(key => {
+      state.sourceIgnores[key] = {
       product: action.product || "",
       sport: action.sport || "",
       code: action.code || "",
@@ -660,8 +669,30 @@
       reason: "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       ignoredAt: new Date().toISOString(),
       resolved: true
-    };
+      };
+    });
     return true;
+  }
+
+  function removeAndRememberAgentAction(id) {
+    const action = state.agentActions.find(item => item.id === id);
+    if (!action) return;
+    const remembered = rememberResolvedSourceAction(action);
+    if (remembered) writeSourceIgnores();
+    state.agentActions = state.agentActions.filter(item => item.id !== id);
+    writeAgentActions();
+    logActivity({
+      type: "agent_action",
+      status: "removed",
+      product: action.product || "",
+      source: "admin",
+      title: "Agent action removed",
+      detail: `${action.product || action.type || "Action"} was removed and remembered so future scans do not requeue it.`
+    });
+    renderAgentActions();
+    renderActionLanes();
+    renderActivityLog();
+    updateMemoryStatus("Action removed and remembered.", "admin rule");
   }
 
   function updateAgentAction(id, patch) {
@@ -4649,14 +4680,91 @@
     return `
       <div class="action-progress" aria-label="Agent progress">
         ${steps.map((step, idx) => `
-          <div class="progress-step ${escapeHtml(step.state)}">
+          <button class="progress-step ${escapeHtml(step.state)}" type="button" data-action-progress-step="${escapeHtml(action.id)}" data-progress-step="${escapeHtml(step.key)}" title="Run ${escapeHtml(step.label)}">
             <span class="progress-dot" aria-hidden="true">${step.state === "done" ? "✓" : step.state === "issue" ? "!" : idx + 1}</span>
             ${idx < steps.length - 1 ? `<span class="progress-line" aria-hidden="true"></span>` : ""}
             <span class="progress-label">${escapeHtml(step.label)}</span>
-          </div>
+          </button>
         `).join("")}
       </div>
     `;
+  }
+
+  function runActionProgressStep(action, stepKey) {
+    if (!action || !stepKey) return;
+    const type = String(action.type || "").toLowerCase();
+    const sourceUrl = action.sourceUrl || action.runUrl || "";
+
+    if (stepKey === "source") {
+      if (sourceUrl) window.open(sourceUrl, "_blank", "noopener,noreferrer");
+      else renderSourceCheckMessage("Source unavailable", "This card does not have a source link.", "warning");
+      return;
+    }
+
+    if (type === "prv_source_review") {
+      if (stepKey === "preview") {
+        if (!sourceUrl) renderSourceCheckMessage("Source URL missing", "This PRV card does not have a source URL to preview.", "warning");
+        else previewPrvSource(sourceUrl, action.sport || "", action.id);
+        return;
+      }
+      if (stepKey === "sheet") {
+        if (!sourceUrl) renderSourceCheckMessage("Source URL missing", "This PRV card does not have a source URL to write.", "warning");
+        else executePrvSourceImport(sourceUrl, action.sport || "", action.id);
+        return;
+      }
+      if (stepKey === "publish") {
+        if (!action.code) renderSourceCheckMessage("PRV code missing", "This PRV card needs a product code before JSON publish.", "warning");
+        else publishPrvVaultData(action.code || "", action.id);
+        return;
+      }
+      if (stepKey === "validate") {
+        if (!action.code) renderSourceCheckMessage("PRV code missing", "This PRV card needs a product code before public validation.", "warning");
+        else recheckPrvPublicData(action.code || "", action.id);
+        return;
+      }
+    }
+
+    if (type === "source_import") {
+      if (stepKey === "preview") {
+        if (!sourceUrl) renderSourceCheckMessage("Source URL missing", "This checklist card does not have a source URL to preview.", "warning");
+        else previewSourceImport(sourceUrl, action.sport || "", action.id);
+        return;
+      }
+      if (stepKey === "sheet") {
+        if (!sourceUrl) renderSourceCheckMessage("Source URL missing", "This checklist card does not have a source URL to write.", "warning");
+        else executeSourceImport(sourceUrl, action.sport || "", action.id);
+        return;
+      }
+    }
+
+    if (type === "checklist_publish") {
+      if (stepKey === "preview") {
+        findSourceAndPreviewImport(action.id);
+        return;
+      }
+      if (stepKey === "publish" || stepKey === "sheet") {
+        publishChecklistAction(action.id);
+        return;
+      }
+    }
+
+    if (stepKey === "validate") {
+      if (type === "source_import" || type === "checklist_publish" || type === "visual_test") {
+        const plan = buildVisualTestPlanFromAction(action);
+        updateAgentAction(action.id, {
+          status: "running",
+          validationResult: "CV/ChatBot visual test requested from progress rail..."
+        });
+        renderAgentActions();
+        renderActionLanes();
+        renderActivityLog();
+        renderVisualTestPlan(plan);
+        runAgentVisualTest(plan);
+        return;
+      }
+    }
+
+    renderSourceCheckMessage("Step not ready", "That progress step is not available for this card yet.", "warning");
   }
 
   function renderAgentActions() {
@@ -4707,7 +4815,16 @@
               <h3 class="agent-product-title">${escapeHtml(getActionProductName(action))}</h3>
               <p>${escapeHtml(action.recommendedAction || "")}</p>
             </div>
-            <span class="badge ${badgeClass}">${escapeHtml(getAgentActionDisplayStatus(action))}</span>
+            <div class="agent-card-controls">
+              <button class="agent-remove-btn" type="button" data-action-remove-request="${escapeHtml(action.id)}" aria-label="Remove action">×</button>
+              <span class="badge ${badgeClass}">${escapeHtml(getAgentActionDisplayStatus(action))}</span>
+            </div>
+          </div>
+          <div class="action-remove-confirm" hidden data-action-remove-confirm="${escapeHtml(action.id)}">
+            <strong>Are you sure you want to remove?</strong>
+            <span>This request will stay gone from future scans unless source ignores are cleared.</span>
+            <button class="action-btn ignore" type="button" data-action-remove-yes="${escapeHtml(action.id)}">Yes</button>
+            <button class="action-btn" type="button" data-action-remove-cancel="${escapeHtml(action.id)}">Cancel</button>
           </div>
           <div class="opp-meta">
             <span class="pill">Risk: ${escapeHtml(titleCase(action.riskLevel || "medium"))}</span>
@@ -4784,6 +4901,35 @@
       : "";
 
     els.agentActionList.innerHTML = activeHtml + resolvedHtml;
+
+    els.agentActionList.querySelectorAll("[data-action-progress-step]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const action = state.agentActions.find(item => item.id === btn.dataset.actionProgressStep);
+        runActionProgressStep(action, btn.dataset.progressStep || "");
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-remove-request]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const card = btn.closest(".agent-action-card");
+        if (!card) return;
+        const confirmBox = card.querySelector(`[data-action-remove-confirm="${CSS.escape(btn.dataset.actionRemoveRequest || "")}"]`);
+        if (confirmBox) confirmBox.hidden = false;
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-remove-cancel]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const box = btn.closest(".action-remove-confirm");
+        if (box) box.hidden = true;
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-remove-yes]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        removeAndRememberAgentAction(btn.dataset.actionRemoveYes);
+      });
+    });
 
     els.agentActionList.querySelectorAll("[data-action-preview-import]").forEach(btn => {
       btn.addEventListener("click", () => {

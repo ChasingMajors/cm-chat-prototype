@@ -1223,6 +1223,22 @@ h2 {
   grid-template-columns: 28px minmax(0, 1fr);
   gap: 8px;
   align-items: center;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.progress-step:hover .progress-label {
+  color: #0b63ce;
+}
+
+.progress-step:focus-visible {
+  outline: 3px solid rgba(36,136,255,0.22);
+  outline-offset: 6px;
+  border-radius: 12px;
 }
 
 .progress-dot {
@@ -1288,6 +1304,60 @@ h2 {
 
 .progress-step.issue .progress-label {
   color: #9c2f2f;
+}
+
+.agent-card-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.agent-remove-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(255,93,93,0.24);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.72);
+  color: #b72d2d;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.agent-remove-btn:hover {
+  background: rgba(255,93,93,0.12);
+}
+
+.action-remove-confirm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 8px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid rgba(255,93,93,0.26);
+  border-radius: 14px;
+  background: rgba(255,241,241,0.88);
+}
+
+.action-remove-confirm[hidden] {
+  display: none;
+}
+
+.action-remove-confirm strong,
+.action-remove-confirm span {
+  grid-column: 1 / 2;
+}
+
+.action-remove-confirm strong {
+  font-size: 13px;
+}
+
+.action-remove-confirm span {
+  color: #7c4a4a;
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 .agent-action-results span {

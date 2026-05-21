@@ -2,12 +2,31 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T12:11:55.412Z",
+  "exported_at": "2026-05-21T12:12:20.807Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
   "tasks": [
+    {
+      "id": "task_1779365539205_rh2a2u",
+      "sourceId": "checklist_publish|operator_backend|2025-26 topps simplicidad uefa club competitions soccer|2025_26_topps_simplicidad_uefa_club_competitions_soccer",
+      "title": "Fix: 2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
+      "kind": "fix",
+      "severity": "critical",
+      "status": "queued",
+      "createdAt": "2026-05-21T12:12:19.205Z",
+      "updatedAt": "2026-05-21T12:12:19.205Z",
+      "why": "Import did not write to Google Sheets.",
+      "objective": "Repair the held action, rerun validation, and record proof.",
+      "steps": [
+        "Confirm the issue still reproduces.",
+        "Patch the smallest safe sandbox fix.",
+        "Run the affected validation again.",
+        "Record proof before marking the action validated."
+      ],
+      "guardrail": "Fix in sandbox first. Do not mark validated until JSON coverage or CV/ChatBot visual proof passes."
+    },
     {
       "id": "task_1779365513801_a7y9vl",
       "sourceId": "prv_source_review|slabsquatch_substack|2025 26 topps chrome uefa club competitions",
@@ -348,15 +367,15 @@
       "sport": "soccer",
       "code": "2025_26_topps_simplicidad_uefa_club_competitions_soccer",
       "riskLevel": "medium",
-      "status": "failed",
-      "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
+      "status": "fix_queued",
+      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "",
       "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
       "validationResult": "Import did not write to Google Sheets.",
       "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_topps_simplicidad_uefa_club_competitions_soccer&sport=soccer&type=product",
       "sourceUrl": "",
       "createdAt": "2026-05-19T23:47:06.765Z",
-      "updatedAt": "2026-05-20T22:46:52.311Z"
+      "updatedAt": "2026-05-21T12:12:19.205Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps chrome sapphire football|2025_topps_chrome_sapphire_football",
@@ -467,6 +486,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779365539206_2f88zj",
+      "ts": "2026-05-21T12:12:19.206Z",
+      "type": "agent_cycle",
+      "title": "Create repair task",
+      "detail": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer is blocked and needs a fix path. Created Fix: 2025-26 Topps Simplicidad UEFA Club Competitions Soccer.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1779365513809_8bq90l",
       "ts": "2026-05-21T12:11:53.809Z",
@@ -1256,16 +1285,6 @@
       "status": "started",
       "product": "2025 Topps Chrome Sapphire Football",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779252031174_itj3ar",
-      "ts": "2026-05-20T04:40:31.174Z",
-      "type": "prv_source_review",
-      "title": "PRV preview completed",
-      "detail": "0 print-run rows parsed.",
-      "status": "needs_review",
-      "product": "2025 Topps Chrome Football",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1398,6 +1417,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T12:11:56.889Z",
+  "saved_at": "2026-05-21T12:12:22.021Z",
   "saved_by": "cm_command_center_operator"
 }

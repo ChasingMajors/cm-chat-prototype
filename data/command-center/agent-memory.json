@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T13:43:03.083Z",
+  "exported_at": "2026-05-21T18:23:30.725Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -177,7 +177,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-club-competitions",
       "createdAt": "2026-05-20T00:30:18.946Z",
-      "updatedAt": "2026-05-21T13:34:52.015Z"
+      "updatedAt": "2026-05-21T13:43:03.494Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 topps chrome football|2025_topps_chrome_football",
@@ -213,7 +213,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowman-basketball-analysis",
       "createdAt": "2026-05-20T00:30:18.945Z",
-      "updatedAt": "2026-05-21T13:34:52.014Z"
+      "updatedAt": "2026-05-21T13:43:03.494Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 bowman basketball case hit breakdown",
@@ -231,7 +231,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowman-basketball-case-hit",
       "createdAt": "2026-05-20T00:30:18.945Z",
-      "updatedAt": "2026-05-21T13:34:52.014Z"
+      "updatedAt": "2026-05-21T13:43:03.494Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2026 bowman baseball|2026-bowman-baseball",
@@ -267,7 +267,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
       "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-21T13:34:52.014Z"
+      "updatedAt": "2026-05-21T13:43:03.494Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps signature class basketball pre-analysis plus",
@@ -285,7 +285,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-signature-class-nba",
       "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-21T13:34:52.013Z"
+      "updatedAt": "2026-05-21T13:43:03.493Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps chrome cactus jack basketball basketball",
@@ -303,7 +303,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-cactus-jack-nba",
       "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-21T13:34:52.013Z"
+      "updatedAt": "2026-05-21T13:43:03.493Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 bowman s best university basketball baby",
@@ -522,6 +522,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779387809119_x372ke",
+      "ts": "2026-05-21T18:23:29.119Z",
+      "type": "agent_cycle",
+      "title": "Admin decision required",
+      "detail": "2025/26 Topps Chrome UEFA Club Competitions needs approval before the agent can continue. Use Scan New Checklists if you want a fresh source scan without advancing this queue item.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1779370983495_lj2odt",
+      "ts": "2026-05-21T13:43:03.495Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch complete",
+      "detail": "11 SlabSquatch items checked. 11 need review. 6 PRV review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1779370983495_6s14c8",
+      "ts": "2026-05-21T13:43:03.495Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "6 findings are now visible in the Agent Action Queue for admin review. 5 already-resolved item(s) were skipped.",
+      "status": "queued",
+      "product": "",
+      "source": "prv_source_watch"
+    },
     {
       "id": "log_1779370981481_etfp7m",
       "ts": "2026-05-21T13:43:01.481Z",
@@ -1291,36 +1321,6 @@
       "status": "started",
       "product": "",
       "source": "quick_json"
-    },
-    {
-      "id": "log_1779317212311_h4qjxp",
-      "ts": "2026-05-20T22:46:52.311Z",
-      "type": "source_import",
-      "title": "Import blocked before sheet write",
-      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779317199733_pdc3si",
-      "ts": "2026-05-20T22:46:39.733Z",
-      "type": "source_watch",
-      "title": "Quick JSON Source Watch complete",
-      "detail": "20 source items checked. 2 need review. 1 review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "quick_json"
-    },
-    {
-      "id": "log_1779317199732_emodha",
-      "ts": "2026-05-20T22:46:39.733Z",
-      "type": "source_watch",
-      "title": "Source Watch actions queued",
-      "detail": "1 findings are now visible in the Agent Action Queue for admin review. 2 admin-ignored source item(s) were skipped.",
-      "status": "queued",
-      "product": "",
-      "source": "quick_json"
     }
   ],
   "visual_tests": {
@@ -1453,6 +1453,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T13:43:04.608Z",
+  "saved_at": "2026-05-21T18:23:32.032Z",
   "saved_by": "cm_command_center_operator"
 }

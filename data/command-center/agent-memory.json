@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T18:23:48.574Z",
+  "exported_at": "2026-05-21T18:24:06.779Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -523,24 +523,14 @@
   ],
   "activity_log": [
     {
-      "id": "log_1779387826972_0tjfvk",
-      "ts": "2026-05-21T18:23:46.972Z",
-      "type": "source_watch",
-      "title": "Quick JSON Source Watch started",
-      "detail": "Checking recent Checklistcenter items against public JSON.",
+      "id": "log_1779387845176_vgwyqe",
+      "ts": "2026-05-21T18:24:05.176Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch started",
+      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
       "status": "started",
       "product": "",
-      "source": "quick_json"
-    },
-    {
-      "id": "log_1779387809119_x372ke",
-      "ts": "2026-05-21T18:23:29.119Z",
-      "type": "agent_cycle",
-      "title": "Admin decision required",
-      "detail": "2025/26 Topps Chrome UEFA Club Competitions needs approval before the agent can continue. Use Scan New Checklists if you want a fresh source scan without advancing this queue item.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
+      "source": "slabsquatch"
     },
     {
       "id": "log_1779370983495_lj2odt",
@@ -1321,6 +1311,16 @@
       "status": "queued",
       "product": "",
       "source": "quick_json"
+    },
+    {
+      "id": "log_1779317223061_1p755s",
+      "ts": "2026-05-20T22:47:03.061Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch started",
+      "detail": "Checking recent Checklistcenter items against public JSON.",
+      "status": "started",
+      "product": "",
+      "source": "quick_json"
     }
   ],
   "visual_tests": {
@@ -1453,6 +1453,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T18:23:49.978Z",
+  "saved_at": "2026-05-21T18:24:08.028Z",
   "saved_by": "cm_command_center_operator"
 }

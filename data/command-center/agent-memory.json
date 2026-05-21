@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T12:42:59.314Z",
+  "exported_at": "2026-05-21T12:44:16.880Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -522,6 +522,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779367455278_yilsm2",
+      "ts": "2026-05-21T12:44:15.278Z",
+      "type": "prv_publish",
+      "title": "PRV public recheck started",
+      "detail": "Checking whether GitHub Pages has the product rows yet.",
+      "status": "started",
+      "product": "2026 Bowman Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779367381029_s9k1r3",
+      "ts": "2026-05-21T12:43:01.029Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync needs review",
+      "detail": "Publish returned without public validation.",
+      "status": "needs_review",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779367377711_5feb95",
       "ts": "2026-05-21T12:42:57.712Z",
@@ -1301,26 +1321,6 @@
       "status": "started",
       "product": "2025_26_bowman_s_best_university_basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779286075409_zqpfjb",
-      "ts": "2026-05-20T14:07:55.409Z",
-      "type": "prv_publish",
-      "title": "PRV JSON publish needs review",
-      "detail": "Publish returned without public validation.",
-      "status": "needs_review",
-      "product": "2025_26_bowman_s_best_university_basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779286067917_u316zn",
-      "ts": "2026-05-20T14:07:47.917Z",
-      "type": "prv_publish",
-      "title": "PRV JSON publish started",
-      "detail": "Publishing Print Run Vault static JSON after approved sheet write.",
-      "status": "started",
-      "product": "2025_26_bowman_s_best_university_basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1453,6 +1453,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T12:43:00.493Z",
+  "saved_at": "2026-05-21T12:44:18.453Z",
   "saved_by": "cm_command_center_operator"
 }

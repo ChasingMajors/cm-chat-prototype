@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T13:35:50.608Z",
+  "exported_at": "2026-05-21T13:35:55.857Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -241,15 +241,15 @@
       "sport": "baseball",
       "code": "2026-bowman-baseball",
       "riskLevel": "low",
-      "status": "approval_required",
-      "recommendedAction": "SlabSquatch has a recent print-run/odds analysis for a PRV-covered product. Compare source numbers against PRV and flag discrepancies before updating.",
+      "status": "validated",
+      "recommendedAction": "PRV public JSON is live. Open PRV for final human check.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "",
+      "validationResult": "27 public PRV rows found.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-bowman-baseball-analysis-and",
       "createdAt": "2026-05-20T00:30:18.945Z",
-      "updatedAt": "2026-05-21T13:34:52.014Z"
+      "updatedAt": "2026-05-21T13:35:51.007Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps hoops basketball",
@@ -522,6 +522,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779370554255_79brwl",
+      "ts": "2026-05-21T13:35:54.255Z",
+      "type": "prv_publish",
+      "title": "PRV public recheck started",
+      "detail": "Checking whether GitHub Pages has the product rows yet.",
+      "status": "started",
+      "product": "2025 Topps Chrome Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779370551013_5mceiy",
+      "ts": "2026-05-21T13:35:51.013Z",
+      "type": "prv_publish",
+      "title": "PRV public validation passed",
+      "detail": "27 public PRV rows found.",
+      "status": "validated",
+      "product": "2026 Bowman Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1779370549005_k6kjiy",
       "ts": "2026-05-21T13:35:49.005Z",
@@ -1301,26 +1321,6 @@
       "status": "started",
       "product": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779317117859_pqqebt",
-      "ts": "2026-05-20T22:45:17.859Z",
-      "type": "prv_publish",
-      "title": "PRV JSON publish needs review",
-      "detail": "Publish returned without public validation.",
-      "status": "needs_review",
-      "product": "2025/26 Bowman’s Best University Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779317114569_wm1fxr",
-      "ts": "2026-05-20T22:45:14.569Z",
-      "type": "prv_publish",
-      "title": "PRV JSON publish started",
-      "detail": "Publishing Print Run Vault static JSON after approved sheet write.",
-      "status": "started",
-      "product": "2025/26 Bowman’s Best University Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1453,6 +1453,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T13:35:51.743Z",
+  "saved_at": "2026-05-21T13:35:57.570Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T18:24:06.779Z",
+  "exported_at": "2026-05-21T18:24:45.622Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -108,6 +108,24 @@
   ],
   "agent_actions": [
     {
+      "id": "prv_source_review|slabsquatch_substack|2025 26 topps chrome cactus jack basketball basketball|2025_26_topps_chrome_cactus_jack_basketball_basketball",
+      "type": "prv_source_review",
+      "source": "slabsquatch_substack",
+      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
+      "sport": "basketball",
+      "code": "2025_26_topps_chrome_cactus_jack_basketball_basketball",
+      "riskLevel": "low",
+      "status": "approval_required",
+      "recommendedAction": "SlabSquatch has a recent print-run/odds analysis for a PRV-covered product. Compare source numbers against PRV and flag discrepancies before updating.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-cactus-jack-nba",
+      "createdAt": "2026-05-21T18:24:07.205Z",
+      "updatedAt": "2026-05-21T18:24:07.205Z"
+    },
+    {
       "id": "prv_source_review|slabsquatch_substack|2025 26 bowman s best university basketball|2025_26_bowman_s_best_university_basketball",
       "type": "prv_source_review",
       "source": "slabsquatch_substack",
@@ -177,7 +195,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-club-competitions",
       "createdAt": "2026-05-20T00:30:18.946Z",
-      "updatedAt": "2026-05-21T13:43:03.494Z"
+      "updatedAt": "2026-05-21T18:24:07.208Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 topps chrome football|2025_topps_chrome_football",
@@ -213,7 +231,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowman-basketball-analysis",
       "createdAt": "2026-05-20T00:30:18.945Z",
-      "updatedAt": "2026-05-21T13:43:03.494Z"
+      "updatedAt": "2026-05-21T18:24:07.208Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 bowman basketball case hit breakdown",
@@ -231,7 +249,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowman-basketball-case-hit",
       "createdAt": "2026-05-20T00:30:18.945Z",
-      "updatedAt": "2026-05-21T13:43:03.494Z"
+      "updatedAt": "2026-05-21T18:24:07.207Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2026 bowman baseball|2026-bowman-baseball",
@@ -267,7 +285,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
       "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-21T13:43:03.494Z"
+      "updatedAt": "2026-05-21T18:24:07.207Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps signature class basketball pre-analysis plus",
@@ -285,7 +303,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-signature-class-nba",
       "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-21T13:43:03.493Z"
+      "updatedAt": "2026-05-21T18:24:07.206Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps chrome cactus jack basketball basketball",
@@ -522,6 +540,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779387884021_l8ykfv",
+      "ts": "2026-05-21T18:24:44.021Z",
+      "type": "prv_publish",
+      "title": "PRV public recheck started",
+      "detail": "Checking whether GitHub Pages has the product rows yet.",
+      "status": "started",
+      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1779387847209_gyqj3l",
+      "ts": "2026-05-21T18:24:07.209Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch complete",
+      "detail": "11 SlabSquatch items checked. 11 need review. 6 PRV review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1779387847208_k8w7qm",
+      "ts": "2026-05-21T18:24:07.208Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "6 findings are now visible in the Agent Action Queue for admin review. 5 already-resolved item(s) were skipped.",
+      "status": "queued",
+      "product": "",
+      "source": "prv_source_watch"
+    },
     {
       "id": "log_1779387845176_vgwyqe",
       "ts": "2026-05-21T18:24:05.176Z",
@@ -1291,36 +1339,6 @@
       "status": "ignored",
       "product": "2026 Leaf Optichrome Football",
       "source": "admin"
-    },
-    {
-      "id": "log_1779317226926_f0wsg7",
-      "ts": "2026-05-20T22:47:06.926Z",
-      "type": "source_watch",
-      "title": "Quick JSON Source Watch complete",
-      "detail": "20 source items checked. 2 need review. 1 review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "quick_json"
-    },
-    {
-      "id": "log_1779317226925_irxeeo",
-      "ts": "2026-05-20T22:47:06.925Z",
-      "type": "source_watch",
-      "title": "Source Watch actions queued",
-      "detail": "1 findings are now visible in the Agent Action Queue for admin review. 2 admin-ignored source item(s) were skipped.",
-      "status": "queued",
-      "product": "",
-      "source": "quick_json"
-    },
-    {
-      "id": "log_1779317223061_1p755s",
-      "ts": "2026-05-20T22:47:03.061Z",
-      "type": "source_watch",
-      "title": "Quick JSON Source Watch started",
-      "detail": "Checking recent Checklistcenter items against public JSON.",
-      "status": "started",
-      "product": "",
-      "source": "quick_json"
     }
   ],
   "visual_tests": {
@@ -1453,6 +1471,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T18:24:08.028Z",
+  "saved_at": "2026-05-21T18:24:47.133Z",
   "saved_by": "cm_command_center_operator"
 }

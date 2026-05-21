@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T18:36:38.282Z",
+  "exported_at": "2026-05-21T18:37:05.786Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -270,24 +270,6 @@
       "updatedAt": "2026-05-21T18:24:07.207Z"
     },
     {
-      "id": "prv_source_review|slabsquatch_substack|2025 26 topps signature class basketball pre-analysis plus",
-      "type": "prv_source_review",
-      "source": "slabsquatch_substack",
-      "product": "2025/26 Topps Signature Class Basketball Pre-Analysis Plus",
-      "sport": "basketball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-signature-class-nba",
-      "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-21T18:24:07.206Z"
-    },
-    {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps chrome cactus jack basketball basketball",
       "type": "prv_source_review",
       "source": "slabsquatch_substack",
@@ -522,6 +504,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779388624183_h9szq3",
+      "ts": "2026-05-21T18:37:04.183Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2025/26 Topps Signature Class Basketball Pre-Analysis Plus was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2025/26 Topps Signature Class Basketball Pre-Analysis Plus",
+      "source": "admin"
+    },
     {
       "id": "log_1779388596679_f6owhh",
       "ts": "2026-05-21T18:36:36.679Z",
@@ -1311,16 +1303,6 @@
       "status": "started",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779317800828_6t8sis",
-      "ts": "2026-05-20T22:56:40.828Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync needs review",
-      "detail": "Publish returned without public validation.",
-      "status": "needs_review",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1468,9 +1450,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-05-21T18:36:36.675Z",
       "resolved": true
+    },
+    "basketball|https slabsquatch substack com p 202526-topps-signature-class-nba": {
+      "product": "2025/26 Topps Signature Class Basketball Pre-Analysis Plus",
+      "sport": "basketball",
+      "code": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-signature-class-nba",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-05-21T18:37:04.182Z",
+      "resolved": true
+    },
+    "basketball|2025 26 topps signature class basketball pre-analysis plus": {
+      "product": "2025/26 Topps Signature Class Basketball Pre-Analysis Plus",
+      "sport": "basketball",
+      "code": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-signature-class-nba",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-05-21T18:37:04.182Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T18:36:39.660Z",
+  "saved_at": "2026-05-21T18:37:07.024Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T12:22:08.638Z",
+  "exported_at": "2026-05-21T12:22:51.983Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -486,6 +486,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779366170381_1nlner",
+      "ts": "2026-05-21T12:22:50.381Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch started",
+      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
+      "status": "started",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1779366129628_b0ntfm",
+      "ts": "2026-05-21T12:22:09.628Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch complete",
+      "detail": "20 source items checked. 2 need review. 0 review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779366129627_rm5mrm",
+      "ts": "2026-05-21T12:22:09.627Z",
+      "type": "source_watch",
+      "title": "Source Watch ignored items skipped",
+      "detail": "3 admin-ignored source item(s) were omitted from the queue.",
+      "status": "ignored",
+      "product": "",
+      "source": "quick_json"
+    },
     {
       "id": "log_1779366127035_blmhhn",
       "ts": "2026-05-21T12:22:07.035Z",
@@ -1255,36 +1285,6 @@
       "status": "failed",
       "product": "2025 Topps Chrome Sapphire Football",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779252156354_tdokjm",
-      "ts": "2026-05-20T04:42:36.354Z",
-      "type": "prv_source_review",
-      "title": "PRV sheet write started",
-      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
-      "status": "started",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "admin"
-    },
-    {
-      "id": "log_1779252075034_nbk87d",
-      "ts": "2026-05-20T04:41:15.034Z",
-      "type": "prv_source_review",
-      "title": "PRV temp data written",
-      "detail": "0 Index row and 0 Products rows validated.",
-      "status": "failed",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779252067994_t4kou6",
-      "ts": "2026-05-20T04:41:07.994Z",
-      "type": "prv_source_review",
-      "title": "PRV sheet write started",
-      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
-      "status": "started",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -1417,6 +1417,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T12:22:09.751Z",
+  "saved_at": "2026-05-21T12:22:54.306Z",
   "saved_by": "cm_command_center_operator"
 }

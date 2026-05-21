@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc55-cockpit-cycle-2026-05-21";
+  const COMMAND_CENTER_VERSION = "cc56-prv-parser-clarity-2026-05-21";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -1951,6 +1951,24 @@
         + "&sport=" + encodeURIComponent(sport || "");
       const data = await fetchJson(url, { timeoutMs: 90000 });
       renderPrvPreview(data);
+      if (actionId) {
+        const parsedRows = Number(data && data.row_count || 0);
+        const previewReady = !!(data && data.status === "preview_ready" && parsedRows > 0);
+        updateAgentAction(actionId, {
+          status: previewReady ? "needs_admin" : "known_issue",
+          executionResult: previewReady
+            ? `PRV source preview parsed ${formatNumber(parsedRows)} print-run rows.`
+            : "Source found, but the PRV parser returned 0 print-run rows.",
+          validationResult: previewReady
+            ? "Preview rows are ready for admin review before PRV sheet write."
+            : "Parser review needed before this can write PRV sheet data.",
+          recommendedAction: previewReady
+            ? "Review sample rows, then write PRV temp data if the numbers look right."
+            : "Open the source and review whether this post has a new layout or no extractable print-run table."
+        });
+        renderAgentActions();
+        renderActionLanes();
+      }
       logActivity({
         type: "prv_source_review",
         status: data && data.status ? data.status : data && data.ok ? "preview_ready" : "failed",
@@ -3169,23 +3187,32 @@
     const product = data.product || {};
     const rows = Array.isArray(data.sample_rows) ? data.sample_rows : [];
     const warnings = Array.isArray(data.warnings) ? data.warnings : [];
+    const parsedRows = Number(data.row_count || 0);
+    const hasRows = parsedRows > 0;
+    const statusLabel = hasRows ? data.status || "preview_ready" : "parser_review";
 
     els.sourceCheckResult.innerHTML = `
-      <div class="import-preview-card">
+      <div class="import-preview-card ${hasRows ? "" : "parser-review-card"}">
         <div class="opp-top">
           <div>
-            <h3>PRV Source Preview</h3>
+            <h3>${hasRows ? "PRV Source Preview" : "PRV Parser Review Needed"}</h3>
             <p>${escapeHtml(product.display_name || "Untitled product")}</p>
           </div>
-          <span class="badge ${data.status === "preview_ready" ? "opportunity" : "warning"}">${escapeHtml(data.status || "preview")}</span>
+          <span class="badge ${hasRows ? "opportunity" : "warning"}">${escapeHtml(statusLabel)}</span>
         </div>
         <div class="opp-meta">
           <span class="pill">Code: ${escapeHtml(product.code || "")}</span>
           <span class="pill">Sport: ${escapeHtml(titleCase(product.sport || ""))}</span>
           <span class="pill">Year: ${escapeHtml(product.year || "")}</span>
-          <span class="pill">Rows: ${formatNumber(data.row_count || 0)}</span>
+          <span class="pill">Rows parsed: ${formatNumber(parsedRows)}</span>
           <a class="pill source-link" href="${escapeHtml(data.source_url || "")}" target="_blank" rel="noopener noreferrer">Source</a>
         </div>
+        ${!hasRows ? `
+          <div class="parser-review-message">
+            <strong>Source found. No usable PRV rows parsed.</strong>
+            <span>This usually means the post uses a layout the parser does not understand yet, or the article mentions the product without a structured print-run breakdown. Do not write PRV temp data until the parser is updated or the rows are entered manually.</span>
+          </div>
+        ` : ""}
         ${warnings.length ? `
           <div class="task-guardrail">${warnings.map(escapeHtml).join(" ")}</div>
         ` : ""}
@@ -3196,9 +3223,9 @@
           </div>
           <div>
             <h4>Next Step</h4>
-            <p>${escapeHtml(data.next_step || "Review these rows before PRV sheet write is enabled.")}</p>
-            <div class="task-guardrail">This writes only one PRV product code. It does not delete other PRV products or publish JSON.</div>
-            ${data.status === "preview_ready" ? `
+            <p>${escapeHtml(hasRows ? data.next_step || "Review these rows before PRV sheet write is enabled." : "Open the source and decide whether this needs a parser update, manual PRV entry, or should be ignored for now.")}</p>
+            <div class="task-guardrail">${hasRows ? "This writes only one PRV product code. It does not delete other PRV products or publish JSON." : "Write is disabled because there are no parsed rows."}</div>
+            ${hasRows && data.status === "preview_ready" ? `
               <button class="action-btn approve" type="button" data-execute-prv-import="${escapeHtml(data.source_url || "")}" data-execute-prv-sport="${escapeHtml(product.sport || "")}">Write PRV Temp Data</button>
             ` : ""}
           </div>

@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc63-public-tool-excellence-2026-05-22";
+  const COMMAND_CENTER_VERSION = "cc64-public-audit-wired-2026-05-22";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -6183,6 +6183,8 @@
 
   els.refreshBtn.addEventListener("click", runAudit);
   els.syncPrvJsonBtn.addEventListener("click", syncPrvJsonOnDemand);
+  if (els.publicToolAuditBtn) els.publicToolAuditBtn.addEventListener("click", runPublicToolAudit);
+  if (els.publicToolAuditPanelBtn) els.publicToolAuditPanelBtn.addEventListener("click", runPublicToolAudit);
   if (els.sentinelCommandBtn) {
     els.sentinelCommandBtn.addEventListener("click", () => runSentinelCommand(els.sentinelCommandInput && els.sentinelCommandInput.value || ""));
   }

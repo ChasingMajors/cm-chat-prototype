@@ -1116,6 +1116,24 @@ function classifyPrvSourceItem_(item, vaultRows) {
 
   const match = findVaultIndexMatch_(title, sport, vaultRows);
   if (match && match.score >= 140) {
+    if (Number(match.row_count || 0) > 0) {
+      return {
+        status: "covered",
+        title: title,
+        sport: sport,
+        source_url: item.url || "",
+        matched_name: match.name,
+        matched_code: match.code,
+        match_score: match.score,
+        public_rows: Number(match.row_count || 0),
+        comparison_source: "public_vault_json",
+        discovery_source: item.discovery_source || "slabsquatch_substack",
+        target_tool: "prv",
+        published_at: item.published_at || "",
+        recommended_action: "PRV public JSON already has rows for this product. No queue action needed unless admin wants to manually compare source numbers."
+      };
+    }
+
     return {
       status: "possible_update",
       title: title,
@@ -1164,19 +1182,59 @@ function classifyPrvSourceItem_(item, vaultRows) {
 function fetchVaultPublicIndexRows_() {
   const payload = JSON.parse(fetchText_(CM_APP_DATA_BASE + "/vault/index.json"));
   const rows = payload && (payload.index || payload.rows);
+  const rowCounts = fetchVaultPublicRowCounts_();
+
   return (Array.isArray(rows) ? rows : []).map(function(row) {
+    const code = safeString_(row.Code || row.code);
     return {
-      code: safeString_(row.Code || row.code),
+      code: code,
       name: safeString_(row.DisplayName || row.displayName || row.display_name),
       keywords: safeString_(row.Keywords || row.keywords),
       year: safeString_(row.year),
       sport: normalize_(row.sport),
       manufacturer: safeString_(row.manufacturer),
-      product: safeString_(row.product)
+      product: safeString_(row.product),
+      row_count: Number(rowCounts[code] || 0)
     };
   }).filter(function(row) {
     return row.code && row.name;
   });
+}
+
+function fetchVaultPublicRowCounts_() {
+  const out = {};
+
+  try {
+    const manifest = JSON.parse(fetchText_(CM_APP_DATA_BASE + "/vault/products/all.json"));
+    const productMap = manifest.product_map || manifest.productMap || {};
+    const seenShards = {};
+    const shards = Object.keys(productMap).map(function(code) {
+      return productMap[code];
+    }).filter(Boolean).filter(function(shard) {
+      if (seenShards[shard]) return false;
+      seenShards[shard] = true;
+      return true;
+    });
+
+    shards.forEach(function(shard) {
+      try {
+        const shardPayload = JSON.parse(fetchText_(CM_APP_DATA_BASE + "/vault/products/" + shard));
+        const products = shardPayload && shardPayload.products
+          ? shardPayload.products
+          : shardPayload && shardPayload.data && shardPayload.data.products
+            ? shardPayload.data.products
+            : {};
+
+        Object.keys(products || {}).forEach(function(code) {
+          const product = products[code] || {};
+          const rows = Array.isArray(product.rows) ? product.rows : [];
+          out[code] = rows.length;
+        });
+      } catch (err) {}
+    });
+  } catch (err) {}
+
+  return out;
 }
 
 function validatePrvVaultProduct_(input) {
@@ -1263,7 +1321,8 @@ function findVaultIndexMatch_(title, sport, rows) {
       best = {
         code: row.code,
         name: row.name,
-        score: score
+        score: score,
+        row_count: Number(row.row_count || 0)
       };
     }
   });

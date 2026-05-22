@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-21T18:37:05.786Z",
+  "exported_at": "2026-05-22T00:38:56.399Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -504,6 +504,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779410334796_dr8tww",
+      "ts": "2026-05-22T00:38:54.796Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch started",
+      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
+      "status": "started",
+      "product": "",
+      "source": "slabsquatch"
+    },
     {
       "id": "log_1779388624183_h9szq3",
       "ts": "2026-05-21T18:37:04.183Z",
@@ -1293,16 +1303,6 @@
       "status": "needs_review",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779338127015_kfpyyf",
-      "ts": "2026-05-21T04:35:27.015Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync started",
-      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
-      "status": "started",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1471,6 +1471,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-21T18:37:07.024Z",
+  "saved_at": "2026-05-22T00:38:57.729Z",
   "saved_by": "cm_command_center_operator"
 }

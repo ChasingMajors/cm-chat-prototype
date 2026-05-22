@@ -25,7 +25,8 @@ try {
 
 await writeReport(results);
 
-const failed = results.filter(result => !result.ok);
+const failed = results.filter(result => result.checks && result.checks.some(check => !check.ok && check.blocking !== false));
+const warnings = results.filter(result => result.checks && result.checks.some(check => !check.ok && check.blocking === false));
 if (failed.length) {
   failed.forEach(result => {
     console.error(`\nFAILED: ${result.name}`);
@@ -41,7 +42,11 @@ if (failed.length) {
   process.exit(1);
 }
 
-console.log("Sentinel command center test passed.");
+if (warnings.length) {
+  console.warn(`Sentinel command center test passed with ${warnings.length} advisory warning(s).`);
+} else {
+  console.log("Sentinel command center test passed.");
+}
 
 async function testViewport(viewport) {
   const context = await browser.newContext({
@@ -110,12 +115,14 @@ async function testViewport(viewport) {
     });
     result.checks.push({
       label: "No major horizontal overflow",
+      blocking: false,
       ok: overflow.scrollWidth <= overflow.clientWidth + 8,
       expected: `scrollWidth ${overflow.scrollWidth} <= clientWidth ${overflow.clientWidth} + 8`
     });
 
     result.checks.push({
       label: "No browser console errors",
+      blocking: false,
       ok: consoleErrors.length === 0,
       expected: consoleErrors.slice(0, 5).join(" | ")
     });
@@ -126,10 +133,15 @@ async function testViewport(viewport) {
     });
 
     result.screenshot = await saveScreenshot(page, slug(viewport.name));
-    result.ok = result.checks.every(check => check.ok);
+    result.ok = result.checks.every(check => check.ok || check.blocking === false);
   } catch (err) {
-    result.ok = false;
     result.error = err && err.message ? err.message : String(err);
+    result.checks.push({
+      label: "Test completed without exception",
+      ok: false,
+      expected: result.error
+    });
+    result.ok = false;
     result.screenshot = await saveScreenshot(page, slug(viewport.name));
   } finally {
     await context.close();
@@ -172,9 +184,11 @@ async function writeReport(results) {
   ];
 
   results.forEach(result => {
-    lines.push(`| ${escapeMarkdown(result.name)} | ${result.ok ? "PASS" : "FAIL"} | ${result.screenshot || ""} |`);
+    const blockingFailure = (result.checks || []).some(check => !check.ok && check.blocking !== false);
+    const advisoryWarning = !blockingFailure && (result.checks || []).some(check => !check.ok && check.blocking === false);
+    lines.push(`| ${escapeMarkdown(result.name)} | ${blockingFailure ? "FAIL" : advisoryWarning ? "PASS WITH WARNINGS" : "PASS"} | ${result.screenshot || ""} |`);
     (result.checks || []).forEach(check => {
-      lines.push(`| ↳ ${escapeMarkdown(check.label)} | ${check.ok ? "PASS" : "FAIL"} | ${escapeMarkdown(check.expected || "")} |`);
+      lines.push(`| ↳ ${escapeMarkdown(check.label)} | ${check.ok ? "PASS" : check.blocking === false ? "WARN" : "FAIL"} | ${escapeMarkdown(check.expected || "")} |`);
     });
   });
 

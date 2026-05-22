@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc65-sentinel-self-test-2026-05-22";
+  const COMMAND_CENTER_VERSION = "cc66-self-test-hardening-2026-05-22";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];

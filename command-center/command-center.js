@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc59-daily-sentinel-sweep-2026-05-21";
+  const COMMAND_CENTER_VERSION = "cc60-agent-cycle-autocheck-2026-05-21";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -5224,6 +5224,88 @@
       };
     }
 
+    const safePrvRecheck = active.find(action => {
+      const status = String(action.status || "").toLowerCase();
+      const type = String(action.type || "").toLowerCase();
+      const validation = String(action.validationResult || "").toLowerCase();
+      const execution = String(action.executionResult || "").toLowerCase();
+      if (type !== "prv_source_review" && type !== "prv_publish") return false;
+      if (status === "running" || status === "failed" || status === "known_issue" || status === "blocked") return false;
+      if (!action.code) return false;
+      if (validation.includes("public rows") || validation.includes("public prv rows") || validation.includes("validated")) return false;
+      return execution.includes("sheet write") ||
+        execution.includes("json publish") ||
+        status === "needs_admin" ||
+        status === "approval_required";
+    });
+    if (safePrvRecheck) {
+      return {
+        kind: "prv_public_recheck",
+        action: safePrvRecheck,
+        title: "Verify PRV public JSON",
+        detail: `${safePrvRecheck.product || safePrvRecheck.code} has a product code. Sentinel will check whether PRV is already live before asking for another admin decision.`
+      };
+    }
+
+    const safeChecklistRecheck = active.find(action => {
+      const status = String(action.status || "").toLowerCase();
+      const type = String(action.type || "").toLowerCase();
+      const validation = String(action.validationResult || "").toLowerCase();
+      const execution = String(action.executionResult || "").toLowerCase();
+      if (type !== "source_import" && type !== "checklist_publish") return false;
+      if (status === "running" || status === "failed" || status === "known_issue" || status === "blocked") return false;
+      if (!action.product) return false;
+      if (validation.includes("public json covered") || validation.includes("public rows")) return false;
+      return execution.includes("sheet write") ||
+        execution.includes("json publish") ||
+        status === "needs_admin" ||
+        status === "approval_required";
+    });
+    if (safeChecklistRecheck) {
+      return {
+        kind: "checklist_coverage_recheck",
+        action: safeChecklistRecheck,
+        title: "Verify Checklist public JSON",
+        detail: `${safeChecklistRecheck.product || safeChecklistRecheck.type} has enough detail for a safe public coverage check. Sentinel will verify the JSON before asking for admin review.`
+      };
+    }
+
+    const safePrvPreview = active.find(action => {
+      const status = String(action.status || "").toLowerCase();
+      const type = String(action.type || "").toLowerCase();
+      const execution = String(action.executionResult || "").toLowerCase();
+      if (type !== "prv_source_review") return false;
+      if (status === "running" || status === "failed" || status === "known_issue" || status === "blocked") return false;
+      if (!(action.sourceUrl || action.runUrl)) return false;
+      return !execution.includes("preview parsed") && !execution.includes("parser returned");
+    });
+    if (safePrvPreview) {
+      return {
+        kind: "prv_preview",
+        action: safePrvPreview,
+        title: "Build PRV preview",
+        detail: `${safePrvPreview.product || "This PRV source"} can be safely previewed. No Google Sheet write will happen without approval.`
+      };
+    }
+
+    const safeChecklistPreview = active.find(action => {
+      const status = String(action.status || "").toLowerCase();
+      const type = String(action.type || "").toLowerCase();
+      const execution = String(action.executionResult || "").toLowerCase();
+      if (type !== "source_import") return false;
+      if (status === "running" || status === "failed" || status === "known_issue" || status === "blocked") return false;
+      if (!(action.sourceUrl || action.runUrl)) return false;
+      return !execution.includes("preview parsed") && !execution.includes("import preview");
+    });
+    if (safeChecklistPreview) {
+      return {
+        kind: "checklist_preview",
+        action: safeChecklistPreview,
+        title: "Build checklist preview",
+        detail: `${safeChecklistPreview.product || "This checklist source"} can be safely previewed. No Google Sheet write will happen without approval.`
+      };
+    }
+
     const failed = active.find(action => {
       const status = String(action.status || "").toLowerCase();
       return status === "failed" || status === "blocked" || status === "known_issue";
@@ -5311,6 +5393,32 @@
     if (step.kind === "visual_test") {
       renderAgentCycleMessage(step.title, step.detail, "info");
       runVisualTestForAction(step.action, false);
+      return;
+    }
+
+    if (step.kind === "prv_public_recheck") {
+      renderAgentCycleMessage(step.title, step.detail, "info");
+      recheckPrvPublicData(step.action.code || "", step.action.id);
+      return;
+    }
+
+    if (step.kind === "checklist_coverage_recheck") {
+      renderAgentCycleMessage(step.title, step.detail, "info");
+      recheckActionCoverage(step.action.id);
+      return;
+    }
+
+    if (step.kind === "prv_preview") {
+      const sourceUrl = step.action.sourceUrl || step.action.runUrl || "";
+      renderAgentCycleMessage(step.title, step.detail, "info");
+      previewPrvSource(sourceUrl, step.action.sport || "", step.action.id);
+      return;
+    }
+
+    if (step.kind === "checklist_preview") {
+      const sourceUrl = step.action.sourceUrl || step.action.runUrl || "";
+      renderAgentCycleMessage(step.title, step.detail, "info");
+      previewSourceImport(sourceUrl, step.action.sport || "", step.action.id);
       return;
     }
 

@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc61-approved-prv-pipeline-2026-05-21";
+  const COMMAND_CENTER_VERSION = "cc62-agent-sweep-summary-2026-05-21";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -1829,7 +1829,7 @@
         { noFocus: !!options.noFocus }
       );
       if (options.noFocus) renderSentinelNotice("Operator Backend needed", "Save the Operator Backend URL before Sentinel can scan source data.", "warning");
-      return;
+      return { ok: false, kind: "checklist", label: modeLabel, items: 0, actionable: 0, queued: 0, error: "Operator Backend URL missing." };
     }
 
     renderSourceCheckMessage(
@@ -1878,6 +1878,14 @@
       renderAgentActions();
       renderActionLanes();
       renderActivityLog();
+      return {
+        ok: !!data.ok,
+        kind: "checklist",
+        label: modeLabel,
+        items: items.length,
+        actionable: actionable.length,
+        queued: queuedCount
+      };
     } catch (err) {
       renderSourceCheckMessage("Source watch failed", err && err.message ? err.message : String(err), "critical", { noFocus: !!options.noFocus });
       if (options.noFocus) renderSentinelNotice("Source scan failed", err && err.message ? err.message : String(err), "critical");
@@ -1889,6 +1897,7 @@
         detail: err && err.message ? err.message : String(err)
       });
       renderActivityLog();
+      return { ok: false, kind: "checklist", label: modeLabel, items: 0, actionable: 0, queued: 0, error: err && err.message ? err.message : String(err) };
     }
   }
 
@@ -1904,7 +1913,7 @@
         { noFocus: !!options.noFocus }
       );
       if (options.noFocus) renderSentinelNotice("Operator Backend needed", "Save the Operator Backend URL before Sentinel can scan PRV source data.", "warning");
-      return;
+      return { ok: false, kind: "prv", label: "PRV Source Watch", items: 0, actionable: 0, queued: 0, error: "Operator Backend URL missing." };
     }
 
     renderSourceCheckMessage(
@@ -1949,6 +1958,14 @@
       renderAgentActions();
       renderActionLanes();
       renderActivityLog();
+      return {
+        ok: !!data.ok,
+        kind: "prv",
+        label: "PRV Source Watch",
+        items: items.length,
+        actionable: actionable.length,
+        queued: queuedCount
+      };
     } catch (err) {
       renderSourceCheckMessage("PRV Source Watch failed", err && err.message ? err.message : String(err), "critical", { noFocus: !!options.noFocus });
       if (options.noFocus) renderSentinelNotice("PRV source scan failed", err && err.message ? err.message : String(err), "critical");
@@ -1960,7 +1977,24 @@
         detail: err && err.message ? err.message : String(err)
       });
       renderActivityLog();
+      return { ok: false, kind: "prv", label: "PRV Source Watch", items: 0, actionable: 0, queued: 0, error: err && err.message ? err.message : String(err) };
     }
+  }
+
+  function buildDailySweepSummary(checklistScan, prvScan, activeCount) {
+    const checklistText = checklistScan && checklistScan.ok
+      ? `Checklist: ${formatNumber(checklistScan.items)} checked, ${formatNumber(checklistScan.queued)} queued.`
+      : `Checklist: ${checklistScan && checklistScan.error ? checklistScan.error : "scan needs review"}`;
+    const prvText = prvScan && prvScan.ok
+      ? prvScan.queued
+        ? `PRV: ${formatNumber(prvScan.items)} checked, ${formatNumber(prvScan.queued)} queued.`
+        : `PRV clear: ${formatNumber(prvScan.items)} source item${Number(prvScan.items || 0) === 1 ? "" : "s"} checked, nothing new queued.`
+      : `PRV: ${prvScan && prvScan.error ? prvScan.error : "scan needs review"}`;
+    const queueText = activeCount
+      ? `${formatNumber(activeCount)} active queue item${activeCount === 1 ? "" : "s"} need review.`
+      : "No active queue items need review.";
+
+    return `${checklistText} ${prvText} ${queueText}`;
   }
 
   async function runDailySentinelSweep() {
@@ -1979,15 +2013,14 @@
     renderActivityLog();
 
     await runAudit();
-    await runSourceWatchWithBackend("quick_json", { noFocus: true });
-    await runPrvSourceWatchWithBackend({ noFocus: true });
+    const checklistScan = await runSourceWatchWithBackend("quick_json", { noFocus: true });
+    const prvScan = await runPrvSourceWatchWithBackend({ noFocus: true });
 
     const activeCount = getActiveAgentActions().length;
+    const sweepSummary = buildDailySweepSummary(checklistScan, prvScan, activeCount);
     renderSentinelNotice(
       "Daily Sentinel sweep complete",
-      activeCount
-        ? `${activeCount} active queue item${activeCount === 1 ? "" : "s"} need review.`
-        : "No active queue items need review right now.",
+      sweepSummary,
       activeCount ? "warning" : "success"
     );
     logActivity({
@@ -1995,9 +2028,7 @@
       status: activeCount ? "needs_review" : "completed",
       source: "command_center",
       title: "Daily Sentinel sweep complete",
-      detail: activeCount
-        ? `${activeCount} active queue item${activeCount === 1 ? "" : "s"} need review.`
-        : "No active queue items need review."
+      detail: sweepSummary
     });
     renderActivityLog();
     renderAgentActions();

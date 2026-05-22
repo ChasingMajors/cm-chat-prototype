@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc58-action-rail-controls-2026-05-21";
+  const COMMAND_CENTER_VERSION = "cc59-daily-sentinel-sweep-2026-05-21";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -1892,22 +1892,26 @@
     }
   }
 
-  async function runPrvSourceWatchWithBackend() {
+  async function runPrvSourceWatchWithBackend(options) {
+    options = options || {};
     const endpoint = readOperatorEndpoint();
 
     if (!endpoint) {
       renderSourceCheckMessage(
         "Operator Backend needed",
         "Paste and save the Apps Script Operator Backend URL before running PRV Source Watch.",
-        "warning"
+        "warning",
+        { noFocus: !!options.noFocus }
       );
+      if (options.noFocus) renderSentinelNotice("Operator Backend needed", "Save the Operator Backend URL before Sentinel can scan PRV source data.", "warning");
       return;
     }
 
     renderSourceCheckMessage(
       "Running PRV Source Watch",
       "The Operator Backend is checking recent SlabSquatch Substack posts against public Print Run Vault JSON.",
-      "info"
+      "info",
+      { noFocus: !!options.noFocus }
     );
     logActivity({
       type: "prv_source_watch",
@@ -1935,11 +1939,19 @@
         detail: `${items.length} SlabSquatch items checked. ${actionable.length} need review. ${queuedCount} PRV review cards queued.`
       });
       renderSourceWatchResults(data);
+      if (options.noFocus) {
+        renderSentinelNotice(
+          "PRV source scan complete",
+          `${items.length} SlabSquatch items checked. ${actionable.length} need review. ${queuedCount} PRV review cards queued.`,
+          actionable.length ? "warning" : "success"
+        );
+      }
       renderAgentActions();
       renderActionLanes();
       renderActivityLog();
     } catch (err) {
-      renderSourceCheckMessage("PRV Source Watch failed", err && err.message ? err.message : String(err), "critical");
+      renderSourceCheckMessage("PRV Source Watch failed", err && err.message ? err.message : String(err), "critical", { noFocus: !!options.noFocus });
+      if (options.noFocus) renderSentinelNotice("PRV source scan failed", err && err.message ? err.message : String(err), "critical");
       logActivity({
         type: "prv_source_watch",
         status: "failed",
@@ -1949,6 +1961,48 @@
       });
       renderActivityLog();
     }
+  }
+
+  async function runDailySentinelSweep() {
+    renderSentinelNotice(
+      "Running daily Sentinel sweep",
+      "Checking app health, new checklist sources, and PRV source updates. Queue cards will appear only for work that needs review.",
+      "info"
+    );
+    logActivity({
+      type: "agent_cycle",
+      status: "started",
+      source: "command_center",
+      title: "Daily Sentinel sweep started",
+      detail: "Running health audit, Checklist source watch, and PRV source watch."
+    });
+    renderActivityLog();
+
+    await runAudit();
+    await runSourceWatchWithBackend("quick_json", { noFocus: true });
+    await runPrvSourceWatchWithBackend({ noFocus: true });
+
+    const activeCount = getActiveAgentActions().length;
+    renderSentinelNotice(
+      "Daily Sentinel sweep complete",
+      activeCount
+        ? `${activeCount} active queue item${activeCount === 1 ? "" : "s"} need review.`
+        : "No active queue items need review right now.",
+      activeCount ? "warning" : "success"
+    );
+    logActivity({
+      type: "agent_cycle",
+      status: activeCount ? "needs_review" : "completed",
+      source: "command_center",
+      title: "Daily Sentinel sweep complete",
+      detail: activeCount
+        ? `${activeCount} active queue item${activeCount === 1 ? "" : "s"} need review.`
+        : "No active queue items need review."
+    });
+    renderActivityLog();
+    renderAgentActions();
+    renderActionLanes();
+    renderRunSummary();
   }
 
   async function previewSourceImport(sourceUrl, sport, actionId) {
@@ -5282,10 +5336,10 @@
 
     renderAgentCycleMessage(
       "Scanning for new work",
-      "No active queue item needed action, so Sentinel is checking recent Checklist Center data now.",
+      "No active queue item needed action, so Sentinel is running the full daily sweep now.",
       "info"
     );
-    runSourceWatchWithBackend("quick_json", { noFocus: true });
+    runDailySentinelSweep();
   }
 
   function renderActionLaneCard(action, lane) {

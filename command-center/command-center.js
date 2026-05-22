@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc66-self-test-hardening-2026-05-22";
+  const COMMAND_CENTER_VERSION = "cc67-incident-response-v1-2026-05-22";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -442,6 +442,7 @@
     const status = String(action && action.status || "").toLowerCase();
     if (posture.label === "Validate" && status !== "validated") return "Validate";
     if (status === "fix_applied") return "Retest Needed";
+    if (status === "fix_attempted") return "Fix Attempted";
     return getAgentActionStatusLabel(status || "queued");
   }
 
@@ -451,7 +452,7 @@
     if (posture && posture.label === "Validate") return "warning";
     if (status === "validated" || status === "done") return "opportunity";
     if (status === "failed" || status === "blocked") return "critical";
-    if (status === "known_issue" || status === "needs_admin" || status === "approval_required" || status === "fix_queued" || status === "fix_applied") return "warning";
+    if (status === "known_issue" || status === "needs_admin" || status === "approval_required" || status === "fix_queued" || status === "fix_applied" || status === "fix_attempted") return "warning";
     return "info";
   }
 
@@ -3254,7 +3255,8 @@
     return url.toString();
   }
 
-  async function runSentinelSelfTest() {
+  async function runSentinelSelfTest(options) {
+    const opts = options || {};
     const endpoint = readOperatorEndpoint();
     const key = readOperatorKey();
 
@@ -3287,6 +3289,17 @@
         + "&key=" + encodeURIComponent(key);
 
       const data = await fetchJson(url, { timeoutMs: 60000 });
+      if (opts.recoveryActionId && data && data.ok) {
+        const recovery = state.agentActions.find(action => action.id === opts.recoveryActionId);
+        if (recovery) {
+          updateAgentAction(opts.recoveryActionId, {
+            executionResult: "Safe recovery attempted: reran Sentinel self-test.",
+            validationResult: "Recovery retest queued; waiting for GitHub Actions result."
+          });
+          renderAgentActions();
+          renderActionLanes();
+        }
+      }
       renderSentinelSelfTestDispatchResult(data);
     } catch (err) {
       const detail = err && err.message ? err.message : String(err);
@@ -3334,6 +3347,49 @@
     scheduleSentinelSelfTestPoll(1);
   }
 
+  function upsertSentinelIncident(data, options) {
+    const opts = options || {};
+    const runUrl = data && (data.run_url || data.workflow_url) ? (data.run_url || data.workflow_url) : state.sentinelSelfTest && state.sentinelSelfTest.runUrl || "";
+    const status = opts.status || "failed";
+    const action = upsertAgentAction({
+      id: "sentinel_incident_command_center_self_test",
+      type: "sentinel_incident",
+      source: "github_actions",
+      product: "CM Sentinel Command Center",
+      sport: "",
+      code: "sentinel_command_center",
+      riskLevel: "high",
+      status,
+      recommendedAction: opts.recommendedAction || "Investigate failed Sentinel self-test. Use the GitHub report and screenshots to identify the failing control, then rerun the self-test.",
+      executionResult: opts.executionResult || "Sentinel self-test failed. Safe recovery has not run yet.",
+      validationResult: opts.validationResult || "Cockpit health test failed.",
+      runUrl
+    });
+    renderAgentActions();
+    renderActionLanes();
+    return action;
+  }
+
+  function attemptSentinelIncidentRecovery(action) {
+    updateAgentAction(action.id, {
+      status: "running",
+      executionResult: "Safe recovery attempted: rerunning Sentinel self-test once before admin review.",
+      validationResult: "Retest queued; waiting for GitHub Actions result."
+    });
+    logActivity({
+      type: "sentinel_incident",
+      status: "started",
+      product: action.product || "CM Sentinel Command Center",
+      source: "command_center",
+      title: "Sentinel safe recovery started",
+      detail: "Agent is rerunning the Sentinel self-test once as a safe recovery step."
+    });
+    renderAgentActions();
+    renderActionLanes();
+    renderActivityLog();
+    runSentinelSelfTest({ recoveryActionId: action.id });
+  }
+
   async function refreshSentinelSelfTestStatus(options) {
     const endpoint = readOperatorEndpoint();
     const key = readOperatorKey();
@@ -3375,6 +3431,27 @@
     const passed = result === "passed" || data.conclusion === "success";
     const failed = result === "failed" || data.conclusion === "failure";
     if (passed || failed) {
+      const incident = state.agentActions.find(action => action.id === "sentinel_incident_command_center_self_test");
+      if (passed && incident) {
+        updateAgentAction(incident.id, {
+          status: "validated",
+          executionResult: incident.executionResult || "Safe recovery retest completed.",
+          validationResult: "Sentinel self-test passed after agent recovery/retest."
+        });
+      } else if (failed) {
+        const hasIncident = !!incident;
+        const execution = incident && incident.executionResult ? incident.executionResult : "";
+        upsertSentinelIncident(data, {
+          status: execution.toLowerCase().includes("safe recovery attempted") ? "fix_attempted" : "failed",
+          executionResult: execution || "Sentinel self-test failed. Safe recovery has not run yet.",
+          validationResult: execution.toLowerCase().includes("safe recovery attempted")
+            ? "Safe recovery retest failed. Admin review required."
+            : "Cockpit health test failed. Agent can attempt one safe recovery retest.",
+          recommendedAction: hasIncident
+            ? "Open the GitHub report/screenshots. If the failure is a code regression, create a fix task. If it is transient, rerun self-test once."
+            : "Run Agent Cycle to let Sentinel attempt one safe recovery retest."
+        });
+      }
       logActivity({
         type: "sentinel_self_test",
         status: passed ? "validated" : "failed",
@@ -3385,9 +3462,13 @@
           : "Cockpit behavior test failed. Open the report for screenshots and failing checks."
       });
       renderActivityLog();
+      renderAgentActions();
+      renderActionLanes();
       renderSentinelNotice(
         passed ? "Sentinel self-test passed" : "Sentinel self-test failed",
-        passed ? "The cockpit loaded and core agent controls responded." : "Open the GitHub report for screenshots and failing checks.",
+        passed
+          ? (incident ? "Agent recovery/retest passed. The cockpit is healthy again." : "The cockpit loaded and core agent controls responded.")
+          : "Incident card created. Run Agent Cycle for one safe recovery attempt, then review the report if it still fails.",
         passed ? "success" : "critical"
       );
     }
@@ -4895,6 +4976,19 @@
       });
     }
 
+    if (type === "sentinel_incident") {
+      checks.push({
+        label: "Self-healing attempt",
+        ok: execution.includes("safe recovery") || status === "validated",
+        note: action && action.executionResult ? action.executionResult : "No safe recovery attempt recorded yet"
+      });
+      checks.push({
+        label: "Retest result",
+        ok: validation.includes("passed") || status === "validated",
+        note: action && action.validationResult ? action.validationResult : "Retest proof pending"
+      });
+    }
+
     return checks;
   }
 
@@ -4971,6 +5065,14 @@
       };
     }
 
+    if (status === "fix_attempted") {
+      return {
+        label: "Admin Review",
+        className: "review",
+        detail: "The agent attempted a safe fix, but the retest still needs review or failed."
+      };
+    }
+
     if (!hasSource || !hasTarget) {
       return {
         label: "Hold",
@@ -5030,6 +5132,7 @@
 
   function getAgentActionKindLabel(action) {
     const type = String(action && action.type || "").toLowerCase();
+    if (type === "sentinel_incident") return "Sentinel Incident";
     if (type === "source_import") return "New Checklist Found";
     if (type === "prv_source_review") return "New Print Run Found";
     if (type === "checklist_publish") return "Checklist Publish";
@@ -5567,6 +5670,23 @@
       };
     }
 
+    const incidentRecovery = active.find(action => {
+      const type = String(action.type || "").toLowerCase();
+      const status = String(action.status || "").toLowerCase();
+      const execution = String(action.executionResult || "").toLowerCase();
+      if (type !== "sentinel_incident") return false;
+      if (status === "running" || status === "validated" || status === "fix_attempted") return false;
+      return !execution.includes("safe recovery attempted");
+    });
+    if (incidentRecovery) {
+      return {
+        kind: "sentinel_incident_recovery",
+        action: incidentRecovery,
+        title: "Attempt safe Sentinel recovery",
+        detail: "Sentinel self-test failed. The agent will run one safe recovery retest before asking admin for manual review."
+      };
+    }
+
     const retest = active.find(action => String(action.status || "").toLowerCase() === "fix_applied" && action.product);
     if (retest) {
       return {
@@ -5823,6 +5943,12 @@
 
   function runAgentCycle() {
     const step = getAgentCycleStep();
+
+    if (step.kind === "sentinel_incident_recovery") {
+      renderAgentCycleMessage(step.title, step.detail, "warning");
+      attemptSentinelIncidentRecovery(step.action);
+      return;
+    }
 
     if (step.kind === "retest") {
       renderAgentCycleMessage(step.title, step.detail, "info");

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-22T15:03:36.274Z",
+  "exported_at": "2026-05-22T15:26:41.366Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -504,6 +504,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779463599760_s5e9vl",
+      "ts": "2026-05-22T15:26:39.760Z",
+      "type": "public_tool_audit",
+      "title": "Public Tool Audit complete",
+      "detail": "Public data layer score: 100%. Checklist, PRV, release, and signal feeds are reachable.",
+      "status": "validated",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1779463599622_o4o3bk",
+      "ts": "2026-05-22T15:26:39.622Z",
+      "type": "public_tool_audit",
+      "title": "Public Tool Audit started",
+      "detail": "Checking public JSON feeds for Checklist Vault, PRV, releases, and early signals.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1779462214670_74vwek",
       "ts": "2026-05-22T15:03:34.670Z",
@@ -1283,26 +1303,6 @@
       "status": "started",
       "product": "2026 Bowman Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779366346179_y8nc60",
-      "ts": "2026-05-21T12:25:46.179Z",
-      "type": "prv_publish",
-      "title": "PRV public validation passed",
-      "detail": "7 public PRV rows found.",
-      "status": "validated",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779366343846_f4xojg",
-      "ts": "2026-05-21T12:25:43.846Z",
-      "type": "prv_publish",
-      "title": "PRV public recheck started",
-      "detail": "Checking whether GitHub Pages has the product rows yet.",
-      "status": "started",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1471,6 +1471,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-22T15:03:37.632Z",
+  "saved_at": "2026-05-22T15:26:42.737Z",
   "saved_by": "cm_command_center_operator"
 }

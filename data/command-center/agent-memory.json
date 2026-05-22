@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-22T15:02:39.500Z",
+  "exported_at": "2026-05-22T15:03:36.274Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -504,6 +504,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779462214670_74vwek",
+      "ts": "2026-05-22T15:03:34.670Z",
+      "type": "sentinel_self_test",
+      "title": "Sentinel self-test passed",
+      "detail": "Cockpit behavior test passed in GitHub Actions.",
+      "status": "validated",
+      "product": "",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1779462162003_5331f4",
+      "ts": "2026-05-22T15:02:42.003Z",
+      "type": "sentinel_self_test",
+      "title": "Sentinel self-test queued",
+      "detail": "GitHub Actions is starting the cockpit behavior test.",
+      "status": "queued",
+      "product": "",
+      "source": "github_actions"
+    },
     {
       "id": "log_1779462157898_ml72pf",
       "ts": "2026-05-22T15:02:37.898Z",
@@ -1283,26 +1303,6 @@
       "status": "started",
       "product": "2025 Topps Chrome Sapphire Football",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779366326683_l4mpcv",
-      "ts": "2026-05-21T12:25:26.683Z",
-      "type": "prv_publish",
-      "title": "PRV public validation passed",
-      "detail": "21 public PRV rows found.",
-      "status": "validated",
-      "product": "2025/26 Bowman’s Best University Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779366324325_4jhi64",
-      "ts": "2026-05-21T12:25:24.325Z",
-      "type": "prv_publish",
-      "title": "PRV public recheck started",
-      "detail": "Checking whether GitHub Pages has the product rows yet.",
-      "status": "started",
-      "product": "2025/26 Bowman’s Best University Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1471,6 +1471,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-22T15:02:42.761Z",
+  "saved_at": "2026-05-22T15:03:37.632Z",
   "saved_by": "cm_command_center_operator"
 }

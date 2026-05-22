@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc62-agent-sweep-summary-2026-05-21";
+  const COMMAND_CENTER_VERSION = "cc63-public-tool-excellence-2026-05-22";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -63,6 +63,8 @@
     refreshBtn: document.getElementById("refreshBtn"),
     clearDoneBtn: document.getElementById("clearDoneBtn"),
     syncPrvJsonBtn: document.getElementById("syncPrvJsonBtn"),
+    publicToolAuditBtn: document.getElementById("publicToolAuditBtn"),
+    publicToolAuditPanelBtn: document.getElementById("publicToolAuditPanelBtn"),
     clearResolvedAgentActionsBtn: document.getElementById("clearResolvedAgentActionsBtn"),
     clearActivityLogBtn: document.getElementById("clearActivityLogBtn"),
     exportMemoryBtn: document.getElementById("exportMemoryBtn"),
@@ -105,6 +107,7 @@
     guardrailList: document.getElementById("guardrailList"),
     operatorTaskList: document.getElementById("operatorTaskList"),
     sourceCheckResult: document.getElementById("sourceCheckResult"),
+    publicToolAuditResult: document.getElementById("publicToolAuditResult"),
     briefList: document.getElementById("briefList"),
     opportunityList: document.getElementById("opportunityList"),
     dataHealthStats: document.getElementById("dataHealthStats"),
@@ -2034,6 +2037,154 @@
     renderAgentActions();
     renderActionLanes();
     renderRunSummary();
+  }
+
+  function countChecklistManifestProducts(bundleData) {
+    return SPORTS.reduce((sum, sport) => {
+      const manifest = bundleData && bundleData.manifests ? bundleData.manifests[sport] : null;
+      const map = manifest && (manifest.product_map || manifest.productMap) ? (manifest.product_map || manifest.productMap) : {};
+      return sum + Object.keys(map).length;
+    }, 0);
+  }
+
+  function getPayloadRows(payload, keys) {
+    for (const key of keys) {
+      if (Array.isArray(payload && payload[key])) return payload[key];
+    }
+    return Array.isArray(payload) ? payload : [];
+  }
+
+  function buildPublicToolAuditCards(metrics) {
+    const cards = [
+      {
+        title: "Checklist Vault",
+        value: `${formatNumber(metrics.checklistProducts)} products`,
+        detail: `${formatNumber(metrics.checklistIndex)} search-index rows`,
+        status: metrics.checklistProducts > 0 && metrics.checklistIndex > 0 ? "pass" : "warn"
+      },
+      {
+        title: "Print Run Vault",
+        value: `${formatNumber(metrics.vaultProducts)} products`,
+        detail: "Public PRV product map is reachable",
+        status: metrics.vaultProducts > 0 ? "pass" : "warn"
+      },
+      {
+        title: "Release Schedule",
+        value: `${formatNumber(metrics.releaseRows)} rows`,
+        detail: "Static release schedule feed",
+        status: metrics.releaseRows > 0 ? "pass" : "warn"
+      },
+      {
+        title: "Early Signals",
+        value: `${formatNumber(metrics.earlySignals)} players`,
+        detail: "MLB opportunity signal feed",
+        status: metrics.earlySignals > 0 ? "pass" : "warn"
+      },
+      {
+        title: "ChatBot",
+        value: "Live",
+        detail: "Behavior proof comes from CV/ChatBot visual tests",
+        status: "review"
+      },
+      {
+        title: "Leadership Readiness",
+        value: `${metrics.score}%`,
+        detail: metrics.score >= 85 ? "Public data layer looks strong" : "Review warnings before calling this ready",
+        status: metrics.score >= 85 ? "pass" : "warn"
+      }
+    ];
+
+    return cards;
+  }
+
+  function renderPublicToolAudit(cards, summary) {
+    if (!els.publicToolAuditResult) return;
+    els.publicToolAuditResult.innerHTML = `
+      ${summary ? `<div class="public-tool-summary">${escapeHtml(summary)}</div>` : ""}
+      ${cards.map(card => `
+        <article class="public-tool-card ${escapeHtml(card.status)}">
+          <div>
+            <strong>${escapeHtml(card.title)}</strong>
+            <span>${escapeHtml(card.detail)}</span>
+          </div>
+          <em>${escapeHtml(card.value)}</em>
+        </article>
+      `).join("")}
+    `;
+  }
+
+  async function runPublicToolAudit() {
+    if (els.publicToolAuditResult) {
+      els.publicToolAuditResult.innerHTML = `
+        <div class="public-tool-card muted">
+          <strong>Auditing public tools...</strong>
+          <span>Checking the public JSON feeds that power Checklist Vault, PRV, releases, and signals.</span>
+        </div>
+      `;
+    }
+    renderSentinelNotice("Public Tool Audit started", "Checking the public-facing data layer for leadership readiness.", "info");
+    logActivity({
+      type: "public_tool_audit",
+      status: "started",
+      source: "command_center",
+      title: "Public Tool Audit started",
+      detail: "Checking public JSON feeds for Checklist Vault, PRV, releases, and early signals."
+    });
+    renderActivityLog();
+
+    const results = await Promise.allSettled([
+      fetchJson(`${DATA_BASE}/checklists/index.json`, { timeoutMs: 12000, cache: "no-store" }),
+      fetchProductBundles({ manifestOnly: true }),
+      fetchVaultProducts({ manifestOnly: true }),
+      fetchJson(RELEASE_URL, { timeoutMs: 10000, cache: "no-store" }),
+      fetchJson(`${DATA_BASE}/players/mlb-early-signals.json`, { timeoutMs: 10000, cache: "no-store" })
+    ]);
+
+    const checklistIndexPayload = results[0].status === "fulfilled" ? results[0].value : {};
+    const bundleData = results[1].status === "fulfilled" ? results[1].value : { manifests: {} };
+    const vaultData = results[2].status === "fulfilled" ? results[2].value : { productMap: {} };
+    const releasePayload = results[3].status === "fulfilled" ? results[3].value : {};
+    const earlySignalsPayload = results[4].status === "fulfilled" ? results[4].value : {};
+    const errors = results
+      .filter(result => result.status === "rejected")
+      .map(result => result.reason && result.reason.message ? result.reason.message : String(result.reason));
+
+    const checklistIndexRows = getPayloadRows(checklistIndexPayload, ["index", "rows"]);
+    const releaseRows = getPayloadRows(releasePayload, ["rows", "releases"]);
+    const earlySignalRows = getPayloadRows(earlySignalsPayload, ["signals", "rows"]);
+    const vaultProductMap = vaultData.productMap || vaultData.product_map || vaultData.productMap || {};
+    const metrics = {
+      checklistIndex: checklistIndexRows.length,
+      checklistProducts: countChecklistManifestProducts(bundleData),
+      vaultProducts: Object.keys(vaultProductMap).length,
+      releaseRows: releaseRows.length,
+      earlySignals: earlySignalRows.length,
+      score: 0
+    };
+    const passingChecks = [
+      metrics.checklistIndex > 0,
+      metrics.checklistProducts > 0,
+      metrics.vaultProducts > 0,
+      metrics.releaseRows > 0,
+      metrics.earlySignals > 0,
+      !errors.length
+    ].filter(Boolean).length;
+    metrics.score = Math.round((passingChecks / 6) * 100);
+
+    const cards = buildPublicToolAuditCards(metrics);
+    const summary = errors.length
+      ? `${errors.length} feed issue${errors.length === 1 ? "" : "s"} found. Review before calling the public tools fully ready.`
+      : `Public data layer score: ${metrics.score}%. Checklist, PRV, release, and signal feeds are reachable.`;
+    renderPublicToolAudit(cards, summary);
+    renderSentinelNotice("Public Tool Audit complete", summary, errors.length || metrics.score < 85 ? "warning" : "success");
+    logActivity({
+      type: "public_tool_audit",
+      status: errors.length || metrics.score < 85 ? "needs_review" : "validated",
+      source: "command_center",
+      title: "Public Tool Audit complete",
+      detail: summary
+    });
+    renderActivityLog();
   }
 
   async function previewSourceImport(sourceUrl, sport, actionId) {

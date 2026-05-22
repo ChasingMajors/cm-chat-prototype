@@ -1,0 +1,55 @@
+name: Sentinel Command Center Test
+run-name: Sentinel Command Center Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      command_center_url:
+        description: "Command Center URL"
+        required: false
+        default: "https://chasingmajors.github.io/cm-chat-prototype/command-center/"
+        type: string
+
+jobs:
+  sentinel-command-center-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Sentinel command center test
+        env:
+          COMMAND_CENTER_URL: ${{ inputs.command_center_url }}
+          OUT_DIR: sentinel-test-results
+        run: npm run test:sentinel
+
+      - name: Publish Sentinel test summary
+        if: always()
+        run: |
+          if [ -f sentinel-test-results/sentinel-command-center-test.md ]; then
+            cat sentinel-test-results/sentinel-command-center-test.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No Sentinel test report was generated." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload Sentinel test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sentinel-command-center-test-results
+          path: sentinel-test-results

@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc64-public-audit-wired-2026-05-22";
+  const COMMAND_CENTER_VERSION = "cc65-sentinel-self-test-2026-05-22";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -10,6 +10,7 @@
   const ACTIVITY_LOG_KEY = "cm_command_center_activity_log_v1";
   const AUTONOMY_MODE_KEY = "cm_command_center_autonomy_mode_v1";
   const VISUAL_TEST_KEY = "cm_command_center_visual_tests_v1";
+  const SENTINEL_SELF_TEST_KEY = "cm_command_center_sentinel_self_test_v1";
   const KNOWN_ISSUE_KEY = "cm_command_center_known_issues_v1";
   const SOURCE_IGNORE_KEY = "cm_command_center_source_ignores_v1";
   const OPERATOR_ENDPOINT_KEY = "cm_command_center_operator_endpoint_v1";
@@ -50,9 +51,11 @@
     activityLog: readJsonStore(ACTIVITY_LOG_KEY, []),
     autonomyMode: readAutonomyMode(),
     visualTests: readJsonStore(VISUAL_TEST_KEY, {}),
+    sentinelSelfTest: readJsonStore(SENTINEL_SELF_TEST_KEY, null),
     knownIssues: readJsonStore(KNOWN_ISSUE_KEY, {}),
     sourceIgnores: readJsonStore(SOURCE_IGNORE_KEY, {}),
     visualPollTimers: {},
+    sentinelSelfTestTimer: null,
     backendMemorySaveTimer: null,
     backendMemorySaving: false,
     backendMemorySuspendAutoSave: false,
@@ -65,6 +68,7 @@
     syncPrvJsonBtn: document.getElementById("syncPrvJsonBtn"),
     publicToolAuditBtn: document.getElementById("publicToolAuditBtn"),
     publicToolAuditPanelBtn: document.getElementById("publicToolAuditPanelBtn"),
+    sentinelSelfTestBtn: document.getElementById("sentinelSelfTestBtn"),
     clearResolvedAgentActionsBtn: document.getElementById("clearResolvedAgentActionsBtn"),
     clearActivityLogBtn: document.getElementById("clearActivityLogBtn"),
     exportMemoryBtn: document.getElementById("exportMemoryBtn"),
@@ -153,6 +157,12 @@
       localStorage.setItem(APPROVAL_KEY, JSON.stringify(state.approvals));
     } catch (err) {}
     scheduleBackendMemorySave();
+  }
+
+  function writeSentinelSelfTest() {
+    try {
+      localStorage.setItem(SENTINEL_SELF_TEST_KEY, JSON.stringify(state.sentinelSelfTest || null));
+    } catch (err) {}
   }
 
   function readTasks() {
@@ -3237,6 +3247,192 @@
     }
   }
 
+  function getCommandCenterTestUrl() {
+    const url = new URL(window.location.href);
+    url.search = "";
+    url.hash = "";
+    return url.toString();
+  }
+
+  async function runSentinelSelfTest() {
+    const endpoint = readOperatorEndpoint();
+    const key = readOperatorKey();
+
+    if (!endpoint) {
+      renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before running the Sentinel self-test.", "warning");
+      return;
+    }
+
+    if (!key) {
+      renderSourceCheckMessage("Admin write key needed", "Enter and save the admin write key before running the Sentinel self-test.", "warning");
+      return;
+    }
+
+    renderSentinelNotice("Sentinel self-test queued", "Asking GitHub Actions to open the cockpit, click key controls, and report pass/fail.", "info");
+    renderSourceCheckMessage("Queuing Sentinel self-test", "The Operator Backend is starting the GitHub Actions cockpit smoke test.", "info");
+    logActivity({
+      type: "sentinel_self_test",
+      status: "started",
+      source: "command_center",
+      title: "Sentinel self-test requested",
+      detail: "Queueing GitHub Actions to test CM Sentinel behavior."
+    });
+    renderActivityLog();
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=dispatchSentinelSelfTest"
+        + "&commandCenterUrl=" + encodeURIComponent(getCommandCenterTestUrl())
+        + "&key=" + encodeURIComponent(key);
+
+      const data = await fetchJson(url, { timeoutMs: 60000 });
+      renderSentinelSelfTestDispatchResult(data);
+    } catch (err) {
+      const detail = err && err.message ? err.message : String(err);
+      renderSourceCheckMessage("Sentinel self-test failed", detail, "critical");
+      renderSentinelNotice("Sentinel self-test failed", detail, "critical");
+      logActivity({
+        type: "sentinel_self_test",
+        status: "failed",
+        source: "operator_backend",
+        title: "Sentinel self-test failed",
+        detail
+      });
+      renderActivityLog();
+    }
+  }
+
+  function renderSentinelSelfTestDispatchResult(data) {
+    if (!data || !data.ok) {
+      const detail = data && data.error ? data.error : "Unknown backend response.";
+      renderSourceCheckMessage("Sentinel self-test did not queue", detail, "critical");
+      renderSentinelNotice("Sentinel self-test did not queue", detail, "critical");
+      return;
+    }
+
+    state.sentinelSelfTest = {
+      status: data.status || "queued",
+      result: "queued",
+      startedAt: data.started_at || new Date().toISOString(),
+      runUrl: data.workflow_url || data.actions_url || "",
+      commandCenterUrl: data.command_center_url || getCommandCenterTestUrl()
+    };
+    writeSentinelSelfTest();
+
+    logActivity({
+      type: "sentinel_self_test",
+      status: "queued",
+      source: "github_actions",
+      title: "Sentinel self-test queued",
+      detail: "GitHub Actions is starting the cockpit behavior test."
+    });
+    renderActivityLog();
+    renderSentinelNotice("Sentinel self-test queued", "GitHub Actions may take a few seconds to show the new run. Sentinel will poll for the result.", "info");
+    renderSourceCheckMessage("Sentinel self-test queued", data.note || "GitHub Actions may take a few seconds to show the new run.", "info");
+    renderSentinelSelfTestPanel();
+    scheduleSentinelSelfTestPoll(1);
+  }
+
+  async function refreshSentinelSelfTestStatus(options) {
+    const endpoint = readOperatorEndpoint();
+    const key = readOperatorKey();
+    const opts = options || {};
+
+    if (!endpoint || !key || !state.sentinelSelfTest) return;
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=getSentinelSelfTestStatus"
+        + "&startedAt=" + encodeURIComponent(state.sentinelSelfTest.startedAt || "")
+        + "&key=" + encodeURIComponent(key);
+      const data = await fetchJson(url, { timeoutMs: 60000 });
+      renderSentinelSelfTestStatusResult(data);
+      if (!isTerminalSentinelSelfTest(data)) {
+        scheduleSentinelSelfTestPoll((opts.pollAttempt || 1) + 1);
+      }
+    } catch (err) {
+      if (!opts.silent) {
+        const detail = err && err.message ? err.message : String(err);
+        renderSourceCheckMessage("Sentinel self-test status failed", detail, "critical");
+      }
+    }
+  }
+
+  function renderSentinelSelfTestStatusResult(data) {
+    if (!data || !data.ok) return;
+    const result = data.result || data.conclusion || data.status || "queued";
+    state.sentinelSelfTest = Object.assign({}, state.sentinelSelfTest || {}, {
+      status: data.status || "",
+      result,
+      runUrl: data.run_url || data.workflow_url || (state.sentinelSelfTest && state.sentinelSelfTest.runUrl) || "",
+      runNumber: data.run_number || "",
+      updatedAt: data.updated_at || new Date().toISOString()
+    });
+    writeSentinelSelfTest();
+
+    const passed = result === "passed" || data.conclusion === "success";
+    const failed = result === "failed" || data.conclusion === "failure";
+    if (passed || failed) {
+      logActivity({
+        type: "sentinel_self_test",
+        status: passed ? "validated" : "failed",
+        source: "github_actions",
+        title: passed ? "Sentinel self-test passed" : "Sentinel self-test failed",
+        detail: passed
+          ? "Cockpit behavior test passed in GitHub Actions."
+          : "Cockpit behavior test failed. Open the report for screenshots and failing checks."
+      });
+      renderActivityLog();
+      renderSentinelNotice(
+        passed ? "Sentinel self-test passed" : "Sentinel self-test failed",
+        passed ? "The cockpit loaded and core agent controls responded." : "Open the GitHub report for screenshots and failing checks.",
+        passed ? "success" : "critical"
+      );
+    }
+
+    renderSentinelSelfTestPanel();
+  }
+
+  function renderSentinelSelfTestPanel() {
+    if (!els.publicToolAuditResult || !state.sentinelSelfTest) return;
+    const record = state.sentinelSelfTest;
+    const result = record.result || record.status || "queued";
+    const statusClass = result === "passed" ? "pass" : result === "failed" ? "warn" : "review";
+    els.publicToolAuditResult.innerHTML = `
+      <div class="public-tool-summary">Sentinel self-test ${escapeHtml(result)}. This checks the cockpit UI, public audit button, health check, agent cycle response, and desktop/mobile overflow.</div>
+      <article class="public-tool-card ${escapeHtml(statusClass)}">
+        <div>
+          <strong>Sentinel Self-Test</strong>
+          <span>${escapeHtml(record.commandCenterUrl || getCommandCenterTestUrl())}</span>
+        </div>
+        <em>${escapeHtml(result)}</em>
+      </article>
+      <article class="public-tool-card review">
+        <div>
+          <strong>GitHub Report</strong>
+          <span>${record.runUrl ? "Workflow run is available." : "Waiting for GitHub Actions to expose the run."}</span>
+        </div>
+        ${record.runUrl ? `<a href="${escapeHtml(record.runUrl)}" target="_blank" rel="noopener noreferrer">Open</a>` : "<em>queued</em>"}
+      </article>
+    `;
+  }
+
+  function scheduleSentinelSelfTestPoll(attempt) {
+    const nextAttempt = Number(attempt || 1);
+    if (nextAttempt > 12) return;
+    if (state.sentinelSelfTestTimer) clearTimeout(state.sentinelSelfTestTimer);
+    state.sentinelSelfTestTimer = setTimeout(() => {
+      refreshSentinelSelfTestStatus({ silent: true, pollAttempt: nextAttempt });
+    }, nextAttempt < 3 ? 10000 : 20000);
+  }
+
+  function isTerminalSentinelSelfTest(data) {
+    const result = String(data && (data.result || data.conclusion || "") || "").toLowerCase();
+    return result === "passed" || result === "failed" || result === "success" || result === "failure";
+  }
+
   function toggleKnownVisualIssue(plan) {
     const key = getVisualProductKey(plan);
     if (!key) return;
@@ -6185,6 +6381,7 @@
   els.syncPrvJsonBtn.addEventListener("click", syncPrvJsonOnDemand);
   if (els.publicToolAuditBtn) els.publicToolAuditBtn.addEventListener("click", runPublicToolAudit);
   if (els.publicToolAuditPanelBtn) els.publicToolAuditPanelBtn.addEventListener("click", runPublicToolAudit);
+  if (els.sentinelSelfTestBtn) els.sentinelSelfTestBtn.addEventListener("click", runSentinelSelfTest);
   if (els.sentinelCommandBtn) {
     els.sentinelCommandBtn.addEventListener("click", () => runSentinelCommand(els.sentinelCommandInput && els.sentinelCommandInput.value || ""));
   }

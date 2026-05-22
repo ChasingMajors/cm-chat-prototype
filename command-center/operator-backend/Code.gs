@@ -45,6 +45,7 @@ const CM_VISUAL_TEST_CHECKLIST_BASE_PROPERTY = "CM_VISUAL_TEST_CHECKLIST_BASE";
 const CM_VISUAL_TEST_OWNER = "ChasingMajors";
 const CM_VISUAL_TEST_REPO = "cm-chat-prototype";
 const CM_VISUAL_TEST_WORKFLOW = "visual-product-test.yml";
+const CM_SENTINEL_TEST_WORKFLOW = "sentinel-command-center-test.yml";
 const CM_VISUAL_TEST_BRANCH = "main";
 const CM_AGENT_MEMORY_BRANCH = "command-center-memory";
 const CM_AGENT_MEMORY_PATH = "data/command-center/agent-memory.json";
@@ -210,6 +211,20 @@ function doGet(e) {
       }));
     }
 
+    if (action === "dispatchSentinelSelfTest") {
+      return json_(dispatchSentinelSelfTest_({
+        commandCenterUrl: p.commandCenterUrl || p.command_center_url || "",
+        key: p.key || ""
+      }));
+    }
+
+    if (action === "getSentinelSelfTestStatus") {
+      return json_(getSentinelSelfTestStatus_({
+        startedAt: p.startedAt || p.started_at || "",
+        key: p.key || ""
+      }));
+    }
+
     if (action === "loadAgentMemory") {
       return json_(loadAgentMemory_({ key: p.key || "" }));
     }
@@ -224,7 +239,7 @@ function doGet(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["health", "sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -287,6 +302,14 @@ function doPost(e) {
       return json_(getVisualProductTestStatus_(body));
     }
 
+    if (action === "dispatchSentinelSelfTest") {
+      return json_(dispatchSentinelSelfTest_(body));
+    }
+
+    if (action === "getSentinelSelfTestStatus") {
+      return json_(getSentinelSelfTestStatus_(body));
+    }
+
     if (action === "loadAgentMemory") {
       return json_(loadAgentMemory_(body));
     }
@@ -302,7 +325,7 @@ function doPost(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
     });
   } catch (err) {
     return json_({
@@ -2313,6 +2336,150 @@ function buildVisualProductTrackingKey_(productName, sport, code) {
     normalize_(sport || ""),
     safeString_(code || "").trim() || normalize_(productName || "")
   ].filter(Boolean).join("|");
+}
+
+function dispatchSentinelSelfTest_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const commandCenterUrl = safeString_(input && (input.commandCenterUrl || input.command_center_url)).trim()
+    || "https://chasingmajors.github.io/cm-chat-prototype/command-center/";
+  const startedAt = new Date().toISOString();
+
+  const token = PropertiesService.getScriptProperties().getProperty(CM_GITHUB_TOKEN_PROPERTY);
+  if (!token) {
+    return {
+      ok: false,
+      error: "Missing Script Property " + CM_GITHUB_TOKEN_PROPERTY + ". Add a GitHub token with Actions workflow permission."
+    };
+  }
+
+  const apiUrl = githubApiUrl_("/actions/workflows/" + encodeURIComponent(CM_SENTINEL_TEST_WORKFLOW) + "/dispatches");
+  const payload = {
+    ref: CM_VISUAL_TEST_BRANCH,
+    inputs: {
+      command_center_url: commandCenterUrl
+    }
+  };
+
+  const res = githubFetch_(apiUrl, token, {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(payload)
+  });
+
+  const status = res.getResponseCode();
+  const text = res.getContentText();
+  let response = {};
+  try {
+    response = text ? JSON.parse(text) : {};
+  } catch (err) {
+    response = { raw: text };
+  }
+
+  if (status < 200 || status >= 300) {
+    return {
+      ok: false,
+      status_code: status,
+      error: "GitHub Sentinel workflow dispatch failed with " + status,
+      response: response
+    };
+  }
+
+  const workflowUrl = "https://github.com/"
+    + CM_VISUAL_TEST_OWNER
+    + "/"
+    + CM_VISUAL_TEST_REPO
+    + "/actions/workflows/"
+    + CM_SENTINEL_TEST_WORKFLOW;
+
+  return {
+    ok: true,
+    status: "queued",
+    started_at: startedAt,
+    command_center_url: commandCenterUrl,
+    workflow_url: workflowUrl,
+    actions_url: "https://github.com/" + CM_VISUAL_TEST_OWNER + "/" + CM_VISUAL_TEST_REPO + "/actions",
+    note: "Sentinel command center test queued. GitHub may take a few seconds to show the new run."
+  };
+}
+
+function getSentinelSelfTestStatus_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const startedAt = safeString_(input && (input.startedAt || input.started_at)).trim();
+  const token = PropertiesService.getScriptProperties().getProperty(CM_GITHUB_TOKEN_PROPERTY);
+  if (!token) {
+    return {
+      ok: false,
+      error: "Missing Script Property " + CM_GITHUB_TOKEN_PROPERTY + ". Add a GitHub token with Actions workflow permission."
+    };
+  }
+
+  const apiUrl = githubApiUrl_("/actions/workflows/" + encodeURIComponent(CM_SENTINEL_TEST_WORKFLOW) + "/runs?event=workflow_dispatch&per_page=25");
+  const res = githubFetch_(apiUrl, token, { method: "get" });
+  const status = res.getResponseCode();
+  const text = res.getContentText();
+  let data = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch (err) {
+    data = { raw: text };
+  }
+
+  if (status < 200 || status >= 300) {
+    return {
+      ok: false,
+      status_code: status,
+      error: "GitHub Sentinel workflow status lookup failed with " + status,
+      response: data
+    };
+  }
+
+  const run = findSentinelSelfTestRun_(data.workflow_runs || [], startedAt);
+  if (!run) {
+    return {
+      ok: true,
+      status: "queued",
+      conclusion: "",
+      result: "queued",
+      note: "No matching Sentinel GitHub run is visible yet."
+    };
+  }
+
+  return {
+    ok: true,
+    status: run.status || "",
+    conclusion: run.conclusion || "",
+    result: run.conclusion === "success"
+      ? "passed"
+      : run.conclusion === "failure"
+        ? "failed"
+        : (run.status || "running"),
+    run_id: run.id || "",
+    run_number: run.run_number || "",
+    run_url: run.html_url || "",
+    created_at: run.created_at || "",
+    updated_at: run.updated_at || "",
+    head_sha: run.head_sha || "",
+    display_title: run.display_title || run.name || ""
+  };
+}
+
+function findSentinelSelfTestRun_(runs, startedAt) {
+  const startedMs = startedAt ? Date.parse(startedAt) : 0;
+  const matches = (runs || []).filter(function(run) {
+    const title = normalize_(run.display_title || run.name || "");
+    if (title.indexOf("sentinel command center test") === -1) return false;
+
+    if (startedMs) {
+      const createdMs = Date.parse(run.created_at || "");
+      if (Number.isFinite(createdMs) && createdMs < startedMs - 120000) return false;
+    }
+
+    return true;
+  });
+
+  return matches.length ? matches[0] : null;
 }
 
 function loadAgentMemory_(input) {

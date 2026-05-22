@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-22T03:33:54.619Z",
+  "exported_at": "2026-05-22T14:49:05.109Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -504,6 +504,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779461343506_somyl2",
+      "ts": "2026-05-22T14:49:03.506Z",
+      "type": "sentinel_self_test",
+      "title": "Sentinel self-test requested",
+      "detail": "Queueing GitHub Actions to test CM Sentinel behavior.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1779420833014_vfz77k",
       "ts": "2026-05-22T03:33:53.014Z",
@@ -1293,16 +1303,6 @@
       "status": "started",
       "product": "",
       "source": "slabsquatch"
-    },
-    {
-      "id": "log_1779366129628_b0ntfm",
-      "ts": "2026-05-21T12:22:09.628Z",
-      "type": "source_watch",
-      "title": "Quick JSON Source Watch complete",
-      "detail": "20 source items checked. 2 need review. 0 review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "quick_json"
     }
   ],
   "visual_tests": {
@@ -1471,6 +1471,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-22T03:33:56.065Z",
+  "saved_at": "2026-05-22T14:49:06.499Z",
   "saved_by": "cm_command_center_operator"
 }

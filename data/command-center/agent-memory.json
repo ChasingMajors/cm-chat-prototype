@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-22T14:50:20.124Z",
+  "exported_at": "2026-05-22T15:02:39.500Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -504,6 +504,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779462157898_ml72pf",
+      "ts": "2026-05-22T15:02:37.898Z",
+      "type": "sentinel_self_test",
+      "title": "Sentinel self-test requested",
+      "detail": "Queueing GitHub Actions to test CM Sentinel behavior.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1779461418520_jexo7w",
       "ts": "2026-05-22T14:50:18.520Z",
@@ -1293,16 +1303,6 @@
       "status": "started",
       "product": "2025/26 Bowman’s Best University Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779366172794_6eezzk",
-      "ts": "2026-05-21T12:22:52.794Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch complete",
-      "detail": "11 SlabSquatch items checked. 11 need review. 11 PRV review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "slabsquatch"
     }
   ],
   "visual_tests": {
@@ -1471,6 +1471,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-22T14:50:21.299Z",
+  "saved_at": "2026-05-22T15:02:42.761Z",
   "saved_by": "cm_command_center_operator"
 }

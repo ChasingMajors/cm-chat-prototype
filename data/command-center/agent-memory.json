@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-22T00:40:10.790Z",
+  "exported_at": "2026-05-22T02:09:47.957Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -504,6 +504,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779415786351_9ll1sx",
+      "ts": "2026-05-22T02:09:46.351Z",
+      "type": "agent_cycle",
+      "title": "Admin decision required",
+      "detail": "2025/26 Topps Chrome UEFA Club Competitions needs approval before the agent can continue. Use Scan New Checklists if you want a fresh source scan without advancing this queue item.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1779410412008_hzdmwd",
+      "ts": "2026-05-22T00:40:12.008Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch complete",
+      "detail": "20 source items checked. 2 need review. 0 review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779410412007_zdq1vk",
+      "ts": "2026-05-22T00:40:12.007Z",
+      "type": "source_watch",
+      "title": "Source Watch skipped clean items",
+      "detail": "3 admin-ignored source item(s) were omitted from the queue.",
+      "status": "ignored",
+      "product": "",
+      "source": "quick_json"
+    },
     {
       "id": "log_1779410409187_ihg7i7",
       "ts": "2026-05-22T00:40:09.187Z",
@@ -1273,36 +1303,6 @@
       "status": "started",
       "product": "",
       "source": "quick_json"
-    },
-    {
-      "id": "log_1779366050247_yjv5vg",
-      "ts": "2026-05-21T12:20:50.247Z",
-      "type": "agent_cycle",
-      "title": "Admin decision required",
-      "detail": "2025 Topps Chrome Football needs approval before the agent can continue. Use Scan New Checklists if you want a fresh source scan without advancing this queue item.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1779365539206_2f88zj",
-      "ts": "2026-05-21T12:12:19.206Z",
-      "type": "agent_cycle",
-      "title": "Create repair task",
-      "detail": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer is blocked and needs a fix path. Created Fix: 2025-26 Topps Simplicidad UEFA Club Competitions Soccer.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1779365513809_8bq90l",
-      "ts": "2026-05-21T12:11:53.809Z",
-      "type": "agent_cycle",
-      "title": "Create repair task",
-      "detail": "2025/26 Topps Chrome UEFA Club Competitions is blocked and needs a fix path. Created Fix: 2025/26 Topps Chrome UEFA Club Competitions.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -1471,6 +1471,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-22T00:40:12.166Z",
+  "saved_at": "2026-05-22T02:09:49.445Z",
   "saved_by": "cm_command_center_operator"
 }

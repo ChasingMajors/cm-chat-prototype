@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-22T00:38:56.399Z",
+  "exported_at": "2026-05-22T00:40:10.790Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -195,7 +195,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-club-competitions",
       "createdAt": "2026-05-20T00:30:18.946Z",
-      "updatedAt": "2026-05-21T18:24:07.208Z"
+      "updatedAt": "2026-05-22T00:38:57.402Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 topps chrome football|2025_topps_chrome_football",
@@ -231,7 +231,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowman-basketball-analysis",
       "createdAt": "2026-05-20T00:30:18.945Z",
-      "updatedAt": "2026-05-21T18:24:07.208Z"
+      "updatedAt": "2026-05-22T00:38:57.402Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2026 bowman baseball|2026-bowman-baseball",
@@ -267,7 +267,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
       "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-21T18:24:07.207Z"
+      "updatedAt": "2026-05-22T00:38:57.401Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps chrome cactus jack basketball basketball",
@@ -504,6 +504,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779410409187_ihg7i7",
+      "ts": "2026-05-22T00:40:09.187Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch started",
+      "detail": "Checking recent Checklistcenter items against public JSON.",
+      "status": "started",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1779410337403_d6i2y7",
+      "ts": "2026-05-22T00:38:57.403Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch complete",
+      "detail": "11 SlabSquatch items checked. 5 need review. 3 PRV review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1779410337402_ucwwql",
+      "ts": "2026-05-22T00:38:57.402Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "3 findings are now visible in the Agent Action Queue for admin review. 2 admin-ignored source item(s) were skipped.",
+      "status": "queued",
+      "product": "",
+      "source": "prv_source_watch"
+    },
     {
       "id": "log_1779410334796_dr8tww",
       "ts": "2026-05-22T00:38:54.796Z",
@@ -1273,36 +1303,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1779338171292_istnr2",
-      "ts": "2026-05-21T04:36:11.292Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync needs review",
-      "detail": "Publish returned without public validation.",
-      "status": "needs_review",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779338167671_308f29",
-      "ts": "2026-05-21T04:36:07.671Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync started",
-      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
-      "status": "started",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779338131647_cgrvcg",
-      "ts": "2026-05-21T04:35:31.647Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync needs review",
-      "detail": "Publish returned without public validation.",
-      "status": "needs_review",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1471,6 +1471,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-22T00:38:57.729Z",
+  "saved_at": "2026-05-22T00:40:12.166Z",
   "saved_by": "cm_command_center_operator"
 }

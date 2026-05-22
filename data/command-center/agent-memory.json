@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-22T02:46:27.182Z",
+  "exported_at": "2026-05-22T03:33:54.619Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -504,6 +504,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1779420833014_vfz77k",
+      "ts": "2026-05-22T03:33:53.014Z",
+      "type": "agent_cycle",
+      "title": "Admin decision required",
+      "detail": "2025/26 Topps Chrome UEFA Club Competitions needs approval before the agent can continue. Use Scan New Checklists if you want a fresh source scan without advancing this queue item.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1779417985573_n2xqtn",
       "ts": "2026-05-22T02:46:25.574Z",
@@ -1293,16 +1303,6 @@
       "status": "completed",
       "product": "",
       "source": "quick_json"
-    },
-    {
-      "id": "log_1779366129627_rm5mrm",
-      "ts": "2026-05-21T12:22:09.627Z",
-      "type": "source_watch",
-      "title": "Source Watch ignored items skipped",
-      "detail": "3 admin-ignored source item(s) were omitted from the queue.",
-      "status": "ignored",
-      "product": "",
-      "source": "quick_json"
     }
   ],
   "visual_tests": {
@@ -1471,6 +1471,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-22T02:46:28.375Z",
+  "saved_at": "2026-05-22T03:33:56.065Z",
   "saved_by": "cm_command_center_operator"
 }

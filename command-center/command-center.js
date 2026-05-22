@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc60-agent-cycle-autocheck-2026-05-21";
+  const COMMAND_CENTER_VERSION = "cc61-approved-prv-pipeline-2026-05-21";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -5165,6 +5165,12 @@
     return status === "approved" || status === "queued" || status === "ready";
   }
 
+  function hasAdminApproval(action) {
+    const status = String(action && action.status || "").toLowerCase();
+    const decision = String(action && action.adminDecision || "").toLowerCase();
+    return status === "approved" || decision === "approved";
+  }
+
   function isHoldAction(action) {
     const status = String(action && action.status || "").toLowerCase();
     return status === "needs_admin" || status === "approval_required" || status === "failed" || status === "blocked" || status === "known_issue" || status === "fix_queued" || status === "fix_applied";
@@ -5193,10 +5199,73 @@
       };
     }
 
+    const approvedPrvPreview = active.find(action => {
+      const status = String(action.status || "").toLowerCase();
+      const type = String(action.type || "").toLowerCase();
+      const execution = String(action.executionResult || "").toLowerCase();
+      if (type !== "prv_source_review") return false;
+      if (!hasAdminApproval(action)) return false;
+      if (status === "running" || status === "failed" || status === "known_issue" || status === "blocked") return false;
+      if (!(action.sourceUrl || action.runUrl)) return false;
+      return !execution.includes("preview parsed") &&
+        !execution.includes("products rows") &&
+        !execution.includes("prv index");
+    });
+    if (approvedPrvPreview) {
+      return {
+        kind: "approved_prv_preview",
+        action: approvedPrvPreview,
+        title: "Build approved PRV preview",
+        detail: `${approvedPrvPreview.product || "This PRV source"} is approved. Sentinel will preview the rows before any sheet write.`
+      };
+    }
+
+    const approvedPrvWrite = active.find(action => {
+      const status = String(action.status || "").toLowerCase();
+      const type = String(action.type || "").toLowerCase();
+      const execution = String(action.executionResult || "").toLowerCase();
+      if (type !== "prv_source_review") return false;
+      if (!hasAdminApproval(action)) return false;
+      if (status === "running" || status === "failed" || status === "known_issue" || status === "blocked") return false;
+      if (!(action.sourceUrl || action.runUrl)) return false;
+      if (execution.includes("products rows") || execution.includes("prv index")) return false;
+      return execution.includes("preview parsed");
+    });
+    if (approvedPrvWrite) {
+      return {
+        kind: "execute_prv_import",
+        action: approvedPrvWrite,
+        title: "Write approved PRV data",
+        detail: `${approvedPrvWrite.product || "This PRV source"} is approved and previewed. Sentinel will write only this product to PRV Google Sheets.`
+      };
+    }
+
+    const approvedPrvPublish = active.find(action => {
+      const status = String(action.status || "").toLowerCase();
+      const type = String(action.type || "").toLowerCase();
+      const execution = String(action.executionResult || "").toLowerCase();
+      if (type !== "prv_source_review") return false;
+      if (!hasAdminApproval(action)) return false;
+      if (status === "running" || status === "failed" || status === "known_issue" || status === "blocked") return false;
+      if (!action.code) return false;
+      if (execution.includes("json publish request completed") || execution.includes("json publish started")) return false;
+      return execution.includes("products rows") ||
+        execution.includes("prv index") ||
+        execution.includes("sheet write completed");
+    });
+    if (approvedPrvPublish) {
+      return {
+        kind: "publish_prv_json",
+        action: approvedPrvPublish,
+        title: "Publish approved PRV JSON",
+        detail: `${approvedPrvPublish.product || approvedPrvPublish.code} was written to PRV Sheets. Sentinel will publish JSON next.`
+      };
+    }
+
     const readyImport = active.find(action => {
       const status = String(action.status || "").toLowerCase();
       return action.type === "source_import" &&
-        (status === "approved" || status === "ready") &&
+        (status === "ready" || hasAdminApproval(action)) &&
         !!(action.sourceUrl || action.runUrl);
     });
     if (readyImport) {
@@ -5383,10 +5452,30 @@
       return;
     }
 
+    if (step.kind === "approved_prv_preview") {
+      const sourceUrl = step.action.sourceUrl || step.action.runUrl || "";
+      renderAgentCycleMessage(step.title, step.detail, "info");
+      previewPrvSource(sourceUrl, step.action.sport || "", step.action.id);
+      return;
+    }
+
+    if (step.kind === "execute_prv_import") {
+      const sourceUrl = step.action.sourceUrl || step.action.runUrl || "";
+      renderAgentCycleMessage(step.title, step.detail, "info");
+      executePrvSourceImport(sourceUrl, step.action.sport || "", step.action.id);
+      return;
+    }
+
     if (step.kind === "execute_import") {
       const sourceUrl = step.action.sourceUrl || step.action.runUrl || "";
       renderAgentCycleMessage(step.title, step.detail, "info");
       executeSourceImport(sourceUrl, step.action.sport || "", step.action.id);
+      return;
+    }
+
+    if (step.kind === "publish_prv_json") {
+      renderAgentCycleMessage(step.title, step.detail, "info");
+      publishPrvVaultData(step.action.code || "", step.action.id);
       return;
     }
 

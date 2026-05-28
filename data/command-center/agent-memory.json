@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:17:22.166Z",
+  "exported_at": "2026-05-28T22:17:28.418Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -612,6 +612,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780006646815_txdpn5",
+      "ts": "2026-05-28T22:17:26.815Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780006642266_g9efva",
+      "ts": "2026-05-28T22:17:22.266Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "772 rows and 57 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Panini Signature Series Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780006640564_mgg6pa",
       "ts": "2026-05-28T22:17:20.564Z",
@@ -1391,26 +1411,6 @@
       "status": "validated",
       "product": "2025/26 Bowman’s Best University Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367131873_7a9v8z",
-      "ts": "2026-05-21T12:38:51.873Z",
-      "type": "prv_publish",
-      "title": "PRV public recheck started",
-      "detail": "Checking whether GitHub Pages has the product rows yet.",
-      "status": "started",
-      "product": "2025/26 Bowman’s Best University Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367122225_nknpzn",
-      "ts": "2026-05-21T12:38:42.225Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch complete",
-      "detail": "11 SlabSquatch items checked. 11 need review. 11 PRV review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "slabsquatch"
     }
   ],
   "visual_tests": {
@@ -1579,6 +1579,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:17:23.487Z",
+  "saved_at": "2026-05-28T22:17:29.595Z",
   "saved_by": "cm_command_center_operator"
 }

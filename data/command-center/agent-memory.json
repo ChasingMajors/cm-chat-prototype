@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:25:06.004Z",
+  "exported_at": "2026-05-28T22:25:26.423Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -114,16 +114,16 @@
       "product": "2025-26 Panini Signature Series Basketball",
       "sport": "basketball",
       "code": "2025_26_panini_signature_series_basketball",
-      "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Visual validation complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test requested from progress rail...",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26605582780",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26605854251",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:18:46.558Z",
-      "updatedAt": "2026-05-28T22:25:04.401Z"
+      "updatedAt": "2026-05-28T22:25:24.819Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 panini signature series basketball|2025_26_panini_signature_series_basketball",
@@ -137,11 +137,11 @@
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=publishImportedChecklist&sport=basketball&bucket=2025-26&code=2025_26_panini_signature_series_basketball&key=JD",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26605582780",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26605854251",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:17:41.211Z",
-      "updatedAt": "2026-05-28T22:24:31.580Z"
+      "updatedAt": "2026-05-28T22:25:24.820Z"
     },
     {
       "id": "source_import|wordpress_api|2026 pro set metal baseball",
@@ -630,6 +630,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780007124820_t6u0j0",
+      "ts": "2026-05-28T22:25:24.820Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Panini Signature Series Basketball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780007107423_r59gxo",
+      "ts": "2026-05-28T22:25:07.423Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2025-26 Panini Signature Series Basketball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780007087133_gx9dl4",
       "ts": "2026-05-28T22:24:47.133Z",
@@ -1409,26 +1429,6 @@
       "status": "started",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367232800_665805",
-      "ts": "2026-05-21T12:40:32.800Z",
-      "type": "prv_source_review",
-      "title": "PRV temp data written",
-      "detail": "1 Index row and 10 Products rows validated.",
-      "status": "needs_review",
-      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367225233_7og4wm",
-      "ts": "2026-05-21T12:40:25.233Z",
-      "type": "prv_source_review",
-      "title": "PRV sheet write started",
-      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
-      "status": "started",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -1525,11 +1525,11 @@
       "checkedAt": "2026-05-20T00:12:55.014Z"
     },
     "basketball|2025_26_panini_signature_series_basketball": {
-      "status": "completed",
-      "result": "failed",
-      "conclusion": "failure",
-      "startedAt": "2026-05-28T22:18:44.229Z",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26605582780",
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-05-28T22:25:05.542Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26605854251",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "basketball|2025_26_panini_signature_series_basketball",
@@ -1537,15 +1537,15 @@
       "productName": "2025-26 Panini Signature Series Basketball",
       "sport": "basketball",
       "code": "2025_26_panini_signature_series_basketball",
-      "updatedAt": "2026-05-28T22:19:59.867Z",
+      "updatedAt": "2026-05-28T22:25:24.818Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 26605582780,
-      "runNumber": 18,
+      "runId": 26605854251,
+      "runNumber": 19,
       "displayTitle": "Visual Product Test - 2025-26 Panini Signature Series Basketball",
       "headSha": "5aec944231df14747af50e1a55b78b99d2b5f02e",
-      "createdAt": "2026-05-28T22:18:45Z",
-      "checkedAt": "2026-05-28T22:19:59.866Z"
+      "createdAt": "2026-05-28T22:25:06Z",
+      "checkedAt": "2026-05-28T22:25:24.818Z"
     }
   },
   "known_issues": {},
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:25:07.181Z",
+  "saved_at": "2026-05-28T22:25:27.770Z",
   "saved_by": "cm_command_center_operator"
 }

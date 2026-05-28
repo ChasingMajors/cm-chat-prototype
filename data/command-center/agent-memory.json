@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:17:28.418Z",
+  "exported_at": "2026-05-28T22:17:42.826Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -108,6 +108,24 @@
   ],
   "agent_actions": [
     {
+      "id": "checklist_publish|operator_backend|2025-26 panini signature series basketball|2025_26_panini_signature_series_basketball",
+      "type": "checklist_publish",
+      "source": "operator_backend",
+      "product": "2025-26 Panini Signature Series Basketball",
+      "sport": "basketball",
+      "code": "2025_26_panini_signature_series_basketball",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "adminDecision": "",
+      "executionResult": "Sheet write completed; publish needs review.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "createdAt": "2026-05-28T22:17:41.211Z",
+      "updatedAt": "2026-05-28T22:17:41.211Z"
+    },
+    {
       "id": "source_import|wordpress_api|2026 pro set metal baseball",
       "type": "source_import",
       "source": "wordpress_api",
@@ -160,24 +178,6 @@
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-ahl-hockey-card-checklist/",
       "createdAt": "2026-05-28T22:16:59.266Z",
       "updatedAt": "2026-05-28T22:16:59.266Z"
-    },
-    {
-      "id": "source_import|wordpress_api|2025-26 panini signature series basketball",
-      "type": "source_import",
-      "source": "wordpress_api",
-      "product": "2025-26 Panini Signature Series Basketball",
-      "sport": "basketball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Basketball source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-signature-series-basketball-card-checklist/",
-      "createdAt": "2026-05-28T22:16:59.265Z",
-      "updatedAt": "2026-05-28T22:16:59.265Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps chrome arsenal soccer",
@@ -612,6 +612,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780006661224_v75aon",
+      "ts": "2026-05-28T22:17:41.224Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Panini Signature Series Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780006661213_y8yhc6",
+      "ts": "2026-05-28T22:17:41.213Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "772 checklist rows and 57 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Panini Signature Series Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780006646815_txdpn5",
       "ts": "2026-05-28T22:17:26.815Z",
@@ -1391,26 +1411,6 @@
       "status": "validated",
       "product": "2025 Topps Chrome Sapphire Football",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367140074_dqrzru",
-      "ts": "2026-05-21T12:39:00.074Z",
-      "type": "prv_publish",
-      "title": "PRV public recheck started",
-      "detail": "Checking whether GitHub Pages has the product rows yet.",
-      "status": "started",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367134183_c728ef",
-      "ts": "2026-05-21T12:38:54.183Z",
-      "type": "prv_publish",
-      "title": "PRV public validation passed",
-      "detail": "21 public PRV rows found.",
-      "status": "validated",
-      "product": "2025/26 Bowman’s Best University Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1579,6 +1579,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:17:29.595Z",
+  "saved_at": "2026-05-28T22:17:44.000Z",
   "saved_by": "cm_command_center_operator"
 }

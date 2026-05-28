@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-23T20:49:54.207Z",
+  "exported_at": "2026-05-28T22:16:42.022Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -231,7 +231,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowman-basketball-analysis",
       "createdAt": "2026-05-20T00:30:18.945Z",
-      "updatedAt": "2026-05-22T00:38:57.402Z"
+      "updatedAt": "2026-05-23T20:49:55.266Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2026 bowman baseball|2026-bowman-baseball",
@@ -267,7 +267,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
       "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-22T00:38:57.401Z"
+      "updatedAt": "2026-05-23T20:49:55.265Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps chrome cactus jack basketball basketball",
@@ -504,6 +504,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780006600419_pv0ids",
+      "ts": "2026-05-28T22:16:40.419Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch started",
+      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
+      "status": "started",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1779569395267_y5ne6b",
+      "ts": "2026-05-23T20:49:55.267Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch complete",
+      "detail": "10 SlabSquatch items checked. 4 need review. 2 PRV review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1779569395266_r36810",
+      "ts": "2026-05-23T20:49:55.266Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "2 findings are now visible in the Agent Action Queue for admin review. 2 admin-ignored source item(s) were skipped.",
+      "status": "queued",
+      "product": "",
+      "source": "prv_source_watch"
+    },
     {
       "id": "log_1779569392598_hhfnxs",
       "ts": "2026-05-23T20:49:52.598Z",
@@ -1273,36 +1303,6 @@
       "status": "started",
       "product": "2025 Topps Chrome Football",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779366464500_apeh78",
-      "ts": "2026-05-21T12:27:44.500Z",
-      "type": "prv_source_review",
-      "title": "PRV preview completed",
-      "detail": "0 print-run rows parsed.",
-      "status": "needs_review",
-      "product": "2025/26 Topps Chrome UEFA Club Competitions",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779366462276_yc4go3",
-      "ts": "2026-05-21T12:27:42.276Z",
-      "type": "prv_source_review",
-      "title": "PRV preview started",
-      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
-      "status": "started",
-      "product": "2025/26 Topps Chrome UEFA Club Competitions",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779366391916_tnwm4x",
-      "ts": "2026-05-21T12:26:31.916Z",
-      "type": "prv_publish",
-      "title": "PRV public validation passed",
-      "detail": "27 public PRV rows found.",
-      "status": "validated",
-      "product": "2026 Bowman Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1471,6 +1471,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-23T20:49:55.795Z",
+  "saved_at": "2026-05-28T22:16:43.333Z",
   "saved_by": "cm_command_center_operator"
 }

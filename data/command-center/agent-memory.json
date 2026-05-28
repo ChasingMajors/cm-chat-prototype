@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:25:47.117Z",
+  "exported_at": "2026-05-28T22:25:53.598Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -123,7 +123,7 @@
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26605854251",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:18:46.558Z",
-      "updatedAt": "2026-05-28T22:25:24.819Z"
+      "updatedAt": "2026-05-28T22:25:51.995Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 panini signature series basketball|2025_26_panini_signature_series_basketball",
@@ -141,7 +141,7 @@
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26605854251",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:17:41.211Z",
-      "updatedAt": "2026-05-28T22:25:24.820Z"
+      "updatedAt": "2026-05-28T22:25:51.996Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 upper deck extended series hockey",
@@ -612,6 +612,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780007151996_zozdro",
+      "ts": "2026-05-28T22:25:51.996Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Panini Signature Series Basketball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780007147141_tsvq6j",
+      "ts": "2026-05-28T22:25:47.141Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "1,094 rows and 70 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Upper Deck Extended Series Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780007145514_fsqccr",
       "ts": "2026-05-28T22:25:45.514Z",
@@ -1391,26 +1411,6 @@
       "status": "started",
       "product": "2025 Topps Chrome Football",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367457240_6hrtid",
-      "ts": "2026-05-21T12:44:17.240Z",
-      "type": "prv_publish",
-      "title": "PRV public validation passed",
-      "detail": "27 public PRV rows found.",
-      "status": "validated",
-      "product": "2026 Bowman Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367455278_yilsm2",
-      "ts": "2026-05-21T12:44:15.278Z",
-      "type": "prv_publish",
-      "title": "PRV public recheck started",
-      "detail": "Checking whether GitHub Pages has the product rows yet.",
-      "status": "started",
-      "product": "2026 Bowman Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1519,7 +1519,7 @@
       "productName": "2025-26 Panini Signature Series Basketball",
       "sport": "basketball",
       "code": "2025_26_panini_signature_series_basketball",
-      "updatedAt": "2026-05-28T22:25:24.818Z",
+      "updatedAt": "2026-05-28T22:25:51.995Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 26605854251,
@@ -1527,7 +1527,7 @@
       "displayTitle": "Visual Product Test - 2025-26 Panini Signature Series Basketball",
       "headSha": "5aec944231df14747af50e1a55b78b99d2b5f02e",
       "createdAt": "2026-05-28T22:25:06Z",
-      "checkedAt": "2026-05-28T22:25:24.818Z"
+      "checkedAt": "2026-05-28T22:25:51.995Z"
     }
   },
   "known_issues": {},
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:25:48.262Z",
+  "saved_at": "2026-05-28T22:25:54.670Z",
   "saved_by": "cm_command_center_operator"
 }

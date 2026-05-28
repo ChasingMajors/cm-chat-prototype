@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:20:01.471Z",
+  "exported_at": "2026-05-28T22:21:42.840Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -630,6 +630,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780006901236_fymdrv",
+      "ts": "2026-05-28T22:21:41.236Z",
+      "type": "checklist_publish",
+      "title": "JSON publish failed",
+      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=publishImportedChecklist&sport=basketball&bucket=2025-26&code=2025_26_panini_signature_series_basketball&key=JD",
+      "status": "failed",
+      "product": "2025-26 Panini Signature Series Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780006799869_zkj1cm",
       "ts": "2026-05-28T22:19:59.869Z",
@@ -1419,16 +1429,6 @@
       "status": "needs_review",
       "product": "2026 Bowman Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367180670_yxh5pw",
-      "ts": "2026-05-21T12:39:40.670Z",
-      "type": "prv_source_review",
-      "title": "PRV preview started",
-      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
-      "status": "started",
-      "product": "2026 Bowman Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:20:02.860Z",
+  "saved_at": "2026-05-28T22:21:44.460Z",
   "saved_by": "cm_command_center_operator"
 }

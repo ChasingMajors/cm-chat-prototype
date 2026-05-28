@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:24:33.196Z",
+  "exported_at": "2026-05-28T22:24:46.949Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -630,6 +630,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780007085346_kcw7ij",
+      "ts": "2026-05-28T22:24:45.346Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Panini's Football EFL Soccer",
+      "source": "admin"
+    },
     {
       "id": "log_1780007071595_wdm1jn",
       "ts": "2026-05-28T22:24:31.595Z",
@@ -1419,16 +1429,6 @@
       "status": "preview_ready",
       "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367197591_bmn229",
-      "ts": "2026-05-21T12:39:57.591Z",
-      "type": "prv_source_review",
-      "title": "PRV preview started",
-      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
-      "status": "started",
-      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:24:34.685Z",
+  "saved_at": "2026-05-28T22:24:48.008Z",
   "saved_by": "cm_command_center_operator"
 }

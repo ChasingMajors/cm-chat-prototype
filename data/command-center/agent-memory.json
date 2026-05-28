@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:26:51.404Z",
+  "exported_at": "2026-05-28T22:26:58.341Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -612,6 +612,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780007216737_r8hvm9",
+      "ts": "2026-05-28T22:26:56.737Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780007211607_07rul4",
+      "ts": "2026-05-28T22:26:51.607Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "284 rows and 6 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Upper Deck AHL Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780007209802_9bn6v9",
       "ts": "2026-05-28T22:26:49.802Z",
@@ -1391,26 +1411,6 @@
       "status": "started",
       "product": "2025/26 Bowman’s Best University Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367645611_ejkqxy",
-      "ts": "2026-05-21T12:47:25.611Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch complete",
-      "detail": "11 SlabSquatch items checked. 11 need review. 11 PRV review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "slabsquatch"
-    },
-    {
-      "id": "log_1779367645611_4xpflm",
-      "ts": "2026-05-21T12:47:25.611Z",
-      "type": "source_watch",
-      "title": "Source Watch actions queued",
-      "detail": "11 findings are now visible in the Agent Action Queue for admin review.",
-      "status": "queued",
-      "product": "",
-      "source": "prv_source_watch"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:26:52.802Z",
+  "saved_at": "2026-05-28T22:26:59.675Z",
   "saved_by": "cm_command_center_operator"
 }

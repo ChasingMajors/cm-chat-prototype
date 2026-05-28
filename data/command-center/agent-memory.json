@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:26:21.198Z",
+  "exported_at": "2026-05-28T22:26:51.404Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -612,6 +612,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780007209802_9bn6v9",
+      "ts": "2026-05-28T22:26:49.802Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Upper Deck AHL Hockey",
+      "source": "admin"
+    },
     {
       "id": "log_1780007179596_mdpmmo",
       "ts": "2026-05-28T22:26:19.596Z",
@@ -1401,16 +1411,6 @@
       "status": "queued",
       "product": "",
       "source": "prv_source_watch"
-    },
-    {
-      "id": "log_1779367642641_mtpp2p",
-      "ts": "2026-05-21T12:47:22.641Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch started",
-      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
-      "status": "started",
-      "product": "",
-      "source": "slabsquatch"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:26:22.205Z",
+  "saved_at": "2026-05-28T22:26:52.802Z",
   "saved_by": "cm_command_center_operator"
 }

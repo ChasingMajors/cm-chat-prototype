@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:16:42.022Z",
+  "exported_at": "2026-05-28T22:16:58.376Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -267,7 +267,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
       "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-23T20:49:55.265Z"
+      "updatedAt": "2026-05-28T22:16:43.243Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 topps chrome cactus jack basketball basketball",
@@ -504,6 +504,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780006616772_y29gf3",
+      "ts": "2026-05-28T22:16:56.772Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch started",
+      "detail": "Checking recent Checklistcenter items against public JSON.",
+      "status": "started",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1780006603244_ox6bc5",
+      "ts": "2026-05-28T22:16:43.244Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch complete",
+      "detail": "10 SlabSquatch items checked. 5 need review. 1 PRV review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1780006603244_yqqeze",
+      "ts": "2026-05-28T22:16:43.244Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "1 findings are now visible in the Agent Action Queue for admin review. 2 admin-ignored source item(s) were skipped. 2 already-resolved item(s) were skipped.",
+      "status": "queued",
+      "product": "",
+      "source": "prv_source_watch"
+    },
     {
       "id": "log_1780006600419_pv0ids",
       "ts": "2026-05-28T22:16:40.419Z",
@@ -1273,36 +1303,6 @@
       "status": "needs_review",
       "product": "2025/26 Topps Chrome UEFA Club Competitions",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779366579599_13ebuq",
-      "ts": "2026-05-21T12:29:39.599Z",
-      "type": "prv_source_review",
-      "title": "PRV preview started",
-      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
-      "status": "started",
-      "product": "2025/26 Topps Chrome UEFA Club Competitions",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779366490769_ckm5ld",
-      "ts": "2026-05-21T12:28:10.769Z",
-      "type": "prv_source_review",
-      "title": "PRV preview completed",
-      "detail": "0 print-run rows parsed.",
-      "status": "needs_review",
-      "product": "2025 Topps Chrome Football",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779366488687_oatxmq",
-      "ts": "2026-05-21T12:28:08.687Z",
-      "type": "prv_source_review",
-      "title": "PRV preview started",
-      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
-      "status": "started",
-      "product": "2025 Topps Chrome Football",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1471,6 +1471,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:16:43.333Z",
+  "saved_at": "2026-05-28T22:16:59.530Z",
   "saved_by": "cm_command_center_operator"
 }

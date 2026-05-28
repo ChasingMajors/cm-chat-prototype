@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:21:42.840Z",
+  "exported_at": "2026-05-28T22:24:33.196Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -133,15 +133,15 @@
       "sport": "basketball",
       "code": "2025_26_panini_signature_series_basketball",
       "riskLevel": "medium",
-      "status": "failed",
-      "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
+      "status": "needs_admin",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
+      "executionResult": "Sheet write completed; JSON publish request failed.",
+      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=publishImportedChecklist&sport=basketball&bucket=2025-26&code=2025_26_panini_signature_series_basketball&key=JD",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26605582780",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:17:41.211Z",
-      "updatedAt": "2026-05-28T22:19:59.869Z"
+      "updatedAt": "2026-05-28T22:24:31.580Z"
     },
     {
       "id": "source_import|wordpress_api|2026 pro set metal baseball",
@@ -630,6 +630,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780007071595_wdm1jn",
+      "ts": "2026-05-28T22:24:31.595Z",
+      "type": "checklist_publish",
+      "title": "JSON publish failed",
+      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=publishImportedChecklist&sport=basketball&bucket=2025-26&code=2025_26_panini_signature_series_basketball&key=JD",
+      "status": "failed",
+      "product": "2025-26 Panini Signature Series Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780006901236_fymdrv",
       "ts": "2026-05-28T22:21:41.236Z",
@@ -1419,16 +1429,6 @@
       "status": "started",
       "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367182761_5xx4hy",
-      "ts": "2026-05-21T12:39:42.761Z",
-      "type": "prv_source_review",
-      "title": "PRV preview completed",
-      "detail": "0 print-run rows parsed.",
-      "status": "needs_review",
-      "product": "2026 Bowman Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:21:44.460Z",
+  "saved_at": "2026-05-28T22:24:34.685Z",
   "saved_by": "cm_command_center_operator"
 }

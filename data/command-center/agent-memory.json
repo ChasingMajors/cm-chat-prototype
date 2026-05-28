@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:27:09.102Z",
+  "exported_at": "2026-05-28T22:27:37.559Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -115,15 +115,15 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_ahl_hockey",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed; publish needs review.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "CV/ChatBot validation needs review.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:27:07.486Z",
-      "updatedAt": "2026-05-28T22:27:07.486Z"
+      "updatedAt": "2026-05-28T22:27:35.956Z"
     },
     {
       "id": "visual_test|github_actions|2025-26 panini signature series basketball|2025_26_panini_signature_series_basketball",
@@ -612,6 +612,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780007255956_f796d1",
+      "ts": "2026-05-28T22:27:35.956Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Upper Deck AHL Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780007230439_hcceka",
+      "ts": "2026-05-28T22:27:10.439Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "284 checklist rows and 6 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Upper Deck AHL Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780007227500_wuoskb",
       "ts": "2026-05-28T22:27:07.500Z",
@@ -1391,26 +1411,6 @@
       "status": "started",
       "product": "2025 Topps Chrome Football",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779370439094_66agmm",
-      "ts": "2026-05-21T13:33:59.094Z",
-      "type": "prv_publish",
-      "title": "PRV public validation passed",
-      "detail": "7 public PRV rows found.",
-      "status": "validated",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779370432788_vadm5b",
-      "ts": "2026-05-21T13:33:52.788Z",
-      "type": "prv_publish",
-      "title": "PRV public recheck started",
-      "detail": "Checking whether GitHub Pages has the product rows yet.",
-      "status": "started",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:27:10.289Z",
+  "saved_at": "2026-05-28T22:27:38.408Z",
   "saved_by": "cm_command_center_operator"
 }

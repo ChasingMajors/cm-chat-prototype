@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:17:42.826Z",
+  "exported_at": "2026-05-28T22:18:17.606Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -115,15 +115,15 @@
       "sport": "basketball",
       "code": "2025_26_panini_signature_series_basketball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed; publish needs review.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "CV/ChatBot validation needs review.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:17:41.211Z",
-      "updatedAt": "2026-05-28T22:17:41.211Z"
+      "updatedAt": "2026-05-28T22:18:16.003Z"
     },
     {
       "id": "source_import|wordpress_api|2026 pro set metal baseball",
@@ -612,6 +612,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780006696003_17cpjl",
+      "ts": "2026-05-28T22:18:16.003Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Panini Signature Series Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780006661224_v75aon",
       "ts": "2026-05-28T22:17:41.224Z",
@@ -1401,16 +1411,6 @@
       "status": "started",
       "product": "2025/26 Topps Chrome UEFA Club Competitions",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367142220_4x6mix",
-      "ts": "2026-05-21T12:39:02.220Z",
-      "type": "prv_publish",
-      "title": "PRV public validation passed",
-      "detail": "7 public PRV rows found.",
-      "status": "validated",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1579,6 +1579,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:17:44.000Z",
+  "saved_at": "2026-05-28T22:18:18.783Z",
   "saved_by": "cm_command_center_operator"
 }

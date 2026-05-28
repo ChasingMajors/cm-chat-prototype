@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:24:46.949Z",
+  "exported_at": "2026-05-28T22:25:06.004Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -115,15 +115,15 @@
       "sport": "basketball",
       "code": "2025_26_panini_signature_series_basketball",
       "riskLevel": "medium",
-      "status": "failed",
+      "status": "running",
       "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
+      "validationResult": "CV/ChatBot visual test requested from progress rail...",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26605582780",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:18:46.558Z",
-      "updatedAt": "2026-05-28T22:19:59.868Z"
+      "updatedAt": "2026-05-28T22:25:04.401Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 panini signature series basketball|2025_26_panini_signature_series_basketball",
@@ -630,6 +630,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780007087133_gx9dl4",
+      "ts": "2026-05-28T22:24:47.133Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "620 rows and 144 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Panini's Football EFL Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780007085346_kcw7ij",
       "ts": "2026-05-28T22:24:45.346Z",
@@ -1419,16 +1429,6 @@
       "status": "started",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1779367199952_haxe7r",
-      "ts": "2026-05-21T12:39:59.952Z",
-      "type": "prv_source_review",
-      "title": "PRV preview completed",
-      "detail": "10 print-run rows parsed.",
-      "status": "preview_ready",
-      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:24:48.008Z",
+  "saved_at": "2026-05-28T22:25:07.181Z",
   "saved_by": "cm_command_center_operator"
 }

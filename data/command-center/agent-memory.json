@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:25:26.423Z",
+  "exported_at": "2026-05-28T22:25:41.650Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -142,24 +142,6 @@
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:17:41.211Z",
       "updatedAt": "2026-05-28T22:25:24.820Z"
-    },
-    {
-      "id": "source_import|wordpress_api|2026 pro set metal baseball",
-      "type": "source_import",
-      "source": "wordpress_api",
-      "product": "2026 Pro Set Metal Baseball",
-      "sport": "baseball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-pro-set-metal-baseball-card-checklist/",
-      "createdAt": "2026-05-28T22:16:59.267Z",
-      "updatedAt": "2026-05-28T22:16:59.267Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 upper deck extended series hockey",
@@ -630,6 +612,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780007140048_4xusk7",
+      "ts": "2026-05-28T22:25:40.048Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2026 Pro Set Metal Baseball was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2026 Pro Set Metal Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780007124820_t6u0j0",
       "ts": "2026-05-28T22:25:24.820Z",
@@ -1419,16 +1411,6 @@
       "status": "needs_review",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367377711_5feb95",
-      "ts": "2026-05-21T12:42:57.712Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync started",
-      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
-      "status": "started",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1617,9 +1599,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-05-21T18:37:04.182Z",
       "resolved": true
+    },
+    "baseball|https www checklistcenter com 2026-pro-set-metal-baseball-card-checklist": {
+      "product": "2026 Pro Set Metal Baseball",
+      "sport": "baseball",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-pro-set-metal-baseball-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-05-28T22:25:40.046Z",
+      "resolved": true
+    },
+    "baseball|2026 pro set metal baseball": {
+      "product": "2026 Pro Set Metal Baseball",
+      "sport": "baseball",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-pro-set-metal-baseball-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-05-28T22:25:40.046Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:25:27.770Z",
+  "saved_at": "2026-05-28T22:25:42.768Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:25:41.650Z",
+  "exported_at": "2026-05-28T22:25:47.117Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -612,6 +612,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780007145514_fsqccr",
+      "ts": "2026-05-28T22:25:45.514Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Upper Deck Extended Series Hockey",
+      "source": "admin"
+    },
     {
       "id": "log_1780007140048_4xusk7",
       "ts": "2026-05-28T22:25:40.048Z",
@@ -1401,16 +1411,6 @@
       "status": "started",
       "product": "2026 Bowman Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367381029_s9k1r3",
-      "ts": "2026-05-21T12:43:01.029Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync needs review",
-      "detail": "Publish returned without public validation.",
-      "status": "needs_review",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:25:42.768Z",
+  "saved_at": "2026-05-28T22:25:48.262Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:18:44.578Z",
+  "exported_at": "2026-05-28T22:19:05.985Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -108,6 +108,24 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2025-26 panini signature series basketball|2025_26_panini_signature_series_basketball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2025-26 Panini Signature Series Basketball",
+      "sport": "basketball",
+      "code": "2025_26_panini_signature_series_basketball",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Visual validation complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26605582780",
+      "sourceUrl": "",
+      "createdAt": "2026-05-28T22:18:46.558Z",
+      "updatedAt": "2026-05-28T22:19:04.383Z"
+    },
+    {
       "id": "checklist_publish|operator_backend|2025-26 panini signature series basketball|2025_26_panini_signature_series_basketball",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -115,15 +133,15 @@
       "sport": "basketball",
       "code": "2025_26_panini_signature_series_basketball",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
       "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot visual test requested from progress rail...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26605582780",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:17:41.211Z",
-      "updatedAt": "2026-05-28T22:18:42.974Z"
+      "updatedAt": "2026-05-28T22:19:04.384Z"
     },
     {
       "id": "source_import|wordpress_api|2026 pro set metal baseball",
@@ -612,6 +630,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780006744384_7fwqet",
+      "ts": "2026-05-28T22:19:04.384Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Panini Signature Series Basketball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780006726560_8qtu6h",
+      "ts": "2026-05-28T22:18:46.560Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2025-26 Panini Signature Series Basketball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780006696003_17cpjl",
       "ts": "2026-05-28T22:18:16.003Z",
@@ -1391,26 +1429,6 @@
       "status": "started",
       "product": "2025 Topps Chrome Football",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367152916_pwgf1f",
-      "ts": "2026-05-21T12:39:12.916Z",
-      "type": "prv_source_review",
-      "title": "PRV preview completed",
-      "detail": "0 print-run rows parsed.",
-      "status": "needs_review",
-      "product": "2025/26 Topps Chrome UEFA Club Competitions",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779367151178_xwcqoq",
-      "ts": "2026-05-21T12:39:11.178Z",
-      "type": "prv_source_review",
-      "title": "PRV preview started",
-      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
-      "status": "started",
-      "product": "2025/26 Topps Chrome UEFA Club Competitions",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1505,6 +1523,29 @@
       "headSha": "eae4647fd891a5fe69719916501c1c1526d69a01",
       "createdAt": "2026-05-20T00:08:18Z",
       "checkedAt": "2026-05-20T00:12:55.014Z"
+    },
+    "basketball|2025_26_panini_signature_series_basketball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-05-28T22:18:44.229Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26605582780",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "basketball|2025_26_panini_signature_series_basketball",
+      "key": "basketball|2025_26_panini_signature_series_basketball",
+      "productName": "2025-26 Panini Signature Series Basketball",
+      "sport": "basketball",
+      "code": "2025_26_panini_signature_series_basketball",
+      "updatedAt": "2026-05-28T22:19:04.382Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 26605582780,
+      "runNumber": 18,
+      "displayTitle": "Visual Product Test - 2025-26 Panini Signature Series Basketball",
+      "headSha": "5aec944231df14747af50e1a55b78b99d2b5f02e",
+      "createdAt": "2026-05-28T22:18:45Z",
+      "checkedAt": "2026-05-28T22:19:04.382Z"
     }
   },
   "known_issues": {},
@@ -1579,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:18:49.601Z",
+  "saved_at": "2026-05-28T22:19:08.197Z",
   "saved_by": "cm_command_center_operator"
 }

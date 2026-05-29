@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T13:55:57.815Z",
+  "exported_at": "2026-05-29T13:56:06.063Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -378,24 +378,6 @@
       "updatedAt": "2026-05-28T22:16:43.243Z"
     },
     {
-      "id": "prv_source_review|slabsquatch_substack|2025 26 topps chrome cactus jack basketball basketball",
-      "type": "prv_source_review",
-      "source": "slabsquatch_substack",
-      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
-      "sport": "basketball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-cactus-jack-nba",
-      "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-21T13:43:03.493Z"
-    },
-    {
       "id": "prv_source_review|slabsquatch_substack|2025 26 bowman s best university basketball baby",
       "type": "prv_source_review",
       "source": "slabsquatch_substack",
@@ -594,6 +576,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780062964460_sb3wkp",
+      "ts": "2026-05-29T13:56:04.460Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2025/26 Topps Chrome Cactus Jack Basketball Basketball was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
+      "source": "admin"
+    },
     {
       "id": "log_1780062956213_atlhft",
       "ts": "2026-05-29T13:55:56.213Z",
@@ -1383,16 +1375,6 @@
       "status": "started",
       "product": "",
       "source": "slabsquatch"
-    },
-    {
-      "id": "log_1779370901379_2yy5gf",
-      "ts": "2026-05-21T13:41:41.379Z",
-      "type": "prv_publish",
-      "title": "PRV public validation passed",
-      "detail": "21 public PRV rows found.",
-      "status": "validated",
-      "product": "2025/26 Bowman’s Best University Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1617,9 +1599,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-05-29T13:55:56.212Z",
       "resolved": true
+    },
+    "basketball|https slabsquatch substack com p 202526-topps-chrome-cactus-jack-nba": {
+      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
+      "sport": "basketball",
+      "code": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-cactus-jack-nba",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-05-29T13:56:04.459Z",
+      "resolved": true
+    },
+    "basketball|2025 26 topps chrome cactus jack basketball basketball": {
+      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
+      "sport": "basketball",
+      "code": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-cactus-jack-nba",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-05-29T13:56:04.459Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T13:55:59.013Z",
+  "saved_at": "2026-05-29T13:56:07.402Z",
   "saved_by": "cm_command_center_operator"
 }

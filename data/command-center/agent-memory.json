@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T13:55:27.645Z",
+  "exported_at": "2026-05-29T13:55:57.815Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -115,15 +115,15 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_ahl_hockey",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "status": "failed",
+      "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "validationResult": "Import did not write to Google Sheets.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:27:07.486Z",
-      "updatedAt": "2026-05-29T13:55:26.043Z"
+      "updatedAt": "2026-05-29T13:55:29.205Z"
     },
     {
       "id": "visual_test|github_actions|2025-26 panini signature series basketball|2025_26_panini_signature_series_basketball",
@@ -486,24 +486,6 @@
       "updatedAt": "2026-05-20T00:06:13.387Z"
     },
     {
-      "id": "checklist_publish|operator_backend|2025-26 topps simplicidad uefa club competitions soccer|2025_26_topps_simplicidad_uefa_club_competitions_soccer",
-      "type": "checklist_publish",
-      "source": "operator_backend",
-      "product": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
-      "sport": "soccer",
-      "code": "2025_26_topps_simplicidad_uefa_club_competitions_soccer",
-      "riskLevel": "medium",
-      "status": "fix_queued",
-      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
-      "adminDecision": "",
-      "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "validationResult": "Import did not write to Google Sheets.",
-      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_topps_simplicidad_uefa_club_competitions_soccer&sport=soccer&type=product",
-      "sourceUrl": "",
-      "createdAt": "2026-05-19T23:47:06.765Z",
-      "updatedAt": "2026-05-21T12:12:19.205Z"
-    },
-    {
       "id": "checklist_publish|operator_backend|2025 topps chrome sapphire football|2025_topps_chrome_sapphire_football",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -612,6 +594,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780062956213_atlhft",
+      "ts": "2026-05-29T13:55:56.213Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780062929206_gsggp9",
+      "ts": "2026-05-29T13:55:29.206Z",
+      "type": "source_import",
+      "title": "Import blocked before sheet write",
+      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780062926042_01z9q7",
       "ts": "2026-05-29T13:55:26.042Z",
@@ -1391,26 +1393,6 @@
       "status": "validated",
       "product": "2025/26 Bowman’s Best University Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779370899521_0m88qu",
-      "ts": "2026-05-21T13:41:39.521Z",
-      "type": "prv_publish",
-      "title": "PRV public recheck started",
-      "detail": "Checking whether GitHub Pages has the product rows yet.",
-      "status": "started",
-      "product": "2025/26 Bowman’s Best University Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779370568252_atkk7q",
-      "ts": "2026-05-21T13:36:08.252Z",
-      "type": "prv_publish",
-      "title": "PRV public validation passed",
-      "detail": "7 public PRV rows found.",
-      "status": "validated",
-      "product": "2025 Topps Chrome Sapphire Football",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1617,9 +1599,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-05-28T22:25:40.046Z",
       "resolved": true
+    },
+    "soccer|https app chasingmajors com checklists refresh 1 and code 2025_26_topps_simplicidad_uefa_club_competitions_soccer and sport soccer and type product": {
+      "product": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_simplicidad_uefa_club_competitions_soccer",
+      "sourceUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_topps_simplicidad_uefa_club_competitions_soccer&sport=soccer&type=product",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-05-29T13:55:56.212Z",
+      "resolved": true
+    },
+    "soccer|2025_26_topps_simplicidad_uefa_club_competitions_soccer": {
+      "product": "2025-26 Topps Simplicidad UEFA Club Competitions Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_simplicidad_uefa_club_competitions_soccer",
+      "sourceUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_topps_simplicidad_uefa_club_competitions_soccer&sport=soccer&type=product",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-05-29T13:55:56.212Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T13:55:29.404Z",
+  "saved_at": "2026-05-29T13:55:59.013Z",
   "saved_by": "cm_command_center_operator"
 }

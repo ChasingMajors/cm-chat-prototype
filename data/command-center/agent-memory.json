@@ -2,12 +2,32 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T14:56:27.438Z",
+  "exported_at": "2026-05-29T14:57:36.614Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
   "tasks": [
+    {
+      "id": "task_1780066599641_81f1ii",
+      "sourceId": "source|hockey|2025-26 upper deck extended series hockey",
+      "title": "Import missing source product: 2025-26 Upper Deck Extended Series Hockey",
+      "kind": "operator",
+      "severity": "warning",
+      "status": "queued",
+      "createdAt": "2026-05-29T14:56:39.641Z",
+      "updatedAt": "2026-05-29T14:56:39.641Z",
+      "why": "A supported source product was not found in the current Chasing Majors static checklist data.",
+      "objective": "Prepare an import task for the Hockey checklist source and validate the product after publishing.",
+      "steps": [
+        "Identify the affected product codes from the audit evidence.",
+        "Confirm the source Google Sheet has matching product codes and row data.",
+        "Run the correct publish function for the affected sport/year/source.",
+        "Rebuild the checklist index if products were added or renamed.",
+        "Retest the exact product query in the sandbox ChatBot and live tool after propagation."
+      ],
+      "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
+    },
     {
       "id": "task_1779365539205_rh2a2u",
       "sourceId": "checklist_publish|operator_backend|2025-26 topps simplicidad uefa club competitions soccer|2025_26_topps_simplicidad_uefa_club_competitions_soccer",
@@ -115,15 +135,15 @@
       "sport": "soccer",
       "code": "2025_26_topps_chrome_arsenal_soccer",
       "riskLevel": "medium",
-      "status": "failed",
+      "status": "running",
       "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
+      "validationResult": "CV/ChatBot visual test requested from progress rail...",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26641674951",
       "sourceUrl": "",
       "createdAt": "2026-05-29T14:00:51.309Z",
-      "updatedAt": "2026-05-29T14:02:33.712Z"
+      "updatedAt": "2026-05-29T14:57:35.010Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 topps chrome arsenal soccer|2025_26_topps_chrome_arsenal_soccer",
@@ -205,15 +225,15 @@
       "sport": "hockey",
       "code": "",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "Coverage recheck started...",
+      "validationResult": "Coverage recheck needs review: Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search..",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-extended-series-hockey-card-checklist/",
       "createdAt": "2026-05-28T22:16:59.267Z",
-      "updatedAt": "2026-05-29T14:56:25.834Z"
+      "updatedAt": "2026-05-29T14:56:39.636Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 panini's football efl soccer",
@@ -594,6 +614,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780066599637_2k53f4",
+      "ts": "2026-05-29T14:56:39.637Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "Public coverage still needs review.",
+      "status": "needs_review",
+      "product": "2025-26 Upper Deck Extended Series Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780066585836_65k6qu",
       "ts": "2026-05-29T14:56:25.836Z",
@@ -1383,16 +1413,6 @@
       "status": "validated",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1779463599622_o4o3bk",
-      "ts": "2026-05-22T15:26:39.622Z",
-      "type": "public_tool_audit",
-      "title": "Public Tool Audit started",
-      "detail": "Checking public JSON feeds for Checklist Vault, PRV, releases, and early signals.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -1661,6 +1681,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T14:56:37.470Z",
+  "saved_at": "2026-05-29T14:57:43.192Z",
   "saved_by": "cm_command_center_operator"
 }

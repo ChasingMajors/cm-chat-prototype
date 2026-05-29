@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T13:59:37.092Z",
+  "exported_at": "2026-05-29T13:59:46.663Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -576,6 +576,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780063185060_xnateh",
+      "ts": "2026-05-29T13:59:45.060Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780063177709_yl8uly",
+      "ts": "2026-05-29T13:59:37.709Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "251 rows and 86 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Topps Chrome Arsenal Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780063175490_znhbqz",
       "ts": "2026-05-29T13:59:35.490Z",
@@ -1355,26 +1375,6 @@
       "status": "completed",
       "product": "",
       "source": "slabsquatch"
-    },
-    {
-      "id": "log_1779410337402_ucwwql",
-      "ts": "2026-05-22T00:38:57.402Z",
-      "type": "source_watch",
-      "title": "Source Watch actions queued",
-      "detail": "3 findings are now visible in the Agent Action Queue for admin review. 2 admin-ignored source item(s) were skipped.",
-      "status": "queued",
-      "product": "",
-      "source": "prv_source_watch"
-    },
-    {
-      "id": "log_1779410334796_dr8tww",
-      "ts": "2026-05-22T00:38:54.796Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch started",
-      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
-      "status": "started",
-      "product": "",
-      "source": "slabsquatch"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T13:59:38.380Z",
+  "saved_at": "2026-05-29T13:59:47.981Z",
   "saved_by": "cm_command_center_operator"
 }

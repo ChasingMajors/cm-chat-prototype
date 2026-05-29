@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T14:01:39.456Z",
+  "exported_at": "2026-05-29T14:01:48.456Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -136,12 +136,12 @@
       "status": "needs_admin",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26641674951",
+      "executionResult": "Sheet write completed; publish needs review.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_topps_chrome_arsenal_soccer&sport=soccer&type=product",
       "sourceUrl": "",
       "createdAt": "2026-05-29T13:59:58.427Z",
-      "updatedAt": "2026-05-29T14:01:36.933Z"
+      "updatedAt": "2026-05-29T14:01:46.525Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 upper deck ahl hockey|2025_26_upper_deck_ahl_hockey",
@@ -594,6 +594,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780063306526_kxc3vc",
+      "ts": "2026-05-29T14:01:46.526Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "251 checklist rows and 86 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Chrome Arsenal Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780063296933_sm6h3z",
       "ts": "2026-05-29T14:01:36.933Z",
@@ -1383,16 +1393,6 @@
       "status": "queued",
       "product": "",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1779461343506_somyl2",
-      "ts": "2026-05-22T14:49:03.506Z",
-      "type": "sentinel_self_test",
-      "title": "Sentinel self-test requested",
-      "detail": "Queueing GitHub Actions to test CM Sentinel behavior.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -1661,6 +1661,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T14:01:40.957Z",
+  "saved_at": "2026-05-29T14:01:49.899Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T14:57:36.614Z",
+  "exported_at": "2026-05-29T14:58:07.987Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -134,16 +134,16 @@
       "product": "2025-26 Topps Chrome Arsenal Soccer",
       "sport": "soccer",
       "code": "2025_26_topps_chrome_arsenal_soccer",
-      "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Visual validation complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test requested from progress rail...",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26641674951",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26644591592",
       "sourceUrl": "",
       "createdAt": "2026-05-29T14:00:51.309Z",
-      "updatedAt": "2026-05-29T14:57:35.010Z"
+      "updatedAt": "2026-05-29T14:58:06.385Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 topps chrome arsenal soccer|2025_26_topps_chrome_arsenal_soccer",
@@ -153,15 +153,15 @@
       "sport": "soccer",
       "code": "2025_26_topps_chrome_arsenal_soccer",
       "riskLevel": "medium",
-      "status": "failed",
+      "status": "needs_admin",
       "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
       "adminDecision": "",
       "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "validationResult": "Import did not write to Google Sheets.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26641674951",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26644591592",
       "sourceUrl": "",
       "createdAt": "2026-05-29T13:59:58.427Z",
-      "updatedAt": "2026-05-29T14:02:40.361Z"
+      "updatedAt": "2026-05-29T14:58:06.385Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 upper deck ahl hockey|2025_26_upper_deck_ahl_hockey",
@@ -614,6 +614,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780066686385_17i46j",
+      "ts": "2026-05-29T14:58:06.385Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Topps Chrome Arsenal Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780066664497_8lu52c",
+      "ts": "2026-05-29T14:57:44.497Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2025-26 Topps Chrome Arsenal Soccer",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780066599637_2k53f4",
       "ts": "2026-05-29T14:56:39.637Z",
@@ -1393,26 +1413,6 @@
       "status": "queued",
       "product": "",
       "source": "prv_source_watch"
-    },
-    {
-      "id": "log_1779569392598_hhfnxs",
-      "ts": "2026-05-23T20:49:52.598Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch started",
-      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
-      "status": "started",
-      "product": "",
-      "source": "slabsquatch"
-    },
-    {
-      "id": "log_1779463599760_s5e9vl",
-      "ts": "2026-05-22T15:26:39.760Z",
-      "type": "public_tool_audit",
-      "title": "Public Tool Audit complete",
-      "detail": "Public data layer score: 100%. Checklist, PRV, release, and signal feeds are reachable.",
-      "status": "validated",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -1532,11 +1532,11 @@
       "checkedAt": "2026-05-28T22:26:19.593Z"
     },
     "soccer|2025_26_topps_chrome_arsenal_soccer": {
-      "status": "completed",
-      "result": "failed",
-      "conclusion": "failure",
-      "startedAt": "2026-05-29T14:00:48.617Z",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26641674951",
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-05-29T14:57:39.387Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26644591592",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "soccer|2025_26_topps_chrome_arsenal_soccer",
@@ -1544,15 +1544,15 @@
       "productName": "2025-26 Topps Chrome Arsenal Soccer",
       "sport": "soccer",
       "code": "2025_26_topps_chrome_arsenal_soccer",
-      "updatedAt": "2026-05-29T14:02:33.708Z",
+      "updatedAt": "2026-05-29T14:58:06.383Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 26641674951,
-      "runNumber": 20,
+      "runId": 26644591592,
+      "runNumber": 21,
       "displayTitle": "Visual Product Test - 2025-26 Topps Chrome Arsenal Soccer",
       "headSha": "5aec944231df14747af50e1a55b78b99d2b5f02e",
-      "createdAt": "2026-05-29T14:00:50Z",
-      "checkedAt": "2026-05-29T14:02:33.708Z"
+      "createdAt": "2026-05-29T14:57:41Z",
+      "checkedAt": "2026-05-29T14:58:06.383Z"
     }
   },
   "known_issues": {},
@@ -1681,6 +1681,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T14:57:43.192Z",
+  "saved_at": "2026-05-29T14:58:17.382Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-28T22:27:41.471Z",
+  "exported_at": "2026-05-29T13:53:59.152Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -115,15 +115,15 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_ahl_hockey",
       "riskLevel": "medium",
-      "status": "failed",
+      "status": "running",
       "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
       "adminDecision": "",
-      "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "Import did not write to Google Sheets.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:27:07.486Z",
-      "updatedAt": "2026-05-28T22:27:39.868Z"
+      "updatedAt": "2026-05-29T13:53:57.549Z"
     },
     {
       "id": "visual_test|github_actions|2025-26 panini signature series basketball|2025_26_panini_signature_series_basketball",
@@ -612,6 +612,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780062837547_bfo1le",
+      "ts": "2026-05-29T13:53:57.547Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Upper Deck AHL Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780007259869_i96bai",
       "ts": "2026-05-28T22:27:39.869Z",
@@ -1401,16 +1411,6 @@
       "status": "started",
       "product": "2026 Bowman Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779370454992_xeznt0",
-      "ts": "2026-05-21T13:34:14.992Z",
-      "type": "prv_publish",
-      "title": "PRV public validation passed",
-      "detail": "82 public PRV rows found.",
-      "status": "validated",
-      "product": "2025 Topps Chrome Football",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-28T22:27:42.816Z",
+  "saved_at": "2026-05-29T13:54:00.121Z",
   "saved_by": "cm_command_center_operator"
 }

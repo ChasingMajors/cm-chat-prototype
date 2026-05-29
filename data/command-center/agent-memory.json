@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T14:02:35.456Z",
+  "exported_at": "2026-05-29T14:02:42.456Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -134,14 +134,14 @@
       "code": "2025_26_topps_chrome_arsenal_soccer",
       "riskLevel": "medium",
       "status": "failed",
-      "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
+      "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
+      "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "validationResult": "Import did not write to Google Sheets.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26641674951",
       "sourceUrl": "",
       "createdAt": "2026-05-29T13:59:58.427Z",
-      "updatedAt": "2026-05-29T14:02:33.712Z"
+      "updatedAt": "2026-05-29T14:02:40.361Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 upper deck ahl hockey|2025_26_upper_deck_ahl_hockey",
@@ -594,6 +594,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780063360362_gl42yq",
+      "ts": "2026-05-29T14:02:40.362Z",
+      "type": "source_import",
+      "title": "Import blocked before sheet write",
+      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780063353712_84fspn",
       "ts": "2026-05-29T14:02:33.713Z",
@@ -1383,16 +1393,6 @@
       "status": "queued",
       "product": "",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1779462157898_ml72pf",
-      "ts": "2026-05-22T15:02:37.898Z",
-      "type": "sentinel_self_test",
-      "title": "Sentinel self-test requested",
-      "detail": "Queueing GitHub Actions to test CM Sentinel behavior.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -1661,6 +1661,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T14:02:36.795Z",
+  "saved_at": "2026-05-29T14:02:44.029Z",
   "saved_by": "cm_command_center_operator"
 }

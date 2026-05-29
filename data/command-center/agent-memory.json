@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T14:02:07.457Z",
+  "exported_at": "2026-05-29T14:02:35.456Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -114,16 +114,16 @@
       "product": "2025-26 Topps Chrome Arsenal Soccer",
       "sport": "soccer",
       "code": "2025_26_topps_chrome_arsenal_soccer",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Visual validation complete.",
+      "riskLevel": "medium",
+      "status": "failed",
+      "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26641674951",
       "sourceUrl": "",
       "createdAt": "2026-05-29T14:00:51.309Z",
-      "updatedAt": "2026-05-29T14:02:05.240Z"
+      "updatedAt": "2026-05-29T14:02:33.712Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 topps chrome arsenal soccer|2025_26_topps_chrome_arsenal_soccer",
@@ -133,15 +133,15 @@
       "sport": "soccer",
       "code": "2025_26_topps_chrome_arsenal_soccer",
       "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "status": "failed",
+      "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26641674951",
       "sourceUrl": "",
       "createdAt": "2026-05-29T13:59:58.427Z",
-      "updatedAt": "2026-05-29T14:02:05.240Z"
+      "updatedAt": "2026-05-29T14:02:33.712Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 upper deck ahl hockey|2025_26_upper_deck_ahl_hockey",
@@ -594,6 +594,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780063353712_84fspn",
+      "ts": "2026-05-29T14:02:33.713Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "Visual test failed. Open the report and review screenshots/errors before marking validated.",
+      "status": "failed",
+      "product": "2025-26 Topps Chrome Arsenal Soccer",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780063325241_jkgw3a",
       "ts": "2026-05-29T14:02:05.241Z",
@@ -1383,16 +1393,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1779461418520_jexo7w",
-      "ts": "2026-05-22T14:50:18.520Z",
-      "type": "sentinel_self_test",
-      "title": "Sentinel self-test failed",
-      "detail": "Cockpit behavior test failed. Open the report for screenshots and failing checks.",
-      "status": "failed",
-      "product": "",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -1512,9 +1512,9 @@
       "checkedAt": "2026-05-28T22:26:19.593Z"
     },
     "soccer|2025_26_topps_chrome_arsenal_soccer": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "failed",
+      "conclusion": "failure",
       "startedAt": "2026-05-29T14:00:48.617Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/26641674951",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -1524,7 +1524,7 @@
       "productName": "2025-26 Topps Chrome Arsenal Soccer",
       "sport": "soccer",
       "code": "2025_26_topps_chrome_arsenal_soccer",
-      "updatedAt": "2026-05-29T14:02:05.239Z",
+      "updatedAt": "2026-05-29T14:02:33.708Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 26641674951,
@@ -1532,7 +1532,7 @@
       "displayTitle": "Visual Product Test - 2025-26 Topps Chrome Arsenal Soccer",
       "headSha": "5aec944231df14747af50e1a55b78b99d2b5f02e",
       "createdAt": "2026-05-29T14:00:50Z",
-      "checkedAt": "2026-05-29T14:02:05.239Z"
+      "checkedAt": "2026-05-29T14:02:33.708Z"
     }
   },
   "known_issues": {},
@@ -1661,6 +1661,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T14:02:08.674Z",
+  "saved_at": "2026-05-29T14:02:36.795Z",
   "saved_by": "cm_command_center_operator"
 }

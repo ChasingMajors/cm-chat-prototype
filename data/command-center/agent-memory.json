@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T13:59:24.157Z",
+  "exported_at": "2026-05-29T13:59:37.092Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -576,6 +576,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780063175490_znhbqz",
+      "ts": "2026-05-29T13:59:35.490Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Topps Chrome Arsenal Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780063164961_0y7qlu",
+      "ts": "2026-05-29T13:59:24.961Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "620 rows and 144 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Panini's Football EFL Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780063162555_s11922",
       "ts": "2026-05-29T13:59:22.555Z",
@@ -1355,26 +1375,6 @@
       "status": "started",
       "product": "",
       "source": "slabsquatch"
-    },
-    {
-      "id": "log_1779388624183_h9szq3",
-      "ts": "2026-05-21T18:37:04.183Z",
-      "type": "agent_action",
-      "title": "Agent action removed",
-      "detail": "2025/26 Topps Signature Class Basketball Pre-Analysis Plus was removed and remembered so future scans do not requeue it.",
-      "status": "removed",
-      "product": "2025/26 Topps Signature Class Basketball Pre-Analysis Plus",
-      "source": "admin"
-    },
-    {
-      "id": "log_1779388596679_f6owhh",
-      "ts": "2026-05-21T18:36:36.679Z",
-      "type": "agent_action",
-      "title": "Agent action removed",
-      "detail": "2025/26 Bowman Basketball Case Hit Breakdown was removed and remembered so future scans do not requeue it.",
-      "status": "removed",
-      "product": "2025/26 Bowman Basketball Case Hit Breakdown",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T13:59:25.532Z",
+  "saved_at": "2026-05-29T13:59:38.380Z",
   "saved_by": "cm_command_center_operator"
 }

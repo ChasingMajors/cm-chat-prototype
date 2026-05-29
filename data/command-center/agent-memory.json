@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T14:59:12.155Z",
+  "exported_at": "2026-05-29T14:59:32.539Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -614,6 +614,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780066770936_u16r2v",
+      "ts": "2026-05-29T14:59:30.936Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Upper Deck Extended Series Hockey",
+      "source": "admin"
+    },
     {
       "id": "log_1780066750553_6jsdc5",
       "ts": "2026-05-29T14:59:10.553Z",
@@ -1403,16 +1413,6 @@
       "status": "completed",
       "product": "",
       "source": "slabsquatch"
-    },
-    {
-      "id": "log_1780006603244_yqqeze",
-      "ts": "2026-05-28T22:16:43.244Z",
-      "type": "source_watch",
-      "title": "Source Watch actions queued",
-      "detail": "1 findings are now visible in the Agent Action Queue for admin review. 2 admin-ignored source item(s) were skipped. 2 already-resolved item(s) were skipped.",
-      "status": "queued",
-      "product": "",
-      "source": "prv_source_watch"
     }
   ],
   "visual_tests": {
@@ -1681,6 +1681,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T14:59:17.785Z",
+  "saved_at": "2026-05-29T14:59:39.517Z",
   "saved_by": "cm_command_center_operator"
 }

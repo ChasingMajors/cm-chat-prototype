@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T14:00:29.564Z",
+  "exported_at": "2026-05-29T14:00:49.416Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -119,11 +119,11 @@
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
       "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-05-29T13:59:58.427Z",
-      "updatedAt": "2026-05-29T14:00:27.962Z"
+      "updatedAt": "2026-05-29T14:00:47.813Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 upper deck ahl hockey|2025_26_upper_deck_ahl_hockey",
@@ -576,6 +576,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780063247813_gdmf54",
+      "ts": "2026-05-29T14:00:47.813Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2025-26 Topps Chrome Arsenal Soccer",
+      "source": "agent_action_queue"
+    },
     {
       "id": "log_1780063227962_z4bj1e",
       "ts": "2026-05-29T14:00:27.962Z",
@@ -1365,16 +1375,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1779410412008_hzdmwd",
-      "ts": "2026-05-22T00:40:12.008Z",
-      "type": "source_watch",
-      "title": "Quick JSON Source Watch complete",
-      "detail": "20 source items checked. 2 need review. 0 review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "quick_json"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T14:00:30.993Z",
+  "saved_at": "2026-05-29T14:00:50.842Z",
   "saved_by": "cm_command_center_operator"
 }

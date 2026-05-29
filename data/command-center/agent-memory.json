@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T14:59:32.539Z",
+  "exported_at": "2026-05-29T14:59:50.179Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -171,15 +171,15 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_ahl_hockey",
       "riskLevel": "medium",
-      "status": "failed",
+      "status": "running",
       "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
       "adminDecision": "",
-      "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "Import did not write to Google Sheets.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:27:07.486Z",
-      "updatedAt": "2026-05-29T13:55:29.205Z"
+      "updatedAt": "2026-05-29T14:59:48.578Z"
     },
     {
       "id": "visual_test|github_actions|2025-26 panini signature series basketball|2025_26_panini_signature_series_basketball",
@@ -614,6 +614,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780066788578_e3t21i",
+      "ts": "2026-05-29T14:59:48.578Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Upper Deck AHL Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780066775659_fnj4l6",
+      "ts": "2026-05-29T14:59:35.659Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "1,094 rows and 70 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Upper Deck Extended Series Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780066770936_u16r2v",
       "ts": "2026-05-29T14:59:30.936Z",
@@ -1393,26 +1413,6 @@
       "status": "queued",
       "product": "",
       "source": "quick_json"
-    },
-    {
-      "id": "log_1780006616772_y29gf3",
-      "ts": "2026-05-28T22:16:56.772Z",
-      "type": "source_watch",
-      "title": "Quick JSON Source Watch started",
-      "detail": "Checking recent Checklistcenter items against public JSON.",
-      "status": "started",
-      "product": "",
-      "source": "quick_json"
-    },
-    {
-      "id": "log_1780006603244_ox6bc5",
-      "ts": "2026-05-28T22:16:43.244Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch complete",
-      "detail": "10 SlabSquatch items checked. 5 need review. 1 PRV review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "slabsquatch"
     }
   ],
   "visual_tests": {
@@ -1681,6 +1681,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T14:59:39.517Z",
+  "saved_at": "2026-05-29T15:00:08.291Z",
   "saved_by": "cm_command_center_operator"
 }

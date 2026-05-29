@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T14:02:42.456Z",
+  "exported_at": "2026-05-29T14:56:27.438Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -205,15 +205,15 @@
       "sport": "hockey",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "running",
       "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-extended-series-hockey-card-checklist/",
       "createdAt": "2026-05-28T22:16:59.267Z",
-      "updatedAt": "2026-05-28T22:16:59.267Z"
+      "updatedAt": "2026-05-29T14:56:25.834Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 panini's football efl soccer",
@@ -594,6 +594,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780066585836_65k6qu",
+      "ts": "2026-05-29T14:56:25.836Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2025-26 Upper Deck Extended Series Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780066585826_0soiho",
+      "ts": "2026-05-29T14:56:25.826Z",
+      "type": "agent_cycle",
+      "title": "Verify Checklist public JSON",
+      "detail": "2025-26 Upper Deck Extended Series Hockey has enough detail for a safe public coverage check. Sentinel will verify the JSON before asking for admin review.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1780063360362_gl42yq",
       "ts": "2026-05-29T14:02:40.362Z",
@@ -1373,26 +1393,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1779462214670_74vwek",
-      "ts": "2026-05-22T15:03:34.670Z",
-      "type": "sentinel_self_test",
-      "title": "Sentinel self-test passed",
-      "detail": "Cockpit behavior test passed in GitHub Actions.",
-      "status": "validated",
-      "product": "",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1779462162003_5331f4",
-      "ts": "2026-05-22T15:02:42.003Z",
-      "type": "sentinel_self_test",
-      "title": "Sentinel self-test queued",
-      "detail": "GitHub Actions is starting the cockpit behavior test.",
-      "status": "queued",
-      "product": "",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -1661,6 +1661,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T14:02:44.029Z",
+  "saved_at": "2026-05-29T14:56:37.470Z",
   "saved_by": "cm_command_center_operator"
 }

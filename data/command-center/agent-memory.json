@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T13:57:40.061Z",
+  "exported_at": "2026-05-29T13:58:25.675Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -375,7 +375,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
       "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-28T22:16:43.243Z"
+      "updatedAt": "2026-05-29T13:57:41.025Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 bowman s best university basketball baby",
@@ -576,6 +576,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780063104071_d8tr9w",
+      "ts": "2026-05-29T13:58:24.071Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Upper Deck Extended Series Hockey",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780063061027_6dlho5",
+      "ts": "2026-05-29T13:57:41.027Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch complete",
+      "detail": "10 SlabSquatch items checked. 5 need review. 1 PRV review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1780063061026_3tta75",
+      "ts": "2026-05-29T13:57:41.026Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "1 findings are now visible in the Agent Action Queue for admin review. 3 admin-ignored source item(s) were skipped. 1 already-resolved item(s) were skipped.",
+      "status": "queued",
+      "product": "",
+      "source": "prv_source_watch"
+    },
     {
       "id": "log_1780063058458_8o92fm",
       "ts": "2026-05-29T13:57:38.458Z",
@@ -1345,36 +1375,6 @@
       "status": "started",
       "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779387847209_gyqj3l",
-      "ts": "2026-05-21T18:24:07.209Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch complete",
-      "detail": "11 SlabSquatch items checked. 11 need review. 6 PRV review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "slabsquatch"
-    },
-    {
-      "id": "log_1779387847208_k8w7qm",
-      "ts": "2026-05-21T18:24:07.208Z",
-      "type": "source_watch",
-      "title": "Source Watch actions queued",
-      "detail": "6 findings are now visible in the Agent Action Queue for admin review. 5 already-resolved item(s) were skipped.",
-      "status": "queued",
-      "product": "",
-      "source": "prv_source_watch"
-    },
-    {
-      "id": "log_1779387845176_vgwyqe",
-      "ts": "2026-05-21T18:24:05.176Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch started",
-      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
-      "status": "started",
-      "product": "",
-      "source": "slabsquatch"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T13:57:41.323Z",
+  "saved_at": "2026-05-29T13:58:27.293Z",
   "saved_by": "cm_command_center_operator"
 }

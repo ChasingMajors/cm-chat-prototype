@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T13:56:06.063Z",
+  "exported_at": "2026-05-29T13:56:19.470Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -576,6 +576,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780062977867_pa4lq6",
+      "ts": "2026-05-29T13:56:17.867Z",
+      "type": "prv_source_review",
+      "title": "PRV preview started",
+      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
+      "status": "started",
+      "product": "2025/26 Bowman Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780062964460_sb3wkp",
       "ts": "2026-05-29T13:56:04.460Z",
@@ -1365,16 +1375,6 @@
       "status": "queued",
       "product": "",
       "source": "prv_source_watch"
-    },
-    {
-      "id": "log_1779370981481_etfp7m",
-      "ts": "2026-05-21T13:43:01.481Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch started",
-      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
-      "status": "started",
-      "product": "",
-      "source": "slabsquatch"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T13:56:07.402Z",
+  "saved_at": "2026-05-29T13:56:20.568Z",
   "saved_by": "cm_command_center_operator"
 }

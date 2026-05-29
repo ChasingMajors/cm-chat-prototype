@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T13:59:46.663Z",
+  "exported_at": "2026-05-29T14:00:00.038Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -108,6 +108,24 @@
   ],
   "agent_actions": [
     {
+      "id": "checklist_publish|operator_backend|2025-26 topps chrome arsenal soccer|2025_26_topps_chrome_arsenal_soccer",
+      "type": "checklist_publish",
+      "source": "operator_backend",
+      "product": "2025-26 Topps Chrome Arsenal Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_chrome_arsenal_soccer",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "adminDecision": "",
+      "executionResult": "Sheet write completed; publish needs review.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "createdAt": "2026-05-29T13:59:58.427Z",
+      "updatedAt": "2026-05-29T13:59:58.427Z"
+    },
+    {
       "id": "checklist_publish|operator_backend|2025-26 upper deck ahl hockey|2025_26_upper_deck_ahl_hockey",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -178,24 +196,6 @@
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-extended-series-hockey-card-checklist/",
       "createdAt": "2026-05-28T22:16:59.267Z",
       "updatedAt": "2026-05-28T22:16:59.267Z"
-    },
-    {
-      "id": "source_import|wordpress_api|2025-26 topps chrome arsenal soccer",
-      "type": "source_import",
-      "source": "wordpress_api",
-      "product": "2025-26 Topps Chrome Arsenal Soccer",
-      "sport": "soccer",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-arsenal-soccer-card-checklist/",
-      "createdAt": "2026-05-28T22:16:59.265Z",
-      "updatedAt": "2026-05-28T22:16:59.265Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 panini's football efl soccer",
@@ -576,6 +576,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780063198437_djqh33",
+      "ts": "2026-05-29T13:59:58.437Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Topps Chrome Arsenal Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780063198429_2n51at",
+      "ts": "2026-05-29T13:59:58.429Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "251 checklist rows and 86 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Chrome Arsenal Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780063185060_xnateh",
       "ts": "2026-05-29T13:59:45.060Z",
@@ -1355,26 +1375,6 @@
       "status": "ignored",
       "product": "",
       "source": "quick_json"
-    },
-    {
-      "id": "log_1779410409187_ihg7i7",
-      "ts": "2026-05-22T00:40:09.187Z",
-      "type": "source_watch",
-      "title": "Quick JSON Source Watch started",
-      "detail": "Checking recent Checklistcenter items against public JSON.",
-      "status": "started",
-      "product": "",
-      "source": "quick_json"
-    },
-    {
-      "id": "log_1779410337403_d6i2y7",
-      "ts": "2026-05-22T00:38:57.403Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch complete",
-      "detail": "11 SlabSquatch items checked. 5 need review. 3 PRV review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "slabsquatch"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T13:59:47.981Z",
+  "saved_at": "2026-05-29T14:00:01.324Z",
   "saved_by": "cm_command_center_operator"
 }

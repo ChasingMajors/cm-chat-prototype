@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T13:58:25.675Z",
+  "exported_at": "2026-05-29T13:59:24.157Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -576,6 +576,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780063162555_s11922",
+      "ts": "2026-05-29T13:59:22.555Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Panini's Football EFL Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780063106430_pzm8b8",
+      "ts": "2026-05-29T13:58:26.430Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "1,094 rows and 70 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Upper Deck Extended Series Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780063104071_d8tr9w",
       "ts": "2026-05-29T13:58:24.071Z",
@@ -1355,26 +1375,6 @@
       "status": "removed",
       "product": "2025/26 Bowman Basketball Case Hit Breakdown",
       "source": "admin"
-    },
-    {
-      "id": "log_1779387886265_fxre0c",
-      "ts": "2026-05-21T18:24:46.265Z",
-      "type": "prv_publish",
-      "title": "PRV public validation passed",
-      "detail": "8 public PRV rows found.",
-      "status": "validated",
-      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1779387884021_l8ykfv",
-      "ts": "2026-05-21T18:24:44.021Z",
-      "type": "prv_publish",
-      "title": "PRV public recheck started",
-      "detail": "Checking whether GitHub Pages has the product rows yet.",
-      "status": "started",
-      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T13:58:27.293Z",
+  "saved_at": "2026-05-29T13:59:25.532Z",
   "saved_by": "cm_command_center_operator"
 }

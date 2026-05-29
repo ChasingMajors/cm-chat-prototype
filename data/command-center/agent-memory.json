@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T13:54:04.252Z",
+  "exported_at": "2026-05-29T13:54:35.442Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -115,15 +115,15 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_ahl_hockey",
       "riskLevel": "medium",
-      "status": "failed",
+      "status": "running",
       "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
       "adminDecision": "",
-      "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "executionResult": "Finding Checklist Center source page before import preview.",
       "validationResult": "Import did not write to Google Sheets.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:27:07.486Z",
-      "updatedAt": "2026-05-29T13:54:02.649Z"
+      "updatedAt": "2026-05-29T13:54:33.838Z"
     },
     {
       "id": "visual_test|github_actions|2025-26 panini signature series basketball|2025_26_panini_signature_series_basketball",
@@ -612,6 +612,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780062873839_kk2e4f",
+      "ts": "2026-05-29T13:54:33.839Z",
+      "type": "source_import",
+      "title": "Source lookup started",
+      "detail": "Finding the Checklist Center page so the agent can rebuild product-scoped rows/parallels.",
+      "status": "started",
+      "product": "2025-26 Upper Deck AHL Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780062842650_vfk463",
       "ts": "2026-05-29T13:54:02.650Z",
@@ -1401,16 +1411,6 @@
       "status": "started",
       "product": "",
       "source": "slabsquatch"
-    },
-    {
-      "id": "log_1779370477683_d5ajrp",
-      "ts": "2026-05-21T13:34:37.683Z",
-      "type": "prv_publish",
-      "title": "PRV public validation passed",
-      "detail": "27 public PRV rows found.",
-      "status": "validated",
-      "product": "2026 Bowman Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T13:54:05.394Z",
+  "saved_at": "2026-05-29T13:54:36.748Z",
   "saved_by": "cm_command_center_operator"
 }

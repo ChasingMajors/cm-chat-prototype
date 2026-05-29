@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-05-29T13:54:41.209Z",
+  "exported_at": "2026-05-29T13:54:49.379Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -612,6 +612,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780062887776_p0rkor",
+      "ts": "2026-05-29T13:54:47.776Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
     {
       "id": "log_1780062879607_s8x0x9",
       "ts": "2026-05-29T13:54:39.607Z",
@@ -1401,16 +1411,6 @@
       "status": "validated",
       "product": "2026 Bowman Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1779370549005_k6kjiy",
-      "ts": "2026-05-21T13:35:49.005Z",
-      "type": "prv_publish",
-      "title": "PRV public recheck started",
-      "detail": "Checking whether GitHub Pages has the product rows yet.",
-      "status": "started",
-      "product": "2026 Bowman Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1620,6 +1620,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-05-29T13:54:42.507Z",
+  "saved_at": "2026-05-29T13:54:51.160Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:55:09.837Z",
+  "exported_at": "2026-06-02T22:55:18.017Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -171,15 +171,15 @@
       "sport": "soccer",
       "code": "2025_26_panini_select_ligue_1_soccer",
       "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "status": "failed",
+      "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "validationResult": "Import did not write to Google Sheets.",
       "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_panini_select_ligue_1_soccer&sport=soccer&type=product",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:52:53.532Z",
-      "updatedAt": "2026-06-02T22:55:08.233Z"
+      "updatedAt": "2026-06-02T22:55:16.414Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 donruss basketball|2025_26_donruss_basketball",
@@ -740,6 +740,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780440916415_i41vvw",
+      "ts": "2026-06-02T22:55:16.415Z",
+      "type": "source_import",
+      "title": "Import blocked before sheet write",
+      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780440908234_ho4g5v",
       "ts": "2026-06-02T22:55:08.234Z",
@@ -1529,16 +1539,6 @@
       "status": "started",
       "product": "2025-26 Upper Deck AHL Hockey",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780062905962_sg342j",
-      "ts": "2026-05-29T13:55:05.962Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "284 checklist rows and 6 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 Upper Deck AHL Hockey",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:55:10.928Z",
+  "saved_at": "2026-06-02T22:55:18.975Z",
   "saved_by": "cm_command_center_operator"
 }

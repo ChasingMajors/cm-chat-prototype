@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:53:42.476Z",
+  "exported_at": "2026-06-02T22:53:55.218Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -128,6 +128,24 @@
   ],
   "agent_actions": [
     {
+      "id": "checklist_publish|operator_backend|2025-26 sp game used chl hockey|2025_26_sp_game_used_chl_hockey",
+      "type": "checklist_publish",
+      "source": "operator_backend",
+      "product": "2025-26 SP Game Used CHL Hockey",
+      "sport": "hockey",
+      "code": "2025_26_sp_game_used_chl_hockey",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "adminDecision": "",
+      "executionResult": "Sheet write completed; publish needs review.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "createdAt": "2026-06-02T22:53:53.604Z",
+      "updatedAt": "2026-06-02T22:53:53.604Z"
+    },
+    {
       "id": "checklist_publish|operator_backend|2025-26 panini select ligue 1 soccer|2025_26_panini_select_ligue_1_soccer",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -162,24 +180,6 @@
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:13:36.145Z",
       "updatedAt": "2026-06-02T22:17:57.357Z"
-    },
-    {
-      "id": "source_import|wordpress_api|2025-26 sp game used chl hockey",
-      "type": "source_import",
-      "source": "wordpress_api",
-      "product": "2025-26 SP Game Used CHL Hockey",
-      "sport": "hockey",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-sp-game-used-chl-hockey-card-checklist/",
-      "createdAt": "2026-06-02T22:12:53.814Z",
-      "updatedAt": "2026-06-02T22:12:53.814Z"
     },
     {
       "id": "source_import|wordpress_api|2026 topps series 2 baseball",
@@ -740,6 +740,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780440833616_zm1iv2",
+      "ts": "2026-06-02T22:53:53.616Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 SP Game Used CHL Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780440833606_v8lspm",
+      "ts": "2026-06-02T22:53:53.606Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "558 checklist rows and 9 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 SP Game Used CHL Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780440820873_7n2bv8",
       "ts": "2026-06-02T22:53:40.873Z",
@@ -1519,26 +1539,6 @@
       "status": "started",
       "product": "2025-26 Upper Deck AHL Hockey",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780007230439_hcceka",
-      "ts": "2026-05-28T22:27:10.439Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "284 checklist rows and 6 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 Upper Deck AHL Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780007227500_wuoskb",
-      "ts": "2026-05-28T22:27:07.500Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Upper Deck AHL Hockey",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:53:43.714Z",
+  "saved_at": "2026-06-02T22:53:56.328Z",
   "saved_by": "cm_command_center_operator"
 }

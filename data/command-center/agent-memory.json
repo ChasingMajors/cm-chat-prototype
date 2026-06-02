@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:12:44.816Z",
+  "exported_at": "2026-06-02T22:12:53.344Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -614,6 +614,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780438371740_a3kux3",
+      "ts": "2026-06-02T22:12:51.740Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch started",
+      "detail": "Checking recent Checklistcenter items against public JSON.",
+      "status": "started",
+      "product": "",
+      "source": "quick_json"
+    },
     {
       "id": "log_1780438363215_zc66yz",
       "ts": "2026-06-02T22:12:43.215Z",
@@ -1403,16 +1413,6 @@
       "status": "in_progress",
       "product": "2025-26 Panini Signature Series Basketball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780006726560_8qtu6h",
-      "ts": "2026-05-28T22:18:46.560Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2025-26 Panini Signature Series Basketball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -1681,6 +1681,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:12:46.302Z",
+  "saved_at": "2026-06-02T22:12:54.739Z",
   "saved_by": "cm_command_center_operator"
 }

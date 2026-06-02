@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:55:03.419Z",
+  "exported_at": "2026-06-02T22:55:09.837Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -171,15 +171,15 @@
       "sport": "soccer",
       "code": "2025_26_panini_select_ligue_1_soccer",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
+      "executionResult": "Sheet write completed; publish needs review.",
       "validationResult": "CV/ChatBot validation needs review.",
-      "runUrl": "",
+      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_panini_select_ligue_1_soccer&sport=soccer&type=product",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:52:53.532Z",
-      "updatedAt": "2026-06-02T22:53:04.636Z"
+      "updatedAt": "2026-06-02T22:55:08.233Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 donruss basketball|2025_26_donruss_basketball",
@@ -740,6 +740,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780440908234_ho4g5v",
+      "ts": "2026-06-02T22:55:08.234Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "660 checklist rows and 144 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Panini Select Ligue 1 Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780440901816_6cpwsk",
       "ts": "2026-06-02T22:55:01.816Z",
@@ -1529,16 +1539,6 @@
       "status": "needs_review",
       "product": "2025-26 Upper Deck AHL Hockey",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780062902926_wib090",
-      "ts": "2026-05-29T13:55:02.926Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Upper Deck AHL Hockey",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:55:04.526Z",
+  "saved_at": "2026-06-02T22:55:10.928Z",
   "saved_by": "cm_command_center_operator"
 }

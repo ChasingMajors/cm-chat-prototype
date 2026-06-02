@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:54:58.617Z",
+  "exported_at": "2026-06-02T22:55:03.419Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -740,6 +740,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780440901816_6cpwsk",
+      "ts": "2026-06-02T22:55:01.816Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780440898981_1e9say",
+      "ts": "2026-06-02T22:54:58.981Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "1,452 rows and 14 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025 Topps Dynasty Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780440897014_5egrov",
       "ts": "2026-06-02T22:54:57.014Z",
@@ -1519,26 +1539,6 @@
       "status": "started",
       "product": "2025-26 Upper Deck AHL Hockey",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780062902918_i5x0do",
-      "ts": "2026-05-29T13:55:02.918Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "284 checklist rows and 6 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 Upper Deck AHL Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780062887776_p0rkor",
-      "ts": "2026-05-29T13:54:47.776Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:54:59.586Z",
+  "saved_at": "2026-06-02T22:55:04.526Z",
   "saved_by": "cm_command_center_operator"
 }

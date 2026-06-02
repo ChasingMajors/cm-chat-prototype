@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:56:22.711Z",
+  "exported_at": "2026-06-02T22:56:30.620Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -135,15 +135,15 @@
       "sport": "football",
       "code": "2025_topps_cosmic_chrome_football",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed; publish needs review.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "CV/ChatBot validation needs review.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:56:21.096Z",
-      "updatedAt": "2026-06-02T22:56:21.096Z"
+      "updatedAt": "2026-06-02T22:56:29.018Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps dynasty baseball|2025_topps_dynasty_baseball",
@@ -740,6 +740,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780440989017_c9rhr5",
+      "ts": "2026-06-02T22:56:29.017Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025 Topps Cosmic Chrome Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780440981110_fs3w0q",
       "ts": "2026-06-02T22:56:21.110Z",
@@ -1529,16 +1539,6 @@
       "status": "started",
       "product": "2025-26 Upper Deck Extended Series Hockey",
       "source": "admin"
-    },
-    {
-      "id": "log_1780063061027_6dlho5",
-      "ts": "2026-05-29T13:57:41.027Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch complete",
-      "detail": "10 SlabSquatch items checked. 5 need review. 1 PRV review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "slabsquatch"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:56:23.606Z",
+  "saved_at": "2026-06-02T22:56:31.532Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:57:25.999Z",
+  "exported_at": "2026-06-02T22:57:46.641Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -135,15 +135,15 @@
       "sport": "football",
       "code": "2025_topps_cosmic_chrome_football",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
+      "executionResult": "Sheet write completed; publish needs review.",
       "validationResult": "CV/ChatBot validation needs review.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:56:21.096Z",
-      "updatedAt": "2026-06-02T22:56:29.018Z"
+      "updatedAt": "2026-06-02T22:57:45.039Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps dynasty baseball|2025_topps_dynasty_baseball",
@@ -740,6 +740,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780441065040_ekjrmt",
+      "ts": "2026-06-02T22:57:45.040Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "863 checklist rows and 43 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025 Topps Cosmic Chrome Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780441043843_bf52r8",
       "ts": "2026-06-02T22:57:23.843Z",
@@ -1529,16 +1539,6 @@
       "status": "started",
       "product": "2025-26 Panini's Football EFL Soccer",
       "source": "admin"
-    },
-    {
-      "id": "log_1780063106430_pzm8b8",
-      "ts": "2026-05-29T13:58:26.430Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "1,094 rows and 70 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Upper Deck Extended Series Hockey",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:57:27.273Z",
+  "saved_at": "2026-06-02T22:57:47.791Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:56:03.855Z",
+  "exported_at": "2026-06-02T22:56:22.711Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -128,6 +128,24 @@
   ],
   "agent_actions": [
     {
+      "id": "checklist_publish|operator_backend|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
+      "type": "checklist_publish",
+      "source": "operator_backend",
+      "product": "2025 Topps Cosmic Chrome Football",
+      "sport": "football",
+      "code": "2025_topps_cosmic_chrome_football",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "adminDecision": "",
+      "executionResult": "Sheet write completed; publish needs review.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "createdAt": "2026-06-02T22:56:21.096Z",
+      "updatedAt": "2026-06-02T22:56:21.096Z"
+    },
+    {
       "id": "checklist_publish|operator_backend|2025 topps dynasty baseball|2025_topps_dynasty_baseball",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -234,24 +252,6 @@
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-uefa-womens-champions-league-soccer-card-checklist/",
       "createdAt": "2026-06-02T22:12:53.813Z",
       "updatedAt": "2026-06-02T22:12:53.813Z"
-    },
-    {
-      "id": "source_import|wordpress_api|2025 topps cosmic chrome football",
-      "type": "source_import",
-      "source": "wordpress_api",
-      "product": "2025 Topps Cosmic Chrome Football",
-      "sport": "football",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Football source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-topps-cosmic-chrome-football-card-checklist/",
-      "createdAt": "2026-06-02T22:12:53.812Z",
-      "updatedAt": "2026-06-02T22:12:53.812Z"
     },
     {
       "id": "visual_test|github_actions|2025-26 topps chrome arsenal soccer|2025_26_topps_chrome_arsenal_soccer",
@@ -740,6 +740,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780440981110_fs3w0q",
+      "ts": "2026-06-02T22:56:21.110Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025 Topps Cosmic Chrome Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780440981099_586q6l",
+      "ts": "2026-06-02T22:56:21.099Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "863 checklist rows and 43 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025 Topps Cosmic Chrome Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780440962252_pi1ftv",
       "ts": "2026-06-02T22:56:02.252Z",
@@ -1519,26 +1539,6 @@
       "status": "completed",
       "product": "",
       "source": "slabsquatch"
-    },
-    {
-      "id": "log_1780063061026_3tta75",
-      "ts": "2026-05-29T13:57:41.026Z",
-      "type": "source_watch",
-      "title": "Source Watch actions queued",
-      "detail": "1 findings are now visible in the Agent Action Queue for admin review. 3 admin-ignored source item(s) were skipped. 1 already-resolved item(s) were skipped.",
-      "status": "queued",
-      "product": "",
-      "source": "prv_source_watch"
-    },
-    {
-      "id": "log_1780063058458_8o92fm",
-      "ts": "2026-05-29T13:57:38.458Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch started",
-      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
-      "status": "started",
-      "product": "",
-      "source": "slabsquatch"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:56:05.440Z",
+  "saved_at": "2026-06-02T22:56:23.606Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:54:12.970Z",
+  "exported_at": "2026-06-02T22:54:19.320Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -740,6 +740,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780440857718_r2o9rc",
+      "ts": "2026-06-02T22:54:17.718Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780440853172_4xtvfk",
+      "ts": "2026-06-02T22:54:13.172Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "3,120 rows and 233 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2026 Topps Series 2 Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780440851367_5jx4j9",
       "ts": "2026-06-02T22:54:11.367Z",
@@ -1519,26 +1539,6 @@
       "status": "started",
       "product": "2025-26 Upper Deck AHL Hockey",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780062842650_vfk463",
-      "ts": "2026-05-29T13:54:02.650Z",
-      "type": "source_import",
-      "title": "Import blocked before sheet write",
-      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780062837547_bfo1le",
-      "ts": "2026-05-29T13:53:57.547Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Upper Deck AHL Hockey",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:54:14.136Z",
+  "saved_at": "2026-06-02T22:54:20.443Z",
   "saved_by": "cm_command_center_operator"
 }

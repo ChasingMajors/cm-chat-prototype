@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:53:29.489Z",
+  "exported_at": "2026-06-02T22:53:42.476Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -740,6 +740,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780440820873_7n2bv8",
+      "ts": "2026-06-02T22:53:40.873Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780440809747_4vuqej",
+      "ts": "2026-06-02T22:53:29.747Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "558 rows and 9 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 SP Game Used CHL Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780440807886_y4xmpw",
       "ts": "2026-06-02T22:53:27.886Z",
@@ -1519,26 +1539,6 @@
       "status": "started",
       "product": "2025-26 Upper Deck AHL Hockey",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780007227488_pf1wyw",
-      "ts": "2026-05-28T22:27:07.488Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "284 checklist rows and 6 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 Upper Deck AHL Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780007216737_r8hvm9",
-      "ts": "2026-05-28T22:26:56.737Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:53:30.602Z",
+  "saved_at": "2026-06-02T22:53:43.714Z",
   "saved_by": "cm_command_center_operator"
 }

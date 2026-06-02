@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:58:41.003Z",
+  "exported_at": "2026-06-02T22:59:31.005Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -740,6 +740,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780441169002_6bpdcp",
+      "ts": "2026-06-02T22:59:29.002Z",
+      "type": "checklist_publish",
+      "title": "JSON publish failed",
+      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=publishImportedChecklist&sport=baseball&bucket=2025&code=2025_topps_dynasty_baseball&key=JD",
+      "status": "failed",
+      "product": "2025 Topps Dynasty Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780441119006_wwflus",
       "ts": "2026-06-02T22:58:39.006Z",
@@ -1529,16 +1539,6 @@
       "status": "started",
       "product": "2025-26 Topps Chrome Arsenal Soccer",
       "source": "admin"
-    },
-    {
-      "id": "log_1780063164961_0y7qlu",
-      "ts": "2026-05-29T13:59:24.961Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "620 rows and 144 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Panini's Football EFL Soccer",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:58:42.671Z",
+  "saved_at": "2026-06-02T22:59:32.447Z",
   "saved_by": "cm_command_center_operator"
 }

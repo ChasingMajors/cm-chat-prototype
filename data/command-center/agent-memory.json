@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:13:17.679Z",
+  "exported_at": "2026-06-02T22:13:21.702Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -740,6 +740,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780438400099_3h78mm",
+      "ts": "2026-06-02T22:13:20.099Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
     {
       "id": "log_1780438396077_jlw90f",
       "ts": "2026-06-02T22:13:16.077Z",
@@ -1529,16 +1539,6 @@
       "status": "started",
       "product": "2025-26 Panini's Football EFL Soccer",
       "source": "admin"
-    },
-    {
-      "id": "log_1780007071595_wdm1jn",
-      "ts": "2026-05-28T22:24:31.595Z",
-      "type": "checklist_publish",
-      "title": "JSON publish failed",
-      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=publishImportedChecklist&sport=basketball&bucket=2025-26&code=2025_26_panini_signature_series_basketball&key=JD",
-      "status": "failed",
-      "product": "2025-26 Panini Signature Series Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:13:18.881Z",
+  "saved_at": "2026-06-02T22:13:23.123Z",
   "saved_by": "cm_command_center_operator"
 }

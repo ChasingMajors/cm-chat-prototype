@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:52:55.149Z",
+  "exported_at": "2026-06-02T22:53:06.238Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -135,15 +135,15 @@
       "sport": "soccer",
       "code": "2025_26_panini_select_ligue_1_soccer",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed; publish needs review.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "CV/ChatBot validation needs review.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:52:53.532Z",
-      "updatedAt": "2026-06-02T22:52:53.532Z"
+      "updatedAt": "2026-06-02T22:53:04.636Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 donruss basketball|2025_26_donruss_basketball",
@@ -740,6 +740,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780440784635_1wnp4o",
+      "ts": "2026-06-02T22:53:04.635Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Panini Select Ligue 1 Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780440773548_vkfvax",
       "ts": "2026-06-02T22:52:53.548Z",
@@ -1529,16 +1539,6 @@
       "status": "preview_ready",
       "product": "2025-26 Upper Deck AHL Hockey",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780007209802_9bn6v9",
-      "ts": "2026-05-28T22:26:49.802Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2025-26 Upper Deck AHL Hockey",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:52:57.136Z",
+  "saved_at": "2026-06-02T22:53:07.158Z",
   "saved_by": "cm_command_center_operator"
 }

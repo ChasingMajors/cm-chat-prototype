@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:12:18.737Z",
+  "exported_at": "2026-06-02T22:12:41.841Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -16,7 +16,7 @@
       "severity": "warning",
       "status": "queued",
       "createdAt": "2026-05-29T14:56:39.641Z",
-      "updatedAt": "2026-05-29T14:56:39.641Z",
+      "updatedAt": "2026-06-02T22:12:19.345Z",
       "why": "A supported source product was not found in the current Chasing Majors static checklist data.",
       "objective": "Prepare an import task for the Hockey checklist source and validate the product after publishing.",
       "steps": [
@@ -171,15 +171,15 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_ahl_hockey",
       "riskLevel": "medium",
-      "status": "failed",
+      "status": "running",
       "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
       "adminDecision": "",
-      "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "Import did not write to Google Sheets.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:27:07.486Z",
-      "updatedAt": "2026-05-29T15:00:01.297Z"
+      "updatedAt": "2026-06-02T22:12:40.239Z"
     },
     {
       "id": "visual_test|github_actions|2025-26 panini signature series basketball|2025_26_panini_signature_series_basketball",
@@ -225,15 +225,15 @@
       "sport": "hockey",
       "code": "",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "Coverage recheck started...",
+      "validationResult": "Coverage recheck needs review: Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search..",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-extended-series-hockey-card-checklist/",
       "createdAt": "2026-05-28T22:16:59.267Z",
-      "updatedAt": "2026-06-02T22:12:17.135Z"
+      "updatedAt": "2026-06-02T22:12:19.343Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 panini's football efl soccer",
@@ -614,6 +614,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780438360239_dksiu7",
+      "ts": "2026-06-02T22:12:40.239Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Upper Deck AHL Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780438339344_el9jv3",
+      "ts": "2026-06-02T22:12:19.344Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "Public coverage still needs review.",
+      "status": "needs_review",
+      "product": "2025-26 Upper Deck Extended Series Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780438337135_odw6rx",
       "ts": "2026-06-02T22:12:17.135Z",
@@ -1393,26 +1413,6 @@
       "status": "started",
       "product": "2025-26 Panini Signature Series Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780006661224_v75aon",
-      "ts": "2026-05-28T22:17:41.224Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Panini Signature Series Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780006661213_y8yhc6",
-      "ts": "2026-05-28T22:17:41.213Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "772 checklist rows and 57 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 Panini Signature Series Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1681,6 +1681,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:12:19.953Z",
+  "saved_at": "2026-06-02T22:12:42.668Z",
   "saved_by": "cm_command_center_operator"
 }

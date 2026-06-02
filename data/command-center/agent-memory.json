@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:54:40.402Z",
+  "exported_at": "2026-06-02T22:54:58.617Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -740,6 +740,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780440897014_5egrov",
+      "ts": "2026-06-02T22:54:57.014Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025 Topps Dynasty Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780440878799_y02s52",
       "ts": "2026-06-02T22:54:38.799Z",
@@ -1529,16 +1539,6 @@
       "status": "started",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1780062879607_s8x0x9",
-      "ts": "2026-05-29T13:54:39.607Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "284 rows and 6 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Upper Deck AHL Hockey",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:54:41.572Z",
+  "saved_at": "2026-06-02T22:54:59.586Z",
   "saved_by": "cm_command_center_operator"
 }

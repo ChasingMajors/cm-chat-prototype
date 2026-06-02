@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:12:41.841Z",
+  "exported_at": "2026-06-02T22:12:44.816Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -171,15 +171,15 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_ahl_hockey",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "failed",
       "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
+      "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
       "validationResult": "Import did not write to Google Sheets.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-05-28T22:27:07.486Z",
-      "updatedAt": "2026-06-02T22:12:40.239Z"
+      "updatedAt": "2026-06-02T22:12:43.213Z"
     },
     {
       "id": "visual_test|github_actions|2025-26 panini signature series basketball|2025_26_panini_signature_series_basketball",
@@ -614,6 +614,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780438363215_zc66yz",
+      "ts": "2026-06-02T22:12:43.215Z",
+      "type": "source_import",
+      "title": "Import blocked before sheet write",
+      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780438360239_dksiu7",
       "ts": "2026-06-02T22:12:40.239Z",
@@ -1403,16 +1413,6 @@
       "status": "queued",
       "product": "2025-26 Panini Signature Series Basketball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780006696003_17cpjl",
-      "ts": "2026-05-28T22:18:16.003Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Panini Signature Series Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1681,6 +1681,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:12:42.668Z",
+  "saved_at": "2026-06-02T22:12:46.302Z",
   "saved_by": "cm_command_center_operator"
 }

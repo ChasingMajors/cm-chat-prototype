@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:52:42.740Z",
+  "exported_at": "2026-06-02T22:52:55.149Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -128,6 +128,24 @@
   ],
   "agent_actions": [
     {
+      "id": "checklist_publish|operator_backend|2025-26 panini select ligue 1 soccer|2025_26_panini_select_ligue_1_soccer",
+      "type": "checklist_publish",
+      "source": "operator_backend",
+      "product": "2025-26 Panini Select Ligue 1 Soccer",
+      "sport": "soccer",
+      "code": "2025_26_panini_select_ligue_1_soccer",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "adminDecision": "",
+      "executionResult": "Sheet write completed; publish needs review.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "createdAt": "2026-06-02T22:52:53.532Z",
+      "updatedAt": "2026-06-02T22:52:53.532Z"
+    },
+    {
       "id": "checklist_publish|operator_backend|2025-26 donruss basketball|2025_26_donruss_basketball",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -144,24 +162,6 @@
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:13:36.145Z",
       "updatedAt": "2026-06-02T22:17:57.357Z"
-    },
-    {
-      "id": "source_import|wordpress_api|2025-26 panini select ligue 1 soccer",
-      "type": "source_import",
-      "source": "wordpress_api",
-      "product": "2025-26 Panini Select Ligue 1 Soccer",
-      "sport": "soccer",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-select-ligue-1-soccer-card-checklist/",
-      "createdAt": "2026-06-02T22:12:53.815Z",
-      "updatedAt": "2026-06-02T22:12:53.815Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 sp game used chl hockey",
@@ -740,6 +740,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780440773548_vkfvax",
+      "ts": "2026-06-02T22:52:53.548Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Panini Select Ligue 1 Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780440773534_q6zbdl",
+      "ts": "2026-06-02T22:52:53.534Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "660 checklist rows and 144 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Panini Select Ligue 1 Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780440761137_j373u6",
       "ts": "2026-06-02T22:52:41.137Z",
@@ -1519,26 +1539,6 @@
       "status": "started",
       "product": "2025-26 Upper Deck AHL Hockey",
       "source": "admin"
-    },
-    {
-      "id": "log_1780007179596_mdpmmo",
-      "ts": "2026-05-28T22:26:19.596Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2025-26 Panini Signature Series Basketball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780007179595_4pgf3s",
-      "ts": "2026-05-28T22:26:19.595Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2025-26 Panini Signature Series Basketball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:52:44.237Z",
+  "saved_at": "2026-06-02T22:52:57.136Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:52:32.526Z",
+  "exported_at": "2026-06-02T22:52:42.740Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -740,6 +740,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780440761137_j373u6",
+      "ts": "2026-06-02T22:52:41.137Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780440752902_vwstc4",
+      "ts": "2026-06-02T22:52:32.902Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "660 rows and 144 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Panini Select Ligue 1 Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780440750921_7fktav",
       "ts": "2026-06-02T22:52:30.921Z",
@@ -1519,26 +1539,6 @@
       "status": "validated",
       "product": "2025-26 Panini Signature Series Basketball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780007151996_zozdro",
-      "ts": "2026-05-28T22:25:51.996Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2025-26 Panini Signature Series Basketball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780007147141_tsvq6j",
-      "ts": "2026-05-28T22:25:47.141Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "1,094 rows and 70 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Upper Deck Extended Series Hockey",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:52:33.783Z",
+  "saved_at": "2026-06-02T22:52:44.237Z",
   "saved_by": "cm_command_center_operator"
 }

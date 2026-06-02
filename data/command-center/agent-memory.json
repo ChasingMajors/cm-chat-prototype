@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:13:58.921Z",
+  "exported_at": "2026-06-02T22:17:38.357Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -740,6 +740,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780438656360_r3g997",
+      "ts": "2026-06-02T22:17:36.360Z",
+      "type": "checklist_publish",
+      "title": "JSON publish failed",
+      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=publishImportedChecklist&sport=basketball&bucket=2025-26&code=2025_26_donruss_basketball&key=JD",
+      "status": "failed",
+      "product": "2025-26 Donruss Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780438437317_3j6i6a",
       "ts": "2026-06-02T22:13:57.317Z",
@@ -1529,16 +1539,6 @@
       "status": "removed",
       "product": "2026 Pro Set Metal Baseball",
       "source": "admin"
-    },
-    {
-      "id": "log_1780007124820_t6u0j0",
-      "ts": "2026-05-28T22:25:24.820Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2025-26 Panini Signature Series Basketball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:14:00.255Z",
+  "saved_at": "2026-06-02T22:17:39.951Z",
   "saved_by": "cm_command_center_operator"
 }

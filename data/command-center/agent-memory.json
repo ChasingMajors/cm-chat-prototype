@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:53:55.218Z",
+  "exported_at": "2026-06-02T22:54:12.970Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -143,7 +143,7 @@
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:53:53.604Z",
-      "updatedAt": "2026-06-02T22:53:53.604Z"
+      "updatedAt": "2026-06-02T22:53:56.500Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 panini select ligue 1 soccer|2025_26_panini_select_ligue_1_soccer",
@@ -740,6 +740,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780440851367_5jx4j9",
+      "ts": "2026-06-02T22:54:11.367Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2026 Topps Series 2 Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780440836501_m048nl",
+      "ts": "2026-06-02T22:53:56.501Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "558 checklist rows and 9 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 SP Game Used CHL Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780440833616_zm1iv2",
       "ts": "2026-06-02T22:53:53.616Z",
@@ -1519,26 +1539,6 @@
       "status": "started",
       "product": "2025-26 Upper Deck AHL Hockey",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780007259869_i96bai",
-      "ts": "2026-05-28T22:27:39.869Z",
-      "type": "source_import",
-      "title": "Import blocked before sheet write",
-      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780007255956_f796d1",
-      "ts": "2026-05-28T22:27:35.956Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Upper Deck AHL Hockey",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:53:56.328Z",
+  "saved_at": "2026-06-02T22:54:14.136Z",
   "saved_by": "cm_command_center_operator"
 }

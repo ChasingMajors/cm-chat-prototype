@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T22:13:21.702Z",
+  "exported_at": "2026-06-02T22:13:37.758Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -128,22 +128,22 @@
   ],
   "agent_actions": [
     {
-      "id": "source_import|wordpress_api|2025-26 donruss basketball",
-      "type": "source_import",
-      "source": "wordpress_api",
+      "id": "checklist_publish|operator_backend|2025-26 donruss basketball|2025_26_donruss_basketball",
+      "type": "checklist_publish",
+      "source": "operator_backend",
       "product": "2025-26 Donruss Basketball",
       "sport": "basketball",
-      "code": "",
+      "code": "2025_26_donruss_basketball",
       "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Basketball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "status": "needs_admin",
+      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "Sheet write completed; publish needs review.",
+      "validationResult": "CV/ChatBot validation needs review.",
       "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-donruss-basketball-card-checklist/",
-      "createdAt": "2026-06-02T22:12:53.815Z",
-      "updatedAt": "2026-06-02T22:12:53.815Z"
+      "sourceUrl": "",
+      "createdAt": "2026-06-02T22:13:36.145Z",
+      "updatedAt": "2026-06-02T22:13:36.145Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 panini select ligue 1 soccer",
@@ -740,6 +740,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780438416158_dcj1mg",
+      "ts": "2026-06-02T22:13:36.158Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Donruss Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780438416147_fjavx9",
+      "ts": "2026-06-02T22:13:36.147Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "2,551 checklist rows and 228 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Donruss Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780438400099_3h78mm",
       "ts": "2026-06-02T22:13:20.099Z",
@@ -1519,26 +1539,6 @@
       "status": "queued",
       "product": "2025-26 Panini Signature Series Basketball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780007087133_gx9dl4",
-      "ts": "2026-05-28T22:24:47.133Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "620 rows and 144 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Panini's Football EFL Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780007085346_kcw7ij",
-      "ts": "2026-05-28T22:24:45.346Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2025-26 Panini's Football EFL Soccer",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T22:13:23.123Z",
+  "saved_at": "2026-06-02T22:13:38.944Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2389,13 +2389,12 @@
     }
 
     try {
-      const url = endpoint
-        + (endpoint.indexOf("?") > -1 ? "&" : "?")
-        + "action=executePrvSourceImport"
-        + "&sourceUrl=" + encodeURIComponent(sourceUrl)
-        + "&sport=" + encodeURIComponent(sport || "")
-        + "&key=" + encodeURIComponent(key);
-      const data = await fetchJson(url, { timeoutMs: 180000 });
+      const data = await postOperatorJson(endpoint, {
+        action: "executePrvSourceImport",
+        sourceUrl: sourceUrl,
+        sport: sport || "",
+        key: key
+      }, { timeoutMs: 180000 });
       renderPrvExecuteResult(data, actionId);
     } catch (err) {
       const detail = err && err.message ? err.message : String(err);
@@ -2472,12 +2471,11 @@
     renderActivityLog();
 
     try {
-      const url = endpoint
-        + (endpoint.indexOf("?") > -1 ? "&" : "?")
-        + "action=publishPrvVaultStaticData"
-        + "&code=" + encodeURIComponent(code)
-        + "&key=" + encodeURIComponent(key);
-      const data = await fetchJson(url, { timeoutMs: 240000 });
+      const data = await postOperatorJson(endpoint, {
+        action: "publishPrvVaultStaticData",
+        code: code,
+        key: key
+      }, { timeoutMs: 240000 });
       renderPrvPublishResult(data, actionId, { fullSync: isFullSync });
     } catch (err) {
       const detail = err && err.message ? err.message : String(err);
@@ -2683,14 +2681,13 @@
     }
 
     try {
-      const url = endpoint
-        + (endpoint.indexOf("?") > -1 ? "&" : "?")
-        + "action=executeSourceImport"
-        + "&sourceUrl=" + encodeURIComponent(sourceUrl)
-        + "&sport=" + encodeURIComponent(sport || "")
-        + "&key=" + encodeURIComponent(key)
-        + "&publish=0";
-      const data = await fetchJson(url, { timeoutMs: 240000 });
+      const data = await postOperatorJson(endpoint, {
+        action: "executeSourceImport",
+        sourceUrl: sourceUrl,
+        sport: sport || "",
+        key: key,
+        publish: "0"
+      }, { timeoutMs: 240000 });
       renderExecuteResult(data, actionId);
       if (data && data.ok && data.publish && data.publish.skipped) {
         publishImportedChecklist(data, actionId);
@@ -2746,14 +2743,13 @@
 
     try {
       const bucket = writeData.target_bucket || product.target_bucket || product.year || "";
-      const url = endpoint
-        + (endpoint.indexOf("?") > -1 ? "&" : "?")
-        + "action=publishImportedChecklist"
-        + "&sport=" + encodeURIComponent(product.sport || "")
-        + "&bucket=" + encodeURIComponent(bucket)
-        + "&code=" + encodeURIComponent(product.code || "")
-        + "&key=" + encodeURIComponent(key);
-      const publishData = await fetchJson(url, { timeoutMs: 240000 });
+      const publishData = await postOperatorJson(endpoint, {
+        action: "publishImportedChecklist",
+        sport: product.sport || "",
+        bucket: bucket,
+        code: product.code || "",
+        key: key
+      }, { timeoutMs: 240000 });
       const merged = Object.assign({}, writeData, {
         publish: publishData && publishData.publish ? publishData.publish : publishData,
         status: publishData && publishData.ok ? "written_published_validated" : "written_publish_needs_review",

@@ -184,11 +184,11 @@ PRV source watch:
 
 PRV JSON sync:
 
-`YOUR_WEB_APP_URL?action=publishPrvVaultStaticData&key=YOUR_ADMIN_KEY`
+Use Command Center `Sync PRV JSON`, which sends the admin key in a POST body.
 
 Scheduled PRV sync with Sentinel memory:
 
-`YOUR_WEB_APP_URL?action=runScheduledPrvSync&key=YOUR_ADMIN_KEY`
+Create an Apps Script time trigger for `runScheduledPrvSyncTrigger` after adding that wrapper in the Operator project, or call `runScheduledPrvSync` from an approved operator flow. Avoid putting the admin key in a bookmark or public URL.
 
 ## Important Safety Note
 

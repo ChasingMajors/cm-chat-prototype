@@ -2706,6 +2706,32 @@ function runScheduledPrvSync_(input) {
   };
 }
 
+function runScheduledPrvSyncTrigger() {
+  const key = PropertiesService.getScriptProperties().getProperty(CM_OPERATOR_KEY_PROPERTY);
+  if (!key) {
+    const result = {
+      ok: false,
+      error: "Missing Script Property " + CM_OPERATOR_KEY_PROPERTY + ". Scheduled PRV sync did not run.",
+      updated_at: new Date().toISOString()
+    };
+    Logger.log(JSON.stringify(result));
+    return result;
+  }
+
+  try {
+    return runScheduledPrvSync_({ key: key });
+  } catch (err) {
+    const result = {
+      ok: false,
+      error: err && err.message ? err.message : String(err),
+      stack: err && err.stack ? String(err.stack).slice(0, 2000) : "",
+      updated_at: new Date().toISOString()
+    };
+    Logger.log("Scheduled PRV sync trigger failed: " + JSON.stringify(result));
+    return result;
+  }
+}
+
 function loadOrCreateAgentMemoryForSchedule_(key) {
   const loaded = loadAgentMemory_({ key: key });
   if (loaded && loaded.has_memory && loaded.memory) return loaded.memory;

@@ -13,6 +13,9 @@ It can run review-only checks and, after an admin write key is configured, appro
 - Builds an import preview from a supported Checklistcenter product page.
 - Writes approved imports to the mapped Chasing Majors Google Sheet.
 - Validates that the product row, checklist rows, and parallel rows were written.
+- Scans supported SlabSquatch posts for PRV review work.
+- Publishes approved PRV JSON through Static Data Exporter.
+- Records scheduled PRV sync failures as Sentinel incidents instead of leaving them as vague admin emails.
 - Reports products as:
   - covered
   - missing
@@ -58,6 +61,20 @@ The Command Center Operator writes the Google Sheet. The Static Data Exporter pu
 After this is configured, approved imports run:
 
 `Preview -> Sheet write -> publish JSON -> rebuild index -> validate public Checklist Vault and ChatBot data`
+
+For PRV, approved work runs:
+
+`PRV preview -> PRV Sheet write -> PRV JSON publish -> public PRV validation`
+
+For safer PRV time triggers, update Static Data Exporter and run:
+
+`installVaultStaticDataGitHubTriggers`
+
+That installs triggers against:
+
+`publishVaultStaticDataToGitHubScheduled`
+
+The scheduled wrapper uses a lock and catches normal publish failures. Use `publishVaultStaticDataToGitHub` or Command Center `Sync PRV JSON` for direct manual syncs.
 
 ## Create The Apps Script Project
 
@@ -160,6 +177,18 @@ Single product validation:
 Import preview:
 
 `YOUR_WEB_APP_URL?action=previewSourceImport&sourceUrl=https%3A%2F%2Fwww.checklistcenter.com%2F2025-26-panini-noir-road-to-fifa-world-cup-26-soccer-card-checklist%2F&sport=soccer`
+
+PRV source watch:
+
+`YOUR_WEB_APP_URL?action=prvSourceWatch`
+
+PRV JSON sync:
+
+`YOUR_WEB_APP_URL?action=publishPrvVaultStaticData&key=YOUR_ADMIN_KEY`
+
+Scheduled PRV sync with Sentinel memory:
+
+`YOUR_WEB_APP_URL?action=runScheduledPrvSync&key=YOUR_ADMIN_KEY`
 
 ## Important Safety Note
 

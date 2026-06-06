@@ -236,10 +236,16 @@ function doGet(e) {
       }));
     }
 
+    if (action === "runScheduledPrvSync") {
+      return json_(runScheduledPrvSync_({
+        key: p.key || ""
+      }));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["health", "sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync"]
     });
   } catch (err) {
     return json_({
@@ -322,10 +328,14 @@ function doPost(e) {
       return json_(runScheduledSourceWatch_(body));
     }
 
+    if (action === "runScheduledPrvSync") {
+      return json_(runScheduledPrvSync_(body));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch"]
+      supported_actions: ["sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync"]
     });
   } catch (err) {
     return json_({
@@ -2586,6 +2596,112 @@ function runScheduledSourceWatch_(input) {
     summary: watch.summary || {},
     memory_path: saveResult.path,
     memory_sha: saveResult.sha,
+    updated_at: now
+  };
+}
+
+function runScheduledPrvSync_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const now = new Date().toISOString();
+  let publish = {};
+  let publishOk = false;
+  let detail = "";
+
+  try {
+    publish = publishPrvVaultStaticData_({
+      key: input && input.key,
+      code: ""
+    });
+    publishOk = !!(publish && publish.ok);
+    detail = publishOk
+      ? "Scheduled PRV JSON sync completed."
+      : publish && publish.error
+        ? publish.error
+        : "Scheduled PRV JSON sync returned a review response.";
+  } catch (err) {
+    publish = {
+      ok: false,
+      error: err && err.message ? err.message : String(err),
+      stack: err && err.stack ? String(err.stack).slice(0, 2000) : ""
+    };
+    detail = publish.error;
+  }
+
+  const memory = loadOrCreateAgentMemoryForSchedule_(input && input.key);
+  const incidentId = "prv_sync_incident_full_vault";
+  const actions = Array.isArray(memory.agent_actions) ? memory.agent_actions.slice() : [];
+  let existing = null;
+
+  actions.forEach(function(action) {
+    if (action && action.id === incidentId) existing = action;
+  });
+
+  if (publishOk) {
+    if (existing) {
+      existing.status = "validated";
+      existing.executionResult = "Scheduled PRV full JSON sync completed through Static Data Exporter.";
+      existing.validationResult = detail;
+      existing.recommendedAction = "No admin action needed unless a specific PRV product fails public validation.";
+      existing.updatedAt = now;
+    }
+  } else {
+    const patch = {
+      id: incidentId,
+      type: "prv_sync_incident",
+      source: "scheduled_prv_sync",
+      product: "Print Run Vault JSON Sync",
+      sport: "",
+      code: "prv_full_sync",
+      riskLevel: "high",
+      status: "failed",
+      recommendedAction: "Run Agent Cycle to let Sentinel retry PRV JSON sync once. If it fails again, inspect Static Data Exporter logs and GitHub publish permissions.",
+      adminDecision: "",
+      executionResult: "Scheduled PRV full JSON sync failed.",
+      validationResult: detail,
+      runUrl: "",
+      sourceUrl: "",
+      createdAt: existing && existing.createdAt ? existing.createdAt : now,
+      updatedAt: now
+    };
+    if (existing) Object.assign(existing, patch);
+    else actions.unshift(patch);
+  }
+
+  memory.agent_actions = actions.slice(0, 80);
+  memory.activity_log = prependMemoryActivity_(memory.activity_log || [], {
+    id: "log_" + Date.now(),
+    ts: now,
+    type: "prv_sync",
+    title: publishOk ? "Scheduled PRV sync complete" : "Scheduled PRV sync failed",
+    detail: detail,
+    status: publishOk ? "validated" : "failed",
+    product: "Print Run Vault",
+    source: "operator_backend"
+  });
+  memory.saved_at = now;
+
+  let saveResult = {};
+  try {
+    saveResult = saveAgentMemory_({
+      key: input && input.key,
+      memory: memory
+    });
+  } catch (err) {
+    saveResult = {
+      ok: false,
+      error: err && err.message ? err.message : String(err)
+    };
+  }
+
+  return {
+    ok: publishOk,
+    status: publishOk ? "validated" : "failed",
+    publish: publish,
+    incident_created: !publishOk,
+    memory_path: saveResult.path || "",
+    memory_sha: saveResult.sha || "",
+    memory_error: saveResult.error || "",
     updated_at: now
   };
 }

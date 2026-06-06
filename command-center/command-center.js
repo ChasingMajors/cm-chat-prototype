@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc67-incident-response-v1-2026-05-22";
+  const COMMAND_CENTER_VERSION = "cc68-prv-sync-incident-v1-2026-06-06";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -770,6 +770,41 @@
     writeActivityLog();
     if (!input.noAutoSave) scheduleBackendMemorySave();
     return entry;
+  }
+
+  function upsertPrvSyncIncident(detail, options) {
+    const opts = options || {};
+    const recovered = opts.status === "validated";
+    const action = upsertAgentAction({
+      id: "prv_sync_incident_full_vault",
+      type: "prv_sync_incident",
+      source: opts.source || "operator_backend",
+      product: "Print Run Vault JSON Sync",
+      sport: "",
+      code: "prv_full_sync",
+      riskLevel: "high",
+      status: opts.status || "failed",
+      recommendedAction: opts.recommendedAction || (recovered
+        ? "PRV sync recovered and validated by the agent."
+        : "Run Agent Cycle to let Sentinel retry PRV JSON sync once. If it fails again, check the Static Data Exporter URL, Apps Script execution log, and GitHub publish permissions."),
+      executionResult: opts.executionResult || "PRV full JSON sync failed.",
+      validationResult: opts.validationResult || detail || "No recovery proof yet.",
+      runUrl: opts.runUrl || ""
+    });
+
+    logActivity({
+      type: "prv_sync_incident",
+      status: action.status || "failed",
+      product: action.product,
+      source: opts.source || "operator_backend",
+      title: recovered ? "PRV sync incident recovered" : "PRV sync incident created",
+      detail: detail || action.validationResult
+    });
+
+    renderAgentActions();
+    renderActionLanes();
+    renderActivityLog();
+    return action;
   }
 
   function getProductName(item) {
@@ -2446,12 +2481,17 @@
       renderPrvPublishResult(data, actionId, { fullSync: isFullSync });
     } catch (err) {
       const detail = err && err.message ? err.message : String(err);
+      const attemptedRecovery = !!(isFullSync && (options.recovery || action && String(action.executionResult || "").toLowerCase().includes("safe recovery attempted")));
       if (actionId) {
         updateAgentAction(actionId, {
-          status: "needs_admin",
-          executionResult: "PRV sheet write completed; PRV JSON publish request failed.",
+          status: attemptedRecovery ? "fix_attempted" : "needs_admin",
+          executionResult: attemptedRecovery
+            ? "Safe recovery attempted: PRV JSON sync was retried once and failed again."
+            : "PRV sheet write completed; PRV JSON publish request failed.",
           validationResult: detail,
-          recommendedAction: "Retry PRV publish after confirming Static Data Exporter endpoint is healthy."
+          recommendedAction: attemptedRecovery
+            ? "Open the latest Static Data Exporter execution log. Check whether publishVaultStaticDataToGitHub timed out, hit GitHub API errors, or is missing permissions."
+            : "Retry PRV publish after confirming Static Data Exporter endpoint is healthy."
         });
         renderAgentActions();
         renderActionLanes();
@@ -2465,6 +2505,21 @@
         detail: detail
       });
       renderActivityLog();
+      if (isFullSync) {
+        upsertPrvSyncIncident(detail, {
+          status: attemptedRecovery ? "fix_attempted" : "failed",
+          executionResult: attemptedRecovery
+            ? "Safe recovery attempted: PRV JSON sync was retried once and failed again."
+            : "PRV full JSON sync failed. Safe recovery has not run yet.",
+          validationResult: attemptedRecovery
+            ? "Retry failed. Admin should inspect Static Data Exporter execution logs and GitHub publish permissions."
+            : detail,
+          recommendedAction: attemptedRecovery
+            ? "Open the latest Static Data Exporter execution log. Check whether publishVaultStaticDataToGitHub timed out, hit GitHub API errors, or is missing permissions."
+            : "Run Agent Cycle to retry PRV JSON sync once before admin review.",
+          source: "operator_backend"
+        });
+      }
       renderSourceCheckMessage("PRV publish failed", detail, "critical");
     }
   }
@@ -3390,6 +3445,26 @@
     runSentinelSelfTest({ recoveryActionId: action.id });
   }
 
+  function attemptPrvSyncIncidentRecovery(action) {
+    updateAgentAction(action.id, {
+      status: "running",
+      executionResult: "Safe recovery attempted: retrying full PRV JSON sync once before admin review.",
+      validationResult: "Retry running through Operator Backend and Static Data Exporter."
+    });
+    logActivity({
+      type: "prv_sync_incident",
+      status: "started",
+      product: action.product || "Print Run Vault JSON Sync",
+      source: "command_center",
+      title: "PRV safe recovery started",
+      detail: "Agent is rerunning the full PRV JSON sync once as a safe recovery step."
+    });
+    renderAgentActions();
+    renderActionLanes();
+    renderActivityLog();
+    publishPrvVaultData("", action.id, { fullSync: true, recovery: true });
+  }
+
   async function refreshSentinelSelfTestStatus(options) {
     const endpoint = readOperatorEndpoint();
     const key = readOperatorKey();
@@ -3936,8 +4011,10 @@
             : "Publish returned without public validation.";
 
     if (actionId) {
+      const existingAction = state.agentActions.find(item => item.id === actionId) || {};
+      const updateType = existingAction.type === "prv_sync_incident" ? "prv_sync_incident" : "prv_source_review";
       updateAgentAction(actionId, {
-        type: "prv_source_review",
+        type: updateType,
         status: ok ? "validated" : "needs_admin",
         executionResult: publishOk ? "PRV JSON publish request completed." : "PRV JSON publish needs review.",
         validationResult: validationDetail,
@@ -3958,6 +4035,26 @@
       detail: validationDetail
     });
     renderActivityLog();
+
+    if (isFullSync) {
+      if (publishOk) {
+        upsertPrvSyncIncident(validationDetail, {
+          status: "validated",
+          executionResult: "PRV full JSON sync completed through Static Data Exporter.",
+          validationResult: validationDetail,
+          recommendedAction: "No admin action needed unless a specific PRV product fails public validation.",
+          source: "operator_backend"
+        });
+      } else {
+        upsertPrvSyncIncident(validationDetail, {
+          status: "failed",
+          executionResult: "PRV full JSON sync returned a publish review response.",
+          validationResult: validationDetail,
+          recommendedAction: "Run Agent Cycle to retry PRV JSON sync once before admin review.",
+          source: "operator_backend"
+        });
+      }
+    }
 
     els.sourceCheckResult.innerHTML = `
       <div class="source-result-card ${ok ? "covered" : ""}">
@@ -4989,6 +5086,19 @@
       });
     }
 
+    if (type === "prv_sync_incident") {
+      checks.push({
+        label: "Self-healing retry",
+        ok: execution.includes("safe recovery") || status === "validated",
+        note: action && action.executionResult ? action.executionResult : "No safe retry recorded yet"
+      });
+      checks.push({
+        label: "Static JSON publish",
+        ok: status === "validated" || validation.includes("completed") || validation.includes("sync completed"),
+        note: action && action.validationResult ? action.validationResult : "Publish proof pending"
+      });
+    }
+
     return checks;
   }
 
@@ -5054,6 +5164,28 @@
         detail: status === "fix_applied"
           ? "A repair task was completed. Rerun validation before marking this resolved."
           : "A repair task has been created. Complete the task, then rerun validation."
+      };
+    }
+
+    if (type === "prv_sync_incident") {
+      if (status === "validated") {
+        return {
+          label: "Recovered",
+          className: "complete",
+          detail: "PRV JSON sync completed and proof was recorded."
+        };
+      }
+      if (status === "fix_attempted") {
+        return {
+          label: "Admin Review",
+          className: "review",
+          detail: "Sentinel retried PRV sync once and it still needs admin review."
+        };
+      }
+      return {
+        label: "Self-Heal Ready",
+        className: "ready",
+        detail: "Run Agent Cycle to retry PRV JSON sync once before manual troubleshooting."
       };
     }
 
@@ -5133,6 +5265,7 @@
   function getAgentActionKindLabel(action) {
     const type = String(action && action.type || "").toLowerCase();
     if (type === "sentinel_incident") return "Sentinel Incident";
+    if (type === "prv_sync_incident") return "PRV Sync Failed";
     if (type === "source_import") return "New Checklist Found";
     if (type === "prv_source_review") return "New Print Run Found";
     if (type === "checklist_publish") return "Checklist Publish";
@@ -5184,11 +5317,20 @@
       { key: "validate", label: "Behavior tested", done: isComplete }
     ];
 
+    const prvSyncSteps = [
+      { key: "sync", label: "Sync failed", done: true },
+      { key: "retry", label: "Agent retry", done: execution.includes("safe recovery") || isComplete },
+      { key: "publish", label: "JSON publish proof", done: isComplete || validation.includes("sync completed") || validation.includes("completed") },
+      { key: "validate", label: "Resolved", done: isComplete }
+    ];
+
     let steps = type === "prv_source_review"
       ? prvSteps
-      : type === "visual_test"
-        ? visualSteps
-        : checklistSteps;
+      : type === "prv_sync_incident"
+        ? prvSyncSteps
+        : type === "visual_test"
+          ? visualSteps
+          : checklistSteps;
 
     let firstOpenFound = false;
     steps = steps.map(step => {
@@ -5255,6 +5397,17 @@
       if (stepKey === "validate") {
         if (!action.code) renderSourceCheckMessage("PRV code missing", "This PRV card needs a product code before public validation.", "warning");
         else recheckPrvPublicData(action.code || "", action.id);
+        return;
+      }
+    }
+
+    if (type === "prv_sync_incident") {
+      if (stepKey === "sync" || stepKey === "retry" || stepKey === "publish") {
+        attemptPrvSyncIncidentRecovery(action);
+        return;
+      }
+      if (stepKey === "validate") {
+        renderSourceCheckMessage("PRV sync status", action.validationResult || "Run Agent Cycle to retry PRV sync or inspect the admin hold.", "info");
         return;
       }
     }
@@ -5401,6 +5554,9 @@
               ${action.code ? `<button class="action-btn" type="button" data-action-recheck-prv="${escapeHtml(action.id)}">Recheck PRV Public JSON</button>` : ""}
               <a class="action-btn" href="${escapeHtml(action.sourceUrl || action.runUrl)}" target="_blank" rel="noopener noreferrer">Open Source</a>
             ` : ""}
+            ${action.type === "prv_sync_incident" ? `
+              <button class="action-btn approve primary-next" type="button" data-action-retry-prv-sync="${escapeHtml(action.id)}">Retry PRV Sync</button>
+            ` : ""}
             ${canTestProduct && !retestNeeded ? `
               <button class="action-btn" type="button" data-action-visual-test="${escapeHtml(action.id)}">Test CV/ChatBot</button>
             ` : ""}
@@ -5518,6 +5674,14 @@
         const action = state.agentActions.find(item => item.id === btn.dataset.actionRecheckPrv);
         if (!action) return;
         recheckPrvPublicData(action.code || "", action.id);
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-retry-prv-sync]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const action = state.agentActions.find(item => item.id === btn.dataset.actionRetryPrvSync);
+        if (!action) return;
+        attemptPrvSyncIncidentRecovery(action);
       });
     });
 
@@ -5684,6 +5848,23 @@
         action: incidentRecovery,
         title: "Attempt safe Sentinel recovery",
         detail: "Sentinel self-test failed. The agent will run one safe recovery retest before asking admin for manual review."
+      };
+    }
+
+    const prvSyncRecovery = active.find(action => {
+      const type = String(action.type || "").toLowerCase();
+      const status = String(action.status || "").toLowerCase();
+      const execution = String(action.executionResult || "").toLowerCase();
+      return type === "prv_sync_incident" &&
+        (status === "failed" || status === "blocked") &&
+        !execution.includes("safe recovery attempted");
+    });
+    if (prvSyncRecovery) {
+      return {
+        kind: "prv_sync_recovery",
+        action: prvSyncRecovery,
+        title: "Attempt safe PRV sync recovery",
+        detail: "PRV JSON sync failed. Sentinel will retry the full PRV publish once, then record proof or hold for admin review."
       };
     }
 
@@ -5947,6 +6128,12 @@
     if (step.kind === "sentinel_incident_recovery") {
       renderAgentCycleMessage(step.title, step.detail, "warning");
       attemptSentinelIncidentRecovery(step.action);
+      return;
+    }
+
+    if (step.kind === "prv_sync_recovery") {
+      renderAgentCycleMessage(step.title, step.detail, "warning");
+      attemptPrvSyncIncidentRecovery(step.action);
       return;
     }
 

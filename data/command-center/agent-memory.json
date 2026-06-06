@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-06T15:42:16.067Z",
+  "exported_at": "2026-06-06T15:42:42.916Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -139,11 +139,11 @@
       "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
       "adminDecision": "",
       "executionResult": "PRV full JSON sync completed through Static Data Exporter.",
-      "validationResult": "uniqueValues_ is not defined",
+      "validationResult": "80 public PRV products and 3,265 product rows validated across 1 shard.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-06T15:29:36.437Z",
-      "updatedAt": "2026-06-06T15:36:55.321Z"
+      "updatedAt": "2026-06-06T15:42:41.313Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
@@ -758,6 +758,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780760561313_5v9s54",
+      "ts": "2026-06-06T15:42:41.313Z",
+      "type": "prv_sync_incident",
+      "title": "PRV sync incident recovered",
+      "detail": "80 public PRV products and 3,265 product rows validated across 1 shard.",
+      "status": "validated",
+      "product": "Print Run Vault JSON Sync",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780760561307_tqobqd",
+      "ts": "2026-06-06T15:42:41.307Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync completed",
+      "detail": "80 public PRV products and 3,265 product rows validated across 1 shard.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780760534462_aroevm",
       "ts": "2026-06-06T15:42:14.463Z",
@@ -1537,26 +1557,6 @@
       "status": "in_progress",
       "product": "2025-26 Topps Chrome Arsenal Soccer",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780063306526_kxc3vc",
-      "ts": "2026-05-29T14:01:46.526Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "251 checklist rows and 86 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 Topps Chrome Arsenal Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780063296933_sm6h3z",
-      "ts": "2026-05-29T14:01:36.933Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2025-26 Topps Chrome Arsenal Soccer",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -1825,6 +1825,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-06T15:42:17.218Z",
+  "saved_at": "2026-06-06T15:42:43.982Z",
   "saved_by": "cm_command_center_operator"
 }

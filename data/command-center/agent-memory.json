@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-06T17:03:48.587Z",
+  "exported_at": "2026-06-06T19:41:17.574Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -128,6 +128,25 @@
   ],
   "agent_actions": [
     {
+      "id": "prv_watch|basketball|2025-26 topps hoops basketball",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2025-26 Topps Hoops Basketball",
+      "sport": "basketball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "failed",
+      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "adminDecision": "",
+      "executionResult": "PRV sheet write failed.",
+      "validationResult": "PRV source preview is not ready for write.",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
+      "createdAt": "2026-06-06T17:00:51.700Z",
+      "updatedAt": "2026-06-06T17:00:51.700Z",
+      "autoExecutedAt": "2026-06-06T17:00:51.700Z"
+    },
+    {
       "id": "prv_watch|basketball|2025 26 topps hoops basketball",
       "type": "prv_source_review",
       "source": "scheduled_prv_quick_json",
@@ -162,7 +181,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:34:06.582Z"
+      "updatedAt": "2026-06-06T17:00:51.700Z"
     },
     {
       "id": "source_watch|hockey|2025-26 upper deck extended series hockey",
@@ -180,7 +199,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-extended-series-hockey-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:34:06.582Z"
+      "updatedAt": "2026-06-06T17:00:51.700Z"
     },
     {
       "id": "source_watch|football|2025-26 panini's football efl soccer",
@@ -198,7 +217,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:34:06.582Z"
+      "updatedAt": "2026-06-06T17:00:51.700Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps chrome uefa women's champions league soccer",
@@ -216,7 +235,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-uefa-womens-champions-league-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:34:06.582Z"
+      "updatedAt": "2026-06-06T17:00:51.700Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps gold bundesliga soccer",
@@ -234,7 +253,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-gold-bundesliga-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:34:06.582Z"
+      "updatedAt": "2026-06-06T17:00:51.700Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -252,7 +271,7 @@
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-06T15:29:36.437Z",
-      "updatedAt": "2026-06-06T16:34:06.582Z"
+      "updatedAt": "2026-06-06T17:00:51.700Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
@@ -868,13 +887,63 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780765426983_35ef0l",
-      "ts": "2026-06-06T17:03:46.983Z",
+      "id": "log_1780774875970_wpbg87",
+      "ts": "2026-06-06T19:41:15.970Z",
       "type": "agent_sweep",
-      "title": "Backend Agent Sweep complete",
-      "detail": "Checklist: 4 actions. PRV: 2 actions. PRV sync: passed. Auto: 1 ran. 2025-26 Topps Hoops Basketball -> failed",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1780765428899_yq7xac",
+      "ts": "2026-06-06T17:03:48.899Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780765428886_1rx09o",
+      "ts": "2026-06-06T17:03:48.886Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780765417738",
+      "ts": "2026-06-06T17:00:51.700Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 4 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Topps Hoops Basketball -> failed",
       "status": "needs_review",
       "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780765417737",
+      "ts": "2026-06-06T17:00:51.700Z",
+      "type": "auto_action",
+      "title": "Full-auto action failed",
+      "detail": "2025-26 Topps Hoops Basketball: PRV sheet write failed. PRV source preview is not ready for write.",
+      "status": "failed",
+      "product": "2025-26 Topps Hoops Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780765417418",
+      "ts": "2026-06-06T17:00:51.700Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
       "source": "operator_backend"
     },
     {
@@ -1616,56 +1685,6 @@
       "status": "needs_review",
       "product": "2025-26 Upper Deck Extended Series Hockey",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780438337135_odw6rx",
-      "ts": "2026-06-02T22:12:17.135Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2025-26 Upper Deck Extended Series Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780438337130_xf4dwd",
-      "ts": "2026-06-02T22:12:17.130Z",
-      "type": "agent_cycle",
-      "title": "Verify Checklist public JSON",
-      "detail": "2025-26 Upper Deck Extended Series Hockey has enough detail for a safe public coverage check. Sentinel will verify the JSON before asking for admin review.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780066801298_p82xni",
-      "ts": "2026-05-29T15:00:01.298Z",
-      "type": "source_import",
-      "title": "Import blocked before sheet write",
-      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780066795436_etpk73",
-      "ts": "2026-05-29T14:59:55.436Z",
-      "type": "source_import",
-      "title": "Import blocked before sheet write",
-      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780066792315_0e8dlg",
-      "ts": "2026-05-29T14:59:52.315Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Upper Deck AHL Hockey",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1934,6 +1953,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-06T17:03:49.790Z",
+  "saved_at": "2026-06-06T19:41:18.792Z",
   "saved_by": "cm_command_center_operator"
 }

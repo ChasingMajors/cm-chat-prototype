@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-06T16:33:51.887Z",
+  "exported_at": "2026-06-06T16:34:07.007Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -867,6 +867,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780763645403_8itmdo",
+      "ts": "2026-06-06T16:34:05.403Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
       "id": "log_1780763630283_68rhad",
       "ts": "2026-06-06T16:33:50.283Z",
       "type": "autonomy",
@@ -1655,16 +1665,6 @@
       "status": "in_progress",
       "product": "2025-26 Topps Chrome Arsenal Soccer",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780066664497_8lu52c",
-      "ts": "2026-05-29T14:57:44.497Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2025-26 Topps Chrome Arsenal Soccer",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -1933,6 +1933,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-06T16:33:53.109Z",
+  "saved_at": "2026-06-06T16:34:08.393Z",
   "saved_by": "cm_command_center_operator"
 }

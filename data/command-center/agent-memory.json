@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-06T15:36:56.923Z",
+  "exported_at": "2026-06-06T15:42:16.067Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -758,6 +758,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780760534462_aroevm",
+      "ts": "2026-06-06T15:42:14.463Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync started",
+      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
+      "status": "started",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780760215322_1nerhu",
       "ts": "2026-06-06T15:36:55.322Z",
@@ -1547,16 +1557,6 @@
       "status": "in_progress",
       "product": "2025-26 Topps Chrome Arsenal Soccer",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780063269241_q4251h",
-      "ts": "2026-05-29T14:01:09.241Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2025-26 Topps Chrome Arsenal Soccer",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -1825,6 +1825,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-06T15:36:57.982Z",
+  "saved_at": "2026-06-06T15:42:17.218Z",
   "saved_by": "cm_command_center_operator"
 }

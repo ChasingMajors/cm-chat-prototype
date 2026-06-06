@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-06T19:41:17.574Z",
+  "exported_at": "2026-06-06T19:50:07.192Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -887,6 +887,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780775014769_i1ao5n",
+      "ts": "2026-06-06T19:43:34.769Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780775014756_jazg1p",
+      "ts": "2026-06-06T19:43:34.756Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780775008499",
       "ts": "2026-06-06T19:41:17.269Z",
       "type": "agent_sweep",
@@ -1665,26 +1685,6 @@
       "status": "completed",
       "product": "",
       "source": "quick_json"
-    },
-    {
-      "id": "log_1780438373817_ivjsyk",
-      "ts": "2026-06-02T22:12:53.817Z",
-      "type": "source_watch",
-      "title": "Source Watch actions queued",
-      "detail": "9 findings are now visible in the Agent Action Queue for admin review. 1 admin-ignored source item(s) were skipped.",
-      "status": "queued",
-      "product": "",
-      "source": "quick_json"
-    },
-    {
-      "id": "log_1780438371740_a3kux3",
-      "ts": "2026-06-02T22:12:51.740Z",
-      "type": "source_watch",
-      "title": "Quick JSON Source Watch started",
-      "detail": "Checking recent Checklistcenter items against public JSON.",
-      "status": "started",
-      "product": "",
-      "source": "quick_json"
     }
   ],
   "visual_tests": {
@@ -1953,6 +1953,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-06T19:43:28.552Z",
+  "saved_at": "2026-06-06T19:50:08.815Z",
   "saved_by": "cm_command_center_operator"
 }

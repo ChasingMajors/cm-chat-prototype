@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-02T23:00:32.003Z",
+  "exported_at": "2026-06-06T15:29:14.865Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -740,6 +740,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780759753261_mi1rcc",
+      "ts": "2026-06-06T15:29:13.261Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync started",
+      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
+      "status": "started",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780441230008_xheov7",
       "ts": "2026-06-02T23:00:30.008Z",
@@ -1529,16 +1539,6 @@
       "status": "needs_review",
       "product": "2025-26 Topps Chrome Arsenal Soccer",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780063185060_xnateh",
-      "ts": "2026-05-29T13:59:45.060Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1807,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-02T23:00:33.533Z",
+  "saved_at": "2026-06-06T15:29:16.043Z",
   "saved_by": "cm_command_center_operator"
 }

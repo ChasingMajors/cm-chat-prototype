@@ -18,6 +18,7 @@
  * - loadAgentMemory
  * - saveAgentMemory
  * - runScheduledSourceWatch
+ * - runScheduledAgentSweep
  *
  * Current safety:
  * - Sheet writes require Script Property CM_OPERATOR_KEY.
@@ -242,10 +243,17 @@ function doGet(e) {
       }));
     }
 
+    if (action === "runScheduledAgentSweep") {
+      return json_(runScheduledAgentSweep_({
+        mode: p.mode || "",
+        key: p.key || ""
+      }));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync"]
+      supported_actions: ["health", "sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync", "runScheduledAgentSweep"]
     });
   } catch (err) {
     return json_({
@@ -332,10 +340,14 @@ function doPost(e) {
       return json_(runScheduledPrvSync_(body));
     }
 
+    if (action === "runScheduledAgentSweep") {
+      return json_(runScheduledAgentSweep_(body));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync"]
+      supported_actions: ["sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync", "runScheduledAgentSweep"]
     });
   } catch (err) {
     return json_({
@@ -2600,17 +2612,14 @@ function runScheduledSourceWatch_(input) {
   };
 }
 
-function runScheduledPrvSync_(input) {
-  requireOperatorKey_(input && input.key);
-
-  const now = new Date().toISOString();
+function runPrvSyncPublishForSchedule_(key) {
   let publish = {};
   let publishOk = false;
   let detail = "";
 
   try {
     publish = publishPrvVaultStaticData_({
-      key: input && input.key,
+      key: key,
       code: ""
     });
     publishOk = !!(publish && publish.ok);
@@ -2628,10 +2637,20 @@ function runScheduledPrvSync_(input) {
     detail = publish.error;
   }
 
-  const memory = loadOrCreateAgentMemoryForSchedule_(input && input.key);
+  return {
+    ok: publishOk,
+    status: publishOk ? "validated" : "failed",
+    publish: publish,
+    detail: detail
+  };
+}
+
+function applyScheduledPrvSyncResultToMemory_(memory, sync, now) {
   const incidentId = "prv_sync_incident_full_vault";
   const actions = Array.isArray(memory.agent_actions) ? memory.agent_actions.slice() : [];
   let existing = null;
+  const publishOk = !!(sync && sync.ok);
+  const detail = sync && sync.detail ? sync.detail : "";
 
   actions.forEach(function(action) {
     if (action && action.id === incidentId) existing = action;
@@ -2680,6 +2699,19 @@ function runScheduledPrvSync_(input) {
     source: "operator_backend"
   });
   memory.saved_at = now;
+  return memory;
+}
+
+function runScheduledPrvSync_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const now = new Date().toISOString();
+  const sync = runPrvSyncPublishForSchedule_(input && input.key);
+  const memory = applyScheduledPrvSyncResultToMemory_(
+    loadOrCreateAgentMemoryForSchedule_(input && input.key),
+    sync,
+    now
+  );
 
   let saveResult = {};
   try {
@@ -2695,10 +2727,147 @@ function runScheduledPrvSync_(input) {
   }
 
   return {
-    ok: publishOk,
-    status: publishOk ? "validated" : "failed",
-    publish: publish,
-    incident_created: !publishOk,
+    ok: sync.ok,
+    status: sync.status,
+    publish: sync.publish,
+    incident_created: !sync.ok,
+    memory_path: saveResult.path || "",
+    memory_sha: saveResult.sha || "",
+    memory_error: saveResult.error || "",
+    updated_at: now
+  };
+}
+
+function runScheduledAgentSweep_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const now = new Date().toISOString();
+  const mode = input && input.mode ? input.mode : "deep_sheets";
+  let checklistWatch = {};
+  let prvWatch = {};
+  let prvSync = {};
+  let checklistError = "";
+  let prvError = "";
+
+  try {
+    checklistWatch = runSourceWatch_(mode);
+  } catch (err) {
+    checklistError = err && err.message ? err.message : String(err);
+    checklistWatch = {
+      ok: false,
+      mode: mode,
+      coverage_source: mode === "quick_json" ? "public_json" : "google_sheets",
+      fetched_count: 0,
+      summary: {},
+      items: [],
+      error: checklistError
+    };
+  }
+
+  try {
+    prvWatch = runPrvSourceWatch_("quick_json");
+  } catch (err) {
+    prvError = err && err.message ? err.message : String(err);
+    prvWatch = {
+      ok: false,
+      mode: "quick_json",
+      coverage_source: "public_vault_json",
+      fetched_count: 0,
+      summary: {},
+      items: [],
+      error: prvError
+    };
+  }
+
+  prvSync = runPrvSyncPublishForSchedule_(input && input.key);
+
+  const memory = loadOrCreateAgentMemoryForSchedule_(input && input.key);
+  const sourceIgnores = memory.source_ignores || {};
+  const checklistItems = checklistWatch.items || [];
+  const prvItems = prvWatch.items || [];
+  const skippedChecklistIgnored = checklistItems.filter(function(item) {
+    return isMemorySourceIgnored_(item, sourceIgnores);
+  }).length;
+  const skippedPrvIgnored = prvItems.filter(function(item) {
+    return isMemorySourceIgnored_(item, sourceIgnores);
+  }).length;
+  const checklistActionable = checklistItems.filter(function(item) {
+    if (isMemorySourceIgnored_(item, sourceIgnores)) return false;
+    return item.status === "missing" || item.status === "needs_review" || item.status === "possible_update";
+  });
+  const prvActionable = prvItems.filter(function(item) {
+    if (isMemorySourceIgnored_(item, sourceIgnores)) return false;
+    return item.status === "missing" || item.status === "needs_review" || item.status === "possible_update";
+  });
+
+  memory.agent_actions = mergeScheduledSourceActions_(memory.agent_actions || [], checklistActionable, now, checklistWatch.mode || mode);
+  memory.agent_actions = mergeScheduledPrvActions_(memory.agent_actions || [], prvActionable, now, prvWatch.mode || "quick_json");
+  applyScheduledPrvSyncResultToMemory_(memory, prvSync, now);
+
+  const detailParts = [
+    "Checklist: " + checklistActionable.length + " actionable from " + (checklistWatch.fetched_count || 0) + " checked.",
+    "PRV: " + prvActionable.length + " actionable from " + (prvWatch.fetched_count || 0) + " checked.",
+    "PRV sync: " + (prvSync.ok ? "passed." : "failed.")
+  ];
+  if (skippedChecklistIgnored || skippedPrvIgnored) {
+    detailParts.push((skippedChecklistIgnored + skippedPrvIgnored) + " admin-ignored source item(s) skipped.");
+  }
+  if (checklistError) detailParts.push("Checklist error: " + checklistError);
+  if (prvError) detailParts.push("PRV source error: " + prvError);
+
+  memory.activity_log = prependMemoryActivity_(memory.activity_log || [], {
+    id: "log_" + Date.now(),
+    ts: now,
+    type: "agent_sweep",
+    title: "Scheduled Agent Sweep complete",
+    detail: detailParts.join(" "),
+    status: checklistActionable.length || prvActionable.length || !prvSync.ok ? "needs_review" : "validated",
+    product: "",
+    source: "operator_backend"
+  });
+  memory.saved_at = now;
+
+  let saveResult = {};
+  try {
+    saveResult = saveAgentMemory_({
+      key: input && input.key,
+      memory: memory
+    });
+  } catch (err) {
+    saveResult = {
+      ok: false,
+      error: err && err.message ? err.message : String(err)
+    };
+  }
+
+  return {
+    ok: !checklistError && !prvError && !!prvSync.ok,
+    status: checklistActionable.length || prvActionable.length || !prvSync.ok ? "needs_review" : "validated",
+    mode: checklistWatch.mode || mode,
+    checklist: {
+      ok: !!checklistWatch.ok,
+      coverage_source: checklistWatch.coverage_source || "",
+      fetched_count: checklistWatch.fetched_count || 0,
+      actionable_count: checklistActionable.length,
+      ignored_count: skippedChecklistIgnored,
+      summary: checklistWatch.summary || {},
+      error: checklistError
+    },
+    prv: {
+      ok: !!prvWatch.ok,
+      coverage_source: prvWatch.coverage_source || "",
+      fetched_count: prvWatch.fetched_count || 0,
+      actionable_count: prvActionable.length,
+      ignored_count: skippedPrvIgnored,
+      summary: prvWatch.summary || {},
+      error: prvError
+    },
+    prv_sync: {
+      ok: !!prvSync.ok,
+      status: prvSync.status,
+      detail: prvSync.detail,
+      publish: prvSync.publish
+    },
     memory_path: saveResult.path || "",
     memory_sha: saveResult.sha || "",
     memory_error: saveResult.error || "",
@@ -2728,6 +2897,35 @@ function runScheduledPrvSyncTrigger() {
       updated_at: new Date().toISOString()
     };
     Logger.log("Scheduled PRV sync trigger failed: " + JSON.stringify(result));
+    return result;
+  }
+}
+
+function runScheduledAgentSweepTrigger() {
+  const key = PropertiesService.getScriptProperties().getProperty(CM_OPERATOR_KEY_PROPERTY);
+  if (!key) {
+    const result = {
+      ok: false,
+      error: "Missing Script Property " + CM_OPERATOR_KEY_PROPERTY + ". Scheduled Agent Sweep did not run.",
+      updated_at: new Date().toISOString()
+    };
+    Logger.log(JSON.stringify(result));
+    return result;
+  }
+
+  try {
+    return runScheduledAgentSweep_({
+      key: key,
+      mode: "deep_sheets"
+    });
+  } catch (err) {
+    const result = {
+      ok: false,
+      error: err && err.message ? err.message : String(err),
+      stack: err && err.stack ? String(err.stack).slice(0, 2000) : "",
+      updated_at: new Date().toISOString()
+    };
+    Logger.log("Scheduled Agent Sweep trigger failed: " + JSON.stringify(result));
     return result;
   }
 }
@@ -2785,6 +2983,46 @@ function mergeScheduledSourceActions_(existingActions, sourceItems, now, mode) {
       riskLevel: item.status === "missing" ? "medium" : "low",
       status: "approval_required",
       recommendedAction: item.recommended_action || "Review source item, preview import, then approve product-scoped write.",
+      adminDecision: "",
+      executionResult: "",
+      validationResult: "",
+      runUrl: "",
+      sourceUrl: item.url || item.source_url || "",
+      createdAt: existing && existing.createdAt ? existing.createdAt : now,
+      updatedAt: now
+    };
+
+    if (existing) Object.assign(existing, patch);
+    else {
+      byId[id] = patch;
+      out.unshift(patch);
+    }
+  });
+
+  return out.slice(0, 80);
+}
+
+function mergeScheduledPrvActions_(existingActions, sourceItems, now, mode) {
+  const out = Array.isArray(existingActions) ? existingActions.slice() : [];
+  const byId = {};
+
+  out.forEach(function(action) {
+    if (action && action.id) byId[action.id] = action;
+  });
+
+  sourceItems.forEach(function(item) {
+    const id = "prv_watch|" + normalize_(item.sport || "") + "|" + normalize_(item.matched_code || item.title || "");
+    const existing = byId[id];
+    const patch = {
+      id: id,
+      type: "prv_source_review",
+      source: "scheduled_prv_" + mode,
+      product: item.matched_name || item.title || "",
+      sport: item.sport || "",
+      code: item.matched_code || "",
+      riskLevel: item.status === "missing" ? "medium" : "low",
+      status: "approval_required",
+      recommendedAction: item.recommended_action || "Review SlabSquatch source, preview PRV rows, then approve product-scoped PRV write.",
       adminDecision: "",
       executionResult: "",
       validationResult: "",

@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc70-prv-validation-helper-fix-v1-2026-06-06";
+  const COMMAND_CENTER_VERSION = "cc71-backend-agent-sweep-v1-2026-06-06";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -83,6 +83,7 @@
     scanSourcesBtn: document.getElementById("scanSourcesBtn"),
     scanPrvSourcesBtn: document.getElementById("scanPrvSourcesBtn"),
     agentCycleBtn: document.getElementById("agentCycleBtn"),
+    backendAgentSweepBtn: document.getElementById("backendAgentSweepBtn"),
     sourceWatchQuickBtn: document.getElementById("sourceWatchQuickBtn"),
     sourceWatchDeepBtn: document.getElementById("sourceWatchDeepBtn"),
     prvSourceWatchBtn: document.getElementById("prvSourceWatchBtn"),
@@ -2083,6 +2084,80 @@
     renderAgentActions();
     renderActionLanes();
     renderRunSummary();
+  }
+
+  async function runBackendAgentSweep() {
+    const endpoint = readOperatorEndpoint();
+    const key = readOperatorKey();
+    if (!endpoint || !key) {
+      renderSentinelNotice(
+        "Backend Agent Sweep needs setup",
+        "Save the Operator Backend URL and admin key before Sentinel can run unattended backend work.",
+        "warning"
+      );
+      renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL and admin key before running the backend agent sweep.", "warning");
+      return null;
+    }
+
+    renderSentinelNotice(
+      "Backend Agent Sweep running",
+      "Sentinel is checking Checklist Center, SlabSquatch PRV sources, PRV JSON sync health, and backend memory.",
+      "info"
+    );
+    renderSourceCheckMessage("Backend Agent Sweep running", "This runs from Apps Script and writes queue findings to backend memory.", "info", { noFocus: true });
+    logActivity({
+      type: "agent_sweep",
+      status: "started",
+      source: "command_center",
+      title: "Backend Agent Sweep started",
+      detail: "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update."
+    });
+    renderActivityLog();
+
+    try {
+      const data = await postOperatorJson(endpoint, {
+        action: "runScheduledAgentSweep",
+        key,
+        mode: "deep_sheets"
+      }, { timeoutMs: 300000 });
+
+      if (!data || !data.ok) {
+        const stillUseful = data && (data.checklist || data.prv || data.prv_sync);
+        if (!stillUseful) throw new Error(data && data.error ? data.error : "Backend Agent Sweep failed.");
+      }
+
+      const checklistCount = data && data.checklist ? Number(data.checklist.actionable_count || 0) : 0;
+      const prvCount = data && data.prv ? Number(data.prv.actionable_count || 0) : 0;
+      const prvSyncOk = !!(data && data.prv_sync && data.prv_sync.ok);
+      const detail = `Checklist: ${formatNumber(checklistCount)} action${checklistCount === 1 ? "" : "s"}. PRV: ${formatNumber(prvCount)} action${prvCount === 1 ? "" : "s"}. PRV sync: ${prvSyncOk ? "passed" : "needs review"}.`;
+      const severity = checklistCount || prvCount || !prvSyncOk ? "warning" : "success";
+
+      logActivity({
+        type: "agent_sweep",
+        status: severity === "success" ? "validated" : "needs_review",
+        source: "operator_backend",
+        title: "Backend Agent Sweep complete",
+        detail
+      });
+      renderActivityLog();
+      renderSentinelNotice("Backend Agent Sweep complete", detail, severity);
+      renderSourceCheckMessage("Backend Agent Sweep complete", detail, severity, { noFocus: true });
+      await loadBackendAgentMemory();
+      return data;
+    } catch (err) {
+      const detail = err && err.message ? err.message : "Backend Agent Sweep failed.";
+      logActivity({
+        type: "agent_sweep",
+        status: "failed",
+        source: "operator_backend",
+        title: "Backend Agent Sweep failed",
+        detail
+      });
+      renderActivityLog();
+      renderSentinelNotice("Backend Agent Sweep failed", detail, "critical");
+      renderSourceCheckMessage("Backend Agent Sweep failed", detail, "critical", { noFocus: true });
+      return null;
+    }
   }
 
   function countChecklistManifestProducts(bundleData) {
@@ -6225,10 +6300,13 @@
 
     renderAgentCycleMessage(
       "Scanning for new work",
-      "No active queue item needed action, so Sentinel is running the full daily sweep now.",
+      readOperatorEndpoint() && readOperatorKey()
+        ? "No active queue item needed action, so Sentinel is running the backend worker sweep now."
+        : "No active queue item needed action, so Sentinel is running the browser daily sweep now.",
       "info"
     );
-    runDailySentinelSweep();
+    if (readOperatorEndpoint() && readOperatorKey()) runBackendAgentSweep();
+    else runDailySentinelSweep();
   }
 
   function renderActionLaneCard(action, lane) {
@@ -6720,6 +6798,7 @@
   els.scanSourcesBtn.addEventListener("click", () => runSourceWatchWithBackend("quick_json"));
   els.scanPrvSourcesBtn.addEventListener("click", () => runPrvSourceWatchWithBackend());
   els.agentCycleBtn.addEventListener("click", runAgentCycle);
+  if (els.backendAgentSweepBtn) els.backendAgentSweepBtn.addEventListener("click", runBackendAgentSweep);
   els.clearDoneBtn.addEventListener("click", clearDoneTasks);
   els.clearResolvedAgentActionsBtn.addEventListener("click", clearResolvedAgentActions);
   els.clearActivityLogBtn.addEventListener("click", clearActivityLog);

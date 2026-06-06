@@ -186,9 +186,22 @@ PRV JSON sync:
 
 Use Command Center `Sync PRV JSON`, which sends the admin key in a POST body.
 
+Backend Agent Sweep:
+
+Use Command Center `Backend Agent Sweep`, which sends the admin key in a POST body and runs:
+
+- Checklist Center source watch
+- SlabSquatch PRV source watch
+- PRV JSON sync health
+- Sentinel backend memory queue/log updates
+
 Scheduled PRV sync with Sentinel memory:
 
 Create an Apps Script time trigger for `runScheduledPrvSyncTrigger` after adding that wrapper in the Operator project, or call `runScheduledPrvSync` from an approved operator flow. Avoid putting the admin key in a bookmark or public URL.
+
+Scheduled Agent Sweep:
+
+Create an Apps Script time trigger for `runScheduledAgentSweepTrigger` when you want Sentinel to do the unattended daily worker pass. This should become the primary scheduled automation because it checks checklist sources, PRV sources, PRV sync health, and writes any findings to Sentinel memory.
 
 ## Important Safety Note
 

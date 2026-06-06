@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc68-prv-sync-incident-v1-2026-06-06";
+  const COMMAND_CENTER_VERSION = "cc69-prv-full-sync-proof-v1-2026-06-06";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -3995,7 +3995,9 @@
     const productName = actionId ? (state.agentActions.find(item => item.id === actionId) || {}).product : "";
     const isFullSync = !!options.fullSync || !code;
     const validationDetail = validation && validation.ok
-      ? `${formatNumber(validation.row_count || 0)} public PRV rows validated.`
+      ? isFullSync
+        ? `${formatNumber(validation.product_count || 0)} public PRV products and ${formatNumber(validation.row_count || 0)} product rows validated across ${formatNumber(validation.shard_count || 0)} shard${Number(validation.shard_count || 0) === 1 ? "" : "s"}.`
+        : `${formatNumber(validation.row_count || 0)} public PRV rows validated.`
       : validation && validation.error
         ? validation.error
         : publishOk
@@ -4064,6 +4066,7 @@
         <div class="opp-meta">
           <span class="pill">${isFullSync ? "Scope: All PRV data" : "Code: " + escapeHtml(code)}</span>
           <span class="pill">Files: ${formatNumber(publish && publish.publish ? publish.publish.files_published || 0 : 0)}</span>
+          ${isFullSync ? `<span class="pill">Public products: ${formatNumber(validation && validation.product_count || 0)}</span>` : ""}
           <span class="pill">Public rows: ${formatNumber(validation && validation.row_count || 0)}</span>
           <span class="pill">Validation: ${validation && validation.ok ? "Passed" : "Review"}</span>
         </div>

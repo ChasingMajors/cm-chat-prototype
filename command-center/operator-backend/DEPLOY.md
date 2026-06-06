@@ -195,6 +195,13 @@ Use Command Center `Backend Agent Sweep`, which sends the admin key in a POST bo
 - PRV JSON sync health
 - Sentinel backend memory queue/log updates
 
+If Sentinel memory is set to `full_auto`, the sweep may advance one guardrail-safe product card per run:
+
+- Checklist Center product source -> product-scoped Sheet write -> checklist JSON publish -> public JSON validation
+- SlabSquatch PRV source -> product-scoped PRV Sheet write -> PRV JSON publish -> public PRV JSON validation
+
+Full auto still refuses unsupported sports, blocked categories, missing product names, missing source URLs, and source URLs outside the approved domains. Review-only, approval-required, and guarded-auto modes do not execute writes from the scheduled sweep.
+
 Scheduled PRV sync with Sentinel memory:
 
 Create an Apps Script time trigger for `runScheduledPrvSyncTrigger` after adding that wrapper in the Operator project, or call `runScheduledPrvSync` from an approved operator flow. Avoid putting the admin key in a bookmark or public URL.

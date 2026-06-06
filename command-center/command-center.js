@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc71-backend-agent-sweep-v1-2026-06-06";
+  const COMMAND_CENTER_VERSION = "cc72-full-auto-worker-v1-2026-06-06";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -2129,8 +2129,14 @@
       const checklistCount = data && data.checklist ? Number(data.checklist.actionable_count || 0) : 0;
       const prvCount = data && data.prv ? Number(data.prv.actionable_count || 0) : 0;
       const prvSyncOk = !!(data && data.prv_sync && data.prv_sync.ok);
-      const detail = `Checklist: ${formatNumber(checklistCount)} action${checklistCount === 1 ? "" : "s"}. PRV: ${formatNumber(prvCount)} action${prvCount === 1 ? "" : "s"}. PRV sync: ${prvSyncOk ? "passed" : "needs review"}.`;
-      const severity = checklistCount || prvCount || !prvSyncOk ? "warning" : "success";
+      const autoAction = data && data.auto_action ? data.auto_action : null;
+      const autoText = autoAction && autoAction.ran
+        ? ` Auto: ${autoAction.product || autoAction.type || "action"} ${autoAction.status || "completed"}.`
+        : autoAction && autoAction.reason
+          ? ` Auto: ${autoAction.reason}`
+          : "";
+      const detail = `Checklist: ${formatNumber(checklistCount)} action${checklistCount === 1 ? "" : "s"}. PRV: ${formatNumber(prvCount)} action${prvCount === 1 ? "" : "s"}. PRV sync: ${prvSyncOk ? "passed" : "needs review"}.${autoText}`;
+      const severity = checklistCount || prvCount || !prvSyncOk || (autoAction && autoAction.ran && autoAction.status !== "validated") ? "warning" : "success";
 
       logActivity({
         type: "agent_sweep",

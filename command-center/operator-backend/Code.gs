@@ -2804,6 +2804,8 @@ function runScheduledAgentSweep_(input) {
   memory.agent_actions = mergeScheduledPrvActions_(memory.agent_actions || [], prvActionable, now, prvWatch.mode || "quick_json");
   applyScheduledPrvSyncResultToMemory_(memory, prvSync, now);
 
+  const autoResult = maybeRunScheduledAutoAction_(memory, input && input.key, now);
+
   const detailParts = [
     "Checklist: " + checklistActionable.length + " actionable from " + (checklistWatch.fetched_count || 0) + " checked.",
     "PRV: " + prvActionable.length + " actionable from " + (prvWatch.fetched_count || 0) + " checked.",
@@ -2811,6 +2813,11 @@ function runScheduledAgentSweep_(input) {
   ];
   if (skippedChecklistIgnored || skippedPrvIgnored) {
     detailParts.push((skippedChecklistIgnored + skippedPrvIgnored) + " admin-ignored source item(s) skipped.");
+  }
+  if (autoResult && autoResult.ran) {
+    detailParts.push("Auto action: " + autoResult.status + " for " + autoResult.product + ".");
+  } else if (autoResult && autoResult.reason) {
+    detailParts.push("Auto action: " + autoResult.reason);
   }
   if (checklistError) detailParts.push("Checklist error: " + checklistError);
   if (prvError) detailParts.push("PRV source error: " + prvError);
@@ -2868,6 +2875,7 @@ function runScheduledAgentSweep_(input) {
       detail: prvSync.detail,
       publish: prvSync.publish
     },
+    auto_action: autoResult,
     memory_path: saveResult.path || "",
     memory_sha: saveResult.sha || "",
     memory_error: saveResult.error || "",
@@ -2927,6 +2935,245 @@ function runScheduledAgentSweepTrigger() {
     };
     Logger.log("Scheduled Agent Sweep trigger failed: " + JSON.stringify(result));
     return result;
+  }
+}
+
+function maybeRunScheduledAutoAction_(memory, key, now) {
+  const mode = safeString_(memory && memory.autonomy_mode).trim() || "approval_required";
+  if (mode !== "full_auto") {
+    return {
+      ran: false,
+      mode: mode,
+      reason: "Full auto is off."
+    };
+  }
+
+  const actions = Array.isArray(memory.agent_actions) ? memory.agent_actions : [];
+  const action = findNextScheduledAutoAction_(actions);
+  if (!action) {
+    return {
+      ran: false,
+      mode: mode,
+      reason: "No safe auto-executable action found."
+    };
+  }
+
+  const safety = validateScheduledAutoActionSafety_(action);
+  if (!safety.ok) {
+    patchMemoryAction_(actions, action.id, {
+      status: "needs_admin",
+      executionResult: "Full-auto guardrail blocked execution.",
+      validationResult: safety.reason,
+      updatedAt: now
+    });
+    memory.activity_log = prependMemoryActivity_(memory.activity_log || [], {
+      id: "log_" + Date.now(),
+      ts: now,
+      type: "auto_action",
+      title: "Full-auto action blocked",
+      detail: (action.product || action.type || "Action") + ": " + safety.reason,
+      status: "needs_review",
+      product: action.product || "",
+      source: "operator_backend"
+    });
+    return {
+      ran: false,
+      mode: mode,
+      action_id: action.id,
+      product: action.product || "",
+      reason: safety.reason
+    };
+  }
+
+  patchMemoryAction_(actions, action.id, {
+    status: "running",
+    executionResult: "Full-auto execution started.",
+    validationResult: "Running product-scoped write, publish, and public JSON validation.",
+    updatedAt: now
+  });
+
+  let result = {};
+  try {
+    if (action.type === "source_import") {
+      result = runScheduledChecklistAutoAction_(action, key);
+    } else if (action.type === "prv_source_review") {
+      result = runScheduledPrvAutoAction_(action, key);
+    } else {
+      result = {
+        ok: false,
+        status: "needs_review",
+        error: "Unsupported full-auto action type: " + action.type
+      };
+    }
+  } catch (err) {
+    result = {
+      ok: false,
+      status: "failed",
+      error: err && err.message ? err.message : String(err),
+      stack: err && err.stack ? String(err.stack).slice(0, 1200) : ""
+    };
+  }
+
+  const finalStatus = result.ok && result.validated
+    ? "validated"
+    : result.ok
+      ? "needs_admin"
+      : "failed";
+  const executionResult = result.executionResult || result.error || "Full-auto action completed.";
+  const validationResult = result.validationResult || result.error || "Validation needs review.";
+
+  patchMemoryAction_(actions, action.id, {
+    status: finalStatus,
+    executionResult: executionResult,
+    validationResult: validationResult,
+    autoExecutedAt: now,
+    updatedAt: now
+  });
+
+  memory.activity_log = prependMemoryActivity_(memory.activity_log || [], {
+    id: "log_" + Date.now(),
+    ts: now,
+    type: "auto_action",
+    title: finalStatus === "validated" ? "Full-auto action completed" : finalStatus === "failed" ? "Full-auto action failed" : "Full-auto action needs review",
+    detail: (action.product || action.type || "Action") + ": " + executionResult + " " + validationResult,
+    status: finalStatus,
+    product: action.product || "",
+    source: "operator_backend"
+  });
+
+  return {
+    ran: true,
+    mode: mode,
+    action_id: action.id,
+    product: action.product || "",
+    type: action.type || "",
+    status: finalStatus,
+    ok: !!result.ok,
+    validated: !!result.validated,
+    executionResult: executionResult,
+    validationResult: validationResult
+  };
+}
+
+function findNextScheduledAutoAction_(actions) {
+  for (let i = 0; i < actions.length; i++) {
+    const action = actions[i] || {};
+    const status = safeString_(action.status).trim().toLowerCase();
+    if (status !== "approval_required" && status !== "needs_admin" && status !== "approved") continue;
+    if (action.type !== "source_import" && action.type !== "prv_source_review") continue;
+    if (safeString_(action.executionResult).toLowerCase().indexOf("full-auto execution started") > -1) continue;
+    return action;
+  }
+  return null;
+}
+
+function validateScheduledAutoActionSafety_(action) {
+  const sport = normalize_(action && action.sport);
+  const sourceUrl = safeString_(action && (action.sourceUrl || action.runUrl)).trim();
+  const product = safeString_(action && action.product).trim();
+
+  if (!product) return { ok: false, reason: "Missing product name." };
+  if (!isAllowedSport_(sport)) return { ok: false, reason: "Unsupported or missing sport." };
+  if (hasBlockedTerm_(product)) return { ok: false, reason: "Blocked product category term detected." };
+  if (!sourceUrl) return { ok: false, reason: "Missing source URL." };
+
+  if (action.type === "source_import" && !/^https:\/\/www\.checklistcenter\.com\//i.test(sourceUrl)) {
+    return { ok: false, reason: "Checklist auto-import only supports Checklist Center URLs." };
+  }
+
+  if (action.type === "prv_source_review" && !/^https:\/\/slabsquatch\.substack\.com\/p\//i.test(sourceUrl)) {
+    return { ok: false, reason: "PRV auto-import only supports SlabSquatch post URLs." };
+  }
+
+  return { ok: true, reason: "" };
+}
+
+function runScheduledChecklistAutoAction_(action, key) {
+  const write = executeSourceImport_({
+    sourceUrl: action.sourceUrl || action.runUrl || "",
+    sport: action.sport || "",
+    key: key,
+    publish: "1"
+  });
+
+  if (!write || !write.ok) {
+    return {
+      ok: false,
+      status: "failed",
+      error: write && write.error ? write.error : "Checklist sheet write failed.",
+      executionResult: "Checklist sheet write failed.",
+      validationResult: write && write.error ? write.error : "No validation proof."
+    };
+  }
+
+  const product = write.product || {};
+  const publicValidation = validateSourceProduct_({
+    title: product.display_name || action.product || "",
+    sport: product.sport || action.sport || "",
+    mode: "quick_json"
+  });
+  const publicRows = Number(publicValidation && (publicValidation.public_row_count || publicValidation.sheet_row_count || 0));
+  const publishOk = !!(write.publish && write.publish.ok);
+  const validated = publishOk && publicRows > 0;
+
+  return {
+    ok: true,
+    validated: validated,
+    status: validated ? "validated" : "needs_review",
+    executionResult: "Checklist sheet write and JSON publish completed for " + (product.code || action.code || "product") + ".",
+    validationResult: validated
+      ? "Public checklist JSON validated with " + publicRows + " rows."
+      : "Checklist write completed, but public JSON validation needs review. " + (publishOk ? "Publish returned ok." : "Publish did not return ok.")
+  };
+}
+
+function runScheduledPrvAutoAction_(action, key) {
+  const write = executePrvSourceImport_({
+    sourceUrl: action.sourceUrl || action.runUrl || "",
+    sport: action.sport || "",
+    key: key
+  });
+
+  if (!write || !write.ok) {
+    return {
+      ok: false,
+      status: "failed",
+      error: write && write.error ? write.error : "PRV sheet write failed.",
+      executionResult: "PRV sheet write failed.",
+      validationResult: write && write.error ? write.error : "No validation proof."
+    };
+  }
+
+  const product = write.product || {};
+  const publish = publishPrvVaultStaticData_({
+    key: key,
+    code: product.code || action.code || ""
+  });
+  const publicValidation = validatePrvVaultProduct_({
+    code: product.code || action.code || ""
+  });
+  const publicRows = Number(publicValidation && publicValidation.row_count || 0);
+  const publishOk = !!(publish && publish.ok);
+  const validated = publishOk && publicRows > 0;
+
+  return {
+    ok: true,
+    validated: validated,
+    status: validated ? "validated" : "needs_review",
+    executionResult: "PRV sheet write and JSON publish completed for " + (product.code || action.code || "product") + ".",
+    validationResult: validated
+      ? "Public PRV JSON validated with " + publicRows + " rows."
+      : "PRV write completed, but public JSON validation needs review. " + (publishOk ? "Publish returned ok." : "Publish did not return ok.")
+  };
+}
+
+function patchMemoryAction_(actions, id, patch) {
+  if (!id || !Array.isArray(actions)) return;
+  for (let i = 0; i < actions.length; i++) {
+    if (actions[i] && actions[i].id === id) {
+      Object.assign(actions[i], patch || {});
+      return;
+    }
   }
 }
 

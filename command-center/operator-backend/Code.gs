@@ -3002,7 +3002,8 @@ function maybeRunScheduledAutoActions_(memory, key, now, maxActions) {
     primary: results[0] || null,
     results: results,
     summary: results.map(function(result) {
-      return (result.product || result.type || "action") + " -> " + (result.status || "completed");
+      const detail = safeString_(result.validationResult || result.executionResult || "").slice(0, 120);
+      return (result.product || result.type || "action") + " -> " + (result.status || "completed") + (detail ? " (" + detail + ")" : "");
     }).join("; "),
     reason: results.length ? "" : "No safe auto-executable action found."
   };
@@ -3084,11 +3085,14 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
     };
   }
 
+  const resultStatus = safeString_(result.status).trim().toLowerCase();
   const finalStatus = result.ok && result.validated
     ? "validated"
     : result.ok
       ? "needs_admin"
-      : "failed";
+      : resultStatus === "known_issue" || resultStatus === "needs_admin" || resultStatus === "blocked"
+        ? resultStatus
+        : "failed";
   const executionResult = result.executionResult || result.error || "Full-auto action completed.";
   const validationResult = result.validationResult || result.error || "Validation needs review.";
 
@@ -3198,6 +3202,26 @@ function runScheduledChecklistAutoAction_(action, key) {
 }
 
 function runScheduledPrvAutoAction_(action, key) {
+  const preview = previewPrvSource_({
+    sourceUrl: action.sourceUrl || action.runUrl || "",
+    sport: action.sport || ""
+  });
+
+  if (!preview || !preview.ok || preview.status !== "preview_ready") {
+    const warning = preview && preview.warnings && preview.warnings.length
+      ? preview.warnings.join(" ")
+      : preview && preview.error
+        ? preview.error
+        : "PRV source preview is not ready for write.";
+    return {
+      ok: false,
+      status: "known_issue",
+      error: warning,
+      executionResult: "PRV source preview did not produce writable rows.",
+      validationResult: warning
+    };
+  }
+
   const write = executePrvSourceImport_({
     sourceUrl: action.sourceUrl || action.runUrl || "",
     sport: action.sport || "",

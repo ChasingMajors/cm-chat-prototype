@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc74-prv-season-normalizer-v1-2026-06-06";
+  const COMMAND_CENTER_VERSION = "cc75-auto-failure-reason-v1-2026-06-06";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -2135,7 +2135,7 @@
       const autoText = autoActions && autoActions.ran
         ? ` Auto: ${formatNumber(autoActions.count || 0)} ran. ${autoActions.summary || ""}`
         : autoAction && autoAction.ran
-          ? ` Auto: ${autoAction.product || autoAction.type || "action"} ${autoAction.status || "completed"}.`
+          ? ` Auto: ${autoAction.product || autoAction.type || "action"} ${autoAction.status || "completed"}. ${autoAction.validationResult || autoAction.executionResult || ""}`
         : autoAction && autoAction.reason
           ? ` Auto: ${autoAction.reason}`
           : "";

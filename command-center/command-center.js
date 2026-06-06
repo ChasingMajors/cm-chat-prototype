@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc73-auto-batch-worker-v1-2026-06-06";
+  const COMMAND_CENTER_VERSION = "cc74-prv-season-normalizer-v1-2026-06-06";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];

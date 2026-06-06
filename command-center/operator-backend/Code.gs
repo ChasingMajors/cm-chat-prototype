@@ -1083,9 +1083,16 @@ function buildPrvProductPreview_(productName, sport, sourceUrl) {
 function extractPrvProductYear_(value) {
   const raw = safeString_(value);
   const season = raw.match(/\b(19|20)\d{2}\s*[-/]\s*\d{2}\b/);
-  if (season) return season[0].replace(/\s+/g, "");
+  if (season) return normalizeSeasonYear_(season[0]);
   const year = raw.match(/\b(19|20)\d{2}\b/);
   return year ? year[0] : "";
+}
+
+function normalizeSeasonYear_(value) {
+  return safeString_(value)
+    .replace(/\b((?:19|20)\d{2})\s*\/\s*(\d{2})\b/g, "$1-$2")
+    .replace(/\b((?:19|20)\d{2})\s*-\s*(\d{2})\b/g, "$1-$2")
+    .trim();
 }
 
 function buildPrvProductCode_(name, sport) {
@@ -1377,6 +1384,8 @@ function findVaultIndexMatch_(title, sport, rows) {
 
 function normalizePrvSourceTitle_(title) {
   return safeString_(title)
+    .replace(/\b((?:19|20)\d{2})\s*\/\s*(\d{2})\b/g, "$1-$2")
+    .replace(/\b((?:19|20)\d{2})\s*-\s*(\d{2})\b/g, "$1-$2")
     .replace(/\bNFL\b/gi, "Football")
     .replace(/\bNBA\b/gi, "Basketball")
     .replace(/\bMLB\b/gi, "Baseball")

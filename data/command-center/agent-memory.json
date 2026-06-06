@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-06T16:34:07.007Z",
+  "exported_at": "2026-06-06T16:37:02.725Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -135,16 +135,15 @@
       "sport": "basketball",
       "code": "",
       "riskLevel": "medium",
-      "status": "failed",
+      "status": "approval_required",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "",
-      "executionResult": "PRV sheet write failed.",
-      "validationResult": "PRV source preview is not ready for write.",
+      "executionResult": "",
+      "validationResult": "",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:34:06.582Z",
-      "autoExecutedAt": "2026-06-06T16:34:06.582Z"
+      "updatedAt": "2026-06-06T16:11:13.256Z"
     },
     {
       "id": "prv_watch|basketball|2025_26_bowman_s_best_university_basketball",
@@ -162,7 +161,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:34:06.582Z"
+      "updatedAt": "2026-06-06T16:11:13.256Z"
     },
     {
       "id": "source_watch|hockey|2025-26 upper deck extended series hockey",
@@ -180,7 +179,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-extended-series-hockey-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:34:06.582Z"
+      "updatedAt": "2026-06-06T16:11:13.256Z"
     },
     {
       "id": "source_watch|football|2025-26 panini's football efl soccer",
@@ -198,7 +197,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:34:06.582Z"
+      "updatedAt": "2026-06-06T16:11:13.256Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps chrome uefa women's champions league soccer",
@@ -216,7 +215,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-uefa-womens-champions-league-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:34:06.582Z"
+      "updatedAt": "2026-06-06T16:11:13.256Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps gold bundesliga soccer",
@@ -234,7 +233,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-gold-bundesliga-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:34:06.582Z"
+      "updatedAt": "2026-06-06T16:11:13.256Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -252,7 +251,7 @@
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-06T15:29:36.437Z",
-      "updatedAt": "2026-06-06T16:34:06.582Z"
+      "updatedAt": "2026-06-06T16:11:13.256Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
@@ -868,33 +867,13 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780763814774",
-      "ts": "2026-06-06T16:34:06.582Z",
+      "id": "log_1780763821120_6qg0gq",
+      "ts": "2026-06-06T16:37:01.120Z",
       "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 4 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025/26 Topps Hoops Basketball -> failed",
+      "title": "Backend Agent Sweep complete",
+      "detail": "Checklist: 4 actions. PRV: 2 actions. PRV sync: passed. Auto: 1 ran. 2025/26 Topps Hoops Basketball -> failed",
       "status": "needs_review",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780763814774",
-      "ts": "2026-06-06T16:34:06.582Z",
-      "type": "auto_action",
-      "title": "Full-auto action failed",
-      "detail": "2025/26 Topps Hoops Basketball: PRV sheet write failed. PRV source preview is not ready for write.",
-      "status": "failed",
-      "product": "2025/26 Topps Hoops Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780763814643",
-      "ts": "2026-06-06T16:34:06.582Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     },
     {
@@ -1666,6 +1645,26 @@
       "status": "passed",
       "product": "2025-26 Topps Chrome Arsenal Soccer",
       "source": "github_actions"
+    },
+    {
+      "id": "log_1780066750552_gv3axi",
+      "ts": "2026-05-29T14:59:10.552Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2025-26 Topps Chrome Arsenal Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780066716862_w27ywx",
+      "ts": "2026-05-29T14:58:36.862Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Topps Chrome Arsenal Soccer",
+      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -1934,6 +1933,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-06T16:36:54.804Z",
+  "saved_at": "2026-06-06T16:37:03.652Z",
   "saved_by": "cm_command_center_operator"
 }

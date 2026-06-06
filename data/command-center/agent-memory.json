@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-06T16:11:13.770Z",
+  "exported_at": "2026-06-06T16:14:10.777Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -128,114 +128,6 @@
   ],
   "agent_actions": [
     {
-      "id": "prv_watch|basketball|2025 26 topps hoops basketball",
-      "type": "prv_source_review",
-      "source": "scheduled_prv_quick_json",
-      "product": "2025/26 Topps Hoops Basketball",
-      "sport": "basketball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
-      "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:11:13.256Z"
-    },
-    {
-      "id": "prv_watch|basketball|2025_26_bowman_s_best_university_basketball",
-      "type": "prv_source_review",
-      "source": "scheduled_prv_quick_json",
-      "product": "2025/26 Bowman’s Best University Basketball",
-      "sport": "basketball",
-      "code": "2025_26_bowman_s_best_university_basketball",
-      "riskLevel": "low",
-      "status": "approval_required",
-      "recommendedAction": "SlabSquatch has a recent print-run/odds analysis for a PRV-covered product. Compare source numbers against PRV and flag discrepancies before updating.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
-      "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:11:13.256Z"
-    },
-    {
-      "id": "source_watch|hockey|2025-26 upper deck extended series hockey",
-      "type": "source_import",
-      "source": "scheduled_deep_sheets",
-      "product": "2025-26 Upper Deck Extended Series Hockey",
-      "sport": "hockey",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-extended-series-hockey-card-checklist/",
-      "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:11:13.256Z"
-    },
-    {
-      "id": "source_watch|football|2025-26 panini's football efl soccer",
-      "type": "source_import",
-      "source": "scheduled_deep_sheets",
-      "product": "2025-26 Panini's Football EFL Soccer",
-      "sport": "football",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Football source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
-      "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:11:13.256Z"
-    },
-    {
-      "id": "source_watch|soccer|2025-26 topps chrome uefa women's champions league soccer",
-      "type": "source_import",
-      "source": "scheduled_deep_sheets",
-      "product": "2025-26 Topps Chrome UEFA Women's Champions League Soccer",
-      "sport": "soccer",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-uefa-womens-champions-league-soccer-card-checklist/",
-      "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:11:13.256Z"
-    },
-    {
-      "id": "source_watch|soccer|2025-26 topps gold bundesliga soccer",
-      "type": "source_import",
-      "source": "scheduled_deep_sheets",
-      "product": "2025-26 Topps Gold Bundesliga Soccer",
-      "sport": "soccer",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-gold-bundesliga-soccer-card-checklist/",
-      "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T16:11:13.256Z"
-    },
-    {
       "id": "prv_sync_incident_full_vault",
       "type": "prv_sync_incident",
       "source": "operator_backend",
@@ -246,12 +138,12 @@
       "status": "validated",
       "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
       "adminDecision": "",
-      "executionResult": "Scheduled PRV full JSON sync completed through Static Data Exporter.",
-      "validationResult": "Scheduled PRV JSON sync completed.",
+      "executionResult": "PRV full JSON sync completed through Static Data Exporter.",
+      "validationResult": "80 public PRV products and 3,265 product rows validated across 1 shard.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-06T15:29:36.437Z",
-      "updatedAt": "2026-06-06T16:11:13.256Z"
+      "updatedAt": "2026-06-06T15:42:41.313Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
@@ -867,23 +759,13 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780762441333",
-      "ts": "2026-06-06T16:11:13.256Z",
+      "id": "log_1780762449171_01bttk",
+      "ts": "2026-06-06T16:14:09.171Z",
       "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 4 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto action: Full auto is off.",
+      "title": "Backend Agent Sweep complete",
+      "detail": "Checklist: 4 actions. PRV: 2 actions. PRV sync: passed. Auto: Full auto is off.",
       "status": "needs_review",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780762441333",
-      "ts": "2026-06-06T16:11:13.256Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     },
     {
@@ -1665,6 +1547,16 @@
       "status": "started",
       "product": "",
       "source": "command_center"
+    },
+    {
+      "id": "log_1780063360362_gl42yq",
+      "ts": "2026-05-29T14:02:40.362Z",
+      "type": "source_import",
+      "title": "Import blocked before sheet write",
+      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1933,6 +1825,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-06T16:14:01.575Z",
+  "saved_at": "2026-06-06T16:14:11.863Z",
   "saved_by": "cm_command_center_operator"
 }

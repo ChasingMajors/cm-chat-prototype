@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc72-full-auto-worker-v1-2026-06-06";
+  const COMMAND_CENTER_VERSION = "cc73-auto-batch-worker-v1-2026-06-06";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -2118,7 +2118,8 @@
       const data = await postOperatorJson(endpoint, {
         action: "runScheduledAgentSweep",
         key,
-        mode: "deep_sheets"
+        mode: "deep_sheets",
+        maxAutoActions: state.autonomyMode === "full_auto" ? 2 : 1
       }, { timeoutMs: 300000 });
 
       if (!data || !data.ok) {
@@ -2130,8 +2131,11 @@
       const prvCount = data && data.prv ? Number(data.prv.actionable_count || 0) : 0;
       const prvSyncOk = !!(data && data.prv_sync && data.prv_sync.ok);
       const autoAction = data && data.auto_action ? data.auto_action : null;
-      const autoText = autoAction && autoAction.ran
-        ? ` Auto: ${autoAction.product || autoAction.type || "action"} ${autoAction.status || "completed"}.`
+      const autoActions = data && data.auto_actions ? data.auto_actions : null;
+      const autoText = autoActions && autoActions.ran
+        ? ` Auto: ${formatNumber(autoActions.count || 0)} ran. ${autoActions.summary || ""}`
+        : autoAction && autoAction.ran
+          ? ` Auto: ${autoAction.product || autoAction.type || "action"} ${autoAction.status || "completed"}.`
         : autoAction && autoAction.reason
           ? ` Auto: ${autoAction.reason}`
           : "";

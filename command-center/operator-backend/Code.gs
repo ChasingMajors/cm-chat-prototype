@@ -2804,7 +2804,12 @@ function runScheduledAgentSweep_(input) {
   memory.agent_actions = mergeScheduledPrvActions_(memory.agent_actions || [], prvActionable, now, prvWatch.mode || "quick_json");
   applyScheduledPrvSyncResultToMemory_(memory, prvSync, now);
 
-  const autoResult = maybeRunScheduledAutoAction_(memory, input && input.key, now);
+  const autoResult = maybeRunScheduledAutoActions_(
+    memory,
+    input && input.key,
+    now,
+    getScheduledAutoActionLimit_(input)
+  );
 
   const detailParts = [
     "Checklist: " + checklistActionable.length + " actionable from " + (checklistWatch.fetched_count || 0) + " checked.",
@@ -2815,7 +2820,7 @@ function runScheduledAgentSweep_(input) {
     detailParts.push((skippedChecklistIgnored + skippedPrvIgnored) + " admin-ignored source item(s) skipped.");
   }
   if (autoResult && autoResult.ran) {
-    detailParts.push("Auto action: " + autoResult.status + " for " + autoResult.product + ".");
+    detailParts.push("Auto actions: " + autoResult.count + " run. " + autoResult.summary);
   } else if (autoResult && autoResult.reason) {
     detailParts.push("Auto action: " + autoResult.reason);
   }
@@ -2875,7 +2880,8 @@ function runScheduledAgentSweep_(input) {
       detail: prvSync.detail,
       publish: prvSync.publish
     },
-    auto_action: autoResult,
+    auto_action: autoResult && autoResult.primary ? autoResult.primary : autoResult,
+    auto_actions: autoResult,
     memory_path: saveResult.path || "",
     memory_sha: saveResult.sha || "",
     memory_error: saveResult.error || "",
@@ -2924,7 +2930,8 @@ function runScheduledAgentSweepTrigger() {
   try {
     return runScheduledAgentSweep_({
       key: key,
-      mode: "deep_sheets"
+      mode: "deep_sheets",
+      maxAutoActions: 1
     });
   } catch (err) {
     const result = {
@@ -2936,6 +2943,60 @@ function runScheduledAgentSweepTrigger() {
     Logger.log("Scheduled Agent Sweep trigger failed: " + JSON.stringify(result));
     return result;
   }
+}
+
+function getScheduledAutoActionLimit_(input) {
+  const raw = Number(input && (input.maxAutoActions || input.max_auto_actions || input.autoLimit || input.auto_limit || 1));
+  if (!raw || raw < 1) return 1;
+  return Math.min(3, Math.floor(raw));
+}
+
+function maybeRunScheduledAutoActions_(memory, key, now, maxActions) {
+  const mode = safeString_(memory && memory.autonomy_mode).trim() || "approval_required";
+  const limit = Math.max(1, Math.min(3, Number(maxActions || 1)));
+
+  if (mode !== "full_auto") {
+    return {
+      ran: false,
+      count: 0,
+      mode: mode,
+      results: [],
+      reason: "Full auto is off."
+    };
+  }
+
+  const results = [];
+  for (let i = 0; i < limit; i++) {
+    const result = maybeRunScheduledAutoAction_(memory, key, now);
+    if (!result || !result.ran) {
+      if (!results.length) {
+        return {
+          ran: false,
+          count: 0,
+          mode: mode,
+          results: [],
+          reason: result && result.reason ? result.reason : "No safe auto-executable action found."
+        };
+      }
+      break;
+    }
+
+    results.push(result);
+
+    if (result.status !== "validated") break;
+  }
+
+  return {
+    ran: results.length > 0,
+    count: results.length,
+    mode: mode,
+    primary: results[0] || null,
+    results: results,
+    summary: results.map(function(result) {
+      return (result.product || result.type || "action") + " -> " + (result.status || "completed");
+    }).join("; "),
+    reason: results.length ? "" : "No safe auto-executable action found."
+  };
 }
 
 function maybeRunScheduledAutoAction_(memory, key, now) {
@@ -2961,7 +3022,7 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
   const safety = validateScheduledAutoActionSafety_(action);
   if (!safety.ok) {
     patchMemoryAction_(actions, action.id, {
-      status: "needs_admin",
+      status: "known_issue",
       executionResult: "Full-auto guardrail blocked execution.",
       validationResult: safety.reason,
       updatedAt: now

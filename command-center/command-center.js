@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc69-prv-full-sync-proof-v1-2026-06-06";
+  const COMMAND_CENTER_VERSION = "cc70-prv-validation-helper-fix-v1-2026-06-06";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -4073,7 +4073,9 @@
         ${data && data.error ? `<div class="task-guardrail">${escapeHtml(data.error)}</div>` : ""}
         <p>${escapeHtml(validationDetail)}</p>
         ${isFullSync ? `
-          <div class="task-guardrail">Full sync is complete when GitHub publish succeeds. Use a product card recheck when you need product-level public validation.</div>
+          <div class="task-guardrail">${validation && validation.ok
+            ? "Full sync is complete. Product-level public validation can still be run from a PRV action card when needed."
+            : "Full sync published files, but public validation needs review. Run Sync PRV JSON again after propagation or check Static Data Exporter logs if this repeats."}</div>
         ` : `
           <div class="opp-actions">
             <button class="action-btn approve" type="button" data-recheck-prv-code="${escapeHtml(code)}">Recheck PRV Public JSON</button>

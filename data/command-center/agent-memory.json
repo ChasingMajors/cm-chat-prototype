@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-06T15:29:14.865Z",
+  "exported_at": "2026-06-06T15:29:38.039Z",
   "autonomy_mode": "approval_required",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -127,6 +127,24 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "prv_sync_incident_full_vault",
+      "type": "prv_sync_incident",
+      "source": "operator_backend",
+      "product": "Print Run Vault JSON Sync",
+      "sport": "",
+      "code": "prv_full_sync",
+      "riskLevel": "high",
+      "status": "validated",
+      "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
+      "adminDecision": "",
+      "executionResult": "PRV full JSON sync completed through Static Data Exporter.",
+      "validationResult": "0 public PRV rows validated.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "createdAt": "2026-06-06T15:29:36.437Z",
+      "updatedAt": "2026-06-06T15:29:36.437Z"
+    },
     {
       "id": "checklist_publish|operator_backend|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
       "type": "checklist_publish",
@@ -740,6 +758,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780759776438_grz1zk",
+      "ts": "2026-06-06T15:29:36.438Z",
+      "type": "prv_sync_incident",
+      "title": "PRV sync incident recovered",
+      "detail": "0 public PRV rows validated.",
+      "status": "validated",
+      "product": "Print Run Vault JSON Sync",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780759776433_9rgg5a",
+      "ts": "2026-06-06T15:29:36.433Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync completed",
+      "detail": "0 public PRV rows validated.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780759753261_mi1rcc",
       "ts": "2026-06-06T15:29:13.261Z",
@@ -1519,26 +1557,6 @@
       "status": "started",
       "product": "2025-26 Topps Chrome Arsenal Soccer",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780063198437_djqh33",
-      "ts": "2026-05-29T13:59:58.437Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Topps Chrome Arsenal Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780063198429_2n51at",
-      "ts": "2026-05-29T13:59:58.429Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "251 checklist rows and 86 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 Topps Chrome Arsenal Soccer",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1807,6 +1825,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-06T15:29:16.043Z",
+  "saved_at": "2026-06-06T15:29:39.121Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -690,6 +690,7 @@ function previewPrvSource_(input) {
   const bodyHtml = extractSubstackBodyHtml_(html);
   const rows = parseSlabSquatchPrintRunRows_(bodyHtml, sourceUrl);
   const product = buildPrvProductPreview_(productName, sport, sourceUrl);
+  const paywalled = isSubstackPostPaywalled_(html, bodyHtml);
 
   return {
     ok: true,
@@ -700,7 +701,11 @@ function previewPrvSource_(input) {
     row_count: rows.length,
     rows: rows.slice(0, 200),
     sample_rows: rows.slice(0, 12),
-    warnings: rows.length ? [] : ["No print-run rows were parsed from the source post."],
+    warnings: rows.length
+      ? []
+      : [paywalled
+        ? "Source post appears paid/locked. Public HTML does not expose writable print-run rows."
+        : "No print-run rows were parsed from the source post."],
     next_step: "Review PRV preview rows. Sheet write is intentionally not enabled yet."
   };
 }
@@ -931,6 +936,15 @@ function extractSubstackPostTitle_(html) {
   if (postH1 && postH1[1]) return cleanProductTitle_(stripHtml_(postH1[1]));
 
   return "";
+}
+
+function isSubstackPostPaywalled_(html, bodyHtml) {
+  const raw = safeString_(html);
+  const body = safeString_(bodyHtml);
+  return /"audience"\s*:\s*"only_paid"/i.test(raw) ||
+    /data-testid=["']paywall["']/i.test(raw) ||
+    /class=["'][^"']*paywall/i.test(raw) ||
+    /subscription-widget/i.test(body) && !/~\s*[\d,]+\s*ea/i.test(body);
 }
 
 function parseSlabSquatchPrintRunRows_(bodyHtml, sourceUrl) {
@@ -3314,6 +3328,7 @@ function mergeScheduledSourceActions_(existingActions, sourceItems, now, mode) {
   sourceItems.forEach(function(item) {
     const id = "source_watch|" + normalize_(item.sport || "") + "|" + normalize_(item.matched_code || item.title || "");
     const existing = byId[id];
+    if (isProtectedMemoryAction_(existing)) return;
     const patch = {
       id: id,
       type: "source_import",
@@ -3354,6 +3369,7 @@ function mergeScheduledPrvActions_(existingActions, sourceItems, now, mode) {
   sourceItems.forEach(function(item) {
     const id = "prv_watch|" + normalize_(item.sport || "") + "|" + normalize_(item.matched_code || item.title || "");
     const existing = byId[id];
+    if (isProtectedMemoryAction_(existing)) return;
     const patch = {
       id: id,
       type: "prv_source_review",
@@ -3381,6 +3397,15 @@ function mergeScheduledPrvActions_(existingActions, sourceItems, now, mode) {
   });
 
   return out.slice(0, 80);
+}
+
+function isProtectedMemoryAction_(action) {
+  const status = safeString_(action && action.status).trim().toLowerCase();
+  return status === "known_issue" ||
+    status === "ignored" ||
+    status === "validated" ||
+    status === "done" ||
+    status === "blocked";
 }
 
 function prependMemoryActivity_(activityLog, entry) {

@@ -26,7 +26,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-07-operator-cc82-queue-sport-repair";
+const CM_OPERATOR_VERSION = "2026-06-07-operator-cc83-pending-public-validation";
 const CM_APP_DATA_BASE = "https://app.chasingmajors.com/data/v1";
 const CM_CHECKLISTCENTER_HOME = "https://www.checklistcenter.com/";
 const CM_CHECKLISTCENTER_POSTS_API = "https://www.checklistcenter.com/wp-json/wp/v2/posts?per_page=20&_fields=link,title,date,slug";
@@ -3116,7 +3116,9 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
 
   let result = {};
   try {
-    if (action.type === "source_import") {
+    if (action.type === "source_import" && safeString_(action.status).trim().toLowerCase() === "pending_public_validation") {
+      result = runScheduledChecklistPendingValidationAction_(action, key);
+    } else if (action.type === "source_import") {
       result = runScheduledChecklistAutoAction_(action, key);
     } else if (action.type === "prv_source_review") {
       result = runScheduledPrvAutoAction_(action, key);
@@ -3139,6 +3141,8 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
   const resultStatus = safeString_(result.status).trim().toLowerCase();
   const finalStatus = result.ok && result.validated
     ? "validated"
+    : resultStatus === "pending_public_validation"
+      ? "pending_public_validation"
     : result.ok
       ? "needs_admin"
       : resultStatus === "known_issue" || resultStatus === "needs_admin" || resultStatus === "blocked"
@@ -3149,6 +3153,10 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
 
   patchMemoryAction_(actions, action.id, {
     status: finalStatus,
+    sport: result.sport || action.sport || "",
+    code: result.code || action.code || "",
+    targetBucket: result.targetBucket || action.targetBucket || "",
+    pendingValidationAttempts: result.pendingValidationAttempts || action.pendingValidationAttempts || 0,
     executionResult: executionResult,
     validationResult: validationResult,
     autoExecutedAt: now,
@@ -3159,7 +3167,7 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
     id: "log_" + Date.now(),
     ts: now,
     type: "auto_action",
-    title: finalStatus === "validated" ? "Full-auto action completed" : finalStatus === "failed" ? "Full-auto action failed" : "Full-auto action needs review",
+    title: finalStatus === "validated" ? "Full-auto action completed" : finalStatus === "failed" ? "Full-auto action failed" : finalStatus === "pending_public_validation" ? "Full-auto action pending public validation" : "Full-auto action needs review",
     detail: (action.product || action.type || "Action") + ": " + executionResult + " " + validationResult,
     status: finalStatus,
     product: action.product || "",
@@ -3181,6 +3189,14 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
 }
 
 function findNextScheduledAutoAction_(actions) {
+  for (let i = 0; i < actions.length; i++) {
+    const action = actions[i] || {};
+    const status = safeString_(action.status).trim().toLowerCase();
+    if (status !== "pending_public_validation") continue;
+    if (action.type !== "source_import" && action.type !== "prv_source_review") continue;
+    return action;
+  }
+
   for (let i = 0; i < actions.length; i++) {
     const action = actions[i] || {};
     const status = safeString_(action.status).trim().toLowerCase();
@@ -3314,13 +3330,68 @@ function runScheduledChecklistAutoAction_(action, key) {
   return {
     ok: true,
     validated: validated,
-    status: validated ? "validated" : "needs_review",
+    status: validated ? "validated" : "pending_public_validation",
+    sport: product.sport || action.sport || "",
+    code: product.code || action.code || "",
+    targetBucket: product.target_bucket || product.year || action.targetBucket || "",
+    pendingValidationAttempts: validated ? 0 : 1,
     executionResult: publishOk
       ? "Checklist sheet write and JSON publish completed for " + (product.code || action.code || "product") + "."
-      : "Checklist sheet write completed; JSON publish needs review for " + (product.code || action.code || "product") + ".",
+      : "Checklist sheet write completed; public JSON validation is pending for " + (product.code || action.code || "product") + ".",
     validationResult: validated
       ? "Public checklist JSON validated with " + publicRows + " rows."
-      : "Checklist write completed, but public JSON validation needs review. " + publishDetail + " " + productDetail + " Public recheck: " + summarizePublicChecklistValidation_(publicValidation)
+      : "Checklist write completed, but public JSON is not visible yet. The agent will retry publish/public validation on the next sweep. " + publishDetail + " " + productDetail + " Public recheck: " + summarizePublicChecklistValidation_(publicValidation)
+  };
+}
+
+function runScheduledChecklistPendingValidationAction_(action, key) {
+  const sport = normalize_(action && action.sport);
+  const code = safeString_(action && action.code).trim();
+  const targetBucket = safeString_(action && (action.targetBucket || action.bucket || action.year)).trim();
+  const attempts = Number(action && action.pendingValidationAttempts || 0) + 1;
+
+  if (!sport || !code) {
+    return {
+      ok: false,
+      status: "needs_admin",
+      error: "Pending validation is missing sport or product code.",
+      executionResult: "Public JSON validation could not run.",
+      validationResult: "Missing sport or product code for pending validation recheck."
+    };
+  }
+
+  let publicValidation = waitForPublicChecklistProduct_(sport, code);
+  let publicRows = Number(publicValidation && publicValidation.row_count || 0);
+  let publish = null;
+
+  if (publicRows <= 0 && attempts <= 3) {
+    publish = publishChecklistAfterImport_({
+      sport: sport,
+      target_bucket: targetBucket,
+      year: targetBucket,
+      code: code
+    }, key);
+    publicValidation = waitForPublicChecklistProduct_(sport, code);
+    publicRows = Number(publicValidation && publicValidation.row_count || 0);
+  }
+
+  const validated = publicRows > 0;
+  const detail = "Checked " + sport + " " + (targetBucket || "current") + " code " + code + ".";
+
+  return {
+    ok: true,
+    validated: validated,
+    status: validated ? "validated" : attempts >= 3 ? "needs_review" : "pending_public_validation",
+    sport: sport,
+    code: code,
+    targetBucket: targetBucket,
+    pendingValidationAttempts: validated ? 0 : attempts,
+    executionResult: validated
+      ? "Pending checklist publish validation completed for " + code + "."
+      : "Pending checklist publish validation rechecked for " + code + ".",
+    validationResult: validated
+      ? "Public checklist JSON validated with " + publicRows + " rows."
+      : "Public checklist JSON is still pending after " + attempts + " check(s). " + (publish ? summarizePublishResult_(publish) + " " : "") + detail + " Public recheck: " + summarizePublicChecklistValidation_(publicValidation)
   };
 }
 

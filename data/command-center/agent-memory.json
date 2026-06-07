@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:39:16.093Z",
+  "exported_at": "2026-06-07T20:39:43.287Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:38:30.355Z",
-      "updatedAt": "2026-06-07T20:39:14.491Z"
+      "updatedAt": "2026-06-07T20:39:41.685Z"
     },
     {
       "id": "visual_test|github_actions|2017 panini contenders draft picks baseball|2017_panini_contenders_draft_picks_baseball",
@@ -1318,7 +1318,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.197Z",
-      "updatedAt": "2026-06-07T20:39:14.492Z"
+      "updatedAt": "2026-06-07T20:39:41.685Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Donruss_Optic_Baseball",
@@ -1822,6 +1822,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780864781685_blbke7",
+      "ts": "2026-06-07T20:39:41.685Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Panini Chronicles Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780864754492_mnj8vv",
       "ts": "2026-06-07T20:39:14.492Z",
@@ -2611,16 +2621,6 @@
       "status": "pending_visual_validation",
       "product": "2017 Topps Definitive Collection Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780862788023",
-      "ts": "2026-06-07T20:06:25.794Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3304,7 +3304,7 @@
       "productName": "2017 Panini Chronicles Baseball",
       "sport": "baseball",
       "code": "2017_Panini_Chronicles_Baseball",
-      "updatedAt": "2026-06-07T20:39:14.489Z",
+      "updatedAt": "2026-06-07T20:39:41.684Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27104148131,
@@ -3312,7 +3312,7 @@
       "displayTitle": "Visual Product Test - 2017 Panini Chronicles Baseball",
       "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
       "createdAt": "2026-06-07T20:38:29Z",
-      "checkedAt": "2026-06-07T20:39:14.489Z"
+      "checkedAt": "2026-06-07T20:39:41.684Z"
     }
   },
   "known_issues": {},
@@ -3531,6 +3531,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:39:17.290Z",
+  "saved_at": "2026-06-07T20:39:44.195Z",
   "saved_by": "cm_command_center_operator"
 }

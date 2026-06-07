@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T16:39:40.408Z",
+  "exported_at": "2026-06-07T16:39:43.469Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -344,15 +344,15 @@
       "sport": "baseball",
       "code": "2025_topps_dynasty_baseball",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "Coverage recheck started...",
+      "validationResult": "Public JSON covered: 1,452 rows, 14 parallels. Visual CV/ChatBot proof still pending.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:55:28.342Z",
-      "updatedAt": "2026-06-07T16:39:38.806Z"
+      "updatedAt": "2026-06-07T16:39:41.865Z"
     },
     {
       "id": "checklist_publish|operator_backend|2026 topps series 2 baseball|2026_topps_series_2_baseball",
@@ -938,6 +938,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780850381867_r0995y",
+      "ts": "2026-06-07T16:39:41.867Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "1,452 public rows and 14 parallels found.",
+      "status": "covered",
+      "product": "2025 Topps Dynasty Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780850378806_f336tw",
       "ts": "2026-06-07T16:39:38.806Z",
@@ -1727,16 +1737,6 @@
       "status": "loaded",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780802244440_f5flms",
-      "ts": "2026-06-07T03:17:24.441Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -2028,6 +2028,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T16:39:41.586Z",
+  "saved_at": "2026-06-07T16:39:44.750Z",
   "saved_by": "cm_command_center_operator"
 }

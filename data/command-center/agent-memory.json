@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:03:24.506Z",
+  "exported_at": "2026-06-07T21:03:32.583Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 panini elite extra edition baseball|2017_panini_elite_extra_edition_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Panini Elite Extra Edition Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Elite_Extra_Edition_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104752735",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T21:03:25.443Z",
+      "updatedAt": "2026-06-07T21:03:30.979Z"
+    },
     {
       "id": "visual_test|github_actions|2017 panini flawless baseball|2017_panini_flawless_baseball",
       "type": "visual_test",
@@ -1456,17 +1478,17 @@
       "sport": "baseball",
       "code": "2017_Panini_Elite_Extra_Edition_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Panini_Elite_Extra_Edition_Baseball.",
-      "validationResult": "CV/ChatBot visual test requested by Agent Cycle...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104752735",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.199Z",
-      "updatedAt": "2026-06-07T21:03:22.903Z",
+      "updatedAt": "2026-06-07T21:03:30.980Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T21:03:14.170Z"
     },
@@ -1829,29 +1851,49 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.189Z",
       "updatedAt": "2026-06-07T18:15:39.190Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Stadium_Club_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Stadium Club Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Stadium_Club_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.189Z",
-      "updatedAt": "2026-06-07T18:15:39.189Z"
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780866210980_6j7rfh",
+      "ts": "2026-06-07T21:03:30.980Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Panini Elite Extra Edition Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780866205462_0azhcz",
+      "ts": "2026-06-07T21:03:25.462Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 18 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Panini Elite Extra Edition Baseball -> pending_visual_validation (Published checklist JSON validated with 835 rows and 31 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780866205455_mjc3u4",
+      "ts": "2026-06-07T21:03:25.455Z",
+      "type": "visual_test",
+      "title": "Visual validation batch queued",
+      "detail": "1 CV/ChatBot visual test queued. 2017 Panini Elite Extra Edition Baseball",
+      "status": "queued",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1780866205446_3o4tyq",
+      "ts": "2026-06-07T21:03:25.446Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Panini Elite Extra Edition Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780866202898_bqulxq",
       "ts": "2026-06-07T21:03:22.898Z",
@@ -2611,46 +2653,6 @@
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780865085773_q4llya",
-      "ts": "2026-06-07T20:44:45.773Z",
-      "type": "visual_test",
-      "title": "Visual validation batch queued",
-      "detail": "1 CV/ChatBot visual test queued. 2017 Topps Archives Snapshots Baseball",
-      "status": "queued",
-      "product": "",
-      "source": "agent_cycle"
-    },
-    {
-      "id": "log_1780865085765_m9cn1q",
-      "ts": "2026-06-07T20:44:45.765Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps Archives Snapshots Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780865083532_n681vm",
-      "ts": "2026-06-07T20:44:43.532Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780865083520_h67nmx",
-      "ts": "2026-06-07T20:44:43.520Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -3550,6 +3552,29 @@
       "headSha": "20851af5ab74cf0aca55b450a0783f21a5411171",
       "createdAt": "2026-06-07T21:01:19Z",
       "checkedAt": "2026-06-07T21:02:31.581Z"
+    },
+    "baseball|2017_Panini_Elite_Extra_Edition_Baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-07T21:03:23.826Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104752735",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Panini_Elite_Extra_Edition_Baseball",
+      "key": "baseball|2017_Panini_Elite_Extra_Edition_Baseball",
+      "productName": "2017 Panini Elite Extra Edition Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Elite_Extra_Edition_Baseball",
+      "updatedAt": "2026-06-07T21:03:30.977Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27104752735,
+      "runNumber": 59,
+      "displayTitle": "Visual Product Test - 2017 Panini Elite Extra Edition Baseball",
+      "headSha": "20851af5ab74cf0aca55b450a0783f21a5411171",
+      "createdAt": "2026-06-07T21:03:24Z",
+      "checkedAt": "2026-06-07T21:03:30.976Z"
     }
   },
   "known_issues": {},
@@ -3768,6 +3793,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:03:25.680Z",
+  "saved_at": "2026-06-07T21:03:33.635Z",
   "saved_by": "cm_command_center_operator"
 }

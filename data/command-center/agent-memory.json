@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T18:00:41.051Z",
+  "exported_at": "2026-06-07T18:13:57.306Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -209,15 +209,15 @@
       "sport": "basketball",
       "code": "",
       "riskLevel": "medium",
-      "status": "fix_queued",
-      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
+      "status": "known_issue",
+      "recommendedAction": "Open the source and review whether this post has a new layout or no extractable print-run table.",
       "adminDecision": "",
-      "executionResult": "PRV source preview is not ready for write.",
-      "validationResult": "PRV sheet write did not complete.",
+      "executionResult": "Source found, but the PRV parser returned 0 print-run rows.",
+      "validationResult": "Parser review needed before this can write PRV sheet data.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
       "createdAt": "2026-06-06T17:00:51.700Z",
-      "updatedAt": "2026-06-07T17:41:33.090Z",
+      "updatedAt": "2026-06-07T18:00:41.377Z",
       "autoExecutedAt": "2026-06-06T19:41:17.269Z"
     },
     {
@@ -975,6 +975,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780856035702_1q8g1o",
+      "ts": "2026-06-07T18:13:55.702Z",
+      "type": "deep_backend_audit",
+      "title": "Deep Sheets Audit started",
+      "detail": "Comparing configured source Google Sheets against public checklist JSON. No writes will run.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1780855241379_nxfwa3",
+      "ts": "2026-06-07T18:00:41.379Z",
+      "type": "prv_source_review",
+      "title": "PRV preview completed",
+      "detail": "0 print-run rows parsed.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Hoops Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780855239448_uhpjuu",
       "ts": "2026-06-07T18:00:39.448Z",
@@ -1754,26 +1774,6 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1780837509446",
-      "ts": "2026-06-07T13:00:59.615Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 2 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Topps Chrome UEFA Women's Champions League Soccer -> needs_admin (Checklist write completed, but public JSON validation needs review. Publish returned published_validation_needs_review. )",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780837509445",
-      "ts": "2026-06-07T13:00:59.615Z",
-      "type": "auto_action",
-      "title": "Full-auto action needs review",
-      "detail": "2025-26 Topps Chrome UEFA Women's Champions League Soccer: Checklist sheet write completed; JSON publish needs review for 2025_26_topps_chrome_uefa_women_s_champions_league_soccer. Checklist write completed, but public JSON validation needs review. Publish returned published_validation_needs_review. Checked soccer 2025-26 code 2025_26_topps_chrome_uefa_women_s_champions_league_soccer. Public recheck: Product code not found in public checklist JSON yet.",
-      "status": "needs_admin",
-      "product": "2025-26 Topps Chrome UEFA Women's Champions League Soccer",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2142,6 +2142,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T18:00:42.303Z",
+  "saved_at": "2026-06-07T18:13:58.367Z",
   "saved_by": "cm_command_center_operator"
 }

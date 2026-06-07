@@ -4248,7 +4248,7 @@
   }
 
   function syncPrvJsonOnDemand() {
-    publishPrvVaultData("", null, { fullSync: true });
+    return publishPrvVaultData("", null, { fullSync: true });
   }
 
   function runSentinelCommand(command) {
@@ -6421,84 +6421,72 @@
     runAgentVisualTest(plan);
   }
 
-  function runAgentCycle() {
+  async function runAgentCycle() {
     const step = getAgentCycleStep();
 
     if (step.kind === "sentinel_incident_recovery") {
       renderAgentCycleMessage(step.title, step.detail, "warning");
-      attemptSentinelIncidentRecovery(step.action);
-      return;
+      return attemptSentinelIncidentRecovery(step.action);
     }
 
     if (step.kind === "prv_sync_recovery") {
       renderAgentCycleMessage(step.title, step.detail, "warning");
-      attemptPrvSyncIncidentRecovery(step.action);
-      return;
+      return attemptPrvSyncIncidentRecovery(step.action);
     }
 
     if (step.kind === "retest") {
       renderAgentCycleMessage(step.title, step.detail, "info");
-      runVisualTestForAction(step.action, true);
-      return;
+      return runVisualTestForAction(step.action, true);
     }
 
     if (step.kind === "approved_prv_preview") {
       const sourceUrl = step.action.sourceUrl || step.action.runUrl || "";
       renderAgentCycleMessage(step.title, step.detail, "info");
-      previewPrvSource(sourceUrl, step.action.sport || "", step.action.id);
-      return;
+      return previewPrvSource(sourceUrl, step.action.sport || "", step.action.id);
     }
 
     if (step.kind === "execute_prv_import") {
       const sourceUrl = step.action.sourceUrl || step.action.runUrl || "";
       renderAgentCycleMessage(step.title, step.detail, "info");
-      executePrvSourceImport(sourceUrl, step.action.sport || "", step.action.id);
-      return;
+      return executePrvSourceImport(sourceUrl, step.action.sport || "", step.action.id);
     }
 
     if (step.kind === "execute_import") {
       const sourceUrl = step.action.sourceUrl || step.action.runUrl || "";
       renderAgentCycleMessage(step.title, step.detail, "info");
-      executeSourceImport(sourceUrl, step.action.sport || "", step.action.id);
-      return;
+      return executeSourceImport(sourceUrl, step.action.sport || "", step.action.id);
     }
 
     if (step.kind === "publish_prv_json") {
       renderAgentCycleMessage(step.title, step.detail, "info");
-      publishPrvVaultData(step.action.code || "", step.action.id);
-      return;
+      return publishPrvVaultData(step.action.code || "", step.action.id);
     }
 
     if (step.kind === "visual_test") {
       renderAgentCycleMessage(step.title, step.detail, "info");
-      runVisualTestForAction(step.action, false);
-      return;
+      return runVisualTestForAction(step.action, false);
     }
 
     if (step.kind === "prv_public_recheck") {
       renderAgentCycleMessage(step.title, step.detail, "info");
-      recheckPrvPublicData(step.action.code || "", step.action.id);
-      return;
+      return recheckPrvPublicData(step.action.code || "", step.action.id);
     }
 
     if (step.kind === "checklist_coverage_recheck") {
       renderAgentCycleMessage(step.title, step.detail, "info");
-      recheckActionCoverage(step.action.id);
-      return;
+      return recheckActionCoverage(step.action.id);
     }
 
     if (step.kind === "prv_preview") {
       const sourceUrl = step.action.sourceUrl || step.action.runUrl || "";
       renderAgentCycleMessage(step.title, step.detail, "info");
-      previewPrvSource(sourceUrl, step.action.sport || "", step.action.id);
-      return;
+      return previewPrvSource(sourceUrl, step.action.sport || "", step.action.id);
     }
 
     if (step.kind === "checklist_preview") {
       const sourceUrl = step.action.sourceUrl || step.action.runUrl || "";
       renderAgentCycleMessage(step.title, step.detail, "info");
-      previewSourceImport(sourceUrl, step.action.sport || "", step.action.id);
-      return;
+      return previewSourceImport(sourceUrl, step.action.sport || "", step.action.id);
     }
 
     if (step.kind === "create_fix_task") {
@@ -6508,17 +6496,17 @@
       renderAgentActions();
       renderActionLanes();
       renderActivityLog();
-      return;
+      return { ok: true, task };
     }
 
     if (step.kind === "needs_admin") {
       renderAgentCycleMessage(step.title, `${step.detail} Use Scan New Checklists if you want a fresh source scan without advancing this queue item.`, "warning");
-      return;
+      return { ok: false, reason: "Admin decision required." };
     }
 
     if (step.kind === "wait") {
       renderAgentCycleMessage(step.title, step.detail, "warning");
-      return;
+      return { ok: false, reason: "Active work is already running." };
     }
 
     renderAgentCycleMessage(
@@ -6528,8 +6516,9 @@
         : "No active queue item needed action, so Sentinel is running the browser daily sweep now.",
       "info"
     );
-    if (readOperatorEndpoint() && readOperatorKey()) runBackendAgentSweep();
-    else runDailySentinelSweep();
+    if (readOperatorEndpoint() && readOperatorKey()) return runBackendAgentSweep();
+    runDailySentinelSweep();
+    return { ok: true };
   }
 
   function renderActionLaneCard(action, lane) {
@@ -7046,11 +7035,41 @@
     `).join("");
   }
 
-  els.refreshBtn.addEventListener("click", runAudit);
-  els.syncPrvJsonBtn.addEventListener("click", syncPrvJsonOnDemand);
-  if (els.publicToolAuditBtn) els.publicToolAuditBtn.addEventListener("click", runPublicToolAudit);
-  if (els.publicToolAuditPanelBtn) els.publicToolAuditPanelBtn.addEventListener("click", runPublicToolAudit);
-  if (els.sentinelSelfTestBtn) els.sentinelSelfTestBtn.addEventListener("click", runSentinelSelfTest);
+  function setLauncherState(button, stateName, label) {
+    if (!button) return;
+    button.classList.remove("launcher-running", "launcher-success", "launcher-failed");
+    if (stateName) button.classList.add(`launcher-${stateName}`);
+    button.setAttribute("data-launcher-state", stateName || "");
+    if (label) button.setAttribute("data-launcher-label", label);
+    else button.removeAttribute("data-launcher-label");
+  }
+
+  async function runLauncher(button, work, labels) {
+    labels = Object.assign({
+      running: "Running",
+      success: "Done",
+      failed: "Issue"
+    }, labels || {});
+
+    setLauncherState(button, "running", labels.running);
+    try {
+      const result = await Promise.resolve(work());
+      const ok = !result || result.ok !== false;
+      setLauncherState(button, ok ? "success" : "failed", ok ? labels.success : labels.failed);
+      setTimeout(() => setLauncherState(button, "", ""), ok ? 4200 : 7000);
+      return result;
+    } catch (err) {
+      setLauncherState(button, "failed", labels.failed);
+      setTimeout(() => setLauncherState(button, "", ""), 7000);
+      throw err;
+    }
+  }
+
+  els.refreshBtn.addEventListener("click", () => runLauncher(els.refreshBtn, runAudit, { running: "Auditing", success: "Audit done" }));
+  els.syncPrvJsonBtn.addEventListener("click", () => runLauncher(els.syncPrvJsonBtn, syncPrvJsonOnDemand, { running: "Syncing", success: "Synced" }));
+  if (els.publicToolAuditBtn) els.publicToolAuditBtn.addEventListener("click", () => runLauncher(els.publicToolAuditBtn, runPublicToolAudit, { running: "Testing", success: "Passed" }));
+  if (els.publicToolAuditPanelBtn) els.publicToolAuditPanelBtn.addEventListener("click", () => runLauncher(els.publicToolAuditPanelBtn, runPublicToolAudit, { running: "Testing", success: "Passed" }));
+  if (els.sentinelSelfTestBtn) els.sentinelSelfTestBtn.addEventListener("click", () => runLauncher(els.sentinelSelfTestBtn, runSentinelSelfTest, { running: "Testing", success: "Passed" }));
   if (els.sentinelCommandBtn) {
     els.sentinelCommandBtn.addEventListener("click", () => runSentinelCommand(els.sentinelCommandInput && els.sentinelCommandInput.value || ""));
   }
@@ -7065,17 +7084,17 @@
   document.querySelectorAll("[data-sentinel-click]").forEach(btn => {
     btn.addEventListener("click", () => {
       const action = btn.dataset.sentinelClick || "";
-      if (action === "syncPrv") syncPrvJsonOnDemand();
-      else if (action === "audit") runAudit();
-      else if (action === "checklists") runSourceWatchWithBackend("deep_sheets");
-      else if (action === "prv") runPrvSourceWatchWithBackend();
-      else if (action === "agent") runAgentCycle();
+      if (action === "syncPrv") runLauncher(btn, syncPrvJsonOnDemand, { running: "Syncing", success: "Synced" });
+      else if (action === "audit") runLauncher(btn, runAudit, { running: "Auditing", success: "Audit done" });
+      else if (action === "checklists") runLauncher(btn, () => runSourceWatchWithBackend("deep_sheets"), { running: "Auditing", success: "Audit done" });
+      else if (action === "prv") runLauncher(btn, runPrvSourceWatchWithBackend, { running: "Scanning", success: "Scan done" });
+      else if (action === "agent") runLauncher(btn, runAgentCycle, { running: "Working", success: "Cycle done" });
     });
   });
-  els.scanSourcesBtn.addEventListener("click", () => runSourceWatchWithBackend("quick_json"));
-  els.scanPrvSourcesBtn.addEventListener("click", () => runPrvSourceWatchWithBackend());
-  els.agentCycleBtn.addEventListener("click", runAgentCycle);
-  if (els.backendAgentSweepBtn) els.backendAgentSweepBtn.addEventListener("click", runBackendAgentSweep);
+  els.scanSourcesBtn.addEventListener("click", () => runLauncher(els.scanSourcesBtn, () => runSourceWatchWithBackend("quick_json"), { running: "Scanning", success: "Scan done" }));
+  els.scanPrvSourcesBtn.addEventListener("click", () => runLauncher(els.scanPrvSourcesBtn, runPrvSourceWatchWithBackend, { running: "Scanning", success: "Scan done" }));
+  els.agentCycleBtn.addEventListener("click", () => runLauncher(els.agentCycleBtn, runAgentCycle, { running: "Working", success: "Cycle done" }));
+  if (els.backendAgentSweepBtn) els.backendAgentSweepBtn.addEventListener("click", () => runLauncher(els.backendAgentSweepBtn, runBackendAgentSweep, { running: "Sweeping", success: "Sweep done" }));
   els.clearDoneBtn.addEventListener("click", clearDoneTasks);
   els.clearResolvedAgentActionsBtn.addEventListener("click", clearResolvedAgentActions);
   els.clearActivityLogBtn.addEventListener("click", clearActivityLog);
@@ -7100,9 +7119,9 @@
     renderActivityLog();
   });
   els.sourceCheckBtn.addEventListener("click", validateSourceProductWithBackend);
-  els.sourceWatchQuickBtn.addEventListener("click", () => runSourceWatchWithBackend("quick_json"));
-  els.sourceWatchDeepBtn.addEventListener("click", () => runSourceWatchWithBackend("deep_sheets"));
-  els.prvSourceWatchBtn.addEventListener("click", () => runPrvSourceWatchWithBackend());
+  els.sourceWatchQuickBtn.addEventListener("click", () => runLauncher(els.sourceWatchQuickBtn, () => runSourceWatchWithBackend("quick_json"), { running: "Scanning", success: "Scan done" }));
+  els.sourceWatchDeepBtn.addEventListener("click", () => runLauncher(els.sourceWatchDeepBtn, () => runSourceWatchWithBackend("deep_sheets"), { running: "Auditing", success: "Audit done" }));
+  els.prvSourceWatchBtn.addEventListener("click", () => runLauncher(els.prvSourceWatchBtn, runPrvSourceWatchWithBackend, { running: "Scanning", success: "Scan done" }));
   els.saveEndpointBtn.addEventListener("click", () => {
     writeOperatorEndpoint(els.operatorEndpointInput.value || "");
     writeOperatorKey(els.operatorKeyInput.value || "");

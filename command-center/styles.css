@@ -542,6 +542,7 @@ a {
 }
 
 .workflow-tile {
+  position: relative;
   min-width: 0;
   min-height: 112px;
   padding: 16px;
@@ -556,6 +557,85 @@ a {
   gap: 8px;
   text-align: left;
   cursor: pointer;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, background 160ms ease;
+}
+
+.workflow-tile.launcher-running,
+.workflow-tile.launcher-success,
+.workflow-tile.launcher-failed,
+.quick-prompts button.launcher-running,
+.quick-prompts button.launcher-success,
+.quick-prompts button.launcher-failed,
+.primary-btn.launcher-running,
+.primary-btn.launcher-success,
+.primary-btn.launcher-failed,
+.ghost-btn.launcher-running,
+.ghost-btn.launcher-success,
+.ghost-btn.launcher-failed {
+  position: relative;
+}
+
+.workflow-tile.launcher-running,
+.quick-prompts button.launcher-running,
+.primary-btn.launcher-running,
+.ghost-btn.launcher-running {
+  border-color: rgba(255,174,66,0.78);
+  box-shadow: 0 0 0 4px rgba(255,174,66,0.20), 0 18px 42px rgba(255,174,66,0.18);
+}
+
+.workflow-tile.launcher-success,
+.quick-prompts button.launcher-success,
+.primary-btn.launcher-success,
+.ghost-btn.launcher-success {
+  border-color: rgba(51,209,122,0.72);
+  box-shadow: 0 0 0 4px rgba(51,209,122,0.18), 0 18px 42px rgba(51,209,122,0.15);
+}
+
+.workflow-tile.launcher-failed,
+.quick-prompts button.launcher-failed,
+.primary-btn.launcher-failed,
+.ghost-btn.launcher-failed {
+  border-color: rgba(255,93,93,0.72);
+  box-shadow: 0 0 0 4px rgba(255,93,93,0.18), 0 18px 42px rgba(255,93,93,0.14);
+}
+
+.workflow-tile[data-launcher-label]::after,
+.quick-prompts button[data-launcher-label]::after,
+.primary-btn[data-launcher-label]::after,
+.ghost-btn[data-launcher-label]::after {
+  content: attr(data-launcher-label);
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  max-width: calc(100% - 16px);
+  padding: 4px 7px;
+  border-radius: 999px;
+  color: #704200;
+  background: rgba(255,244,222,0.94);
+  border: 1px solid rgba(255,174,66,0.32);
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.workflow-tile.launcher-success[data-launcher-label]::after,
+.quick-prompts button.launcher-success[data-launcher-label]::after,
+.primary-btn.launcher-success[data-launcher-label]::after,
+.ghost-btn.launcher-success[data-launcher-label]::after {
+  color: #126d38;
+  background: rgba(235,255,244,0.94);
+  border-color: rgba(51,209,122,0.28);
+}
+
+.workflow-tile.launcher-failed[data-launcher-label]::after,
+.quick-prompts button.launcher-failed[data-launcher-label]::after,
+.primary-btn.launcher-failed[data-launcher-label]::after,
+.ghost-btn.launcher-failed[data-launcher-label]::after {
+  color: #a22828;
+  background: rgba(255,241,241,0.96);
+  border-color: rgba(255,93,93,0.30);
 }
 
 .command-brief-panel {

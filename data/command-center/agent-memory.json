@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T22:09:04.647Z",
+  "exported_at": "2026-06-07T22:09:10.507Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -273,12 +273,30 @@
   ],
   "agent_run_queue": [
     "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Panini_Immaculate_Collection_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball",
     "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Tribute_Baseball",
     "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780870148905_hm8bul",
+      "ts": "2026-06-07T22:09:08.905Z",
+      "type": "agent_run_queue",
+      "title": "Removed from Agent Run Queue",
+      "detail": "2017 Panini Immaculate Collection Baseball was removed from the explicit run queue.",
+      "status": "removed",
+      "product": "2017 Panini Immaculate Collection Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780870146439_pbpgbo",
+      "ts": "2026-06-07T22:09:06.439Z",
+      "type": "agent_run_queue",
+      "title": "Removed from Agent Run Queue",
+      "detail": "2017 Topps Museum Collection Baseball was removed from the explicit run queue.",
+      "status": "removed",
+      "product": "2017 Topps Museum Collection Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780870143044_3079zj",
       "ts": "2026-06-07T22:09:03.044Z",
@@ -1056,26 +1074,6 @@
       "title": "Product action validated",
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
-      "product": "2017 Panini Elite Extra Edition Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780866267318_l7cq1z",
-      "ts": "2026-06-07T21:04:27.318Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Panini Elite Extra Edition Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780866240056_itjetv",
-      "ts": "2026-06-07T21:04:00.056Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
       "product": "2017 Panini Elite Extra Edition Baseball",
       "source": "github_actions"
     }
@@ -2997,6 +2995,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T22:09:05.989Z",
+  "saved_at": "2026-06-07T22:09:11.739Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:19:06.938Z",
+  "exported_at": "2026-06-07T21:19:13.833Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1802,17 +1802,17 @@
       "sport": "baseball",
       "code": "2016_Topps_Update_Series_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1021 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.191Z",
-      "updatedAt": "2026-06-07T18:15:39.191Z"
+      "updatedAt": "2026-06-07T21:19:12.230Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Tribute_Baseball",
@@ -1866,6 +1866,36 @@
     "backend_audit|stale_public_json|baseball|2017_Bowman_s_Best_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780867152231_5c2d60",
+      "ts": "2026-06-07T21:19:12.231Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2016 Topps Update Series Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780867152227_9gqw0i",
+      "ts": "2026-06-07T21:19:12.227Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2016 Topps Update Series Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2016 Topps Update Series Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780867152223_0vwrux",
+      "ts": "2026-06-07T21:19:12.223Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "8 flagged jobs will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1780867145336_6mbxqs",
       "ts": "2026-06-07T21:19:05.336Z",
@@ -2633,36 +2663,6 @@
       "title": "Scheduled Agent Sweep complete",
       "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Allen & Ginter Baseball -> pending_visual_validation (Published checklist JSON validated with 1677 rows and 8 parallels. CV/ChatBot visual validation is pending.)",
       "status": "validated",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780865657862",
-      "ts": "2026-06-07T20:54:15.797Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Topps Allen & Ginter Baseball: Pending checklist publish validation completed for 2017_Topps_Allen_Ginter_Baseball. Published checklist JSON validated with 1677 rows and 8 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Topps Allen & Ginter Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780865657522",
-      "ts": "2026-06-07T20:54:15.797Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780865610156_dmd7uq",
-      "ts": "2026-06-07T20:53:30.156Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
       "product": "",
       "source": "operator_backend"
     }
@@ -3828,6 +3828,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:19:08.190Z",
+  "saved_at": "2026-06-07T21:19:15.122Z",
   "saved_by": "cm_command_center_operator"
 }

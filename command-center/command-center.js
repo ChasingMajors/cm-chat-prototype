@@ -696,6 +696,60 @@
     return true;
   }
 
+  function autoResolveCoveredSourceCheck(data) {
+    if (!data || data.status !== "covered") return 0;
+
+    const input = {
+      type: "source_import",
+      product: data.matched_name || data.title || "",
+      title: data.matched_name || data.title || "",
+      sport: data.sport || "",
+      code: data.matched_code || "",
+      matched_code: data.matched_code || "",
+      sourceUrl: data.source_url || data.url || "",
+      url: data.url || ""
+    };
+
+    let resolvedCount = 0;
+    (state.agentActions || []).forEach(action => {
+      if (!action) return;
+      const type = String(action.type || "").toLowerCase();
+      const status = String(action.status || "").toLowerCase();
+      if (status === "validated" || status === "ignored") return;
+      if (type !== "source_import" && type !== "checklist_publish") return;
+      if (!sameProductAction(action, input)) return;
+
+      Object.assign(action, {
+        status: "validated",
+        adminDecision: action.adminDecision || "auto_validated_covered",
+        executionResult: "Source Check confirmed this product is already covered.",
+        validationResult: `Already covered in Chasing Majors as ${data.matched_code || action.code || data.matched_name || action.product}. No import needed.`,
+        recommendedAction: "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+        updatedAt: new Date().toISOString()
+      });
+      rememberResolvedSourceAction(action);
+      resolvedCount += 1;
+    });
+
+    if (resolvedCount) {
+      writeAgentActions();
+      writeSourceIgnores();
+      logActivity({
+        type: "agent_action",
+        status: "validated",
+        product: data.matched_name || data.title || "",
+        source: "operator_backend",
+        title: "Covered product auto-resolved",
+        detail: `${resolvedCount} matching queue card${resolvedCount === 1 ? "" : "s"} cleared because Source Check confirmed coverage.`
+      });
+      renderAgentActions();
+      renderActionLanes();
+      renderActivityLog();
+    }
+
+    return resolvedCount;
+  }
+
   function removeAndRememberAgentAction(id) {
     const action = state.agentActions.find(item => item.id === id);
     if (!action) return;
@@ -3025,6 +3079,7 @@
     }
 
     if (data.status === "covered") {
+      const resolvedCount = autoResolveCoveredSourceCheck(data);
       els.sourceCheckResult.innerHTML = `
         <div class="source-result-card covered">
           <div class="opp-top">
@@ -3040,6 +3095,7 @@
             <span class="pill">Score: ${escapeHtml(data.match_score || "")}</span>
           </div>
           <p>${escapeHtml(data.recommended_action || "No import needed unless source details are newer.")}</p>
+          ${resolvedCount ? `<div class="task-guardrail">${escapeHtml(`${resolvedCount} matching Agent Action Queue card${resolvedCount === 1 ? "" : "s"} auto-resolved and remembered.`)}</div>` : ""}
         </div>
       `;
       focusSourceCheckResult();

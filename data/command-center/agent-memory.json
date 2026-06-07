@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:16:43.455Z",
+  "exported_at": "2026-06-07T20:17:00.610Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -157,16 +157,16 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103625780",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:16:41.836Z",
-      "updatedAt": "2026-06-07T20:16:41.837Z"
+      "updatedAt": "2026-06-07T20:16:59.006Z"
     },
     {
       "id": "visual_test|github_actions|2017 panini national treasures baseball|2017_panini_national_treasures_baseball",
@@ -983,12 +983,12 @@
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Chrome_Update_Series_Baseball.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103625780",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.203Z",
-      "updatedAt": "2026-06-07T20:16:41.838Z",
+      "updatedAt": "2026-06-07T20:16:59.007Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:16:28.752Z"
     },
@@ -1815,6 +1815,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780863419008_s8d9gm",
+      "ts": "2026-06-07T20:16:59.008Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780863401854_eqpmpe",
       "ts": "2026-06-07T20:16:41.854Z",
       "type": "agent_cycle",
@@ -2603,16 +2613,6 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780862335385_9cactq",
-      "ts": "2026-06-07T19:58:55.385Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3215,11 +3215,11 @@
       "checkedAt": "2026-06-07T20:15:42.311Z"
     },
     "baseball|2017_Topps_Chrome_Update_Series_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-07T20:16:40.329Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103625780",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Chrome_Update_Series_Baseball",
@@ -3227,9 +3227,15 @@
       "productName": "2017 Topps Chrome Update Series Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Update_Series_Baseball",
-      "updatedAt": "2026-06-07T20:16:41.834Z",
+      "updatedAt": "2026-06-07T20:16:59.004Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27103625780,
+      "runNumber": 45,
+      "displayTitle": "Visual Product Test - 2017 Topps Chrome Update Series Baseball",
+      "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
+      "createdAt": "2026-06-07T20:16:41Z",
+      "checkedAt": "2026-06-07T20:16:59.004Z"
     }
   },
   "known_issues": {},
@@ -3448,6 +3454,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:16:44.442Z",
+  "saved_at": "2026-06-07T20:17:01.958Z",
   "saved_by": "cm_command_center_operator"
 }

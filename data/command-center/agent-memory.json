@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:57:55.674Z",
+  "exported_at": "2026-06-07T20:58:00.080Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 panini stars and stripes usa baseball|2017_panini_stars_and_stripes_usa_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Panini Stars and Stripes USA Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Stars_and_Stripes_USA_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T20:57:58.463Z",
+      "updatedAt": "2026-06-07T20:57:58.463Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps allen and ginter baseball|2017_topps_allen_ginter_baseball",
       "type": "visual_test",
@@ -1328,17 +1350,17 @@
       "sport": "baseball",
       "code": "2017_Panini_Stars_and_Stripes_USA_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Panini_Stars_and_Stripes_USA_Baseball.",
-      "validationResult": "Published checklist JSON validated with 989 rows and 20 parallels. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.201Z",
-      "updatedAt": "2026-06-07T20:57:46.369Z",
+      "updatedAt": "2026-06-07T20:57:58.464Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:57:46.369Z"
     },
@@ -1821,32 +1843,42 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.188Z",
       "updatedAt": "2026-06-07T18:15:39.189Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Series_2_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Series 2 Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Series_2_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.188Z",
-      "updatedAt": "2026-06-07T18:15:39.188Z"
     }
   ],
   "activity_log": [
     {
-      "id": "log_1780865874072_fsyj67",
-      "ts": "2026-06-07T20:57:54.072Z",
+      "id": "log_1780865878477_51smob",
+      "ts": "2026-06-07T20:57:58.477Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 22 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Panini Stars and Stripes USA Baseball -> pending_visual_validation (Published checklist JSON validated with 989 rows and 20 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780865878472_yw5w9o",
+      "ts": "2026-06-07T20:57:58.472Z",
+      "type": "visual_test",
+      "title": "Visual validation batch queued",
+      "detail": "1 CV/ChatBot visual test queued. 2017 Panini Stars and Stripes USA Baseball",
+      "status": "queued",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1780865878464_6t09jf",
+      "ts": "2026-06-07T20:57:58.464Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Panini Stars and Stripes USA Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780865876174_pzdc42",
+      "ts": "2026-06-07T20:57:56.174Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -1855,8 +1887,8 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1780865874059_mv7g1j",
-      "ts": "2026-06-07T20:57:54.059Z",
+      "id": "log_1780865876162_b8vpx9",
+      "ts": "2026-06-07T20:57:56.163Z",
       "type": "memory",
       "title": "Agent memory imported",
       "detail": "Queue, log, approvals, known issues, and visual status were restored.",
@@ -2613,36 +2645,6 @@
       "status": "in_progress",
       "product": "2017 Panini Contenders Draft Picks Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780864609144_cwyyen",
-      "ts": "2026-06-07T20:36:49.144Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Panini Contenders Draft Picks Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864591790_atl47k",
-      "ts": "2026-06-07T20:36:31.790Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Panini Contenders Draft Picks Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864589324_pznn78",
-      "ts": "2026-06-07T20:36:29.324Z",
-      "type": "visual_test",
-      "title": "Visual test requested",
-      "detail": "Queue card requested CV/ChatBot validation.",
-      "status": "requested",
-      "product": "2017 Panini Contenders Draft Picks Baseball",
-      "source": "agent_action_queue"
     }
   ],
   "visual_tests": {
@@ -3496,6 +3498,23 @@
       "headSha": "20851af5ab74cf0aca55b450a0783f21a5411171",
       "createdAt": "2026-06-07T20:54:28Z",
       "checkedAt": "2026-06-07T20:56:06.783Z"
+    },
+    "baseball|2017_Panini_Stars_and_Stripes_USA_Baseball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-07T20:57:57.154Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Panini_Stars_and_Stripes_USA_Baseball",
+      "key": "baseball|2017_Panini_Stars_and_Stripes_USA_Baseball",
+      "productName": "2017 Panini Stars and Stripes USA Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Stars_and_Stripes_USA_Baseball",
+      "updatedAt": "2026-06-07T20:57:58.462Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -3714,6 +3733,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:57:56.902Z",
+  "saved_at": "2026-06-07T20:58:01.174Z",
   "saved_by": "cm_command_center_operator"
 }

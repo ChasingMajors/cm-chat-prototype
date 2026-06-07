@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:20:10.959Z",
+  "exported_at": "2026-06-07T21:20:17.183Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1842,23 +1842,53 @@
       "sport": "baseball",
       "code": "2016_Topps_Tribute_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 433 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.190Z",
-      "updatedAt": "2026-06-07T18:15:39.190Z"
+      "updatedAt": "2026-06-07T21:20:15.581Z"
     }
   ],
   "agent_run_queue": [
     "backend_audit|stale_public_json|baseball|2016_Topps_Tribute_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780867215581_5945b7",
+      "ts": "2026-06-07T21:20:15.581Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2016 Topps Tribute Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780867215578_wezheo",
+      "ts": "2026-06-07T21:20:15.578Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2016 Topps Tribute Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2016 Topps Tribute Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780867215575_4xq8dw",
+      "ts": "2026-06-07T21:20:15.575Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "1 flagged job will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1780867209356_b172r7",
       "ts": "2026-06-07T21:20:09.356Z",
@@ -2626,36 +2656,6 @@
       "title": "Scheduled Agent Sweep complete",
       "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Panini Flawless Baseball -> pending_visual_validation (Published checklist JSON validated with 1105 rows and 23 parallels. CV/ChatBot visual validation is pending.)",
       "status": "validated",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780866071929",
-      "ts": "2026-06-07T21:01:08.653Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Panini Flawless Baseball: Pending checklist publish validation completed for 2017_Panini_Flawless_Baseball. Published checklist JSON validated with 1105 rows and 23 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Panini Flawless Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780866071445",
-      "ts": "2026-06-07T21:01:08.653Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780866022720_116qef",
-      "ts": "2026-06-07T21:00:22.720Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
       "product": "",
       "source": "operator_backend"
     }
@@ -3965,6 +3965,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:20:12.056Z",
+  "saved_at": "2026-06-07T21:20:18.452Z",
   "saved_by": "cm_command_center_operator"
 }

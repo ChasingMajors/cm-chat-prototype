@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:33:05.985Z",
+  "exported_at": "2026-06-07T20:33:23.108Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -157,16 +157,16 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104011765",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:33:04.366Z",
-      "updatedAt": "2026-06-07T20:33:04.367Z"
+      "updatedAt": "2026-06-07T20:33:21.506Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps chrome update series baseball|2017_topps_chrome_update_series_baseball",
@@ -1027,12 +1027,12 @@
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104011765",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.203Z",
-      "updatedAt": "2026-06-07T20:33:04.367Z",
+      "updatedAt": "2026-06-07T20:33:21.506Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:32:50.799Z"
     },
@@ -1818,6 +1818,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780864401506_1a8zqq",
+      "ts": "2026-06-07T20:33:21.506Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Chrome Sapphire Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780864384383_wxiko3",
       "ts": "2026-06-07T20:33:04.383Z",
@@ -2607,16 +2617,6 @@
       "status": "in_progress",
       "product": "2017 Topps Finest Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780862451550_xps8tz",
-      "ts": "2026-06-07T20:00:51.550Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Heritage High Number Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3242,11 +3242,11 @@
       "checkedAt": "2026-06-07T20:18:20.908Z"
     },
     "baseball|2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-07T20:33:02.815Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104011765",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
@@ -3254,9 +3254,15 @@
       "productName": "2017 Topps Chrome Sapphire Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
-      "updatedAt": "2026-06-07T20:33:04.365Z",
+      "updatedAt": "2026-06-07T20:33:21.504Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27104011765,
+      "runNumber": 46,
+      "displayTitle": "Visual Product Test - 2017 Topps Chrome Sapphire Baseball",
+      "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
+      "createdAt": "2026-06-07T20:33:03Z",
+      "checkedAt": "2026-06-07T20:33:21.504Z"
     }
   },
   "known_issues": {},
@@ -3475,6 +3481,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:33:07.233Z",
+  "saved_at": "2026-06-07T20:33:24.469Z",
   "saved_by": "cm_command_center_operator"
 }

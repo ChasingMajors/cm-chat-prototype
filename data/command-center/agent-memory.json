@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:05:41.726Z",
+  "exported_at": "2026-06-07T21:06:02.011Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 panini diamond kings baseball|2017_panini_diamond_kings_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Panini Diamond Kings Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Diamond_Kings_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104808590",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T21:05:43.217Z",
+      "updatedAt": "2026-06-07T21:06:00.408Z"
+    },
     {
       "id": "visual_test|github_actions|2017 panini elite extra edition baseball|2017_panini_elite_extra_edition_baseball",
       "type": "visual_test",
@@ -1500,17 +1522,17 @@
       "sport": "baseball",
       "code": "2017_Panini_Diamond_Kings_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104808590",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.198Z",
-      "updatedAt": "2026-06-07T21:05:40.123Z"
+      "updatedAt": "2026-06-07T21:06:00.408Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Contenders_Draft_Picks_Baseball",
@@ -1831,29 +1853,29 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.190Z",
       "updatedAt": "2026-06-07T18:15:39.190Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Tier_One_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Tier One Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Tier_One_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 880 rows / 18 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.189Z",
-      "updatedAt": "2026-06-07T18:15:39.190Z"
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780866360409_53l7z2",
+      "ts": "2026-06-07T21:06:00.409Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Panini Diamond Kings Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780866343219_uh6iof",
+      "ts": "2026-06-07T21:05:43.219Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Panini Diamond Kings Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780866340124_ex5egl",
       "ts": "2026-06-07T21:05:40.124Z",
@@ -2631,26 +2653,6 @@
       "title": "Product action validated",
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
-      "product": "2017 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780865394278_eptn70",
-      "ts": "2026-06-07T20:49:54.278Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780865367050_15krgk",
-      "ts": "2026-06-07T20:49:27.050Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
       "product": "2017 Topps Archives Baseball",
       "source": "github_actions"
     }
@@ -3575,6 +3577,29 @@
       "headSha": "20851af5ab74cf0aca55b450a0783f21a5411171",
       "createdAt": "2026-06-07T21:03:24Z",
       "checkedAt": "2026-06-07T21:04:54.748Z"
+    },
+    "baseball|2017_Panini_Diamond_Kings_Baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-07T21:05:41.526Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104808590",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Panini_Diamond_Kings_Baseball",
+      "key": "baseball|2017_Panini_Diamond_Kings_Baseball",
+      "productName": "2017 Panini Diamond Kings Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Diamond_Kings_Baseball",
+      "updatedAt": "2026-06-07T21:06:00.406Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27104808590,
+      "runNumber": 60,
+      "displayTitle": "Visual Product Test - 2017 Panini Diamond Kings Baseball",
+      "headSha": "20851af5ab74cf0aca55b450a0783f21a5411171",
+      "createdAt": "2026-06-07T21:05:42Z",
+      "checkedAt": "2026-06-07T21:06:00.405Z"
     }
   },
   "known_issues": {},
@@ -3793,6 +3818,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:05:42.924Z",
+  "saved_at": "2026-06-07T21:06:02.960Z",
   "saved_by": "cm_command_center_operator"
 }

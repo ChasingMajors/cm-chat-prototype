@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:34:42.326Z",
+  "exported_at": "2026-06-07T20:35:02.262Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -462,19 +462,19 @@
       "sport": "baseball",
       "code": "2017_Topps_Luminaries_Baseball",
       "riskLevel": "low",
-      "status": "running",
-      "recommendedAction": "Visual validation complete.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103112151",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104053810",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:55:22.962Z",
-      "updatedAt": "2026-06-07T20:34:40.723Z"
+      "updatedAt": "2026-06-07T20:35:00.659Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps five star baseball|2017_topps_five_star_baseball",
@@ -636,17 +636,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Luminaries_Baseball",
       "riskLevel": "high",
-      "status": "needs_admin",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Luminaries_Baseball.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103112151",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104053810",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.209Z",
-      "updatedAt": "2026-06-07T19:56:34.599Z",
+      "updatedAt": "2026-06-07T20:35:00.660Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:32:42.699Z"
     },
@@ -1819,6 +1819,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780864500660_r5lchz",
+      "ts": "2026-06-07T20:35:00.660Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Luminaries Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780864483309_e5plrw",
+      "ts": "2026-06-07T20:34:43.309Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Topps Luminaries Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780864480724_8mgfw8",
       "ts": "2026-06-07T20:34:40.724Z",
       "type": "visual_test",
@@ -2597,26 +2617,6 @@
       "status": "validated",
       "product": "2017 Topps Dynasty Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780862481007_nw0dx6",
-      "ts": "2026-06-07T20:01:21.007Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Finest Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862481006_8jpg6n",
-      "ts": "2026-06-07T20:01:21.006Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Finest Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -2923,8 +2923,8 @@
       "status": "in_progress",
       "result": "in_progress",
       "conclusion": "",
-      "startedAt": "2026-06-07T19:55:21.230Z",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103112151",
+      "startedAt": "2026-06-07T20:34:41.807Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104053810",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Luminaries_Baseball",
@@ -2932,15 +2932,15 @@
       "productName": "2017 Topps Luminaries Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Luminaries_Baseball",
-      "updatedAt": "2026-06-07T19:56:34.595Z",
+      "updatedAt": "2026-06-07T20:35:00.657Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 27103112151,
-      "runNumber": 32,
+      "runId": 27104053810,
+      "runNumber": 47,
       "displayTitle": "Visual Product Test - 2017 Topps Luminaries Baseball",
-      "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
-      "createdAt": "2026-06-07T19:55:22Z",
-      "checkedAt": "2026-06-07T19:56:34.595Z"
+      "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
+      "createdAt": "2026-06-07T20:34:42Z",
+      "checkedAt": "2026-06-07T20:35:00.657Z"
     },
     "baseball|2017_Topps_Inception_Baseball": {
       "status": "completed",
@@ -3481,6 +3481,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:34:43.478Z",
+  "saved_at": "2026-06-07T20:35:03.558Z",
   "saved_by": "cm_command_center_operator"
 }

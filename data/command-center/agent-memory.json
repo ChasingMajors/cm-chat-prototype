@@ -2,12 +2,31 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T22:10:55.263Z",
+  "exported_at": "2026-06-07T22:12:08.832Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
   "tasks": [
+    {
+      "id": "task_1780870327230_55h9qw",
+      "sourceId": "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball",
+      "title": "Fix: 2017 Topps Museum Collection Baseball",
+      "kind": "fix",
+      "severity": "critical",
+      "status": "queued",
+      "createdAt": "2026-06-07T22:12:07.230Z",
+      "updatedAt": "2026-06-07T22:12:07.230Z",
+      "why": "Missing sourceUrl",
+      "objective": "Repair the held action, rerun validation, and record proof.",
+      "steps": [
+        "Confirm the issue still reproduces.",
+        "Patch the smallest safe sandbox fix.",
+        "Run the affected validation again.",
+        "Record proof before marking the action validated."
+      ],
+      "guardrail": "Fix in sandbox first. Do not mark validated until JSON coverage or CV/ChatBot visual proof passes."
+    },
     {
       "id": "task_1780854093089_j8omiv",
       "sourceId": "prv_watch|basketball|2025-26 topps hoops basketball",
@@ -262,8 +281,8 @@
       "sport": "baseball",
       "code": "2017_Topps_Museum_Collection_Baseball",
       "riskLevel": "high",
-      "status": "failed",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "fix_queued",
+      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "",
       "executionResult": "Checklist sheet write failed.",
       "validationResult": "Missing sourceUrl",
@@ -272,7 +291,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.210Z",
-      "updatedAt": "2026-06-07T19:28:43.151Z",
+      "updatedAt": "2026-06-07T22:12:07.230Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:28:43.151Z"
     },
@@ -339,6 +358,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1780870327231_9i0mgg",
+      "ts": "2026-06-07T22:12:07.231Z",
+      "type": "agent_cycle",
+      "title": "Create repair task",
+      "detail": "2017 Topps Museum Collection Baseball is blocked and needs a fix path. Created Fix: 2017 Topps Museum Collection Baseball.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1780870253659_4mhoq6",
       "ts": "2026-06-07T22:10:53.659Z",
@@ -1126,16 +1155,6 @@
       "title": "Covered product auto-resolved",
       "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
       "status": "validated",
-      "product": "2017 Bowman Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780867157096_x7u5rw",
-      "ts": "2026-06-07T21:19:17.096Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "879 public rows and 55 parallels found.",
-      "status": "covered",
       "product": "2017 Bowman Baseball",
       "source": "operator_backend"
     }
@@ -3126,6 +3145,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T22:10:56.254Z",
+  "saved_at": "2026-06-07T22:12:10.081Z",
   "saved_by": "cm_command_center_operator"
 }

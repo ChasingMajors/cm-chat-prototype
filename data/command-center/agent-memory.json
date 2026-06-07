@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T17:41:34.695Z",
+  "exported_at": "2026-06-07T18:00:41.051Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -976,6 +976,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780855239448_uhpjuu",
+      "ts": "2026-06-07T18:00:39.448Z",
+      "type": "prv_source_review",
+      "title": "PRV preview started",
+      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
+      "status": "started",
+      "product": "2025-26 Topps Hoops Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780855239447_maff6d",
+      "ts": "2026-06-07T18:00:39.447Z",
+      "type": "agent_cycle",
+      "title": "Build PRV preview",
+      "detail": "2025-26 Topps Hoops Basketball can be safely previewed. No Google Sheet write will happen without approval.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
       "id": "log_1780854093092_5ovxq7",
       "ts": "2026-06-07T17:41:33.092Z",
       "type": "agent_cycle",
@@ -1754,26 +1774,6 @@
       "status": "needs_admin",
       "product": "2025-26 Topps Chrome UEFA Women's Champions League Soccer",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780837445649",
-      "ts": "2026-06-07T13:00:59.615Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780837258233_c63yat",
-      "ts": "2026-06-07T13:00:58.233Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -2142,6 +2142,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T17:41:35.826Z",
+  "saved_at": "2026-06-07T18:00:42.303Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:58:00.080Z",
+  "exported_at": "2026-06-07T20:58:17.369Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -157,16 +157,16 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104619346",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:57:58.463Z",
-      "updatedAt": "2026-06-07T20:57:58.463Z"
+      "updatedAt": "2026-06-07T20:58:15.765Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps allen and ginter baseball|2017_topps_allen_ginter_baseball",
@@ -1355,12 +1355,12 @@
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Panini_Stars_and_Stripes_USA_Baseball.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104619346",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.201Z",
-      "updatedAt": "2026-06-07T20:57:58.464Z",
+      "updatedAt": "2026-06-07T20:58:15.765Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:57:46.369Z"
     },
@@ -1846,6 +1846,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780865895766_ju8si6",
+      "ts": "2026-06-07T20:58:15.766Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Panini Stars and Stripes USA Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780865878477_51smob",
       "ts": "2026-06-07T20:57:58.477Z",
@@ -2629,16 +2639,6 @@
     {
       "id": "log_1780864663802_ipdwmr",
       "ts": "2026-06-07T20:37:43.802Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Panini Contenders Draft Picks Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864636856_i1ntox",
-      "ts": "2026-06-07T20:37:16.856Z",
       "type": "visual_test",
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
@@ -3500,11 +3500,11 @@
       "checkedAt": "2026-06-07T20:56:06.783Z"
     },
     "baseball|2017_Panini_Stars_and_Stripes_USA_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-07T20:57:57.154Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104619346",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Panini_Stars_and_Stripes_USA_Baseball",
@@ -3512,9 +3512,15 @@
       "productName": "2017 Panini Stars and Stripes USA Baseball",
       "sport": "baseball",
       "code": "2017_Panini_Stars_and_Stripes_USA_Baseball",
-      "updatedAt": "2026-06-07T20:57:58.462Z",
+      "updatedAt": "2026-06-07T20:58:15.763Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27104619346,
+      "runNumber": 57,
+      "displayTitle": "Visual Product Test - 2017 Panini Stars and Stripes USA Baseball",
+      "headSha": "20851af5ab74cf0aca55b450a0783f21a5411171",
+      "createdAt": "2026-06-07T20:57:58Z",
+      "checkedAt": "2026-06-07T20:58:15.763Z"
     }
   },
   "known_issues": {},
@@ -3733,6 +3739,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:58:01.174Z",
+  "saved_at": "2026-06-07T20:58:18.532Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T22:10:00.671Z",
+  "exported_at": "2026-06-07T22:10:06.773Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T22:09:18.876Z",
-      "updatedAt": "2026-06-07T22:09:37.012Z"
+      "updatedAt": "2026-06-07T22:10:05.171Z"
     },
     {
       "id": "visual_test|github_actions|2016 topps tribute baseball|2016_topps_tribute_baseball",
@@ -188,7 +188,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T22:09:16.385Z",
-      "updatedAt": "2026-06-07T22:09:33.887Z"
+      "updatedAt": "2026-06-07T22:10:00.821Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps new era baseball|2017_topps_new_era_baseball",
@@ -314,7 +314,7 @@
       "bucket": "2016",
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.192Z",
-      "updatedAt": "2026-06-07T22:09:37.011Z"
+      "updatedAt": "2026-06-07T22:10:05.171Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Tribute_Baseball",
@@ -334,7 +334,7 @@
       "bucket": "2016",
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.191Z",
-      "updatedAt": "2026-06-07T22:09:33.887Z"
+      "updatedAt": "2026-06-07T22:10:00.821Z"
     }
   ],
   "agent_run_queue": [
@@ -343,6 +343,26 @@
     "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780870205171_gmjggx",
+      "ts": "2026-06-07T22:10:05.171Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Update Series Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780870200821_sqizub",
+      "ts": "2026-06-07T22:10:00.821Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Tribute Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780870199069_jbc88x",
       "ts": "2026-06-07T22:09:59.069Z",
@@ -1122,26 +1142,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780867145336_6mbxqs",
-      "ts": "2026-06-07T21:19:05.336Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2016 Topps Update Series Baseball will be attempted by Run Agent Cycle.",
-      "status": "queued",
-      "product": "2016 Topps Update Series Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780867138317_7sztl3",
-      "ts": "2026-06-07T21:18:58.317Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Bowman Baseball will be attempted by Run Agent Cycle.",
-      "status": "queued",
-      "product": "2017 Bowman Baseball",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -2124,7 +2124,7 @@
       "productName": "2016 Topps Tribute Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tribute_Baseball",
-      "updatedAt": "2026-06-07T22:09:33.886Z",
+      "updatedAt": "2026-06-07T22:10:00.819Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27106287757,
@@ -2132,7 +2132,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tribute Baseball",
       "headSha": "0b464a837c7f679086b307e6db5b95086df58f85",
       "createdAt": "2026-06-07T22:09:15Z",
-      "checkedAt": "2026-06-07T22:09:33.886Z"
+      "checkedAt": "2026-06-07T22:10:00.819Z"
     },
     "baseball|2016_Topps_Update_Series_Baseball": {
       "status": "in_progress",
@@ -2147,7 +2147,7 @@
       "productName": "2016 Topps Update Series Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Update_Series_Baseball",
-      "updatedAt": "2026-06-07T22:09:37.010Z",
+      "updatedAt": "2026-06-07T22:10:05.169Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27106288599,
@@ -2155,7 +2155,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Update Series Baseball",
       "headSha": "0b464a837c7f679086b307e6db5b95086df58f85",
       "createdAt": "2026-06-07T22:09:18Z",
-      "checkedAt": "2026-06-07T22:09:37.010Z"
+      "checkedAt": "2026-06-07T22:10:05.169Z"
     }
   },
   "known_issues": {},
@@ -3130,6 +3130,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T22:10:02.019Z",
+  "saved_at": "2026-06-07T22:10:07.830Z",
   "saved_by": "cm_command_center_operator"
 }

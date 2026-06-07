@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:00:53.152Z",
+  "exported_at": "2026-06-07T20:00:57.987Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:00:11.954Z",
-      "updatedAt": "2026-06-07T20:00:29.065Z"
+      "updatedAt": "2026-06-07T20:00:56.384Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps finest baseball|2017_topps_finest_baseball",
@@ -188,7 +188,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:00:09.802Z",
-      "updatedAt": "2026-06-07T20:00:26.712Z"
+      "updatedAt": "2026-06-07T20:00:53.876Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps heritage high number baseball|2017_topps_heritage_high_number_baseball",
@@ -804,7 +804,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.205Z",
-      "updatedAt": "2026-06-07T20:00:26.713Z",
+      "updatedAt": "2026-06-07T20:00:53.877Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:57:02.234Z"
     },
@@ -826,7 +826,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.205Z",
-      "updatedAt": "2026-06-07T20:00:29.066Z",
+      "updatedAt": "2026-06-07T20:00:56.384Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:59:55.018Z"
     },
@@ -1793,6 +1793,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862456385_hi6bdr",
+      "ts": "2026-06-07T20:00:56.385Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Dynasty Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780862453878_czx15i",
+      "ts": "2026-06-07T20:00:53.878Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Finest Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780862451550_xps8tz",
       "ts": "2026-06-07T20:00:51.550Z",
       "type": "visual_test",
@@ -2571,26 +2591,6 @@
       "status": "in_progress",
       "product": "2017 Topps Gold Label Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780861544564_vwtid1",
-      "ts": "2026-06-07T19:45:44.564Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780861542129_hcfy7o",
-      "ts": "2026-06-07T19:45:42.129Z",
-      "type": "visual_test",
-      "title": "Visual test requested",
-      "detail": "Queue card requested CV/ChatBot validation.",
-      "status": "requested",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "agent_action_queue"
     }
   ],
   "visual_tests": {
@@ -3067,7 +3067,7 @@
       "productName": "2017 Topps Finest Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Finest_Baseball",
-      "updatedAt": "2026-06-07T20:00:26.709Z",
+      "updatedAt": "2026-06-07T20:00:53.874Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103226038,
@@ -3075,7 +3075,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Finest Baseball",
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T20:00:09Z",
-      "checkedAt": "2026-06-07T20:00:26.709Z"
+      "checkedAt": "2026-06-07T20:00:53.874Z"
     },
     "baseball|2017_Topps_Dynasty_Baseball": {
       "status": "in_progress",
@@ -3090,7 +3090,7 @@
       "productName": "2017 Topps Dynasty Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Dynasty_Baseball",
-      "updatedAt": "2026-06-07T20:00:29.063Z",
+      "updatedAt": "2026-06-07T20:00:56.383Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103227296,
@@ -3098,7 +3098,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Dynasty Baseball",
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T20:00:11Z",
-      "checkedAt": "2026-06-07T20:00:29.063Z"
+      "checkedAt": "2026-06-07T20:00:56.383Z"
     }
   },
   "known_issues": {},
@@ -3281,6 +3281,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:00:54.613Z",
+  "saved_at": "2026-06-07T20:00:59.425Z",
   "saved_by": "cm_command_center_operator"
 }

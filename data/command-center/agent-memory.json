@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:00:25.590Z",
+  "exported_at": "2026-06-07T20:00:30.669Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -155,18 +155,18 @@
       "code": "2017_Topps_Dynasty_Baseball",
       "riskLevel": "low",
       "status": "needs_admin",
-      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
+      "recommendedAction": "Visual validation complete.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103227296",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:00:11.954Z",
-      "updatedAt": "2026-06-07T20:00:11.955Z"
+      "updatedAt": "2026-06-07T20:00:29.065Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps finest baseball|2017_topps_finest_baseball",
@@ -177,18 +177,18 @@
       "code": "2017_Topps_Finest_Baseball",
       "riskLevel": "low",
       "status": "needs_admin",
-      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
+      "recommendedAction": "Visual validation complete.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103226038",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:00:09.802Z",
-      "updatedAt": "2026-06-07T20:00:09.803Z"
+      "updatedAt": "2026-06-07T20:00:26.712Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps heritage high number baseball|2017_topps_heritage_high_number_baseball",
@@ -799,12 +799,12 @@
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Finest_Baseball.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103226038",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.205Z",
-      "updatedAt": "2026-06-07T20:00:09.804Z",
+      "updatedAt": "2026-06-07T20:00:26.713Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:57:02.234Z"
     },
@@ -821,12 +821,12 @@
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Dynasty_Baseball.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103227296",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.205Z",
-      "updatedAt": "2026-06-07T20:00:11.956Z",
+      "updatedAt": "2026-06-07T20:00:29.066Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:59:55.018Z"
     },
@@ -1793,6 +1793,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862429067_ncwrv4",
+      "ts": "2026-06-07T20:00:29.067Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Dynasty Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780862426714_q7dtb1",
+      "ts": "2026-06-07T20:00:26.714Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Finest Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780862423989_6nqa9s",
       "ts": "2026-06-07T20:00:23.989Z",
       "type": "visual_test",
@@ -2571,26 +2591,6 @@
       "status": "passed",
       "product": "2017 Topps Gypsy Queen Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780861487211_vvvls8",
-      "ts": "2026-06-07T19:44:47.211Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780861459101_9c4pbh",
-      "ts": "2026-06-07T19:44:19.101Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3055,11 +3055,11 @@
       "checkedAt": "2026-06-07T20:00:23.985Z"
     },
     "baseball|2017_Topps_Finest_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-07T20:00:08.632Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103226038",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Finest_Baseball",
@@ -3067,16 +3067,22 @@
       "productName": "2017 Topps Finest Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Finest_Baseball",
-      "updatedAt": "2026-06-07T20:00:09.801Z",
+      "updatedAt": "2026-06-07T20:00:26.709Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27103226038,
+      "runNumber": 39,
+      "displayTitle": "Visual Product Test - 2017 Topps Finest Baseball",
+      "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
+      "createdAt": "2026-06-07T20:00:09Z",
+      "checkedAt": "2026-06-07T20:00:26.709Z"
     },
     "baseball|2017_Topps_Dynasty_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-07T20:00:10.774Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103227296",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Dynasty_Baseball",
@@ -3084,9 +3090,15 @@
       "productName": "2017 Topps Dynasty Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Dynasty_Baseball",
-      "updatedAt": "2026-06-07T20:00:11.953Z",
+      "updatedAt": "2026-06-07T20:00:29.063Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27103227296,
+      "runNumber": 40,
+      "displayTitle": "Visual Product Test - 2017 Topps Dynasty Baseball",
+      "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
+      "createdAt": "2026-06-07T20:00:11Z",
+      "checkedAt": "2026-06-07T20:00:29.063Z"
     }
   },
   "known_issues": {},
@@ -3269,6 +3281,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:00:26.768Z",
+  "saved_at": "2026-06-07T20:00:32.089Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -173,15 +173,16 @@
       "sport": "basketball",
       "code": "2025_26_bowman_s_best_university_basketball",
       "riskLevel": "low",
-      "status": "approval_required",
+      "status": "known_issue",
       "recommendedAction": "SlabSquatch has a recent print-run/odds analysis for a PRV-covered product. Compare source numbers against PRV and flag discrepancies before updating.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "PRV source preview did not produce writable rows.",
+      "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T19:41:17.269Z"
+      "updatedAt": "2026-06-07T02:56:23.785Z",
+      "autoExecutedAt": "2026-06-07T02:56:23.785Z"
     },
     {
       "id": "source_watch|hockey|2025-26 upper deck extended series hockey",
@@ -199,7 +200,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-extended-series-hockey-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T19:41:17.269Z"
+      "updatedAt": "2026-06-07T02:56:23.785Z"
     },
     {
       "id": "source_watch|football|2025-26 panini's football efl soccer",
@@ -217,7 +218,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T19:41:17.269Z"
+      "updatedAt": "2026-06-07T02:56:23.785Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps chrome uefa women's champions league soccer",
@@ -235,7 +236,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-uefa-womens-champions-league-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T19:41:17.269Z"
+      "updatedAt": "2026-06-07T02:56:23.785Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps gold bundesliga soccer",
@@ -253,7 +254,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-gold-bundesliga-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-06T19:41:17.269Z"
+      "updatedAt": "2026-06-07T02:56:23.785Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -271,7 +272,7 @@
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-06T15:29:36.437Z",
-      "updatedAt": "2026-06-06T19:41:17.269Z"
+      "updatedAt": "2026-06-07T02:56:23.785Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
@@ -886,6 +887,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780801144477",
+      "ts": "2026-06-07T02:56:23.785Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 4 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025/26 Bowman’s Best University Basketball -> known_issue (Source post appears paid/locked. Public HTML does not expose writable print-run rows.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780801144477",
+      "ts": "2026-06-07T02:56:23.785Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2025/26 Bowman’s Best University Basketball: PRV source preview did not produce writable rows. Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
+      "status": "known_issue",
+      "product": "2025/26 Bowman’s Best University Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780801144292",
+      "ts": "2026-06-07T02:56:23.785Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780800982355_gukbll",
       "ts": "2026-06-07T02:56:22.355Z",
@@ -1655,36 +1686,6 @@
       "status": "needs_review",
       "product": "2025-26 Donruss Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780438400099_3h78mm",
-      "ts": "2026-06-02T22:13:20.099Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780438396077_jlw90f",
-      "ts": "2026-06-02T22:13:16.077Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "2,551 rows and 228 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Donruss Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780438394766_ahw7rc",
-      "ts": "2026-06-02T22:13:14.766Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2025-26 Donruss Basketball",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -1953,6 +1954,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T02:56:25.098Z",
+  "saved_at": "2026-06-07T02:59:04.497Z",
   "saved_by": "cm_command_center_operator"
 }

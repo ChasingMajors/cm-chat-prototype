@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc105-admin-run-queue-v1-2026-06-07";
+  const COMMAND_CENTER_VERSION = "cc106-backend-run-queue-v1-2026-06-07";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -2498,7 +2498,7 @@
         action: "runScheduledAgentSweep",
         key,
         mode: "quick_json",
-        maxAutoActions: 3,
+        maxAutoActions: 10,
         skipPrvSync: true,
         fastMode: true
       }, { timeoutMs: 150000 });
@@ -2515,7 +2515,7 @@
       const autoAction = data && data.auto_action ? data.auto_action : null;
       const autoActions = data && data.auto_actions ? data.auto_actions : null;
       const autoText = autoActions && autoActions.ran
-        ? ` Auto: ${formatNumber(autoActions.count || 0)} ran. ${autoActions.summary || ""}`
+        ? ` Auto: ${formatNumber(autoActions.count || 0)} ran.${autoActions.queue_count ? " Queue remaining: " + formatNumber(autoActions.queue_remaining || 0) + "." : ""} ${autoActions.summary || ""}`
         : autoAction && autoAction.ran
           ? ` Auto: ${autoAction.product || autoAction.type || "action"} ${autoAction.status || "completed"}. ${autoAction.validationResult || autoAction.executionResult || ""}`
         : autoAction && autoAction.reason

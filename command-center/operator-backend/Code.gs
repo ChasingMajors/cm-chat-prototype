@@ -3248,9 +3248,9 @@ function runScheduledAgentSweep_(input) {
     detailParts.push((skippedChecklistIgnored + skippedPrvIgnored) + " admin-ignored source item(s) skipped.");
   }
   if (autoResult && autoResult.ran) {
-    detailParts.push("Auto actions: " + autoResult.count + " run. " + autoResult.summary);
+    detailParts.push("Auto actions: " + autoResult.count + " run. " + autoResult.summary + (autoResult.queue_count ? " Queue remaining: " + (autoResult.queue_remaining || 0) + "." : ""));
   } else if (autoResult && autoResult.reason) {
-    detailParts.push("Auto action: " + autoResult.reason);
+    detailParts.push("Auto action: " + autoResult.reason + (autoResult.queue_count ? " Queue count: " + autoResult.queue_count + "." : ""));
   }
   if (checklistError) detailParts.push("Checklist error: " + checklistError);
   if (prvError) detailParts.push("PRV source error: " + prvError);
@@ -3370,7 +3370,7 @@ function runScheduledAgentSweepTrigger() {
     return runScheduledAgentSweep_({
       key: key,
       mode: "deep_sheets",
-      maxAutoActions: 1
+      maxAutoActions: 6
     });
   } catch (err) {
     const result = {
@@ -3387,18 +3387,20 @@ function runScheduledAgentSweepTrigger() {
 function getScheduledAutoActionLimit_(input) {
   const raw = Number(input && (input.maxAutoActions || input.max_auto_actions || input.autoLimit || input.auto_limit || 1));
   if (!raw || raw < 1) return 1;
-  return Math.min(3, Math.floor(raw));
+  return Math.min(10, Math.floor(raw));
 }
 
 function maybeRunScheduledAutoActions_(memory, key, now, maxActions) {
   const mode = safeString_(memory && memory.autonomy_mode).trim() || "approval_required";
-  const limit = Math.max(1, Math.min(3, Number(maxActions || 1)));
+  const limit = Math.max(1, Math.min(10, Number(maxActions || 1)));
+  const queuedIds = normalizeAgentRunQueue_(memory);
 
   if (mode !== "full_auto" && mode !== "guarded_auto") {
     return {
       ran: false,
       count: 0,
       mode: mode,
+      queue_count: queuedIds.length,
       results: [],
       reason: "Auto execution is off."
     };
@@ -3413,6 +3415,7 @@ function maybeRunScheduledAutoActions_(memory, key, now, maxActions) {
           ran: false,
           count: 0,
           mode: mode,
+          queue_count: queuedIds.length,
           results: [],
           reason: result && result.reason ? result.reason : "No safe auto-executable action found."
         };
@@ -3422,13 +3425,20 @@ function maybeRunScheduledAutoActions_(memory, key, now, maxActions) {
 
     results.push(result);
 
-    if (result.status !== "validated") break;
+    removeResolvedAgentRunQueueItems_(memory);
+    const hasMoreQueuedWork = normalizeAgentRunQueue_(memory).some(function(id) {
+      return !!findMemoryActionById_(memory.agent_actions || [], id);
+    });
+    if (result.status !== "validated" && !hasMoreQueuedWork) break;
   }
 
+  removeResolvedAgentRunQueueItems_(memory);
   return {
     ran: results.length > 0,
     count: results.length,
     mode: mode,
+    queue_count: queuedIds.length,
+    queue_remaining: normalizeAgentRunQueue_(memory).length,
     primary: results[0] || null,
     results: results,
     summary: results.map(function(result) {
@@ -3451,24 +3461,30 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
 
   const actions = Array.isArray(memory.agent_actions) ? memory.agent_actions : [];
   normalizeQueuedSourceImportActions_(actions, now);
-  const action = findNextScheduledAutoAction_(actions);
+  const action = findNextScheduledAutoAction_(actions, memory);
   if (!action) {
     return {
       ran: false,
       mode: mode,
-      reason: "No safe auto-executable action found."
+      queue_count: normalizeAgentRunQueue_(memory).length,
+      reason: normalizeAgentRunQueue_(memory).length
+        ? "Queued actions exist, but none have a safe executable next step yet."
+        : "No safe auto-executable action found."
     };
   }
 
   const actionStatus = safeString_(action.status).trim().toLowerCase();
   const wasPendingPublicValidation = actionStatus === "pending_public_validation";
-  if (mode === "guarded_auto" && actionStatus !== "pending_public_validation") {
+  const wasPendingVisualValidation = actionStatus === "pending_visual_validation";
+  const wasVisualInFlight = (actionStatus === "queued" || actionStatus === "running" || actionStatus === "in_progress") &&
+    safeString_(action.validationResult).toLowerCase().indexOf("visual") > -1;
+  if (mode === "guarded_auto" && actionStatus !== "pending_public_validation" && !wasPendingVisualValidation && !wasVisualInFlight) {
     return {
       ran: false,
       mode: mode,
       action_id: action.id,
       product: action.product || "",
-      reason: "Guarded auto only self-heals pending public validation. Switch to Full auto for approved writes."
+      reason: "Guarded auto only self-heals pending public or visual validation. Switch to Full auto for approved writes."
     };
   }
 
@@ -3508,7 +3524,9 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
 
   let result = {};
   try {
-    if (action.type === "source_import" && wasPendingPublicValidation) {
+    if (wasPendingVisualValidation || wasVisualInFlight) {
+      result = runScheduledVisualAutoAction_(action, key);
+    } else if (action.type === "source_import" && wasPendingPublicValidation) {
       result = runScheduledChecklistPendingValidationAction_(action, key);
     } else if (action.type === "source_import") {
       result = runScheduledChecklistAutoAction_(action, key);
@@ -3535,6 +3553,8 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
     ? "pending_visual_validation"
     : result.ok && result.validated
     ? "validated"
+    : resultStatus === "queued" || resultStatus === "running" || resultStatus === "in_progress"
+      ? resultStatus
     : resultStatus === "pending_public_validation"
       ? "pending_public_validation"
     : result.ok
@@ -3553,6 +3573,9 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
     pendingValidationAttempts: result.pendingValidationAttempts || action.pendingValidationAttempts || 0,
     executionResult: executionResult,
     validationResult: validationResult,
+    visualStartedAt: result.visualStartedAt || action.visualStartedAt || "",
+    visualRunUrl: result.runUrl || action.visualRunUrl || "",
+    runUrl: result.runUrl || action.runUrl || "",
     autoExecutedAt: now,
     updatedAt: now
   });
@@ -3571,6 +3594,7 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
   return {
     ran: true,
     mode: mode,
+    from_run_queue: isActionQueuedForAgent_(memory, action.id),
     action_id: action.id,
     product: action.product || "",
     type: action.type || "",
@@ -3583,7 +3607,87 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
   };
 }
 
-function findNextScheduledAutoAction_(actions) {
+function normalizeAgentRunQueue_(memory) {
+  const seen = {};
+  const out = [];
+  const queue = Array.isArray(memory && memory.agent_run_queue) ? memory.agent_run_queue : [];
+  queue.forEach(function(id) {
+    id = safeString_(id).trim();
+    if (!id || seen[id]) return;
+    seen[id] = true;
+    out.push(id);
+  });
+  if (memory) memory.agent_run_queue = out;
+  return out;
+}
+
+function findMemoryActionById_(actions, id) {
+  id = safeString_(id).trim();
+  if (!id || !Array.isArray(actions)) return null;
+  for (let i = 0; i < actions.length; i++) {
+    if (actions[i] && actions[i].id === id) return actions[i];
+  }
+  return null;
+}
+
+function isMemoryActionResolved_(action) {
+  const status = safeString_(action && action.status).trim().toLowerCase();
+  return status === "validated" || status === "done" || status === "ignored";
+}
+
+function isActionQueuedForAgent_(memory, id) {
+  id = safeString_(id).trim();
+  if (!id) return false;
+  return normalizeAgentRunQueue_(memory).indexOf(id) > -1;
+}
+
+function removeResolvedAgentRunQueueItems_(memory) {
+  const actions = Array.isArray(memory && memory.agent_actions) ? memory.agent_actions : [];
+  const before = normalizeAgentRunQueue_(memory);
+  const after = before.filter(function(id) {
+    const action = findMemoryActionById_(actions, id);
+    return !!(action && !isMemoryActionResolved_(action));
+  });
+  if (memory) memory.agent_run_queue = after;
+  return before.length - after.length;
+}
+
+function findNextQueuedScheduledAutoAction_(actions, memory) {
+  const queue = normalizeAgentRunQueue_(memory);
+  for (let i = 0; i < queue.length; i++) {
+    const action = findMemoryActionById_(actions, queue[i]);
+    if (!action || isMemoryActionResolved_(action)) continue;
+    const status = safeString_(action.status).trim().toLowerCase();
+    const validation = safeString_(action.validationResult).toLowerCase();
+    if ((status === "running" || status === "queued" || status === "in_progress") && validation.indexOf("visual") === -1) continue;
+    if (action.type !== "source_import" && action.type !== "checklist_publish" && action.type !== "prv_source_review") continue;
+    return action;
+  }
+  return null;
+}
+
+function findNextScheduledAutoAction_(actions, memory) {
+  const queued = findNextQueuedScheduledAutoAction_(actions, memory);
+  if (queued) return queued;
+
+  for (let i = 0; i < actions.length; i++) {
+    const action = actions[i] || {};
+    const status = safeString_(action.status).trim().toLowerCase();
+    if (status !== "pending_visual_validation") continue;
+    if (action.type !== "source_import" && action.type !== "checklist_publish" && action.type !== "prv_source_review") continue;
+    return action;
+  }
+
+  for (let i = 0; i < actions.length; i++) {
+    const action = actions[i] || {};
+    const status = safeString_(action.status).trim().toLowerCase();
+    const validation = safeString_(action.validationResult).toLowerCase();
+    if (status !== "queued" && status !== "running" && status !== "in_progress") continue;
+    if (validation.indexOf("visual") === -1) continue;
+    if (action.type !== "source_import" && action.type !== "checklist_publish" && action.type !== "prv_source_review") continue;
+    return action;
+  }
+
   for (let i = 0; i < actions.length; i++) {
     const action = actions[i] || {};
     const status = safeString_(action.status).trim().toLowerCase();
@@ -3610,18 +3714,21 @@ function validateScheduledAutoActionSafety_(action) {
   const code = safeString_(action && action.code).trim();
   const status = safeString_(action && action.status).trim().toLowerCase();
   const isPendingPublicValidation = status === "pending_public_validation";
+  const isPendingVisualValidation = status === "pending_visual_validation";
+  const isVisualInFlight = (status === "queued" || status === "running" || status === "in_progress") &&
+    safeString_(action && action.validationResult).toLowerCase().indexOf("visual") > -1;
 
   if (!product) return { ok: false, reason: "Missing product name." };
   if (!isAllowedSport_(sport)) return { ok: false, reason: "Unsupported or missing sport." };
   if (hasBlockedTerm_(product)) return { ok: false, reason: "Blocked product category term detected." };
   if (isPendingPublicValidation && !code) return { ok: false, reason: "Pending validation is missing product code." };
-  if (!isPendingPublicValidation && !sourceUrl) return { ok: false, reason: "Missing source URL." };
+  if (!isPendingPublicValidation && !isPendingVisualValidation && !isVisualInFlight && !sourceUrl) return { ok: false, reason: "Missing source URL." };
 
-  if (!isPendingPublicValidation && action.type === "source_import" && !/^https:\/\/www\.checklistcenter\.com\//i.test(sourceUrl)) {
+  if (!isPendingPublicValidation && !isPendingVisualValidation && !isVisualInFlight && action.type === "source_import" && !/^https:\/\/www\.checklistcenter\.com\//i.test(sourceUrl)) {
     return { ok: false, reason: "Checklist auto-import only supports Checklist Center URLs." };
   }
 
-  if (!isPendingPublicValidation && action.type === "prv_source_review" && !/^https:\/\/slabsquatch\.substack\.com\/p\//i.test(sourceUrl)) {
+  if (!isPendingPublicValidation && !isPendingVisualValidation && !isVisualInFlight && action.type === "prv_source_review" && !/^https:\/\/slabsquatch\.substack\.com\/p\//i.test(sourceUrl)) {
     return { ok: false, reason: "PRV auto-import only supports SlabSquatch post URLs." };
   }
 
@@ -3919,6 +4026,92 @@ function runScheduledPrvAutoAction_(action, key) {
   };
 }
 
+function runScheduledVisualAutoAction_(action, key) {
+  const productName = safeString_(action && action.product).trim();
+  const sport = normalize_(action && action.sport);
+  const code = safeString_(action && action.code).trim();
+  const startedAt = safeString_(action && action.visualStartedAt).trim();
+
+  if (!startedAt) {
+    const dispatch = dispatchVisualProductTest_({
+      key: key,
+      productName: productName,
+      sport: sport,
+      code: code
+    });
+
+    if (!dispatch || !dispatch.ok) {
+      return {
+        ok: false,
+        status: "failed",
+        error: dispatch && dispatch.error ? dispatch.error : "Visual product test dispatch failed.",
+        executionResult: "CV/ChatBot visual test could not be queued.",
+        validationResult: dispatch && dispatch.error ? dispatch.error : "No GitHub Actions dispatch proof."
+      };
+    }
+
+    return {
+      ok: true,
+      status: "queued",
+      visualStartedAt: dispatch.started_at || new Date().toISOString(),
+      runUrl: dispatch.workflow_url || dispatch.actions_url || "",
+      executionResult: "CV/ChatBot visual test queued in GitHub Actions.",
+      validationResult: "Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep."
+    };
+  }
+
+  const status = getVisualProductTestStatus_({
+    key: key,
+    productName: productName,
+    sport: sport,
+    code: code,
+    startedAt: startedAt
+  });
+
+  if (!status || !status.ok) {
+    return {
+      ok: false,
+      status: "failed",
+      error: status && status.error ? status.error : "Visual product status lookup failed.",
+      executionResult: "CV/ChatBot visual test status could not be refreshed.",
+      validationResult: status && status.error ? status.error : "No GitHub Actions status proof."
+    };
+  }
+
+  const result = safeString_(status.result || status.conclusion || status.status).trim().toLowerCase();
+  if (result === "passed" || status.conclusion === "success") {
+    return {
+      ok: true,
+      validated: true,
+      status: "validated",
+      visualStartedAt: startedAt,
+      runUrl: status.run_url || action.visualRunUrl || action.runUrl || "",
+      executionResult: "CV/ChatBot visual test passed.",
+      validationResult: "GitHub Actions visual test passed for " + productName + "."
+    };
+  }
+
+  if (result === "failed" || status.conclusion === "failure") {
+    return {
+      ok: false,
+      status: "failed",
+      visualStartedAt: startedAt,
+      runUrl: status.run_url || action.visualRunUrl || action.runUrl || "",
+      executionResult: "CV/ChatBot visual test failed.",
+      validationResult: "GitHub Actions visual test failed for " + productName + ". Review the visual report."
+    };
+  }
+
+  return {
+    ok: true,
+    status: "running",
+    visualStartedAt: startedAt,
+    runUrl: status.run_url || action.visualRunUrl || action.runUrl || "",
+    executionResult: "CV/ChatBot visual test is still running.",
+    validationResult: status.note || "GitHub Actions has not produced a final visual result yet."
+  };
+}
+
 function patchMemoryAction_(actions, id, patch) {
   if (!id || !Array.isArray(actions)) return;
   for (let i = 0; i < actions.length; i++) {
@@ -3941,6 +4134,7 @@ function loadOrCreateAgentMemoryForSchedule_(key) {
     approvals: {},
     tasks: [],
     agent_actions: [],
+    agent_run_queue: [],
     activity_log: [],
     visual_tests: {},
     known_issues: {},

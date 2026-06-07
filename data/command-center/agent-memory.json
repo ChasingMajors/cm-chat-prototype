@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:55:46.053Z",
+  "exported_at": "2026-06-07T19:56:09.296Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -210,7 +210,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:55:22.962Z",
-      "updatedAt": "2026-06-07T19:55:40.381Z"
+      "updatedAt": "2026-06-07T19:56:07.691Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps five star baseball|2017_topps_five_star_baseball",
@@ -418,7 +418,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.209Z",
-      "updatedAt": "2026-06-07T19:55:40.381Z",
+      "updatedAt": "2026-06-07T19:56:07.692Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:32:42.699Z"
     },
@@ -1777,6 +1777,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862167693_vnqv9u",
+      "ts": "2026-06-07T19:56:07.693Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Luminaries Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780862144450_ysmw6v",
       "ts": "2026-06-07T19:55:44.450Z",
       "type": "visual_test",
@@ -2565,16 +2575,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780860791267_lozwdy",
-      "ts": "2026-06-07T19:33:11.267Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2890,7 +2890,7 @@
       "productName": "2017 Topps Luminaries Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Luminaries_Baseball",
-      "updatedAt": "2026-06-07T19:55:40.380Z",
+      "updatedAt": "2026-06-07T19:56:07.690Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103112151,
@@ -2898,7 +2898,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Luminaries Baseball",
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T19:55:22Z",
-      "checkedAt": "2026-06-07T19:55:40.379Z"
+      "checkedAt": "2026-06-07T19:56:07.690Z"
     },
     "baseball|2017_Topps_Inception_Baseball": {
       "status": "in_progress",
@@ -3127,6 +3127,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:55:47.311Z",
+  "saved_at": "2026-06-07T19:56:10.734Z",
   "saved_by": "cm_command_center_operator"
 }

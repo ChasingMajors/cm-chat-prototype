@@ -3473,6 +3473,7 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
     };
   }
 
+  applyRunQueueApprovalToMemoryAction_(memory, action, now);
   const actionStatus = safeString_(action.status).trim().toLowerCase();
   const wasPendingPublicValidation = actionStatus === "pending_public_validation";
   const wasPendingVisualValidation = actionStatus === "pending_visual_validation";
@@ -3664,6 +3665,39 @@ function findNextQueuedScheduledAutoAction_(actions, memory) {
     return action;
   }
   return null;
+}
+
+function isRunQueueApprovalEligibleMemoryAction_(action) {
+  const type = safeString_(action && action.type).trim().toLowerCase();
+  if (type !== "source_import" && type !== "checklist_publish" && type !== "prv_source_review" && type !== "prv_publish") return false;
+  return !!(safeString_(action && action.product).trim() || safeString_(action && action.code).trim());
+}
+
+function applyRunQueueApprovalToMemoryAction_(memory, action, now) {
+  if (!action || !isActionQueuedForAgent_(memory, action.id)) return action;
+  if (!isRunQueueApprovalEligibleMemoryAction_(action)) return action;
+
+  const status = safeString_(action.status).trim().toLowerCase();
+  if (status !== "needs_admin" && status !== "approval_required" && status !== "ready") return action;
+
+  action.status = "approved";
+  action.adminDecision = "run_queue_approved";
+  action.executionResult = action.executionResult || "Admin Run Queue approval recorded.";
+  action.validationResult = action.validationResult || "Sentinel may attempt the next product-scoped safe step.";
+  action.updatedAt = now;
+
+  memory.activity_log = prependMemoryActivity_(memory.activity_log || [], {
+    id: "log_" + Date.now(),
+    ts: now,
+    type: "agent_run_queue",
+    title: "Run Queue approval applied",
+    detail: (action.product || action.code || action.type || "Action") + " was approved because admin flagged it for the run queue.",
+    status: "approved",
+    product: action.product || "",
+    source: "operator_backend"
+  });
+
+  return action;
 }
 
 function findNextScheduledAutoAction_(actions, memory) {

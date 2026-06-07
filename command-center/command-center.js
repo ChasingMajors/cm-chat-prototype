@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc106-backend-run-queue-v1-2026-06-07";
+  const COMMAND_CENTER_VERSION = "cc107-run-queue-approval-v1-2026-06-07";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -522,13 +522,44 @@
       product: action.product || "",
       source: "admin",
       title: "Added to Agent Run Queue",
-      detail: `${action.product || action.type || "Action"} will be attempted by Run Agent Cycle.`
+      detail: `${action.product || action.type || "Action"} will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.`
     });
     renderAgentActions();
     renderActionLanes();
     renderActivityLog();
     updateMemoryStatus("Action added to Agent Run Queue.", "queued");
     return action;
+  }
+
+  function isRunQueueApprovalEligible(action) {
+    const type = String(action && action.type || "").toLowerCase();
+    if (type !== "source_import" && type !== "checklist_publish" && type !== "prv_source_review" && type !== "prv_publish") return false;
+    if (!action.product && !action.code) return false;
+    return true;
+  }
+
+  function applyRunQueueApproval(action) {
+    if (!action || !isRunQueueApprovalEligible(action)) return action;
+    const status = String(action.status || "").toLowerCase();
+    if (status !== "needs_admin" && status !== "approval_required" && status !== "ready") return action;
+
+    const approved = updateAgentAction(action.id, {
+      status: "approved",
+      adminDecision: "run_queue_approved",
+      executionResult: action.executionResult || "Admin Run Queue approval recorded.",
+      validationResult: action.validationResult || "Sentinel may attempt the next product-scoped safe step."
+    });
+
+    logActivity({
+      type: "agent_run_queue",
+      status: "approved",
+      product: action.product || "",
+      source: "admin_run_queue",
+      title: "Run Queue approval applied",
+      detail: `${action.product || action.code || action.type} was approved because admin flagged it for the run queue.`
+    });
+
+    return approved || action;
   }
 
   function removeActionFromRunQueue(actionId, options) {
@@ -7351,16 +7382,24 @@
     const summaries = [];
 
     for (const action of queued) {
-      const fresh = state.agentActions.find(item => item.id === action.id);
+      let fresh = state.agentActions.find(item => item.id === action.id);
       if (!fresh || isResolvedAgentAction(fresh)) {
         removeActionFromRunQueue(action.id, { silent: true, source: "agent_run_queue" });
         continue;
       }
+      fresh = applyRunQueueApproval(fresh);
 
       try {
         const result = await attemptQueuedAgentAction(fresh);
-        if (result && result.skipped) skipped += 1;
-        else attempted += 1;
+        if (result && result.skipped) {
+          skipped += 1;
+          updateAgentAction(fresh.id, {
+            executionResult: "Admin Run Queue skipped this item.",
+            validationResult: result.detail || "No safe executable next step was available."
+          });
+        } else {
+          attempted += 1;
+        }
         if (result && result.ok === false && !result.skipped) failed += 1;
 
         const current = state.agentActions.find(item => item.id === fresh.id);

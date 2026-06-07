@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:02:06.073Z",
+  "exported_at": "2026-06-07T21:02:33.187Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -154,11 +154,11 @@
       "sport": "baseball",
       "code": "2017_Panini_Flawless_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104699851",
       "sourceUrl": "",
       "bucket": "",
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T21:01:19.922Z",
-      "updatedAt": "2026-06-07T21:02:04.468Z"
+      "updatedAt": "2026-06-07T21:02:31.583Z"
     },
     {
       "id": "visual_test|github_actions|2017 panini stars and stripes usa baseball|2017_panini_stars_and_stripes_usa_baseball",
@@ -1434,17 +1434,17 @@
       "sport": "baseball",
       "code": "2017_Panini_Flawless_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Panini_Flawless_Baseball.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104699851",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.199Z",
-      "updatedAt": "2026-06-07T21:02:04.469Z",
+      "updatedAt": "2026-06-07T21:02:31.584Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T21:01:08.653Z"
     },
@@ -1850,6 +1850,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780866151585_1ywxu8",
+      "ts": "2026-06-07T21:02:31.585Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Panini Flawless Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780866151584_so47zb",
+      "ts": "2026-06-07T21:02:31.584Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Panini Flawless Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780866124469_nf3j7j",
       "ts": "2026-06-07T21:02:04.469Z",
@@ -2627,26 +2647,6 @@
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "passed",
-      "product": "2017 Donruss Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864994072_6c1cna",
-      "ts": "2026-06-07T20:43:14.072Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Donruss Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864966796_wjccor",
-      "ts": "2026-06-07T20:42:46.796Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
       "product": "2017 Donruss Baseball",
       "source": "github_actions"
     }
@@ -3527,9 +3527,9 @@
       "checkedAt": "2026-06-07T20:59:37.181Z"
     },
     "baseball|2017_Panini_Flawless_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T21:01:18.367Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104699851",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3539,7 +3539,7 @@
       "productName": "2017 Panini Flawless Baseball",
       "sport": "baseball",
       "code": "2017_Panini_Flawless_Baseball",
-      "updatedAt": "2026-06-07T21:02:04.466Z",
+      "updatedAt": "2026-06-07T21:02:31.581Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27104699851,
@@ -3547,7 +3547,7 @@
       "displayTitle": "Visual Product Test - 2017 Panini Flawless Baseball",
       "headSha": "20851af5ab74cf0aca55b450a0783f21a5411171",
       "createdAt": "2026-06-07T21:01:19Z",
-      "checkedAt": "2026-06-07T21:02:04.465Z"
+      "checkedAt": "2026-06-07T21:02:31.581Z"
     }
   },
   "known_issues": {},
@@ -3766,6 +3766,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:02:08.322Z",
+  "saved_at": "2026-06-07T21:02:34.569Z",
   "saved_by": "cm_command_center_operator"
 }

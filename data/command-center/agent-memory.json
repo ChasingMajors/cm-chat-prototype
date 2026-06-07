@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:56:44.807Z",
+  "exported_at": "2026-06-07T21:56:49.206Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1856,10 +1856,32 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Panini_Immaculate_Collection_Baseball",
+    "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball",
     "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Tribute_Baseball",
     "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780869407604_9tu4t1",
+      "ts": "2026-06-07T21:56:47.604Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Panini Immaculate Collection Baseball will be attempted by Run Agent Cycle.",
+      "status": "queued",
+      "product": "2017 Panini Immaculate Collection Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780869405186_q7vapt",
+      "ts": "2026-06-07T21:56:45.186Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Museum Collection Baseball will be attempted by Run Agent Cycle.",
+      "status": "queued",
+      "product": "2017 Topps Museum Collection Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780869403203_hq5gq7",
       "ts": "2026-06-07T21:56:43.203Z",
@@ -2637,26 +2659,6 @@
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
       "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780866202886_6r7420",
-      "ts": "2026-06-07T21:03:22.886Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780866196360",
-      "ts": "2026-06-07T21:03:14.170Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Panini Elite Extra Edition Baseball -> pending_visual_validation (Published checklist JSON validated with 835 rows and 31 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "validated",
       "product": "",
       "source": "operator_backend"
     }
@@ -3984,6 +3986,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:56:46.218Z",
+  "saved_at": "2026-06-07T21:56:50.822Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T16:07:46.228Z",
+  "exported_at": "2026-06-07T16:08:13.811Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -135,15 +135,15 @@
       "sport": "football",
       "code": "2025_topps_cosmic_chrome_football",
       "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Visual validation complete.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27097731850",
       "sourceUrl": "",
       "createdAt": "2026-06-07T16:05:29.356Z",
-      "updatedAt": "2026-06-07T16:07:44.625Z"
+      "updatedAt": "2026-06-07T16:08:12.204Z"
     },
     {
       "id": "source_watch|soccer|2025-26 panini's football efl soccer",
@@ -326,15 +326,15 @@
       "sport": "football",
       "code": "2025_topps_cosmic_chrome_football",
       "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27097731850",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:56:21.096Z",
-      "updatedAt": "2026-06-07T16:07:44.625Z"
+      "updatedAt": "2026-06-07T16:08:12.205Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps dynasty baseball|2025_topps_dynasty_baseball",
@@ -938,6 +938,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780848492209_tkj7bz",
+      "ts": "2026-06-07T16:08:12.209Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2025 Topps Cosmic Chrome Football",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780848492206_xby7x6",
+      "ts": "2026-06-07T16:08:12.206Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2025 Topps Cosmic Chrome Football",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780848464625_q6y8sj",
       "ts": "2026-06-07T16:07:44.626Z",
@@ -1717,26 +1737,6 @@
       "status": "loaded",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780801491039_jmneie",
-      "ts": "2026-06-07T03:04:51.039Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780801480164",
-      "ts": "2026-06-07T03:01:40.826Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 4 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Upper Deck Extended Series Hockey -> needs_admin (Checklist write completed, but public JSON validation needs review. Publish did not return ok.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1879,9 +1879,9 @@
       "checkedAt": "2026-05-29T14:59:10.550Z"
     },
     "football|2025_topps_cosmic_chrome_football": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T16:06:48.393Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27097731850",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -1891,7 +1891,7 @@
       "productName": "2025 Topps Cosmic Chrome Football",
       "sport": "football",
       "code": "2025_topps_cosmic_chrome_football",
-      "updatedAt": "2026-06-07T16:07:44.622Z",
+      "updatedAt": "2026-06-07T16:08:12.200Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27097731850,
@@ -1899,7 +1899,7 @@
       "displayTitle": "Visual Product Test - 2025 Topps Cosmic Chrome Football",
       "headSha": "884ff5135067ef6c59f728b6dfa24be86a65dadf",
       "createdAt": "2026-06-07T16:06:49Z",
-      "checkedAt": "2026-06-07T16:07:44.622Z"
+      "checkedAt": "2026-06-07T16:08:12.200Z"
     }
   },
   "known_issues": {},
@@ -2028,6 +2028,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T16:07:47.681Z",
+  "saved_at": "2026-06-07T16:08:14.951Z",
   "saved_by": "cm_command_center_operator"
 }

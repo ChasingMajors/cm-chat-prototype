@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:47:34.243Z",
+  "exported_at": "2026-06-07T19:47:54.209Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps gallery baseball|2017_topps_gallery_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Gallery Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Gallery_Baseball",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Visual validation complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27102930523",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T19:47:35.180Z",
+      "updatedAt": "2026-06-07T19:47:52.606Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps gold label baseball|2017_topps_gold_label_baseball",
       "type": "visual_test",
@@ -510,17 +532,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Gallery_Baseball",
       "riskLevel": "high",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27102930523",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.206Z",
-      "updatedAt": "2026-06-07T19:47:32.637Z"
+      "updatedAt": "2026-06-07T19:47:52.607Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Five_Star_Baseball",
@@ -1741,29 +1763,29 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.171Z",
       "updatedAt": "2026-06-07T18:15:39.171Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Panini_Diamond_Kings_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Panini Diamond Kings Baseball",
-      "sport": "baseball",
-      "code": "2016_Panini_Diamond_Kings_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.170Z",
-      "updatedAt": "2026-06-07T18:15:39.170Z"
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780861672607_lg6chh",
+      "ts": "2026-06-07T19:47:52.607Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Gallery Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780861655183_lbpv8n",
+      "ts": "2026-06-07T19:47:35.183Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Topps Gallery Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780861652641_dkuxzk",
       "ts": "2026-06-07T19:47:32.641Z",
@@ -2543,26 +2565,6 @@
       "status": "started",
       "product": "2025-26 Topps Hoops Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780855239447_maff6d",
-      "ts": "2026-06-07T18:00:39.447Z",
-      "type": "agent_cycle",
-      "title": "Build PRV preview",
-      "detail": "2025-26 Topps Hoops Basketball can be safely previewed. No Google Sheet write will happen without approval.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780854093092_5ovxq7",
-      "ts": "2026-06-07T17:41:33.092Z",
-      "type": "agent_cycle",
-      "title": "Create repair task",
-      "detail": "2025-26 Topps Hoops Basketball is blocked and needs a fix path. Created Fix: 2025-26 Topps Hoops Basketball.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -2818,6 +2820,29 @@
       "headSha": "cdc73b972c9c7f245381d4d2df399be8b4214353",
       "createdAt": "2026-06-07T19:45:44Z",
       "checkedAt": "2026-06-07T19:46:55.987Z"
+    },
+    "baseball|2017_Topps_Gallery_Baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-07T19:47:33.897Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27102930523",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Topps_Gallery_Baseball",
+      "key": "baseball|2017_Topps_Gallery_Baseball",
+      "productName": "2017 Topps Gallery Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Gallery_Baseball",
+      "updatedAt": "2026-06-07T19:47:52.604Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27102930523,
+      "runNumber": 30,
+      "displayTitle": "Visual Product Test - 2017 Topps Gallery Baseball",
+      "headSha": "cdc73b972c9c7f245381d4d2df399be8b4214353",
+      "createdAt": "2026-06-07T19:47:34Z",
+      "checkedAt": "2026-06-07T19:47:52.604Z"
     }
   },
   "known_issues": {},
@@ -3000,6 +3025,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:47:35.306Z",
+  "saved_at": "2026-06-07T19:47:55.700Z",
   "saved_by": "cm_command_center_operator"
 }

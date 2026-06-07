@@ -320,17 +320,19 @@
       "sport": "baseball",
       "code": "2017_Topps_High_Tek_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "pending_visual_validation",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 287 rows / 12 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "executionResult": "Pending checklist publish validation completed for 2017_Topps_High_Tek_Baseball.",
+      "validationResult": "Published checklist JSON validated with 287 rows and 12 parallels. CV/ChatBot visual validation is pending.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.208Z",
-      "updatedAt": "2026-06-07T18:15:39.208Z"
+      "updatedAt": "2026-06-07T19:39:59.471Z",
+      "pendingValidationAttempts": 0,
+      "autoExecutedAt": "2026-06-07T19:39:59.471Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Minor_League_Baseball",
@@ -1755,6 +1757,36 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780861204137",
+      "ts": "2026-06-07T19:39:59.471Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps High Tek Baseball -> pending_visual_validation (Published checklist JSON validated with 287 rows and 12 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780861204136",
+      "ts": "2026-06-07T19:39:59.471Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2017 Topps High Tek Baseball: Pending checklist publish validation completed for 2017_Topps_High_Tek_Baseball. Published checklist JSON validated with 287 rows and 12 parallels. CV/ChatBot visual validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2017 Topps High Tek Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780861203353",
+      "ts": "2026-06-07T19:39:59.471Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1780861198161_qovc2y",
       "ts": "2026-06-07T19:39:58.161Z",
       "type": "agent_cycle",
@@ -2523,36 +2555,6 @@
       "status": "in_progress",
       "product": "2025 Topps Cosmic Chrome Football",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780848409921_qd6nzc",
-      "ts": "2026-06-07T16:06:49.921Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2025 Topps Cosmic Chrome Football",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780848383030_5dszsz",
-      "ts": "2026-06-07T16:06:23.030Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2025 Topps Cosmic Chrome Football",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780848365547_3ex34f",
-      "ts": "2026-06-07T16:06:05.547Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2025 Topps Cosmic Chrome Football",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -2921,6 +2923,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:40:01.003Z",
+  "saved_at": "2026-06-07T19:40:04.340Z",
   "saved_by": "cm_command_center_operator"
 }

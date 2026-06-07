@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:44:34.362Z",
+  "exported_at": "2026-06-07T20:44:43.374Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1829,6 +1829,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780865081772_egr78j",
+      "ts": "2026-06-07T20:44:41.772Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780865081758_19tn6u",
+      "ts": "2026-06-07T20:44:41.758Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780865078463",
       "ts": "2026-06-07T20:44:35.981Z",
       "type": "agent_sweep",
@@ -2607,26 +2627,6 @@
       "status": "queued",
       "product": "2017 Topps Clearly Authentic Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780863048669_73p73q",
-      "ts": "2026-06-07T20:10:48.669Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780863048657_8bkk3n",
-      "ts": "2026-06-07T20:10:48.657Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -3583,6 +3583,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:44:38.478Z",
+  "saved_at": "2026-06-07T20:44:44.632Z",
   "saved_by": "cm_command_center_operator"
 }

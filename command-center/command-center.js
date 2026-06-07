@@ -1888,8 +1888,8 @@
     renderSourceCheckMessage(
       `Running ${modeLabel}`,
       auditMode === "quick_json"
-        ? "The Operator Backend is checking recent Checklistcenter items against public JSON files."
-        : "The Operator Backend is checking recent Checklistcenter items against source Google Sheets.",
+        ? "The Operator Backend is checking recent Checklistcenter items against public JSON files. This scan is read-only."
+        : "The Operator Backend is checking recent Checklistcenter items against source Google Sheets. This audit is read-only.",
       "info",
       { noFocus: !!options.noFocus }
     );
@@ -1899,8 +1899,8 @@
       source: auditMode,
       title: `${modeLabel} started`,
       detail: auditMode === "quick_json"
-        ? "Checking recent Checklistcenter items against public JSON."
-        : "Checking recent Checklistcenter items against source Google Sheets."
+        ? "Checking recent Checklistcenter items against public JSON. No writes will run."
+        : "Checking recent Checklistcenter items against source Google Sheets. No writes will run."
     });
     renderActivityLog();
 
@@ -1918,13 +1918,13 @@
         status: data.ok ? "completed" : "failed",
         source: auditMode,
         title: `${modeLabel} complete`,
-        detail: `${items.length} source items checked. ${actionable.length} need review. ${queuedCount} review cards queued.`
+        detail: `${items.length} source items checked. ${actionable.length} need review. ${queuedCount} review cards queued. No Sheet or JSON writes were run by this audit.`
       });
       renderSourceWatchResults(data);
       if (options.noFocus) {
         renderSentinelNotice(
           "Source scan complete",
-          `${items.length} source items checked. ${actionable.length} need review. ${queuedCount} review cards queued.`,
+          `${items.length} source items checked. ${actionable.length} need review. ${queuedCount} review cards queued. No writes were run.`,
           actionable.length ? "warning" : "success"
         );
       }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:57:19.205Z",
+  "exported_at": "2026-06-07T19:57:33.498Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -177,18 +177,18 @@
       "code": "2017_Topps_High_Tek_Baseball",
       "riskLevel": "low",
       "status": "needs_admin",
-      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
+      "recommendedAction": "Visual validation complete.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103155471",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:57:15.207Z",
-      "updatedAt": "2026-06-07T19:57:15.209Z"
+      "updatedAt": "2026-06-07T19:57:31.894Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps holiday baseball|2017_topps_holiday_baseball",
@@ -199,18 +199,18 @@
       "code": "2017_Topps_Holiday_Baseball",
       "riskLevel": "low",
       "status": "needs_admin",
-      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
+      "recommendedAction": "Visual validation complete.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103154655",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:57:13.048Z",
-      "updatedAt": "2026-06-07T19:57:13.049Z"
+      "updatedAt": "2026-06-07T19:57:30.695Z"
     },
     {
       "id": "visual_test|github_actions|2017 bowman holiday baseball|2017_topps_holiday_bowman_baseball",
@@ -545,12 +545,12 @@
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Holiday_Baseball.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103154655",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.208Z",
-      "updatedAt": "2026-06-07T19:57:13.049Z",
+      "updatedAt": "2026-06-07T19:57:30.695Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:39:39.289Z"
     },
@@ -567,12 +567,12 @@
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_High_Tek_Baseball.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103155471",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.208Z",
-      "updatedAt": "2026-06-07T19:57:15.209Z",
+      "updatedAt": "2026-06-07T19:57:31.895Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:39:59.471Z"
     },
@@ -1785,6 +1785,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862251896_mz93iw",
+      "ts": "2026-06-07T19:57:31.896Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps High Tek Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780862250696_d0l5zf",
+      "ts": "2026-06-07T19:57:30.696Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Holiday Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780862237604_003u7e",
       "ts": "2026-06-07T19:57:17.604Z",
       "type": "agent_cycle",
@@ -2563,26 +2583,6 @@
       "status": "pending_visual_validation",
       "product": "2017 Topps Heritage Minor League Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780861234340",
-      "ts": "2026-06-07T19:40:32.293Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780861207763_q846my",
-      "ts": "2026-06-07T19:40:07.763Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2955,11 +2955,11 @@
       "checkedAt": "2026-06-07T19:56:38.485Z"
     },
     "baseball|2017_Topps_Holiday_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-07T19:57:11.944Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103154655",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Holiday_Baseball",
@@ -2967,16 +2967,22 @@
       "productName": "2017 Topps Holiday Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Baseball",
-      "updatedAt": "2026-06-07T19:57:13.047Z",
+      "updatedAt": "2026-06-07T19:57:30.692Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27103154655,
+      "runNumber": 35,
+      "displayTitle": "Visual Product Test - 2017 Topps Holiday Baseball",
+      "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
+      "createdAt": "2026-06-07T19:57:12Z",
+      "checkedAt": "2026-06-07T19:57:30.692Z"
     },
     "baseball|2017_Topps_High_Tek_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-07T19:57:13.836Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103155471",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_High_Tek_Baseball",
@@ -2984,9 +2990,15 @@
       "productName": "2017 Topps High Tek Baseball",
       "sport": "baseball",
       "code": "2017_Topps_High_Tek_Baseball",
-      "updatedAt": "2026-06-07T19:57:15.207Z",
+      "updatedAt": "2026-06-07T19:57:31.893Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27103155471,
+      "runNumber": 36,
+      "displayTitle": "Visual Product Test - 2017 Topps High Tek Baseball",
+      "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
+      "createdAt": "2026-06-07T19:57:14Z",
+      "checkedAt": "2026-06-07T19:57:31.893Z"
     },
     "baseball|2017_Topps_Heritage_Minor_League_Baseball": {
       "status": "queued",
@@ -3186,6 +3198,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:57:20.590Z",
+  "saved_at": "2026-06-07T19:57:34.589Z",
   "saved_by": "cm_command_center_operator"
 }

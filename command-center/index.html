@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=cc79" />
+  <link rel="stylesheet" href="./styles.css?v=cc90" />
 </head>
 <body>
   <div class="sentinel-app">
@@ -42,7 +42,7 @@
           <div class="kicker">CM Sentinel</div>
           <h1>Good morning, Admin.</h1>
           <p class="lede">Everything important is here: data health, missing products, approval-ready work, and the next action the agent needs.</p>
-          <div class="build-version">HTML cc88-agent-briefing-cards-v1-2026-06-07</div>
+          <div class="build-version">HTML cc90-apple-cockpit-v1-2026-06-07</div>
         </div>
         <div class="hero-side">
         <div class="hero-pill">
@@ -96,59 +96,21 @@
         <div class="status-card version-card">
           <span class="status-icon teal">⌁</span>
           <span class="status-label">JSON Index</span>
-          <strong id="buildVersion">HTML cc88</strong>
+          <strong id="buildVersion">HTML cc90</strong>
           <em>Current build</em>
         </div>
-      </section>
-
-      <section class="assistant-panel">
-        <div class="assistant-orb" aria-hidden="true"></div>
-        <div class="assistant-content">
-          <h2>How can I help you today?</h2>
-          <div class="quick-prompts">
-            <button type="button" data-sentinel-click="agent">Run Agent Cycle</button>
-            <button type="button" data-sentinel-click="syncPrv">Sync PRV JSON</button>
-            <button type="button" data-sentinel-click="audit">Run health check</button>
-            <button type="button" data-sentinel-click="checklists">Find new checklists</button>
-            <button type="button" data-sentinel-click="prv">Find PRV updates</button>
-          </div>
-          <div class="assistant-input-row">
-            <input id="sentinelCommandInput" type="text" placeholder="Ask CM Sentinel anything..." aria-label="Ask CM Sentinel anything" />
-            <button id="sentinelCommandBtn" type="button" aria-label="Send command">Send</button>
-          </div>
-        </div>
-      </section>
-
-      <section id="sentinelNotice" class="sentinel-notice info" aria-live="polite">
-        <strong>Ready when you are.</strong>
-        <span>Start with “Run Agent Cycle” to let Sentinel choose the next useful check.</span>
       </section>
 
       <section class="workflow-grid" aria-label="Workflows">
         <button id="agentCycleBtn" class="workflow-tile primary-workflow" type="button">
           <span>◇</span>
           <strong>Run Agent Cycle</strong>
-          <em>Runs the daily sweep</em>
+          <em>Daily agent sweep</em>
         </button>
-        <button id="backendAgentSweepBtn" class="workflow-tile primary-workflow" type="button">
-          <span>✦</span>
-          <strong>Backend Agent Sweep</strong>
-          <em>Runs without babysitting</em>
-        </button>
-        <button id="refreshBtn" class="workflow-tile" type="button">
+        <button id="sourceWatchDeepBtn" class="workflow-tile" type="button">
           <span>⌁</span>
-          <strong>Run Health Check</strong>
-          <em>Fast JSON audit</em>
-        </button>
-        <button id="scanSourcesBtn" class="workflow-tile" type="button">
-          <span>＋</span>
-          <strong>Scan New Checklists</strong>
-          <em>Checklist Center watch</em>
-        </button>
-        <button id="scanPrvSourcesBtn" class="workflow-tile" type="button">
-          <span>▥</span>
-          <strong>Scan PRV Sources</strong>
-          <em>SlabSquatch watch</em>
+          <strong>Deep Sheets Audit</strong>
+          <em>Source-of-truth check</em>
         </button>
         <button id="syncPrvJsonBtn" class="workflow-tile primary-workflow" type="button">
           <span>↥</span>
@@ -160,32 +122,51 @@
           <strong>Public Tool Audit</strong>
           <em>Leadership readiness</em>
         </button>
-        <button id="sentinelSelfTestBtn" class="workflow-tile" type="button">
-          <span>◈</span>
-          <strong>Run Sentinel Self-Test</strong>
-          <em>Agent UI proof</em>
-        </button>
-        <a class="workflow-tile" href="../index.html">
-          <span>◌</span>
-          <strong>Open ChatBot</strong>
-          <em>Live assistant</em>
+        <a class="workflow-tile" href="#productVerifier">
+          <span>⌕</span>
+          <strong>Product Verifier</strong>
+          <em>Check one product</em>
         </a>
       </section>
 
-      <section class="panel public-tool-panel">
-        <div class="panel-head">
-          <div>
-            <h2>Public Tool Excellence</h2>
-            <p>Fast leadership check for the public experience: data depth, freshness, and tool readiness.</p>
+      <section class="command-row" aria-label="Sentinel command area">
+        <section class="assistant-panel">
+          <div class="assistant-orb" aria-hidden="true"></div>
+          <div class="assistant-content">
+            <h2>How can I help you today?</h2>
+            <div class="quick-prompts">
+              <button type="button" data-sentinel-click="agent">Run Agent Cycle</button>
+              <button type="button" data-sentinel-click="syncPrv">Sync PRV JSON</button>
+              <button type="button" data-sentinel-click="audit">Run health check</button>
+              <button type="button" data-sentinel-click="checklists">Find new checklists</button>
+              <button type="button" data-sentinel-click="prv">Find PRV updates</button>
+            </div>
+            <div class="assistant-input-row">
+              <input id="sentinelCommandInput" type="text" placeholder="Ask CM Sentinel anything..." aria-label="Ask CM Sentinel anything" />
+              <button id="sentinelCommandBtn" type="button" aria-label="Send command">Send</button>
+            </div>
           </div>
-          <button id="publicToolAuditPanelBtn" class="primary-btn" type="button">Run Public Tool Audit</button>
-        </div>
-        <div id="publicToolAuditResult" class="public-tool-grid">
-          <div class="public-tool-card muted">
-            <strong>Waiting for audit</strong>
-            <span>Run the audit to verify Checklist Vault, PRV, release data, and signal feeds.</span>
+        </section>
+
+        <section class="panel run-summary-panel command-brief-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Command Brief</h2>
+              <p>What Sentinel checked, changed, held, and recommends next.</p>
+            </div>
           </div>
-        </div>
+          <div id="runSummaryList" class="run-summary-list">
+            <div class="brief-item">
+              <strong>Waiting for Agent Cycle</strong>
+              <span>Run Agent Cycle to generate the first operating brief.</span>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section id="sentinelNotice" class="sentinel-notice info" aria-live="polite">
+        <strong>Ready when you are.</strong>
+        <span>Start with “Run Agent Cycle” to let Sentinel choose the next useful check.</span>
       </section>
 
       <section class="grid main-cockpit-grid">
@@ -211,8 +192,8 @@
           <div class="panel review-hold-panel" id="alerts">
             <div class="panel-head">
           <div>
-            <h2>Alerts</h2>
-            <p>Items that need review before the agent moves forward.</p>
+            <h2>Needs Attention</h2>
+            <p>Held issues, failed checks, and admin decisions.</p>
           </div>
           <strong id="criticalCount" class="alert-count">-</strong>
         </div>
@@ -268,7 +249,7 @@
         </div>
       </section>
 
-      <details class="advanced-operations" open>
+      <details class="advanced-operations">
         <summary>
           <strong>Advanced Operations</strong>
           <span>Endpoint settings, source watches, memory, guardrails, and deeper reports.</span>
@@ -286,8 +267,28 @@
             <input id="operatorKeyInput" type="password" placeholder="Admin write key" aria-label="Admin write key" />
             <button id="saveEndpointBtn" class="ghost-btn" type="button">Save Endpoint</button>
             <button id="sourceWatchQuickBtn" class="ghost-btn" type="button">Quick JSON Source Watch</button>
-            <button id="sourceWatchDeepBtn" class="primary-btn" type="button">Deep Sheets Source Watch</button>
             <button id="prvSourceWatchBtn" class="primary-btn" type="button">PRV Source Watch</button>
+            <button id="backendAgentSweepBtn" class="ghost-btn" type="button">Backend Agent Sweep</button>
+            <button id="refreshBtn" class="ghost-btn" type="button">Run Health Check</button>
+            <button id="scanSourcesBtn" class="ghost-btn" type="button">Scan New Checklists</button>
+            <button id="scanPrvSourcesBtn" class="ghost-btn" type="button">Scan PRV Sources</button>
+            <button id="sentinelSelfTestBtn" class="ghost-btn" type="button">Run Sentinel Self-Test</button>
+          </div>
+        </section>
+
+        <section class="panel public-tool-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Public Tool Excellence</h2>
+              <p>Deeper public experience check for data depth, freshness, and tool readiness.</p>
+            </div>
+            <button id="publicToolAuditPanelBtn" class="primary-btn" type="button">Run Public Tool Audit</button>
+          </div>
+          <div id="publicToolAuditResult" class="public-tool-grid">
+            <div class="public-tool-card muted">
+              <strong>Waiting for audit</strong>
+              <span>Run the audit to verify Checklist Vault, PRV, release data, and signal feeds.</span>
+            </div>
           </div>
         </section>
 
@@ -416,21 +417,6 @@
           </div>
         </section>
 
-        <section class="panel run-summary-panel">
-          <div class="panel-head">
-            <div>
-              <h2>Agent Run Summary</h2>
-              <p>One-page operating brief: what happened, what is blocked, and what the agent recommends next.</p>
-            </div>
-          </div>
-          <div id="runSummaryList" class="run-summary-list">
-            <div class="brief-item">
-              <strong>Waiting for audit</strong>
-              <span>Run an audit or source watch to generate the first operating summary.</span>
-            </div>
-          </div>
-        </section>
-
         <details class="panel next-panel next-panel-collapsed">
           <summary class="next-panel-summary">
             <div>
@@ -447,6 +433,6 @@
     </main>
   </div>
 
-  <script defer src="./command-center.js?v=cc79"></script>
+  <script defer src="./command-center.js?v=cc90"></script>
 </body>
 </html>

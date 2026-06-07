@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:44:48.826Z",
+  "exported_at": "2026-06-07T19:45:43.730Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -468,17 +468,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Gold_Label_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 394 rows / 6 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.207Z",
-      "updatedAt": "2026-06-07T18:15:39.207Z"
+      "updatedAt": "2026-06-07T19:45:42.126Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball",
@@ -1763,6 +1763,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780861542129_hcfy7o",
+      "ts": "2026-06-07T19:45:42.129Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2017 Topps Gold Label Baseball",
+      "source": "agent_action_queue"
+    },
+    {
       "id": "log_1780861487212_3hr0pv",
       "ts": "2026-06-07T19:44:47.212Z",
       "type": "visual_test",
@@ -2551,16 +2561,6 @@
       "status": "covered",
       "product": "2025-26 SP Game Used CHL Hockey",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780853888024_bm89gr",
-      "ts": "2026-06-07T17:38:08.024Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2025-26 SP Game Used CHL Hockey",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2975,6 +2975,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:44:50.198Z",
+  "saved_at": "2026-06-07T19:45:44.900Z",
   "saved_by": "cm_command_center_operator"
 }

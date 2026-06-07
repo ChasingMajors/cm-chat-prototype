@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T14:01:42.941Z",
+  "exported_at": "2026-06-07T13:59:11.779Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -238,7 +238,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T13:15:51.041Z",
+      "updatedAt": "2026-06-07T13:59:11.351Z",
       "autoExecutedAt": "2026-06-07T12:48:48.332Z",
       "previousSport": "football"
     },
@@ -269,18 +269,18 @@
       "sport": "soccer",
       "code": "2025_26_topps_gold_bundesliga_soccer",
       "riskLevel": "medium",
-      "status": "pending_public_validation",
+      "status": "validated",
       "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
-      "executionResult": "Checklist sheet write completed; public JSON validation is pending for 2025_26_topps_gold_bundesliga_soccer.",
-      "validationResult": "Checklist write completed, but public JSON is not visible yet. The agent will retry publish/public validation on the next sweep. Publish returned published_validation_needs_review. Checked soccer 2025-26 code 2025_26_topps_gold_bundesliga_soccer. Public recheck: Product code not found in public checklist JSON yet.",
+      "executionResult": "Checklist sheet write and JSON publish completed for 2025_26_topps_gold_bundesliga_soccer.",
+      "validationResult": "Published checklist JSON validated with 287 rows.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-gold-bundesliga-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T13:15:51.041Z",
+      "updatedAt": "2026-06-07T13:59:11.351Z",
       "targetBucket": "2025-26",
       "pendingValidationAttempts": 1,
-      "autoExecutedAt": "2026-06-07T13:15:51.041Z"
+      "autoExecutedAt": "2026-06-07T13:59:11.351Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -294,11 +294,11 @@
       "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
       "adminDecision": "",
       "executionResult": "Scheduled PRV full JSON sync completed through Static Data Exporter.",
-      "validationResult": "Scheduled PRV JSON sync completed.",
+      "validationResult": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-06T15:29:36.437Z",
-      "updatedAt": "2026-06-07T13:15:51.041Z"
+      "updatedAt": "2026-06-07T13:59:11.351Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
@@ -424,7 +424,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-uefa-womens-champions-league-soccer-card-checklist/",
       "createdAt": "2026-06-02T22:12:53.813Z",
-      "updatedAt": "2026-06-07T13:00:59.615Z"
+      "updatedAt": "2026-06-07T13:59:11.351Z"
     },
     {
       "id": "visual_test|github_actions|2025-26 topps chrome arsenal soccer|2025_26_topps_chrome_arsenal_soccer",
@@ -532,7 +532,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-extended-series-hockey-card-checklist/",
       "createdAt": "2026-05-28T22:16:59.267Z",
-      "updatedAt": "2026-06-07T13:15:51.041Z"
+      "updatedAt": "2026-06-07T13:59:11.351Z"
     },
     {
       "id": "source_watch|soccer|2025-26 panini's football efl soccer",
@@ -550,7 +550,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-05-28T22:16:59.264Z",
-      "updatedAt": "2026-06-07T13:15:51.041Z",
+      "updatedAt": "2026-06-07T13:59:11.351Z",
       "previousSport": "football"
     },
     {
@@ -915,13 +915,33 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780840900944_adtj1g",
-      "ts": "2026-06-07T14:01:40.945Z",
+      "id": "log_1780840909550",
+      "ts": "2026-06-07T13:59:11.351Z",
       "type": "agent_sweep",
-      "title": "Backend Agent Sweep failed",
-      "detail": "Timed out after 150s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Topps Gold Bundesliga Soccer -> validated (Published checklist JSON validated with 287 rows.)",
+      "status": "needs_review",
       "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780840909550",
+      "ts": "2026-06-07T13:59:11.351Z",
+      "type": "auto_action",
+      "title": "Full-auto action completed",
+      "detail": "2025-26 Topps Gold Bundesliga Soccer: Checklist sheet write and JSON publish completed for 2025_26_topps_gold_bundesliga_soccer. Published checklist JSON validated with 287 rows.",
+      "status": "validated",
+      "product": "2025-26 Topps Gold Bundesliga Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780840879588",
+      "ts": "2026-06-07T13:59:11.351Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
       "source": "operator_backend"
     },
     {
@@ -1693,26 +1713,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780763630283_68rhad",
-      "ts": "2026-06-06T16:33:50.283Z",
-      "type": "autonomy",
-      "title": "Autonomy mode changed",
-      "detail": "Mode set to Full auto.",
-      "status": "full_auto",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780762451359_bvr9zb",
-      "ts": "2026-06-06T16:14:11.359Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1981,6 +1981,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T14:01:44.206Z",
+  "saved_at": "2026-06-07T14:01:49.585Z",
   "saved_by": "cm_command_center_operator"
 }

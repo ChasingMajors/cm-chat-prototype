@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:07:24.570Z",
+  "exported_at": "2026-06-07T21:18:41.585Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1855,7 +1855,20 @@
       "updatedAt": "2026-06-07T18:15:39.190Z"
     }
   ],
+  "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Bowman_s_Best_Baseball"
+  ],
   "activity_log": [
+    {
+      "id": "log_1780867119980_aqdu8i",
+      "ts": "2026-06-07T21:18:39.980Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Bowman's Best Baseball will be attempted by Run Agent Cycle.",
+      "status": "queued",
+      "product": "2017 Bowman's Best Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780866442966_5yvdz9",
       "ts": "2026-06-07T21:07:22.966Z",
@@ -2639,16 +2652,6 @@
     {
       "id": "log_1780865485893_vc00wv",
       "ts": "2026-06-07T20:51:25.893Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Bowman Mega Box Chrome Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780865458815_ksebk3",
-      "ts": "2026-06-07T20:50:58.815Z",
       "type": "visual_test",
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
@@ -3818,6 +3821,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:07:25.738Z",
+  "saved_at": "2026-06-07T21:18:42.978Z",
   "saved_by": "cm_command_center_operator"
 }

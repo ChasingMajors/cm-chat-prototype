@@ -238,7 +238,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T13:15:51.041Z",
+      "updatedAt": "2026-06-07T13:25:56.906Z",
       "autoExecutedAt": "2026-06-07T12:48:48.332Z",
       "previousSport": "football"
     },
@@ -269,18 +269,18 @@
       "sport": "soccer",
       "code": "2025_26_topps_gold_bundesliga_soccer",
       "riskLevel": "medium",
-      "status": "pending_public_validation",
+      "status": "validated",
       "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
-      "executionResult": "Checklist sheet write completed; public JSON validation is pending for 2025_26_topps_gold_bundesliga_soccer.",
-      "validationResult": "Checklist write completed, but public JSON is not visible yet. The agent will retry publish/public validation on the next sweep. Publish returned published_validation_needs_review. Checked soccer 2025-26 code 2025_26_topps_gold_bundesliga_soccer. Public recheck: Product code not found in public checklist JSON yet.",
+      "executionResult": "Checklist sheet write and JSON publish completed for 2025_26_topps_gold_bundesliga_soccer.",
+      "validationResult": "Published checklist JSON validated with 287 rows.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-gold-bundesliga-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T13:15:51.041Z",
+      "updatedAt": "2026-06-07T13:25:56.906Z",
       "targetBucket": "2025-26",
       "pendingValidationAttempts": 1,
-      "autoExecutedAt": "2026-06-07T13:15:51.041Z"
+      "autoExecutedAt": "2026-06-07T13:25:56.906Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -298,7 +298,7 @@
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-06T15:29:36.437Z",
-      "updatedAt": "2026-06-07T13:15:51.041Z"
+      "updatedAt": "2026-06-07T13:25:56.906Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
@@ -424,7 +424,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-uefa-womens-champions-league-soccer-card-checklist/",
       "createdAt": "2026-06-02T22:12:53.813Z",
-      "updatedAt": "2026-06-07T13:00:59.615Z"
+      "updatedAt": "2026-06-07T13:25:56.906Z"
     },
     {
       "id": "visual_test|github_actions|2025-26 topps chrome arsenal soccer|2025_26_topps_chrome_arsenal_soccer",
@@ -532,7 +532,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-extended-series-hockey-card-checklist/",
       "createdAt": "2026-05-28T22:16:59.267Z",
-      "updatedAt": "2026-06-07T13:15:51.041Z"
+      "updatedAt": "2026-06-07T13:25:56.906Z"
     },
     {
       "id": "source_watch|soccer|2025-26 panini's football efl soccer",
@@ -550,7 +550,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-05-28T22:16:59.264Z",
-      "updatedAt": "2026-06-07T13:15:51.041Z",
+      "updatedAt": "2026-06-07T13:25:56.906Z",
       "previousSport": "football"
     },
     {
@@ -633,15 +633,18 @@
       "sport": "soccer",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "known_issue",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "PRV source preview did not produce writable rows.",
+      "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-club-competitions",
       "createdAt": "2026-05-20T00:30:18.946Z",
-      "updatedAt": "2026-05-22T00:38:57.402Z"
+      "updatedAt": "2026-06-07T13:25:56.906Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "autoExecutedAt": "2026-06-07T13:25:56.906Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 topps chrome football|2025_topps_chrome_football",
@@ -914,6 +917,46 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780838958071",
+      "ts": "2026-06-07T13:25:56.906Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 2 run. 2025-26 Topps Gold Bundesliga Soccer -> validated (Published checklist JSON validated with 287 rows.); 2025/26 Topps Chrome UEFA Club Competitions -> known_issue (Source post appears paid/locked. Public HTML does not expose writable print-run rows.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780838958071",
+      "ts": "2026-06-07T13:25:56.906Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2025/26 Topps Chrome UEFA Club Competitions: PRV source preview did not produce writable rows. Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
+      "status": "known_issue",
+      "product": "2025/26 Topps Chrome UEFA Club Competitions",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780838957542",
+      "ts": "2026-06-07T13:25:56.906Z",
+      "type": "auto_action",
+      "title": "Full-auto action completed",
+      "detail": "2025-26 Topps Gold Bundesliga Soccer: Checklist sheet write and JSON publish completed for 2025_26_topps_gold_bundesliga_soccer. Published checklist JSON validated with 287 rows.",
+      "status": "validated",
+      "product": "2025-26 Topps Gold Bundesliga Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780838929019",
+      "ts": "2026-06-07T13:25:56.906Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780838755656_c5cdbj",
       "ts": "2026-06-07T13:25:55.656Z",
@@ -1673,46 +1716,6 @@
       "status": "full_auto",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1780762451359_bvr9zb",
-      "ts": "2026-06-06T16:14:11.359Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780762451343_s7ufx6",
-      "ts": "2026-06-06T16:14:11.343Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780762441333",
-      "ts": "2026-06-06T16:11:13.256Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 4 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto action: Full auto is off.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780762441333",
-      "ts": "2026-06-06T16:11:13.256Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1981,6 +1984,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T13:25:58.183Z",
+  "saved_at": "2026-06-07T13:29:18.219Z",
   "saved_by": "cm_command_center_operator"
 }

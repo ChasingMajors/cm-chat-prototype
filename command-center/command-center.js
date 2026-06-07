@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc97-deep-backend-audit-v1-2026-06-07";
+  const COMMAND_CENTER_VERSION = "cc98-pending-validation-batch-v1-2026-06-07";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -579,6 +579,8 @@
       sourceUrl: input.sourceUrl || "",
       bucket: input.bucket || "",
       targetBucket: input.targetBucket || input.bucket || "",
+      expectedRowCount: Number(input.expectedRowCount || input.expected_row_count || 0),
+      expectedParallelCount: Number(input.expectedParallelCount || input.expected_parallel_count || 0),
       createdAt: now,
       updatedAt: now
     };
@@ -702,6 +704,8 @@
         riskLevel: issue.severity === "high" ? "high" : issue.severity === "low" ? "low" : "medium",
         status: staleJson ? "pending_public_validation" : "needs_admin",
         recommendedAction: issue.recommended_action || "Review the source data, fix the issue, publish JSON, and validate the public tools.",
+        expectedRowCount: issue.expected_row_count || issue.expectedRowCount || 0,
+        expectedParallelCount: issue.expected_parallel_count || issue.expectedParallelCount || 0,
         executionResult: staleJson
           ? "Deep backend audit found source Sheet counts ahead of public JSON."
           : issue.title || "Deep backend audit found a source-of-truth issue.",
@@ -2347,7 +2351,7 @@
 
     renderSentinelNotice(
       "Backend Agent Sweep running",
-      "Sentinel is checking Checklist Center, SlabSquatch PRV sources, one safe auto action, and backend memory. Full PRV sync runs separately.",
+      "Sentinel is checking Checklist Center, SlabSquatch PRV sources, a bounded batch of safe auto work, and backend memory. Full PRV sync runs separately.",
       "info"
     );
     renderSourceCheckMessage("Backend Agent Sweep running", "Fast sweep runs from Apps Script and writes queue findings to backend memory. Use Sync PRV JSON for a full PRV publish pass.", "info", { noFocus: true });
@@ -2356,7 +2360,7 @@
       status: "started",
       source: "command_center",
       title: "Backend Agent Sweep started",
-      detail: "Running checklist source watch, PRV source watch, one safe auto action, and backend memory update."
+      detail: "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update."
     });
     renderActivityLog();
 
@@ -3213,24 +3217,40 @@
       const covered = data && data.ok && data.status === "covered";
       const rowCount = Number(data && data.sheet_row_count || 0);
       const parallelCount = Number(data && data.sheet_parallel_count || 0);
+      const expectedRowCount = Number(action.expectedRowCount || 0);
+      const expectedParallelCount = Number(action.expectedParallelCount || 0);
+      const meetsExpectedRows = expectedRowCount <= 0 || rowCount >= expectedRowCount;
+      const meetsExpectedParallels = expectedParallelCount <= 0 || parallelCount >= expectedParallelCount;
+      const fullyCovered = covered && meetsExpectedRows && meetsExpectedParallels;
 
+      const wasPendingPublicValidation = isPendingPublicValidationAction(action);
       updateAgentAction(actionId, {
-        status: "needs_admin",
+        status: fullyCovered && wasPendingPublicValidation ? "pending_visual_validation" : "needs_admin",
         code: action.code || (data && data.matched_code) || "",
-        validationResult: covered
+        validationResult: fullyCovered
           ? `Public JSON covered: ${formatNumber(rowCount)} rows, ${formatNumber(parallelCount)} parallels. Visual CV/ChatBot proof still pending.`
+          : covered && !fullyCovered
+            ? `Public JSON exists but appears stale: expected ${formatNumber(expectedRowCount || 0)} rows / ${formatNumber(expectedParallelCount || 0)} parallels; found ${formatNumber(rowCount)} rows / ${formatNumber(parallelCount)} parallels.`
           : `Coverage recheck needs review: ${(data && (data.recommended_action || data.reason || data.status)) || "unknown result"}.`
+        ,
+        recommendedAction: fullyCovered && wasPendingPublicValidation
+          ? "Public JSON is live. Run CV/ChatBot visual validation next."
+          : covered && !fullyCovered
+            ? "Run Agent Cycle with backend credentials so Sentinel can publish/recheck the stale product JSON."
+          : action.recommendedAction || ""
       });
 
       logActivity({
         type: "validation",
-        status: covered ? "covered" : "needs_review",
+        status: fullyCovered ? "covered" : "needs_review",
         product: action.product || "",
         source: "operator_backend",
         title: "Coverage rechecked",
-        detail: covered
+        detail: fullyCovered
           ? `${formatNumber(rowCount)} public rows and ${formatNumber(parallelCount)} parallels found.`
-          : "Public coverage still needs review."
+          : covered
+            ? "Public JSON exists but row/parallel counts are still short."
+            : "Public coverage still needs review."
       });
 
       renderBackendValidationResult(data);
@@ -6606,7 +6626,74 @@
     runAgentVisualTest(plan);
   }
 
+  function getPendingPublicValidationBatch(limit) {
+    const max = Math.max(1, Math.min(8, Number(limit || 5)));
+    return getActiveAgentActions()
+      .filter(action => {
+        if (!isPendingPublicValidationAction(action)) return false;
+        const type = String(action.type || "").toLowerCase();
+        if (type !== "source_import" && type !== "checklist_publish" && type !== "prv_source_review" && type !== "prv_publish") return false;
+        return !!(action.product || action.code);
+      })
+      .slice(0, max);
+  }
+
+  async function runPendingPublicValidationBatch() {
+    const pending = getPendingPublicValidationBatch(6);
+    if (!pending.length) return { ok: true, ran: 0, detail: "No pending public validations found." };
+
+    if (readOperatorEndpoint() && readOperatorKey()) {
+      renderAgentCycleMessage(
+        "Self-healing pending validations",
+        `${pending.length} pending public validation item${pending.length === 1 ? "" : "s"} found. Sentinel is handing the batch to the backend worker so stale JSON can be republished when needed.`,
+        "info"
+      );
+      return runBackendAgentSweep();
+    }
+
+    renderAgentCycleMessage(
+      "Rechecking pending validations",
+      `${pending.length} pending public validation item${pending.length === 1 ? "" : "s"} found. Backend key is missing, so Sentinel will only recheck public JSON and will not publish.`,
+      "warning"
+    );
+
+    let passed = 0;
+    let needsReview = 0;
+    for (const action of pending) {
+      const type = String(action.type || "").toLowerCase();
+      if (type === "prv_source_review" || type === "prv_publish") {
+        await recheckPrvPublicData(action.code || "", action.id);
+      } else {
+        await recheckActionCoverage(action.id);
+      }
+
+      const fresh = state.agentActions.find(item => item.id === action.id) || action;
+      const status = String(fresh.status || "").toLowerCase();
+      if (status === "pending_visual_validation" || status === "validated") passed += 1;
+      else needsReview += 1;
+    }
+
+    const detail = `${passed} moved forward. ${needsReview} still need backend publish or admin review.`;
+    logActivity({
+      type: "agent_cycle",
+      status: needsReview ? "needs_review" : "validated",
+      source: "command_center",
+      title: "Pending validation batch complete",
+      detail
+    });
+    renderSentinelNotice("Pending validation batch complete", detail, needsReview ? "warning" : "success");
+    renderActivityLog();
+    renderAgentActions();
+    renderActionLanes();
+    return { ok: needsReview === 0, ran: pending.length, passed, needsReview, detail };
+  }
+
   async function runAgentCycle() {
+    const pendingBatch = getPendingPublicValidationBatch(6);
+    if (pendingBatch.length > 1) {
+      return runPendingPublicValidationBatch();
+    }
+
     const step = getAgentCycleStep();
 
     if (step.kind === "sentinel_incident_recovery") {

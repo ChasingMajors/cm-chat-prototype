@@ -762,7 +762,11 @@ function runDeepBackendAudit_(input) {
         bucket: row.source_key || row.year || "",
         title: "Public JSON appears stale",
         detail: "Sheets show " + sourceRowCount + " rows / " + sourceParallelCount + " parallels. Public JSON index shows " + publicRowCount + " rows / " + publicParallelCount + " parallels.",
-        recommended_action: "Publish the product/year JSON and let Sentinel recheck public validation."
+        recommended_action: "Publish the product/year JSON and let Sentinel recheck public validation.",
+        expected_row_count: sourceRowCount,
+        expected_parallel_count: sourceParallelCount,
+        public_row_count: publicRowCount,
+        public_parallel_count: publicParallelCount
       });
     }
 
@@ -846,6 +850,10 @@ function pushBackendAuditIssue_(issues, input) {
     detail: input.detail || "",
     reason: input.detail || "",
     recommended_action: input.recommended_action || "Review and fix the source data, then publish and validate.",
+    expected_row_count: Number(input.expected_row_count || 0),
+    expected_parallel_count: Number(input.expected_parallel_count || 0),
+    public_row_count: Number(input.public_row_count || 0),
+    public_parallel_count: Number(input.public_parallel_count || 0),
     source_url: "",
     url: ""
   });
@@ -3754,9 +3762,14 @@ function runScheduledChecklistPendingValidationAction_(action, key) {
 
   let publicValidation = waitForPublicChecklistProduct_(sport, code);
   let publicRows = Number(publicValidation && publicValidation.row_count || 0);
+  let publicParallels = Number(publicValidation && publicValidation.parallel_count || 0);
+  const expectedRows = Number(action && (action.expectedRowCount || action.expected_row_count) || 0);
+  const expectedParallels = Number(action && (action.expectedParallelCount || action.expected_parallel_count) || 0);
+  const publicIsShort = (expectedRows > 0 && publicRows < expectedRows) ||
+    (expectedParallels > 0 && publicParallels < expectedParallels);
   let publish = null;
 
-  if (publicRows <= 0 && attempts <= 3) {
+  if ((publicRows <= 0 || publicIsShort) && attempts <= 3) {
     publish = publishChecklistAfterImport_({
       sport: sport,
       target_bucket: targetBucket,
@@ -3765,9 +3778,12 @@ function runScheduledChecklistPendingValidationAction_(action, key) {
     }, key);
     publicValidation = waitForPublicChecklistProduct_(sport, code);
     publicRows = Number(publicValidation && publicValidation.row_count || 0);
+    publicParallels = Number(publicValidation && publicValidation.parallel_count || 0);
   }
 
-  const validated = publicRows > 0;
+  const meetsExpectedRows = expectedRows <= 0 || publicRows >= expectedRows;
+  const meetsExpectedParallels = expectedParallels <= 0 || publicParallels >= expectedParallels;
+  const validated = publicRows > 0 && meetsExpectedRows && meetsExpectedParallels;
   const detail = "Checked " + sport + " " + (targetBucket || "current") + " code " + code + ".";
 
   return {
@@ -3782,8 +3798,8 @@ function runScheduledChecklistPendingValidationAction_(action, key) {
       ? "Pending checklist publish validation completed for " + code + "."
       : "Pending checklist publish validation rechecked for " + code + ".",
     validationResult: validated
-      ? "Published checklist JSON validated with " + publicRows + " rows. CV/ChatBot visual validation is pending."
-      : "Published checklist JSON is still pending after " + attempts + " check(s). " + (publish ? summarizePublishResult_(publish) + " " : "") + detail + " Recheck: " + summarizePublicChecklistValidation_(publicValidation)
+      ? "Published checklist JSON validated with " + publicRows + " rows and " + publicParallels + " parallels. CV/ChatBot visual validation is pending."
+      : "Published checklist JSON is still pending or stale after " + attempts + " check(s). Expected " + (expectedRows || "any") + " rows / " + (expectedParallels || "any") + " parallels; found " + publicRows + " rows / " + publicParallels + " parallels. " + (publish ? summarizePublishResult_(publish) + " " : "") + detail + " Recheck: " + summarizePublicChecklistValidation_(publicValidation)
     ,
     pendingVisualValidation: validated
   };

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:46:57.594Z",
+  "exported_at": "2026-06-07T19:47:34.243Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -510,17 +510,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Gallery_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 504 rows / 24 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.206Z",
-      "updatedAt": "2026-06-07T18:15:39.206Z"
+      "updatedAt": "2026-06-07T19:47:32.637Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Five_Star_Baseball",
@@ -1765,6 +1765,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780861652641_dkuxzk",
+      "ts": "2026-06-07T19:47:32.641Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2017 Topps Gallery Baseball",
+      "source": "agent_action_queue"
+    },
+    {
       "id": "log_1780861615991_skflb4",
       "ts": "2026-06-07T19:46:55.991Z",
       "type": "visual_test",
@@ -2553,16 +2563,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780854081987_6dko9v",
-      "ts": "2026-06-07T17:41:21.987Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2025-26 Donruss Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3000,6 +3000,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:46:59.282Z",
+  "saved_at": "2026-06-07T19:47:35.306Z",
   "saved_by": "cm_command_center_operator"
 }

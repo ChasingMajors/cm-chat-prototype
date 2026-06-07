@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T16:39:34.146Z",
+  "exported_at": "2026-06-07T16:39:40.408Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -344,15 +344,15 @@
       "sport": "baseball",
       "code": "2025_topps_dynasty_baseball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=publishImportedChecklist&sport=baseball&bucket=2025&code=2025_topps_dynasty_baseball&key=JD",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:55:28.342Z",
-      "updatedAt": "2026-06-02T22:59:39.001Z"
+      "updatedAt": "2026-06-07T16:39:38.806Z"
     },
     {
       "id": "checklist_publish|operator_backend|2026 topps series 2 baseball|2026_topps_series_2_baseball",
@@ -938,6 +938,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780850378806_f336tw",
+      "ts": "2026-06-07T16:39:38.806Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2025 Topps Dynasty Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780850378804_lmouv6",
+      "ts": "2026-06-07T16:39:38.804Z",
+      "type": "agent_cycle",
+      "title": "Verify Checklist public JSON",
+      "detail": "2025 Topps Dynasty Baseball has enough detail for a safe public coverage check. Sentinel will verify the JSON before asking for admin review.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1780850372543_7zgzby",
       "ts": "2026-06-07T16:39:32.543Z",
@@ -1717,26 +1737,6 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1780802235475",
-      "ts": "2026-06-07T03:14:15.432Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 3 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Upper Deck Extended Series Hockey -> needs_admin (Checklist write completed, but public JSON validation needs review. No spreadsheet configured for hockey 2025-26)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780802235475",
-      "ts": "2026-06-07T03:14:15.432Z",
-      "type": "auto_action",
-      "title": "Full-auto action needs review",
-      "detail": "2025-26 Upper Deck Extended Series Hockey: Checklist sheet write completed; JSON publish needs retry for 2025_26_upper_deck_extended_series_hockey. Checklist write completed, but public JSON validation needs review. No spreadsheet configured for hockey 2025-26",
-      "status": "needs_admin",
-      "product": "2025-26 Upper Deck Extended Series Hockey",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2028,6 +2028,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T16:39:35.446Z",
+  "saved_at": "2026-06-07T16:39:41.586Z",
   "saved_by": "cm_command_center_operator"
 }

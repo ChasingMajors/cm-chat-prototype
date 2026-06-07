@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:36:23.867Z",
+  "exported_at": "2026-06-07T20:36:30.925Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1244,17 +1244,17 @@
       "sport": "baseball",
       "code": "2017_Panini_Contenders_Draft_Picks_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 233 rows / 39 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.198Z",
-      "updatedAt": "2026-06-07T18:15:39.198Z"
+      "updatedAt": "2026-06-07T20:36:29.322Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Chronicles_Baseball",
@@ -1818,6 +1818,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780864589324_pznn78",
+      "ts": "2026-06-07T20:36:29.324Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2017 Panini Contenders Draft Picks Baseball",
+      "source": "agent_action_queue"
+    },
     {
       "id": "log_1780864582265_3dm0lf",
       "ts": "2026-06-07T20:36:22.265Z",
@@ -2607,16 +2617,6 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1780862554039",
-      "ts": "2026-06-07T20:02:31.620Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Diamond Icons Baseball -> pending_visual_validation (Published checklist JSON validated with 546 rows and 26 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3481,6 +3481,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:36:24.968Z",
+  "saved_at": "2026-06-07T20:36:32.012Z",
   "saved_by": "cm_command_center_operator"
 }

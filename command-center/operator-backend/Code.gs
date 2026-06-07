@@ -26,7 +26,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-07-operator-cc86-quick-agent-sweep";
+const CM_OPERATOR_VERSION = "2026-06-07-operator-cc87-prv-locked-source-guard";
 const CM_APP_DATA_BASE = "https://app.chasingmajors.com/data/v1";
 const CM_CHECKLISTCENTER_HOME = "https://www.checklistcenter.com/";
 const CM_CHECKLISTCENTER_POSTS_API = "https://www.checklistcenter.com/wp-json/wp/v2/posts?per_page=20&_fields=link,title,date,slug";
@@ -623,7 +623,8 @@ function runPrvSourceWatch_(mode) {
   const sourceItems = fetchRecentSlabSquatchItems_();
 
   const results = sourceItems.map(function(item) {
-    return classifyPrvSourceItem_(item, vaultRows);
+    const classified = classifyPrvSourceItem_(item, vaultRows);
+    return markLockedPrvSourceIssue_(classified);
   });
 
   const summary = results.reduce(function(out, item) {
@@ -1247,6 +1248,45 @@ function classifyPrvSourceItem_(item, vaultRows) {
     published_at: item.published_at || "",
     recommended_action: "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data."
   };
+}
+
+function markLockedPrvSourceIssue_(item) {
+  const status = safeString_(item && item.status).trim().toLowerCase();
+  const sourceUrl = safeString_(item && item.source_url).trim();
+  if (!item || !sourceUrl) return item;
+  if (status !== "missing" && status !== "needs_review" && status !== "possible_update") return item;
+
+  const lock = inspectPrvSourceLock_(sourceUrl);
+  if (!lock.locked) return item;
+
+  return Object.assign({}, item, {
+    status: "known_issue",
+    blocked_reason: lock.reason,
+    recommended_action: "Source post appears paid/locked. Public HTML does not expose writable print-run rows. Keep as known issue unless admin has another source."
+  });
+}
+
+function inspectPrvSourceLock_(sourceUrl) {
+  try {
+    const html = fetchText_(sourceUrl);
+    const bodyHtml = extractSubstackBodyHtml_(html);
+    const rows = parseSlabSquatchPrintRunRows_(bodyHtml, sourceUrl);
+    const locked = isSubstackPostPaywalled_(html, bodyHtml) && !rows.length;
+
+    return {
+      locked: locked,
+      row_count: rows.length,
+      reason: locked
+        ? "Source post appears paid/locked. Public HTML does not expose writable print-run rows."
+        : ""
+    };
+  } catch (err) {
+    return {
+      locked: false,
+      row_count: 0,
+      reason: err && err.message ? err.message : String(err)
+    };
+  }
 }
 
 function fetchVaultPublicIndexRows_() {
@@ -2937,7 +2977,7 @@ function runScheduledAgentSweep_(input) {
   });
   const prvActionable = prvItems.filter(function(item) {
     if (isMemorySourceIgnored_(item, sourceIgnores)) return false;
-    return item.status === "missing" || item.status === "needs_review" || item.status === "possible_update";
+    return item.status === "missing" || item.status === "needs_review" || item.status === "possible_update" || item.status === "known_issue";
   });
 
   memory.agent_actions = mergeScheduledSourceActions_(memory.agent_actions || [], checklistActionable, now, checklistWatch.mode || mode);
@@ -3724,11 +3764,11 @@ function mergeScheduledPrvActions_(existingActions, sourceItems, now, mode) {
       sport: item.sport || "",
       code: item.matched_code || "",
       riskLevel: item.status === "missing" ? "medium" : "low",
-      status: "approval_required",
+      status: item.status === "known_issue" ? "known_issue" : "approval_required",
       recommendedAction: item.recommended_action || "Review SlabSquatch source, preview PRV rows, then approve product-scoped PRV write.",
       adminDecision: "",
-      executionResult: "",
-      validationResult: "",
+      executionResult: item.status === "known_issue" ? "PRV source was scanned and held before auto execution." : "",
+      validationResult: item.status === "known_issue" ? (item.blocked_reason || "Known PRV source issue.") : "",
       runUrl: "",
       sourceUrl: item.url || item.source_url || "",
       createdAt: existing && existing.createdAt ? existing.createdAt : now,

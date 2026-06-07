@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:59:38.786Z",
+  "exported_at": "2026-06-07T21:00:24.323Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1847,6 +1847,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780866022720_116qef",
+      "ts": "2026-06-07T21:00:22.720Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780866022708_2illkn",
+      "ts": "2026-06-07T21:00:22.708Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780866017652",
       "ts": "2026-06-07T21:00:15.060Z",
       "type": "agent_sweep",
@@ -2623,26 +2643,6 @@
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "passed",
-      "product": "2017 Panini Chronicles Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864809090_2w3qv0",
-      "ts": "2026-06-07T20:40:09.090Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Panini Chronicles Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864781685_blbke7",
-      "ts": "2026-06-07T20:39:41.685Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
       "product": "2017 Panini Chronicles Baseball",
       "source": "github_actions"
     }
@@ -3739,6 +3739,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:00:17.710Z",
+  "saved_at": "2026-06-07T21:00:25.364Z",
   "saved_by": "cm_command_center_operator"
 }

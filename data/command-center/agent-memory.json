@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:04:23.761Z",
+  "exported_at": "2026-06-07T20:07:34.830Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -882,17 +882,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Definitive_Collection_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Definitive_Collection_Baseball.",
-      "validationResult": "Published checklist JSON validated with 658 rows and 26 parallels. CV/ChatBot visual validation is pending.",
+      "validationResult": "CV/ChatBot visual test requested by Agent Cycle...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.204Z",
-      "updatedAt": "2026-06-07T20:06:25.794Z",
+      "updatedAt": "2026-06-07T20:07:33.227Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:06:25.794Z"
     },
@@ -1799,6 +1799,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862853224_q4s4k5",
+      "ts": "2026-06-07T20:07:33.224Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780862853209_ksvc8i",
+      "ts": "2026-06-07T20:07:33.209Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780862788418",
       "ts": "2026-06-07T20:06:25.794Z",
       "type": "agent_sweep",
@@ -2577,26 +2597,6 @@
       "status": "queued",
       "product": "2017 Topps Inception Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780862122965_8l16zk",
-      "ts": "2026-06-07T19:55:22.965Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862120016_ztzfqh",
-      "ts": "2026-06-07T19:55:20.016Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3310,6 +3310,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:06:28.475Z",
+  "saved_at": "2026-06-07T20:07:36.317Z",
   "saved_by": "cm_command_center_operator"
 }

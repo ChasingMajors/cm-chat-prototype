@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:32:04.609Z",
+  "exported_at": "2026-06-07T19:32:50.063Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -161,8 +161,8 @@
       "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
-      "createdAt": "2026-06-07T19:28:43.151Z",
-      "updatedAt": "2026-06-07T19:28:43.151Z"
+      "createdAt": "2026-06-07T19:31:57.081Z",
+      "updatedAt": "2026-06-07T19:31:57.081Z"
     },
     {
       "id": "prv_watch|basketball|2025_26_bowman_s_best_university_basketball",
@@ -179,8 +179,8 @@
       "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
-      "createdAt": "2026-06-07T19:28:43.151Z",
-      "updatedAt": "2026-06-07T19:28:43.151Z"
+      "createdAt": "2026-06-07T19:31:57.081Z",
+      "updatedAt": "2026-06-07T19:31:57.081Z"
     },
     {
       "id": "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
@@ -210,19 +210,19 @@
       "sport": "baseball",
       "code": "2017_Topps_Museum_Collection_Baseball",
       "riskLevel": "high",
-      "status": "failed",
+      "status": "pending_visual_validation",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Checklist sheet write failed.",
-      "validationResult": "Missing sourceUrl",
+      "executionResult": "Pending checklist publish validation completed for 2017_Topps_Museum_Collection_Baseball.",
+      "validationResult": "Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.210Z",
-      "updatedAt": "2026-06-07T19:28:43.151Z",
+      "updatedAt": "2026-06-07T19:31:57.081Z",
       "pendingValidationAttempts": 0,
-      "autoExecutedAt": "2026-06-07T19:28:43.151Z"
+      "autoExecutedAt": "2026-06-07T19:31:57.081Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Luminaries_Baseball",
@@ -232,19 +232,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Luminaries_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "pending_public_validation",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Pending checklist publish validation completed for 2017_Topps_Luminaries_Baseball.",
-      "validationResult": "Published checklist JSON validated with 619 rows and 18 parallels. CV/ChatBot visual validation is pending.",
+      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
+      "validationResult": "Sheets show 619 rows / 18 parallels. Public JSON index shows 1 rows / 0 parallels.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.209Z",
-      "updatedAt": "2026-06-07T19:32:42.699Z",
-      "pendingValidationAttempts": 0,
-      "autoExecutedAt": "2026-06-07T19:32:42.699Z"
+      "updatedAt": "2026-06-07T18:15:39.210Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Inception_Baseball",
@@ -1749,48 +1747,18 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780860765330",
-      "ts": "2026-06-07T19:32:42.699Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Luminaries Baseball -> pending_visual_validation (Published checklist JSON validated with 619 rows and 18 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780860765330",
-      "ts": "2026-06-07T19:32:42.699Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Topps Luminaries Baseball: Pending checklist publish validation completed for 2017_Topps_Luminaries_Baseball. Published checklist JSON validated with 619 rows and 18 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780860764898",
-      "ts": "2026-06-07T19:32:42.699Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780860723006_24ijfe",
-      "ts": "2026-06-07T19:32:03.006Z",
+      "id": "log_1780860768460_owysue",
+      "ts": "2026-06-07T19:32:48.460Z",
       "type": "agent_sweep",
       "title": "Backend Agent Sweep complete",
-      "detail": "Checklist: 0 actions. PRV: 2 actions. PRV sync: skipped. Auto: 1 ran. 2017 Topps Museum Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.)",
+      "detail": "Checklist: 0 actions. PRV: 2 actions. PRV sync: skipped. Auto: 1 ran. 2017 Topps Luminaries Baseball -> pending_visual_validation (Published checklist JSON validated with 619 rows and 18 parallels. CV/ChatBot visual validation is pending.)",
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1780860715758_dpg4we",
-      "ts": "2026-06-07T19:31:55.758Z",
+      "id": "log_1780860761590_fdjols",
+      "ts": "2026-06-07T19:32:41.590Z",
       "type": "agent_sweep",
       "title": "Backend Agent Sweep started",
       "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
@@ -1799,8 +1767,8 @@
       "source": "command_center"
     },
     {
-      "id": "log_1780860715753_hdp9kz",
-      "ts": "2026-06-07T19:31:55.753Z",
+      "id": "log_1780860761584_cdthrr",
+      "ts": "2026-06-07T19:32:41.584Z",
       "type": "agent_cycle",
       "title": "Self-healing pending validations",
       "detail": "6 pending public validation items found. Sentinel is handing the batch to the backend worker so stale JSON can be republished when needed.",
@@ -1809,8 +1777,8 @@
       "source": "command_center"
     },
     {
-      "id": "log_1780860530652_lw6evl",
-      "ts": "2026-06-07T19:28:50.652Z",
+      "id": "log_1780860725088_96ihpv",
+      "ts": "2026-06-07T19:32:05.088Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -1819,8 +1787,8 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1780860530639_hch952",
-      "ts": "2026-06-07T19:28:50.639Z",
+      "id": "log_1780860725074_fn7j8d",
+      "ts": "2026-06-07T19:32:05.074Z",
       "type": "memory",
       "title": "Agent memory imported",
       "detail": "Queue, log, approvals, known issues, and visual status were restored.",
@@ -1829,34 +1797,64 @@
       "source": "admin"
     },
     {
-      "id": "log_1780860525787",
-      "ts": "2026-06-07T19:28:43.151Z",
+      "id": "log_1780860720639",
+      "ts": "2026-06-07T19:31:57.081Z",
       "type": "agent_sweep",
       "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Museum Collection Baseball -> failed (Missing sourceUrl)",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Museum Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.)",
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1780860525787",
-      "ts": "2026-06-07T19:28:43.151Z",
+      "id": "log_1780860720639",
+      "ts": "2026-06-07T19:31:57.081Z",
       "type": "auto_action",
-      "title": "Full-auto action failed",
-      "detail": "2017 Topps Museum Collection Baseball: Checklist sheet write failed. Missing sourceUrl",
-      "status": "failed",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2017 Topps Museum Collection Baseball: Pending checklist publish validation completed for 2017_Topps_Museum_Collection_Baseball. Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.",
+      "status": "pending_visual_validation",
       "product": "2017 Topps Museum Collection Baseball",
       "source": "operator_backend"
     },
     {
-      "id": "log_1780860525763",
-      "ts": "2026-06-07T19:28:43.151Z",
+      "id": "log_1780860719925",
+      "ts": "2026-06-07T19:31:57.081Z",
       "type": "prv_sync",
       "title": "Scheduled PRV sync complete",
       "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
+    },
+    {
+      "id": "log_1780860528601_00fvyg",
+      "ts": "2026-06-07T19:28:48.601Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep complete",
+      "detail": "Checklist: 0 actions. PRV: 2 actions. PRV sync: skipped. Auto: 1 ran. 2017 Topps Museum Collection Baseball -> failed (Missing sourceUrl)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780860521726_ws7ltk",
+      "ts": "2026-06-07T19:28:41.726Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1780860521722_elgjhf",
+      "ts": "2026-06-07T19:28:41.722Z",
+      "type": "agent_cycle",
+      "title": "Self-healing pending validations",
+      "detail": "6 pending public validation items found. Sentinel is handing the batch to the backend worker so stale JSON can be republished when needed.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
     },
     {
       "id": "log_1780856139211_5gxpjk",
@@ -2915,6 +2913,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:32:45.370Z",
+  "saved_at": "2026-06-07T19:32:51.941Z",
   "saved_by": "cm_command_center_operator"
 }

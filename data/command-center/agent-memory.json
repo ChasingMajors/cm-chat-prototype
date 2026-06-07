@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:53:31.758Z",
+  "exported_at": "2026-06-07T20:54:16.280Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1240,19 +1240,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Allen_Ginter_X_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "pending_public_validation",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Pending checklist publish validation completed for 2017_Topps_Allen_Ginter_X_Baseball.",
-      "validationResult": "Published checklist JSON validated with 556 rows and 7 parallels. CV/ChatBot visual validation is pending.",
+      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
+      "validationResult": "Sheets show 556 rows / 7 parallels. Public JSON index shows 1 rows / 0 parallels.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.201Z",
-      "updatedAt": "2026-06-07T20:53:23.588Z",
-      "pendingValidationAttempts": 0,
-      "autoExecutedAt": "2026-06-07T20:53:23.588Z"
+      "updatedAt": "2026-06-07T18:15:39.202Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Allen_Ginter_Baseball",
@@ -1837,8 +1835,28 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780865610156_dmd7uq",
-      "ts": "2026-06-07T20:53:30.156Z",
+      "id": "log_1780865654676_cgwvg5",
+      "ts": "2026-06-07T20:54:14.676Z",
+      "type": "agent_cycle",
+      "title": "Running Agent Cycle",
+      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1780865611913_184zvm",
+      "ts": "2026-06-07T20:53:31.913Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 1 safe action executed. 26 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Allen & Ginter X Baseball -> pending_visual_validation (Published checklist JSON validated with 556 rows and 7 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780865611911_ge8uwo",
+      "ts": "2026-06-07T20:53:31.911Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -1847,8 +1865,8 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1780865610144_xij4wd",
-      "ts": "2026-06-07T20:53:30.144Z",
+      "id": "log_1780865611900_6zzthy",
+      "ts": "2026-06-07T20:53:31.900Z",
       "type": "memory",
       "title": "Agent memory imported",
       "detail": "Queue, log, approvals, known issues, and visual status were restored.",
@@ -1857,34 +1875,14 @@
       "source": "admin"
     },
     {
-      "id": "log_1780865606274",
-      "ts": "2026-06-07T20:53:23.588Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Allen & Ginter X Baseball -> pending_visual_validation (Published checklist JSON validated with 556 rows and 7 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "validated",
+      "id": "log_1780865602415_5mxlot",
+      "ts": "2026-06-07T20:53:22.415Z",
+      "type": "agent_cycle",
+      "title": "Running Agent Cycle",
+      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
+      "status": "started",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780865606274",
-      "ts": "2026-06-07T20:53:23.588Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Topps Allen & Ginter X Baseball: Pending checklist publish validation completed for 2017_Topps_Allen_Ginter_X_Baseball. Published checklist JSON validated with 556 rows and 7 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Topps Allen & Ginter X Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780865605768",
-      "ts": "2026-06-07T20:53:23.588Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
+      "source": "command_center"
     },
     {
       "id": "log_1780865513012_0yepqr",
@@ -3660,6 +3658,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:53:32.987Z",
+  "saved_at": "2026-06-07T20:54:17.423Z",
   "saved_by": "cm_command_center_operator"
 }

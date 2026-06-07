@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:41:51.142Z",
+  "exported_at": "2026-06-07T20:42:01.909Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1370,17 +1370,17 @@
       "sport": "baseball",
       "code": "2017_Donruss_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 748 rows / 100 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.196Z",
-      "updatedAt": "2026-06-07T18:15:39.197Z"
+      "updatedAt": "2026-06-07T20:42:00.306Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_s_Best_Baseball",
@@ -1824,6 +1824,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780864920307_zafkym",
+      "ts": "2026-06-07T20:42:00.307Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2017 Donruss Baseball",
+      "source": "agent_action_queue"
+    },
     {
       "id": "log_1780864909537_osjbtl",
       "ts": "2026-06-07T20:41:49.537Z",
@@ -2607,16 +2617,6 @@
     {
       "id": "log_1780862927260_vbqp8v",
       "ts": "2026-06-07T20:08:47.260Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Definitive Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862899873_yu20q4",
-      "ts": "2026-06-07T20:08:19.873Z",
       "type": "visual_test",
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
@@ -3556,6 +3556,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:41:52.216Z",
+  "saved_at": "2026-06-07T20:42:02.968Z",
   "saved_by": "cm_command_center_operator"
 }

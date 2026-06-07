@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:32:51.283Z",
+  "exported_at": "2026-06-07T20:33:01.675Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1817,6 +1817,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780864380072_p1vqil",
+      "ts": "2026-06-07T20:33:00.072Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780864380058_iyt3pn",
+      "ts": "2026-06-07T20:33:00.058Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780864375792",
       "ts": "2026-06-07T20:32:50.799Z",
       "type": "agent_sweep",
@@ -2595,26 +2615,6 @@
       "status": "in_progress",
       "product": "2017 Topps Heritage High Number Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780862411969_4veso3",
-      "ts": "2026-06-07T20:00:11.969Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 wave ran. 1 safe action executed. Queued 3 CV/ChatBot visual tests. 60 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Dynasty Baseball -> pending_visual_validation (Published checklist JSON validated with 261 rows and 5 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780862411964_e7dab0",
-      "ts": "2026-06-07T20:00:11.964Z",
-      "type": "visual_test",
-      "title": "Visual validation batch queued",
-      "detail": "3 CV/ChatBot visual tests queued. 2017 Topps Heritage High Number Baseball; 2017 Topps Finest Baseball; 2017 Topps Dynasty Baseball",
-      "status": "queued",
-      "product": "",
-      "source": "agent_cycle"
     }
   ],
   "visual_tests": {
@@ -3456,6 +3456,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:32:55.935Z",
+  "saved_at": "2026-06-07T20:33:03.063Z",
   "saved_by": "cm_command_center_operator"
 }

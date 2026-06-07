@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:01:21.539Z",
+  "exported_at": "2026-06-07T21:01:38.751Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -157,16 +157,16 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104699851",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T21:01:19.922Z",
-      "updatedAt": "2026-06-07T21:01:19.923Z"
+      "updatedAt": "2026-06-07T21:01:37.147Z"
     },
     {
       "id": "visual_test|github_actions|2017 panini stars and stripes usa baseball|2017_panini_stars_and_stripes_usa_baseball",
@@ -1439,12 +1439,12 @@
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Panini_Flawless_Baseball.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104699851",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.199Z",
-      "updatedAt": "2026-06-07T21:01:19.923Z",
+      "updatedAt": "2026-06-07T21:01:37.148Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T21:01:08.653Z"
     },
@@ -1850,6 +1850,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780866097148_msyw54",
+      "ts": "2026-06-07T21:01:37.148Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Panini Flawless Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780866079937_4vina3",
       "ts": "2026-06-07T21:01:19.937Z",
@@ -2637,16 +2647,6 @@
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
-      "product": "2017 Donruss Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864922757_tcy2h1",
-      "ts": "2026-06-07T20:42:02.757Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
       "product": "2017 Donruss Baseball",
       "source": "github_actions"
     }
@@ -3527,11 +3527,11 @@
       "checkedAt": "2026-06-07T20:59:37.181Z"
     },
     "baseball|2017_Panini_Flawless_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-07T21:01:18.367Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104699851",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Panini_Flawless_Baseball",
@@ -3539,9 +3539,15 @@
       "productName": "2017 Panini Flawless Baseball",
       "sport": "baseball",
       "code": "2017_Panini_Flawless_Baseball",
-      "updatedAt": "2026-06-07T21:01:19.921Z",
+      "updatedAt": "2026-06-07T21:01:37.145Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27104699851,
+      "runNumber": 58,
+      "displayTitle": "Visual Product Test - 2017 Panini Flawless Baseball",
+      "headSha": "20851af5ab74cf0aca55b450a0783f21a5411171",
+      "createdAt": "2026-06-07T21:01:19Z",
+      "checkedAt": "2026-06-07T21:01:37.145Z"
     }
   },
   "known_issues": {},
@@ -3760,6 +3766,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:01:22.441Z",
+  "saved_at": "2026-06-07T21:01:39.687Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T02:56:23.960Z",
+  "exported_at": "2026-06-07T02:59:16.916Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -888,6 +888,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780801155313_rvn3ne",
+      "ts": "2026-06-07T02:59:15.313Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780801155302_60cc6j",
+      "ts": "2026-06-07T02:59:15.302Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780801144477",
       "ts": "2026-06-07T02:56:23.785Z",
       "type": "agent_sweep",
@@ -1666,26 +1686,6 @@
       "status": "started",
       "product": "2025-26 Donruss Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780438416158_dcj1mg",
-      "ts": "2026-06-02T22:13:36.158Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Donruss Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780438416147_fjavx9",
-      "ts": "2026-06-02T22:13:36.147Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "2,551 checklist rows and 228 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 Donruss Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1954,6 +1954,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T02:59:04.497Z",
+  "saved_at": "2026-06-07T02:59:18.026Z",
   "saved_by": "cm_command_center_operator"
 }

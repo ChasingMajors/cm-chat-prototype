@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T22:12:08.832Z",
+  "exported_at": "2026-06-07T22:12:19.052Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -356,8 +356,20 @@
       "updatedAt": "2026-06-07T22:10:28.523Z"
     }
   ],
-  "agent_run_queue": [],
+  "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Panini_Immaculate_Collection_Baseball"
+  ],
   "activity_log": [
+    {
+      "id": "log_1780870337450_89bf2p",
+      "ts": "2026-06-07T22:12:17.450Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Panini Immaculate Collection Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Panini Immaculate Collection Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780870327231_9i0mgg",
       "ts": "2026-06-07T22:12:07.231Z",
@@ -1147,16 +1159,6 @@
       "status": "started",
       "product": "2017 Bowman Chrome Baseball",
       "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780867157098_jpjgoh",
-      "ts": "2026-06-07T21:19:17.098Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Bowman Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3145,6 +3147,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T22:12:10.081Z",
+  "saved_at": "2026-06-07T22:12:20.361Z",
   "saved_by": "cm_command_center_operator"
 }

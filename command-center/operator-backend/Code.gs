@@ -3223,12 +3223,8 @@ function runScheduledChecklistAutoAction_(action, key) {
   }
 
   const product = write.product || {};
-  const publicValidation = validateSourceProduct_({
-    title: product.display_name || action.product || "",
-    sport: product.sport || action.sport || "",
-    mode: "quick_json"
-  });
-  const publicRows = Number(publicValidation && (publicValidation.public_row_count || publicValidation.sheet_row_count || 0));
+  const publicValidation = waitForPublicChecklistProduct_(product.sport || action.sport || "", product.code || action.code || "");
+  const publicRows = Number(publicValidation && publicValidation.row_count || 0);
   const publishOk = !!(write.publish && write.publish.ok);
   const validated = publishOk && publicRows > 0;
   const publishDetail = summarizePublishResult_(write.publish);
@@ -3242,8 +3238,34 @@ function runScheduledChecklistAutoAction_(action, key) {
       : "Checklist sheet write completed; JSON publish needs retry for " + (product.code || action.code || "product") + ".",
     validationResult: validated
       ? "Public checklist JSON validated with " + publicRows + " rows."
-      : "Checklist write completed, but public JSON validation needs review. " + publishDetail
+      : "Checklist write completed, but public JSON validation needs review. " + publishDetail + " Public recheck: " + summarizePublicChecklistValidation_(publicValidation)
   };
+}
+
+function waitForPublicChecklistProduct_(sport, code) {
+  const attempts = [0, 1200, 2400];
+  let last = null;
+
+  for (let i = 0; i < attempts.length; i++) {
+    if (attempts[i]) Utilities.sleep(attempts[i]);
+    last = fetchPublicChecklistProductCounts_(sport, code);
+    if (last && last.found && Number(last.row_count || 0) > 0) return last;
+  }
+
+  return last || {
+    found: false,
+    row_count: 0,
+    parallel_count: 0,
+    error: "Product code not found in public checklist JSON yet."
+  };
+}
+
+function summarizePublicChecklistValidation_(result) {
+  if (!result) return "No public validation response.";
+  if (result.found) {
+    return "Found " + Number(result.row_count || 0) + " rows and " + Number(result.parallel_count || 0) + " parallels in " + (result.shard || "public JSON") + ".";
+  }
+  return result.error || "Product code not found in public checklist JSON yet.";
 }
 
 function runScheduledPrvAutoAction_(action, key) {

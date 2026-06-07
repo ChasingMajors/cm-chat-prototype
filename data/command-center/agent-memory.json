@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T22:09:20.489Z",
+  "exported_at": "2026-06-07T22:09:33.505Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -201,16 +201,16 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27106286853",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T22:09:13.625Z",
-      "updatedAt": "2026-06-07T22:09:13.627Z"
+      "updatedAt": "2026-06-07T22:09:31.903Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -247,12 +247,12 @@
       "adminDecision": "run_queue_approved",
       "executionResult": "Product row needs metadata",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27106286853",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.210Z",
-      "updatedAt": "2026-06-07T22:09:13.626Z"
+      "updatedAt": "2026-06-07T22:09:31.903Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball",
@@ -343,6 +343,16 @@
     "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780870171903_1pucn2",
+      "ts": "2026-06-07T22:09:31.903Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps New Era Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780870158886_7mu9oa",
       "ts": "2026-06-07T22:09:18.886Z",
@@ -1131,16 +1141,6 @@
       "detail": "2017 Bowman Draft Baseball will be attempted by Run Agent Cycle.",
       "status": "queued",
       "product": "2017 Bowman Draft Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780867128030_f2twf4",
-      "ts": "2026-06-07T21:18:48.030Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Bowman High Tek Baseball will be attempted by Run Agent Cycle.",
-      "status": "queued",
-      "product": "2017 Bowman High Tek Baseball",
       "source": "admin"
     }
   ],
@@ -2089,11 +2089,11 @@
       "checkedAt": "2026-06-07T21:07:22.963Z"
     },
     "baseball|2017_Topps_New_Era_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-07T22:09:12.310Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27106286853",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_New_Era_Baseball",
@@ -2101,9 +2101,15 @@
       "productName": "2017 Topps New Era Baseball",
       "sport": "baseball",
       "code": "2017_Topps_New_Era_Baseball",
-      "updatedAt": "2026-06-07T22:09:13.624Z",
+      "updatedAt": "2026-06-07T22:09:31.900Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27106286853,
+      "runNumber": 61,
+      "displayTitle": "Visual Product Test - 2017 Topps New Era Baseball",
+      "headSha": "0b464a837c7f679086b307e6db5b95086df58f85",
+      "createdAt": "2026-06-07T22:09:13Z",
+      "checkedAt": "2026-06-07T22:09:31.900Z"
     },
     "baseball|2016_Topps_Tribute_Baseball": {
       "status": "queued",
@@ -3112,6 +3118,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T22:09:21.596Z",
+  "saved_at": "2026-06-07T22:09:35.177Z",
   "saved_by": "cm_command_center_operator"
 }

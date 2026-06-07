@@ -2,8 +2,8 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:43:15.675Z",
-  "autonomy_mode": "guarded_auto",
+  "exported_at": "2026-06-07T20:44:34.362Z",
+  "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
@@ -1827,6 +1827,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780865072759_58wls7",
+      "ts": "2026-06-07T20:44:32.759Z",
+      "type": "autonomy",
+      "title": "Autonomy mode changed",
+      "detail": "Mode set to Full auto.",
+      "status": "full_auto",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780864994073_hbl0ko",
       "ts": "2026-06-07T20:43:14.073Z",
       "type": "visual_test",
@@ -2615,16 +2625,6 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780863036139_z1eili",
-      "ts": "2026-06-07T20:10:36.139Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -3581,6 +3581,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:43:16.890Z",
+  "saved_at": "2026-06-07T20:44:35.635Z",
   "saved_by": "cm_command_center_operator"
 }

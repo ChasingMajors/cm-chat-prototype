@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T02:59:16.916Z",
+  "exported_at": "2026-06-07T03:01:40.870Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -888,6 +888,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780801299263_c7mcjn",
+      "ts": "2026-06-07T03:01:39.263Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
       "id": "log_1780801155313_rvn3ne",
       "ts": "2026-06-07T02:59:15.313Z",
       "type": "memory",
@@ -1676,16 +1686,6 @@
       "status": "failed",
       "product": "2025-26 Donruss Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780438437317_3j6i6a",
-      "ts": "2026-06-02T22:13:57.317Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Donruss Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1954,6 +1954,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T02:59:18.026Z",
+  "saved_at": "2026-06-07T03:01:42.196Z",
   "saved_by": "cm_command_center_operator"
 }

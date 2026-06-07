@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:20:40.469Z",
+  "exported_at": "2026-06-07T21:20:47.220Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1856,9 +1856,20 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball",
     "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780867245617_ssifz7",
+      "ts": "2026-06-07T21:20:45.617Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2016 Topps Update Series Baseball will be attempted by Run Agent Cycle.",
+      "status": "queued",
+      "product": "2016 Topps Update Series Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780867238865_tq4m7w",
       "ts": "2026-06-07T21:20:38.865Z",
@@ -2648,16 +2659,6 @@
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780866079933_suv2qg",
-      "ts": "2026-06-07T21:01:19.933Z",
-      "type": "visual_test",
-      "title": "Visual validation batch queued",
-      "detail": "1 CV/ChatBot visual test queued. 2017 Panini Flawless Baseball",
-      "status": "queued",
-      "product": "",
-      "source": "agent_cycle"
     }
   ],
   "visual_tests": {
@@ -3983,6 +3984,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:20:41.711Z",
+  "saved_at": "2026-06-07T21:20:48.642Z",
   "saved_by": "cm_command_center_operator"
 }

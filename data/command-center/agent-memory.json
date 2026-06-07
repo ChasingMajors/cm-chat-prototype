@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:10:37.742Z",
+  "exported_at": "2026-06-07T20:10:48.494Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1767,6 +1767,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780863046891_qy3w6n",
+      "ts": "2026-06-07T20:10:46.891Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780863046877_gyw1pl",
+      "ts": "2026-06-07T20:10:46.877Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780863043063",
       "ts": "2026-06-07T20:10:37.257Z",
       "type": "agent_sweep",
@@ -2545,26 +2565,6 @@
       "status": "pending_visual_validation",
       "product": "2017 Topps Finest Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780862224936",
-      "ts": "2026-06-07T19:57:02.234Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780862198488_gnp9nu",
-      "ts": "2026-06-07T19:56:38.488Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Bowman Holiday Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3337,6 +3337,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:10:43.171Z",
+  "saved_at": "2026-06-07T20:10:49.673Z",
   "saved_by": "cm_command_center_operator"
 }

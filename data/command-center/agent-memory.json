@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T22:12:19.052Z",
+  "exported_at": "2026-06-07T22:12:22.858Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -303,17 +303,17 @@
       "sport": "baseball",
       "code": "2017_Panini_Immaculate_Collection_Baseball",
       "riskLevel": "high",
-      "status": "known_issue",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Full-auto guardrail blocked execution.",
-      "validationResult": "Blocked product category term detected.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.200Z",
-      "updatedAt": "2026-06-07T21:00:15.060Z"
+      "updatedAt": "2026-06-07T22:12:21.256Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball",
@@ -360,6 +360,36 @@
     "backend_audit|stale_public_json|baseball|2017_Panini_Immaculate_Collection_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780870341256_3kc647",
+      "ts": "2026-06-07T22:12:21.256Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Panini Immaculate Collection Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780870341254_cyv2zf",
+      "ts": "2026-06-07T22:12:21.254Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Panini Immaculate Collection Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Panini Immaculate Collection Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780870341251_d92p39",
+      "ts": "2026-06-07T22:12:21.251Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "1 flagged job will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1780870337450_89bf2p",
       "ts": "2026-06-07T22:12:17.450Z",
@@ -1129,36 +1159,6 @@
       "status": "validated",
       "product": "2017 Bowman Chrome Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780867159161_wp4umn",
-      "ts": "2026-06-07T21:19:19.161Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "475 public rows and 20 parallels found.",
-      "status": "covered",
-      "product": "2017 Bowman Chrome Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780867157115_0zg21j",
-      "ts": "2026-06-07T21:19:17.115Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Bowman Chrome Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780867157112_896roi",
-      "ts": "2026-06-07T21:19:17.112Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Bowman Chrome Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Bowman Chrome Baseball",
-      "source": "admin_run_queue"
     }
   ],
   "visual_tests": {
@@ -3147,6 +3147,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T22:12:20.361Z",
+  "saved_at": "2026-06-07T22:12:24.156Z",
   "saved_by": "cm_command_center_operator"
 }

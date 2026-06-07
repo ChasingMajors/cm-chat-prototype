@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:34:17.650Z",
+  "exported_at": "2026-06-07T20:34:42.326Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -462,11 +462,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Luminaries_Baseball",
       "riskLevel": "low",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Visual validation complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103112151",
       "sourceUrl": "",
       "bucket": "",
@@ -474,7 +474,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:55:22.962Z",
-      "updatedAt": "2026-06-07T19:56:34.598Z"
+      "updatedAt": "2026-06-07T20:34:40.723Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps five star baseball|2017_topps_five_star_baseball",
@@ -1819,6 +1819,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780864480724_8mgfw8",
+      "ts": "2026-06-07T20:34:40.724Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2017 Topps Luminaries Baseball",
+      "source": "agent_action_queue"
+    },
+    {
       "id": "log_1780864456047_rns1vx",
       "ts": "2026-06-07T20:34:16.047Z",
       "type": "visual_test",
@@ -2606,16 +2616,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Topps Finest Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862478722_xtolci",
-      "ts": "2026-06-07T20:01:18.722Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Heritage High Number Baseball",
       "source": "github_actions"
     }
   ],
@@ -3481,6 +3481,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:34:18.706Z",
+  "saved_at": "2026-06-07T20:34:43.478Z",
   "saved_by": "cm_command_center_operator"
 }

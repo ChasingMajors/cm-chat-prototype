@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:38:12.518Z",
+  "exported_at": "2026-06-07T20:38:29.762Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1286,17 +1286,17 @@
       "sport": "baseball",
       "code": "2017_Panini_Chronicles_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 973 rows / 63 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.197Z",
-      "updatedAt": "2026-06-07T18:15:39.198Z"
+      "updatedAt": "2026-06-07T20:38:28.158Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Donruss_Optic_Baseball",
@@ -1820,6 +1820,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780864708159_hrdiz1",
+      "ts": "2026-06-07T20:38:28.159Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2017 Panini Chronicles Baseball",
+      "source": "agent_action_queue"
+    },
     {
       "id": "log_1780864690915_mfiuyl",
       "ts": "2026-06-07T20:38:10.915Z",
@@ -2603,16 +2613,6 @@
     {
       "id": "log_1780862634775_d6rmro",
       "ts": "2026-06-07T20:03:54.775Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Diamond Icons Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862607727_yxyaeh",
-      "ts": "2026-06-07T20:03:27.727Z",
       "type": "visual_test",
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
@@ -3506,6 +3506,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:38:13.821Z",
+  "saved_at": "2026-06-07T20:38:30.830Z",
   "saved_by": "cm_command_center_operator"
 }

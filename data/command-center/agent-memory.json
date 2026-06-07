@@ -196,12 +196,12 @@
       "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
       "executionResult": "Checklist sheet write completed; JSON publish needs retry for 2025_26_upper_deck_extended_series_hockey.",
-      "validationResult": "Checklist write completed, but public JSON validation needs review. No spreadsheet configured for hockey 2025-26",
+      "validationResult": "Checklist write completed, but public JSON validation needs review. Publish returned published_validation_needs_review.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-extended-series-hockey-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T03:14:15.432Z",
-      "autoExecutedAt": "2026-06-07T03:14:15.432Z"
+      "updatedAt": "2026-06-07T03:22:15.964Z",
+      "autoExecutedAt": "2026-06-07T03:22:15.964Z"
     },
     {
       "id": "source_watch|football|2025-26 panini's football efl soccer",
@@ -219,7 +219,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T03:14:15.432Z"
+      "updatedAt": "2026-06-07T03:22:15.964Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps chrome uefa women's champions league soccer",
@@ -237,7 +237,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-uefa-womens-champions-league-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T03:14:15.432Z"
+      "updatedAt": "2026-06-07T03:22:15.964Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps gold bundesliga soccer",
@@ -255,7 +255,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-gold-bundesliga-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T03:14:15.432Z"
+      "updatedAt": "2026-06-07T03:22:15.964Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -273,7 +273,7 @@
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-06T15:29:36.437Z",
-      "updatedAt": "2026-06-07T03:14:15.432Z"
+      "updatedAt": "2026-06-07T03:22:15.964Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
@@ -888,6 +888,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780802742411",
+      "ts": "2026-06-07T03:22:15.964Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 3 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Upper Deck Extended Series Hockey -> needs_admin (Checklist write completed, but public JSON validation needs review. Publish returned published_validation_needs_review.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780802742411",
+      "ts": "2026-06-07T03:22:15.964Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2025-26 Upper Deck Extended Series Hockey: Checklist sheet write completed; JSON publish needs retry for 2025_26_upper_deck_extended_series_hockey. Checklist write completed, but public JSON validation needs review. Publish returned published_validation_needs_review.",
+      "status": "needs_admin",
+      "product": "2025-26 Upper Deck Extended Series Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780802710272",
+      "ts": "2026-06-07T03:22:15.964Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780802534734_mjprjb",
       "ts": "2026-06-07T03:22:14.734Z",
@@ -1657,36 +1687,6 @@
       "status": "preview_ready",
       "product": "2026 Topps Series 2 Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780440851367_5jx4j9",
-      "ts": "2026-06-02T22:54:11.367Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2026 Topps Series 2 Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780440836501_m048nl",
-      "ts": "2026-06-02T22:53:56.501Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "558 checklist rows and 9 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 SP Game Used CHL Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780440833616_zm1iv2",
-      "ts": "2026-06-02T22:53:53.616Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 SP Game Used CHL Hockey",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1955,6 +1955,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T03:22:17.640Z",
+  "saved_at": "2026-06-07T03:25:42.425Z",
   "saved_by": "cm_command_center_operator"
 }

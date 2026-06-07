@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T16:57:06.866Z",
+  "exported_at": "2026-06-07T16:59:37.460Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -190,15 +190,15 @@
       "sport": "basketball",
       "code": "",
       "riskLevel": "medium",
-      "status": "known_issue",
+      "status": "running",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "",
-      "executionResult": "PRV source preview did not produce writable rows.",
+      "executionResult": "PRV sheet write started through Operator Backend.",
       "validationResult": "No print-run rows were parsed from the source post.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
       "createdAt": "2026-06-06T17:00:51.700Z",
-      "updatedAt": "2026-06-06T19:41:17.269Z",
+      "updatedAt": "2026-06-07T16:59:35.858Z",
       "autoExecutedAt": "2026-06-06T19:41:17.269Z"
     },
     {
@@ -380,15 +380,15 @@
       "sport": "baseball",
       "code": "2026_topps_series_2_baseball",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
-      "adminDecision": "",
-      "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2026_topps_series_2_baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:54:32.566Z",
-      "updatedAt": "2026-06-07T16:57:05.264Z"
+      "updatedAt": "2026-06-07T16:57:07.356Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 sp game used chl hockey|2025_26_sp_game_used_chl_hockey",
@@ -956,6 +956,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780851575855_uqdu51",
+      "ts": "2026-06-07T16:59:35.855Z",
+      "type": "prv_source_review",
+      "title": "PRV sheet write started",
+      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
+      "status": "started",
+      "product": "2025-26 Topps Hoops Basketball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780851427357_rrez0m",
+      "ts": "2026-06-07T16:57:07.357Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2026 Topps Series 2 Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780851427355_dvfp0n",
+      "ts": "2026-06-07T16:57:07.355Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "3,120 public rows and 233 parallels found.",
+      "status": "covered",
+      "product": "2026 Topps Series 2 Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780851425264_w59ad2",
       "ts": "2026-06-07T16:57:05.264Z",
@@ -1725,36 +1755,6 @@
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780803729436",
-      "ts": "2026-06-07T03:39:15.855Z",
-      "type": "auto_action",
-      "title": "Full-auto action needs review",
-      "detail": "2025-26 Panini's Football EFL Soccer: Checklist sheet write completed; JSON publish needs retry for 2025_26_panini_s_football_efl_soccer. Checklist write completed, but public JSON validation needs review. Publish returned published_validation_needs_review. Public recheck: Product code not found in public checklist JSON yet.",
-      "status": "needs_admin",
-      "product": "2025-26 Panini's Football EFL Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780803700629",
-      "ts": "2026-06-07T03:39:15.855Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780803554903_ywuce5",
-      "ts": "2026-06-07T03:39:14.903Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -2066,9 +2066,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-05-29T13:56:04.459Z",
       "resolved": true
+    },
+    "baseball|2026 topps series 2 baseball": {
+      "product": "2026 Topps Series 2 Baseball",
+      "sport": "baseball",
+      "code": "2026_topps_series_2_baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-07T16:57:07.356Z",
+      "resolved": true
+    },
+    "baseball|2026_topps_series_2_baseball": {
+      "product": "2026 Topps Series 2 Baseball",
+      "sport": "baseball",
+      "code": "2026_topps_series_2_baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-07T16:57:07.356Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T16:57:07.999Z",
+  "saved_at": "2026-06-07T16:59:38.509Z",
   "saved_by": "cm_command_center_operator"
 }

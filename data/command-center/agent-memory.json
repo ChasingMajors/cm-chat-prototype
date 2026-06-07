@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:45:58.889Z",
+  "exported_at": "2026-06-07T20:49:08.504Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1176,17 +1176,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Archives_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 545 rows / 25 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.202Z",
-      "updatedAt": "2026-06-07T18:15:39.202Z"
+      "updatedAt": "2026-06-07T20:49:06.895Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Allen_Ginter_X_Baseball",
@@ -1830,6 +1830,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780865346901_7z24wz",
+      "ts": "2026-06-07T20:49:06.901Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2017 Topps Archives Baseball",
+      "source": "agent_action_queue"
+    },
     {
       "id": "log_1780865157287_ewb29r",
       "ts": "2026-06-07T20:45:57.287Z",
@@ -2619,16 +2629,6 @@
       "status": "queued",
       "product": "2017 Panini National Treasures Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780863241080_mb9kh3",
-      "ts": "2026-06-07T20:14:01.080Z",
-      "type": "visual_test",
-      "title": "Visual test requested",
-      "detail": "Queue card requested CV/ChatBot validation.",
-      "status": "requested",
-      "product": "2017 Panini National Treasures Baseball",
-      "source": "agent_action_queue"
     }
   ],
   "visual_tests": {
@@ -3608,6 +3608,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:46:00.242Z",
+  "saved_at": "2026-06-07T20:49:09.638Z",
   "saved_by": "cm_command_center_operator"
 }

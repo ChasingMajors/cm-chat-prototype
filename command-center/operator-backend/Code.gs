@@ -80,6 +80,7 @@ const CM_CHECKLIST_SOURCE_MAP = {
   },
   hockey: {
     current: "16eT73CzM7JQMZcaEI3Zc0elX5lzzMtrvX8TGr1aKYKc",
+    "2025-26": "16eT73CzM7JQMZcaEI3Zc0elX5lzzMtrvX8TGr1aKYKc",
     "2025": "16eT73CzM7JQMZcaEI3Zc0elX5lzzMtrvX8TGr1aKYKc",
     "2024": "1164NTKL3HyxCqY5WSpY87cAc10HDm1LG06usP2LlbvQ",
     "2023": "1riKx-h-ChEpA-UK4e7UmnWd6OcpPsqFx0oSrxYvcA74"
@@ -2061,7 +2062,7 @@ function getPublishRecommendation_(sport, bucket) {
   if (s === "basketball" && b === "2025-26") return "publishCurrentBasketballChecklistToGitHub";
   if (s === "football" && b === "2026") return "publishCurrentFootballChecklistToGitHub";
   if (s === "baseball" && b === "2026") return "publishCurrentBaseballChecklistToGitHub";
-  if (s === "hockey" && b === "2025") return "publishCurrentHockeyChecklistToGitHub";
+  if (s === "hockey" && (b === "2025" || b === "2025-26")) return "publishCurrentHockeyChecklistToGitHub";
 
   return "Run the matching publish function for " + s + " " + b + ", then rebuild the checklist index if this is a new product.";
 }
@@ -2080,7 +2081,7 @@ function publishChecklistAfterImport_(product, key) {
     + (exporterUrl.indexOf("?") > -1 ? "&" : "?")
     + "action=publishChecklistAfterImport"
     + "&sport=" + encodeURIComponent(product.sport || "")
-    + "&bucket=" + encodeURIComponent(product.target_bucket || product.year || "")
+    + "&bucket=" + encodeURIComponent(getPublishBucketForChecklist_(product.sport, product.target_bucket || product.year || ""))
     + "&code=" + encodeURIComponent(product.code || "")
     + "&key=" + encodeURIComponent(key || "");
 
@@ -2108,6 +2109,13 @@ function publishChecklistAfterImport_(product, key) {
   }
 
   return data;
+}
+
+function getPublishBucketForChecklist_(sport, bucket) {
+  const s = normalize_(sport);
+  const b = safeString_(bucket || "").trim();
+  if (s === "hockey" && b === "2025-26") return "2025";
+  return b;
 }
 
 function publishImportedChecklist_(input) {

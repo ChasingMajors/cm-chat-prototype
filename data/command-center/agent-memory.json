@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:56:40.090Z",
+  "exported_at": "2026-06-07T19:57:10.685Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1779,6 +1779,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862229083_vasc8r",
+      "ts": "2026-06-07T19:57:09.083Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780862229073_i1qqhe",
+      "ts": "2026-06-07T19:57:09.073Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780862225571",
       "ts": "2026-06-07T19:57:02.234Z",
       "type": "agent_sweep",
@@ -2557,26 +2577,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780861188840_bgrg34",
-      "ts": "2026-06-07T19:39:48.840Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 wave ran. 1 safe action executed. 80 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Holiday Baseball -> pending_visual_validation (Published checklist JSON validated with 344 rows and 4 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780861188838_s58jp5",
-      "ts": "2026-06-07T19:39:48.838Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3129,6 +3129,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:57:05.654Z",
+  "saved_at": "2026-06-07T19:57:11.984Z",
   "saved_by": "cm_command_center_operator"
 }

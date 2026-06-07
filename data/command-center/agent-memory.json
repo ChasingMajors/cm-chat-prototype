@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:14:02.683Z",
+  "exported_at": "2026-06-07T20:14:22.649Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 panini national treasures baseball|2017_panini_national_treasures_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Panini National Treasures Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_National_Treasures_Baseball",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Visual validation complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103562421",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T20:14:03.751Z",
+      "updatedAt": "2026-06-07T20:14:21.045Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps clearly authentic baseball|2017_topps_clearly_authentic_baseball",
       "type": "visual_test",
@@ -1074,17 +1096,17 @@
       "sport": "baseball",
       "code": "2017_Panini_National_Treasures_Baseball",
       "riskLevel": "high",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103562421",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.200Z",
-      "updatedAt": "2026-06-07T20:14:01.071Z"
+      "updatedAt": "2026-06-07T20:14:21.046Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Immaculate_Collection_Baseball",
@@ -1788,6 +1810,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780863261046_6npwwk",
+      "ts": "2026-06-07T20:14:21.046Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Panini National Treasures Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780863243753_b1ta61",
+      "ts": "2026-06-07T20:14:03.753Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Panini National Treasures Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780863241080_mb9kh3",
       "ts": "2026-06-07T20:14:01.080Z",
@@ -2567,26 +2609,6 @@
       "status": "in_progress",
       "product": "2017 Topps High Tek Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780862250696_d0l5zf",
-      "ts": "2026-06-07T19:57:30.696Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Holiday Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862237604_003u7e",
-      "ts": "2026-06-07T19:57:17.604Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 wave ran. 1 safe action executed. Queued 3 CV/ChatBot visual tests. 66 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Finest Baseball -> pending_visual_validation (Published checklist JSON validated with 325 rows and 48 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3164,6 +3186,29 @@
       "headSha": "ad0cd5ef3c6451bd9697b8fdba81e713415b20a6",
       "createdAt": "2026-06-07T20:10:51Z",
       "checkedAt": "2026-06-07T20:12:03.056Z"
+    },
+    "baseball|2017_Panini_National_Treasures_Baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-07T20:14:02.231Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103562421",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Panini_National_Treasures_Baseball",
+      "key": "baseball|2017_Panini_National_Treasures_Baseball",
+      "productName": "2017 Panini National Treasures Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_National_Treasures_Baseball",
+      "updatedAt": "2026-06-07T20:14:21.044Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27103562421,
+      "runNumber": 44,
+      "displayTitle": "Visual Product Test - 2017 Panini National Treasures Baseball",
+      "headSha": "ad0cd5ef3c6451bd9697b8fdba81e713415b20a6",
+      "createdAt": "2026-06-07T20:14:03Z",
+      "checkedAt": "2026-06-07T20:14:21.043Z"
     }
   },
   "known_issues": {},
@@ -3382,6 +3427,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:14:03.904Z",
+  "saved_at": "2026-06-07T20:14:23.943Z",
   "saved_by": "cm_command_center_operator"
 }

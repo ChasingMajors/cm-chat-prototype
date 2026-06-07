@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc102-visual-batch-ten-v1-2026-06-07";
+  const COMMAND_CENTER_VERSION = "cc103-visual-queue-state-v1-2026-06-07";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -1198,13 +1198,13 @@
           : `${pendingPrefix ? pendingPrefix + " " : ""}CV/ChatBot visual test queued or running.`;
 
       updateAgentAction(action.id, {
-        status: isPassed ? "validated" : isFailed ? "failed" : "needs_admin",
+        status: isPassed ? "validated" : isFailed ? "failed" : "queued",
         validationResult: validationResult,
         recommendedAction: isFailed
           ? "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix."
           : isPassed
             ? "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete."
-            : action.recommendedAction,
+            : "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
         runUrl: runUrl || action.runUrl || ""
       });
 
@@ -6741,6 +6741,15 @@
     let failed = 0;
     const labels = [];
 
+    pending.forEach((action, index) => {
+      updateAgentAction(action.id, {
+        status: "queued",
+        validationResult: `Queued for CV/ChatBot visual test dispatch (${index + 1} of ${pending.length}).`
+      });
+    });
+    renderAgentActions();
+    renderActionLanes();
+
     for (const action of pending) {
       const plan = buildVisualTestPlanFromAction(action);
       updateAgentAction(action.id, {
@@ -6795,8 +6804,10 @@
     return getActiveAgentActions().filter(action => {
       const status = String(action.status || "").toLowerCase();
       const type = String(action.type || "").toLowerCase();
+      const validation = String(action.validationResult || "").toLowerCase();
       if (status === "running" || status === "failed" || status === "blocked" || status === "known_issue") return false;
       if (type !== "source_import" && type !== "checklist_publish" && type !== "prv_source_review" && type !== "prv_publish") return false;
+      if (validation.includes("visual test") || validation.includes("cv/chatbot")) return false;
       if (status === "pending_visual_validation") return false;
       if (status === "pending_public_validation") return !!(action.code || action.product);
       return !!(action.sourceUrl || action.runUrl || action.code);

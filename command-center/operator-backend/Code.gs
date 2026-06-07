@@ -26,7 +26,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-07-operator-cc83-pending-public-validation";
+const CM_OPERATOR_VERSION = "2026-06-07-operator-cc84-canonical-json-validation";
 const CM_APP_DATA_BASE = "https://app.chasingmajors.com/data/v1";
 const CM_CHECKLISTCENTER_HOME = "https://www.checklistcenter.com/";
 const CM_CHECKLISTCENTER_POSTS_API = "https://www.checklistcenter.com/wp-json/wp/v2/posts?per_page=20&_fields=link,title,date,slug";
@@ -45,6 +45,8 @@ const CM_VISUAL_TEST_CHATBOT_BASE_PROPERTY = "CM_VISUAL_TEST_CHATBOT_BASE";
 const CM_VISUAL_TEST_CHECKLIST_BASE_PROPERTY = "CM_VISUAL_TEST_CHECKLIST_BASE";
 const CM_VISUAL_TEST_OWNER = "ChasingMajors";
 const CM_VISUAL_TEST_REPO = "cm-chat-prototype";
+const CM_APP_DATA_OWNER = "ChasingMajors";
+const CM_APP_DATA_REPO = "chasing-majors-app";
 const CM_VISUAL_TEST_WORKFLOW = "visual-product-test.yml";
 const CM_SENTINEL_TEST_WORKFLOW = "sentinel-command-center-test.yml";
 const CM_VISUAL_TEST_BRANCH = "main";
@@ -1776,12 +1778,85 @@ function fetchPublicChecklistProductCounts_(sport, code) {
 
     return {
       found: true,
+      source: "app_public_json",
       shard: shard,
       row_count: Array.isArray(product.rows) ? product.rows.length : 0,
       parallel_count: Array.isArray(product.parallels) ? product.parallels.length : 0
     };
   } catch (err) {
-    return null;
+    return fetchGitHubChecklistProductCounts_(s, c);
+  }
+}
+
+function fetchPublishedChecklistProductCounts_(sport, code) {
+  const publicCounts = fetchPublicChecklistProductCounts_(sport, code);
+  if (publicCounts && publicCounts.found) return publicCounts;
+
+  const githubCounts = fetchGitHubChecklistProductCounts_(sport, code);
+  if (githubCounts && githubCounts.found) return githubCounts;
+
+  return publicCounts || githubCounts || null;
+}
+
+function fetchGitHubChecklistProductCounts_(sport, code) {
+  const s = normalize_(sport);
+  const c = safeString_(code).trim();
+  if (!s || !c) return null;
+
+  const token = PropertiesService.getScriptProperties().getProperty(CM_GITHUB_TOKEN_PROPERTY);
+  if (!token) {
+    return {
+      found: false,
+      source: "github_main_json",
+      row_count: 0,
+      parallel_count: 0,
+      error: "Missing Script Property " + CM_GITHUB_TOKEN_PROPERTY + " for canonical GitHub JSON validation."
+    };
+  }
+
+  try {
+    const manifest = JSON.parse(getGitHubRepoContentText_(CM_APP_DATA_OWNER, CM_APP_DATA_REPO, "data/v1/checklists/products/" + s + ".json", token, CM_VISUAL_TEST_BRANCH));
+    const productMap = manifest.product_map || manifest.productMap || {};
+    const shard = productMap[c];
+    if (!shard) {
+      return {
+        found: false,
+        source: "github_main_json",
+        row_count: 0,
+        parallel_count: 0,
+        error: "Product code not found in GitHub main checklist manifest."
+      };
+    }
+
+    const shardData = JSON.parse(getGitHubRepoContentText_(CM_APP_DATA_OWNER, CM_APP_DATA_REPO, "data/v1/checklists/products/" + shard, token, CM_VISUAL_TEST_BRANCH));
+    const products = shardData.products || {};
+    const product = products[c] || null;
+    if (!product) {
+      return {
+        found: false,
+        source: "github_main_json",
+        shard: shard,
+        row_count: 0,
+        parallel_count: 0,
+        error: "Product code not found in GitHub main checklist shard."
+      };
+    }
+
+    return {
+      found: true,
+      source: "github_main_json",
+      shard: shard,
+      row_count: Array.isArray(product.rows) ? product.rows.length : 0,
+      parallel_count: Array.isArray(product.parallels) ? product.parallels.length : 0
+    };
+  } catch (err) {
+    return {
+      found: false,
+      source: "github_main_json",
+      row_count: 0,
+      parallel_count: 0,
+      error: err && err.message ? err.message : String(err)
+    };
   }
 }
 
@@ -3110,7 +3185,7 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
   patchMemoryAction_(actions, action.id, {
     status: "running",
     executionResult: "Full-auto execution started.",
-    validationResult: "Running product-scoped write, publish, and public JSON validation.",
+    validationResult: "Running product-scoped write, publish, and published JSON validation.",
     updatedAt: now
   });
 
@@ -3337,10 +3412,10 @@ function runScheduledChecklistAutoAction_(action, key) {
     pendingValidationAttempts: validated ? 0 : 1,
     executionResult: publishOk
       ? "Checklist sheet write and JSON publish completed for " + (product.code || action.code || "product") + "."
-      : "Checklist sheet write completed; public JSON validation is pending for " + (product.code || action.code || "product") + ".",
+      : "Checklist sheet write completed; published JSON validation is pending for " + (product.code || action.code || "product") + ".",
     validationResult: validated
-      ? "Public checklist JSON validated with " + publicRows + " rows."
-      : "Checklist write completed, but public JSON is not visible yet. The agent will retry publish/public validation on the next sweep. " + publishDetail + " " + productDetail + " Public recheck: " + summarizePublicChecklistValidation_(publicValidation)
+      ? "Published checklist JSON validated with " + publicRows + " rows."
+      : "Checklist write completed, but published JSON is not visible yet. The agent will retry publish validation on the next sweep. " + publishDetail + " " + productDetail + " Recheck: " + summarizePublicChecklistValidation_(publicValidation)
   };
 }
 
@@ -3390,8 +3465,8 @@ function runScheduledChecklistPendingValidationAction_(action, key) {
       ? "Pending checklist publish validation completed for " + code + "."
       : "Pending checklist publish validation rechecked for " + code + ".",
     validationResult: validated
-      ? "Public checklist JSON validated with " + publicRows + " rows."
-      : "Public checklist JSON is still pending after " + attempts + " check(s). " + (publish ? summarizePublishResult_(publish) + " " : "") + detail + " Public recheck: " + summarizePublicChecklistValidation_(publicValidation)
+      ? "Published checklist JSON validated with " + publicRows + " rows."
+      : "Published checklist JSON is still pending after " + attempts + " check(s). " + (publish ? summarizePublishResult_(publish) + " " : "") + detail + " Recheck: " + summarizePublicChecklistValidation_(publicValidation)
   };
 }
 
@@ -3426,7 +3501,7 @@ function waitForPublicChecklistProduct_(sport, code) {
 
   for (let i = 0; i < attempts.length; i++) {
     if (attempts[i]) Utilities.sleep(attempts[i]);
-    last = fetchPublicChecklistProductCounts_(sport, code);
+    last = fetchPublishedChecklistProductCounts_(sport, code);
     if (last && last.found && Number(last.row_count || 0) > 0) return last;
   }
 
@@ -3441,7 +3516,7 @@ function waitForPublicChecklistProduct_(sport, code) {
 function summarizePublicChecklistValidation_(result) {
   if (!result) return "No public validation response.";
   if (result.found) {
-    return "Found " + Number(result.row_count || 0) + " rows and " + Number(result.parallel_count || 0) + " parallels in " + (result.shard || "public JSON") + ".";
+    return "Found " + Number(result.row_count || 0) + " rows and " + Number(result.parallel_count || 0) + " parallels in " + (result.source || "published_json") + " " + (result.shard || "checklist JSON") + ".";
   }
   return result.error || "Product code not found in public checklist JSON yet.";
 }
@@ -3663,10 +3738,14 @@ function prependMemoryActivity_(activityLog, entry) {
 }
 
 function githubApiUrl_(path) {
+  return githubRepoApiUrl_(CM_VISUAL_TEST_OWNER, CM_VISUAL_TEST_REPO, path);
+}
+
+function githubRepoApiUrl_(owner, repo, path) {
   return "https://api.github.com/repos/"
-    + encodeURIComponent(CM_VISUAL_TEST_OWNER)
+    + encodeURIComponent(owner)
     + "/"
-    + encodeURIComponent(CM_VISUAL_TEST_REPO)
+    + encodeURIComponent(repo)
     + path;
 }
 
@@ -3749,6 +3828,29 @@ function getGitHubContentFile_(path, token, branch) {
     sha: data.sha || "",
     text: decoded
   };
+}
+
+function getGitHubRepoContentText_(owner, repo, path, token, branch) {
+  const targetBranch = safeString_(branch || CM_VISUAL_TEST_BRANCH).trim();
+  const url = githubRepoApiUrl_(owner, repo, "/contents/" + path + "?ref=" + encodeURIComponent(targetBranch));
+  const res = githubFetch_(url, token, { method: "get" });
+  const status = res.getResponseCode();
+  const text = res.getContentText();
+
+  if (status < 200 || status >= 300) {
+    throw new Error("GitHub content lookup failed for " + owner + "/" + repo + "/" + path + " with " + status + ": " + text);
+  }
+
+  let data = {};
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch (err) {
+    throw new Error("GitHub content response was not JSON for " + path + ".");
+  }
+
+  const content = safeString_(data.content || "").replace(/\s/g, "");
+  const bytes = content ? Utilities.base64Decode(content) : [];
+  return bytes.length ? Utilities.newBlob(bytes).getDataAsString("UTF-8") : "";
 }
 
 function putGitHubContentJson_(path, obj, token, message, branch) {

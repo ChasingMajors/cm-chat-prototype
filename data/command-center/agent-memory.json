@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-06T19:50:07.192Z",
+  "exported_at": "2026-06-07T02:56:23.960Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -887,6 +887,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780800982355_gukbll",
+      "ts": "2026-06-07T02:56:22.355Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
       "id": "log_1780775014769_i1ao5n",
       "ts": "2026-06-06T19:43:34.769Z",
       "type": "memory",
@@ -1675,16 +1685,6 @@
       "status": "started",
       "product": "2025-26 Donruss Basketball",
       "source": "admin"
-    },
-    {
-      "id": "log_1780438373817_f13ai8",
-      "ts": "2026-06-02T22:12:53.817Z",
-      "type": "source_watch",
-      "title": "Quick JSON Source Watch complete",
-      "detail": "20 source items checked. 10 need review. 9 review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "quick_json"
     }
   ],
   "visual_tests": {
@@ -1953,6 +1953,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-06T19:50:08.815Z",
+  "saved_at": "2026-06-07T02:56:25.098Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:52:03.146Z",
+  "exported_at": "2026-06-07T19:55:19.435Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1771,6 +1771,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862117832_sp9uba",
+      "ts": "2026-06-07T19:55:17.832Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780862117818_inok6z",
+      "ts": "2026-06-07T19:55:17.818Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780862114312",
       "ts": "2026-06-07T19:55:11.509Z",
       "type": "agent_sweep",
@@ -2549,26 +2569,6 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1780860765330",
-      "ts": "2026-06-07T19:32:42.699Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Luminaries Baseball -> pending_visual_validation (Published checklist JSON validated with 619 rows and 18 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780860765330",
-      "ts": "2026-06-07T19:32:42.699Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Topps Luminaries Baseball: Pending checklist publish validation completed for 2017_Topps_Luminaries_Baseball. Published checklist JSON validated with 619 rows and 18 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3052,6 +3052,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:55:14.350Z",
+  "saved_at": "2026-06-07T19:55:20.876Z",
   "saved_by": "cm_command_center_operator"
 }

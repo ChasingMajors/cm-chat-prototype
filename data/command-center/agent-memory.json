@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:09:16.042Z",
+  "exported_at": "2026-06-07T20:09:52.169Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -513,24 +513,6 @@
       "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
-      "createdAt": "2026-06-07T19:28:43.151Z",
-      "updatedAt": "2026-06-07T19:28:43.151Z"
-    },
-    {
-      "id": "prv_watch|basketball|2025_26_bowman_s_best_university_basketball",
-      "type": "prv_source_review",
-      "source": "scheduled_prv_quick_json",
-      "product": "2025/26 Bowman’s Best University Basketball",
-      "sport": "basketball",
-      "code": "2025_26_bowman_s_best_university_basketball",
-      "riskLevel": "low",
-      "status": "known_issue",
-      "recommendedAction": "Source post appears paid/locked. Public HTML does not expose writable print-run rows. Keep as known issue unless admin has another source.",
-      "adminDecision": "",
-      "executionResult": "PRV source was scanned and held before auto execution.",
-      "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
-      "runUrl": "",
-      "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
       "createdAt": "2026-06-07T19:28:43.151Z",
       "updatedAt": "2026-06-07T19:28:43.151Z"
     },
@@ -1801,6 +1783,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862990567_t80tn4",
+      "ts": "2026-06-07T20:09:50.567Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2025/26 Bowman’s Best University Basketball was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2025/26 Bowman’s Best University Basketball",
+      "source": "admin"
+    },
+    {
       "id": "log_1780862954441_4wexq9",
       "ts": "2026-06-07T20:09:14.441Z",
       "type": "visual_test",
@@ -2589,16 +2581,6 @@
       "status": "in_progress",
       "product": "2017 Bowman Holiday Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780862169347_v8e8rn",
-      "ts": "2026-06-07T19:56:09.347Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Inception Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3332,9 +3314,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-07T17:41:21.986Z",
       "resolved": true
+    },
+    "basketball|https slabsquatch substack com p 202526-bowmans-best-university-basketball": {
+      "product": "2025/26 Bowman’s Best University Basketball",
+      "sport": "basketball",
+      "code": "2025_26_bowman_s_best_university_basketball",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-07T20:09:50.566Z",
+      "resolved": true
+    },
+    "basketball|2025_26_bowman_s_best_university_basketball": {
+      "product": "2025/26 Bowman’s Best University Basketball",
+      "sport": "basketball",
+      "code": "2025_26_bowman_s_best_university_basketball",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-07T20:09:50.566Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:09:17.216Z",
+  "saved_at": "2026-06-07T20:09:53.383Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:03:29.329Z",
+  "exported_at": "2026-06-07T20:03:56.377Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:02:42.992Z",
-      "updatedAt": "2026-06-07T20:03:27.727Z"
+      "updatedAt": "2026-06-07T20:03:54.773Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps dynasty baseball|2017_topps_dynasty_baseball",
@@ -870,7 +870,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.204Z",
-      "updatedAt": "2026-06-07T20:03:27.727Z",
+      "updatedAt": "2026-06-07T20:03:54.774Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:02:31.620Z"
     },
@@ -1797,6 +1797,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862634775_d6rmro",
+      "ts": "2026-06-07T20:03:54.775Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Diamond Icons Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780862607727_yxyaeh",
       "ts": "2026-06-07T20:03:27.727Z",
       "type": "visual_test",
@@ -2585,16 +2595,6 @@
       "status": "passed",
       "product": "2017 Topps Five Star Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780861921543_hznxsx",
-      "ts": "2026-06-07T19:52:01.543Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Five Star Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3117,7 +3117,7 @@
       "productName": "2017 Topps Diamond Icons Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Diamond_Icons_Baseball",
-      "updatedAt": "2026-06-07T20:03:27.726Z",
+      "updatedAt": "2026-06-07T20:03:54.770Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103295947,
@@ -3125,7 +3125,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Diamond Icons Baseball",
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T20:02:42Z",
-      "checkedAt": "2026-06-07T20:03:27.726Z"
+      "checkedAt": "2026-06-07T20:03:54.769Z"
     }
   },
   "known_issues": {},
@@ -3308,6 +3308,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:03:30.825Z",
+  "saved_at": "2026-06-07T20:03:57.696Z",
   "saved_by": "cm_command_center_operator"
 }

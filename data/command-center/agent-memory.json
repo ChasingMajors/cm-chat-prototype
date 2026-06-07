@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:56:08.388Z",
+  "exported_at": "2026-06-07T20:57:55.674Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1845,6 +1845,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780865874072_fsyj67",
+      "ts": "2026-06-07T20:57:54.072Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780865874059_mv7g1j",
+      "ts": "2026-06-07T20:57:54.059Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780865868823",
       "ts": "2026-06-07T20:57:46.369Z",
       "type": "agent_sweep",
@@ -2623,26 +2643,6 @@
       "status": "requested",
       "product": "2017 Panini Contenders Draft Picks Baseball",
       "source": "agent_action_queue"
-    },
-    {
-      "id": "log_1780864582265_3dm0lf",
-      "ts": "2026-06-07T20:36:22.265Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864582265_qs2td8",
-      "ts": "2026-06-07T20:36:22.265Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3714,6 +3714,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:57:48.879Z",
+  "saved_at": "2026-06-07T20:57:56.902Z",
   "saved_by": "cm_command_center_operator"
 }

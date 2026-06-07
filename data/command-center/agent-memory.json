@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:28:50.204Z",
+  "exported_at": "2026-06-07T19:31:57.360Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -147,6 +147,42 @@
   ],
   "agent_actions": [
     {
+      "id": "prv_watch|basketball|2025-26 topps hoops basketball",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2025-26 Topps Hoops Basketball",
+      "sport": "basketball",
+      "code": "",
+      "riskLevel": "low",
+      "status": "known_issue",
+      "recommendedAction": "Source post appears paid/locked. Public HTML does not expose writable print-run rows. Keep as known issue unless admin has another source.",
+      "adminDecision": "",
+      "executionResult": "PRV source was scanned and held before auto execution.",
+      "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
+      "createdAt": "2026-06-07T19:28:43.151Z",
+      "updatedAt": "2026-06-07T19:28:43.151Z"
+    },
+    {
+      "id": "prv_watch|basketball|2025_26_bowman_s_best_university_basketball",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2025/26 Bowman’s Best University Basketball",
+      "sport": "basketball",
+      "code": "2025_26_bowman_s_best_university_basketball",
+      "riskLevel": "low",
+      "status": "known_issue",
+      "recommendedAction": "Source post appears paid/locked. Public HTML does not expose writable print-run rows. Keep as known issue unless admin has another source.",
+      "adminDecision": "",
+      "executionResult": "PRV source was scanned and held before auto execution.",
+      "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
+      "createdAt": "2026-06-07T19:28:43.151Z",
+      "updatedAt": "2026-06-07T19:28:43.151Z"
+    },
+    {
       "id": "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
       "type": "backend_data_issue",
       "source": "deep_backend_audit",
@@ -174,17 +210,19 @@
       "sport": "baseball",
       "code": "2017_Topps_Museum_Collection_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "failed",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1427 rows / 35 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "executionResult": "Checklist sheet write failed.",
+      "validationResult": "Missing sourceUrl",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.210Z",
-      "updatedAt": "2026-06-07T18:15:39.210Z"
+      "updatedAt": "2026-06-07T19:28:43.151Z",
+      "pendingValidationAttempts": 0,
+      "autoExecutedAt": "2026-06-07T19:28:43.151Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Luminaries_Baseball",
@@ -1705,62 +1743,12 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.168Z",
       "updatedAt": "2026-06-07T18:15:39.169Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Donruss_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Donruss Baseball",
-      "sport": "baseball",
-      "code": "2016_Donruss_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.168Z",
-      "updatedAt": "2026-06-07T18:15:39.168Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Donruss_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Donruss Baseball",
-      "sport": "baseball",
-      "code": "2016_Donruss_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 762 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.166Z",
-      "updatedAt": "2026-06-07T18:15:39.167Z"
     }
   ],
   "activity_log": [
     {
-      "id": "log_1780860528601_00fvyg",
-      "ts": "2026-06-07T19:28:48.601Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep complete",
-      "detail": "Checklist: 0 actions. PRV: 2 actions. PRV sync: skipped. Auto: 1 ran. 2017 Topps Museum Collection Baseball -> failed (Missing sourceUrl)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780860521726_ws7ltk",
-      "ts": "2026-06-07T19:28:41.726Z",
+      "id": "log_1780860715758_dpg4we",
+      "ts": "2026-06-07T19:31:55.758Z",
       "type": "agent_sweep",
       "title": "Backend Agent Sweep started",
       "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
@@ -1769,14 +1757,64 @@
       "source": "command_center"
     },
     {
-      "id": "log_1780860521722_elgjhf",
-      "ts": "2026-06-07T19:28:41.722Z",
+      "id": "log_1780860715753_hdp9kz",
+      "ts": "2026-06-07T19:31:55.753Z",
       "type": "agent_cycle",
       "title": "Self-healing pending validations",
       "detail": "6 pending public validation items found. Sentinel is handing the batch to the backend worker so stale JSON can be republished when needed.",
       "status": "started",
       "product": "",
       "source": "command_center"
+    },
+    {
+      "id": "log_1780860530652_lw6evl",
+      "ts": "2026-06-07T19:28:50.652Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780860530639_hch952",
+      "ts": "2026-06-07T19:28:50.639Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780860525787",
+      "ts": "2026-06-07T19:28:43.151Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Museum Collection Baseball -> failed (Missing sourceUrl)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780860525787",
+      "ts": "2026-06-07T19:28:43.151Z",
+      "type": "auto_action",
+      "title": "Full-auto action failed",
+      "detail": "2017 Topps Museum Collection Baseball: Checklist sheet write failed. Missing sourceUrl",
+      "status": "failed",
+      "product": "2017 Topps Museum Collection Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780860525763",
+      "ts": "2026-06-07T19:28:43.151Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1780856139211_5gxpjk",
@@ -2507,46 +2545,6 @@
       "status": "failed",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780838755656_c5cdbj",
-      "ts": "2026-06-07T13:25:55.656Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780838384415_s2i1mj",
-      "ts": "2026-06-07T13:19:44.415Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780838384400_y1i2fr",
-      "ts": "2026-06-07T13:19:44.400Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780838376065",
-      "ts": "2026-06-07T13:15:51.041Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Topps Gold Bundesliga Soccer -> pending_public_validation (Checklist write completed, but public JSON is not visible yet. The agent will retry publish/public validation on the nex)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2915,6 +2913,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:28:51.518Z",
+  "saved_at": "2026-06-07T19:31:58.657Z",
   "saved_by": "cm_command_center_operator"
 }

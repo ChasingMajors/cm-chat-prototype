@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:40:09.366Z",
+  "exported_at": "2026-06-07T19:40:42.396Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1759,6 +1759,36 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780861240794_5y3t3v",
+      "ts": "2026-06-07T19:40:40.794Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 1 safe action executed. 80 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Heritage Minor League Baseball -> pending_visual_validation (Published checklist JSON validated with 450 rows and 18 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780861240792_vs274p",
+      "ts": "2026-06-07T19:40:40.792Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780861240780_90xjt1",
+      "ts": "2026-06-07T19:40:40.780Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780861234892",
       "ts": "2026-06-07T19:40:32.293Z",
       "type": "agent_sweep",
@@ -2527,36 +2557,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780850372543_7zgzby",
-      "ts": "2026-06-07T16:39:32.543Z",
-      "type": "autonomy",
-      "title": "Autonomy mode changed",
-      "detail": "Mode set to Guarded auto.",
-      "status": "guarded_auto",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780849777851_9jfvqz",
-      "ts": "2026-06-07T16:29:37.851Z",
-      "type": "prv_source_review",
-      "title": "PRV sheet write blocked",
-      "detail": "PRV source preview is not ready for write.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780849772329_nyzv4w",
-      "ts": "2026-06-07T16:29:32.329Z",
-      "type": "prv_source_review",
-      "title": "PRV sheet write started",
-      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
-      "status": "started",
-      "product": "2025/26 Topps Chrome UEFA Club Competitions",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -2925,6 +2925,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:40:34.905Z",
+  "saved_at": "2026-06-07T19:40:43.664Z",
   "saved_by": "cm_command_center_operator"
 }

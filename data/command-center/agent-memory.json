@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T15:19:36.865Z",
+  "exported_at": "2026-06-07T14:37:46.978Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -238,7 +238,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T14:37:38.670Z",
+      "updatedAt": "2026-06-07T15:19:36.418Z",
       "autoExecutedAt": "2026-06-07T12:48:48.332Z",
       "previousSport": "football"
     },
@@ -298,7 +298,7 @@
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-06T15:29:36.437Z",
-      "updatedAt": "2026-06-07T14:37:38.670Z"
+      "updatedAt": "2026-06-07T15:19:36.418Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
@@ -424,7 +424,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-uefa-womens-champions-league-soccer-card-checklist/",
       "createdAt": "2026-06-02T22:12:53.813Z",
-      "updatedAt": "2026-06-07T14:37:38.670Z"
+      "updatedAt": "2026-06-07T15:19:36.418Z"
     },
     {
       "id": "visual_test|github_actions|2025-26 topps chrome arsenal soccer|2025_26_topps_chrome_arsenal_soccer",
@@ -532,7 +532,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-extended-series-hockey-card-checklist/",
       "createdAt": "2026-05-28T22:16:59.267Z",
-      "updatedAt": "2026-06-07T14:37:38.670Z"
+      "updatedAt": "2026-06-07T15:19:36.418Z"
     },
     {
       "id": "source_watch|soccer|2025-26 panini's football efl soccer",
@@ -550,7 +550,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-05-28T22:16:59.264Z",
-      "updatedAt": "2026-06-07T14:37:38.670Z",
+      "updatedAt": "2026-06-07T15:19:36.418Z",
       "previousSport": "football"
     },
     {
@@ -921,14 +921,24 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780845575210_zbgz22",
-      "ts": "2026-06-07T15:19:35.210Z",
+      "id": "log_1780845579049",
+      "ts": "2026-06-07T15:19:36.418Z",
       "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, one safe auto action, and backend memory update.",
-      "status": "started",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "status": "needs_review",
       "product": "",
-      "source": "command_center"
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780845579048",
+      "ts": "2026-06-07T15:19:36.418Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1780843064841_p8q50e",
@@ -1709,16 +1719,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780765428899_yq7xac",
-      "ts": "2026-06-06T17:03:48.899Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1987,6 +1987,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T15:19:38.309Z",
+  "saved_at": "2026-06-07T15:19:39.101Z",
   "saved_by": "cm_command_center_operator"
 }

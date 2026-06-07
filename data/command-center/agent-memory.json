@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:56:49.206Z",
+  "exported_at": "2026-06-07T21:56:54.028Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1863,6 +1863,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780869412426_hzcykj",
+      "ts": "2026-06-07T21:56:52.426Z",
+      "type": "agent_run_queue",
+      "title": "Admin Run Queue complete",
+      "detail": "0 attempted. 4 skipped for approval/details. 0 failed. 4 still queued. 2017 Panini Immaculate Collection Baseball: Checklist write needs approval or source details 2017 Topps Museum Collection Baseball: Checklist write needs approval or source details 2016 Topps Tribute Baseball: No safe attempt is available yet 2016 Topps Update Series Baseball: No safe attempt is available yet",
+      "status": "needs_review",
+      "product": "",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780869412422_auuf2a",
+      "ts": "2026-06-07T21:56:52.422Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "4 flagged jobs will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
       "id": "log_1780869407604_9tu4t1",
       "ts": "2026-06-07T21:56:47.604Z",
       "type": "agent_run_queue",
@@ -2641,26 +2661,6 @@
       "status": "queued",
       "product": "",
       "source": "agent_cycle"
-    },
-    {
-      "id": "log_1780866205446_3o4tyq",
-      "ts": "2026-06-07T21:03:25.446Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Panini Elite Extra Edition Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780866202898_bqulxq",
-      "ts": "2026-06-07T21:03:22.898Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3986,6 +3986,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:56:50.822Z",
+  "saved_at": "2026-06-07T21:56:55.410Z",
   "saved_by": "cm_command_center_operator"
 }

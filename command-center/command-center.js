@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc99-agent-cycle-drain-v1-2026-06-07";
+  const COMMAND_CENTER_VERSION = "cc100-agent-visual-batch-v1-2026-06-07";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -3586,21 +3586,24 @@
     `;
   }
 
-  async function runAgentVisualTest(plan) {
+  async function runAgentVisualTest(plan, options) {
+    const opts = options || {};
     const endpoint = readOperatorEndpoint();
     const key = readOperatorKey();
 
     if (!endpoint) {
       renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before running agent visual tests.", "warning");
-      return;
+      return { ok: false, error: "Operator Backend URL missing." };
     }
 
     if (!key) {
       renderSourceCheckMessage("Admin write key needed", "Enter and save the admin write key before running agent visual tests.", "warning");
-      return;
+      return { ok: false, error: "Admin write key missing." };
     }
 
-    renderSourceCheckMessage("Queuing agent visual test", "The Operator Backend is starting the GitHub Actions CV/ChatBot test for this product.", "info");
+    if (!opts.silent) {
+      renderSourceCheckMessage("Queuing agent visual test", "The Operator Backend is starting the GitHub Actions CV/ChatBot test for this product.", "info");
+    }
 
     try {
       const url = endpoint
@@ -3613,8 +3616,11 @@
 
       const data = await fetchJson(url, { timeoutMs: 60000 });
       renderVisualDispatchResult(data, plan);
+      return data;
     } catch (err) {
-      renderSourceCheckMessage("Agent visual test failed", err && err.message ? err.message : String(err), "critical");
+      const message = err && err.message ? err.message : String(err);
+      if (!opts.silent) renderSourceCheckMessage("Agent visual test failed", message, "critical");
+      return { ok: false, error: message };
     }
   }
 
@@ -6628,7 +6634,80 @@
     renderActionLanes();
     renderActivityLog();
     renderVisualTestPlan(plan);
-    runAgentVisualTest(plan);
+    return runAgentVisualTest(plan);
+  }
+
+  function getPendingVisualValidationBatch(limit) {
+    const max = Math.max(1, Math.min(5, Number(limit || 3)));
+    return getActiveAgentActions()
+      .filter(action => {
+        if (!isPendingVisualValidationAction(action)) return false;
+        const type = String(action.type || "").toLowerCase();
+        if (type !== "source_import" && type !== "checklist_publish" && type !== "visual_test") return false;
+        return !!action.product;
+      })
+      .slice(0, max);
+  }
+
+  async function runPendingVisualValidationBatch(options) {
+    const opts = options || {};
+    const pending = getPendingVisualValidationBatch(opts.limit || 3);
+    if (!pending.length) return { ok: true, queued: 0, detail: "No pending visual validations found." };
+
+    if (!readOperatorEndpoint() || !readOperatorKey()) {
+      const detail = "Backend URL or admin key is missing, so Sentinel cannot queue CV/ChatBot visual tests.";
+      renderAgentCycleMessage("Visual validation needs setup", detail, "warning");
+      return { ok: false, queued: 0, detail };
+    }
+
+    if (!opts.silentStart) {
+      renderAgentCycleMessage(
+        "Queuing CV/ChatBot validation",
+        `${pending.length} product${pending.length === 1 ? "" : "s"} have public JSON proof. Sentinel will queue visual tests now.`,
+        "info"
+      );
+    }
+
+    let queued = 0;
+    let failed = 0;
+    const labels = [];
+
+    for (const action of pending) {
+      const plan = buildVisualTestPlanFromAction(action);
+      updateAgentAction(action.id, {
+        status: "running",
+        validationResult: "CV/ChatBot visual test requested by Agent Cycle..."
+      });
+      renderAgentActions();
+      renderActionLanes();
+
+      const data = await runAgentVisualTest(plan, { silent: true });
+      if (data && data.ok) {
+        queued += 1;
+        labels.push(action.product || action.code || "product");
+      } else {
+        failed += 1;
+        updateAgentAction(action.id, {
+          status: "failed",
+          validationResult: data && data.error ? data.error : "Visual test dispatch failed."
+        });
+      }
+    }
+
+    const detail = `${queued} CV/ChatBot visual test${queued === 1 ? "" : "s"} queued.${failed ? " " + failed + " failed to queue." : ""}`;
+    logActivity({
+      type: "visual_test",
+      status: failed ? "needs_review" : "queued",
+      source: "agent_cycle",
+      title: "Visual validation batch queued",
+      detail: labels.length ? `${detail} ${labels.slice(0, 4).join("; ")}` : detail
+    });
+    renderSentinelNotice("Visual validation batch queued", detail, failed ? "warning" : "success");
+    renderActivityLog();
+    renderAgentActions();
+    renderActionLanes();
+
+    return { ok: failed === 0, queued, failed, detail };
   }
 
   function getPendingPublicValidationBatch(limit) {
@@ -6724,8 +6803,18 @@
     }
 
     await loadBackendAgentMemory();
+    const visualBatch = getPendingVisualValidationBatch(3);
+    let visualSummary = "";
+    let visualQueuedCount = 0;
+    if (visualBatch.length) {
+      const visualResult = await runPendingVisualValidationBatch({ silentStart: true, limit: 3 });
+      visualQueuedCount = Number(visualResult && visualResult.queued || 0);
+      visualSummary = visualResult && visualResult.queued
+        ? ` Queued ${visualResult.queued} CV/ChatBot visual test${visualResult.queued === 1 ? "" : "s"}.`
+        : "";
+    }
     const activeCount = getActiveAgentActions().length;
-    const detail = `${waves} wave${waves === 1 ? "" : "s"} ran. ${totalAuto} safe action${totalAuto === 1 ? "" : "s"} executed. ${activeCount} active queue item${activeCount === 1 ? "" : "s"} remain.${stopReason ? " Stopped because: " + stopReason : ""}`;
+    const detail = `${waves} wave${waves === 1 ? "" : "s"} ran. ${totalAuto} safe action${totalAuto === 1 ? "" : "s"} executed.${visualSummary} ${activeCount} active queue item${activeCount === 1 ? "" : "s"} remain.${stopReason ? " Stopped because: " + stopReason : ""}`;
 
     logActivity({
       type: "agent_cycle",
@@ -6745,6 +6834,7 @@
       ok: true,
       waves,
       totalAuto,
+      visualQueued: visualQueuedCount,
       activeCount,
       stopReason,
       summaries: waveSummaries
@@ -6804,6 +6894,11 @@
   async function runAgentCycle() {
     if (readOperatorEndpoint() && readOperatorKey() && countActiveSafeAutoCandidates() > 1) {
       return runBackendAgentDrainCycle();
+    }
+
+    const visualBatch = getPendingVisualValidationBatch(3);
+    if (visualBatch.length > 1) {
+      return runPendingVisualValidationBatch({ limit: 3 });
     }
 
     const pendingBatch = getPendingPublicValidationBatch(6);

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T14:31:11.969Z",
+  "exported_at": "2026-06-07T14:37:46.978Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -921,6 +921,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780843064841_p8q50e",
+      "ts": "2026-06-07T14:37:44.841Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780843064823_352j2g",
+      "ts": "2026-06-07T14:37:44.823Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780843060801",
       "ts": "2026-06-07T14:37:38.670Z",
       "type": "agent_sweep",
@@ -1699,26 +1719,6 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1780765417738",
-      "ts": "2026-06-06T17:00:51.700Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 4 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Topps Hoops Basketball -> failed",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780765417737",
-      "ts": "2026-06-06T17:00:51.700Z",
-      "type": "auto_action",
-      "title": "Full-auto action failed",
-      "detail": "2025-26 Topps Hoops Basketball: PRV sheet write failed. PRV source preview is not ready for write.",
-      "status": "failed",
-      "product": "2025-26 Topps Hoops Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1987,6 +1987,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T14:37:40.844Z",
+  "saved_at": "2026-06-07T14:37:48.104Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:57:33.498Z",
+  "exported_at": "2026-06-07T19:57:36.169Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -155,18 +155,18 @@
       "code": "2017_Topps_Heritage_Minor_League_Baseball",
       "riskLevel": "low",
       "status": "needs_admin",
-      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
+      "recommendedAction": "Visual validation complete.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103156514",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:57:17.586Z",
-      "updatedAt": "2026-06-07T19:57:17.587Z"
+      "updatedAt": "2026-06-07T19:57:34.565Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps high tek baseball|2017_topps_high_tek_baseball",
@@ -589,12 +589,12 @@
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Heritage_Minor_League_Baseball.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103156514",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.208Z",
-      "updatedAt": "2026-06-07T19:57:17.588Z",
+      "updatedAt": "2026-06-07T19:57:34.566Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:40:32.293Z"
     },
@@ -1785,6 +1785,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862254566_6nrwur",
+      "ts": "2026-06-07T19:57:34.566Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Heritage Minor League Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780862251896_mz93iw",
       "ts": "2026-06-07T19:57:31.896Z",
       "type": "visual_test",
@@ -2573,16 +2583,6 @@
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780861234890",
-      "ts": "2026-06-07T19:40:32.293Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Topps Heritage Minor League Baseball: Pending checklist publish validation completed for 2017_Topps_Heritage_Minor_League_Baseball. Published checklist JSON validated with 450 rows and 18 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3001,11 +3001,11 @@
       "checkedAt": "2026-06-07T19:57:31.893Z"
     },
     "baseball|2017_Topps_Heritage_Minor_League_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-07T19:57:16.332Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103156514",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Heritage_Minor_League_Baseball",
@@ -3013,9 +3013,15 @@
       "productName": "2017 Topps Heritage Minor League Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Heritage_Minor_League_Baseball",
-      "updatedAt": "2026-06-07T19:57:17.585Z",
+      "updatedAt": "2026-06-07T19:57:34.563Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27103156514,
+      "runNumber": 37,
+      "displayTitle": "Visual Product Test - 2017 Topps Heritage Minor League Baseball",
+      "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
+      "createdAt": "2026-06-07T19:57:17Z",
+      "checkedAt": "2026-06-07T19:57:34.563Z"
     }
   },
   "known_issues": {},
@@ -3198,6 +3204,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:57:34.589Z",
+  "saved_at": "2026-06-07T19:57:37.329Z",
   "saved_by": "cm_command_center_operator"
 }

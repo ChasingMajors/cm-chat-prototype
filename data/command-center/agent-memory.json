@@ -2,8 +2,8 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:21:13.048Z",
-  "autonomy_mode": "full_auto",
+  "exported_at": "2026-06-07T21:56:18.975Z",
+  "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
@@ -1862,6 +1862,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780869377372_kioaez",
+      "ts": "2026-06-07T21:56:17.372Z",
+      "type": "autonomy",
+      "title": "Autonomy mode changed",
+      "detail": "Mode set to Guarded auto.",
+      "status": "guarded_auto",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780867271446_qc9zkj",
       "ts": "2026-06-07T21:21:11.446Z",
       "type": "agent_run_queue",
@@ -2649,16 +2659,6 @@
       "detail": "2017 Panini Elite Extra Edition Baseball: Pending checklist publish validation completed for 2017_Panini_Elite_Extra_Edition_Baseball. Published checklist JSON validated with 835 rows and 31 parallels. CV/ChatBot visual validation is pending.",
       "status": "pending_visual_validation",
       "product": "2017 Panini Elite Extra Edition Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780866196068",
-      "ts": "2026-06-07T21:03:14.170Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     }
   ],
@@ -3985,6 +3985,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:21:14.336Z",
+  "saved_at": "2026-06-07T21:56:20.311Z",
   "saved_by": "cm_command_center_operator"
 }

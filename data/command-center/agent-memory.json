@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:07:34.830Z",
+  "exported_at": "2026-06-07T20:07:54.733Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps definitive collection baseball|2017_topps_definitive_collection_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Definitive Collection Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Definitive_Collection_Baseball",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Visual validation complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103414055",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T20:07:35.737Z",
+      "updatedAt": "2026-06-07T20:07:53.130Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps diamond icons baseball|2017_topps_diamond_icons_baseball",
       "type": "visual_test",
@@ -882,17 +904,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Definitive_Collection_Baseball",
       "riskLevel": "high",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Definitive_Collection_Baseball.",
-      "validationResult": "CV/ChatBot visual test requested by Agent Cycle...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103414055",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.204Z",
-      "updatedAt": "2026-06-07T20:07:33.227Z",
+      "updatedAt": "2026-06-07T20:07:53.131Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:06:25.794Z"
     },
@@ -1775,29 +1797,49 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.178Z",
       "updatedAt": "2026-06-07T18:15:39.179Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Archives_Signature_Series_All_Star_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Archives Signature Series All-Star Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Archives_Signature_Series_All_Star_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.178Z",
-      "updatedAt": "2026-06-07T18:15:39.178Z"
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780862873132_44vv32",
+      "ts": "2026-06-07T20:07:53.132Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Definitive Collection Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780862855754_yegdmi",
+      "ts": "2026-06-07T20:07:35.754Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 52 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Definitive Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 658 rows and 26 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780862855748_23719f",
+      "ts": "2026-06-07T20:07:35.748Z",
+      "type": "visual_test",
+      "title": "Visual validation batch queued",
+      "detail": "1 CV/ChatBot visual test queued. 2017 Topps Definitive Collection Baseball",
+      "status": "queued",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1780862855739_iw9t3j",
+      "ts": "2026-06-07T20:07:35.739Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Topps Definitive Collection Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780862853224_q4s4k5",
       "ts": "2026-06-07T20:07:33.224Z",
@@ -2557,46 +2599,6 @@
       "status": "in_progress",
       "product": "2017 Topps Luminaries Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780862127336_wudb2l",
-      "ts": "2026-06-07T19:55:27.336Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 wave ran. 1 safe action executed. Queued 3 CV/ChatBot visual tests. 70 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Heritage High Number Baseball -> pending_visual_validation (Published checklist JSON validated with 795 rows and 13 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780862127332_qd5piu",
-      "ts": "2026-06-07T19:55:27.332Z",
-      "type": "visual_test",
-      "title": "Visual validation batch queued",
-      "detail": "3 CV/ChatBot visual tests queued. 2017 Topps Luminaries Baseball; 2017 Topps Inception Baseball; 2017 Bowman Holiday Baseball",
-      "status": "queued",
-      "product": "",
-      "source": "agent_cycle"
-    },
-    {
-      "id": "log_1780862127325_h4ahcz",
-      "ts": "2026-06-07T19:55:27.325Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Bowman Holiday Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862125166_665hjf",
-      "ts": "2026-06-07T19:55:25.166Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps Inception Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3128,6 +3130,29 @@
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T20:02:42Z",
       "checkedAt": "2026-06-07T20:04:22.156Z"
+    },
+    "baseball|2017_Topps_Definitive_Collection_Baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-07T20:07:34.305Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103414055",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Topps_Definitive_Collection_Baseball",
+      "key": "baseball|2017_Topps_Definitive_Collection_Baseball",
+      "productName": "2017 Topps Definitive Collection Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Definitive_Collection_Baseball",
+      "updatedAt": "2026-06-07T20:07:53.128Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27103414055,
+      "runNumber": 42,
+      "displayTitle": "Visual Product Test - 2017 Topps Definitive Collection Baseball",
+      "headSha": "ad0cd5ef3c6451bd9697b8fdba81e713415b20a6",
+      "createdAt": "2026-06-07T20:07:35Z",
+      "checkedAt": "2026-06-07T20:07:53.128Z"
     }
   },
   "known_issues": {},
@@ -3310,6 +3335,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:07:36.317Z",
+  "saved_at": "2026-06-07T20:07:56.029Z",
   "saved_by": "cm_command_center_operator"
 }

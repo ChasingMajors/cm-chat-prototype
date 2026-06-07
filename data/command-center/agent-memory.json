@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:57:10.685Z",
+  "exported_at": "2026-06-07T19:57:14.660Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps holiday baseball|2017_topps_holiday_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Holiday Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Holiday_Baseball",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T19:57:13.048Z",
+      "updatedAt": "2026-06-07T19:57:13.049Z"
+    },
     {
       "id": "visual_test|github_actions|2017 bowman holiday baseball|2017_topps_holiday_bowman_baseball",
       "type": "visual_test",
@@ -474,17 +496,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "needs_admin",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Holiday_Baseball.",
-      "validationResult": "Published checklist JSON validated with 344 rows and 4 parallels. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.208Z",
-      "updatedAt": "2026-06-07T19:39:39.289Z",
+      "updatedAt": "2026-06-07T19:57:13.049Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:39:39.289Z"
     },
@@ -496,17 +518,17 @@
       "sport": "baseball",
       "code": "2017_Topps_High_Tek_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_High_Tek_Baseball.",
-      "validationResult": "Published checklist JSON validated with 287 rows and 12 parallels. CV/ChatBot visual validation is pending.",
+      "validationResult": "CV/ChatBot visual test requested by Agent Cycle...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.208Z",
-      "updatedAt": "2026-06-07T19:39:59.471Z",
+      "updatedAt": "2026-06-07T19:57:13.058Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:39:59.471Z"
     },
@@ -1755,32 +1777,22 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.174Z",
       "updatedAt": "2026-06-07T18:15:39.174Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Panini_Pantheon_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Panini Pantheon Baseball",
-      "sport": "baseball",
-      "code": "2016_Panini_Pantheon_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1054 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.173Z",
-      "updatedAt": "2026-06-07T18:15:39.174Z"
     }
   ],
   "activity_log": [
     {
-      "id": "log_1780862229083_vasc8r",
-      "ts": "2026-06-07T19:57:09.083Z",
+      "id": "log_1780862233049_l9npjl",
+      "ts": "2026-06-07T19:57:13.049Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Topps Holiday Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780862230785_mmq1el",
+      "ts": "2026-06-07T19:57:10.785Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -1789,8 +1801,8 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1780862229073_i1qqhe",
-      "ts": "2026-06-07T19:57:09.073Z",
+      "id": "log_1780862230772_znugyk",
+      "ts": "2026-06-07T19:57:10.772Z",
       "type": "memory",
       "title": "Agent memory imported",
       "detail": "Queue, log, approvals, known issues, and visual status were restored.",
@@ -2567,16 +2579,6 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780861198161_qovc2y",
-      "ts": "2026-06-07T19:39:58.161Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -2947,6 +2949,23 @@
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T19:55:27Z",
       "checkedAt": "2026-06-07T19:56:38.485Z"
+    },
+    "baseball|2017_Topps_Holiday_Baseball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-07T19:57:11.944Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Topps_Holiday_Baseball",
+      "key": "baseball|2017_Topps_Holiday_Baseball",
+      "productName": "2017 Topps Holiday Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Holiday_Baseball",
+      "updatedAt": "2026-06-07T19:57:13.047Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -3129,6 +3148,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:57:11.984Z",
+  "saved_at": "2026-06-07T19:57:15.971Z",
   "saved_by": "cm_command_center_operator"
 }

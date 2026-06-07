@@ -2101,16 +2101,16 @@
 
     renderSentinelNotice(
       "Backend Agent Sweep running",
-      "Sentinel is checking Checklist Center, SlabSquatch PRV sources, PRV JSON sync health, and backend memory.",
+      "Sentinel is checking Checklist Center, SlabSquatch PRV sources, one safe auto action, and backend memory. Full PRV sync runs separately.",
       "info"
     );
-    renderSourceCheckMessage("Backend Agent Sweep running", "This runs from Apps Script and writes queue findings to backend memory.", "info", { noFocus: true });
+    renderSourceCheckMessage("Backend Agent Sweep running", "Fast sweep runs from Apps Script and writes queue findings to backend memory. Use Sync PRV JSON for a full PRV publish pass.", "info", { noFocus: true });
     logActivity({
       type: "agent_sweep",
       status: "started",
       source: "command_center",
       title: "Backend Agent Sweep started",
-      detail: "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update."
+      detail: "Running checklist source watch, PRV source watch, one safe auto action, and backend memory update."
     });
     renderActivityLog();
 
@@ -2119,8 +2119,10 @@
         action: "runScheduledAgentSweep",
         key,
         mode: "deep_sheets",
-        maxAutoActions: state.autonomyMode === "full_auto" ? 2 : 1
-      }, { timeoutMs: 300000 });
+        maxAutoActions: 1,
+        skipPrvSync: true,
+        fastMode: true
+      }, { timeoutMs: 150000 });
 
       if (!data || !data.ok) {
         const stillUseful = data && (data.checklist || data.prv || data.prv_sync);
@@ -2129,6 +2131,7 @@
 
       const checklistCount = data && data.checklist ? Number(data.checklist.actionable_count || 0) : 0;
       const prvCount = data && data.prv ? Number(data.prv.actionable_count || 0) : 0;
+      const prvSyncSkipped = !!(data && data.prv_sync && data.prv_sync.status === "skipped");
       const prvSyncOk = !!(data && data.prv_sync && data.prv_sync.ok);
       const autoAction = data && data.auto_action ? data.auto_action : null;
       const autoActions = data && data.auto_actions ? data.auto_actions : null;
@@ -2139,8 +2142,8 @@
         : autoAction && autoAction.reason
           ? ` Auto: ${autoAction.reason}`
           : "";
-      const detail = `Checklist: ${formatNumber(checklistCount)} action${checklistCount === 1 ? "" : "s"}. PRV: ${formatNumber(prvCount)} action${prvCount === 1 ? "" : "s"}. PRV sync: ${prvSyncOk ? "passed" : "needs review"}.${autoText}`;
-      const severity = checklistCount || prvCount || !prvSyncOk || (autoAction && autoAction.ran && autoAction.status !== "validated") ? "warning" : "success";
+      const detail = `Checklist: ${formatNumber(checklistCount)} action${checklistCount === 1 ? "" : "s"}. PRV: ${formatNumber(prvCount)} action${prvCount === 1 ? "" : "s"}. PRV sync: ${prvSyncSkipped ? "skipped" : (prvSyncOk ? "passed" : "needs review")}.${autoText}`;
+      const severity = checklistCount || prvCount || (!prvSyncSkipped && !prvSyncOk) || (autoAction && autoAction.ran && autoAction.status !== "validated") ? "warning" : "success";
 
       logActivity({
         type: "agent_sweep",

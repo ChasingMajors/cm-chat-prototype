@@ -26,7 +26,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-07-operator-cc84-canonical-json-validation";
+const CM_OPERATOR_VERSION = "2026-06-07-operator-cc85-fast-agent-sweep";
 const CM_APP_DATA_BASE = "https://app.chasingmajors.com/data/v1";
 const CM_CHECKLISTCENTER_HOME = "https://www.checklistcenter.com/";
 const CM_CHECKLISTCENTER_POSTS_API = "https://www.checklistcenter.com/wp-json/wp/v2/posts?per_page=20&_fields=link,title,date,slug";
@@ -2906,7 +2906,18 @@ function runScheduledAgentSweep_(input) {
     };
   }
 
-  prvSync = runPrvSyncPublishForSchedule_(input && input.key);
+  const skipPrvSync = shouldSkipAgentSweepPrvSync_(input);
+  prvSync = skipPrvSync
+    ? {
+      ok: true,
+      status: "skipped",
+      detail: "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      publish: {
+        ok: true,
+        skipped: true
+      }
+    }
+    : runPrvSyncPublishForSchedule_(input && input.key);
 
   const memory = loadOrCreateAgentMemoryForSchedule_(input && input.key);
   const sourceIgnores = memory.source_ignores || {};
@@ -2941,7 +2952,7 @@ function runScheduledAgentSweep_(input) {
   const detailParts = [
     "Checklist: " + checklistActionable.length + " actionable from " + (checklistWatch.fetched_count || 0) + " checked.",
     "PRV: " + prvActionable.length + " actionable from " + (prvWatch.fetched_count || 0) + " checked.",
-    "PRV sync: " + (prvSync.ok ? "passed." : "failed.")
+    "PRV sync: " + (prvSync.status === "skipped" ? "skipped for fast sweep." : (prvSync.ok ? "passed." : "failed."))
   ];
   const sportInference = getSportInferenceSelfTest_();
   if (!sportInference.ok) {
@@ -3047,6 +3058,11 @@ function runScheduledPrvSyncTrigger() {
     Logger.log("Scheduled PRV sync trigger failed: " + JSON.stringify(result));
     return result;
   }
+}
+
+function shouldSkipAgentSweepPrvSync_(input) {
+  const raw = safeString_(input && (input.skipPrvSync || input.skip_prv_sync || input.fast || input.fastMode || input.fast_mode)).trim().toLowerCase();
+  return raw === "1" || raw === "true" || raw === "yes" || raw === "fast";
 }
 
 function runScheduledAgentSweepTrigger() {

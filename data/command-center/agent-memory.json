@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:17:28.106Z",
+  "exported_at": "2026-06-07T20:17:55.356Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:16:41.836Z",
-      "updatedAt": "2026-06-07T20:17:26.503Z"
+      "updatedAt": "2026-06-07T20:17:53.752Z"
     },
     {
       "id": "visual_test|github_actions|2017 panini national treasures baseball|2017_panini_national_treasures_baseball",
@@ -988,7 +988,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.203Z",
-      "updatedAt": "2026-06-07T20:17:26.504Z",
+      "updatedAt": "2026-06-07T20:17:53.753Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:16:28.752Z"
     },
@@ -1815,6 +1815,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780863473753_y57hnv",
+      "ts": "2026-06-07T20:17:53.753Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780863446504_9prsgd",
       "ts": "2026-06-07T20:17:26.504Z",
       "type": "visual_test",
@@ -2603,16 +2613,6 @@
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780862397546",
-      "ts": "2026-06-07T19:59:55.018Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Topps Dynasty Baseball: Pending checklist publish validation completed for 2017_Topps_Dynasty_Baseball. Published checklist JSON validated with 261 rows and 5 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Topps Dynasty Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3227,7 +3227,7 @@
       "productName": "2017 Topps Chrome Update Series Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Update_Series_Baseball",
-      "updatedAt": "2026-06-07T20:17:26.502Z",
+      "updatedAt": "2026-06-07T20:17:53.750Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103625780,
@@ -3235,7 +3235,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Chrome Update Series Baseball",
       "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
       "createdAt": "2026-06-07T20:16:41Z",
-      "checkedAt": "2026-06-07T20:17:26.502Z"
+      "checkedAt": "2026-06-07T20:17:53.750Z"
     }
   },
   "known_issues": {},
@@ -3454,6 +3454,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:17:29.292Z",
+  "saved_at": "2026-06-07T20:17:56.599Z",
   "saved_by": "cm_command_center_operator"
 }

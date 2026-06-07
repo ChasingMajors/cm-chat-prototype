@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T16:05:48.264Z",
+  "exported_at": "2026-06-07T16:06:07.149Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -136,14 +136,14 @@
       "code": "2025_topps_cosmic_chrome_football",
       "riskLevel": "low",
       "status": "needs_admin",
-      "recommendedAction": "Visual validation complete.",
+      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
       "adminDecision": "",
-      "executionResult": "",
+      "executionResult": "GitHub Actions visual test queued.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27097700347",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "createdAt": "2026-06-07T16:05:29.356Z",
-      "updatedAt": "2026-06-07T16:05:46.660Z"
+      "updatedAt": "2026-06-07T16:06:05.546Z"
     },
     {
       "id": "source_watch|soccer|2025-26 panini's football efl soccer",
@@ -331,10 +331,10 @@
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27097700347",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:56:21.096Z",
-      "updatedAt": "2026-06-07T16:05:46.661Z"
+      "updatedAt": "2026-06-07T16:06:05.546Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps dynasty baseball|2025_topps_dynasty_baseball",
@@ -938,6 +938,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780848365547_3ex34f",
+      "ts": "2026-06-07T16:06:05.547Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2025 Topps Cosmic Chrome Football",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780848346661_i0cxor",
       "ts": "2026-06-07T16:05:46.661Z",
@@ -1727,16 +1737,6 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1780801144477",
-      "ts": "2026-06-07T02:56:23.785Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 4 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025/26 Bowman’s Best University Basketball -> known_issue (Source post appears paid/locked. Public HTML does not expose writable print-run rows.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1879,11 +1879,11 @@
       "checkedAt": "2026-05-29T14:59:10.550Z"
     },
     "football|2025_topps_cosmic_chrome_football": {
-      "status": "in_progress",
-      "result": "in_progress",
+      "status": "queued",
+      "result": "queued",
       "conclusion": "",
-      "startedAt": "2026-06-07T16:05:27.892Z",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27097700347",
+      "startedAt": "2026-06-07T16:06:03.932Z",
+      "runUrl": "",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "football|2025_topps_cosmic_chrome_football",
@@ -1891,7 +1891,7 @@
       "productName": "2025 Topps Cosmic Chrome Football",
       "sport": "football",
       "code": "2025_topps_cosmic_chrome_football",
-      "updatedAt": "2026-06-07T16:05:46.659Z",
+      "updatedAt": "2026-06-07T16:06:05.544Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27097700347,
@@ -2028,6 +2028,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T16:05:49.429Z",
+  "saved_at": "2026-06-07T16:06:08.311Z",
   "saved_by": "cm_command_center_operator"
 }

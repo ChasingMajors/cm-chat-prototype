@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:00:30.669Z",
+  "exported_at": "2026-06-07T20:00:53.152Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -210,7 +210,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:00:06.654Z",
-      "updatedAt": "2026-06-07T20:00:23.987Z"
+      "updatedAt": "2026-06-07T20:00:51.549Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps heritage minor league baseball|2017_topps_heritage_minor_league_baseball",
@@ -682,7 +682,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.208Z",
-      "updatedAt": "2026-06-07T20:00:23.988Z",
+      "updatedAt": "2026-06-07T20:00:51.550Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:55:11.509Z"
     },
@@ -1793,6 +1793,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862451550_xps8tz",
+      "ts": "2026-06-07T20:00:51.550Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Heritage High Number Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780862429067_ncwrv4",
       "ts": "2026-06-07T20:00:29.067Z",
       "type": "visual_test",
@@ -2581,16 +2591,6 @@
       "status": "requested",
       "product": "2017 Topps Gold Label Baseball",
       "source": "agent_action_queue"
-    },
-    {
-      "id": "log_1780861487212_3hr0pv",
-      "ts": "2026-06-07T19:44:47.212Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3044,7 +3044,7 @@
       "productName": "2017 Topps Heritage High Number Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Heritage_High_Number_Baseball",
-      "updatedAt": "2026-06-07T20:00:23.985Z",
+      "updatedAt": "2026-06-07T20:00:51.546Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103224044,
@@ -3052,7 +3052,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Heritage High Number Baseball",
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T20:00:06Z",
-      "checkedAt": "2026-06-07T20:00:23.985Z"
+      "checkedAt": "2026-06-07T20:00:51.545Z"
     },
     "baseball|2017_Topps_Finest_Baseball": {
       "status": "in_progress",
@@ -3281,6 +3281,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:00:32.089Z",
+  "saved_at": "2026-06-07T20:00:54.613Z",
   "saved_by": "cm_command_center_operator"
 }

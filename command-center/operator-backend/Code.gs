@@ -26,7 +26,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-06-operator-cc80-sport-inference";
+const CM_OPERATOR_VERSION = "2026-06-06-operator-cc81-auto-publish-retry";
 const CM_APP_DATA_BASE = "https://app.chasingmajors.com/data/v1";
 const CM_CHECKLISTCENTER_HOME = "https://www.checklistcenter.com/";
 const CM_CHECKLISTCENTER_POSTS_API = "https://www.checklistcenter.com/wp-json/wp/v2/posts?per_page=20&_fields=link,title,date,slug";
@@ -3231,11 +3231,15 @@ function runScheduledChecklistAutoAction_(action, key) {
   }
 
   const product = write.product || {};
+  const publishAttempt = ensureChecklistPublishAfterAutoWrite_(write, product, key);
   const publicValidation = waitForPublicChecklistProduct_(product.sport || action.sport || "", product.code || action.code || "");
   const publicRows = Number(publicValidation && publicValidation.row_count || 0);
-  const publishOk = !!(write.publish && write.publish.ok);
-  const validated = publishOk && publicRows > 0;
-  const publishDetail = summarizePublishResult_(write.publish);
+  const publishOk = !!(publishAttempt.publish && publishAttempt.publish.ok);
+  const validated = publicRows > 0;
+  const publishDetail = summarizePublishResult_(publishAttempt.publish);
+  const productDetail = "Checked " + (product.sport || action.sport || "unknown sport")
+    + " " + (product.target_bucket || product.year || "unknown bucket")
+    + " code " + (product.code || action.code || "unknown code") + ".";
 
   return {
     ok: true,
@@ -3243,15 +3247,40 @@ function runScheduledChecklistAutoAction_(action, key) {
     status: validated ? "validated" : "needs_review",
     executionResult: publishOk
       ? "Checklist sheet write and JSON publish completed for " + (product.code || action.code || "product") + "."
-      : "Checklist sheet write completed; JSON publish needs retry for " + (product.code || action.code || "product") + ".",
+      : "Checklist sheet write completed; JSON publish needs review for " + (product.code || action.code || "product") + ".",
     validationResult: validated
       ? "Public checklist JSON validated with " + publicRows + " rows."
-      : "Checklist write completed, but public JSON validation needs review. " + publishDetail + " Public recheck: " + summarizePublicChecklistValidation_(publicValidation)
+      : "Checklist write completed, but public JSON validation needs review. " + publishDetail + " " + productDetail + " Public recheck: " + summarizePublicChecklistValidation_(publicValidation)
+  };
+}
+
+function ensureChecklistPublishAfterAutoWrite_(write, product, key) {
+  const firstPublish = write && write.publish ? write.publish : null;
+  if (firstPublish && firstPublish.ok) {
+    return {
+      publish: firstPublish,
+      retried: false
+    };
+  }
+
+  const retryPublish = publishChecklistAfterImport_(product || {}, key);
+  if (retryPublish && retryPublish.ok) {
+    return {
+      publish: retryPublish,
+      retried: true,
+      first_publish: firstPublish
+    };
+  }
+
+  return {
+    publish: retryPublish || firstPublish,
+    retried: true,
+    first_publish: firstPublish
   };
 }
 
 function waitForPublicChecklistProduct_(sport, code) {
-  const attempts = [0, 1200, 2400];
+  const attempts = [0, 1500, 3000, 6000, 10000];
   let last = null;
 
   for (let i = 0; i < attempts.length; i++) {

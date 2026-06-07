@@ -2137,6 +2137,26 @@ function publishImportedChecklist_(input) {
   };
 }
 
+function summarizePublishResult_(publish) {
+  if (!publish) return "No publish response.";
+  if (publish.ok) {
+    return "Publish returned ok" + (publish.commit ? " commit " + publish.commit : "") + ".";
+  }
+  if (publish.error) return publish.error;
+  if (publish.status || publish.status_code) {
+    return "Publish returned " + (publish.status || publish.status_code) + ".";
+  }
+  if (publish.response && publish.response.error) return publish.response.error;
+  if (publish.response && publish.response.message) return publish.response.message;
+  if (publish.response && publish.response.raw) return safeString_(publish.response.raw).slice(0, 220);
+  if (publish.raw) return safeString_(publish.raw).slice(0, 220);
+  try {
+    return JSON.stringify(publish).slice(0, 220);
+  } catch (err) {
+    return "Publish response was not readable.";
+  }
+}
+
 function publishPrvVaultStaticData_(input) {
   requireOperatorKey_(input && input.key);
 
@@ -3203,15 +3223,18 @@ function runScheduledChecklistAutoAction_(action, key) {
   const publicRows = Number(publicValidation && (publicValidation.public_row_count || publicValidation.sheet_row_count || 0));
   const publishOk = !!(write.publish && write.publish.ok);
   const validated = publishOk && publicRows > 0;
+  const publishDetail = summarizePublishResult_(write.publish);
 
   return {
     ok: true,
     validated: validated,
     status: validated ? "validated" : "needs_review",
-    executionResult: "Checklist sheet write and JSON publish completed for " + (product.code || action.code || "product") + ".",
+    executionResult: publishOk
+      ? "Checklist sheet write and JSON publish completed for " + (product.code || action.code || "product") + "."
+      : "Checklist sheet write completed; JSON publish needs retry for " + (product.code || action.code || "product") + ".",
     validationResult: validated
       ? "Public checklist JSON validated with " + publicRows + " rows."
-      : "Checklist write completed, but public JSON validation needs review. " + (publishOk ? "Publish returned ok." : "Publish did not return ok.")
+      : "Checklist write completed, but public JSON validation needs review. " + publishDetail
   };
 }
 

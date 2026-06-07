@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:40:55.880Z",
+  "exported_at": "2026-06-07T20:41:24.696Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:40:37.304Z",
-      "updatedAt": "2026-06-07T20:40:54.277Z"
+      "updatedAt": "2026-06-07T20:41:22.179Z"
     },
     {
       "id": "visual_test|github_actions|2017 panini chronicles baseball|2017_panini_chronicles_baseball",
@@ -1360,7 +1360,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.197Z",
-      "updatedAt": "2026-06-07T20:40:54.278Z"
+      "updatedAt": "2026-06-07T20:41:22.180Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Donruss_Baseball",
@@ -1824,6 +1824,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780864882180_lox7ri",
+      "ts": "2026-06-07T20:41:22.181Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Donruss Optic Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780864854278_y0q4pn",
       "ts": "2026-06-07T20:40:54.278Z",
@@ -2613,16 +2623,6 @@
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780862855748_23719f",
-      "ts": "2026-06-07T20:07:35.748Z",
-      "type": "visual_test",
-      "title": "Visual validation batch queued",
-      "detail": "1 CV/ChatBot visual test queued. 2017 Topps Definitive Collection Baseball",
-      "status": "queued",
-      "product": "",
-      "source": "agent_cycle"
     }
   ],
   "visual_tests": {
@@ -3329,7 +3329,7 @@
       "productName": "2017 Donruss Optic Baseball",
       "sport": "baseball",
       "code": "2017_Donruss_Optic_Baseball",
-      "updatedAt": "2026-06-07T20:40:54.275Z",
+      "updatedAt": "2026-06-07T20:41:22.176Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27104198895,
@@ -3337,7 +3337,7 @@
       "displayTitle": "Visual Product Test - 2017 Donruss Optic Baseball",
       "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
       "createdAt": "2026-06-07T20:40:36Z",
-      "checkedAt": "2026-06-07T20:40:54.275Z"
+      "checkedAt": "2026-06-07T20:41:22.176Z"
     }
   },
   "known_issues": {},
@@ -3556,6 +3556,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:40:57.155Z",
+  "saved_at": "2026-06-07T20:41:26.017Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:45:43.730Z",
+  "exported_at": "2026-06-07T19:46:03.465Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps gold label baseball|2017_topps_gold_label_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Gold Label Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Gold_Label_Baseball",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Visual validation complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27102887057",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T19:45:44.561Z",
+      "updatedAt": "2026-06-07T19:46:01.853Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps gypsy queen baseball|2017_topps_gypsy_queen_baseball",
       "type": "visual_test",
@@ -468,17 +490,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Gold_Label_Baseball",
       "riskLevel": "high",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27102887057",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.207Z",
-      "updatedAt": "2026-06-07T19:45:42.126Z"
+      "updatedAt": "2026-06-07T19:46:01.854Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball",
@@ -1739,29 +1761,29 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.170Z",
       "updatedAt": "2026-06-07T18:15:39.170Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Panini_Diamond_Kings_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Panini Diamond Kings Baseball",
-      "sport": "baseball",
-      "code": "2016_Panini_Diamond_Kings_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1054 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.169Z",
-      "updatedAt": "2026-06-07T18:15:39.170Z"
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780861561855_co5bdl",
+      "ts": "2026-06-07T19:46:01.855Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Gold Label Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780861544564_vwtid1",
+      "ts": "2026-06-07T19:45:44.564Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Topps Gold Label Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780861542129_hcfy7o",
       "ts": "2026-06-07T19:45:42.129Z",
@@ -2541,26 +2563,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780853889956_hqq8t7",
-      "ts": "2026-06-07T17:38:09.956Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2025-26 SP Game Used CHL Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780853889953_vds5e0",
-      "ts": "2026-06-07T17:38:09.953Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "1 public rows and 0 parallels found.",
-      "status": "covered",
-      "product": "2025-26 SP Game Used CHL Hockey",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2793,6 +2795,29 @@
       "headSha": "cdc73b972c9c7f245381d4d2df399be8b4214353",
       "createdAt": "2026-06-07T19:43:06Z",
       "checkedAt": "2026-06-07T19:44:47.206Z"
+    },
+    "baseball|2017_Topps_Gold_Label_Baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-07T19:45:43.433Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27102887057",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Topps_Gold_Label_Baseball",
+      "key": "baseball|2017_Topps_Gold_Label_Baseball",
+      "productName": "2017 Topps Gold Label Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Gold_Label_Baseball",
+      "updatedAt": "2026-06-07T19:46:01.851Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27102887057,
+      "runNumber": 29,
+      "displayTitle": "Visual Product Test - 2017 Topps Gold Label Baseball",
+      "headSha": "cdc73b972c9c7f245381d4d2df399be8b4214353",
+      "createdAt": "2026-06-07T19:45:44Z",
+      "checkedAt": "2026-06-07T19:46:01.851Z"
     }
   },
   "known_issues": {},
@@ -2975,6 +3000,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:45:44.900Z",
+  "saved_at": "2026-06-07T19:46:04.538Z",
   "saved_by": "cm_command_center_operator"
 }

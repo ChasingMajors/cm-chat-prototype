@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T03:04:50.870Z",
+  "exported_at": "2026-06-07T03:14:16.060Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -192,15 +192,16 @@
       "sport": "hockey",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "needs_admin",
       "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "Checklist sheet write and JSON publish completed for 2025_26_upper_deck_extended_series_hockey.",
+      "validationResult": "Checklist write completed, but public JSON validation needs review. Publish did not return ok.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-extended-series-hockey-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T02:56:23.785Z"
+      "updatedAt": "2026-06-07T03:01:40.826Z",
+      "autoExecutedAt": "2026-06-07T03:01:40.826Z"
     },
     {
       "id": "source_watch|football|2025-26 panini's football efl soccer",
@@ -218,7 +219,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T02:56:23.785Z"
+      "updatedAt": "2026-06-07T03:01:40.826Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps chrome uefa women's champions league soccer",
@@ -236,7 +237,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-uefa-womens-champions-league-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T02:56:23.785Z"
+      "updatedAt": "2026-06-07T03:01:40.826Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps gold bundesliga soccer",
@@ -254,7 +255,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-gold-bundesliga-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T02:56:23.785Z"
+      "updatedAt": "2026-06-07T03:01:40.826Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -272,7 +273,7 @@
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-06T15:29:36.437Z",
-      "updatedAt": "2026-06-07T02:56:23.785Z"
+      "updatedAt": "2026-06-07T03:01:40.826Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
@@ -888,13 +889,63 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780801489250_um0oh7",
-      "ts": "2026-06-07T03:04:49.250Z",
+      "id": "log_1780802054454_37jlzw",
+      "ts": "2026-06-07T03:14:14.454Z",
       "type": "agent_sweep",
-      "title": "Backend Agent Sweep complete",
-      "detail": "Checklist: 4 actions. PRV: 2 actions. PRV sync: passed. Auto: 1 ran. 2025-26 Upper Deck Extended Series Hockey -> needs_admin (Checklist write completed, but public JSON validation needs review. Publish did not return ok.)",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1780801491052_j2cav5",
+      "ts": "2026-06-07T03:04:51.052Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780801491039_jmneie",
+      "ts": "2026-06-07T03:04:51.039Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780801480164",
+      "ts": "2026-06-07T03:01:40.826Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 4 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Upper Deck Extended Series Hockey -> needs_admin (Checklist write completed, but public JSON validation needs review. Publish did not return ok.)",
       "status": "needs_review",
       "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780801480164",
+      "ts": "2026-06-07T03:01:40.826Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2025-26 Upper Deck Extended Series Hockey: Checklist sheet write and JSON publish completed for 2025_26_upper_deck_extended_series_hockey. Checklist write completed, but public JSON validation needs review. Publish did not return ok.",
+      "status": "needs_admin",
+      "product": "2025-26 Upper Deck Extended Series Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780801469186",
+      "ts": "2026-06-07T03:01:40.826Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
       "source": "operator_backend"
     },
     {
@@ -1636,56 +1687,6 @@
       "status": "started",
       "product": "2025-26 Panini Select Ligue 1 Soccer",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780440773534_q6zbdl",
-      "ts": "2026-06-02T22:52:53.534Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "660 checklist rows and 144 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 Panini Select Ligue 1 Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780440761137_j373u6",
-      "ts": "2026-06-02T22:52:41.137Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780440752902_vwstc4",
-      "ts": "2026-06-02T22:52:32.902Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "660 rows and 144 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Panini Select Ligue 1 Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780440750921_7fktav",
-      "ts": "2026-06-02T22:52:30.921Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2025-26 Panini Select Ligue 1 Soccer",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780438677370_tw27vj",
-      "ts": "2026-06-02T22:17:57.371Z",
-      "type": "checklist_publish",
-      "title": "JSON publish failed",
-      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=publishImportedChecklist&sport=basketball&bucket=2025-26&code=2025_26_donruss_basketball&key=JD",
-      "status": "failed",
-      "product": "2025-26 Donruss Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1954,6 +1955,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T03:04:51.978Z",
+  "saved_at": "2026-06-07T03:14:17.105Z",
   "saved_by": "cm_command_center_operator"
 }

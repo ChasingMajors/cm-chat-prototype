@@ -441,6 +441,7 @@
   function getAgentActionDisplayStatus(action) {
     const posture = getActionExecutionPosture(action);
     const status = String(action && action.status || "").toLowerCase();
+    if (isPendingVisualValidationAction(action)) return "Validate";
     if (posture.label === "Validate" && status !== "validated") return "Validate";
     if (status === "fix_applied") return "Retest Needed";
     if (status === "fix_attempted") return "Fix Attempted";
@@ -453,7 +454,7 @@
     if (posture && posture.label === "Validate") return "warning";
     if (status === "validated" || status === "done") return "opportunity";
     if (status === "failed" || status === "blocked") return "critical";
-    if (status === "known_issue" || status === "needs_admin" || status === "approval_required" || status === "fix_queued" || status === "fix_applied" || status === "fix_attempted") return "warning";
+    if (status === "known_issue" || status === "needs_admin" || status === "approval_required" || status === "fix_queued" || status === "fix_applied" || status === "fix_attempted" || status === "pending_visual_validation") return "warning";
     return "info";
   }
 
@@ -464,6 +465,10 @@
 
   function isPendingPublicValidationAction(action) {
     return String(action && action.status || "").toLowerCase() === "pending_public_validation";
+  }
+
+  function isPendingVisualValidationAction(action) {
+    return String(action && action.status || "").toLowerCase() === "pending_visual_validation";
   }
 
   function getActiveAgentActions() {
@@ -5204,11 +5209,13 @@
       },
       {
         label: "Validation proof",
-        ok: validationPassed || isPendingPublicValidationAction(action),
+        ok: validationPassed || isPendingPublicValidationAction(action) || isPendingVisualValidationAction(action),
         note: action && action.validationResult
           ? action.validationResult
           : isPendingPublicValidationAction(action)
             ? "Publish completed; waiting for public JSON propagation."
+            : isPendingVisualValidationAction(action)
+              ? "Public JSON passed; CV/ChatBot visual validation is next."
             : "No validation proof yet"
       }
     ];
@@ -5366,6 +5373,14 @@
         label: "Recheck Ready",
         className: "ready",
         detail: "Publish completed but public JSON was not visible yet. Run Agent Cycle to recheck automatically."
+      };
+    }
+
+    if (isPendingVisualValidationAction(action)) {
+      return {
+        label: "Validate",
+        className: "review",
+        detail: "Public JSON is live. Run Agent Cycle to start CV/ChatBot visual validation."
       };
     }
 
@@ -6243,6 +6258,7 @@
       const status = String(action.status || "").toLowerCase();
       if (!action.product) return false;
       if (status === "running" || status === "fix_queued") return false;
+      if (isPendingVisualValidationAction(action)) return true;
       const posture = getActionExecutionPosture(action);
       return posture.label === "Validate";
     });

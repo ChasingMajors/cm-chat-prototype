@@ -3288,7 +3288,9 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
   }
 
   const resultStatus = safeString_(result.status).trim().toLowerCase();
-  const finalStatus = result.ok && result.validated
+  const finalStatus = result.ok && result.pendingVisualValidation
+    ? "pending_visual_validation"
+    : result.ok && result.validated
     ? "validated"
     : resultStatus === "pending_public_validation"
       ? "pending_public_validation"
@@ -3316,7 +3318,7 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
     id: "log_" + Date.now(),
     ts: now,
     type: "auto_action",
-    title: finalStatus === "validated" ? "Full-auto action completed" : finalStatus === "failed" ? "Full-auto action failed" : finalStatus === "pending_public_validation" ? "Full-auto action pending public validation" : "Full-auto action needs review",
+    title: finalStatus === "validated" ? "Full-auto action completed" : finalStatus === "failed" ? "Full-auto action failed" : finalStatus === "pending_public_validation" ? "Full-auto action pending public validation" : finalStatus === "pending_visual_validation" ? "Full-auto action pending visual validation" : "Full-auto action needs review",
     detail: (action.product || action.type || "Action") + ": " + executionResult + " " + validationResult,
     status: finalStatus,
     product: action.product || "",
@@ -3332,6 +3334,7 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
     status: finalStatus,
     ok: !!result.ok,
     validated: !!result.validated,
+    pendingVisualValidation: !!result.pendingVisualValidation,
     executionResult: executionResult,
     validationResult: validationResult
   };
@@ -3483,7 +3486,7 @@ function runScheduledChecklistAutoAction_(action, key) {
   return {
     ok: true,
     validated: validated,
-    status: validated ? "validated" : "pending_public_validation",
+    status: validated ? "pending_visual_validation" : "pending_public_validation",
     sport: product.sport || action.sport || "",
     code: product.code || action.code || "",
     targetBucket: product.target_bucket || product.year || action.targetBucket || "",
@@ -3492,8 +3495,10 @@ function runScheduledChecklistAutoAction_(action, key) {
       ? "Checklist sheet write and JSON publish completed for " + (product.code || action.code || "product") + "."
       : "Checklist sheet write completed; published JSON validation is pending for " + (product.code || action.code || "product") + ".",
     validationResult: validated
-      ? "Published checklist JSON validated with " + publicRows + " rows."
+      ? "Published checklist JSON validated with " + publicRows + " rows. CV/ChatBot visual validation is pending."
       : "Checklist write completed, but published JSON is not visible yet. The agent will retry publish validation on the next sweep. " + publishDetail + " " + productDetail + " Recheck: " + summarizePublicChecklistValidation_(publicValidation)
+    ,
+    pendingVisualValidation: validated
   };
 }
 
@@ -3534,7 +3539,7 @@ function runScheduledChecklistPendingValidationAction_(action, key) {
   return {
     ok: true,
     validated: validated,
-    status: validated ? "validated" : attempts >= 3 ? "needs_review" : "pending_public_validation",
+    status: validated ? "pending_visual_validation" : attempts >= 3 ? "needs_review" : "pending_public_validation",
     sport: sport,
     code: code,
     targetBucket: targetBucket,
@@ -3543,8 +3548,10 @@ function runScheduledChecklistPendingValidationAction_(action, key) {
       ? "Pending checklist publish validation completed for " + code + "."
       : "Pending checklist publish validation rechecked for " + code + ".",
     validationResult: validated
-      ? "Published checklist JSON validated with " + publicRows + " rows."
+      ? "Published checklist JSON validated with " + publicRows + " rows. CV/ChatBot visual validation is pending."
       : "Published checklist JSON is still pending after " + attempts + " check(s). " + (publish ? summarizePublishResult_(publish) + " " : "") + detail + " Recheck: " + summarizePublicChecklistValidation_(publicValidation)
+    ,
+    pendingVisualValidation: validated
   };
 }
 
@@ -3651,11 +3658,13 @@ function runScheduledPrvAutoAction_(action, key) {
   return {
     ok: true,
     validated: validated,
-    status: validated ? "validated" : "needs_review",
+    status: validated ? "pending_visual_validation" : "needs_review",
     executionResult: "PRV sheet write and JSON publish completed for " + (product.code || action.code || "product") + ".",
     validationResult: validated
-      ? "Public PRV JSON validated with " + publicRows + " rows."
+      ? "Public PRV JSON validated with " + publicRows + " rows. Public PRV behavior validation is pending."
       : "PRV write completed, but public JSON validation needs review. " + (publishOk ? "Publish returned ok." : "Publish did not return ok.")
+    ,
+    pendingVisualValidation: validated
   };
 }
 

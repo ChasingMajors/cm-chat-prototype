@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:18:51.851Z",
+  "exported_at": "2026-06-07T21:18:56.834Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1856,12 +1856,34 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Bowman_Chrome_Baseball",
+    "backend_audit|stale_public_json|baseball|2017_Bowman_Chrome_Mini_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Bowman_Draft_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Bowman_High_Tek_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Bowman_Platinum_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Bowman_s_Best_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780867135232_vcw988",
+      "ts": "2026-06-07T21:18:55.232Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Bowman Chrome Baseball will be attempted by Run Agent Cycle.",
+      "status": "queued",
+      "product": "2017 Bowman Chrome Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780867132951_ep10nx",
+      "ts": "2026-06-07T21:18:52.951Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Bowman Chrome Mini Baseball will be attempted by Run Agent Cycle.",
+      "status": "queued",
+      "product": "2017 Bowman Chrome Mini Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780867130248_8i3ull",
       "ts": "2026-06-07T21:18:50.248Z",
@@ -2640,26 +2662,6 @@
       "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Allen & Ginter X Baseball -> pending_visual_validation (Published checklist JSON validated with 556 rows and 7 parallels. CV/ChatBot visual validation is pending.)",
       "status": "validated",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780865606274",
-      "ts": "2026-06-07T20:53:23.588Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Topps Allen & Ginter X Baseball: Pending checklist publish validation completed for 2017_Topps_Allen_Ginter_X_Baseball. Published checklist JSON validated with 556 rows and 7 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Topps Allen & Ginter X Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780865605768",
-      "ts": "2026-06-07T20:53:23.588Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     }
   ],
@@ -3824,6 +3826,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:18:53.291Z",
+  "saved_at": "2026-06-07T21:18:58.272Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:57:36.169Z",
+  "exported_at": "2026-06-07T19:58:00.329Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -188,7 +188,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:57:15.207Z",
-      "updatedAt": "2026-06-07T19:57:31.894Z"
+      "updatedAt": "2026-06-07T19:57:58.725Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps holiday baseball|2017_topps_holiday_baseball",
@@ -210,7 +210,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:57:13.048Z",
-      "updatedAt": "2026-06-07T19:57:30.695Z"
+      "updatedAt": "2026-06-07T19:57:57.475Z"
     },
     {
       "id": "visual_test|github_actions|2017 bowman holiday baseball|2017_topps_holiday_bowman_baseball",
@@ -550,7 +550,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.208Z",
-      "updatedAt": "2026-06-07T19:57:30.695Z",
+      "updatedAt": "2026-06-07T19:57:57.475Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:39:39.289Z"
     },
@@ -572,7 +572,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.208Z",
-      "updatedAt": "2026-06-07T19:57:31.895Z",
+      "updatedAt": "2026-06-07T19:57:58.726Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:39:59.471Z"
     },
@@ -1785,6 +1785,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862278726_pvlll2",
+      "ts": "2026-06-07T19:57:58.726Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps High Tek Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780862277476_pnxum6",
+      "ts": "2026-06-07T19:57:57.476Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Holiday Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780862254566_6nrwur",
       "ts": "2026-06-07T19:57:34.566Z",
       "type": "visual_test",
@@ -2563,26 +2583,6 @@
       "status": "loaded",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780861240780_90xjt1",
-      "ts": "2026-06-07T19:40:40.780Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780861234892",
-      "ts": "2026-06-07T19:40:32.293Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Heritage Minor League Baseball -> pending_visual_validation (Published checklist JSON validated with 450 rows and 18 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2967,7 +2967,7 @@
       "productName": "2017 Topps Holiday Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Baseball",
-      "updatedAt": "2026-06-07T19:57:30.692Z",
+      "updatedAt": "2026-06-07T19:57:57.472Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103154655,
@@ -2975,7 +2975,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Holiday Baseball",
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T19:57:12Z",
-      "checkedAt": "2026-06-07T19:57:30.692Z"
+      "checkedAt": "2026-06-07T19:57:57.472Z"
     },
     "baseball|2017_Topps_High_Tek_Baseball": {
       "status": "in_progress",
@@ -2990,7 +2990,7 @@
       "productName": "2017 Topps High Tek Baseball",
       "sport": "baseball",
       "code": "2017_Topps_High_Tek_Baseball",
-      "updatedAt": "2026-06-07T19:57:31.893Z",
+      "updatedAt": "2026-06-07T19:57:58.724Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103155471,
@@ -2998,7 +2998,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps High Tek Baseball",
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T19:57:14Z",
-      "checkedAt": "2026-06-07T19:57:31.893Z"
+      "checkedAt": "2026-06-07T19:57:58.724Z"
     },
     "baseball|2017_Topps_Heritage_Minor_League_Baseball": {
       "status": "in_progress",
@@ -3204,6 +3204,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:57:37.329Z",
+  "saved_at": "2026-06-07T19:58:01.410Z",
   "saved_by": "cm_command_center_operator"
 }

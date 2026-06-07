@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:40:35.952Z",
+  "exported_at": "2026-06-07T20:40:55.880Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 donruss optic baseball|2017_donruss_optic_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Donruss Optic Baseball",
+      "sport": "baseball",
+      "code": "2017_Donruss_Optic_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104198895",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T20:40:37.304Z",
+      "updatedAt": "2026-06-07T20:40:54.277Z"
+    },
     {
       "id": "visual_test|github_actions|2017 panini chronicles baseball|2017_panini_chronicles_baseball",
       "type": "visual_test",
@@ -1328,17 +1350,17 @@
       "sport": "baseball",
       "code": "2017_Donruss_Optic_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104198895",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.197Z",
-      "updatedAt": "2026-06-07T20:40:34.348Z"
+      "updatedAt": "2026-06-07T20:40:54.278Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Donruss_Baseball",
@@ -1799,29 +1821,29 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.183Z",
       "updatedAt": "2026-06-07T18:15:39.183Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Heritage_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Heritage Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Heritage_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1534 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.181Z",
-      "updatedAt": "2026-06-07T18:15:39.182Z"
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780864854278_y0q4pn",
+      "ts": "2026-06-07T20:40:54.278Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Donruss Optic Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780864837305_zrmqfp",
+      "ts": "2026-06-07T20:40:37.305Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Donruss Optic Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780864834350_kgjai5",
       "ts": "2026-06-07T20:40:34.350Z",
@@ -2601,26 +2623,6 @@
       "status": "queued",
       "product": "",
       "source": "agent_cycle"
-    },
-    {
-      "id": "log_1780862855739_iw9t3j",
-      "ts": "2026-06-07T20:07:35.739Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps Definitive Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862853224_q4s4k5",
-      "ts": "2026-06-07T20:07:33.224Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3313,6 +3315,29 @@
       "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
       "createdAt": "2026-06-07T20:38:29Z",
       "checkedAt": "2026-06-07T20:40:09.088Z"
+    },
+    "baseball|2017_Donruss_Optic_Baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-07T20:40:35.514Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104198895",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Donruss_Optic_Baseball",
+      "key": "baseball|2017_Donruss_Optic_Baseball",
+      "productName": "2017 Donruss Optic Baseball",
+      "sport": "baseball",
+      "code": "2017_Donruss_Optic_Baseball",
+      "updatedAt": "2026-06-07T20:40:54.275Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27104198895,
+      "runNumber": 50,
+      "displayTitle": "Visual Product Test - 2017 Donruss Optic Baseball",
+      "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
+      "createdAt": "2026-06-07T20:40:36Z",
+      "checkedAt": "2026-06-07T20:40:54.275Z"
     }
   },
   "known_issues": {},
@@ -3531,6 +3556,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:40:37.246Z",
+  "saved_at": "2026-06-07T20:40:57.155Z",
   "saved_by": "cm_command_center_operator"
 }

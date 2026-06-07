@@ -238,7 +238,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T13:25:56.906Z",
+      "updatedAt": "2026-06-07T13:30:02.349Z",
       "autoExecutedAt": "2026-06-07T12:48:48.332Z",
       "previousSport": "football"
     },
@@ -298,7 +298,7 @@
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-06T15:29:36.437Z",
-      "updatedAt": "2026-06-07T13:25:56.906Z"
+      "updatedAt": "2026-06-07T13:30:02.349Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
@@ -424,7 +424,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-uefa-womens-champions-league-soccer-card-checklist/",
       "createdAt": "2026-06-02T22:12:53.813Z",
-      "updatedAt": "2026-06-07T13:25:56.906Z"
+      "updatedAt": "2026-06-07T13:30:02.349Z"
     },
     {
       "id": "visual_test|github_actions|2025-26 topps chrome arsenal soccer|2025_26_topps_chrome_arsenal_soccer",
@@ -532,7 +532,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-extended-series-hockey-card-checklist/",
       "createdAt": "2026-05-28T22:16:59.267Z",
-      "updatedAt": "2026-06-07T13:25:56.906Z"
+      "updatedAt": "2026-06-07T13:30:02.349Z"
     },
     {
       "id": "source_watch|soccer|2025-26 panini's football efl soccer",
@@ -550,7 +550,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-05-28T22:16:59.264Z",
-      "updatedAt": "2026-06-07T13:25:56.906Z",
+      "updatedAt": "2026-06-07T13:30:02.349Z",
       "previousSport": "football"
     },
     {
@@ -708,15 +708,18 @@
       "sport": "basketball",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "known_issue",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "PRV source preview did not produce writable rows.",
+      "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
       "createdAt": "2026-05-20T00:30:18.944Z",
-      "updatedAt": "2026-05-29T13:57:41.025Z"
+      "updatedAt": "2026-06-07T13:30:02.349Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "autoExecutedAt": "2026-06-07T13:30:02.349Z"
     },
     {
       "id": "prv_source_review|slabsquatch_substack|2025 26 bowman s best university basketball baby",
@@ -917,6 +920,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780839150993",
+      "ts": "2026-06-07T13:30:02.349Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025/26 Topps Hoops Basketball -> known_issue (Source post appears paid/locked. Public HTML does not expose writable print-run rows.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780839150993",
+      "ts": "2026-06-07T13:30:02.349Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2025/26 Topps Hoops Basketball: PRV source preview did not produce writable rows. Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
+      "status": "known_issue",
+      "product": "2025/26 Topps Hoops Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780839150838",
+      "ts": "2026-06-07T13:30:02.349Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780838958071",
       "ts": "2026-06-07T13:25:56.906Z",
@@ -1686,36 +1719,6 @@
       "status": "failed",
       "product": "2025/26 Topps Hoops Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780763814643",
-      "ts": "2026-06-06T16:34:06.582Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780763645403_8itmdo",
-      "ts": "2026-06-06T16:34:05.403Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780763630283_68rhad",
-      "ts": "2026-06-06T16:33:50.283Z",
-      "type": "autonomy",
-      "title": "Autonomy mode changed",
-      "detail": "Mode set to Full auto.",
-      "status": "full_auto",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -1984,6 +1987,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T13:29:18.219Z",
+  "saved_at": "2026-06-07T13:32:31.034Z",
   "saved_by": "cm_command_center_operator"
 }

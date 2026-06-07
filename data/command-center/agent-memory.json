@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:03:14.713Z",
+  "exported_at": "2026-06-07T21:02:33.187Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1456,17 +1456,19 @@
       "sport": "baseball",
       "code": "2017_Panini_Elite_Extra_Edition_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "pending_visual_validation",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 835 rows / 31 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "executionResult": "Pending checklist publish validation completed for 2017_Panini_Elite_Extra_Edition_Baseball.",
+      "validationResult": "Published checklist JSON validated with 835 rows and 31 parallels. CV/ChatBot visual validation is pending.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.199Z",
-      "updatedAt": "2026-06-07T18:15:39.199Z"
+      "updatedAt": "2026-06-07T21:03:14.170Z",
+      "pendingValidationAttempts": 0,
+      "autoExecutedAt": "2026-06-07T21:03:14.170Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Diamond_Kings_Baseball",
@@ -1851,14 +1853,34 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780866193110_wozr2n",
-      "ts": "2026-06-07T21:03:13.110Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
+      "id": "log_1780866196360",
+      "ts": "2026-06-07T21:03:14.170Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Panini Elite Extra Edition Baseball -> pending_visual_validation (Published checklist JSON validated with 835 rows and 31 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "validated",
       "product": "",
-      "source": "command_center"
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780866196360",
+      "ts": "2026-06-07T21:03:14.170Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2017 Panini Elite Extra Edition Baseball: Pending checklist publish validation completed for 2017_Panini_Elite_Extra_Edition_Baseball. Published checklist JSON validated with 835 rows and 31 parallels. CV/ChatBot visual validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2017 Panini Elite Extra Edition Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780866196068",
+      "ts": "2026-06-07T21:03:14.170Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1780866151585_1ywxu8",
@@ -2629,26 +2651,6 @@
       "status": "pending_visual_validation",
       "product": "2017 Topps Archives Snapshots Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780865078064",
-      "ts": "2026-06-07T20:44:35.981Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780865072759_58wls7",
-      "ts": "2026-06-07T20:44:32.759Z",
-      "type": "autonomy",
-      "title": "Autonomy mode changed",
-      "detail": "Mode set to Full auto.",
-      "status": "full_auto",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -3766,6 +3768,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:03:15.844Z",
+  "saved_at": "2026-06-07T21:03:16.400Z",
   "saved_by": "cm_command_center_operator"
 }

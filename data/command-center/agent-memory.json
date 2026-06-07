@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:04:56.355Z",
+  "exported_at": "2026-06-07T21:05:41.726Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1500,17 +1500,17 @@
       "sport": "baseball",
       "code": "2017_Panini_Diamond_Kings_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 881 rows / 58 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.198Z",
-      "updatedAt": "2026-06-07T18:15:39.199Z"
+      "updatedAt": "2026-06-07T21:05:40.123Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Contenders_Draft_Picks_Baseball",
@@ -1854,6 +1854,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780866340124_ex5egl",
+      "ts": "2026-06-07T21:05:40.124Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2017 Panini Diamond Kings Baseball",
+      "source": "agent_action_queue"
+    },
     {
       "id": "log_1780866294753_1q31fj",
       "ts": "2026-06-07T21:04:54.753Z",
@@ -2641,16 +2651,6 @@
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
-      "product": "2017 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780865349716_tkyivm",
-      "ts": "2026-06-07T20:49:09.716Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
       "product": "2017 Topps Archives Baseball",
       "source": "github_actions"
     }
@@ -3793,6 +3793,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:04:57.708Z",
+  "saved_at": "2026-06-07T21:05:42.924Z",
   "saved_by": "cm_command_center_operator"
 }

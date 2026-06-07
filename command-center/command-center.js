@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc104-visual-queue-dashboard-v1-2026-06-07";
+  const COMMAND_CENTER_VERSION = "cc105-admin-run-queue-v1-2026-06-07";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -7,6 +7,7 @@
   const APPROVAL_KEY = "cm_command_center_opportunity_status_v1";
   const TASK_KEY = "cm_command_center_operator_tasks_v1";
   const AGENT_ACTION_KEY = "cm_command_center_agent_actions_v1";
+  const AGENT_RUN_QUEUE_KEY = "cm_command_center_agent_run_queue_v1";
   const ACTIVITY_LOG_KEY = "cm_command_center_activity_log_v1";
   const AUTONOMY_MODE_KEY = "cm_command_center_autonomy_mode_v1";
   const VISUAL_TEST_KEY = "cm_command_center_visual_tests_v1";
@@ -48,6 +49,7 @@
     approvals: readApprovals(),
     tasks: readTasks(),
     agentActions: readJsonStore(AGENT_ACTION_KEY, []),
+    agentRunQueue: readJsonStore(AGENT_RUN_QUEUE_KEY, []),
     activityLog: readJsonStore(ACTIVITY_LOG_KEY, []),
     autonomyMode: readAutonomyMode(),
     visualTests: readJsonStore(VISUAL_TEST_KEY, {}),
@@ -229,6 +231,13 @@
     scheduleBackendMemorySave();
   }
 
+  function writeAgentRunQueue() {
+    try {
+      localStorage.setItem(AGENT_RUN_QUEUE_KEY, JSON.stringify(state.agentRunQueue || []));
+    } catch (err) {}
+    scheduleBackendMemorySave();
+  }
+
   function writeActivityLog() {
     try {
       localStorage.setItem(ACTIVITY_LOG_KEY, JSON.stringify(state.activityLog.slice(0, 80)));
@@ -256,6 +265,7 @@
     writeApprovals();
     writeTasks();
     writeAgentActions();
+    writeAgentRunQueue();
     writeActivityLog();
     writeVisualTests();
     writeKnownIssues();
@@ -477,6 +487,104 @@
 
   function getResolvedAgentActions() {
     return (state.agentActions || []).filter(isResolvedAgentAction);
+  }
+
+  function normalizeRunQueue() {
+    const seen = new Set();
+    state.agentRunQueue = (Array.isArray(state.agentRunQueue) ? state.agentRunQueue : [])
+      .map(id => String(id || "").trim())
+      .filter(id => {
+        if (!id || seen.has(id)) return false;
+        seen.add(id);
+        return true;
+      });
+    return state.agentRunQueue;
+  }
+
+  function isActionInRunQueue(actionId) {
+    const id = String(actionId || "").trim();
+    if (!id) return false;
+    return normalizeRunQueue().includes(id);
+  }
+
+  function addActionToRunQueue(actionId) {
+    const id = String(actionId || "").trim();
+    const action = state.agentActions.find(item => item.id === id);
+    if (!action || isResolvedAgentAction(action)) return null;
+    normalizeRunQueue();
+    if (!state.agentRunQueue.includes(id)) {
+      state.agentRunQueue.unshift(id);
+      writeAgentRunQueue();
+    }
+    logActivity({
+      type: "agent_run_queue",
+      status: "queued",
+      product: action.product || "",
+      source: "admin",
+      title: "Added to Agent Run Queue",
+      detail: `${action.product || action.type || "Action"} will be attempted by Run Agent Cycle.`
+    });
+    renderAgentActions();
+    renderActionLanes();
+    renderActivityLog();
+    updateMemoryStatus("Action added to Agent Run Queue.", "queued");
+    return action;
+  }
+
+  function removeActionFromRunQueue(actionId, options) {
+    const opts = options || {};
+    const id = String(actionId || "").trim();
+    const before = normalizeRunQueue().length;
+    state.agentRunQueue = state.agentRunQueue.filter(item => item !== id);
+    if (state.agentRunQueue.length !== before) {
+      writeAgentRunQueue();
+      if (!opts.silent) {
+        const action = state.agentActions.find(item => item.id === id);
+        logActivity({
+          type: "agent_run_queue",
+          status: "removed",
+          product: action && action.product || "",
+          source: opts.source || "admin",
+          title: "Removed from Agent Run Queue",
+          detail: `${action && (action.product || action.type) || "Action"} was removed from the explicit run queue.`
+        });
+        renderActivityLog();
+      }
+    }
+  }
+
+  function clearResolvedRunQueueItems() {
+    const before = normalizeRunQueue().length;
+    const activeIds = new Set(getActiveAgentActions().map(action => action.id));
+    state.agentRunQueue = state.agentRunQueue.filter(id => activeIds.has(id));
+    if (state.agentRunQueue.length !== before) writeAgentRunQueue();
+  }
+
+  function getQueuedAgentActions(limit) {
+    clearResolvedRunQueueItems();
+    const max = Math.max(1, Math.min(20, Number(limit || 10)));
+    return normalizeRunQueue()
+      .map(id => state.agentActions.find(action => action.id === id))
+      .filter(action => action && !isResolvedAgentAction(action))
+      .slice(0, max);
+  }
+
+  function renderAgentRunQueueSummary() {
+    clearResolvedRunQueueItems();
+    const queuedActions = getQueuedAgentActions(12);
+    if (!queuedActions.length) return "";
+
+    return `
+      <div class="brief-item agent-run-queue-summary">
+        <strong>Admin Run Queue: ${formatNumber(queuedActions.length)} flagged job${queuedActions.length === 1 ? "" : "s"}</strong>
+        <span>Run Agent Cycle will attempt these first, then fall back to normal source watch and validation work.</span>
+        <div class="opp-meta run-queue-meta">
+          ${queuedActions.slice(0, 8).map(action => `
+            <span class="pill">${escapeHtml(action.product || action.code || action.type || "Action")} · ${escapeHtml(getAgentActionDisplayStatus(action))}</span>
+          `).join("")}
+        </div>
+      </div>
+    `;
   }
 
   function getAutonomyLabel(mode) {
@@ -945,6 +1053,7 @@
     const remembered = rememberResolvedSourceAction(action);
     if (remembered) writeSourceIgnores();
     state.agentActions = state.agentActions.filter(item => item.id !== id);
+    removeActionFromRunQueue(id, { silent: true, source: "admin" });
     writeAgentActions();
     logActivity({
       type: "agent_action",
@@ -4842,6 +4951,7 @@
       approvals: state.approvals || {},
       tasks: state.tasks || [],
       agent_actions: state.agentActions || [],
+      agent_run_queue: state.agentRunQueue || [],
       activity_log: state.activityLog || [],
       visual_tests: state.visualTests || {},
       known_issues: state.knownIssues || {},
@@ -4853,6 +4963,7 @@
   function hasLocalAgentMemory() {
     return !!(
       (state.agentActions || []).length ||
+      (state.agentRunQueue || []).length ||
       (state.activityLog || []).length ||
       (state.tasks || []).length ||
       Object.keys(state.visualTests || {}).length ||
@@ -4865,6 +4976,7 @@
     if (!els.memoryStatus) return;
     const counts = [
       `${formatNumber((state.agentActions || []).length)} actions`,
+      `${formatNumber((state.agentRunQueue || []).length)} queued jobs`,
       `${formatNumber((state.activityLog || []).length)} log entries`,
       `${formatNumber(Object.keys(state.knownIssues || {}).length)} known issues`,
       `${formatNumber(Object.keys(state.sourceIgnores || {}).length)} source ignores`,
@@ -4909,6 +5021,7 @@
     state.approvals = payload.approvals && typeof payload.approvals === "object" ? payload.approvals : {};
     state.tasks = Array.isArray(payload.tasks) ? payload.tasks : [];
     state.agentActions = Array.isArray(payload.agent_actions) ? payload.agent_actions : [];
+    state.agentRunQueue = Array.isArray(payload.agent_run_queue) ? payload.agent_run_queue : [];
     state.activityLog = Array.isArray(payload.activity_log) ? payload.activity_log : [];
     state.visualTests = payload.visual_tests && typeof payload.visual_tests === "object" ? payload.visual_tests : {};
     state.knownIssues = payload.known_issues && typeof payload.known_issues === "object" ? payload.known_issues : {};
@@ -5941,6 +6054,7 @@
       const retestNeeded = status === "fix_applied";
       const canCreateFixTask = !!fixPlan.steps.length && (status === "failed" || status === "blocked" || status === "known_issue");
       const isPrvKnownIssue = action.type === "prv_source_review" && status === "known_issue";
+      const inRunQueue = isActionInRunQueue(action.id);
       const canExecuteSourceImport = action.type === "source_import" &&
         (status === "approved" || status === "ready") &&
         !!(action.sourceUrl || action.runUrl) &&
@@ -5990,6 +6104,11 @@
           ` : ""}
           ${renderValidationChecklist(action)}
           <div class="opp-actions">
+            ${inRunQueue ? `
+              <button class="action-btn approve" type="button" data-action-remove-run-queue="${escapeHtml(action.id)}">Queued for Agent</button>
+            ` : `
+              <button class="action-btn approve primary-next" type="button" data-action-add-run-queue="${escapeHtml(action.id)}">Add to Run Queue</button>
+            `}
             ${retestNeeded ? `
               <button class="action-btn approve primary-next" type="button" data-action-visual-test="${escapeHtml(action.id)}">Run Retest</button>
             ` : ""}
@@ -6051,7 +6170,7 @@
       `
       : "";
 
-    els.agentActionList.innerHTML = activeHtml + resolvedHtml;
+    els.agentActionList.innerHTML = renderAgentRunQueueSummary() + activeHtml + resolvedHtml;
 
     els.agentActionList.querySelectorAll("[data-action-progress-step]").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -6079,6 +6198,21 @@
     els.agentActionList.querySelectorAll("[data-action-remove-yes]").forEach(btn => {
       btn.addEventListener("click", () => {
         removeAndRememberAgentAction(btn.dataset.actionRemoveYes);
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-add-run-queue]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        addActionToRunQueue(btn.dataset.actionAddRunQueue);
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-remove-run-queue]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        removeActionFromRunQueue(btn.dataset.actionRemoveRunQueue);
+        renderAgentActions();
+        renderActionLanes();
+        updateMemoryStatus("Action removed from Agent Run Queue.", "queued");
       });
     });
 
@@ -7046,7 +7180,230 @@
     return { ok: needsReview === 0, ran: pending.length, passed, needsReview, detail };
   }
 
+  function describeQueuedActionAttempt(action) {
+    const status = String(action && action.status || "").toLowerCase();
+    const type = String(action && action.type || "").toLowerCase();
+    const execution = String(action && action.executionResult || "").toLowerCase();
+    const posture = action ? getActionExecutionPosture(action) : null;
+
+    if (!action) return { kind: "missing", label: "Missing action", safe: false };
+    if (isResolvedAgentAction(action)) return { kind: "resolved", label: "Already resolved", safe: false };
+    if (status === "running" || status === "in_progress") {
+      const validation = String(action.validationResult || "").toLowerCase();
+      if (validation.includes("visual") || type === "visual_test") {
+        return { kind: "refresh_visual", label: "Refresh visual test status", safe: true };
+      }
+      return { kind: "skip_running", label: "Already running", safe: false };
+    }
+    if (status === "queued") {
+      const validation = String(action.validationResult || "").toLowerCase();
+      if (validation.includes("visual") || type === "visual_test") {
+        return { kind: "refresh_visual", label: "Refresh visual test status", safe: true };
+      }
+    }
+    if (status === "pending_visual_validation" || (posture && posture.label === "Validate")) {
+      return { kind: "visual_test", label: "Run CV/ChatBot visual test", safe: true };
+    }
+    if (status === "pending_public_validation") {
+      if (type === "prv_source_review" || type === "prv_publish") return { kind: "prv_public_recheck", label: "Recheck PRV public JSON", safe: true };
+      return { kind: "checklist_coverage_recheck", label: "Recheck checklist public JSON", safe: true };
+    }
+    if (status === "fix_applied" && action.product) return { kind: "visual_test", label: "Run retest after fix", safe: true };
+    if (type === "source_import") {
+      if ((status === "approved" || status === "ready" || hasAdminApproval(action)) && (action.sourceUrl || action.runUrl)) {
+        return { kind: "execute_import", label: "Write approved checklist import", safe: true };
+      }
+      if ((action.sourceUrl || action.runUrl) && !execution.includes("preview parsed") && !execution.includes("import preview")) {
+        return { kind: "checklist_preview", label: "Preview checklist source", safe: true };
+      }
+      return { kind: "needs_admin", label: "Checklist write needs approval or source details", safe: false };
+    }
+    if (type === "checklist_publish") {
+      if (hasAdminApproval(action) && (action.code || action.product)) return { kind: "publish_checklist", label: "Publish approved checklist JSON", safe: true };
+      if (action.product) return { kind: "checklist_coverage_recheck", label: "Recheck checklist public JSON", safe: true };
+      return { kind: "needs_admin", label: "Checklist publish needs product details", safe: false };
+    }
+    if (type === "prv_source_review") {
+      if (status === "known_issue" || status === "blocked" || status === "failed") return { kind: "create_fix_task", label: "Create repair task", safe: true };
+      if (hasAdminApproval(action) && (execution.includes("products rows") || execution.includes("prv index") || execution.includes("sheet write")) && action.code) {
+        return { kind: "publish_prv_json", label: "Publish approved PRV JSON", safe: true };
+      }
+      if (hasAdminApproval(action) && execution.includes("preview parsed") && (action.sourceUrl || action.runUrl)) {
+        return { kind: "execute_prv_import", label: "Write approved PRV data", safe: true };
+      }
+      if ((action.sourceUrl || action.runUrl) && !execution.includes("preview parsed") && !execution.includes("parser returned")) {
+        return { kind: "prv_preview", label: "Preview PRV source", safe: true };
+      }
+      if (action.code) return { kind: "prv_public_recheck", label: "Recheck PRV public JSON", safe: true };
+      return { kind: "needs_admin", label: "PRV write needs approval or product code", safe: false };
+    }
+    if (type === "prv_publish" && action.code) return { kind: "prv_public_recheck", label: "Recheck PRV public JSON", safe: true };
+    if (type === "prv_sync_incident") return { kind: "prv_sync_recovery", label: "Retry PRV sync recovery", safe: true };
+    if (type === "sentinel_incident") return { kind: "sentinel_incident_recovery", label: "Retry Sentinel self-test", safe: true };
+    if (status === "failed" || status === "blocked" || status === "known_issue") return { kind: "create_fix_task", label: "Create repair task", safe: true };
+    return { kind: "needs_admin", label: "No safe attempt is available yet", safe: false };
+  }
+
+  async function attemptQueuedAgentAction(action) {
+    const attempt = describeQueuedActionAttempt(action);
+    if (!action || !attempt.safe) {
+      return {
+        ok: false,
+        skipped: true,
+        action,
+        kind: attempt.kind,
+        detail: attempt.label
+      };
+    }
+
+    const sourceUrl = action.sourceUrl || action.runUrl || "";
+    logActivity({
+      type: "agent_run_queue",
+      status: "started",
+      product: action.product || "",
+      source: "admin_run_queue",
+      title: attempt.label,
+      detail: `${action.product || action.code || action.type} is being attempted from the Admin Run Queue.`
+    });
+    renderActivityLog();
+
+    if (attempt.kind === "refresh_visual") {
+      const plan = buildVisualTestPlanFromAction(action);
+      await refreshAgentVisualTestStatus(plan, { silent: true });
+      return { ok: true, action, kind: attempt.kind, detail: attempt.label };
+    }
+    if (attempt.kind === "visual_test") {
+      const plan = buildVisualTestPlanFromAction(action);
+      updateAgentAction(action.id, {
+        status: "running",
+        validationResult: "CV/ChatBot visual test requested by Admin Run Queue..."
+      });
+      renderAgentActions();
+      renderActionLanes();
+      renderVisualTestPlan(plan);
+      const data = await runAgentVisualTest(plan, { silent: true, silentPanel: true });
+      return { ok: !!(data && data.ok), action, kind: attempt.kind, detail: data && data.error ? data.error : attempt.label };
+    }
+    if (attempt.kind === "prv_public_recheck") {
+      await recheckPrvPublicData(action.code || "", action.id);
+      return { ok: true, action, kind: attempt.kind, detail: attempt.label };
+    }
+    if (attempt.kind === "checklist_coverage_recheck") {
+      await recheckActionCoverage(action.id);
+      return { ok: true, action, kind: attempt.kind, detail: attempt.label };
+    }
+    if (attempt.kind === "checklist_preview") {
+      await previewSourceImport(sourceUrl, action.sport || "", action.id);
+      return { ok: true, action, kind: attempt.kind, detail: attempt.label };
+    }
+    if (attempt.kind === "execute_import") {
+      await executeSourceImport(sourceUrl, action.sport || "", action.id);
+      return { ok: true, action, kind: attempt.kind, detail: attempt.label };
+    }
+    if (attempt.kind === "publish_checklist") {
+      await publishChecklistAction(action.id);
+      return { ok: true, action, kind: attempt.kind, detail: attempt.label };
+    }
+    if (attempt.kind === "prv_preview") {
+      await previewPrvSource(sourceUrl, action.sport || "", action.id);
+      return { ok: true, action, kind: attempt.kind, detail: attempt.label };
+    }
+    if (attempt.kind === "execute_prv_import") {
+      await executePrvSourceImport(sourceUrl, action.sport || "", action.id);
+      return { ok: true, action, kind: attempt.kind, detail: attempt.label };
+    }
+    if (attempt.kind === "publish_prv_json") {
+      await publishPrvVaultData(action.code || "", action.id);
+      return { ok: true, action, kind: attempt.kind, detail: attempt.label };
+    }
+    if (attempt.kind === "prv_sync_recovery") {
+      await attemptPrvSyncIncidentRecovery(action);
+      return { ok: true, action, kind: attempt.kind, detail: attempt.label };
+    }
+    if (attempt.kind === "sentinel_incident_recovery") {
+      await attemptSentinelIncidentRecovery(action);
+      return { ok: true, action, kind: attempt.kind, detail: attempt.label };
+    }
+    if (attempt.kind === "create_fix_task") {
+      const task = createFixTaskFromAgentAction(action);
+      renderOperatorTasks();
+      renderAgentActions();
+      renderActionLanes();
+      return { ok: true, action, kind: attempt.kind, detail: `Created ${task.title}.` };
+    }
+
+    return { ok: false, skipped: true, action, kind: attempt.kind, detail: attempt.label };
+  }
+
+  async function runAdminRunQueue() {
+    const queued = getQueuedAgentActions(10);
+    if (!queued.length) return { ok: true, ran: 0, detail: "No Admin Run Queue jobs found." };
+
+    renderAgentCycleMessage(
+      "Running Admin Run Queue",
+      `${queued.length} flagged job${queued.length === 1 ? "" : "s"} will be attempted before Sentinel chooses other work.`,
+      "info"
+    );
+
+    let attempted = 0;
+    let skipped = 0;
+    let failed = 0;
+    const summaries = [];
+
+    for (const action of queued) {
+      const fresh = state.agentActions.find(item => item.id === action.id);
+      if (!fresh || isResolvedAgentAction(fresh)) {
+        removeActionFromRunQueue(action.id, { silent: true, source: "agent_run_queue" });
+        continue;
+      }
+
+      try {
+        const result = await attemptQueuedAgentAction(fresh);
+        if (result && result.skipped) skipped += 1;
+        else attempted += 1;
+        if (result && result.ok === false && !result.skipped) failed += 1;
+
+        const current = state.agentActions.find(item => item.id === fresh.id);
+        if (current && isResolvedAgentAction(current)) {
+          removeActionFromRunQueue(current.id, { silent: true, source: "agent_run_queue" });
+        }
+        summaries.push(`${fresh.product || fresh.code || fresh.type}: ${result && result.detail || "attempted"}`);
+      } catch (err) {
+        failed += 1;
+        updateAgentAction(fresh.id, {
+          status: "failed",
+          executionResult: err && err.message ? err.message : "Admin Run Queue attempt failed."
+        });
+        summaries.push(`${fresh.product || fresh.code || fresh.type}: failed`);
+      }
+    }
+
+    clearResolvedRunQueueItems();
+    const remaining = getQueuedAgentActions(20).length;
+    const detail = `${attempted} attempted. ${skipped} skipped for approval/details. ${failed} failed. ${remaining} still queued.`;
+    logActivity({
+      type: "agent_run_queue",
+      status: failed || skipped || remaining ? "needs_review" : "validated",
+      source: "admin_run_queue",
+      title: "Admin Run Queue complete",
+      detail: `${detail} ${summaries.slice(0, 5).join(" ")}`
+    });
+    renderSentinelNotice("Admin Run Queue complete", detail, failed || skipped || remaining ? "warning" : "success");
+    renderSourceCheckMessage("Admin Run Queue complete", detail, failed || skipped || remaining ? "warning" : "success", { noFocus: true });
+    renderActivityLog();
+    renderAgentActions();
+    renderActionLanes();
+    renderRunSummary();
+
+    return { ok: failed === 0, attempted, skipped, failed, remaining, detail };
+  }
+
   async function runAgentCycle() {
+    const queued = getQueuedAgentActions(10);
+    if (queued.length) {
+      return runAdminRunQueue();
+    }
+
     const runningVisuals = getRunningVisualValidationBatch(5);
     if (runningVisuals.length) {
       return refreshRunningVisualValidationBatch({ limit: 5 });

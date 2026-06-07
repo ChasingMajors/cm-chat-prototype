@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:17:55.356Z",
+  "exported_at": "2026-06-07T20:18:22.515Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -154,11 +154,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Update_Series_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103625780",
       "sourceUrl": "",
       "bucket": "",
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:16:41.836Z",
-      "updatedAt": "2026-06-07T20:17:53.752Z"
+      "updatedAt": "2026-06-07T20:18:20.910Z"
     },
     {
       "id": "visual_test|github_actions|2017 panini national treasures baseball|2017_panini_national_treasures_baseball",
@@ -978,17 +978,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Update_Series_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Chrome_Update_Series_Baseball.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103625780",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.203Z",
-      "updatedAt": "2026-06-07T20:17:53.753Z",
+      "updatedAt": "2026-06-07T20:18:20.911Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:16:28.752Z"
     },
@@ -1815,6 +1815,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780863500912_h2lq1q",
+      "ts": "2026-06-07T20:18:20.912Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780863500911_8ygxuq",
+      "ts": "2026-06-07T20:18:20.911Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780863473753_y57hnv",
       "ts": "2026-06-07T20:17:53.753Z",
       "type": "visual_test",
@@ -2593,26 +2613,6 @@
       "status": "loaded",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780862403693_4hv6bh",
-      "ts": "2026-06-07T20:00:03.693Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780862397546",
-      "ts": "2026-06-07T19:59:55.018Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Dynasty Baseball -> pending_visual_validation (Published checklist JSON validated with 261 rows and 5 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3215,9 +3215,9 @@
       "checkedAt": "2026-06-07T20:15:42.311Z"
     },
     "baseball|2017_Topps_Chrome_Update_Series_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T20:16:40.329Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103625780",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3227,7 +3227,7 @@
       "productName": "2017 Topps Chrome Update Series Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Update_Series_Baseball",
-      "updatedAt": "2026-06-07T20:17:53.750Z",
+      "updatedAt": "2026-06-07T20:18:20.908Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103625780,
@@ -3235,7 +3235,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Chrome Update Series Baseball",
       "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
       "createdAt": "2026-06-07T20:16:41Z",
-      "checkedAt": "2026-06-07T20:17:53.750Z"
+      "checkedAt": "2026-06-07T20:18:20.908Z"
     }
   },
   "known_issues": {},
@@ -3454,6 +3454,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:17:56.599Z",
+  "saved_at": "2026-06-07T20:18:23.764Z",
   "saved_by": "cm_command_center_operator"
 }

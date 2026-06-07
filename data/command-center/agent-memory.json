@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:50:40.917Z",
+  "exported_at": "2026-06-07T20:51:00.429Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 bowman mega box chrome baseball|2017_bowman_mega_box_chrome_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "sport": "baseball",
+      "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104442514",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T20:50:41.999Z",
+      "updatedAt": "2026-06-07T20:50:58.815Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps archives baseball|2017_topps_archives_baseball",
       "type": "visual_test",
@@ -1498,17 +1520,17 @@
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104442514",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.195Z",
-      "updatedAt": "2026-06-07T20:50:39.314Z"
+      "updatedAt": "2026-06-07T20:50:58.815Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_High_Tek_Baseball",
@@ -1809,29 +1831,29 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.186Z",
       "updatedAt": "2026-06-07T18:15:39.186Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Series_1_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Series 1 Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Series_1_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1378 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.185Z",
-      "updatedAt": "2026-06-07T18:15:39.186Z"
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780865458815_ksebk3",
+      "ts": "2026-06-07T20:50:58.815Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780865442000_62v5j8",
+      "ts": "2026-06-07T20:50:42.000Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780865439315_lpvr0r",
       "ts": "2026-06-07T20:50:39.315Z",
@@ -2611,26 +2633,6 @@
       "status": "pending_visual_validation",
       "product": "2017 Topps Chrome Update Series Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780863393441",
-      "ts": "2026-06-07T20:16:28.752Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780863387327_hd9cjy",
-      "ts": "2026-06-07T20:16:27.327Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -3415,6 +3417,29 @@
       "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
       "createdAt": "2026-06-07T20:49:08Z",
       "checkedAt": "2026-06-07T20:50:21.539Z"
+    },
+    "baseball|2017_Bowman_Mega_Box_Chrome_Baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-07T20:50:40.505Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104442514",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Bowman_Mega_Box_Chrome_Baseball",
+      "key": "baseball|2017_Bowman_Mega_Box_Chrome_Baseball",
+      "productName": "2017 Bowman Mega Box Chrome Baseball",
+      "sport": "baseball",
+      "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
+      "updatedAt": "2026-06-07T20:50:58.814Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27104442514,
+      "runNumber": 54,
+      "displayTitle": "Visual Product Test - 2017 Bowman Mega Box Chrome Baseball",
+      "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
+      "createdAt": "2026-06-07T20:50:41Z",
+      "checkedAt": "2026-06-07T20:50:58.813Z"
     }
   },
   "known_issues": {},
@@ -3633,6 +3658,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:50:42.011Z",
+  "saved_at": "2026-06-07T20:51:01.661Z",
   "saved_by": "cm_command_center_operator"
 }

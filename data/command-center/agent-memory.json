@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:10:48.494Z",
+  "exported_at": "2026-06-07T20:10:53.245Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps clearly authentic baseball|2017_topps_clearly_authentic_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Clearly Authentic Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Clearly_Authentic_Baseball",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T20:10:51.626Z",
+      "updatedAt": "2026-06-07T20:10:51.627Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps definitive collection baseball|2017_topps_definitive_collection_baseball",
       "type": "visual_test",
@@ -890,17 +912,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Clearly_Authentic_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "needs_admin",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Clearly_Authentic_Baseball.",
-      "validationResult": "Published checklist JSON validated with 121 rows and 5 parallels. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.204Z",
-      "updatedAt": "2026-06-07T20:10:37.257Z",
+      "updatedAt": "2026-06-07T20:10:51.628Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:10:37.257Z"
     },
@@ -1767,8 +1789,38 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780863046891_qy3w6n",
-      "ts": "2026-06-07T20:10:46.891Z",
+      "id": "log_1780863051642_c6s3ww",
+      "ts": "2026-06-07T20:10:51.642Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 49 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Clearly Authentic Baseball -> pending_visual_validation (Published checklist JSON validated with 121 rows and 5 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780863051637_ys440j",
+      "ts": "2026-06-07T20:10:51.637Z",
+      "type": "visual_test",
+      "title": "Visual validation batch queued",
+      "detail": "1 CV/ChatBot visual test queued. 2017 Topps Clearly Authentic Baseball",
+      "status": "queued",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1780863051628_yazo0p",
+      "ts": "2026-06-07T20:10:51.628Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Topps Clearly Authentic Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780863048669_73p73q",
+      "ts": "2026-06-07T20:10:48.669Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -1777,8 +1829,8 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1780863046877_gyw1pl",
-      "ts": "2026-06-07T20:10:46.877Z",
+      "id": "log_1780863048657_8bkk3n",
+      "ts": "2026-06-07T20:10:48.657Z",
       "type": "memory",
       "title": "Agent memory imported",
       "detail": "Queue, log, approvals, known issues, and visual status were restored.",
@@ -2535,36 +2587,6 @@
       "status": "loaded",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780862230772_znugyk",
-      "ts": "2026-06-07T19:57:10.772Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780862225571",
-      "ts": "2026-06-07T19:57:02.234Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Finest Baseball -> pending_visual_validation (Published checklist JSON validated with 325 rows and 48 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780862225571",
-      "ts": "2026-06-07T19:57:02.234Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Topps Finest Baseball: Pending checklist publish validation completed for 2017_Topps_Finest_Baseball. Published checklist JSON validated with 325 rows and 48 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Topps Finest Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3119,6 +3141,23 @@
       "headSha": "ad0cd5ef3c6451bd9697b8fdba81e713415b20a6",
       "createdAt": "2026-06-07T20:07:35Z",
       "checkedAt": "2026-06-07T20:09:14.437Z"
+    },
+    "baseball|2017_Topps_Clearly_Authentic_Baseball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-07T20:10:49.865Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Topps_Clearly_Authentic_Baseball",
+      "key": "baseball|2017_Topps_Clearly_Authentic_Baseball",
+      "productName": "2017 Topps Clearly Authentic Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Clearly_Authentic_Baseball",
+      "updatedAt": "2026-06-07T20:10:51.626Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -3337,6 +3376,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:10:49.673Z",
+  "saved_at": "2026-06-07T20:10:54.450Z",
   "saved_by": "cm_command_center_operator"
 }

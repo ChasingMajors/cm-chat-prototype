@@ -26,7 +26,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-06-operator-cc81-auto-publish-retry";
+const CM_OPERATOR_VERSION = "2026-06-07-operator-cc82-queue-sport-repair";
 const CM_APP_DATA_BASE = "https://app.chasingmajors.com/data/v1";
 const CM_CHECKLISTCENTER_HOME = "https://www.checklistcenter.com/";
 const CM_CHECKLISTCENTER_POSTS_API = "https://www.checklistcenter.com/wp-json/wp/v2/posts?per_page=20&_fields=link,title,date,slug";
@@ -3070,6 +3070,7 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
   }
 
   const actions = Array.isArray(memory.agent_actions) ? memory.agent_actions : [];
+  normalizeQueuedSourceImportActions_(actions, now);
   const action = findNextScheduledAutoAction_(actions);
   if (!action) {
     return {
@@ -3210,6 +3211,75 @@ function validateScheduledAutoActionSafety_(action) {
   }
 
   return { ok: true, reason: "" };
+}
+
+function normalizeQueuedSourceImportActions_(actions, now) {
+  if (!Array.isArray(actions)) return;
+
+  actions.forEach(function(action) {
+    if (!action || action.type !== "source_import") return;
+
+    const sourceText = [
+      action.product || "",
+      action.sourceUrl || "",
+      action.runUrl || "",
+      action.code || ""
+    ].join(" ");
+    const inferredSport = inferSport_(sourceText);
+
+    if (inferredSport && inferredSport !== normalize_(action.sport)) {
+      action.previousSport = action.sport || "";
+      action.sport = inferredSport;
+      action.id = buildScheduledSourceActionId_({
+        sport: inferredSport,
+        matched_code: action.code || "",
+        title: action.product || "",
+        url: action.sourceUrl || action.runUrl || ""
+      });
+      action.updatedAt = now;
+      action.validationResult = "Sport corrected from " + action.previousSport + " to " + inferredSport + " before execution.";
+    }
+  });
+
+  const seen = {};
+  actions.forEach(function(action) {
+    if (!action || action.type !== "source_import") return;
+    const key = buildScheduledActionDedupeKey_(action);
+    if (!key) return;
+
+    const existing = seen[key];
+    if (!existing) {
+      seen[key] = action;
+      return;
+    }
+
+    const keep = choosePreferredScheduledAction_(existing, action);
+    const drop = keep === existing ? action : existing;
+    seen[key] = keep;
+
+    drop.status = "validated";
+    drop.adminDecision = "auto_deduped";
+    drop.executionResult = "Duplicate queued action collapsed into " + (keep.id || "the active action") + ".";
+    drop.validationResult = "Same source/product already handled by the active queue item.";
+    drop.updatedAt = now;
+  });
+}
+
+function buildScheduledActionDedupeKey_(action) {
+  const source = normalize_(action && (action.sourceUrl || action.runUrl || ""));
+  const product = normalize_(action && action.product);
+  const code = normalize_(action && action.code);
+  return source || code || product;
+}
+
+function choosePreferredScheduledAction_(a, b) {
+  const aStatus = safeString_(a && a.status).toLowerCase();
+  const bStatus = safeString_(b && b.status).toLowerCase();
+  if (aStatus === "validated" && bStatus !== "validated") return a;
+  if (bStatus === "validated" && aStatus !== "validated") return b;
+  if (normalize_(a && a.sport) === "soccer" && normalize_(b && b.sport) !== "soccer") return a;
+  if (normalize_(b && b.sport) === "soccer" && normalize_(a && a.sport) !== "soccer") return b;
+  return a;
 }
 
 function runScheduledChecklistAutoAction_(action, key) {
@@ -3410,14 +3480,18 @@ function isMemorySourceIgnored_(item, sourceIgnores) {
 function mergeScheduledSourceActions_(existingActions, sourceItems, now, mode) {
   const out = Array.isArray(existingActions) ? existingActions.slice() : [];
   const byId = {};
+  const byDedupeKey = {};
 
   out.forEach(function(action) {
     if (action && action.id) byId[action.id] = action;
+    const dedupeKey = buildScheduledActionDedupeKey_(action);
+    if (dedupeKey && !byDedupeKey[dedupeKey]) byDedupeKey[dedupeKey] = action;
   });
 
   sourceItems.forEach(function(item) {
-    const id = "source_watch|" + normalize_(item.sport || "") + "|" + normalize_(item.matched_code || item.title || "");
-    const existing = byId[id];
+    const id = buildScheduledSourceActionId_(item);
+    const dedupeKey = buildScheduledSourceDedupeKey_(item);
+    const existing = byId[id] || byDedupeKey[dedupeKey];
     if (isProtectedMemoryAction_(existing)) return;
     const patch = {
       id: id,
@@ -3438,14 +3512,27 @@ function mergeScheduledSourceActions_(existingActions, sourceItems, now, mode) {
       updatedAt: now
     };
 
-    if (existing) Object.assign(existing, patch);
+    if (existing) {
+      Object.assign(existing, patch);
+      byId[id] = existing;
+      if (dedupeKey) byDedupeKey[dedupeKey] = existing;
+    }
     else {
       byId[id] = patch;
+      if (dedupeKey) byDedupeKey[dedupeKey] = patch;
       out.unshift(patch);
     }
   });
 
   return out.slice(0, 80);
+}
+
+function buildScheduledSourceActionId_(item) {
+  return "source_watch|" + normalize_(item && item.sport || "") + "|" + normalize_(item && (item.matched_code || item.code || item.title || item.product || ""));
+}
+
+function buildScheduledSourceDedupeKey_(item) {
+  return normalize_(item && (item.url || item.source_url || item.sourceUrl || item.runUrl || item.matched_code || item.code || item.title || item.product || ""));
 }
 
 function mergeScheduledPrvActions_(existingActions, sourceItems, now, mode) {

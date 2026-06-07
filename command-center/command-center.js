@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc103-visual-queue-state-v1-2026-06-07";
+  const COMMAND_CENTER_VERSION = "cc104-visual-queue-dashboard-v1-2026-06-07";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -3632,7 +3632,7 @@
         + "&key=" + encodeURIComponent(key);
 
       const data = await fetchJson(url, { timeoutMs: 60000 });
-      renderVisualDispatchResult(data, plan);
+      renderVisualDispatchResult(data, plan, { silentPanel: !!opts.silentPanel });
       return data;
     } catch (err) {
       const message = err && err.message ? err.message : String(err);
@@ -4025,7 +4025,8 @@
     renderActivityLog();
   }
 
-  function renderVisualDispatchResult(data, plan) {
+  function renderVisualDispatchResult(data, plan, options) {
+    const opts = options || {};
     if (!data || !data.ok) {
       renderSourceCheckMessage(
         "Agent visual test failed",
@@ -4066,6 +4067,14 @@
       title: "Visual test queued",
       detail: "CV/ChatBot behavior check started."
     });
+
+    if (opts.silentPanel) {
+      scheduleVisualStatusPoll(plan, 1);
+      renderAgentActions();
+      renderActionLanes();
+      renderActivityLog();
+      return;
+    }
 
     els.sourceCheckResult.innerHTML = `
       <div class="visual-test-card">
@@ -6680,6 +6689,50 @@
       .slice(0, max);
   }
 
+  function renderVisualQueueSummary(input) {
+    if (!els.sourceCheckResult) return;
+    const selected = Array.isArray(input && input.selected) ? input.selected : [];
+    const queued = Array.isArray(input && input.queued) ? input.queued : [];
+    const failed = Array.isArray(input && input.failed) ? input.failed : [];
+    const running = getRunningVisualValidationBatch(20);
+
+    els.sourceCheckResult.innerHTML = `
+      <div class="visual-test-card">
+        <div class="opp-top">
+          <div>
+            <h3>CV/ChatBot Visual Test Queue</h3>
+            <p>${escapeHtml(input && input.detail ? input.detail : "Sentinel is queueing product behavior checks.")}</p>
+          </div>
+          <span class="badge ${failed.length ? "warning" : "info"}">${escapeHtml(queued.length ? "in flight" : "queued")}</span>
+        </div>
+        <div class="opp-meta">
+          <span class="pill">Selected: ${formatNumber(selected.length)}</span>
+          <span class="pill">Queued: ${formatNumber(queued.length)}</span>
+          <span class="pill">Running/In flight: ${formatNumber(running.length)}</span>
+          <span class="pill">Failed to queue: ${formatNumber(failed.length)}</span>
+        </div>
+        <div class="source-watch-list">
+          ${selected.slice(0, 10).map((action, index) => {
+            const isQueued = queued.some(item => item.id === action.id);
+            const isFailed = failed.some(item => item.id === action.id);
+            return `
+              <div class="source-watch-item">
+                <div class="opp-top">
+                  <div>
+                    <strong>${escapeHtml(action.product || action.code || "Product")}</strong>
+                    <p>${escapeHtml(isFailed ? "Visual test failed to queue." : isQueued ? "Visual test is queued in GitHub Actions." : "Waiting to dispatch visual test.")}</p>
+                  </div>
+                  <span class="badge ${isFailed ? "critical" : isQueued ? "info" : "warning"}">${isFailed ? "failed" : isQueued ? "queued" : (index + 1) + " of " + selected.length}</span>
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+        <div class="task-guardrail">Run Agent Cycle again to refresh queued visual tests and close passed/failed results.</div>
+      </div>
+    `;
+  }
+
   async function refreshRunningVisualValidationBatch(options) {
     const opts = options || {};
     const running = getRunningVisualValidationBatch(opts.limit || 5);
@@ -6739,6 +6792,8 @@
 
     let queued = 0;
     let failed = 0;
+    const queuedActions = [];
+    const failedActions = [];
     const labels = [];
 
     pending.forEach((action, index) => {
@@ -6749,6 +6804,12 @@
     });
     renderAgentActions();
     renderActionLanes();
+    renderVisualQueueSummary({
+      selected: pending,
+      queued: queuedActions,
+      failed: failedActions,
+      detail: `Dispatching ${pending.length} CV/ChatBot visual test${pending.length === 1 ? "" : "s"}.`
+    });
 
     for (const action of pending) {
       const plan = buildVisualTestPlanFromAction(action);
@@ -6759,17 +6820,25 @@
       renderAgentActions();
       renderActionLanes();
 
-      const data = await runAgentVisualTest(plan, { silent: true });
+      const data = await runAgentVisualTest(plan, { silent: true, silentPanel: true });
       if (data && data.ok) {
         queued += 1;
+        queuedActions.push(action);
         labels.push(action.product || action.code || "product");
       } else {
         failed += 1;
+        failedActions.push(action);
         updateAgentAction(action.id, {
           status: "failed",
           validationResult: data && data.error ? data.error : "Visual test dispatch failed."
         });
       }
+      renderVisualQueueSummary({
+        selected: pending,
+        queued: queuedActions,
+        failed: failedActions,
+        detail: `${queued} of ${pending.length} visual test${pending.length === 1 ? "" : "s"} queued so far.`
+      });
     }
 
     const detail = `${queued} CV/ChatBot visual test${queued === 1 ? "" : "s"} queued.${failed ? " " + failed + " failed to queue." : ""}`;
@@ -6781,6 +6850,12 @@
       detail: labels.length ? `${detail} ${labels.slice(0, 4).join("; ")}` : detail
     });
     renderSentinelNotice("Visual validation batch queued", detail, failed ? "warning" : "success");
+    renderVisualQueueSummary({
+      selected: pending,
+      queued: queuedActions,
+      failed: failedActions,
+      detail
+    });
     renderActivityLog();
     renderAgentActions();
     renderActionLanes();

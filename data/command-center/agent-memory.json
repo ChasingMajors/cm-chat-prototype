@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:55:39.391Z",
+  "exported_at": "2026-06-07T20:56:08.388Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -154,11 +154,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Allen_Ginter_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104534150",
       "sourceUrl": "",
       "bucket": "",
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:54:28.663Z",
-      "updatedAt": "2026-06-07T20:55:12.807Z"
+      "updatedAt": "2026-06-07T20:56:06.784Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps allen and ginter x baseball|2017_topps_allen_ginter_x_baseball",
@@ -176,11 +176,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Allen_Ginter_X_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104533402",
       "sourceUrl": "",
       "bucket": "",
@@ -188,7 +188,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:54:26.551Z",
-      "updatedAt": "2026-06-07T20:55:37.788Z"
+      "updatedAt": "2026-06-07T20:56:05.208Z"
     },
     {
       "id": "visual_test|github_actions|2017 bowman mega box chrome baseball|2017_bowman_mega_box_chrome_baseball",
@@ -1284,17 +1284,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Allen_Ginter_X_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Allen_Ginter_X_Baseball.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104533402",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.201Z",
-      "updatedAt": "2026-06-07T20:55:37.789Z",
+      "updatedAt": "2026-06-07T20:56:05.208Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:53:23.588Z"
     },
@@ -1306,17 +1306,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Allen_Ginter_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Allen_Ginter_Baseball.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104534150",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.201Z",
-      "updatedAt": "2026-06-07T20:55:12.807Z",
+      "updatedAt": "2026-06-07T20:56:06.784Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:54:15.797Z"
     },
@@ -1842,6 +1842,56 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780865766785_l10ww0",
+      "ts": "2026-06-07T20:56:06.785Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Topps Allen & Ginter Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780865766785_3v0c4d",
+      "ts": "2026-06-07T20:56:06.785Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Topps Allen & Ginter Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780865765209_5fn5b5",
+      "ts": "2026-06-07T20:56:05.209Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Topps Allen & Ginter X Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780865765209_7p1x29",
+      "ts": "2026-06-07T20:56:05.209Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Topps Allen & Ginter X Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780865739650_u4aj9u",
+      "ts": "2026-06-07T20:55:39.650Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Allen & Ginter Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780865737790_599y2z",
       "ts": "2026-06-07T20:55:37.790Z",
@@ -2590,56 +2640,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
       "product": "2017 Topps Luminaries Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864483309_e5plrw",
-      "ts": "2026-06-07T20:34:43.309Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864480724_8mgfw8",
-      "ts": "2026-06-07T20:34:40.724Z",
-      "type": "visual_test",
-      "title": "Visual test requested",
-      "detail": "Queue card requested CV/ChatBot validation.",
-      "status": "requested",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "agent_action_queue"
-    },
-    {
-      "id": "log_1780864456047_rns1vx",
-      "ts": "2026-06-07T20:34:16.047Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Chrome Sapphire Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864456046_zo2bn6",
-      "ts": "2026-06-07T20:34:16.046Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Chrome Sapphire Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864428787_kphwfn",
-      "ts": "2026-06-07T20:33:48.787Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Chrome Sapphire Baseball",
       "source": "github_actions"
     }
   ],
@@ -3450,9 +3450,9 @@
       "checkedAt": "2026-06-07T20:51:53.008Z"
     },
     "baseball|2017_Topps_Allen_Ginter_X_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T20:54:25.214Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104533402",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3462,7 +3462,7 @@
       "productName": "2017 Topps Allen & Ginter X Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Allen_Ginter_X_Baseball",
-      "updatedAt": "2026-06-07T20:55:37.786Z",
+      "updatedAt": "2026-06-07T20:56:05.205Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27104533402,
@@ -3470,12 +3470,12 @@
       "displayTitle": "Visual Product Test - 2017 Topps Allen & Ginter X Baseball",
       "headSha": "20851af5ab74cf0aca55b450a0783f21a5411171",
       "createdAt": "2026-06-07T20:54:26Z",
-      "checkedAt": "2026-06-07T20:55:37.786Z"
+      "checkedAt": "2026-06-07T20:56:05.205Z"
     },
     "baseball|2017_Topps_Allen_Ginter_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T20:54:27.326Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104534150",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3485,7 +3485,7 @@
       "productName": "2017 Topps Allen & Ginter Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Allen_Ginter_Baseball",
-      "updatedAt": "2026-06-07T20:55:12.804Z",
+      "updatedAt": "2026-06-07T20:56:06.783Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27104534150,
@@ -3493,7 +3493,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Allen & Ginter Baseball",
       "headSha": "20851af5ab74cf0aca55b450a0783f21a5411171",
       "createdAt": "2026-06-07T20:54:28Z",
-      "checkedAt": "2026-06-07T20:55:12.804Z"
+      "checkedAt": "2026-06-07T20:56:06.783Z"
     }
   },
   "known_issues": {},
@@ -3712,6 +3712,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:55:40.369Z",
+  "saved_at": "2026-06-07T20:56:09.522Z",
   "saved_by": "cm_command_center_operator"
 }

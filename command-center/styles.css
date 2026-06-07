@@ -1155,6 +1155,33 @@ h2 {
   color: #071833;
 }
 
+.known-issue-panel {
+  display: grid;
+  gap: 10px;
+  padding: 13px;
+  border: 1px solid rgba(245,158,11,0.24);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255,247,237,0.86), rgba(255,255,255,0.58));
+}
+
+.known-issue-panel strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #7c2d12;
+}
+
+.known-issue-panel span,
+.known-issue-panel li {
+  color: #6b4d2e;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.known-issue-panel ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
 .agent-action-kind-row {
   display: flex;
   flex-wrap: wrap;

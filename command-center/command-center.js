@@ -605,7 +605,8 @@
       if (
         item.status !== "missing" &&
         item.status !== "needs_review" &&
-        item.status !== "possible_update"
+        item.status !== "possible_update" &&
+        item.status !== "known_issue"
       ) {
         return false;
       }
@@ -640,10 +641,12 @@
         sport: item.sport || "",
         code: item.matched_code || "",
         riskLevel: item.status === "missing" ? "medium" : "low",
-        status: "approval_required",
+        status: item.status === "known_issue" ? "known_issue" : "approval_required",
         recommendedAction: item.recommended_action || (isPrv
           ? "Review source post, compare against PRV, then prepare update/build task if numbers are missing or stale."
           : "Preview source import, write product-scoped rows, publish JSON, validate CV/ChatBot."),
+        executionResult: item.status === "known_issue" ? "Source was scanned and held before auto execution." : "",
+        validationResult: item.status === "known_issue" ? (item.blocked_reason || item.reason || "Known source issue.") : "",
         sourceUrl: item.source_url || item.url || ""
       });
       if (action) createdOrUpdated += 1;
@@ -5353,8 +5356,10 @@
 
   function getAgentActionKindLabel(action) {
     const type = String(action && action.type || "").toLowerCase();
+    const status = String(action && action.status || "").toLowerCase();
     if (type === "sentinel_incident") return "Sentinel Incident";
     if (type === "prv_sync_incident") return "PRV Sync Failed";
+    if (type === "prv_source_review" && status === "known_issue") return "PRV Source Held";
     if (type === "source_import") return "New Checklist Found";
     if (type === "prv_source_review") return "New Print Run Found";
     if (type === "checklist_publish") return "Checklist Publish";
@@ -5369,6 +5374,35 @@
 
   function getActionProductName(action) {
     return String(action && (action.product || action.title || action.recommendedAction || "Unknown product"));
+  }
+
+  function getPrvKnownIssueReason(action) {
+    const validation = String(action && action.validationResult || "");
+    const execution = String(action && action.executionResult || "");
+    const combined = `${validation} ${execution}`.toLowerCase();
+    if (combined.includes("paid") || combined.includes("locked")) return "Locked source";
+    if (combined.includes("no writable") || combined.includes("no print-run rows") || combined.includes("no print run rows")) return "No writable rows";
+    if (combined.includes("blocked")) return "Blocked source";
+    return "Needs alternate source";
+  }
+
+  function renderPrvKnownIssuePanel(action) {
+    if (!action || action.type !== "prv_source_review" || String(action.status || "").toLowerCase() !== "known_issue") return "";
+    const reason = getPrvKnownIssueReason(action);
+    const source = action.sourceUrl || action.runUrl || "";
+    return `
+      <div class="known-issue-panel prv-known-issue-panel">
+        <div>
+          <strong>${escapeHtml(reason)}</strong>
+          <span>Sentinel found a PRV source, but it is not safe to auto-write. Use another source, add PRV data manually, or ignore this product if it is not worth tracking.</span>
+        </div>
+        <ul>
+          <li>No live write was attempted.</li>
+          <li>Auto-run will not spend a worker slot on this card.</li>
+          <li>${source ? "Source link is available for manual review." : "No source link is available."}</li>
+        </ul>
+      </div>
+    `;
   }
 
   function getActionProgressSteps(action) {
@@ -5577,6 +5611,7 @@
       const fixPlan = buildAgentActionFixPlan(action);
       const retestNeeded = status === "fix_applied";
       const canCreateFixTask = !!fixPlan.steps.length && (status === "failed" || status === "blocked" || status === "known_issue");
+      const isPrvKnownIssue = action.type === "prv_source_review" && status === "known_issue";
       const canExecuteSourceImport = action.type === "source_import" &&
         (status === "approved" || status === "ready") &&
         !!(action.sourceUrl || action.runUrl) &&
@@ -5610,6 +5645,7 @@
             ${action.source ? `<span class="pill">Source: ${escapeHtml(action.source)}</span>` : ""}
           </div>
           ${renderActionProgress(action)}
+          ${renderPrvKnownIssuePanel(action)}
           ${action.executionResult || action.validationResult ? `
             <div class="agent-action-results">
               ${action.executionResult ? `<span><strong>Execution</strong>${escapeHtml(action.executionResult)}</span>` : ""}
@@ -5636,12 +5672,18 @@
               <button class="action-btn approve" type="button" data-action-find-source-preview="${escapeHtml(action.id)}">Find Source / Preview Import</button>
               <button class="action-btn approve" type="button" data-action-publish-json="${escapeHtml(action.id)}">Publish JSON</button>
             ` : ""}
-            ${action.type === "prv_source_review" && (action.sourceUrl || action.runUrl) ? `
+            ${action.type === "prv_source_review" && (action.sourceUrl || action.runUrl) && !isPrvKnownIssue ? `
               <button class="action-btn approve" type="button" data-action-preview-prv="${escapeHtml(action.id)}">Preview PRV Source</button>
               <button class="action-btn approve" type="button" data-action-execute-prv="${escapeHtml(action.id)}">Write PRV Temp Data</button>
               ${action.code ? `<button class="action-btn approve" type="button" data-action-publish-prv="${escapeHtml(action.id)}">Publish PRV JSON</button>` : ""}
               ${action.code ? `<button class="action-btn" type="button" data-action-recheck-prv="${escapeHtml(action.id)}">Recheck PRV Public JSON</button>` : ""}
               <a class="action-btn" href="${escapeHtml(action.sourceUrl || action.runUrl)}" target="_blank" rel="noopener noreferrer">Open Source</a>
+            ` : ""}
+            ${isPrvKnownIssue ? `
+              ${action.sourceUrl || action.runUrl ? `<a class="action-btn" href="${escapeHtml(action.sourceUrl || action.runUrl)}" target="_blank" rel="noopener noreferrer">Open Source</a>` : ""}
+              <button class="action-btn approve" type="button" data-action-manual-prv="${escapeHtml(action.id)}">Add Manual PRV Data</button>
+              <button class="action-btn" type="button" data-action-keep-watching="${escapeHtml(action.id)}">Keep Watching</button>
+              <button class="action-btn ignore" type="button" data-action-ignore-future="${escapeHtml(action.id)}">Ignore Future</button>
             ` : ""}
             ${action.type === "prv_sync_incident" ? `
               <button class="action-btn approve primary-next" type="button" data-action-retry-prv-sync="${escapeHtml(action.id)}">Retry PRV Sync</button>
@@ -5858,6 +5900,56 @@
         renderActionLanes();
         renderActivityLog();
         updateMemoryStatus("Source ignore saved.", "admin rule");
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-keep-watching]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const action = updateAgentAction(btn.dataset.actionKeepWatching, {
+          status: "known_issue",
+          adminDecision: "keep_watching",
+          executionResult: "Admin asked Sentinel to keep watching this source without auto-writing.",
+          validationResult: "Held until the source exposes writable rows or an alternate source is available."
+        });
+        if (action) {
+          logActivity({
+            type: "prv_source_review",
+            status: "known_issue",
+            product: action.product || "",
+            source: "admin",
+            title: "PRV source kept on watch",
+            detail: `${action.product || "PRV source"} remains held. Sentinel will not auto-write from locked source HTML.`
+          });
+        }
+        renderAgentActions();
+        renderActionLanes();
+        renderActivityLog();
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-action-manual-prv]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const action = state.agentActions.find(item => item.id === btn.dataset.actionManualPrv);
+        if (!action) return;
+        updateAgentAction(action.id, {
+          status: "needs_admin",
+          adminDecision: "manual_prv_needed",
+          recommendedAction: "Add PRV rows manually from a trusted source, then run Sync PRV JSON and recheck the product.",
+          executionResult: "Manual PRV data path selected by admin.",
+          validationResult: "Waiting for trusted PRV rows outside the locked source."
+        });
+        logActivity({
+          type: "prv_source_review",
+          status: "needs_admin",
+          product: action.product || "",
+          source: "admin",
+          title: "Manual PRV data requested",
+          detail: `${action.product || "PRV product"} needs trusted manual PRV rows before publish.`
+        });
+        renderAgentActions();
+        renderActionLanes();
+        renderActivityLog();
+        renderSourceCheckMessage("Manual PRV path selected", "Review the source, add trusted PRV rows manually, then use Sync PRV JSON and Recheck PRV Public JSON.", "warning");
       });
     });
 
@@ -6551,6 +6643,49 @@
     return (state.activityLog || []).find(entry => wanted.includes(String(entry.status || "").toLowerCase()));
   }
 
+  function getLatestAgentSweepActivity() {
+    return (state.activityLog || []).find(entry => {
+      const type = String(entry.type || "").toLowerCase();
+      const title = String(entry.title || "").toLowerCase();
+      return type === "agent_sweep" || title.includes("backend agent sweep") || title.includes("scheduled agent sweep");
+    }) || null;
+  }
+
+  function summarizeHeldActions(actions) {
+    const held = (actions || []).filter(action => {
+      const status = String(action.status || "").toLowerCase();
+      return status === "known_issue" || status === "blocked" || status === "failed";
+    });
+    const lockedPrv = held.filter(action => action.type === "prv_source_review" && getPrvKnownIssueReason(action) === "Locked source");
+    const failed = held.filter(action => String(action.status || "").toLowerCase() === "failed");
+    const blocked = held.filter(action => String(action.status || "").toLowerCase() === "blocked");
+
+    if (!held.length) return "No held issues. Sentinel can continue with the next safe action.";
+    const parts = [];
+    if (lockedPrv.length) parts.push(`${formatNumber(lockedPrv.length)} locked PRV source${lockedPrv.length === 1 ? "" : "s"}`);
+    if (failed.length) parts.push(`${formatNumber(failed.length)} failed action${failed.length === 1 ? "" : "s"}`);
+    if (blocked.length) parts.push(`${formatNumber(blocked.length)} blocked action${blocked.length === 1 ? "" : "s"}`);
+    const other = held.length - lockedPrv.length - failed.length - blocked.length;
+    if (other > 0) parts.push(`${formatNumber(other)} other known issue${other === 1 ? "" : "s"}`);
+    return `${parts.join(", ")} held from auto execution.`;
+  }
+
+  function getNextAgentRecommendation(actions) {
+    const pendingValidation = (actions || []).find(action => String(action.status || "").toLowerCase() === "pending_public_validation");
+    if (pendingValidation) return `Let Sentinel recheck published JSON for ${pendingValidation.product || pendingValidation.code || "the pending product"}.`;
+
+    const needsAdmin = (actions || []).find(action => {
+      const status = String(action.status || "").toLowerCase();
+      return status === "needs_admin" || status === "approval_required";
+    });
+    if (needsAdmin) return `Review ${needsAdmin.product || needsAdmin.type || "the next action"} and approve only if the source/target scope is correct.`;
+
+    const lockedPrv = (actions || []).find(action => action.type === "prv_source_review" && String(action.status || "").toLowerCase() === "known_issue");
+    if (lockedPrv) return `Locked PRV sources are held. Choose Ignore Future, Keep Watching, or Add Manual PRV Data.`;
+
+    return "Run Agent Cycle again later, or run Deep Sheets Audit when you need source-of-truth verification.";
+  }
+
   function renderRunSummary() {
     if (!els.runSummaryList) return;
 
@@ -6565,50 +6700,53 @@
       return status === "failed" || status === "blocked" || status === "known_issue";
     });
     const critical = (state.opportunities || []).filter(item => item.severity === "critical");
-    const latestFailure = getLatestActivityByStatus(["failed", "needs_review", "blocked"]);
-    const latestSuccess = getLatestActivityByStatus(["validated", "completed", "imported", "exported", "queued"]);
-    const nextAction = pending[0] || actions.find(action => String(action.status || "").toLowerCase() === "needs_admin") || null;
+    const latestSweep = getLatestAgentSweepActivity();
+    const latestFailure = getLatestActivityByStatus(["failed", "needs_review", "blocked", "known_issue"]);
+    const latestSuccess = getLatestActivityByStatus(["validated", "completed", "imported", "exported", "queued", "saved"]);
+    const validated = resolved.filter(action => String(action.status || "").toLowerCase() === "validated");
+    const pendingValidation = actions.filter(action => String(action.status || "").toLowerCase() === "pending_public_validation");
     const mode = getAutonomyLabel(state.autonomyMode);
     const readiness = renderAutonomyReadiness();
-    const cycleStep = getAgentCycleStep();
+    const heldDetail = summarizeHeldActions(actions);
+    const nextRecommendation = getNextAgentRecommendation(actions);
 
     const cards = [
       {
-        title: "Operating Mode",
-        detail: `${mode}. ${state.autonomyMode === "full_auto" ? "Agent can run approved guardrail-safe work." : "Admin approval remains required before meaningful changes."}`,
-        badge: state.autonomyMode === "full_auto" ? "full auto" : "guarded"
+        title: "Last Sweep",
+        detail: latestSweep ? latestSweep.detail || latestSweep.status || "Sweep completed." : "No backend sweep has been logged yet.",
+        badge: latestSweep ? latestSweep.status || "logged" : "not run"
       },
       {
-        title: "Autonomy Readiness",
-        detail: readiness.detail,
+        title: "Checked",
+        detail: `Mode: ${mode}. ${readiness.detail}`,
         badge: readiness.label
       },
       {
-        title: "Current Queue",
-        detail: `${formatNumber(pending.length)} pending actions, ${formatNumber(resolved.length)} resolved with proof, ${formatNumber(blocked.length)} blocked or known issues.`,
-        badge: pending.length ? "action needed" : "clear"
+        title: "Changed",
+        detail: latestSuccess ? `${latestSuccess.title}: ${latestSuccess.detail || latestSuccess.status}` : "No new write, validation, save, or queue change recorded yet.",
+        badge: latestSuccess ? latestSuccess.status || "recorded" : "none"
       },
       {
-        title: "Audit Pressure",
+        title: "Held",
+        detail: heldDetail,
+        badge: blocked.length ? "held" : "clear"
+      },
+      {
+        title: "Validation",
+        detail: `${formatNumber(validated.length)} validated actions with proof. ${formatNumber(pendingValidation.length)} pending published JSON recheck${pendingValidation.length === 1 ? "" : "s"}.`,
+        badge: pendingValidation.length ? "pending" : "proof"
+      },
+      {
+        title: "Attention",
         detail: critical.length
-          ? `${formatNumber(critical.length)} critical items are active in the audit queue.`
-          : "No critical audit items detected in the current run.",
-        badge: critical.length ? "critical" : "healthy"
+          ? `${formatNumber(critical.length)} critical audit item${critical.length === 1 ? "" : "s"} active.`
+          : latestFailure ? `${latestFailure.title}: ${latestFailure.detail || latestFailure.status}` : "No critical audit items or failed agent actions logged.",
+        badge: critical.length ? "critical" : latestFailure ? latestFailure.status || "review" : "clear"
       },
       {
-        title: "Last Good Signal",
-        detail: latestSuccess ? `${latestSuccess.title}: ${latestSuccess.detail || latestSuccess.status}` : "No successful agent activity logged yet.",
-        badge: latestSuccess ? latestSuccess.status || "ok" : "none"
-      },
-      {
-        title: "Last Concern",
-        detail: latestFailure ? `${latestFailure.title}: ${latestFailure.detail || latestFailure.status}` : "No logged failures or review holds.",
-        badge: latestFailure ? latestFailure.status || "review" : "none"
-      },
-      {
-        title: "Agent Cycle",
-        detail: `${cycleStep.title}: ${cycleStep.detail}`,
-        badge: cycleStep.kind.replace(/_/g, " ")
+        title: "Recommended Next",
+        detail: nextRecommendation,
+        badge: pending.length || blocked.length ? "admin" : "agent"
       }
     ];
 

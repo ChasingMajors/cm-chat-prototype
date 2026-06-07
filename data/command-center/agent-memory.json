@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:43:25.928Z",
+  "exported_at": "2026-06-07T19:43:53.438Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:43:06.803Z",
-      "updatedAt": "2026-06-07T19:43:24.325Z"
+      "updatedAt": "2026-06-07T19:43:51.835Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps heritage baseball|2017_topps_heritage_baseball",
@@ -458,7 +458,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.207Z",
-      "updatedAt": "2026-06-07T19:43:24.326Z"
+      "updatedAt": "2026-06-07T19:43:51.836Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gold_Label_Baseball",
@@ -1763,6 +1763,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780861431836_vjowy8",
+      "ts": "2026-06-07T19:43:51.836Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Gypsy Queen Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780861404326_fcvgdb",
       "ts": "2026-06-07T19:43:24.326Z",
       "type": "visual_test",
@@ -2551,16 +2561,6 @@
       "status": "started",
       "product": "2025-26 Topps Hoops Basketball",
       "source": "admin"
-    },
-    {
-      "id": "log_1780851427357_rrez0m",
-      "ts": "2026-06-07T16:57:07.357Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2026 Topps Series 2 Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2784,7 +2784,7 @@
       "productName": "2017 Topps Gypsy Queen Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gypsy_Queen_Baseball",
-      "updatedAt": "2026-06-07T19:43:24.322Z",
+      "updatedAt": "2026-06-07T19:43:51.833Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27102825509,
@@ -2792,7 +2792,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Gypsy Queen Baseball",
       "headSha": "cdc73b972c9c7f245381d4d2df399be8b4214353",
       "createdAt": "2026-06-07T19:43:06Z",
-      "checkedAt": "2026-06-07T19:43:24.322Z"
+      "checkedAt": "2026-06-07T19:43:51.833Z"
     }
   },
   "known_issues": {},
@@ -2975,6 +2975,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:43:27.078Z",
+  "saved_at": "2026-06-07T19:43:54.570Z",
   "saved_by": "cm_command_center_operator"
 }

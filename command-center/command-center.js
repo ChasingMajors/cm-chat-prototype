@@ -2118,7 +2118,7 @@
       const data = await postOperatorJson(endpoint, {
         action: "runScheduledAgentSweep",
         key,
-        mode: "deep_sheets",
+        mode: "quick_json",
         maxAutoActions: 1,
         skipPrvSync: true,
         fastMode: true

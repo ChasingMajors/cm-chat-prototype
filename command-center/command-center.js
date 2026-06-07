@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc101-visual-close-loop-v1-2026-06-07";
+  const COMMAND_CENTER_VERSION = "cc102-visual-batch-ten-v1-2026-06-07";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -6655,7 +6655,7 @@
   }
 
   function getPendingVisualValidationBatch(limit) {
-    const max = Math.max(1, Math.min(5, Number(limit || 3)));
+    const max = Math.max(1, Math.min(10, Number(limit || 10)));
     return getActiveAgentActions()
       .filter(action => {
         if (!isPendingVisualValidationAction(action)) return false;
@@ -6720,7 +6720,7 @@
 
   async function runPendingVisualValidationBatch(options) {
     const opts = options || {};
-    const pending = getPendingVisualValidationBatch(opts.limit || 3);
+    const pending = getPendingVisualValidationBatch(opts.limit || 10);
     if (!pending.length) return { ok: true, queued: 0, detail: "No pending visual validations found." };
 
     if (!readOperatorEndpoint() || !readOperatorKey()) {
@@ -6872,11 +6872,11 @@
     }
 
     await loadBackendAgentMemory();
-    const visualBatch = getPendingVisualValidationBatch(3);
+    const visualBatch = getPendingVisualValidationBatch(10);
     let visualSummary = "";
     let visualQueuedCount = 0;
     if (visualBatch.length) {
-      const visualResult = await runPendingVisualValidationBatch({ silentStart: true, limit: 3 });
+      const visualResult = await runPendingVisualValidationBatch({ silentStart: true, limit: 10 });
       visualQueuedCount = Number(visualResult && visualResult.queued || 0);
       visualSummary = visualResult && visualResult.queued
         ? ` Queued ${visualResult.queued} CV/ChatBot visual test${visualResult.queued === 1 ? "" : "s"}.`
@@ -6970,9 +6970,9 @@
       return runBackendAgentDrainCycle();
     }
 
-    const visualBatch = getPendingVisualValidationBatch(3);
+    const visualBatch = getPendingVisualValidationBatch(10);
     if (visualBatch.length > 1) {
-      return runPendingVisualValidationBatch({ limit: 3 });
+      return runPendingVisualValidationBatch({ limit: 10 });
     }
 
     const pendingBatch = getPendingPublicValidationBatch(6);

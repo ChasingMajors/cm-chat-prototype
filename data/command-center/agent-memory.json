@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:37:45.404Z",
+  "exported_at": "2026-06-07T20:38:12.518Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -154,11 +154,11 @@
       "sport": "baseball",
       "code": "2017_Panini_Contenders_Draft_Picks_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104101547",
       "sourceUrl": "",
       "bucket": "",
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:36:31.788Z",
-      "updatedAt": "2026-06-07T20:37:43.801Z"
+      "updatedAt": "2026-06-07T20:38:10.913Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps chrome sapphire baseball|2017_topps_chrome_baseball_complete_set_sapphire_edition",
@@ -1266,17 +1266,17 @@
       "sport": "baseball",
       "code": "2017_Panini_Contenders_Draft_Picks_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104101547",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.198Z",
-      "updatedAt": "2026-06-07T20:37:43.801Z"
+      "updatedAt": "2026-06-07T20:38:10.914Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Chronicles_Baseball",
@@ -1820,6 +1820,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780864690915_mfiuyl",
+      "ts": "2026-06-07T20:38:10.915Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Panini Contenders Draft Picks Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780864690915_zasnrh",
+      "ts": "2026-06-07T20:38:10.915Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Panini Contenders Draft Picks Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780864663802_ipdwmr",
       "ts": "2026-06-07T20:37:43.802Z",
@@ -2599,26 +2619,6 @@
       "status": "in_progress",
       "product": "2017 Topps Diamond Icons Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780862580396_nstpyf",
-      "ts": "2026-06-07T20:03:00.396Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Diamond Icons Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862563010_s5sf7s",
-      "ts": "2026-06-07T20:02:43.010Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 54 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Diamond Icons Baseball -> pending_visual_validation (Published checklist JSON validated with 546 rows and 26 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3267,9 +3267,9 @@
       "checkedAt": "2026-06-07T20:34:16.042Z"
     },
     "baseball|2017_Panini_Contenders_Draft_Picks_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T20:36:30.224Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104101547",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3279,7 +3279,7 @@
       "productName": "2017 Panini Contenders Draft Picks Baseball",
       "sport": "baseball",
       "code": "2017_Panini_Contenders_Draft_Picks_Baseball",
-      "updatedAt": "2026-06-07T20:37:43.799Z",
+      "updatedAt": "2026-06-07T20:38:10.911Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27104101547,
@@ -3287,7 +3287,7 @@
       "displayTitle": "Visual Product Test - 2017 Panini Contenders Draft Picks Baseball",
       "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
       "createdAt": "2026-06-07T20:36:31Z",
-      "checkedAt": "2026-06-07T20:37:43.799Z"
+      "checkedAt": "2026-06-07T20:38:10.911Z"
     }
   },
   "known_issues": {},
@@ -3506,6 +3506,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:37:46.552Z",
+  "saved_at": "2026-06-07T20:38:13.821Z",
   "saved_by": "cm_command_center_operator"
 }

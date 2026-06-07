@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:59:29.079Z",
+  "exported_at": "2026-06-07T21:59:42.914Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -256,6 +256,16 @@
     "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780869581310_8ixjke",
+      "ts": "2026-06-07T21:59:41.310Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync started",
+      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
+      "status": "started",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780869567476_u4jos9",
       "ts": "2026-06-07T21:59:27.476Z",
@@ -1045,16 +1055,6 @@
       "status": "in_progress",
       "product": "2017 Panini Elite Extra Edition Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780866205462_0azhcz",
-      "ts": "2026-06-07T21:03:25.462Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 18 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Panini Elite Extra Edition Baseball -> pending_visual_validation (Published checklist JSON validated with 835 rows and 31 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2974,6 +2974,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:59:30.407Z",
+  "saved_at": "2026-06-07T21:59:44.010Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T22:10:06.773Z",
+  "exported_at": "2026-06-07T22:10:30.600Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -176,11 +176,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Tribute_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27106287757",
       "sourceUrl": "",
       "bucket": "",
@@ -188,7 +188,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T22:09:16.385Z",
-      "updatedAt": "2026-06-07T22:10:00.821Z"
+      "updatedAt": "2026-06-07T22:10:28.523Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps new era baseball|2017_topps_new_era_baseball",
@@ -210,7 +210,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T22:09:13.625Z",
-      "updatedAt": "2026-06-07T22:09:59.069Z"
+      "updatedAt": "2026-06-07T22:10:26.644Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -252,7 +252,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.210Z",
-      "updatedAt": "2026-06-07T22:09:59.069Z"
+      "updatedAt": "2026-06-07T22:10:26.644Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball",
@@ -324,25 +324,54 @@
       "sport": "baseball",
       "code": "2016_Topps_Tribute_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "run_queue_approved",
       "executionResult": "Large checklist has no parallels",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27106287757",
       "sourceUrl": "",
       "bucket": "2016",
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.191Z",
-      "updatedAt": "2026-06-07T22:10:00.821Z"
+      "updatedAt": "2026-06-07T22:10:28.523Z"
     }
   ],
   "agent_run_queue": [
     "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
-    "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Tribute_Baseball",
     "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780870228524_efkcez",
+      "ts": "2026-06-07T22:10:28.524Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2016 Topps Tribute Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780870228523_3opawf",
+      "ts": "2026-06-07T22:10:28.523Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2016 Topps Tribute Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780870226644_xq3c4e",
+      "ts": "2026-06-07T22:10:26.644Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps New Era Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780870205171_gmjggx",
       "ts": "2026-06-07T22:10:05.171Z",
@@ -1112,36 +1141,6 @@
       "status": "covered",
       "product": "2016 Topps Update Series Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780867152231_5c2d60",
-      "ts": "2026-06-07T21:19:12.231Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2016 Topps Update Series Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780867152227_9gqw0i",
-      "ts": "2026-06-07T21:19:12.227Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2016 Topps Update Series Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2016 Topps Update Series Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780867152223_0vwrux",
-      "ts": "2026-06-07T21:19:12.223Z",
-      "type": "agent_cycle",
-      "title": "Running Admin Run Queue",
-      "detail": "8 flagged jobs will be attempted before Sentinel chooses other work.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -2101,7 +2100,7 @@
       "productName": "2017 Topps New Era Baseball",
       "sport": "baseball",
       "code": "2017_Topps_New_Era_Baseball",
-      "updatedAt": "2026-06-07T22:09:59.067Z",
+      "updatedAt": "2026-06-07T22:10:26.638Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27106286853,
@@ -2109,12 +2108,12 @@
       "displayTitle": "Visual Product Test - 2017 Topps New Era Baseball",
       "headSha": "0b464a837c7f679086b307e6db5b95086df58f85",
       "createdAt": "2026-06-07T22:09:13Z",
-      "checkedAt": "2026-06-07T22:09:59.067Z"
+      "checkedAt": "2026-06-07T22:10:26.638Z"
     },
     "baseball|2016_Topps_Tribute_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T22:09:14.658Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27106287757",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2124,7 +2123,7 @@
       "productName": "2016 Topps Tribute Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tribute_Baseball",
-      "updatedAt": "2026-06-07T22:10:00.819Z",
+      "updatedAt": "2026-06-07T22:10:28.521Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27106287757,
@@ -2132,7 +2131,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tribute Baseball",
       "headSha": "0b464a837c7f679086b307e6db5b95086df58f85",
       "createdAt": "2026-06-07T22:09:15Z",
-      "checkedAt": "2026-06-07T22:10:00.819Z"
+      "checkedAt": "2026-06-07T22:10:28.521Z"
     },
     "baseball|2016_Topps_Update_Series_Baseball": {
       "status": "in_progress",
@@ -3130,6 +3129,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T22:10:07.830Z",
+  "saved_at": "2026-06-07T22:10:31.715Z",
   "saved_by": "cm_command_center_operator"
 }

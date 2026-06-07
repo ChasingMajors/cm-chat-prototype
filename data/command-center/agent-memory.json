@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T12:48:48.567Z",
+  "exported_at": "2026-06-07T12:52:32.003Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -135,16 +135,16 @@
       "sport": "soccer",
       "code": "",
       "riskLevel": "medium",
-      "status": "validated",
+      "status": "needs_admin",
       "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
-      "executionResult": "Checklist sheet write and JSON publish completed for 2025_26_panini_s_football_efl_soccer.",
-      "validationResult": "Public checklist JSON validated with 620 rows.",
+      "executionResult": "Checklist sheet write completed; JSON publish needs retry for 2025_26_panini_s_football_efl_soccer.",
+      "validationResult": "Checklist write completed, but public JSON validation needs review. Publish returned published_validation_needs_review. Public recheck: Product code not found in public checklist JSON yet.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-06-07T03:39:15.855Z",
-      "updatedAt": "2026-06-07T12:48:48.332Z",
-      "autoExecutedAt": "2026-06-07T12:48:48.332Z"
+      "updatedAt": "2026-06-07T03:39:15.855Z",
+      "autoExecutedAt": "2026-06-07T03:39:15.855Z"
     },
     {
       "id": "prv_watch|basketball|2025-26 topps hoops basketball",
@@ -233,13 +233,13 @@
       "status": "needs_admin",
       "recommendedAction": "Create approval task: inspect source checklist, import into Football source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
-      "executionResult": "Checklist sheet write completed; JSON publish needs review for 2025_26_panini_s_football_efl_soccer.",
-      "validationResult": "Checklist write completed, but public JSON validation needs review. No spreadsheet configured for football 2025-26 Checked football 2025-26 code 2025_26_panini_s_football_efl_soccer. Public recheck: Product code not found in public checklist JSON yet.",
+      "executionResult": "Checklist sheet write completed; JSON publish needs retry for 2025_26_panini_s_football_efl_soccer.",
+      "validationResult": "Checklist write completed, but public JSON validation needs review. No spreadsheet configured for football 2025-26 Public recheck: Product code not found in public checklist JSON yet.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-paninis-football-efl-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T12:48:48.332Z",
-      "autoExecutedAt": "2026-06-07T12:48:48.332Z"
+      "updatedAt": "2026-06-07T03:30:04.800Z",
+      "autoExecutedAt": "2026-06-07T03:30:04.800Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps chrome uefa women's champions league soccer",
@@ -257,7 +257,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-uefa-womens-champions-league-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T12:48:48.332Z"
+      "updatedAt": "2026-06-07T03:39:15.855Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps gold bundesliga soccer",
@@ -275,7 +275,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-gold-bundesliga-soccer-card-checklist/",
       "createdAt": "2026-06-06T16:11:13.256Z",
-      "updatedAt": "2026-06-07T12:48:48.332Z"
+      "updatedAt": "2026-06-07T03:39:15.855Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -293,7 +293,7 @@
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-06T15:29:36.437Z",
-      "updatedAt": "2026-06-07T12:48:48.332Z"
+      "updatedAt": "2026-06-07T03:39:15.855Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
@@ -909,43 +909,13 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780836744448",
-      "ts": "2026-06-07T12:48:48.332Z",
+      "id": "log_1780836750399_70gi37",
+      "ts": "2026-06-07T12:52:30.399Z",
       "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 2 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 2 run. 2025-26 Panini's Football EFL Soccer -> validated (Public checklist JSON validated with 620 rows.); 2025-26 Panini's Football EFL Soccer -> needs_admin (Checklist write completed, but public JSON validation needs review. No spreadsheet configured for football 2025-26 Check)",
+      "title": "Backend Agent Sweep complete",
+      "detail": "Checklist: 2 actions. PRV: 2 actions. PRV sync: passed. Auto: 2 ran. 2025-26 Panini's Football EFL Soccer -> validated (Public checklist JSON validated with 620 rows.); 2025-26 Panini's Football EFL Soccer -> needs_admin (Checklist write completed, but public JSON validation needs review. No spreadsheet configured for football 2025-26 Check)",
       "status": "needs_review",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780836744448",
-      "ts": "2026-06-07T12:48:48.332Z",
-      "type": "auto_action",
-      "title": "Full-auto action needs review",
-      "detail": "2025-26 Panini's Football EFL Soccer: Checklist sheet write completed; JSON publish needs review for 2025_26_panini_s_football_efl_soccer. Checklist write completed, but public JSON validation needs review. No spreadsheet configured for football 2025-26 Checked football 2025-26 code 2025_26_panini_s_football_efl_soccer. Public recheck: Product code not found in public checklist JSON yet.",
-      "status": "needs_admin",
-      "product": "2025-26 Panini's Football EFL Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780836712987",
-      "ts": "2026-06-07T12:48:48.332Z",
-      "type": "auto_action",
-      "title": "Full-auto action completed",
-      "detail": "2025-26 Panini's Football EFL Soccer: Checklist sheet write and JSON publish completed for 2025_26_panini_s_football_efl_soccer. Public checklist JSON validated with 620 rows.",
-      "status": "validated",
-      "product": "2025-26 Panini's Football EFL Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780836683938",
-      "ts": "2026-06-07T12:48:48.332Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     },
     {
@@ -1707,6 +1677,36 @@
       "status": "needs_review",
       "product": "2025 Topps Cosmic Chrome Football",
       "source": "operator_backend"
+    },
+    {
+      "id": "log_1780441043843_bf52r8",
+      "ts": "2026-06-02T22:57:23.843Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "3,120 checklist rows and 233 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2026 Topps Series 2 Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780440989017_c9rhr5",
+      "ts": "2026-06-02T22:56:29.017Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025 Topps Cosmic Chrome Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780440981110_fs3w0q",
+      "ts": "2026-06-02T22:56:21.110Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025 Topps Cosmic Chrome Football",
+      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1975,6 +1975,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T12:52:24.487Z",
+  "saved_at": "2026-06-07T12:52:34.297Z",
   "saved_by": "cm_command_center_operator"
 }

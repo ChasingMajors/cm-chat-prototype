@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:00:57.987Z",
+  "exported_at": "2026-06-07T20:01:20.324Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -198,11 +198,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Heritage_High_Number_Baseball",
       "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Visual validation complete.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103224044",
       "sourceUrl": "",
       "bucket": "",
@@ -210,7 +210,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:00:06.654Z",
-      "updatedAt": "2026-06-07T20:00:51.549Z"
+      "updatedAt": "2026-06-07T20:01:18.721Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps heritage minor league baseball|2017_topps_heritage_minor_league_baseball",
@@ -672,17 +672,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Heritage_High_Number_Baseball",
       "riskLevel": "high",
-      "status": "needs_admin",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Heritage_High_Number_Baseball.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103224044",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.208Z",
-      "updatedAt": "2026-06-07T20:00:51.550Z",
+      "updatedAt": "2026-06-07T20:01:18.721Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:55:11.509Z"
     },
@@ -1793,6 +1793,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862478722_xtolci",
+      "ts": "2026-06-07T20:01:18.722Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Topps Heritage High Number Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780862478722_ozdci1",
+      "ts": "2026-06-07T20:01:18.722Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Topps Heritage High Number Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780862456385_hi6bdr",
       "ts": "2026-06-07T20:00:56.385Z",
       "type": "visual_test",
@@ -2571,26 +2591,6 @@
       "status": "validated",
       "product": "2017 Topps Gold Label Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780861588888_g6w985",
-      "ts": "2026-06-07T19:46:28.889Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780861561855_co5bdl",
-      "ts": "2026-06-07T19:46:01.855Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3032,9 +3032,9 @@
       "checkedAt": "2026-06-07T19:58:55.381Z"
     },
     "baseball|2017_Topps_Heritage_High_Number_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T20:00:04.956Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103224044",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3044,7 +3044,7 @@
       "productName": "2017 Topps Heritage High Number Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Heritage_High_Number_Baseball",
-      "updatedAt": "2026-06-07T20:00:51.546Z",
+      "updatedAt": "2026-06-07T20:01:18.719Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103224044,
@@ -3052,7 +3052,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Heritage High Number Baseball",
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T20:00:06Z",
-      "checkedAt": "2026-06-07T20:00:51.545Z"
+      "checkedAt": "2026-06-07T20:01:18.719Z"
     },
     "baseball|2017_Topps_Finest_Baseball": {
       "status": "in_progress",
@@ -3281,6 +3281,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:00:59.425Z",
+  "saved_at": "2026-06-07T20:01:21.639Z",
   "saved_by": "cm_command_center_operator"
 }

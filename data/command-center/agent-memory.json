@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T18:15:41.449Z",
+  "exported_at": "2026-06-07T19:28:43.329Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1749,6 +1749,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780860521726_ws7ltk",
+      "ts": "2026-06-07T19:28:41.726Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1780860521722_elgjhf",
+      "ts": "2026-06-07T19:28:41.722Z",
+      "type": "agent_cycle",
+      "title": "Self-healing pending validations",
+      "detail": "6 pending public validation items found. Sentinel is handing the batch to the backend worker so stale JSON can be republished when needed.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
       "id": "log_1780856139211_5gxpjk",
       "ts": "2026-06-07T18:15:39.211Z",
       "type": "deep_backend_audit",
@@ -2527,26 +2547,6 @@
       "status": "pending_public_validation",
       "product": "2025-26 Topps Gold Bundesliga Soccer",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780838311676",
-      "ts": "2026-06-07T13:15:51.041Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780838149864_ealfog",
-      "ts": "2026-06-07T13:15:49.864Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -2915,6 +2915,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T18:15:42.647Z",
+  "saved_at": "2026-06-07T19:28:44.685Z",
   "saved_by": "cm_command_center_operator"
 }

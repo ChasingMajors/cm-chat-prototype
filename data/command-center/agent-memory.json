@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T14:37:46.978Z",
+  "exported_at": "2026-06-07T15:19:36.865Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -921,6 +921,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780845575210_zbgz22",
+      "ts": "2026-06-07T15:19:35.210Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, one safe auto action, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
       "id": "log_1780843064841_p8q50e",
       "ts": "2026-06-07T14:37:44.841Z",
       "type": "memory",
@@ -1709,16 +1719,6 @@
       "status": "loaded",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780765428886_1rx09o",
-      "ts": "2026-06-06T17:03:48.886Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -1987,6 +1987,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T14:37:48.104Z",
+  "saved_at": "2026-06-07T15:19:38.309Z",
   "saved_by": "cm_command_center_operator"
 }

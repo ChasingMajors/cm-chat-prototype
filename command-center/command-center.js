@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc98-pending-validation-batch-v1-2026-06-07";
+  const COMMAND_CENTER_VERSION = "cc99-agent-cycle-drain-v1-2026-06-07";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -2336,7 +2336,8 @@
     renderRunSummary();
   }
 
-  async function runBackendAgentSweep() {
+  async function runBackendAgentSweep(options) {
+    options = options || {};
     const endpoint = readOperatorEndpoint();
     const key = readOperatorKey();
     if (!endpoint || !key) {
@@ -2349,20 +2350,22 @@
       return null;
     }
 
-    renderSentinelNotice(
-      "Backend Agent Sweep running",
-      "Sentinel is checking Checklist Center, SlabSquatch PRV sources, a bounded batch of safe auto work, and backend memory. Full PRV sync runs separately.",
-      "info"
-    );
-    renderSourceCheckMessage("Backend Agent Sweep running", "Fast sweep runs from Apps Script and writes queue findings to backend memory. Use Sync PRV JSON for a full PRV publish pass.", "info", { noFocus: true });
-    logActivity({
-      type: "agent_sweep",
-      status: "started",
-      source: "command_center",
-      title: "Backend Agent Sweep started",
-      detail: "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update."
-    });
-    renderActivityLog();
+    if (!options.silent) {
+      renderSentinelNotice(
+        options.wave ? `Backend Agent Sweep wave ${options.wave}` : "Backend Agent Sweep running",
+        "Sentinel is checking Checklist Center, SlabSquatch PRV sources, a bounded batch of safe auto work, and backend memory. Full PRV sync runs separately.",
+        "info"
+      );
+      renderSourceCheckMessage("Backend Agent Sweep running", "Fast sweep runs from Apps Script and writes queue findings to backend memory. Use Sync PRV JSON for a full PRV publish pass.", "info", { noFocus: true });
+      logActivity({
+        type: "agent_sweep",
+        status: "started",
+        source: "command_center",
+        title: options.wave ? `Backend Agent Sweep wave ${options.wave} started` : "Backend Agent Sweep started",
+        detail: "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update."
+      });
+      renderActivityLog();
+    }
 
     try {
       const data = await postOperatorJson(endpoint, {
@@ -2395,16 +2398,18 @@
       const detail = `Checklist: ${formatNumber(checklistCount)} action${checklistCount === 1 ? "" : "s"}. PRV: ${formatNumber(prvCount)} action${prvCount === 1 ? "" : "s"}. PRV sync: ${prvSyncSkipped ? "skipped" : (prvSyncOk ? "passed" : "needs review")}.${autoText}`;
       const severity = checklistCount || prvCount || (!prvSyncSkipped && !prvSyncOk) || (autoAction && autoAction.ran && autoAction.status !== "validated") ? "warning" : "success";
 
-      logActivity({
-        type: "agent_sweep",
-        status: severity === "success" ? "validated" : "needs_review",
-        source: "operator_backend",
-        title: "Backend Agent Sweep complete",
-        detail
-      });
-      renderActivityLog();
-      renderSentinelNotice("Backend Agent Sweep complete", detail, severity);
-      renderSourceCheckMessage("Backend Agent Sweep complete", detail, severity, { noFocus: true });
+      if (!options.silent) {
+        logActivity({
+          type: "agent_sweep",
+          status: severity === "success" ? "validated" : "needs_review",
+          source: "operator_backend",
+          title: options.wave ? `Backend Agent Sweep wave ${options.wave} complete` : "Backend Agent Sweep complete",
+          detail
+        });
+        renderActivityLog();
+        renderSentinelNotice("Backend Agent Sweep complete", detail, severity);
+        renderSourceCheckMessage("Backend Agent Sweep complete", detail, severity, { noFocus: true });
+      }
       await loadBackendAgentMemory();
       return data;
     } catch (err) {
@@ -6638,6 +6643,114 @@
       .slice(0, max);
   }
 
+  function countActiveSafeAutoCandidates() {
+    return getActiveAgentActions().filter(action => {
+      const status = String(action.status || "").toLowerCase();
+      const type = String(action.type || "").toLowerCase();
+      if (status === "running" || status === "failed" || status === "blocked" || status === "known_issue") return false;
+      if (type !== "source_import" && type !== "checklist_publish" && type !== "prv_source_review" && type !== "prv_publish") return false;
+      if (status === "pending_visual_validation") return false;
+      if (status === "pending_public_validation") return !!(action.code || action.product);
+      return !!(action.sourceUrl || action.runUrl || action.code);
+    }).length;
+  }
+
+  function getBackendSweepAutoCount(data) {
+    const autoActions = data && data.auto_actions ? data.auto_actions : null;
+    if (autoActions && autoActions.ran) return Number(autoActions.count || 0);
+    const autoAction = data && data.auto_action ? data.auto_action : null;
+    if (autoAction && autoAction.ran) return 1;
+    return 0;
+  }
+
+  function getBackendSweepStopReason(data) {
+    const autoActions = data && data.auto_actions ? data.auto_actions : null;
+    if (autoActions && autoActions.reason) return autoActions.reason;
+    const autoAction = data && data.auto_action ? data.auto_action : null;
+    if (autoAction && autoAction.reason) return autoAction.reason;
+    return "";
+  }
+
+  async function runBackendAgentDrainCycle() {
+    if (!readOperatorEndpoint() || !readOperatorKey()) {
+      return runBackendAgentSweep();
+    }
+
+    const maxWaves = 4;
+    let waves = 0;
+    let totalAuto = 0;
+    let stopReason = "";
+    const waveSummaries = [];
+
+    renderAgentCycleMessage(
+      "Running Agent Cycle",
+      "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
+      "info"
+    );
+
+    for (let wave = 1; wave <= maxWaves; wave += 1) {
+      const safeBefore = countActiveSafeAutoCandidates();
+      if (wave > 1 && safeBefore <= 0) {
+        stopReason = "No local safe queue candidates remain.";
+        break;
+      }
+
+      const data = await runBackendAgentSweep({ silent: true, wave });
+      waves += 1;
+      const autoCount = getBackendSweepAutoCount(data);
+      totalAuto += autoCount;
+      stopReason = getBackendSweepStopReason(data) || "";
+      const summary = data && data.auto_actions && data.auto_actions.summary
+        ? data.auto_actions.summary
+        : data && data.auto_action
+          ? `${data.auto_action.product || data.auto_action.type || "action"} -> ${data.auto_action.status || data.auto_action.reason || "complete"}`
+          : stopReason || "No backend auto action result.";
+      waveSummaries.push(`Wave ${wave}: ${summary}`);
+
+      if (!data || data.ok === false) {
+        stopReason = data && data.error ? data.error : "Backend sweep returned an issue.";
+        break;
+      }
+
+      if (autoCount <= 0) {
+        stopReason = stopReason || "No safe auto-executable action found.";
+        break;
+      }
+
+      if (data.auto_actions && data.auto_actions.results && data.auto_actions.results.some(result => result && result.status && result.status !== "validated")) {
+        stopReason = "A wave ended with an item needing validation or admin review.";
+        break;
+      }
+    }
+
+    await loadBackendAgentMemory();
+    const activeCount = getActiveAgentActions().length;
+    const detail = `${waves} wave${waves === 1 ? "" : "s"} ran. ${totalAuto} safe action${totalAuto === 1 ? "" : "s"} executed. ${activeCount} active queue item${activeCount === 1 ? "" : "s"} remain.${stopReason ? " Stopped because: " + stopReason : ""}`;
+
+    logActivity({
+      type: "agent_cycle",
+      status: activeCount ? "needs_review" : "validated",
+      source: "operator_backend",
+      title: "Agent Cycle drain complete",
+      detail: `${detail} ${waveSummaries.slice(0, 4).join(" ")}`
+    });
+    renderActivityLog();
+    renderSentinelNotice("Agent Cycle complete", detail, activeCount ? "warning" : "success");
+    renderSourceCheckMessage("Agent Cycle complete", detail, activeCount ? "warning" : "success", { noFocus: true });
+    renderAgentActions();
+    renderActionLanes();
+    renderRunSummary();
+
+    return {
+      ok: true,
+      waves,
+      totalAuto,
+      activeCount,
+      stopReason,
+      summaries: waveSummaries
+    };
+  }
+
   async function runPendingPublicValidationBatch() {
     const pending = getPendingPublicValidationBatch(6);
     if (!pending.length) return { ok: true, ran: 0, detail: "No pending public validations found." };
@@ -6648,7 +6761,7 @@
         `${pending.length} pending public validation item${pending.length === 1 ? "" : "s"} found. Sentinel is handing the batch to the backend worker so stale JSON can be republished when needed.`,
         "info"
       );
-      return runBackendAgentSweep();
+      return runBackendAgentDrainCycle();
     }
 
     renderAgentCycleMessage(
@@ -6689,6 +6802,10 @@
   }
 
   async function runAgentCycle() {
+    if (readOperatorEndpoint() && readOperatorKey() && countActiveSafeAutoCandidates() > 1) {
+      return runBackendAgentDrainCycle();
+    }
+
     const pendingBatch = getPendingPublicValidationBatch(6);
     if (pendingBatch.length > 1) {
       return runPendingPublicValidationBatch();

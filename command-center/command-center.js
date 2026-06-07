@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc100-agent-visual-batch-v1-2026-06-07";
+  const COMMAND_CENTER_VERSION = "cc101-visual-close-loop-v1-2026-06-07";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -1207,6 +1207,14 @@
             : action.recommendedAction,
         runUrl: runUrl || action.runUrl || ""
       });
+
+      if (isFailed && !state.tasks.some(task => task.sourceId === action.id && task.kind === "fix")) {
+        createFixTaskFromAgentAction(Object.assign({}, action, {
+          status: "failed",
+          validationResult,
+          runUrl: runUrl || action.runUrl || ""
+        }));
+      }
     });
 
     if (isPassed) {
@@ -1217,6 +1225,15 @@
         source: "github_actions",
         title: "Product action validated",
         detail: `${actions.length} matching queue item${actions.length === 1 ? "" : "s"} now have visual proof.`
+      });
+    } else if (isFailed) {
+      logActivity({
+        type: "operator_task",
+        status: "queued",
+        product: plan.productName || "",
+        source: "github_actions",
+        title: "Repair task created from visual failure",
+        detail: "Sentinel created a fix task so the failed CV/ChatBot behavior has a clear repair path."
       });
     }
 
@@ -6649,6 +6666,58 @@
       .slice(0, max);
   }
 
+  function getRunningVisualValidationBatch(limit) {
+    const max = Math.max(1, Math.min(8, Number(limit || 5)));
+    return getActiveAgentActions()
+      .filter(action => {
+        const type = String(action.type || "").toLowerCase();
+        const status = String(action.status || "").toLowerCase();
+        if (type !== "visual_test" && type !== "source_import" && type !== "checklist_publish") return false;
+        if (status !== "queued" && status !== "running" && status !== "in_progress") return false;
+        const validation = String(action.validationResult || "").toLowerCase();
+        return validation.includes("visual") || type === "visual_test";
+      })
+      .slice(0, max);
+  }
+
+  async function refreshRunningVisualValidationBatch(options) {
+    const opts = options || {};
+    const running = getRunningVisualValidationBatch(opts.limit || 5);
+    if (!running.length) return { ok: true, checked: 0, detail: "No running visual tests to refresh." };
+
+    if (!readOperatorEndpoint() || !readOperatorKey()) {
+      return { ok: false, checked: 0, detail: "Backend URL or admin key is missing." };
+    }
+
+    let checked = 0;
+    let closed = 0;
+    let failed = 0;
+    for (const action of running) {
+      const plan = buildVisualTestPlanFromAction(action);
+      await refreshAgentVisualTestStatus(plan, { silent: true });
+      checked += 1;
+      const fresh = state.agentActions.find(item => item.id === action.id) || action;
+      const status = String(fresh.status || "").toLowerCase();
+      if (status === "validated") closed += 1;
+      if (status === "failed" || status === "fix_queued") failed += 1;
+    }
+
+    const detail = `${checked} visual test${checked === 1 ? "" : "s"} refreshed. ${closed} passed. ${failed} need repair.`;
+    if (!opts.silent) {
+      logActivity({
+        type: "visual_test",
+        status: failed ? "needs_review" : "checked",
+        source: "agent_cycle",
+        title: "Visual test statuses refreshed",
+        detail
+      });
+      renderSentinelNotice("Visual tests refreshed", detail, failed ? "warning" : "success");
+      renderActivityLog();
+    }
+
+    return { ok: failed === 0, checked, closed, failed, detail };
+  }
+
   async function runPendingVisualValidationBatch(options) {
     const opts = options || {};
     const pending = getPendingVisualValidationBatch(opts.limit || 3);
@@ -6892,6 +6961,11 @@
   }
 
   async function runAgentCycle() {
+    const runningVisuals = getRunningVisualValidationBatch(5);
+    if (runningVisuals.length) {
+      return refreshRunningVisualValidationBatch({ limit: 5 });
+    }
+
     if (readOperatorEndpoint() && readOperatorKey() && countActiveSafeAutoCandidates() > 1) {
       return runBackendAgentDrainCycle();
     }

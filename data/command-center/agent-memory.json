@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:16:39.048Z",
+  "exported_at": "2026-06-07T20:16:43.455Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps chrome update series baseball|2017_topps_chrome_update_series_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Chrome_Update_Series_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T20:16:41.836Z",
+      "updatedAt": "2026-06-07T20:16:41.837Z"
+    },
     {
       "id": "visual_test|github_actions|2017 panini national treasures baseball|2017_panini_national_treasures_baseball",
       "type": "visual_test",
@@ -956,17 +978,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Update_Series_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Chrome_Update_Series_Baseball.",
-      "validationResult": "Published checklist JSON validated with 196 rows and 11 parallels. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.203Z",
-      "updatedAt": "2026-06-07T20:16:28.752Z",
+      "updatedAt": "2026-06-07T20:16:41.838Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:16:28.752Z"
     },
@@ -1789,32 +1811,42 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.179Z",
       "updatedAt": "2026-06-07T18:15:39.179Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Chrome_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Chrome Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Chrome_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 459 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.178Z",
-      "updatedAt": "2026-06-07T18:15:39.179Z"
     }
   ],
   "activity_log": [
     {
-      "id": "log_1780863397444_en7oxe",
-      "ts": "2026-06-07T20:16:37.444Z",
+      "id": "log_1780863401854_eqpmpe",
+      "ts": "2026-06-07T20:16:41.854Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 46 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Chrome Update Series Baseball -> pending_visual_validation (Published checklist JSON validated with 196 rows and 11 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780863401849_elau1c",
+      "ts": "2026-06-07T20:16:41.849Z",
+      "type": "visual_test",
+      "title": "Visual validation batch queued",
+      "detail": "1 CV/ChatBot visual test queued. 2017 Topps Chrome Update Series Baseball",
+      "status": "queued",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1780863401838_8mbhyr",
+      "ts": "2026-06-07T20:16:41.838Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780863399160_d1flo1",
+      "ts": "2026-06-07T20:16:39.160Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -1823,8 +1855,8 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1780863397430_grka67",
-      "ts": "2026-06-07T20:16:37.430Z",
+      "id": "log_1780863399149_b7o5xl",
+      "ts": "2026-06-07T20:16:39.149Z",
       "type": "memory",
       "title": "Agent memory imported",
       "detail": "Queue, log, approvals, known issues, and visual status were restored.",
@@ -2581,36 +2613,6 @@
       "status": "passed",
       "product": "2017 Topps Heritage Minor League Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780862335385_cv7rzq",
-      "ts": "2026-06-07T19:58:55.385Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862333258_qp85hq",
-      "ts": "2026-06-07T19:58:53.258Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps High Tek Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862333258_vc2def",
-      "ts": "2026-06-07T19:58:53.258Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps High Tek Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3211,6 +3213,23 @@
       "headSha": "ad0cd5ef3c6451bd9697b8fdba81e713415b20a6",
       "createdAt": "2026-06-07T20:14:03Z",
       "checkedAt": "2026-06-07T20:15:42.311Z"
+    },
+    "baseball|2017_Topps_Chrome_Update_Series_Baseball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-07T20:16:40.329Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Topps_Chrome_Update_Series_Baseball",
+      "key": "baseball|2017_Topps_Chrome_Update_Series_Baseball",
+      "productName": "2017 Topps Chrome Update Series Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Chrome_Update_Series_Baseball",
+      "updatedAt": "2026-06-07T20:16:41.834Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -3429,6 +3448,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:16:40.341Z",
+  "saved_at": "2026-06-07T20:16:44.442Z",
   "saved_by": "cm_command_center_operator"
 }

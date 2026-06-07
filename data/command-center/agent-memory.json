@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:36:50.746Z",
+  "exported_at": "2026-06-07T20:37:18.457Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:36:31.788Z",
-      "updatedAt": "2026-06-07T20:36:49.143Z"
+      "updatedAt": "2026-06-07T20:37:16.855Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps chrome sapphire baseball|2017_topps_chrome_baseball_complete_set_sapphire_edition",
@@ -1276,7 +1276,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.198Z",
-      "updatedAt": "2026-06-07T20:36:49.144Z"
+      "updatedAt": "2026-06-07T20:37:16.855Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Chronicles_Baseball",
@@ -1820,6 +1820,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780864636856_i1ntox",
+      "ts": "2026-06-07T20:37:16.856Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Panini Contenders Draft Picks Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780864609144_cwyyen",
       "ts": "2026-06-07T20:36:49.144Z",
@@ -2609,16 +2619,6 @@
       "status": "queued",
       "product": "",
       "source": "agent_cycle"
-    },
-    {
-      "id": "log_1780862562995_2hpbg9",
-      "ts": "2026-06-07T20:02:42.995Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps Diamond Icons Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3279,7 +3279,7 @@
       "productName": "2017 Panini Contenders Draft Picks Baseball",
       "sport": "baseball",
       "code": "2017_Panini_Contenders_Draft_Picks_Baseball",
-      "updatedAt": "2026-06-07T20:36:49.141Z",
+      "updatedAt": "2026-06-07T20:37:16.853Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27104101547,
@@ -3287,7 +3287,7 @@
       "displayTitle": "Visual Product Test - 2017 Panini Contenders Draft Picks Baseball",
       "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
       "createdAt": "2026-06-07T20:36:31Z",
-      "checkedAt": "2026-06-07T20:36:49.141Z"
+      "checkedAt": "2026-06-07T20:37:16.853Z"
     }
   },
   "known_issues": {},
@@ -3506,6 +3506,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:36:51.716Z",
+  "saved_at": "2026-06-07T20:37:19.650Z",
   "saved_by": "cm_command_center_operator"
 }

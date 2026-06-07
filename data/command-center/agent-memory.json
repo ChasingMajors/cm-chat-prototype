@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:47:54.209Z",
+  "exported_at": "2026-06-07T19:48:21.286Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:47:35.180Z",
-      "updatedAt": "2026-06-07T19:47:52.606Z"
+      "updatedAt": "2026-06-07T19:48:19.684Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps gold label baseball|2017_topps_gold_label_baseball",
@@ -542,7 +542,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.206Z",
-      "updatedAt": "2026-06-07T19:47:52.607Z"
+      "updatedAt": "2026-06-07T19:48:19.685Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Five_Star_Baseball",
@@ -1767,6 +1767,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780861699685_s8jg4x",
+      "ts": "2026-06-07T19:48:19.685Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Gallery Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780861672607_lg6chh",
       "ts": "2026-06-07T19:47:52.607Z",
       "type": "visual_test",
@@ -2555,16 +2565,6 @@
       "status": "needs_review",
       "product": "2025-26 Topps Hoops Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780855239448_uhpjuu",
-      "ts": "2026-06-07T18:00:39.448Z",
-      "type": "prv_source_review",
-      "title": "PRV preview started",
-      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
-      "status": "started",
-      "product": "2025-26 Topps Hoops Basketball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2834,7 +2834,7 @@
       "productName": "2017 Topps Gallery Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gallery_Baseball",
-      "updatedAt": "2026-06-07T19:47:52.604Z",
+      "updatedAt": "2026-06-07T19:48:19.679Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27102930523,
@@ -2842,7 +2842,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Gallery Baseball",
       "headSha": "cdc73b972c9c7f245381d4d2df399be8b4214353",
       "createdAt": "2026-06-07T19:47:34Z",
-      "checkedAt": "2026-06-07T19:47:52.604Z"
+      "checkedAt": "2026-06-07T19:48:19.679Z"
     }
   },
   "known_issues": {},
@@ -3025,6 +3025,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:47:55.700Z",
+  "saved_at": "2026-06-07T19:48:22.664Z",
   "saved_by": "cm_command_center_operator"
 }

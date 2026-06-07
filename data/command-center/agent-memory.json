@@ -2,12 +2,31 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T17:41:21.263Z",
+  "exported_at": "2026-06-07T17:41:34.695Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
   "tasks": [
+    {
+      "id": "task_1780854093089_j8omiv",
+      "sourceId": "prv_watch|basketball|2025-26 topps hoops basketball",
+      "title": "Fix: 2025-26 Topps Hoops Basketball",
+      "kind": "fix",
+      "severity": "critical",
+      "status": "queued",
+      "createdAt": "2026-06-07T17:41:33.089Z",
+      "updatedAt": "2026-06-07T17:41:33.089Z",
+      "why": "PRV sheet write did not complete.",
+      "objective": "Repair the held action, rerun validation, and record proof.",
+      "steps": [
+        "Confirm the issue still reproduces.",
+        "Patch the smallest safe sandbox fix.",
+        "Run the affected validation again.",
+        "Record proof before marking the action validated."
+      ],
+      "guardrail": "Fix in sandbox first. Do not mark validated until JSON coverage or CV/ChatBot visual proof passes."
+    },
     {
       "id": "task_1780066599641_81f1ii",
       "sourceId": "source|hockey|2025-26 upper deck extended series hockey",
@@ -190,15 +209,15 @@
       "sport": "basketball",
       "code": "",
       "riskLevel": "medium",
-      "status": "failed",
-      "recommendedAction": "Open PRV preview, confirm rows, then retry the product-scoped write.",
+      "status": "fix_queued",
+      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "",
       "executionResult": "PRV source preview is not ready for write.",
       "validationResult": "PRV sheet write did not complete.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
       "createdAt": "2026-06-06T17:00:51.700Z",
-      "updatedAt": "2026-06-07T16:59:37.734Z",
+      "updatedAt": "2026-06-07T17:41:33.090Z",
       "autoExecutedAt": "2026-06-06T19:41:17.269Z"
     },
     {
@@ -434,15 +453,15 @@
       "sport": "basketball",
       "code": "2025_26_donruss_basketball",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
-      "adminDecision": "",
-      "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2025_26_donruss_basketball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:13:36.145Z",
-      "updatedAt": "2026-06-07T17:41:19.661Z"
+      "updatedAt": "2026-06-07T17:41:21.986Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps chrome uefa women's champions league soccer",
@@ -956,6 +975,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780854093092_5ovxq7",
+      "ts": "2026-06-07T17:41:33.092Z",
+      "type": "agent_cycle",
+      "title": "Create repair task",
+      "detail": "2025-26 Topps Hoops Basketball is blocked and needs a fix path. Created Fix: 2025-26 Topps Hoops Basketball.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1780854081987_6dko9v",
+      "ts": "2026-06-07T17:41:21.987Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2025-26 Donruss Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780854081985_8uj99x",
+      "ts": "2026-06-07T17:41:21.985Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "2,551 public rows and 228 parallels found.",
+      "status": "covered",
+      "product": "2025-26 Donruss Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780854079661_knsqjl",
       "ts": "2026-06-07T17:41:19.661Z",
@@ -1725,36 +1774,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780836752437_lu3c0r",
-      "ts": "2026-06-07T12:52:32.437Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780836752426_vxttrz",
-      "ts": "2026-06-07T12:52:32.426Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780836744448",
-      "ts": "2026-06-07T12:48:48.332Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 2 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 2 run. 2025-26 Panini's Football EFL Soccer -> validated (Public checklist JSON validated with 620 rows.); 2025-26 Panini's Football EFL Soccer -> needs_admin (Checklist write completed, but public JSON validation needs review. No spreadsheet configured for football 2025-26 Check)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2102,9 +2121,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-07T17:38:09.955Z",
       "resolved": true
+    },
+    "basketball|2025-26 donruss basketball": {
+      "product": "2025-26 Donruss Basketball",
+      "sport": "basketball",
+      "code": "2025_26_donruss_basketball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-07T17:41:21.986Z",
+      "resolved": true
+    },
+    "basketball|2025_26_donruss_basketball": {
+      "product": "2025-26 Donruss Basketball",
+      "sport": "basketball",
+      "code": "2025_26_donruss_basketball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-07T17:41:21.986Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T17:41:22.333Z",
+  "saved_at": "2026-06-07T17:41:35.826Z",
   "saved_by": "cm_command_center_operator"
 }

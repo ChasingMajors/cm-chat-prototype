@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:46:03.465Z",
+  "exported_at": "2026-06-07T19:46:30.490Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:45:44.561Z",
-      "updatedAt": "2026-06-07T19:46:01.853Z"
+      "updatedAt": "2026-06-07T19:46:28.887Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps gypsy queen baseball|2017_topps_gypsy_queen_baseball",
@@ -500,7 +500,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.207Z",
-      "updatedAt": "2026-06-07T19:46:01.854Z"
+      "updatedAt": "2026-06-07T19:46:28.888Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball",
@@ -1765,6 +1765,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780861588888_g6w985",
+      "ts": "2026-06-07T19:46:28.889Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Gold Label Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780861561855_co5bdl",
       "ts": "2026-06-07T19:46:01.855Z",
       "type": "visual_test",
@@ -2553,16 +2563,6 @@
       "status": "running",
       "product": "2025-26 Donruss Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780854079658_ms5a89",
-      "ts": "2026-06-07T17:41:19.658Z",
-      "type": "agent_cycle",
-      "title": "Verify Checklist public JSON",
-      "detail": "2025-26 Donruss Basketball has enough detail for a safe public coverage check. Sentinel will verify the JSON before asking for admin review.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -2809,7 +2809,7 @@
       "productName": "2017 Topps Gold Label Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gold_Label_Baseball",
-      "updatedAt": "2026-06-07T19:46:01.851Z",
+      "updatedAt": "2026-06-07T19:46:28.881Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27102887057,
@@ -2817,7 +2817,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Gold Label Baseball",
       "headSha": "cdc73b972c9c7f245381d4d2df399be8b4214353",
       "createdAt": "2026-06-07T19:45:44Z",
-      "checkedAt": "2026-06-07T19:46:01.851Z"
+      "checkedAt": "2026-06-07T19:46:28.880Z"
     }
   },
   "known_issues": {},
@@ -3000,6 +3000,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:46:04.538Z",
+  "saved_at": "2026-06-07T19:46:31.776Z",
   "saved_by": "cm_command_center_operator"
 }

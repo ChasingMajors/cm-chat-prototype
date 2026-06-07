@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:09:52.169Z",
+  "exported_at": "2026-06-07T20:10:03.234Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -497,24 +497,6 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:41:42.957Z",
       "updatedAt": "2026-06-07T19:42:54.601Z"
-    },
-    {
-      "id": "prv_watch|basketball|2025-26 topps hoops basketball",
-      "type": "prv_source_review",
-      "source": "scheduled_prv_quick_json",
-      "product": "2025-26 Topps Hoops Basketball",
-      "sport": "basketball",
-      "code": "",
-      "riskLevel": "low",
-      "status": "known_issue",
-      "recommendedAction": "Source post appears paid/locked. Public HTML does not expose writable print-run rows. Keep as known issue unless admin has another source.",
-      "adminDecision": "",
-      "executionResult": "PRV source was scanned and held before auto execution.",
-      "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
-      "runUrl": "",
-      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
-      "createdAt": "2026-06-07T19:28:43.151Z",
-      "updatedAt": "2026-06-07T19:28:43.151Z"
     },
     {
       "id": "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
@@ -1783,6 +1765,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780863001632_84x316",
+      "ts": "2026-06-07T20:10:01.632Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2025-26 Topps Hoops Basketball was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2025-26 Topps Hoops Basketball",
+      "source": "admin"
+    },
+    {
       "id": "log_1780862990567_t80tn4",
       "ts": "2026-06-07T20:09:50.567Z",
       "type": "agent_action",
@@ -2571,16 +2563,6 @@
       "status": "in_progress",
       "product": "2017 Topps Luminaries Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780862171377_xh4s6s",
-      "ts": "2026-06-07T19:56:11.377Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Bowman Holiday Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3332,9 +3314,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-07T20:09:50.566Z",
       "resolved": true
+    },
+    "basketball|https slabsquatch substack com p 202526-topps-hoops-basketball-analysis": {
+      "product": "2025-26 Topps Hoops Basketball",
+      "sport": "basketball",
+      "code": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-07T20:10:01.631Z",
+      "resolved": true
+    },
+    "basketball|2025-26 topps hoops basketball": {
+      "product": "2025-26 Topps Hoops Basketball",
+      "sport": "basketball",
+      "code": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-07T20:10:01.631Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:09:53.383Z",
+  "saved_at": "2026-06-07T20:10:04.604Z",
   "saved_by": "cm_command_center_operator"
 }

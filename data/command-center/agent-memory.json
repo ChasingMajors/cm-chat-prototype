@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T16:56:48.340Z",
+  "exported_at": "2026-06-07T16:57:06.866Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -380,15 +380,15 @@
       "sport": "baseball",
       "code": "2026_topps_series_2_baseball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=publishImportedChecklist&sport=baseball&bucket=2026&code=2026_topps_series_2_baseball&key=JD",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:54:32.566Z",
-      "updatedAt": "2026-06-02T22:58:39.003Z"
+      "updatedAt": "2026-06-07T16:57:05.264Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 sp game used chl hockey|2025_26_sp_game_used_chl_hockey",
@@ -956,6 +956,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780851425264_w59ad2",
+      "ts": "2026-06-07T16:57:05.264Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2026 Topps Series 2 Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780851425260_ayyfor",
+      "ts": "2026-06-07T16:57:05.260Z",
+      "type": "agent_cycle",
+      "title": "Verify Checklist public JSON",
+      "detail": "2026 Topps Series 2 Baseball has enough detail for a safe public coverage check. Sentinel will verify the JSON before asking for admin review.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1780851406739_bve12w",
       "ts": "2026-06-07T16:56:46.739Z",
@@ -1735,26 +1755,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780803192997_djws4p",
-      "ts": "2026-06-07T03:33:12.997Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780803192984_xn5dgz",
-      "ts": "2026-06-07T03:33:12.984Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -2069,6 +2069,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T16:56:49.383Z",
+  "saved_at": "2026-06-07T16:57:07.999Z",
   "saved_by": "cm_command_center_operator"
 }

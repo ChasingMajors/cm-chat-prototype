@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:39:20.971Z",
+  "exported_at": "2026-06-07T19:39:48.649Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1755,6 +1755,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780861187046_ki646t",
+      "ts": "2026-06-07T19:39:47.046Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780861187035_dihju1",
+      "ts": "2026-06-07T19:39:47.035Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780861182182",
       "ts": "2026-06-07T19:39:39.289Z",
       "type": "agent_sweep",
@@ -2533,26 +2553,6 @@
       "status": "queued",
       "product": "2025 Topps Cosmic Chrome Football",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780848326536_iwr8x0",
-      "ts": "2026-06-07T16:05:26.536Z",
-      "type": "visual_test",
-      "title": "Visual test requested",
-      "detail": "Agent cycle started CV/ChatBot validation.",
-      "status": "requested",
-      "product": "2025 Topps Cosmic Chrome Football",
-      "source": "agent_cycle"
-    },
-    {
-      "id": "log_1780848326531_aryr7c",
-      "ts": "2026-06-07T16:05:26.531Z",
-      "type": "agent_cycle",
-      "title": "Run CV/ChatBot validation",
-      "detail": "2025 Topps Cosmic Chrome Football has execution or coverage proof and needs app behavior proof.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -2921,6 +2921,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:39:42.221Z",
+  "saved_at": "2026-06-07T19:39:49.948Z",
   "saved_by": "cm_command_center_operator"
 }

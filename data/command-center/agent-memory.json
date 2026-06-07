@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T16:06:07.149Z",
+  "exported_at": "2026-06-07T16:06:24.632Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -136,14 +136,14 @@
       "code": "2025_topps_cosmic_chrome_football",
       "riskLevel": "low",
       "status": "needs_admin",
-      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
+      "recommendedAction": "Visual validation complete.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27097714762",
       "sourceUrl": "",
       "createdAt": "2026-06-07T16:05:29.356Z",
-      "updatedAt": "2026-06-07T16:06:05.546Z"
+      "updatedAt": "2026-06-07T16:06:23.029Z"
     },
     {
       "id": "source_watch|soccer|2025-26 panini's football efl soccer",
@@ -331,10 +331,10 @@
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27097714762",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:56:21.096Z",
-      "updatedAt": "2026-06-07T16:06:05.546Z"
+      "updatedAt": "2026-06-07T16:06:23.030Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps dynasty baseball|2025_topps_dynasty_baseball",
@@ -938,6 +938,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780848383030_5dszsz",
+      "ts": "2026-06-07T16:06:23.030Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025 Topps Cosmic Chrome Football",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780848365547_3ex34f",
       "ts": "2026-06-07T16:06:05.547Z",
@@ -1727,16 +1737,6 @@
       "status": "loaded",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780801155302_60cc6j",
-      "ts": "2026-06-07T02:59:15.302Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -1879,11 +1879,11 @@
       "checkedAt": "2026-05-29T14:59:10.550Z"
     },
     "football|2025_topps_cosmic_chrome_football": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-07T16:06:03.932Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27097714762",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "football|2025_topps_cosmic_chrome_football",
@@ -1891,15 +1891,15 @@
       "productName": "2025 Topps Cosmic Chrome Football",
       "sport": "football",
       "code": "2025_topps_cosmic_chrome_football",
-      "updatedAt": "2026-06-07T16:06:05.544Z",
+      "updatedAt": "2026-06-07T16:06:23.028Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 27097700347,
-      "runNumber": 22,
+      "runId": 27097714762,
+      "runNumber": 23,
       "displayTitle": "Visual Product Test - 2025 Topps Cosmic Chrome Football",
       "headSha": "884ff5135067ef6c59f728b6dfa24be86a65dadf",
-      "createdAt": "2026-06-07T16:05:28Z",
-      "checkedAt": "2026-06-07T16:05:46.659Z"
+      "createdAt": "2026-06-07T16:06:04Z",
+      "checkedAt": "2026-06-07T16:06:23.027Z"
     }
   },
   "known_issues": {},
@@ -2028,6 +2028,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T16:06:08.311Z",
+  "saved_at": "2026-06-07T16:06:25.901Z",
   "saved_by": "cm_command_center_operator"
 }

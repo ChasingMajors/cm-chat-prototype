@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T14:37:46.978Z",
+  "exported_at": "2026-06-07T15:19:45.864Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -921,6 +921,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780845583761_ebxikl",
+      "ts": "2026-06-07T15:19:43.761Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780845583745_lc4mpe",
+      "ts": "2026-06-07T15:19:43.745Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780845579049",
       "ts": "2026-06-07T15:19:36.418Z",
       "type": "agent_sweep",
@@ -1699,26 +1719,6 @@
       "status": "known_issue",
       "product": "2025-26 Topps Hoops Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780775008333",
-      "ts": "2026-06-06T19:41:17.269Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780774875970_wpbg87",
-      "ts": "2026-06-06T19:41:15.970Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -1987,6 +1987,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T15:19:39.101Z",
+  "saved_at": "2026-06-07T15:19:47.394Z",
   "saved_by": "cm_command_center_operator"
 }

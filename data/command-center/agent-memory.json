@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:50:41.466Z",
+  "exported_at": "2026-06-07T19:51:08.763Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:49:55.421Z",
-      "updatedAt": "2026-06-07T19:50:39.862Z"
+      "updatedAt": "2026-06-07T19:51:07.160Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps gallery baseball|2017_topps_gallery_baseball",
@@ -584,7 +584,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.206Z",
-      "updatedAt": "2026-06-07T19:50:39.863Z"
+      "updatedAt": "2026-06-07T19:51:07.161Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Finest_Baseball",
@@ -1769,6 +1769,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780861867161_uuvkeg",
+      "ts": "2026-06-07T19:51:07.161Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Five Star Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780861839864_p5ybwk",
       "ts": "2026-06-07T19:50:39.864Z",
       "type": "visual_test",
@@ -2557,16 +2567,6 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1780860525787",
-      "ts": "2026-06-07T19:28:43.151Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Museum Collection Baseball -> failed (Missing sourceUrl)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2859,7 +2859,7 @@
       "productName": "2017 Topps Five Star Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Five_Star_Baseball",
-      "updatedAt": "2026-06-07T19:50:39.859Z",
+      "updatedAt": "2026-06-07T19:51:07.158Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27102983741,
@@ -2867,7 +2867,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Five Star Baseball",
       "headSha": "1a48c71200fda4d2610c373561968f4b280ac994",
       "createdAt": "2026-06-07T19:49:54Z",
-      "checkedAt": "2026-06-07T19:50:39.858Z"
+      "checkedAt": "2026-06-07T19:51:07.158Z"
     }
   },
   "known_issues": {},
@@ -3050,6 +3050,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:50:42.769Z",
+  "saved_at": "2026-06-07T19:51:10.070Z",
   "saved_by": "cm_command_center_operator"
 }

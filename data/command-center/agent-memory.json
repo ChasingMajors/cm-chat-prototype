@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T22:12:22.858Z",
+  "exported_at": "2026-06-07T22:13:08.021Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -303,17 +303,17 @@
       "sport": "baseball",
       "code": "2017_Panini_Immaculate_Collection_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Full-auto guardrail blocked execution.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Panini_Immaculate_Collection_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.200Z",
-      "updatedAt": "2026-06-07T22:12:21.256Z"
+      "updatedAt": "2026-06-07T22:12:23.853Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball",
@@ -356,10 +356,48 @@
       "updatedAt": "2026-06-07T22:10:28.523Z"
     }
   ],
-  "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Panini_Immaculate_Collection_Baseball"
-  ],
+  "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1780870386418_3qi6gv",
+      "ts": "2026-06-07T22:13:06.418Z",
+      "type": "deep_backend_audit",
+      "title": "Deep Sheets Audit started",
+      "detail": "Comparing configured source Google Sheets against public checklist JSON. No writes will run.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1780870343864_967i0h",
+      "ts": "2026-06-07T22:12:23.864Z",
+      "type": "agent_run_queue",
+      "title": "Admin Run Queue complete",
+      "detail": "1 attempted. 0 skipped for approval/details. 0 failed. 0 still queued. 2017 Panini Immaculate Collection Baseball: Recheck checklist public JSON",
+      "status": "validated",
+      "product": "",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780870343856_y3ocjj",
+      "ts": "2026-06-07T22:12:23.856Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Panini Immaculate Collection Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780870343851_3sk7hl",
+      "ts": "2026-06-07T22:12:23.851Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "1,238 public rows and 78 parallels found.",
+      "status": "covered",
+      "product": "2017 Panini Immaculate Collection Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780870341256_3kc647",
       "ts": "2026-06-07T22:12:21.256Z",
@@ -1118,46 +1156,6 @@
       "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
       "status": "validated",
       "product": "2017 Bowman Chrome Mini Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780867160996_tfvvka",
-      "ts": "2026-06-07T21:19:20.996Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "277 public rows and 10 parallels found.",
-      "status": "covered",
-      "product": "2017 Bowman Chrome Mini Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780867159177_wabpoz",
-      "ts": "2026-06-07T21:19:19.177Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Bowman Chrome Mini Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780867159175_kg731y",
-      "ts": "2026-06-07T21:19:19.175Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Bowman Chrome Mini Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Bowman Chrome Mini Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780867159162_49o5a0",
-      "ts": "2026-06-07T21:19:19.162Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Bowman Chrome Baseball",
       "source": "operator_backend"
     }
   ],
@@ -3144,9 +3142,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-07T21:59:27.473Z",
       "resolved": true
+    },
+    "baseball|2017 panini immaculate collection baseball": {
+      "product": "2017 Panini Immaculate Collection Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Immaculate_Collection_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-07T22:12:23.853Z",
+      "resolved": true
+    },
+    "baseball|2017_panini_immaculate_collection_baseball": {
+      "product": "2017 Panini Immaculate Collection Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Immaculate_Collection_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-07T22:12:23.853Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T22:12:24.156Z",
+  "saved_at": "2026-06-07T22:13:09.469Z",
   "saved_by": "cm_command_center_operator"
 }

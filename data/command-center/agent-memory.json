@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T22:00:08.824Z",
+  "exported_at": "2026-06-07T22:09:04.647Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -272,12 +272,23 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Panini_Immaculate_Collection_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball",
     "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Tribute_Baseball",
     "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780870143044_3079zj",
+      "ts": "2026-06-07T22:09:03.044Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps New Era Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps New Era Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780869607222_9vef98",
       "ts": "2026-06-07T22:00:07.222Z",
@@ -1067,16 +1078,6 @@
       "status": "in_progress",
       "product": "2017 Panini Elite Extra Edition Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780866212923_msy63d",
-      "ts": "2026-06-07T21:03:32.923Z",
-      "type": "visual_test",
-      "title": "Visual test statuses refreshed",
-      "detail": "2 visual tests refreshed. 0 passed. 0 need repair.",
-      "status": "checked",
-      "product": "",
-      "source": "agent_cycle"
     }
   ],
   "visual_tests": {
@@ -2996,6 +2997,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T22:00:10.023Z",
+  "saved_at": "2026-06-07T22:09:05.989Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:02:39.993Z",
+  "exported_at": "2026-06-07T20:02:44.611Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps diamond icons baseball|2017_topps_diamond_icons_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Diamond Icons Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Diamond_Icons_Baseball",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T20:02:42.992Z",
+      "updatedAt": "2026-06-07T20:02:42.994Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps dynasty baseball|2017_topps_dynasty_baseball",
       "type": "visual_test",
@@ -838,17 +860,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Diamond_Icons_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "needs_admin",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Diamond_Icons_Baseball.",
-      "validationResult": "Published checklist JSON validated with 546 rows and 26 parallels. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.204Z",
-      "updatedAt": "2026-06-07T20:02:31.620Z",
+      "updatedAt": "2026-06-07T20:02:42.995Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:02:31.620Z"
     },
@@ -1771,32 +1793,42 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.178Z",
       "updatedAt": "2026-06-07T18:15:39.178Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Archives_Signature_Series_All_Star_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Archives Signature Series All-Star Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Archives_Signature_Series_All_Star_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 102 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.177Z",
-      "updatedAt": "2026-06-07T18:15:39.177Z"
     }
   ],
   "activity_log": [
     {
-      "id": "log_1780862558390_d3g6gd",
-      "ts": "2026-06-07T20:02:38.390Z",
+      "id": "log_1780862563010_s5sf7s",
+      "ts": "2026-06-07T20:02:43.010Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 54 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Diamond Icons Baseball -> pending_visual_validation (Published checklist JSON validated with 546 rows and 26 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780862563004_ia92kt",
+      "ts": "2026-06-07T20:02:43.004Z",
+      "type": "visual_test",
+      "title": "Visual validation batch queued",
+      "detail": "1 CV/ChatBot visual test queued. 2017 Topps Diamond Icons Baseball",
+      "status": "queued",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1780862562995_2hpbg9",
+      "ts": "2026-06-07T20:02:42.995Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Topps Diamond Icons Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780862560127_li00ry",
+      "ts": "2026-06-07T20:02:40.127Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -1805,8 +1837,8 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1780862558377_txmn82",
-      "ts": "2026-06-07T20:02:38.377Z",
+      "id": "log_1780862560115_xuftpk",
+      "ts": "2026-06-07T20:02:40.115Z",
       "type": "memory",
       "title": "Agent memory imported",
       "detail": "Queue, log, approvals, known issues, and visual status were restored.",
@@ -2563,36 +2595,6 @@
       "status": "in_progress",
       "product": "2017 Topps Five Star Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780861839864_p5ybwk",
-      "ts": "2026-06-07T19:50:39.864Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Five Star Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780861812507_umbf09",
-      "ts": "2026-06-07T19:50:12.507Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Five Star Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780861795426_e22zma",
-      "ts": "2026-06-07T19:49:55.426Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps Five Star Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3101,6 +3103,23 @@
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T20:00:11Z",
       "checkedAt": "2026-06-07T20:01:23.446Z"
+    },
+    "baseball|2017_Topps_Diamond_Icons_Baseball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-07T20:02:41.528Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Topps_Diamond_Icons_Baseball",
+      "key": "baseball|2017_Topps_Diamond_Icons_Baseball",
+      "productName": "2017 Topps Diamond Icons Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Diamond_Icons_Baseball",
+      "updatedAt": "2026-06-07T20:02:42.991Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -3283,6 +3302,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:02:41.259Z",
+  "saved_at": "2026-06-07T20:02:45.945Z",
   "saved_by": "cm_command_center_operator"
 }

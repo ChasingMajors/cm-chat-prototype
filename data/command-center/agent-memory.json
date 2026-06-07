@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:55:11.725Z",
+  "exported_at": "2026-06-07T19:52:03.146Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -474,17 +474,19 @@
       "sport": "baseball",
       "code": "2017_Topps_Heritage_High_Number_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "pending_visual_validation",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 795 rows / 13 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "executionResult": "Pending checklist publish validation completed for 2017_Topps_Heritage_High_Number_Baseball.",
+      "validationResult": "Published checklist JSON validated with 795 rows and 13 parallels. CV/ChatBot visual validation is pending.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.208Z",
-      "updatedAt": "2026-06-07T18:15:39.208Z"
+      "updatedAt": "2026-06-07T19:55:11.509Z",
+      "pendingValidationAttempts": 0,
+      "autoExecutedAt": "2026-06-07T19:55:11.509Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Baseball",
@@ -1769,14 +1771,34 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780862110120_xy2wk9",
-      "ts": "2026-06-07T19:55:10.120Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
+      "id": "log_1780862114312",
+      "ts": "2026-06-07T19:55:11.509Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Heritage High Number Baseball -> pending_visual_validation (Published checklist JSON validated with 795 rows and 13 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
       "product": "",
-      "source": "command_center"
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780862114312",
+      "ts": "2026-06-07T19:55:11.509Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2017 Topps Heritage High Number Baseball: Pending checklist publish validation completed for 2017_Topps_Heritage_High_Number_Baseball. Published checklist JSON validated with 795 rows and 13 parallels. CV/ChatBot visual validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2017 Topps Heritage High Number Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780862113735",
+      "ts": "2026-06-07T19:55:11.509Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1780861921543_05a9du",
@@ -2547,26 +2569,6 @@
       "status": "pending_visual_validation",
       "product": "2017 Topps Luminaries Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780860764898",
-      "ts": "2026-06-07T19:32:42.699Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780860723006_24ijfe",
-      "ts": "2026-06-07T19:32:03.006Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep complete",
-      "detail": "Checklist: 0 actions. PRV: 2 actions. PRV sync: skipped. Auto: 1 ran. 2017 Topps Museum Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3050,6 +3052,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:55:13.217Z",
+  "saved_at": "2026-06-07T19:55:14.350Z",
   "saved_by": "cm_command_center_operator"
 }

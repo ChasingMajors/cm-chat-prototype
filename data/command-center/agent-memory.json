@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T16:55:06.838Z",
+  "exported_at": "2026-06-07T16:55:34.838Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -135,15 +135,15 @@
       "sport": "baseball",
       "code": "2025_topps_dynasty_baseball",
       "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Visual validation complete.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27098848480",
       "sourceUrl": "",
       "createdAt": "2026-06-07T16:53:24.558Z",
-      "updatedAt": "2026-06-07T16:55:05.109Z"
+      "updatedAt": "2026-06-07T16:55:32.948Z"
     },
     {
       "id": "visual_test|github_actions|2025 topps cosmic chrome football|2025_topps_cosmic_chrome_football",
@@ -362,15 +362,15 @@
       "sport": "baseball",
       "code": "2025_topps_dynasty_baseball",
       "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27098848480",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:55:28.342Z",
-      "updatedAt": "2026-06-07T16:55:05.110Z"
+      "updatedAt": "2026-06-07T16:55:32.949Z"
     },
     {
       "id": "checklist_publish|operator_backend|2026 topps series 2 baseball|2026_topps_series_2_baseball",
@@ -956,6 +956,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780851332950_v5cl10",
+      "ts": "2026-06-07T16:55:32.950Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2025 Topps Dynasty Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780851332949_uocha3",
+      "ts": "2026-06-07T16:55:32.949Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2025 Topps Dynasty Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780851305110_l7j9on",
       "ts": "2026-06-07T16:55:05.110Z",
@@ -1735,26 +1755,6 @@
       "status": "needs_admin",
       "product": "2025-26 Panini's Football EFL Soccer",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780803175316",
-      "ts": "2026-06-07T03:30:04.800Z",
-      "type": "auto_action",
-      "title": "Full-auto action completed",
-      "detail": "2025-26 Upper Deck Extended Series Hockey: Checklist sheet write and JSON publish completed for 2025_26_upper_deck_extended_series_hockey. Public checklist JSON validated with 1094 rows.",
-      "status": "validated",
-      "product": "2025-26 Upper Deck Extended Series Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780803145734",
-      "ts": "2026-06-07T03:30:04.800Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1920,9 +1920,9 @@
       "checkedAt": "2026-06-07T16:08:12.200Z"
     },
     "baseball|2025_topps_dynasty_baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T16:54:18.782Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27098848480",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -1932,7 +1932,7 @@
       "productName": "2025 Topps Dynasty Baseball",
       "sport": "baseball",
       "code": "2025_topps_dynasty_baseball",
-      "updatedAt": "2026-06-07T16:55:05.107Z",
+      "updatedAt": "2026-06-07T16:55:32.946Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27098848480,
@@ -1940,7 +1940,7 @@
       "displayTitle": "Visual Product Test - 2025 Topps Dynasty Baseball",
       "headSha": "5564f82e7391f59c9a4abd41c754fd797c0e04c1",
       "createdAt": "2026-06-07T16:54:19Z",
-      "checkedAt": "2026-06-07T16:55:05.106Z"
+      "checkedAt": "2026-06-07T16:55:32.946Z"
     }
   },
   "known_issues": {},
@@ -2069,6 +2069,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T16:55:08.109Z",
+  "saved_at": "2026-06-07T16:55:36.232Z",
   "saved_by": "cm_command_center_operator"
 }

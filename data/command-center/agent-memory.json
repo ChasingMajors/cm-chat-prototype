@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:56:18.975Z",
+  "exported_at": "2026-06-07T21:56:44.807Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1857,10 +1857,19 @@
   ],
   "agent_run_queue": [
     "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Tribute_Baseball",
-    "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball",
-    "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball"
+    "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780869403203_hq5gq7",
+      "ts": "2026-06-07T21:56:43.203Z",
+      "type": "agent_run_queue",
+      "title": "Removed from Agent Run Queue",
+      "detail": "2017 Topps New Era Baseball was removed from the explicit run queue.",
+      "status": "removed",
+      "product": "2017 Topps New Era Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780869377372_kioaez",
       "ts": "2026-06-07T21:56:17.372Z",
@@ -2649,16 +2658,6 @@
       "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Panini Elite Extra Edition Baseball -> pending_visual_validation (Published checklist JSON validated with 835 rows and 31 parallels. CV/ChatBot visual validation is pending.)",
       "status": "validated",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780866196360",
-      "ts": "2026-06-07T21:03:14.170Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Panini Elite Extra Edition Baseball: Pending checklist publish validation completed for 2017_Panini_Elite_Extra_Edition_Baseball. Published checklist JSON validated with 835 rows and 31 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Panini Elite Extra Edition Baseball",
       "source": "operator_backend"
     }
   ],
@@ -3985,6 +3984,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:56:20.311Z",
+  "saved_at": "2026-06-07T21:56:46.218Z",
   "saved_by": "cm_command_center_operator"
 }

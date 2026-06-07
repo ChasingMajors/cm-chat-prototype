@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:06:57.633Z",
+  "exported_at": "2026-06-07T21:07:24.570Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -154,11 +154,11 @@
       "sport": "baseball",
       "code": "2017_Panini_Diamond_Kings_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104808590",
       "sourceUrl": "",
       "bucket": "",
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T21:05:43.217Z",
-      "updatedAt": "2026-06-07T21:06:56.030Z"
+      "updatedAt": "2026-06-07T21:07:22.965Z"
     },
     {
       "id": "visual_test|github_actions|2017 panini elite extra edition baseball|2017_panini_elite_extra_edition_baseball",
@@ -1522,17 +1522,17 @@
       "sport": "baseball",
       "code": "2017_Panini_Diamond_Kings_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104808590",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.198Z",
-      "updatedAt": "2026-06-07T21:06:56.030Z"
+      "updatedAt": "2026-06-07T21:07:22.965Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Contenders_Draft_Picks_Baseball",
@@ -1856,6 +1856,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780866442966_5yvdz9",
+      "ts": "2026-06-07T21:07:22.966Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Panini Diamond Kings Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780866442966_l7l61d",
+      "ts": "2026-06-07T21:07:22.966Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Panini Diamond Kings Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780866416031_u7sgy1",
       "ts": "2026-06-07T21:06:56.031Z",
@@ -2635,26 +2655,6 @@
       "status": "in_progress",
       "product": "2017 Bowman Mega Box Chrome Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780865442000_62v5j8",
-      "ts": "2026-06-07T20:50:42.000Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Bowman Mega Box Chrome Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780865439315_lpvr0r",
-      "ts": "2026-06-07T20:50:39.315Z",
-      "type": "visual_test",
-      "title": "Visual test requested",
-      "detail": "Queue card requested CV/ChatBot validation.",
-      "status": "requested",
-      "product": "2017 Bowman Mega Box Chrome Baseball",
-      "source": "agent_action_queue"
     }
   ],
   "visual_tests": {
@@ -3579,9 +3579,9 @@
       "checkedAt": "2026-06-07T21:04:54.748Z"
     },
     "baseball|2017_Panini_Diamond_Kings_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T21:05:41.526Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104808590",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3591,7 +3591,7 @@
       "productName": "2017 Panini Diamond Kings Baseball",
       "sport": "baseball",
       "code": "2017_Panini_Diamond_Kings_Baseball",
-      "updatedAt": "2026-06-07T21:06:56.028Z",
+      "updatedAt": "2026-06-07T21:07:22.963Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27104808590,
@@ -3599,7 +3599,7 @@
       "displayTitle": "Visual Product Test - 2017 Panini Diamond Kings Baseball",
       "headSha": "20851af5ab74cf0aca55b450a0783f21a5411171",
       "createdAt": "2026-06-07T21:05:42Z",
-      "checkedAt": "2026-06-07T21:06:56.027Z"
+      "checkedAt": "2026-06-07T21:07:22.963Z"
     }
   },
   "known_issues": {},
@@ -3818,6 +3818,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:06:59.482Z",
+  "saved_at": "2026-06-07T21:07:25.738Z",
   "saved_by": "cm_command_center_operator"
 }

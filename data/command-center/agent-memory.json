@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:56:36.202Z",
+  "exported_at": "2026-06-07T19:56:40.090Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -154,11 +154,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Bowman_Baseball",
       "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Visual validation complete.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103113962",
       "sourceUrl": "",
       "bucket": "",
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:55:27.324Z",
-      "updatedAt": "2026-06-07T19:56:11.376Z"
+      "updatedAt": "2026-06-07T19:56:38.486Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps inception baseball|2017_topps_inception_baseball",
@@ -176,11 +176,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Inception_Baseball",
       "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Visual validation complete.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103113084",
       "sourceUrl": "",
       "bucket": "",
@@ -188,7 +188,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:55:25.163Z",
-      "updatedAt": "2026-06-07T19:56:09.345Z"
+      "updatedAt": "2026-06-07T19:56:36.343Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps luminaries baseball|2017_topps_luminaries_baseball",
@@ -430,17 +430,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Inception_Baseball",
       "riskLevel": "high",
-      "status": "needs_admin",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Inception_Baseball.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103113084",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.209Z",
-      "updatedAt": "2026-06-07T19:56:09.346Z",
+      "updatedAt": "2026-06-07T19:56:36.344Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:33:02.684Z"
     },
@@ -452,17 +452,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Bowman_Baseball",
       "riskLevel": "high",
-      "status": "needs_admin",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Holiday_Bowman_Baseball.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103113962",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.209Z",
-      "updatedAt": "2026-06-07T19:56:11.376Z",
+      "updatedAt": "2026-06-07T19:56:38.487Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:39:10.848Z"
     },
@@ -1777,6 +1777,46 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862198488_gnp9nu",
+      "ts": "2026-06-07T19:56:38.488Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Bowman Holiday Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780862198488_fefjyd",
+      "ts": "2026-06-07T19:56:38.488Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Bowman Holiday Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780862196345_57c32e",
+      "ts": "2026-06-07T19:56:36.345Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Topps Inception Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780862196344_ch24mg",
+      "ts": "2026-06-07T19:56:36.344Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Topps Inception Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780862194599_d8pjs3",
       "ts": "2026-06-07T19:56:34.599Z",
       "type": "visual_test",
@@ -2535,46 +2575,6 @@
       "status": "pending_visual_validation",
       "product": "2017 Topps Holiday Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780861181277",
-      "ts": "2026-06-07T19:39:39.289Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780861159369_7ujxou",
-      "ts": "2026-06-07T19:39:19.369Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780861159355_jxqmnn",
-      "ts": "2026-06-07T19:39:19.355Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780861155708",
-      "ts": "2026-06-07T19:39:10.848Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Bowman Holiday Baseball -> pending_visual_validation (Published checklist JSON validated with 146 rows and 5 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2901,9 +2901,9 @@
       "checkedAt": "2026-06-07T19:56:34.595Z"
     },
     "baseball|2017_Topps_Inception_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T19:55:24.068Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103113084",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2913,7 +2913,7 @@
       "productName": "2017 Topps Inception Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Inception_Baseball",
-      "updatedAt": "2026-06-07T19:56:09.343Z",
+      "updatedAt": "2026-06-07T19:56:36.341Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103113084,
@@ -2921,12 +2921,12 @@
       "displayTitle": "Visual Product Test - 2017 Topps Inception Baseball",
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T19:55:24Z",
-      "checkedAt": "2026-06-07T19:56:09.343Z"
+      "checkedAt": "2026-06-07T19:56:36.341Z"
     },
     "baseball|2017_Topps_Holiday_Bowman_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T19:55:26.303Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103113962",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2936,7 +2936,7 @@
       "productName": "2017 Bowman Holiday Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Bowman_Baseball",
-      "updatedAt": "2026-06-07T19:56:11.374Z",
+      "updatedAt": "2026-06-07T19:56:38.485Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103113962,
@@ -2944,7 +2944,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Holiday Baseball",
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T19:55:27Z",
-      "checkedAt": "2026-06-07T19:56:11.374Z"
+      "checkedAt": "2026-06-07T19:56:38.485Z"
     }
   },
   "known_issues": {},
@@ -3127,6 +3127,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:56:37.380Z",
+  "saved_at": "2026-06-07T19:56:41.339Z",
   "saved_by": "cm_command_center_operator"
 }

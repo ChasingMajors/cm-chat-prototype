@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T16:59:37.460Z",
+  "exported_at": "2026-06-07T17:38:09.626Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -190,15 +190,15 @@
       "sport": "basketball",
       "code": "",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "status": "failed",
+      "recommendedAction": "Open PRV preview, confirm rows, then retry the product-scoped write.",
       "adminDecision": "",
-      "executionResult": "PRV sheet write started through Operator Backend.",
-      "validationResult": "No print-run rows were parsed from the source post.",
+      "executionResult": "PRV source preview is not ready for write.",
+      "validationResult": "PRV sheet write did not complete.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-hoops-basketball-analysis",
       "createdAt": "2026-06-06T17:00:51.700Z",
-      "updatedAt": "2026-06-07T16:59:35.858Z",
+      "updatedAt": "2026-06-07T16:59:37.734Z",
       "autoExecutedAt": "2026-06-06T19:41:17.269Z"
     },
     {
@@ -398,15 +398,15 @@
       "sport": "hockey",
       "code": "2025_26_sp_game_used_chl_hockey",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:53:53.604Z",
-      "updatedAt": "2026-06-02T22:53:56.500Z"
+      "updatedAt": "2026-06-07T17:38:08.022Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 panini select ligue 1 soccer|2025_26_panini_select_ligue_1_soccer",
@@ -956,6 +956,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780853888024_bm89gr",
+      "ts": "2026-06-07T17:38:08.024Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2025-26 SP Game Used CHL Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780853888019_5ms6nw",
+      "ts": "2026-06-07T17:38:08.019Z",
+      "type": "agent_cycle",
+      "title": "Verify Checklist public JSON",
+      "detail": "2025-26 SP Game Used CHL Hockey has enough detail for a safe public coverage check. Sentinel will verify the JSON before asking for admin review.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1780851577741_h5hzxw",
+      "ts": "2026-06-07T16:59:37.741Z",
+      "type": "prv_source_review",
+      "title": "PRV sheet write blocked",
+      "detail": "PRV source preview is not ready for write.",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780851575855_uqdu51",
       "ts": "2026-06-07T16:59:35.855Z",
@@ -1725,36 +1755,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780803737580_ztqtrz",
-      "ts": "2026-06-07T03:42:17.580Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780803737553_xxyswk",
-      "ts": "2026-06-07T03:42:17.553Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780803729436",
-      "ts": "2026-06-07T03:39:15.855Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 3 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Panini's Football EFL Soccer -> needs_admin (Checklist write completed, but public JSON validation needs review. Publish returned published_validation_needs_review. )",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2087,6 +2087,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T16:59:38.509Z",
+  "saved_at": "2026-06-07T17:38:10.866Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -364,17 +364,19 @@
       "sport": "baseball",
       "code": "2017_Topps_Heritage_High_Number_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "pending_visual_validation",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 795 rows / 13 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "executionResult": "Pending checklist publish validation completed for 2017_Topps_Heritage_High_Number_Baseball.",
+      "validationResult": "Published checklist JSON validated with 795 rows and 13 parallels. CV/ChatBot visual validation is pending.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.208Z",
-      "updatedAt": "2026-06-07T18:15:39.208Z"
+      "updatedAt": "2026-06-07T19:40:45.458Z",
+      "pendingValidationAttempts": 0,
+      "autoExecutedAt": "2026-06-07T19:40:45.458Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Baseball",
@@ -1759,6 +1761,36 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780861247498",
+      "ts": "2026-06-07T19:40:45.458Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Heritage High Number Baseball -> pending_visual_validation (Published checklist JSON validated with 795 rows and 13 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780861247497",
+      "ts": "2026-06-07T19:40:45.458Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2017 Topps Heritage High Number Baseball: Pending checklist publish validation completed for 2017_Topps_Heritage_High_Number_Baseball. Published checklist JSON validated with 795 rows and 13 parallels. CV/ChatBot visual validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2017 Topps Heritage High Number Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780861247132",
+      "ts": "2026-06-07T19:40:45.458Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1780861240794_5y3t3v",
       "ts": "2026-06-07T19:40:40.794Z",
       "type": "agent_cycle",
@@ -2527,36 +2559,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780850381867_r0995y",
-      "ts": "2026-06-07T16:39:41.867Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "1,452 public rows and 14 parallels found.",
-      "status": "covered",
-      "product": "2025 Topps Dynasty Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780850378806_f336tw",
-      "ts": "2026-06-07T16:39:38.806Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2025 Topps Dynasty Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780850378804_lmouv6",
-      "ts": "2026-06-07T16:39:38.804Z",
-      "type": "agent_cycle",
-      "title": "Verify Checklist public JSON",
-      "detail": "2025 Topps Dynasty Baseball has enough detail for a safe public coverage check. Sentinel will verify the JSON before asking for admin review.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -2925,6 +2927,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:40:43.664Z",
+  "saved_at": "2026-06-07T19:40:47.537Z",
   "saved_by": "cm_command_center_operator"
 }

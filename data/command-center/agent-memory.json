@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:39:11.269Z",
+  "exported_at": "2026-06-07T19:39:20.971Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1753,6 +1753,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780861159369_7ujxou",
+      "ts": "2026-06-07T19:39:19.369Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780861159355_jxqmnn",
+      "ts": "2026-06-07T19:39:19.355Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780861155708",
       "ts": "2026-06-07T19:39:10.848Z",
       "type": "agent_sweep",
@@ -2531,26 +2551,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780845583761_ebxikl",
-      "ts": "2026-06-07T15:19:43.761Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780845583745_lc4mpe",
-      "ts": "2026-06-07T15:19:43.745Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -2919,6 +2919,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:39:15.754Z",
+  "saved_at": "2026-06-07T19:39:22.048Z",
   "saved_by": "cm_command_center_operator"
 }

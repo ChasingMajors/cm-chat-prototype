@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:38:29.762Z",
+  "exported_at": "2026-06-07T20:38:48.935Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 panini chronicles baseball|2017_panini_chronicles_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Panini Chronicles Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Chronicles_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104148131",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T20:38:30.355Z",
+      "updatedAt": "2026-06-07T20:38:47.331Z"
+    },
     {
       "id": "visual_test|github_actions|2017 panini contenders draft picks baseball|2017_panini_contenders_draft_picks_baseball",
       "type": "visual_test",
@@ -1286,17 +1308,17 @@
       "sport": "baseball",
       "code": "2017_Panini_Chronicles_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104148131",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.197Z",
-      "updatedAt": "2026-06-07T20:38:28.158Z"
+      "updatedAt": "2026-06-07T20:38:47.332Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Donruss_Optic_Baseball",
@@ -1797,29 +1819,29 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.181Z",
       "updatedAt": "2026-06-07T18:15:39.182Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Dynasty_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Dynasty Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Dynasty_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.180Z",
-      "updatedAt": "2026-06-07T18:15:39.180Z"
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780864727332_dne35j",
+      "ts": "2026-06-07T20:38:47.332Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Panini Chronicles Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780864710357_sbtq4n",
+      "ts": "2026-06-07T20:38:30.357Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Panini Chronicles Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780864708159_hrdiz1",
       "ts": "2026-06-07T20:38:28.159Z",
@@ -2599,26 +2621,6 @@
       "status": "passed",
       "product": "2017 Topps Diamond Icons Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780862662159_s3uub6",
-      "ts": "2026-06-07T20:04:22.159Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Diamond Icons Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862634775_d6rmro",
-      "ts": "2026-06-07T20:03:54.775Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Diamond Icons Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3288,6 +3290,29 @@
       "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
       "createdAt": "2026-06-07T20:36:31Z",
       "checkedAt": "2026-06-07T20:38:10.911Z"
+    },
+    "baseball|2017_Panini_Chronicles_Baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-07T20:38:28.953Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104148131",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Panini_Chronicles_Baseball",
+      "key": "baseball|2017_Panini_Chronicles_Baseball",
+      "productName": "2017 Panini Chronicles Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Chronicles_Baseball",
+      "updatedAt": "2026-06-07T20:38:47.330Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27104148131,
+      "runNumber": 49,
+      "displayTitle": "Visual Product Test - 2017 Panini Chronicles Baseball",
+      "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
+      "createdAt": "2026-06-07T20:38:29Z",
+      "checkedAt": "2026-06-07T20:38:47.330Z"
     }
   },
   "known_issues": {},
@@ -3506,6 +3531,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:38:30.830Z",
+  "saved_at": "2026-06-07T20:38:49.888Z",
   "saved_by": "cm_command_center_operator"
 }

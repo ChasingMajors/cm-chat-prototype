@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:33:01.675Z",
+  "exported_at": "2026-06-07T20:33:05.985Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps chrome sapphire baseball|2017_topps_chrome_baseball_complete_set_sapphire_edition",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Chrome Sapphire Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T20:33:04.366Z",
+      "updatedAt": "2026-06-07T20:33:04.367Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps chrome update series baseball|2017_topps_chrome_update_series_baseball",
       "type": "visual_test",
@@ -1000,17 +1022,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition.",
-      "validationResult": "Published checklist JSON validated with 717 rows and 1 parallels. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.203Z",
-      "updatedAt": "2026-06-07T20:32:50.799Z",
+      "updatedAt": "2026-06-07T20:33:04.367Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:32:50.799Z"
     },
@@ -1793,32 +1815,42 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.179Z",
       "updatedAt": "2026-06-07T18:15:39.180Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Chrome_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Chrome Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Chrome_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.179Z",
-      "updatedAt": "2026-06-07T18:15:39.179Z"
     }
   ],
   "activity_log": [
     {
-      "id": "log_1780864380072_p1vqil",
-      "ts": "2026-06-07T20:33:00.072Z",
+      "id": "log_1780864384383_wxiko3",
+      "ts": "2026-06-07T20:33:04.383Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 44 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Chrome Sapphire Baseball -> pending_visual_validation (Published checklist JSON validated with 717 rows and 1 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780864384377_fzha4y",
+      "ts": "2026-06-07T20:33:04.377Z",
+      "type": "visual_test",
+      "title": "Visual validation batch queued",
+      "detail": "1 CV/ChatBot visual test queued. 2017 Topps Chrome Sapphire Baseball",
+      "status": "queued",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1780864384368_pimyhy",
+      "ts": "2026-06-07T20:33:04.368Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Topps Chrome Sapphire Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780864381698_1dho2n",
+      "ts": "2026-06-07T20:33:01.698Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -1827,8 +1859,8 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1780864380058_iyt3pn",
-      "ts": "2026-06-07T20:33:00.058Z",
+      "id": "log_1780864381690_tv43k3",
+      "ts": "2026-06-07T20:33:01.690Z",
       "type": "memory",
       "title": "Agent memory imported",
       "detail": "Queue, log, approvals, known issues, and visual status were restored.",
@@ -2585,36 +2617,6 @@
       "status": "in_progress",
       "product": "2017 Topps Heritage High Number Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780862429067_ncwrv4",
-      "ts": "2026-06-07T20:00:29.067Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Dynasty Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862426714_q7dtb1",
-      "ts": "2026-06-07T20:00:26.714Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Finest Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862423989_6nqa9s",
-      "ts": "2026-06-07T20:00:23.989Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Heritage High Number Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3238,6 +3240,23 @@
       "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
       "createdAt": "2026-06-07T20:16:41Z",
       "checkedAt": "2026-06-07T20:18:20.908Z"
+    },
+    "baseball|2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-07T20:33:02.815Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
+      "key": "baseball|2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
+      "productName": "2017 Topps Chrome Sapphire Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
+      "updatedAt": "2026-06-07T20:33:04.365Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -3456,6 +3475,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:33:03.063Z",
+  "saved_at": "2026-06-07T20:33:07.233Z",
   "saved_by": "cm_command_center_operator"
 }

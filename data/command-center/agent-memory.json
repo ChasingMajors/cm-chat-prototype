@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:59:38.786Z",
+  "exported_at": "2026-06-07T21:00:15.611Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1847,6 +1847,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780866014007_p3a5my",
+      "ts": "2026-06-07T21:00:14.007Z",
+      "type": "agent_cycle",
+      "title": "Running Agent Cycle",
+      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
       "id": "log_1780865977185_brq1vd",
       "ts": "2026-06-07T20:59:37.185Z",
       "type": "visual_test",
@@ -2633,16 +2643,6 @@
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
-      "product": "2017 Panini Chronicles Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864710357_sbtq4n",
-      "ts": "2026-06-07T20:38:30.357Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
       "product": "2017 Panini Chronicles Baseball",
       "source": "github_actions"
     }
@@ -3739,6 +3739,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:59:39.852Z",
+  "saved_at": "2026-06-07T21:00:16.777Z",
   "saved_by": "cm_command_center_operator"
 }

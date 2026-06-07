@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T13:32:29.937Z",
+  "exported_at": "2026-06-07T13:59:11.779Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -915,6 +915,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780840750176_cvmyuk",
+      "ts": "2026-06-07T13:59:10.176Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, one safe auto action, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
       "id": "log_1780839147940_tp0te4",
       "ts": "2026-06-07T13:32:27.940Z",
       "type": "agent_sweep",
@@ -1703,16 +1713,6 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1780762441333",
-      "ts": "2026-06-06T16:11:13.256Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 4 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto action: Full auto is off.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -1981,6 +1981,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T13:32:31.260Z",
+  "saved_at": "2026-06-07T13:59:12.923Z",
   "saved_by": "cm_command_center_operator"
 }

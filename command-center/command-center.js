@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc79-public-json-recheck-v1-2026-06-06";
+  const COMMAND_CENTER_VERSION = "cc97-deep-backend-audit-v1-2026-06-07";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -577,6 +577,8 @@
       validationResult: input.validationResult || "",
       runUrl: input.runUrl || "",
       sourceUrl: input.sourceUrl || "",
+      bucket: input.bucket || "",
+      targetBucket: input.targetBucket || input.bucket || "",
       createdAt: now,
       updatedAt: now
     };
@@ -680,6 +682,184 @@
     }
 
     return createdOrUpdated;
+  }
+
+  function queueDeepBackendAuditIssues(issues) {
+    const actionable = Array.isArray(issues) ? issues : [];
+    let createdOrUpdated = 0;
+
+    actionable.forEach(issue => {
+      const staleJson = issue.type === "stale_public_json" || issue.status === "pending_public_validation";
+      const action = upsertAgentAction({
+        id: issue.id || "",
+        type: staleJson ? "source_import" : "backend_data_issue",
+        source: "deep_backend_audit",
+        product: issue.product || issue.matched_name || "Backend data issue",
+        sport: issue.sport || "",
+        code: issue.code || issue.matched_code || "",
+        bucket: issue.bucket || "",
+        targetBucket: issue.bucket || "",
+        riskLevel: issue.severity === "high" ? "high" : issue.severity === "low" ? "low" : "medium",
+        status: staleJson ? "pending_public_validation" : "needs_admin",
+        recommendedAction: issue.recommended_action || "Review the source data, fix the issue, publish JSON, and validate the public tools.",
+        executionResult: staleJson
+          ? "Deep backend audit found source Sheet counts ahead of public JSON."
+          : issue.title || "Deep backend audit found a source-of-truth issue.",
+        validationResult: issue.detail || issue.reason || "",
+        sourceUrl: issue.source_url || ""
+      });
+      if (action) createdOrUpdated += 1;
+    });
+
+    if (createdOrUpdated) {
+      logActivity({
+        type: "deep_backend_audit",
+        status: "queued",
+        source: "operator_backend",
+        title: "Backend audit issues queued",
+        detail: `${createdOrUpdated} audit finding${createdOrUpdated === 1 ? "" : "s"} added to the Agent Action Queue.`
+      });
+    }
+
+    return createdOrUpdated;
+  }
+
+  async function runDeepBackendAuditWithBackend(options) {
+    options = options || {};
+    const endpoint = readOperatorEndpoint();
+    if (!endpoint) {
+      renderSourceCheckMessage(
+        "Operator Backend needed",
+        "Save the Apps Script Operator Backend URL before running Deep Sheets Audit.",
+        "warning",
+        { noFocus: !!options.noFocus }
+      );
+      if (options.noFocus) renderSentinelNotice("Operator Backend needed", "Save the Operator Backend URL before Sentinel can audit source Sheets.", "warning");
+      return { ok: false, kind: "deep_backend_audit", error: "Operator Backend URL missing." };
+    }
+
+    renderSourceCheckMessage(
+      "Running Deep Sheets Audit",
+      "Sentinel is comparing source Google Sheets against public JSON. This is read-only and will not write Sheets or publish files.",
+      "info",
+      { noFocus: !!options.noFocus }
+    );
+    logActivity({
+      type: "deep_backend_audit",
+      status: "started",
+      source: "command_center",
+      title: "Deep Sheets Audit started",
+      detail: "Comparing configured source Google Sheets against public checklist JSON. No writes will run."
+    });
+    renderActivityLog();
+
+    try {
+      const data = await postOperatorJson(endpoint, {
+        action: "runDeepBackendAudit"
+      }, { timeoutMs: 240000 });
+
+      if (!data || !data.ok) {
+        throw new Error(data && data.error ? data.error : "Deep backend audit failed.");
+      }
+
+      const issues = Array.isArray(data.issues) ? data.issues : [];
+      const queued = queueDeepBackendAuditIssues(issues);
+      const summary = data.summary || {};
+      const detail = `${formatNumber(summary.sheet_products || 0)} Sheet products checked against ${formatNumber(summary.public_products || 0)} public JSON products. ${formatNumber(issues.length)} issue${issues.length === 1 ? "" : "s"} found. ${formatNumber(queued)} queue card${queued === 1 ? "" : "s"} updated.`;
+
+      renderDeepBackendAuditResults(data, queued);
+      logActivity({
+        type: "deep_backend_audit",
+        status: issues.length ? "needs_review" : "validated",
+        source: "operator_backend",
+        title: "Deep Sheets Audit complete",
+        detail
+      });
+      renderActivityLog();
+      renderAgentActions();
+      renderActionLanes();
+      renderRunSummary();
+      if (options.noFocus) {
+        renderSentinelNotice("Deep Sheets Audit complete", detail, issues.length ? "warning" : "success");
+      }
+      return {
+        ok: true,
+        kind: "deep_backend_audit",
+        issues: issues.length,
+        queued,
+        summary
+      };
+    } catch (err) {
+      const message = err && err.message ? err.message : String(err);
+      renderSourceCheckMessage("Deep Sheets Audit failed", message, "critical", { noFocus: !!options.noFocus });
+      if (options.noFocus) renderSentinelNotice("Deep Sheets Audit failed", message, "critical");
+      logActivity({
+        type: "deep_backend_audit",
+        status: "failed",
+        source: "operator_backend",
+        title: "Deep Sheets Audit failed",
+        detail: message
+      });
+      renderActivityLog();
+      return { ok: false, kind: "deep_backend_audit", error: message };
+    }
+  }
+
+  function renderDeepBackendAuditResults(data, queuedCount) {
+    if (!els.sourceCheckResult) return;
+    const issues = Array.isArray(data && data.issues) ? data.issues : [];
+    const summary = data && data.summary ? data.summary : {};
+    const topIssues = issues.slice(0, 20);
+    els.sourceCheckResult.innerHTML = `
+      <div class="source-watch-summary">
+        <div class="opp-top">
+          <div>
+            <h3>Deep Sheets Audit Complete</h3>
+            <p>${escapeHtml(formatNumber(summary.sheet_products || 0))} Sheet products checked against ${escapeHtml(formatNumber(summary.public_products || 0))} public JSON products.</p>
+          </div>
+          <span class="badge ${issues.length ? "warning" : "opportunity"}">${issues.length ? "needs review" : "clear"}</span>
+        </div>
+        <div class="opp-meta">
+          <span class="pill">Read-only</span>
+          <span class="pill">Issues: ${escapeHtml(formatNumber(issues.length))}</span>
+          <span class="pill">Queued: ${escapeHtml(formatNumber(queuedCount || 0))}</span>
+          <span class="pill">Missing JSON: ${escapeHtml(formatNumber(summary.missing_public_json || 0))}</span>
+          <span class="pill">Stale JSON: ${escapeHtml(formatNumber(summary.stale_public_json || 0))}</span>
+          <span class="pill">Duplicates: ${escapeHtml(formatNumber(summary.duplicate_codes || 0))}</span>
+          <span class="pill">Empty products: ${escapeHtml(formatNumber(summary.empty_sheet_products || 0))}</span>
+        </div>
+        <p>${escapeHtml(data.next_step || "Review findings in the Agent Action Queue.")}</p>
+      </div>
+      <div class="source-watch-list">
+        ${topIssues.length ? topIssues.map(renderDeepBackendAuditIssue).join("") : `
+          <div class="source-watch-item">
+            <strong>No backend issues found</strong>
+            <p>Source Google Sheets and public JSON are aligned for this audit pass.</p>
+          </div>
+        `}
+      </div>
+    `;
+  }
+
+  function renderDeepBackendAuditIssue(issue) {
+    const severity = issue.severity === "high" ? "critical" : issue.severity === "low" ? "info" : "warning";
+    return `
+      <div class="source-watch-item">
+        <div class="opp-top">
+          <div>
+            <strong>${escapeHtml(issue.product || issue.title || "Backend data issue")}</strong>
+            <p>${escapeHtml(issue.title || issue.type || "Issue found")}</p>
+          </div>
+          <span class="badge ${severity}">${escapeHtml(issue.severity || "review")}</span>
+        </div>
+        <p>${escapeHtml(issue.detail || issue.reason || "")}</p>
+        <div class="opp-meta">
+          ${issue.sport ? `<span class="pill">Sport: ${escapeHtml(titleCase(issue.sport))}</span>` : ""}
+          ${issue.code ? `<span class="pill">Code: ${escapeHtml(issue.code)}</span>` : ""}
+          ${issue.bucket ? `<span class="pill">Bucket: ${escapeHtml(issue.bucket)}</span>` : ""}
+        </div>
+      </div>
+    `;
   }
 
   function rememberResolvedSourceAction(action) {
@@ -4263,8 +4443,13 @@
       return;
     }
 
+    if (q.includes("deep") || q.includes("backend") || q.includes("sheet") || q.includes("source truth") || q.includes("data issue")) {
+      runDeepBackendAuditWithBackend();
+      return;
+    }
+
     if (q.includes("new checklist") || q.includes("checklist center") || q.includes("missing checklist")) {
-      runSourceWatchWithBackend("deep_sheets");
+      runSourceWatchWithBackend("quick_json");
       return;
     }
 
@@ -7086,7 +7271,7 @@
       const action = btn.dataset.sentinelClick || "";
       if (action === "syncPrv") runLauncher(btn, syncPrvJsonOnDemand, { running: "Syncing", success: "Synced" });
       else if (action === "audit") runLauncher(btn, runAudit, { running: "Auditing", success: "Audit done" });
-      else if (action === "checklists") runLauncher(btn, () => runSourceWatchWithBackend("deep_sheets"), { running: "Auditing", success: "Audit done" });
+      else if (action === "checklists") runLauncher(btn, runDeepBackendAuditWithBackend, { running: "Auditing", success: "Audit done" });
       else if (action === "prv") runLauncher(btn, runPrvSourceWatchWithBackend, { running: "Scanning", success: "Scan done" });
       else if (action === "agent") runLauncher(btn, runAgentCycle, { running: "Working", success: "Cycle done" });
     });
@@ -7120,7 +7305,7 @@
   });
   els.sourceCheckBtn.addEventListener("click", validateSourceProductWithBackend);
   els.sourceWatchQuickBtn.addEventListener("click", () => runLauncher(els.sourceWatchQuickBtn, () => runSourceWatchWithBackend("quick_json"), { running: "Scanning", success: "Scan done" }));
-  els.sourceWatchDeepBtn.addEventListener("click", () => runLauncher(els.sourceWatchDeepBtn, () => runSourceWatchWithBackend("deep_sheets"), { running: "Auditing", success: "Audit done" }));
+  els.sourceWatchDeepBtn.addEventListener("click", () => runLauncher(els.sourceWatchDeepBtn, runDeepBackendAuditWithBackend, { running: "Auditing", success: "Audit done" }));
   els.prvSourceWatchBtn.addEventListener("click", () => runLauncher(els.prvSourceWatchBtn, runPrvSourceWatchWithBackend, { running: "Scanning", success: "Scan done" }));
   els.saveEndpointBtn.addEventListener("click", () => {
     writeOperatorEndpoint(els.operatorEndpointInput.value || "");

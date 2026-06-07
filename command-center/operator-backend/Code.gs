@@ -26,7 +26,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-07-operator-cc87-prv-locked-source-guard";
+const CM_OPERATOR_VERSION = "2026-06-07-operator-cc97-deep-backend-audit";
 const CM_APP_DATA_BASE = "https://app.chasingmajors.com/data/v1";
 const CM_CHECKLISTCENTER_HOME = "https://www.checklistcenter.com/";
 const CM_CHECKLISTCENTER_POSTS_API = "https://www.checklistcenter.com/wp-json/wp/v2/posts?per_page=20&_fields=link,title,date,slug";
@@ -126,6 +126,8 @@ function doGet(e) {
     });
 
     if (action === "sourceWatch") return json_(runSourceWatch_(p.mode || ""));
+
+    if (action === "runDeepBackendAudit") return json_(runDeepBackendAudit_(p));
 
     if (action === "prvSourceWatch") return json_(runPrvSourceWatch_(p.mode || ""));
 
@@ -257,7 +259,7 @@ function doGet(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync", "runScheduledAgentSweep"]
+      supported_actions: ["health", "sourceWatch", "runDeepBackendAudit", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync", "runScheduledAgentSweep"]
     });
   } catch (err) {
     return json_({
@@ -273,6 +275,8 @@ function doPost(e) {
 
   try {
     if (action === "sourceWatch") return json_(runSourceWatch_(body.mode || ""));
+
+    if (action === "runDeepBackendAudit") return json_(runDeepBackendAudit_(body));
 
     if (action === "prvSourceWatch") return json_(runPrvSourceWatch_(body.mode || ""));
 
@@ -351,7 +355,7 @@ function doPost(e) {
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync", "runScheduledAgentSweep"]
+      supported_actions: ["sourceWatch", "runDeepBackendAudit", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync", "runScheduledAgentSweep"]
     });
   } catch (err) {
     return json_({
@@ -615,6 +619,236 @@ function runSourceWatch_(mode) {
       : "Deep Sheets Audit checks source Google Sheets. Missing or needs_review items should become approval tasks before any sheet write.",
     updated_at: new Date().toISOString()
   };
+}
+
+function runDeepBackendAudit_(input) {
+  const startedAt = new Date();
+  const sourceRows = fetchChecklistSourceRows_();
+  const publicRows = fetchChecklistPublicJsonRows_();
+  const issues = [];
+  const stats = {
+    sheet_products: sourceRows.length,
+    public_products: publicRows.length,
+    duplicate_codes: 0,
+    missing_public_json: 0,
+    stale_public_json: 0,
+    empty_sheet_products: 0,
+    missing_required_fields: 0,
+    public_without_source: 0,
+    warnings: 0,
+    errors: 0
+  };
+
+  const sourceByKey = {};
+  const publicByKey = {};
+  const sourceCodeBuckets = {};
+
+  sourceRows.forEach(function(row) {
+    const sport = normalize_(row.sport || "");
+    const code = safeString_(row.Code || row.code || "").trim();
+    const key = sport + "|" + code;
+    if (!sport || !code) return;
+
+    if (!sourceByKey[key]) sourceByKey[key] = [];
+    sourceByKey[key].push(row);
+
+    const codeKey = sport + "|" + code;
+    if (!sourceCodeBuckets[codeKey]) sourceCodeBuckets[codeKey] = [];
+    sourceCodeBuckets[codeKey].push(row);
+  });
+
+  publicRows.forEach(function(row) {
+    const sport = normalize_(row.sport || "");
+    const code = safeString_(row.Code || row.code || "").trim();
+    if (!sport || !code) return;
+    publicByKey[sport + "|" + code] = row;
+  });
+
+  Object.keys(sourceCodeBuckets).forEach(function(key) {
+    const rows = sourceCodeBuckets[key] || [];
+    if (rows.length < 2) return;
+    stats.duplicate_codes += 1;
+    pushBackendAuditIssue_(issues, {
+      type: "duplicate_product_code",
+      severity: "high",
+      status: "needs_admin",
+      product: rows[0].DisplayName || rows[0].displayName || rows[0].Code || "",
+      sport: rows[0].sport || "",
+      code: rows[0].Code || "",
+      bucket: rows.map(function(row) { return row.source_key || row.year || ""; }).filter(Boolean).join(", "),
+      title: "Duplicate product code in source Sheets",
+      detail: "The same product code appears " + rows.length + " times in source Google Sheets. This can confuse JSON publish and search.",
+      recommended_action: "Review duplicate Product rows and keep one source-of-truth row before publishing."
+    });
+  });
+
+  sourceRows.forEach(function(row) {
+    const sport = normalize_(row.sport || "");
+    const code = safeString_(row.Code || row.code || "").trim();
+    const key = sport + "|" + code;
+    if (!sport || !code) return;
+
+    const displayName = safeString_(row.DisplayName || row.displayName || "").trim();
+    const publicRow = publicByKey[key] || null;
+    const sourceRowCount = Number(row.row_count || 0);
+    const sourceParallelCount = Number(row.parallel_count || 0);
+    const publicRowCount = publicRow ? Number(publicRow.row_count || 0) : 0;
+    const publicParallelCount = publicRow ? Number(publicRow.parallel_count || 0) : 0;
+
+    const missingFields = [];
+    if (!displayName) missingFields.push("DisplayName");
+    if (!row.year) missingFields.push("Year");
+    if (!sport) missingFields.push("Sport");
+    if (!safeString_(row.Keywords || row.keywords || "").trim()) missingFields.push("Keywords");
+
+    if (missingFields.length) {
+      stats.missing_required_fields += 1;
+      pushBackendAuditIssue_(issues, {
+        type: "missing_product_metadata",
+        severity: missingFields.indexOf("DisplayName") > -1 ? "high" : "medium",
+        status: "needs_admin",
+        product: displayName || code,
+        sport: sport,
+        code: code,
+        bucket: row.source_key || row.year || "",
+        title: "Product row needs metadata",
+        detail: "Missing: " + missingFields.join(", ") + ". Search and routing quality may suffer.",
+        recommended_action: "Fill missing metadata in the Products tab, then publish the affected checklist JSON."
+      });
+    }
+
+    if (sourceRowCount === 0) {
+      stats.empty_sheet_products += 1;
+      pushBackendAuditIssue_(issues, {
+        type: "product_has_no_checklist_rows",
+        severity: "medium",
+        status: "needs_admin",
+        product: displayName || code,
+        sport: sport,
+        code: code,
+        bucket: row.source_key || row.year || "",
+        title: "Product has no checklist rows",
+        detail: "The Products tab has this product, but ChecklistRows has 0 rows for the code.",
+        recommended_action: "Add checklist rows or confirm this is a shell product that should stay unpublished."
+      });
+    }
+
+    if (!publicRow) {
+      stats.missing_public_json += 1;
+      pushBackendAuditIssue_(issues, {
+        type: "missing_public_json",
+        severity: "high",
+        status: "needs_admin",
+        product: displayName || code,
+        sport: sport,
+        code: code,
+        bucket: row.source_key || row.year || "",
+        title: "Source product missing from public JSON",
+        detail: "Google Sheets has " + sourceRowCount + " checklist rows and " + sourceParallelCount + " parallels, but public JSON index does not list this product.",
+        recommended_action: "Run the product/year publish function, rebuild checklist index if this is new, then validate CV and ChatBot."
+      });
+      return;
+    }
+
+    if (publicRowCount < sourceRowCount || publicParallelCount < sourceParallelCount) {
+      stats.stale_public_json += 1;
+      pushBackendAuditIssue_(issues, {
+        type: "stale_public_json",
+        severity: "high",
+        status: "pending_public_validation",
+        product: displayName || publicRow.DisplayName || code,
+        sport: sport,
+        code: code,
+        bucket: row.source_key || row.year || "",
+        title: "Public JSON appears stale",
+        detail: "Sheets show " + sourceRowCount + " rows / " + sourceParallelCount + " parallels. Public JSON index shows " + publicRowCount + " rows / " + publicParallelCount + " parallels.",
+        recommended_action: "Publish the product/year JSON and let Sentinel recheck public validation."
+      });
+    }
+
+    if (sourceRowCount > 100 && sourceParallelCount === 0) {
+      pushBackendAuditIssue_(issues, {
+        type: "missing_or_unparsed_parallels",
+        severity: "low",
+        status: "needs_admin",
+        product: displayName || code,
+        sport: sport,
+        code: code,
+        bucket: row.source_key || row.year || "",
+        title: "Large checklist has no parallels",
+        detail: "This can be valid, but it is worth review for modern products.",
+        recommended_action: "Confirm the source has no parallels. If it does, import or add them before publish."
+      });
+    }
+  });
+
+  Object.keys(publicByKey).forEach(function(key) {
+    if (sourceByKey[key]) return;
+    const row = publicByKey[key] || {};
+    stats.public_without_source += 1;
+    pushBackendAuditIssue_(issues, {
+      type: "public_json_without_source_product",
+      severity: "medium",
+      status: "needs_admin",
+      product: row.DisplayName || row.displayName || row.Code || "",
+      sport: row.sport || "",
+      code: row.Code || row.code || "",
+      bucket: row.year || "",
+      title: "Public JSON product not found in source Sheets",
+      detail: "The public checklist index has this product, but the configured source Google Sheets did not return a matching Product row.",
+      recommended_action: "Confirm the source sheet mapping and product code. Do not delete public data until the source-of-truth row is found."
+    });
+  });
+
+  issues.forEach(function(issue) {
+    if (issue.severity === "high") stats.errors += 1;
+    else stats.warnings += 1;
+  });
+
+  const durationMs = new Date().getTime() - startedAt.getTime();
+  return {
+    ok: true,
+    status: issues.length ? "needs_review" : "validated",
+    mode: "deep_backend_audit",
+    read_only: true,
+    coverage_source: "google_sheets_vs_public_json",
+    summary: stats,
+    issue_count: issues.length,
+    issues: issues.slice(0, 150),
+    next_step: issues.length
+      ? "Review audit issues in the Agent Action Queue. Safe publish-validation items can be handled by Run Agent Cycle; metadata or duplicate issues need admin review."
+      : "No backend source-vs-public JSON issues found.",
+    duration_ms: durationMs,
+    updated_at: new Date().toISOString()
+  };
+}
+
+function pushBackendAuditIssue_(issues, input) {
+  issues.push({
+    id: [
+      "backend_audit",
+      normalize_(input.type || "issue"),
+      normalize_(input.sport || ""),
+      safeString_(input.code || "").trim() || normalize_(input.product || "")
+    ].filter(Boolean).join("|"),
+    type: input.type || "backend_data_issue",
+    target_tool: "checklist",
+    discovery_source: "deep_backend_audit",
+    status: input.status || "needs_admin",
+    severity: input.severity || "medium",
+    title: input.title || "Backend data issue",
+    product: input.product || "",
+    matched_name: input.product || "",
+    sport: input.sport || "",
+    code: input.code || "",
+    matched_code: input.code || "",
+    bucket: input.bucket || "",
+    detail: input.detail || "",
+    reason: input.detail || "",
+    recommended_action: input.recommended_action || "Review and fix the source data, then publish and validate.",
+    source_url: "",
+    url: ""
+  });
 }
 
 function runPrvSourceWatch_(mode) {

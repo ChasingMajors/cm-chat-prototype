@@ -890,17 +890,19 @@
       "sport": "baseball",
       "code": "2017_Topps_Clearly_Authentic_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "pending_visual_validation",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 121 rows / 5 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "executionResult": "Pending checklist publish validation completed for 2017_Topps_Clearly_Authentic_Baseball.",
+      "validationResult": "Published checklist JSON validated with 121 rows and 5 parallels. CV/ChatBot visual validation is pending.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.204Z",
-      "updatedAt": "2026-06-07T18:15:39.204Z"
+      "updatedAt": "2026-06-07T20:10:37.257Z",
+      "pendingValidationAttempts": 0,
+      "autoExecutedAt": "2026-06-07T20:10:37.257Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Update_Series_Baseball",
@@ -1765,6 +1767,36 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780863043063",
+      "ts": "2026-06-07T20:10:37.257Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Clearly Authentic Baseball -> pending_visual_validation (Published checklist JSON validated with 121 rows and 5 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780863043063",
+      "ts": "2026-06-07T20:10:37.257Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2017 Topps Clearly Authentic Baseball: Pending checklist publish validation completed for 2017_Topps_Clearly_Authentic_Baseball. Published checklist JSON validated with 121 rows and 5 parallels. CV/ChatBot visual validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2017 Topps Clearly Authentic Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780863042389",
+      "ts": "2026-06-07T20:10:37.257Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1780863036139_z1eili",
       "ts": "2026-06-07T20:10:36.139Z",
       "type": "agent_cycle",
@@ -2532,36 +2564,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "passed",
       "product": "2017 Bowman Holiday Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862198488_fefjyd",
-      "ts": "2026-06-07T19:56:38.488Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Bowman Holiday Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862196345_57c32e",
-      "ts": "2026-06-07T19:56:36.345Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Inception Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862196344_ch24mg",
-      "ts": "2026-06-07T19:56:36.344Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Inception Baseball",
       "source": "github_actions"
     }
   ],
@@ -3335,6 +3337,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:10:38.940Z",
+  "saved_at": "2026-06-07T20:10:43.171Z",
   "saved_by": "cm_command_center_operator"
 }

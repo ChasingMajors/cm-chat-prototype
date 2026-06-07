@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:56:09.296Z",
+  "exported_at": "2026-06-07T19:56:12.979Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:55:27.324Z",
-      "updatedAt": "2026-06-07T19:55:44.449Z"
+      "updatedAt": "2026-06-07T19:56:11.376Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps inception baseball|2017_topps_inception_baseball",
@@ -188,7 +188,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T19:55:25.163Z",
-      "updatedAt": "2026-06-07T19:55:42.353Z"
+      "updatedAt": "2026-06-07T19:56:09.345Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps luminaries baseball|2017_topps_luminaries_baseball",
@@ -440,7 +440,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.209Z",
-      "updatedAt": "2026-06-07T19:55:42.353Z",
+      "updatedAt": "2026-06-07T19:56:09.346Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:33:02.684Z"
     },
@@ -462,7 +462,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.209Z",
-      "updatedAt": "2026-06-07T19:55:44.450Z",
+      "updatedAt": "2026-06-07T19:56:11.376Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T19:39:10.848Z"
     },
@@ -1777,6 +1777,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862171377_xh4s6s",
+      "ts": "2026-06-07T19:56:11.377Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Bowman Holiday Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780862169347_v8e8rn",
+      "ts": "2026-06-07T19:56:09.347Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Inception Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780862167693_vnqv9u",
       "ts": "2026-06-07T19:56:07.693Z",
       "type": "visual_test",
@@ -2555,26 +2575,6 @@
       "status": "pending_visual_validation",
       "product": "2017 Bowman Holiday Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780861155225",
-      "ts": "2026-06-07T19:39:10.848Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780861149666_y8xwog",
-      "ts": "2026-06-07T19:39:09.666Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -2913,7 +2913,7 @@
       "productName": "2017 Topps Inception Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Inception_Baseball",
-      "updatedAt": "2026-06-07T19:55:42.352Z",
+      "updatedAt": "2026-06-07T19:56:09.343Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103113084,
@@ -2921,7 +2921,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Inception Baseball",
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T19:55:24Z",
-      "checkedAt": "2026-06-07T19:55:42.351Z"
+      "checkedAt": "2026-06-07T19:56:09.343Z"
     },
     "baseball|2017_Topps_Holiday_Bowman_Baseball": {
       "status": "in_progress",
@@ -2936,7 +2936,7 @@
       "productName": "2017 Bowman Holiday Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Bowman_Baseball",
-      "updatedAt": "2026-06-07T19:55:44.448Z",
+      "updatedAt": "2026-06-07T19:56:11.374Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103113962,
@@ -2944,7 +2944,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Holiday Baseball",
       "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
       "createdAt": "2026-06-07T19:55:27Z",
-      "checkedAt": "2026-06-07T19:55:44.448Z"
+      "checkedAt": "2026-06-07T19:56:11.374Z"
     }
   },
   "known_issues": {},
@@ -3127,6 +3127,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:56:10.734Z",
+  "saved_at": "2026-06-07T19:56:13.956Z",
   "saved_by": "cm_command_center_operator"
 }

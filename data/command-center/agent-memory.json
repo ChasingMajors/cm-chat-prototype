@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:00:24.323Z",
+  "exported_at": "2026-06-07T21:01:17.302Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1849,6 +1849,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780866075700_r39gam",
+      "ts": "2026-06-07T21:01:15.700Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780866075688_x3omj2",
+      "ts": "2026-06-07T21:01:15.688Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780866071930",
       "ts": "2026-06-07T21:01:08.653Z",
       "type": "agent_sweep",
@@ -2625,26 +2645,6 @@
       "title": "Product action validated",
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
-      "product": "2017 Donruss Optic Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864882180_lox7ri",
-      "ts": "2026-06-07T20:41:22.181Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Donruss Optic Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864854278_y0q4pn",
-      "ts": "2026-06-07T20:40:54.278Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
       "product": "2017 Donruss Optic Baseball",
       "source": "github_actions"
     }
@@ -3741,6 +3741,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:01:11.942Z",
+  "saved_at": "2026-06-07T21:01:18.360Z",
   "saved_by": "cm_command_center_operator"
 }

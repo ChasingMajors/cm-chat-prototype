@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:43:05.862Z",
+  "exported_at": "2026-06-07T19:43:25.928Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps gypsy queen baseball|2017_topps_gypsy_queen_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Gypsy Queen Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Gypsy_Queen_Baseball",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Visual validation complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27102825509",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T19:43:06.803Z",
+      "updatedAt": "2026-06-07T19:43:24.325Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps heritage baseball|2017_topps_heritage_baseball",
       "type": "visual_test",
@@ -426,17 +448,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Gypsy_Queen_Baseball",
       "riskLevel": "high",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27102825509",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.207Z",
-      "updatedAt": "2026-06-07T19:43:04.257Z"
+      "updatedAt": "2026-06-07T19:43:24.326Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gold_Label_Baseball",
@@ -1737,29 +1759,29 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.169Z",
       "updatedAt": "2026-06-07T18:15:39.170Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Donruss_Optic_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Donruss Optic Baseball",
-      "sport": "baseball",
-      "code": "2016_Donruss_Optic_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.169Z",
-      "updatedAt": "2026-06-07T18:15:39.169Z"
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780861404326_fcvgdb",
+      "ts": "2026-06-07T19:43:24.326Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Gypsy Queen Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780861386805_6yv8rs",
+      "ts": "2026-06-07T19:43:06.805Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Topps Gypsy Queen Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780861384258_6bm0z0",
       "ts": "2026-06-07T19:43:04.258Z",
@@ -2539,26 +2561,6 @@
       "status": "validated",
       "product": "2026 Topps Series 2 Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780851427355_dvfp0n",
-      "ts": "2026-06-07T16:57:07.355Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "3,120 public rows and 233 parallels found.",
-      "status": "covered",
-      "product": "2026 Topps Series 2 Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780851425264_w59ad2",
-      "ts": "2026-06-07T16:57:05.264Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2026 Topps Series 2 Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2768,6 +2770,29 @@
       "headSha": "cdc73b972c9c7f245381d4d2df399be8b4214353",
       "createdAt": "2026-06-07T19:41:42Z",
       "checkedAt": "2026-06-07T19:42:54.598Z"
+    },
+    "baseball|2017_Topps_Gypsy_Queen_Baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-07T19:43:05.514Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27102825509",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Topps_Gypsy_Queen_Baseball",
+      "key": "baseball|2017_Topps_Gypsy_Queen_Baseball",
+      "productName": "2017 Topps Gypsy Queen Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Gypsy_Queen_Baseball",
+      "updatedAt": "2026-06-07T19:43:24.322Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27102825509,
+      "runNumber": 28,
+      "displayTitle": "Visual Product Test - 2017 Topps Gypsy Queen Baseball",
+      "headSha": "cdc73b972c9c7f245381d4d2df399be8b4214353",
+      "createdAt": "2026-06-07T19:43:06Z",
+      "checkedAt": "2026-06-07T19:43:24.322Z"
     }
   },
   "known_issues": {},
@@ -2950,6 +2975,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:43:07.045Z",
+  "saved_at": "2026-06-07T19:43:27.078Z",
   "saved_by": "cm_command_center_operator"
 }

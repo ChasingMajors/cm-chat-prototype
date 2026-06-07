@@ -2,8 +2,8 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T16:29:33.945Z",
-  "autonomy_mode": "full_auto",
+  "exported_at": "2026-06-07T16:39:34.146Z",
+  "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
@@ -651,15 +651,15 @@
       "sport": "soccer",
       "code": "",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "status": "failed",
+      "recommendedAction": "Open PRV preview, confirm rows, then retry the product-scoped write.",
       "adminDecision": "",
-      "executionResult": "PRV sheet write started through Operator Backend.",
-      "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
+      "executionResult": "PRV source preview is not ready for write.",
+      "validationResult": "PRV sheet write did not complete.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-club-competitions",
       "createdAt": "2026-05-20T00:30:18.946Z",
-      "updatedAt": "2026-06-07T16:29:32.342Z",
+      "updatedAt": "2026-06-07T16:29:37.844Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T14:31:01.213Z"
@@ -938,6 +938,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780850372543_7zgzby",
+      "ts": "2026-06-07T16:39:32.543Z",
+      "type": "autonomy",
+      "title": "Autonomy mode changed",
+      "detail": "Mode set to Guarded auto.",
+      "status": "guarded_auto",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780849777851_9jfvqz",
+      "ts": "2026-06-07T16:29:37.851Z",
+      "type": "prv_source_review",
+      "title": "PRV sheet write blocked",
+      "detail": "PRV source preview is not ready for write.",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780849772329_nyzv4w",
       "ts": "2026-06-07T16:29:32.329Z",
@@ -1717,26 +1737,6 @@
       "status": "needs_admin",
       "product": "2025-26 Upper Deck Extended Series Hockey",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780802221271",
-      "ts": "2026-06-07T03:14:15.432Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780802054454_37jlzw",
-      "ts": "2026-06-07T03:14:14.454Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -2028,6 +2028,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T16:29:37.930Z",
+  "saved_at": "2026-06-07T16:39:35.446Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:53:31.758Z",
+  "exported_at": "2026-06-07T20:54:25.881Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1240,17 +1240,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Allen_Ginter_X_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Allen_Ginter_X_Baseball.",
-      "validationResult": "Published checklist JSON validated with 556 rows and 7 parallels. CV/ChatBot visual validation is pending.",
+      "validationResult": "CV/ChatBot visual test requested by Agent Cycle...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.201Z",
-      "updatedAt": "2026-06-07T20:53:23.588Z",
+      "updatedAt": "2026-06-07T20:54:24.279Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:53:23.588Z"
     },
@@ -1262,17 +1262,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Allen_Ginter_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "queued",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Allen_Ginter_Baseball.",
-      "validationResult": "Published checklist JSON validated with 1677 rows and 8 parallels. CV/ChatBot visual validation is pending.",
+      "validationResult": "Queued for CV/ChatBot visual test dispatch (2 of 2).",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.201Z",
-      "updatedAt": "2026-06-07T20:54:15.797Z",
+      "updatedAt": "2026-06-07T20:54:24.274Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:54:15.797Z"
     },
@@ -1838,6 +1838,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780865664272_ghb241",
+      "ts": "2026-06-07T20:54:24.272Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780865664261_ulcwsw",
+      "ts": "2026-06-07T20:54:24.261Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
     {
       "id": "log_1780865657862",
       "ts": "2026-06-07T20:54:15.797Z",
@@ -2617,26 +2637,6 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780864369676_ukyhkr",
-      "ts": "2026-06-07T20:32:49.676Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780863500912_h2lq1q",
-      "ts": "2026-06-07T20:18:20.912Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Chrome Update Series Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3662,6 +3662,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:54:17.879Z",
+  "saved_at": "2026-06-07T20:54:26.917Z",
   "saved_by": "cm_command_center_operator"
 }

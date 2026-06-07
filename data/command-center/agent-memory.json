@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:20:47.220Z",
+  "exported_at": "2026-06-07T21:20:53.726Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1856,10 +1856,41 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Tribute_Baseball",
     "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball",
     "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780867252123_aau1e9",
+      "ts": "2026-06-07T21:20:52.123Z",
+      "type": "agent_run_queue",
+      "title": "Admin Run Queue complete",
+      "detail": "0 attempted. 3 skipped for approval/details. 0 failed. 3 still queued. 2016 Topps Tribute Baseball: No safe attempt is available yet 2016 Topps Update Series Baseball: No safe attempt is available yet 2017 Topps New Era Baseball: No safe attempt is available yet",
+      "status": "needs_review",
+      "product": "",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780867252119_9nzubd",
+      "ts": "2026-06-07T21:20:52.119Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "3 flagged jobs will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1780867248783_as71w3",
+      "ts": "2026-06-07T21:20:48.783Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2016 Topps Tribute Baseball will be attempted by Run Agent Cycle.",
+      "status": "queued",
+      "product": "2016 Topps Tribute Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780867245617_ssifz7",
       "ts": "2026-06-07T21:20:45.617Z",
@@ -2629,36 +2660,6 @@
       "status": "validated",
       "product": "2017 Panini Flawless Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780866124469_nf3j7j",
-      "ts": "2026-06-07T21:02:04.469Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Panini Flawless Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780866097148_msyw54",
-      "ts": "2026-06-07T21:01:37.148Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Panini Flawless Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780866079937_4vina3",
-      "ts": "2026-06-07T21:01:19.937Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 20 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Panini Flawless Baseball -> pending_visual_validation (Published checklist JSON validated with 1105 rows and 23 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3984,6 +3985,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:20:48.642Z",
+  "saved_at": "2026-06-07T21:20:54.913Z",
   "saved_by": "cm_command_center_operator"
 }

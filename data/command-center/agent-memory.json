@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:00:15.611Z",
+  "exported_at": "2026-06-07T20:59:38.786Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1392,17 +1392,17 @@
       "sport": "baseball",
       "code": "2017_Panini_Immaculate_Collection_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "known_issue",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1238 rows / 78 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "executionResult": "Full-auto guardrail blocked execution.",
+      "validationResult": "Blocked product category term detected.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.200Z",
-      "updatedAt": "2026-06-07T18:15:39.200Z"
+      "updatedAt": "2026-06-07T21:00:15.060Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Flawless_Baseball",
@@ -1847,14 +1847,34 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780866014007_p3a5my",
-      "ts": "2026-06-07T21:00:14.007Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
+      "id": "log_1780866017652",
+      "ts": "2026-06-07T21:00:15.060Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto action: Blocked product category term detected.",
+      "status": "validated",
       "product": "",
-      "source": "command_center"
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780866017651",
+      "ts": "2026-06-07T21:00:15.060Z",
+      "type": "auto_action",
+      "title": "Full-auto action blocked",
+      "detail": "2017 Panini Immaculate Collection Baseball: Blocked product category term detected.",
+      "status": "needs_review",
+      "product": "2017 Panini Immaculate Collection Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780866017650",
+      "ts": "2026-06-07T21:00:15.060Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1780865977185_brq1vd",
@@ -2619,26 +2639,6 @@
     {
       "id": "log_1780864781685_blbke7",
       "ts": "2026-06-07T20:39:41.685Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Panini Chronicles Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864754492_mnj8vv",
-      "ts": "2026-06-07T20:39:14.492Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Panini Chronicles Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864727332_dne35j",
-      "ts": "2026-06-07T20:38:47.332Z",
       "type": "visual_test",
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
@@ -3739,6 +3739,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:00:16.777Z",
+  "saved_at": "2026-06-07T21:00:17.710Z",
   "saved_by": "cm_command_center_operator"
 }

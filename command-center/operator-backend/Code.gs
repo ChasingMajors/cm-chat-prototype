@@ -3479,6 +3479,8 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
   const wasPendingVisualValidation = actionStatus === "pending_visual_validation";
   const wasVisualInFlight = (actionStatus === "queued" || actionStatus === "running" || actionStatus === "in_progress") &&
     safeString_(action.validationResult).toLowerCase().indexOf("visual") > -1;
+  const isCoverageOnlyAudit = (action.type === "backend_data_issue" || action.source === "deep_backend_audit") &&
+    !!safeString_(action.code).trim();
   if (mode === "guarded_auto" && actionStatus !== "pending_public_validation" && !wasPendingVisualValidation && !wasVisualInFlight) {
     return {
       ran: false,
@@ -3527,7 +3529,7 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
   try {
     if (wasPendingVisualValidation || wasVisualInFlight) {
       result = runScheduledVisualAutoAction_(action, key);
-    } else if (action.type === "source_import" && wasPendingPublicValidation) {
+    } else if (isCoverageOnlyAudit || (action.type === "source_import" && wasPendingPublicValidation)) {
       result = runScheduledChecklistPendingValidationAction_(action, key);
     } else if (action.type === "source_import") {
       result = runScheduledChecklistAutoAction_(action, key);
@@ -3661,7 +3663,7 @@ function findNextQueuedScheduledAutoAction_(actions, memory) {
     const status = safeString_(action.status).trim().toLowerCase();
     const validation = safeString_(action.validationResult).toLowerCase();
     if ((status === "running" || status === "queued" || status === "in_progress") && validation.indexOf("visual") === -1) continue;
-    if (action.type !== "source_import" && action.type !== "checklist_publish" && action.type !== "prv_source_review") continue;
+    if (action.type !== "source_import" && action.type !== "checklist_publish" && action.type !== "prv_source_review" && action.type !== "backend_data_issue") continue;
     return action;
   }
   return null;
@@ -3669,7 +3671,7 @@ function findNextQueuedScheduledAutoAction_(actions, memory) {
 
 function isRunQueueApprovalEligibleMemoryAction_(action) {
   const type = safeString_(action && action.type).trim().toLowerCase();
-  if (type !== "source_import" && type !== "checklist_publish" && type !== "prv_source_review" && type !== "prv_publish") return false;
+  if (type !== "source_import" && type !== "checklist_publish" && type !== "prv_source_review" && type !== "prv_publish" && type !== "backend_data_issue") return false;
   return !!(safeString_(action && action.product).trim() || safeString_(action && action.code).trim());
 }
 
@@ -3708,7 +3710,7 @@ function findNextScheduledAutoAction_(actions, memory) {
     const action = actions[i] || {};
     const status = safeString_(action.status).trim().toLowerCase();
     if (status !== "pending_visual_validation") continue;
-    if (action.type !== "source_import" && action.type !== "checklist_publish" && action.type !== "prv_source_review") continue;
+    if (action.type !== "source_import" && action.type !== "checklist_publish" && action.type !== "prv_source_review" && action.type !== "backend_data_issue") continue;
     return action;
   }
 
@@ -3751,18 +3753,20 @@ function validateScheduledAutoActionSafety_(action) {
   const isPendingVisualValidation = status === "pending_visual_validation";
   const isVisualInFlight = (status === "queued" || status === "running" || status === "in_progress") &&
     safeString_(action && action.validationResult).toLowerCase().indexOf("visual") > -1;
+  const isCoverageOnlyAudit = (safeString_(action && action.type).trim().toLowerCase() === "backend_data_issue" || safeString_(action && action.source).trim().toLowerCase() === "deep_backend_audit") &&
+    !!code;
 
   if (!product) return { ok: false, reason: "Missing product name." };
   if (!isAllowedSport_(sport)) return { ok: false, reason: "Unsupported or missing sport." };
   if (hasBlockedTerm_(product)) return { ok: false, reason: "Blocked product category term detected." };
   if (isPendingPublicValidation && !code) return { ok: false, reason: "Pending validation is missing product code." };
-  if (!isPendingPublicValidation && !isPendingVisualValidation && !isVisualInFlight && !sourceUrl) return { ok: false, reason: "Missing source URL." };
+  if (!isPendingPublicValidation && !isPendingVisualValidation && !isVisualInFlight && !isCoverageOnlyAudit && !sourceUrl) return { ok: false, reason: "Missing source URL." };
 
-  if (!isPendingPublicValidation && !isPendingVisualValidation && !isVisualInFlight && action.type === "source_import" && !/^https:\/\/www\.checklistcenter\.com\//i.test(sourceUrl)) {
+  if (!isPendingPublicValidation && !isPendingVisualValidation && !isVisualInFlight && !isCoverageOnlyAudit && action.type === "source_import" && !/^https:\/\/www\.checklistcenter\.com\//i.test(sourceUrl)) {
     return { ok: false, reason: "Checklist auto-import only supports Checklist Center URLs." };
   }
 
-  if (!isPendingPublicValidation && !isPendingVisualValidation && !isVisualInFlight && action.type === "prv_source_review" && !/^https:\/\/slabsquatch\.substack\.com\/p\//i.test(sourceUrl)) {
+  if (!isPendingPublicValidation && !isPendingVisualValidation && !isVisualInFlight && !isCoverageOnlyAudit && action.type === "prv_source_review" && !/^https:\/\/slabsquatch\.substack\.com\/p\//i.test(sourceUrl)) {
     return { ok: false, reason: "PRV auto-import only supports SlabSquatch post URLs." };
   }
 
@@ -4987,7 +4991,9 @@ function isAllowedSport_(sport) {
 function hasBlockedTerm_(value) {
   const text = normalize_(value);
   return CM_BLOCKED_TERMS.some(function(term) {
-    return text.indexOf(normalize_(term)) > -1;
+    const normalizedTerm = normalize_(term);
+    if (!normalizedTerm) return false;
+    return (" " + text + " ").indexOf(" " + normalizedTerm + " ") > -1;
   });
 }
 

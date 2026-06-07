@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc107-run-queue-approval-v1-2026-06-07";
+  const COMMAND_CENTER_VERSION = "cc108-needs-attention-recheck-v1-2026-06-07";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -533,7 +533,7 @@
 
   function isRunQueueApprovalEligible(action) {
     const type = String(action && action.type || "").toLowerCase();
-    if (type !== "source_import" && type !== "checklist_publish" && type !== "prv_source_review" && type !== "prv_publish") return false;
+    if (type !== "source_import" && type !== "checklist_publish" && type !== "prv_source_review" && type !== "prv_publish" && type !== "backend_data_issue") return false;
     if (!action.product && !action.code) return false;
     return true;
   }
@@ -1386,7 +1386,11 @@
 
   function hasBlockedSourceTerm(value) {
     const text = normalize(value);
-    return BLOCKED_SOURCE_TERMS.some(term => text.includes(normalize(term)));
+    return BLOCKED_SOURCE_TERMS.some(term => {
+      const normalizedTerm = normalize(term);
+      if (!normalizedTerm) return false;
+      return (` ${text} `).includes(` ${normalizedTerm} `);
+    });
   }
 
   async function fetchJson(url, options) {
@@ -6170,7 +6174,7 @@
             ${canTestProduct && !retestNeeded ? `
               <button class="action-btn" type="button" data-action-visual-test="${escapeHtml(action.id)}">Test CV/ChatBot</button>
             ` : ""}
-            ${action.product && (action.type === "source_import" || action.type === "checklist_publish") ? `
+            ${action.product && (action.type === "source_import" || action.type === "checklist_publish" || action.type === "backend_data_issue") ? `
               <button class="action-btn" type="button" data-action-recheck-coverage="${escapeHtml(action.id)}">Recheck Coverage</button>
             ` : ""}
             ${canExecuteSourceImport ? `
@@ -7240,12 +7244,18 @@
       return { kind: "checklist_coverage_recheck", label: "Recheck checklist public JSON", safe: true };
     }
     if (status === "fix_applied" && action.product) return { kind: "visual_test", label: "Run retest after fix", safe: true };
+    if (type === "backend_data_issue" && (action.product || action.code)) {
+      return { kind: "checklist_coverage_recheck", label: "Recheck checklist public JSON", safe: true };
+    }
     if (type === "source_import") {
       if ((status === "approved" || status === "ready" || hasAdminApproval(action)) && (action.sourceUrl || action.runUrl)) {
         return { kind: "execute_import", label: "Write approved checklist import", safe: true };
       }
       if ((action.sourceUrl || action.runUrl) && !execution.includes("preview parsed") && !execution.includes("import preview")) {
         return { kind: "checklist_preview", label: "Preview checklist source", safe: true };
+      }
+      if (action.product || action.code) {
+        return { kind: "checklist_coverage_recheck", label: "Recheck checklist public JSON", safe: true };
       }
       return { kind: "needs_admin", label: "Checklist write needs approval or source details", safe: false };
     }

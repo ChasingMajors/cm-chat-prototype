@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:02:44.611Z",
+  "exported_at": "2026-06-07T20:03:01.998Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -155,18 +155,18 @@
       "code": "2017_Topps_Diamond_Icons_Baseball",
       "riskLevel": "low",
       "status": "needs_admin",
-      "recommendedAction": "Run CV and ChatBot visual checks after publish.",
+      "recommendedAction": "Visual validation complete.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103295947",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:02:42.992Z",
-      "updatedAt": "2026-06-07T20:02:42.994Z"
+      "updatedAt": "2026-06-07T20:03:00.395Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps dynasty baseball|2017_topps_dynasty_baseball",
@@ -865,12 +865,12 @@
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Diamond_Icons_Baseball.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103295947",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.204Z",
-      "updatedAt": "2026-06-07T20:02:42.995Z",
+      "updatedAt": "2026-06-07T20:03:00.396Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:02:31.620Z"
     },
@@ -1797,6 +1797,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780862580396_nstpyf",
+      "ts": "2026-06-07T20:03:00.396Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Diamond Icons Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780862563010_s5sf7s",
       "ts": "2026-06-07T20:02:43.010Z",
       "type": "agent_cycle",
@@ -2585,16 +2595,6 @@
       "status": "in_progress",
       "product": "2017 Topps Five Star Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780861867161_uuvkeg",
-      "ts": "2026-06-07T19:51:07.161Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Five Star Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3105,11 +3105,11 @@
       "checkedAt": "2026-06-07T20:01:23.446Z"
     },
     "baseball|2017_Topps_Diamond_Icons_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-07T20:02:41.528Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103295947",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Diamond_Icons_Baseball",
@@ -3117,9 +3117,15 @@
       "productName": "2017 Topps Diamond Icons Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Diamond_Icons_Baseball",
-      "updatedAt": "2026-06-07T20:02:42.991Z",
+      "updatedAt": "2026-06-07T20:03:00.393Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27103295947,
+      "runNumber": 41,
+      "displayTitle": "Visual Product Test - 2017 Topps Diamond Icons Baseball",
+      "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
+      "createdAt": "2026-06-07T20:02:42Z",
+      "checkedAt": "2026-06-07T20:03:00.393Z"
     }
   },
   "known_issues": {},
@@ -3302,6 +3308,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:02:45.945Z",
+  "saved_at": "2026-06-07T20:03:03.334Z",
   "saved_by": "cm_command_center_operator"
 }

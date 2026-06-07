@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:01:09.142Z",
+  "exported_at": "2026-06-07T21:00:24.323Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1412,17 +1412,19 @@
       "sport": "baseball",
       "code": "2017_Panini_Flawless_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "pending_visual_validation",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1105 rows / 23 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "executionResult": "Pending checklist publish validation completed for 2017_Panini_Flawless_Baseball.",
+      "validationResult": "Published checklist JSON validated with 1105 rows and 23 parallels. CV/ChatBot visual validation is pending.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.199Z",
-      "updatedAt": "2026-06-07T18:15:39.200Z"
+      "updatedAt": "2026-06-07T21:01:08.653Z",
+      "pendingValidationAttempts": 0,
+      "autoExecutedAt": "2026-06-07T21:01:08.653Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Elite_Extra_Edition_Baseball",
@@ -1847,28 +1849,38 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780866067539_stj3ge",
-      "ts": "2026-06-07T21:01:07.539Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780866024518_xax57m",
-      "ts": "2026-06-07T21:00:24.518Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 wave ran. 0 safe actions executed. 20 active queue items remain. Stopped because: Blocked product category term detected. Wave 1: action -> Blocked product category term detected.",
-      "status": "needs_review",
+      "id": "log_1780866071930",
+      "ts": "2026-06-07T21:01:08.653Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Panini Flawless Baseball -> pending_visual_validation (Published checklist JSON validated with 1105 rows and 23 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "validated",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1780866024516_kp2orq",
-      "ts": "2026-06-07T21:00:24.516Z",
+      "id": "log_1780866071929",
+      "ts": "2026-06-07T21:01:08.653Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2017 Panini Flawless Baseball: Pending checklist publish validation completed for 2017_Panini_Flawless_Baseball. Published checklist JSON validated with 1105 rows and 23 parallels. CV/ChatBot visual validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2017 Panini Flawless Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780866071445",
+      "ts": "2026-06-07T21:01:08.653Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780866022720_116qef",
+      "ts": "2026-06-07T21:00:22.720Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -1877,8 +1889,8 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1780866024507_yzzmre",
-      "ts": "2026-06-07T21:00:24.507Z",
+      "id": "log_1780866022708_2illkn",
+      "ts": "2026-06-07T21:00:22.708Z",
       "type": "memory",
       "title": "Agent memory imported",
       "detail": "Queue, log, approvals, known issues, and visual status were restored.",
@@ -2633,16 +2645,6 @@
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
-      "product": "2017 Donruss Optic Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780864837305_zrmqfp",
-      "ts": "2026-06-07T20:40:37.305Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
       "product": "2017 Donruss Optic Baseball",
       "source": "github_actions"
     }
@@ -3739,6 +3741,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:01:10.187Z",
+  "saved_at": "2026-06-07T21:01:11.942Z",
   "saved_by": "cm_command_center_operator"
 }

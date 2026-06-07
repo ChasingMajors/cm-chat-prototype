@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T15:42:47.636Z",
+  "exported_at": "2026-06-07T16:05:28.139Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -312,11 +312,11 @@
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "Coverage recheck started...",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-06-02T22:56:21.096Z",
-      "updatedAt": "2026-06-07T15:42:46.033Z"
+      "updatedAt": "2026-06-07T16:05:26.535Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025 topps dynasty baseball|2025_topps_dynasty_baseball",
@@ -920,6 +920,36 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780848326536_iwr8x0",
+      "ts": "2026-06-07T16:05:26.536Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Agent cycle started CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2025 Topps Cosmic Chrome Football",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1780848326531_aryr7c",
+      "ts": "2026-06-07T16:05:26.531Z",
+      "type": "agent_cycle",
+      "title": "Run CV/ChatBot validation",
+      "detail": "2025 Topps Cosmic Chrome Football has execution or coverage proof and needs app behavior proof.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1780846968415_biqzn3",
+      "ts": "2026-06-07T15:42:48.415Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "863 public rows and 43 parallels found.",
+      "status": "covered",
+      "product": "2025 Topps Cosmic Chrome Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780846966034_ataads",
       "ts": "2026-06-07T15:42:46.034Z",
@@ -1689,36 +1719,6 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780800982355_gukbll",
-      "ts": "2026-06-07T02:56:22.355Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, PRV JSON sync health, and backend memory update.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780775014769_i1ao5n",
-      "ts": "2026-06-06T19:43:34.769Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780775014756_jazg1p",
-      "ts": "2026-06-06T19:43:34.756Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -1987,6 +1987,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T15:42:49.014Z",
+  "saved_at": "2026-06-07T16:05:29.491Z",
   "saved_by": "cm_command_center_operator"
 }

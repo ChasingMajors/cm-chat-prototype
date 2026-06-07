@@ -3152,13 +3152,13 @@ function maybeRunScheduledAutoActions_(memory, key, now, maxActions) {
   const mode = safeString_(memory && memory.autonomy_mode).trim() || "approval_required";
   const limit = Math.max(1, Math.min(3, Number(maxActions || 1)));
 
-  if (mode !== "full_auto") {
+  if (mode !== "full_auto" && mode !== "guarded_auto") {
     return {
       ran: false,
       count: 0,
       mode: mode,
       results: [],
-      reason: "Full auto is off."
+      reason: "Auto execution is off."
     };
   }
 
@@ -3199,11 +3199,11 @@ function maybeRunScheduledAutoActions_(memory, key, now, maxActions) {
 
 function maybeRunScheduledAutoAction_(memory, key, now) {
   const mode = safeString_(memory && memory.autonomy_mode).trim() || "approval_required";
-  if (mode !== "full_auto") {
+  if (mode !== "full_auto" && mode !== "guarded_auto") {
     return {
       ran: false,
       mode: mode,
-      reason: "Full auto is off."
+      reason: "Auto execution is off."
     };
   }
 
@@ -3215,6 +3215,17 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
       ran: false,
       mode: mode,
       reason: "No safe auto-executable action found."
+    };
+  }
+
+  const actionStatus = safeString_(action.status).trim().toLowerCase();
+  if (mode === "guarded_auto" && actionStatus !== "pending_public_validation") {
+    return {
+      ran: false,
+      mode: mode,
+      action_id: action.id,
+      product: action.product || "",
+      reason: "Guarded auto only self-heals pending public validation. Switch to Full auto for approved writes."
     };
   }
 
@@ -3350,17 +3361,21 @@ function validateScheduledAutoActionSafety_(action) {
   const sport = normalize_(action && action.sport);
   const sourceUrl = safeString_(action && (action.sourceUrl || action.runUrl)).trim();
   const product = safeString_(action && action.product).trim();
+  const code = safeString_(action && action.code).trim();
+  const status = safeString_(action && action.status).trim().toLowerCase();
+  const isPendingPublicValidation = status === "pending_public_validation";
 
   if (!product) return { ok: false, reason: "Missing product name." };
   if (!isAllowedSport_(sport)) return { ok: false, reason: "Unsupported or missing sport." };
   if (hasBlockedTerm_(product)) return { ok: false, reason: "Blocked product category term detected." };
-  if (!sourceUrl) return { ok: false, reason: "Missing source URL." };
+  if (isPendingPublicValidation && !code) return { ok: false, reason: "Pending validation is missing product code." };
+  if (!isPendingPublicValidation && !sourceUrl) return { ok: false, reason: "Missing source URL." };
 
-  if (action.type === "source_import" && !/^https:\/\/www\.checklistcenter\.com\//i.test(sourceUrl)) {
+  if (!isPendingPublicValidation && action.type === "source_import" && !/^https:\/\/www\.checklistcenter\.com\//i.test(sourceUrl)) {
     return { ok: false, reason: "Checklist auto-import only supports Checklist Center URLs." };
   }
 
-  if (action.type === "prv_source_review" && !/^https:\/\/slabsquatch\.substack\.com\/p\//i.test(sourceUrl)) {
+  if (!isPendingPublicValidation && action.type === "prv_source_review" && !/^https:\/\/slabsquatch\.substack\.com\/p\//i.test(sourceUrl)) {
     return { ok: false, reason: "PRV auto-import only supports SlabSquatch post URLs." };
   }
 

@@ -2126,7 +2126,7 @@
         action: "runScheduledAgentSweep",
         key,
         mode: "quick_json",
-        maxAutoActions: 1,
+        maxAutoActions: 3,
         skipPrvSync: true,
         fastMode: true
       }, { timeoutMs: 150000 });
@@ -6608,10 +6608,18 @@
       };
     }
 
-    if (validated.length >= 1 && state.autonomyMode === "guarded_auto") {
+    if (state.autonomyMode === "full_auto") {
+      return {
+        label: "Full Auto",
+        detail: "Full auto can run approved product-scoped writes, publishes, and validation in bounded batches.",
+        className: blockers.length || knownIssues.length ? "warning" : "opportunity"
+      };
+    }
+
+    if (state.autonomyMode === "guarded_auto") {
       return {
         label: "Guarded",
-        detail: "Guarded auto has validation proof and no active blockers.",
+        detail: "Guarded auto self-heals pending public validation, but does not write new source rows.",
         className: "opportunity"
       };
     }

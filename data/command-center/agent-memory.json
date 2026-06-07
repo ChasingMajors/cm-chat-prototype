@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:51:00.429Z",
+  "exported_at": "2026-06-07T20:51:27.496Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:50:41.999Z",
-      "updatedAt": "2026-06-07T20:50:58.815Z"
+      "updatedAt": "2026-06-07T20:51:25.893Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps archives baseball|2017_topps_archives_baseball",
@@ -1530,7 +1530,7 @@
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.195Z",
-      "updatedAt": "2026-06-07T20:50:58.815Z"
+      "updatedAt": "2026-06-07T20:51:25.893Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_High_Tek_Baseball",
@@ -1834,6 +1834,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780865485893_vc00wv",
+      "ts": "2026-06-07T20:51:25.893Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780865458815_ksebk3",
       "ts": "2026-06-07T20:50:58.815Z",
@@ -2622,16 +2632,6 @@
       "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Chrome Update Series Baseball -> pending_visual_validation (Published checklist JSON validated with 196 rows and 11 parallels. CV/ChatBot visual validation is pending.)",
       "status": "validated",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780863393851",
-      "ts": "2026-06-07T20:16:28.752Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Topps Chrome Update Series Baseball: Pending checklist publish validation completed for 2017_Topps_Chrome_Update_Series_Baseball. Published checklist JSON validated with 196 rows and 11 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Topps Chrome Update Series Baseball",
       "source": "operator_backend"
     }
   ],
@@ -3431,7 +3431,7 @@
       "productName": "2017 Bowman Mega Box Chrome Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
-      "updatedAt": "2026-06-07T20:50:58.814Z",
+      "updatedAt": "2026-06-07T20:51:25.878Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27104442514,
@@ -3439,7 +3439,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Mega Box Chrome Baseball",
       "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
       "createdAt": "2026-06-07T20:50:41Z",
-      "checkedAt": "2026-06-07T20:50:58.813Z"
+      "checkedAt": "2026-06-07T20:51:25.876Z"
     }
   },
   "known_issues": {},
@@ -3658,6 +3658,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:51:01.661Z",
+  "saved_at": "2026-06-07T20:51:28.943Z",
   "saved_by": "cm_command_center_operator"
 }

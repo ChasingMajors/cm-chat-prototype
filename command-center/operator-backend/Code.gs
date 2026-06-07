@@ -3461,6 +3461,7 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
   }
 
   const actionStatus = safeString_(action.status).trim().toLowerCase();
+  const wasPendingPublicValidation = actionStatus === "pending_public_validation";
   if (mode === "guarded_auto" && actionStatus !== "pending_public_validation") {
     return {
       ran: false,
@@ -3507,7 +3508,7 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
 
   let result = {};
   try {
-    if (action.type === "source_import" && safeString_(action.status).trim().toLowerCase() === "pending_public_validation") {
+    if (action.type === "source_import" && wasPendingPublicValidation) {
       result = runScheduledChecklistPendingValidationAction_(action, key);
     } else if (action.type === "source_import") {
       result = runScheduledChecklistAutoAction_(action, key);

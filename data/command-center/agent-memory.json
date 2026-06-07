@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:11:37.464Z",
+  "exported_at": "2026-06-07T20:12:04.661Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -154,11 +154,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Clearly_Authentic_Baseball",
       "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Visual validation complete.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103488679",
       "sourceUrl": "",
       "bucket": "",
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:10:51.626Z",
-      "updatedAt": "2026-06-07T20:11:35.861Z"
+      "updatedAt": "2026-06-07T20:12:03.057Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps definitive collection baseball|2017_topps_definitive_collection_baseball",
@@ -912,17 +912,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Clearly_Authentic_Baseball",
       "riskLevel": "high",
-      "status": "needs_admin",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Clearly_Authentic_Baseball.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103488679",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.204Z",
-      "updatedAt": "2026-06-07T20:11:35.862Z",
+      "updatedAt": "2026-06-07T20:12:03.058Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:10:37.257Z"
     },
@@ -1789,6 +1789,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780863123059_7aqah7",
+      "ts": "2026-06-07T20:12:03.059Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Topps Clearly Authentic Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780863123058_44comg",
+      "ts": "2026-06-07T20:12:03.058Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Topps Clearly Authentic Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780863095862_q1dbf4",
       "ts": "2026-06-07T20:11:35.862Z",
       "type": "visual_test",
@@ -2567,26 +2587,6 @@
       "status": "queued",
       "product": "",
       "source": "agent_cycle"
-    },
-    {
-      "id": "log_1780862237589_7hb676",
-      "ts": "2026-06-07T19:57:17.589Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780862235210_hz1wvg",
-      "ts": "2026-06-07T19:57:15.210Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps High Tek Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3143,9 +3143,9 @@
       "checkedAt": "2026-06-07T20:09:14.437Z"
     },
     "baseball|2017_Topps_Clearly_Authentic_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T20:10:49.865Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103488679",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3155,7 +3155,7 @@
       "productName": "2017 Topps Clearly Authentic Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Clearly_Authentic_Baseball",
-      "updatedAt": "2026-06-07T20:11:35.859Z",
+      "updatedAt": "2026-06-07T20:12:03.056Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27103488679,
@@ -3163,7 +3163,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Clearly Authentic Baseball",
       "headSha": "ad0cd5ef3c6451bd9697b8fdba81e713415b20a6",
       "createdAt": "2026-06-07T20:10:51Z",
-      "checkedAt": "2026-06-07T20:11:35.859Z"
+      "checkedAt": "2026-06-07T20:12:03.056Z"
     }
   },
   "known_issues": {},
@@ -3382,6 +3382,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:11:38.776Z",
+  "saved_at": "2026-06-07T20:12:05.806Z",
   "saved_by": "cm_command_center_operator"
 }

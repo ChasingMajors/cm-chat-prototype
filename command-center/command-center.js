@@ -462,6 +462,10 @@
     return status === "validated" || status === "done" || status === "ignored";
   }
 
+  function isPendingPublicValidationAction(action) {
+    return String(action && action.status || "").toLowerCase() === "pending_public_validation";
+  }
+
   function getActiveAgentActions() {
     return (state.agentActions || []).filter(action => !isResolvedAgentAction(action));
   }
@@ -5144,8 +5148,12 @@
       },
       {
         label: "Validation proof",
-        ok: validationPassed,
-        note: action && action.validationResult ? action.validationResult : "No validation proof yet"
+        ok: validationPassed || isPendingPublicValidationAction(action),
+        note: action && action.validationResult
+          ? action.validationResult
+          : isPendingPublicValidationAction(action)
+            ? "Publish completed; waiting for public JSON propagation."
+            : "No validation proof yet"
       }
     ];
 
@@ -5297,6 +5305,14 @@
       };
     }
 
+    if (isPendingPublicValidationAction(action)) {
+      return {
+        label: "Recheck Ready",
+        className: "ready",
+        detail: "Publish completed but public JSON was not visible yet. Run Agent Cycle to recheck automatically."
+      };
+    }
+
     if (!hasSource || !hasTarget) {
       return {
         label: "Hold",
@@ -5422,7 +5438,7 @@
       { key: "source", label: "Source found", done: hasSource || type === "checklist_publish" },
       { key: "preview", label: "Preview ready", done: hasPreview || hasSheetWrite || type === "checklist_publish" },
       { key: "sheet", label: "Sheet write", done: hasSheetWrite || type === "checklist_publish" },
-      { key: "publish", label: "JSON publish", done: hasPublish || hasPublicValidation },
+      { key: "publish", label: "JSON publish", done: hasPublish || hasPublicValidation || isPendingPublicValidationAction(action) },
       { key: "validate", label: "CV / ChatBot test", done: isComplete }
     ];
 
@@ -5430,7 +5446,7 @@
       { key: "source", label: "Source found", done: hasSource },
       { key: "preview", label: "PRV preview", done: hasPreview || hasSheetWrite },
       { key: "sheet", label: "PRV sheet write", done: hasSheetWrite },
-      { key: "publish", label: "PRV JSON publish", done: hasPublish || hasPublicValidation },
+      { key: "publish", label: "PRV JSON publish", done: hasPublish || hasPublicValidation || isPendingPublicValidationAction(action) },
       { key: "validate", label: "Public PRV test", done: isComplete || hasPublicValidation }
     ];
 
@@ -6119,6 +6135,36 @@
         action: approvedPrvPublish,
         title: "Publish approved PRV JSON",
         detail: `${approvedPrvPublish.product || approvedPrvPublish.code} was written to PRV Sheets. Sentinel will publish JSON next.`
+      };
+    }
+
+    const pendingChecklistValidation = active.find(action => {
+      const type = String(action.type || "").toLowerCase();
+      if (!isPendingPublicValidationAction(action)) return false;
+      if (type !== "source_import" && type !== "checklist_publish") return false;
+      return !!action.product;
+    });
+    if (pendingChecklistValidation) {
+      return {
+        kind: "checklist_coverage_recheck",
+        action: pendingChecklistValidation,
+        title: "Self-heal pending checklist validation",
+        detail: `${pendingChecklistValidation.product || "This checklist"} was published but not visible yet. Sentinel will recheck public JSON before asking admin.`
+      };
+    }
+
+    const pendingPrvValidation = active.find(action => {
+      const type = String(action.type || "").toLowerCase();
+      if (!isPendingPublicValidationAction(action)) return false;
+      if (type !== "prv_source_review" && type !== "prv_publish") return false;
+      return !!action.code;
+    });
+    if (pendingPrvValidation) {
+      return {
+        kind: "prv_public_recheck",
+        action: pendingPrvValidation,
+        title: "Self-heal pending PRV validation",
+        detail: `${pendingPrvValidation.product || pendingPrvValidation.code} was published but not visible yet. Sentinel will recheck public PRV JSON before asking admin.`
       };
     }
 

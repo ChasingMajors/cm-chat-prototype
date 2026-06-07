@@ -26,7 +26,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-06-operator-cc76-prv-paywall-guard";
+const CM_OPERATOR_VERSION = "2026-06-06-operator-cc80-sport-inference";
 const CM_APP_DATA_BASE = "https://app.chasingmajors.com/data/v1";
 const CM_CHECKLISTCENTER_HOME = "https://www.checklistcenter.com/";
 const CM_CHECKLISTCENTER_POSTS_API = "https://www.checklistcenter.com/wp-json/wp/v2/posts?per_page=20&_fields=link,title,date,slug";
@@ -119,6 +119,7 @@ function doGet(e) {
       version: CM_OPERATOR_VERSION,
       mode: "review_only",
       supported_sports: CM_ALLOWED_SPORTS,
+      sport_inference: getSportInferenceSelfTest_(),
       updated_at: new Date().toISOString()
     });
 
@@ -2867,6 +2868,12 @@ function runScheduledAgentSweep_(input) {
     "PRV: " + prvActionable.length + " actionable from " + (prvWatch.fetched_count || 0) + " checked.",
     "PRV sync: " + (prvSync.ok ? "passed." : "failed.")
   ];
+  const sportInference = getSportInferenceSelfTest_();
+  if (!sportInference.ok) {
+    detailParts.push("Sport inference guard failed: " + sportInference.failed.map(function(item) {
+      return item.title + " expected " + item.expected + " got " + item.actual;
+    }).join("; "));
+  }
   if (skippedChecklistIgnored || skippedPrvIgnored) {
     detailParts.push((skippedChecklistIgnored + skippedPrvIgnored) + " admin-ignored source item(s) skipped.");
   }
@@ -2884,7 +2891,7 @@ function runScheduledAgentSweep_(input) {
     type: "agent_sweep",
     title: "Scheduled Agent Sweep complete",
     detail: detailParts.join(" "),
-    status: checklistActionable.length || prvActionable.length || !prvSync.ok ? "needs_review" : "validated",
+    status: checklistActionable.length || prvActionable.length || !prvSync.ok || !sportInference.ok ? "needs_review" : "validated",
     product: "",
     source: "operator_backend"
   });
@@ -2904,8 +2911,8 @@ function runScheduledAgentSweep_(input) {
   }
 
   return {
-    ok: !checklistError && !prvError && !!prvSync.ok,
-    status: checklistActionable.length || prvActionable.length || !prvSync.ok ? "needs_review" : "validated",
+    ok: !checklistError && !prvError && !!prvSync.ok && sportInference.ok,
+    status: checklistActionable.length || prvActionable.length || !prvSync.ok || !sportInference.ok ? "needs_review" : "validated",
     mode: checklistWatch.mode || mode,
     checklist: {
       ok: !!checklistWatch.ok,
@@ -2933,6 +2940,7 @@ function runScheduledAgentSweep_(input) {
     },
     auto_action: autoResult && autoResult.primary ? autoResult.primary : autoResult,
     auto_actions: autoResult,
+    sport_inference: sportInference,
     memory_path: saveResult.path || "",
     memory_sha: saveResult.sha || "",
     memory_error: saveResult.error || "",
@@ -4038,17 +4046,83 @@ function titleFromChecklistCenterHref_(href) {
 
 function inferSport_(value) {
   const text = normalize_(value);
-  for (let i = 0; i < CM_ALLOWED_SPORTS.length; i++) {
-    if (text.indexOf(CM_ALLOWED_SPORTS[i]) > -1) return CM_ALLOWED_SPORTS[i];
+
+  const soccerSignals = [
+    "soccer",
+    "uefa",
+    "fifa",
+    "premier league",
+    "champions league",
+    "europa league",
+    "conference league",
+    "club competitions",
+    "world cup",
+    "road to fifa",
+    "efl",
+    "epl",
+    "mls",
+    "la liga",
+    "bundesliga",
+    "serie a",
+    "ligue 1",
+    "k league",
+    "merlin",
+    "fc barcelona",
+    "real madrid",
+    "arsenal",
+    "sl benfica",
+    "chelsea",
+    "liverpool",
+    "manchester",
+    "bayern",
+    "psg"
+  ];
+
+  for (let i = 0; i < soccerSignals.length; i++) {
+    if (text.indexOf(soccerSignals[i]) > -1) return "soccer";
   }
 
-  if (text.indexOf("premier league") > -1 || text.indexOf("uefa") > -1 || text.indexOf("mls") > -1 || text.indexOf("soccer") > -1) return "soccer";
   if (text.indexOf("nba") > -1 || text.indexOf("wnba") > -1 || text.indexOf("euroleague") > -1) return "basketball";
   if (text.indexOf("nfl") > -1) return "football";
   if (text.indexOf("mlb") > -1) return "baseball";
   if (text.indexOf("nhl") > -1) return "hockey";
 
+  for (let i = 0; i < CM_ALLOWED_SPORTS.length; i++) {
+    if (text.indexOf(CM_ALLOWED_SPORTS[i]) > -1) return CM_ALLOWED_SPORTS[i];
+  }
+
   return "";
+}
+
+function getSportInferenceSelfTest_() {
+  const cases = [
+    { title: "2025-26 Panini's Football EFL Soccer", expected: "soccer" },
+    { title: "2025 Topps Finest Football", expected: "football" },
+    { title: "2025 Topps Chrome Sapphire Premier League Soccer", expected: "soccer" },
+    { title: "2025 Panini Prizm Football", expected: "football" },
+    { title: "2025-26 Topps UEFA Japan Edition Soccer", expected: "soccer" },
+    { title: "2025-26 Donruss Road To World Cup", expected: "soccer" }
+  ];
+  const results = cases.map(function(testCase) {
+    const actual = inferSport_(testCase.title);
+    return {
+      title: testCase.title,
+      expected: testCase.expected,
+      actual: actual,
+      ok: actual === testCase.expected
+    };
+  });
+  const failed = results.filter(function(result) {
+    return !result.ok;
+  });
+
+  return {
+    ok: failed.length === 0,
+    passed: results.length - failed.length,
+    failed_count: failed.length,
+    failed: failed,
+    results: results
+  };
 }
 
 function isAllowedSport_(sport) {

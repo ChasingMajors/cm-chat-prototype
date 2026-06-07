@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:36:30.925Z",
+  "exported_at": "2026-06-07T20:36:50.746Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -146,6 +146,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 panini contenders draft picks baseball|2017_panini_contenders_draft_picks_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Panini Contenders Draft Picks Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Contenders_Draft_Picks_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104101547",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-07T20:36:31.788Z",
+      "updatedAt": "2026-06-07T20:36:49.143Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps chrome sapphire baseball|2017_topps_chrome_baseball_complete_set_sapphire_edition",
       "type": "visual_test",
@@ -1244,17 +1266,17 @@
       "sport": "baseball",
       "code": "2017_Panini_Contenders_Draft_Picks_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104101547",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.198Z",
-      "updatedAt": "2026-06-07T20:36:29.322Z"
+      "updatedAt": "2026-06-07T20:36:49.144Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Chronicles_Baseball",
@@ -1795,29 +1817,29 @@
       "targetBucket": "2016",
       "createdAt": "2026-06-07T18:15:39.180Z",
       "updatedAt": "2026-06-07T18:15:39.180Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Dynasty_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Dynasty Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Dynasty_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 168 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "createdAt": "2026-06-07T18:15:39.179Z",
-      "updatedAt": "2026-06-07T18:15:39.180Z"
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780864609144_cwyyen",
+      "ts": "2026-06-07T20:36:49.144Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Panini Contenders Draft Picks Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780864591790_atl47k",
+      "ts": "2026-06-07T20:36:31.790Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Panini Contenders Draft Picks Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780864589324_pznn78",
       "ts": "2026-06-07T20:36:29.324Z",
@@ -2597,26 +2619,6 @@
       "status": "queued",
       "product": "2017 Topps Diamond Icons Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780862560127_li00ry",
-      "ts": "2026-06-07T20:02:40.127Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780862560115_xuftpk",
-      "ts": "2026-06-07T20:02:40.115Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -3263,6 +3265,29 @@
       "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
       "createdAt": "2026-06-07T20:33:03Z",
       "checkedAt": "2026-06-07T20:34:16.042Z"
+    },
+    "baseball|2017_Panini_Contenders_Draft_Picks_Baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-07T20:36:30.224Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104101547",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Panini_Contenders_Draft_Picks_Baseball",
+      "key": "baseball|2017_Panini_Contenders_Draft_Picks_Baseball",
+      "productName": "2017 Panini Contenders Draft Picks Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Contenders_Draft_Picks_Baseball",
+      "updatedAt": "2026-06-07T20:36:49.141Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27104101547,
+      "runNumber": 48,
+      "displayTitle": "Visual Product Test - 2017 Panini Contenders Draft Picks Baseball",
+      "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
+      "createdAt": "2026-06-07T20:36:31Z",
+      "checkedAt": "2026-06-07T20:36:49.141Z"
     }
   },
   "known_issues": {},
@@ -3481,6 +3506,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:36:32.012Z",
+  "saved_at": "2026-06-07T20:36:51.716Z",
   "saved_by": "cm_command_center_operator"
 }

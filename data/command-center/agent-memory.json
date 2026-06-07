@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T21:20:53.726Z",
+  "exported_at": "2026-06-07T21:21:13.048Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1862,6 +1862,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780867271446_qc9zkj",
+      "ts": "2026-06-07T21:21:11.446Z",
+      "type": "agent_run_queue",
+      "title": "Admin Run Queue complete",
+      "detail": "0 attempted. 3 skipped for approval/details. 0 failed. 3 still queued. 2016 Topps Tribute Baseball: No safe attempt is available yet 2016 Topps Update Series Baseball: No safe attempt is available yet 2017 Topps New Era Baseball: No safe attempt is available yet",
+      "status": "needs_review",
+      "product": "",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780867271442_qzq25c",
+      "ts": "2026-06-07T21:21:11.442Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "3 flagged jobs will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
       "id": "log_1780867252123_aau1e9",
       "ts": "2026-06-07T21:20:52.123Z",
       "type": "agent_run_queue",
@@ -2640,26 +2660,6 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780866151585_1ywxu8",
-      "ts": "2026-06-07T21:02:31.585Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Panini Flawless Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780866151584_so47zb",
-      "ts": "2026-06-07T21:02:31.584Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Panini Flawless Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3985,6 +3985,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T21:20:54.913Z",
+  "saved_at": "2026-06-07T21:21:14.336Z",
   "saved_by": "cm_command_center_operator"
 }

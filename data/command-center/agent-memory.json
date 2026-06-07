@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:42:48.400Z",
+  "exported_at": "2026-06-07T20:43:15.675Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -154,11 +154,11 @@
       "sport": "baseball",
       "code": "2017_Donruss_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104233128",
       "sourceUrl": "",
       "bucket": "",
@@ -166,7 +166,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:42:02.755Z",
-      "updatedAt": "2026-06-07T20:42:46.796Z"
+      "updatedAt": "2026-06-07T20:43:14.071Z"
     },
     {
       "id": "visual_test|github_actions|2017 donruss optic baseball|2017_donruss_optic_baseball",
@@ -1392,17 +1392,17 @@
       "sport": "baseball",
       "code": "2017_Donruss_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104233128",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.196Z",
-      "updatedAt": "2026-06-07T20:42:46.796Z"
+      "updatedAt": "2026-06-07T20:43:14.072Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_s_Best_Baseball",
@@ -1826,6 +1826,26 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780864994073_hbl0ko",
+      "ts": "2026-06-07T20:43:14.073Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Donruss Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780864994072_6c1cna",
+      "ts": "2026-06-07T20:43:14.072Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Donruss Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780864966796_wjccor",
       "ts": "2026-06-07T20:42:46.796Z",
@@ -2605,26 +2625,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780863001632_84x316",
-      "ts": "2026-06-07T20:10:01.632Z",
-      "type": "agent_action",
-      "title": "Agent action removed",
-      "detail": "2025-26 Topps Hoops Basketball was removed and remembered so future scans do not requeue it.",
-      "status": "removed",
-      "product": "2025-26 Topps Hoops Basketball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780862990567_t80tn4",
-      "ts": "2026-06-07T20:09:50.567Z",
-      "type": "agent_action",
-      "title": "Agent action removed",
-      "detail": "2025/26 Bowman’s Best University Basketball was removed and remembered so future scans do not requeue it.",
-      "status": "removed",
-      "product": "2025/26 Bowman’s Best University Basketball",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -3342,9 +3342,9 @@
       "checkedAt": "2026-06-07T20:41:49.532Z"
     },
     "baseball|2017_Donruss_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T20:42:01.346Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104233128",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3354,7 +3354,7 @@
       "productName": "2017 Donruss Baseball",
       "sport": "baseball",
       "code": "2017_Donruss_Baseball",
-      "updatedAt": "2026-06-07T20:42:46.794Z",
+      "updatedAt": "2026-06-07T20:43:14.068Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27104233128,
@@ -3362,7 +3362,7 @@
       "displayTitle": "Visual Product Test - 2017 Donruss Baseball",
       "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
       "createdAt": "2026-06-07T20:42:02Z",
-      "checkedAt": "2026-06-07T20:42:46.794Z"
+      "checkedAt": "2026-06-07T20:43:14.068Z"
     }
   },
   "known_issues": {},
@@ -3581,6 +3581,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:42:49.741Z",
+  "saved_at": "2026-06-07T20:43:16.890Z",
   "saved_by": "cm_command_center_operator"
 }

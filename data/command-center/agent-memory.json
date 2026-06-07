@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:54:30.283Z",
+  "exported_at": "2026-06-07T20:54:45.268Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -179,16 +179,16 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104533402",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T20:54:26.551Z",
-      "updatedAt": "2026-06-07T20:54:26.552Z"
+      "updatedAt": "2026-06-07T20:54:43.665Z"
     },
     {
       "id": "visual_test|github_actions|2017 bowman mega box chrome baseball|2017_bowman_mega_box_chrome_baseball",
@@ -1289,12 +1289,12 @@
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Allen_Ginter_X_Baseball.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104533402",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.201Z",
-      "updatedAt": "2026-06-07T20:54:26.553Z",
+      "updatedAt": "2026-06-07T20:54:43.665Z",
       "pendingValidationAttempts": 0,
       "autoExecutedAt": "2026-06-07T20:53:23.588Z"
     },
@@ -1842,6 +1842,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780865683665_fc56ua",
+      "ts": "2026-06-07T20:54:43.665Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Allen & Ginter X Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780865668680_ehhddk",
       "ts": "2026-06-07T20:54:28.680Z",
@@ -2631,16 +2641,6 @@
       "status": "queued",
       "product": "2017 Topps Chrome Sapphire Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780864381698_1dho2n",
-      "ts": "2026-06-07T20:33:01.698Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3450,11 +3450,11 @@
       "checkedAt": "2026-06-07T20:51:53.008Z"
     },
     "baseball|2017_Topps_Allen_Ginter_X_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-07T20:54:25.214Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104533402",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Allen_Ginter_X_Baseball",
@@ -3462,9 +3462,15 @@
       "productName": "2017 Topps Allen & Ginter X Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Allen_Ginter_X_Baseball",
-      "updatedAt": "2026-06-07T20:54:26.550Z",
+      "updatedAt": "2026-06-07T20:54:43.663Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27104533402,
+      "runNumber": 55,
+      "displayTitle": "Visual Product Test - 2017 Topps Allen & Ginter X Baseball",
+      "headSha": "20851af5ab74cf0aca55b450a0783f21a5411171",
+      "createdAt": "2026-06-07T20:54:26Z",
+      "checkedAt": "2026-06-07T20:54:43.663Z"
     },
     "baseball|2017_Topps_Allen_Ginter_Baseball": {
       "status": "queued",
@@ -3700,6 +3706,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:54:31.366Z",
+  "saved_at": "2026-06-07T20:54:46.430Z",
   "saved_by": "cm_command_center_operator"
 }

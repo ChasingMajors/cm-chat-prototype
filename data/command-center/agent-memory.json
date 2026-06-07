@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T19:33:03.058Z",
+  "exported_at": "2026-06-07T19:33:11.162Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -254,19 +254,17 @@
       "sport": "baseball",
       "code": "2017_Topps_Inception_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "pending_public_validation",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Pending checklist publish validation completed for 2017_Topps_Inception_Baseball.",
-      "validationResult": "Published checklist JSON validated with 351 rows and 31 parallels. CV/ChatBot visual validation is pending.",
+      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
+      "validationResult": "Sheets show 351 rows / 31 parallels. Public JSON index shows 1 rows / 0 parallels.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.209Z",
-      "updatedAt": "2026-06-07T19:33:02.684Z",
-      "pendingValidationAttempts": 0,
-      "autoExecutedAt": "2026-06-07T19:33:02.684Z"
+      "updatedAt": "2026-06-07T18:15:39.209Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Holiday_Bowman_Baseball",
@@ -1751,33 +1749,13 @@
   ],
   "activity_log": [
     {
-      "id": "log_1780860787257",
-      "ts": "2026-06-07T19:33:02.684Z",
+      "id": "log_1780860789560_fm3aib",
+      "ts": "2026-06-07T19:33:09.560Z",
       "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Inception Baseball -> pending_visual_validation (Published checklist JSON validated with 351 rows and 31 parallels. CV/ChatBot visual validation is pending.)",
+      "title": "Backend Agent Sweep complete",
+      "detail": "Checklist: 0 actions. PRV: 2 actions. PRV sync: skipped. Auto: 1 ran. 2017 Topps Inception Baseball -> pending_visual_validation (Published checklist JSON validated with 351 rows and 31 parallels. CV/ChatBot visual validation is pending.)",
       "status": "needs_review",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780860787256",
-      "ts": "2026-06-07T19:33:02.684Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Topps Inception Baseball: Pending checklist publish validation completed for 2017_Topps_Inception_Baseball. Published checklist JSON validated with 351 rows and 31 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Topps Inception Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780860786581",
-      "ts": "2026-06-07T19:33:02.684Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     },
     {
@@ -2549,6 +2527,26 @@
       "status": "known_issue",
       "product": "2025/26 Topps Hoops Basketball",
       "source": "operator_backend"
+    },
+    {
+      "id": "log_1780843060519",
+      "ts": "2026-06-07T14:37:38.670Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780842669644_4qvc7q",
+      "ts": "2026-06-07T14:31:09.644Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -2917,6 +2915,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T19:33:07.430Z",
+  "saved_at": "2026-06-07T19:33:12.238Z",
   "saved_by": "cm_command_center_operator"
 }

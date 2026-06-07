@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T20:12:04.661Z",
+  "exported_at": "2026-06-07T20:14:02.683Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1074,17 +1074,17 @@
       "sport": "baseball",
       "code": "2017_Panini_National_Treasures_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 2089 rows / 155 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "createdAt": "2026-06-07T18:15:39.200Z",
-      "updatedAt": "2026-06-07T18:15:39.200Z"
+      "updatedAt": "2026-06-07T20:14:01.071Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Immaculate_Collection_Baseball",
@@ -1788,6 +1788,16 @@
     }
   ],
   "activity_log": [
+    {
+      "id": "log_1780863241080_mb9kh3",
+      "ts": "2026-06-07T20:14:01.080Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2017 Panini National Treasures Baseball",
+      "source": "agent_action_queue"
+    },
     {
       "id": "log_1780863123059_7aqah7",
       "ts": "2026-06-07T20:12:03.059Z",
@@ -2577,16 +2587,6 @@
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780862237598_gguwjq",
-      "ts": "2026-06-07T19:57:17.598Z",
-      "type": "visual_test",
-      "title": "Visual validation batch queued",
-      "detail": "3 CV/ChatBot visual tests queued. 2017 Topps Holiday Baseball; 2017 Topps High Tek Baseball; 2017 Topps Heritage Minor League Baseball",
-      "status": "queued",
-      "product": "",
-      "source": "agent_cycle"
     }
   ],
   "visual_tests": {
@@ -3382,6 +3382,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-07T20:12:05.806Z",
+  "saved_at": "2026-06-07T20:14:03.904Z",
   "saved_by": "cm_command_center_operator"
 }

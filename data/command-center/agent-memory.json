@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:26:04.536Z",
+  "exported_at": "2026-06-08T01:26:10.804Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1927,6 +1927,8 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Topps_Holiday_Bowman_Baseball",
+    "backend_audit|stale_public_json|baseball|2017_Topps_Five_Star_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Definitive_Collection_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Clearly_Authentic_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Update_Series_Baseball",
@@ -1938,6 +1940,26 @@
     "backend_audit|stale_public_json|baseball|2017_Panini_Stars_and_Stripes_USA_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780881969202_lopbvs",
+      "ts": "2026-06-08T01:26:09.202Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Bowman Holiday Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Bowman Holiday Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780881965750_sncdyz",
+      "ts": "2026-06-08T01:26:05.750Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Five Star Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Five Star Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780881962935_nw1w60",
       "ts": "2026-06-08T01:26:02.935Z",
@@ -2716,26 +2738,6 @@
       "detail": "2017 Topps Holiday Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
       "status": "queued",
       "product": "2017 Topps Holiday Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881850733_9na50g",
-      "ts": "2026-06-08T01:24:10.733Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Heritage Minor League Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881847750_vcy57v",
-      "ts": "2026-06-08T01:24:07.750Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Heritage High Number Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Heritage High Number Baseball",
       "source": "admin"
     }
   ],
@@ -4901,6 +4903,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:26:06.121Z",
+  "saved_at": "2026-06-08T01:26:12.314Z",
   "saved_by": "cm_command_center_operator"
 }

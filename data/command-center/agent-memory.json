@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:34:44.932Z",
+  "exported_at": "2026-06-08T01:34:52.856Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1927,7 +1927,7 @@
     }
   ],
   "agent_run_queue": [
-    "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball",
+    "backend_audit|stale_public_json|baseball|2016_Topps_Update_Series_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Bowman_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Bowman_Chrome_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Bowman_Draft_Baseball",
@@ -1936,6 +1936,26 @@
     "backend_audit|stale_public_json|baseball|2017_Bowman_Platinum_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780882491254_0zna7w",
+      "ts": "2026-06-08T01:34:51.254Z",
+      "type": "agent_run_queue",
+      "title": "Removed from Agent Run Queue",
+      "detail": "2016 Topps Update Series Baseball was removed from the explicit run queue.",
+      "status": "removed",
+      "product": "2016 Topps Update Series Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780882486898_ph01qi",
+      "ts": "2026-06-08T01:34:46.898Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2016 Topps Update Series Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2016 Topps Update Series Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780882483330_4hxcz2",
       "ts": "2026-06-08T01:34:43.330Z",
@@ -2714,26 +2734,6 @@
       "detail": "Checking current public checklist coverage for this product.",
       "status": "running",
       "product": "2017 Topps Archives Snapshots Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881989337_bbby85",
-      "ts": "2026-06-08T01:26:29.337Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Archives Snapshots Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Archives Snapshots Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881989318_khk5zb",
-      "ts": "2026-06-08T01:26:29.318Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Chrome Sapphire Baseball",
       "source": "operator_backend"
     }
   ],
@@ -5061,6 +5061,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:34:47.367Z",
+  "saved_at": "2026-06-08T01:34:54.459Z",
   "saved_by": "cm_command_center_operator"
 }

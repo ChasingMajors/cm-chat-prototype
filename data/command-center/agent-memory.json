@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:25:18.255Z",
+  "exported_at": "2026-06-08T01:25:26.345Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -525,11 +525,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Diamond_Icons_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 546 rows / 26 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -537,7 +537,7 @@
       "expectedRowCount": 546,
       "expectedParallelCount": 26,
       "createdAt": "2026-06-08T01:17:00.157Z",
-      "updatedAt": "2026-06-08T01:17:00.157Z"
+      "updatedAt": "2026-06-08T01:25:24.743Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Definitive_Collection_Baseball",
@@ -1937,6 +1937,36 @@
     "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780881924743_lcj9za",
+      "ts": "2026-06-08T01:25:24.743Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Diamond Icons Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881924741_sgffcx",
+      "ts": "2026-06-08T01:25:24.741Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Diamond Icons Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Diamond Icons Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881924738_az2u0b",
+      "ts": "2026-06-08T01:25:24.738Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "8 flagged jobs will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1780881916653_drj19t",
       "ts": "2026-06-08T01:25:16.653Z",
@@ -4619,6 +4649,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:25:19.570Z",
+  "saved_at": "2026-06-08T01:25:27.582Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:25:39.338Z",
+  "exported_at": "2026-06-08T01:25:43.978Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -195,11 +195,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Museum_Collection_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1427 rows / 35 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Museum_Collection_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -207,7 +207,7 @@
       "expectedRowCount": 1427,
       "expectedParallelCount": 35,
       "createdAt": "2026-06-08T01:17:00.163Z",
-      "updatedAt": "2026-06-08T01:17:00.163Z"
+      "updatedAt": "2026-06-08T01:25:42.364Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Luminaries_Baseball",
@@ -239,11 +239,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Inception_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Inception_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -251,7 +251,7 @@
       "expectedRowCount": 351,
       "expectedParallelCount": 31,
       "createdAt": "2026-06-08T01:17:00.162Z",
-      "updatedAt": "2026-06-08T01:25:37.735Z"
+      "updatedAt": "2026-06-08T01:25:40.163Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Holiday_Bowman_Baseball",
@@ -1926,11 +1926,78 @@
       "updatedAt": "2026-06-08T01:17:00.130Z"
     }
   ],
-  "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Topps_Inception_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball"
-  ],
+  "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1780881942376_z5z0s3",
+      "ts": "2026-06-08T01:25:42.376Z",
+      "type": "agent_run_queue",
+      "title": "Admin Run Queue complete",
+      "detail": "8 attempted. 0 skipped for approval/details. 0 failed. 0 still queued. 2017 Topps Diamond Icons Baseball: Recheck checklist public JSON 2017 Topps Dynasty Baseball: Recheck checklist public JSON 2017 Topps Finest Baseball: Recheck checklist public JSON 2017 Topps Gallery Baseball: Recheck checklist public JSON 2017 Topps High Tek Baseball: Recheck checklist public JSON",
+      "status": "validated",
+      "product": "",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881942365_lpe5b1",
+      "ts": "2026-06-08T01:25:42.365Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Museum Collection Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881942363_yf4uj6",
+      "ts": "2026-06-08T01:25:42.363Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "1,427 public rows and 35 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Museum Collection Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881940181_ps5gd9",
+      "ts": "2026-06-08T01:25:40.181Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Museum Collection Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881940178_02vhgn",
+      "ts": "2026-06-08T01:25:40.178Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Museum Collection Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Museum Collection Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881940164_yvqhue",
+      "ts": "2026-06-08T01:25:40.164Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Inception Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881940162_nxp42z",
+      "ts": "2026-06-08T01:25:40.162Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "351 public rows and 31 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Inception Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780881937736_6zta13",
       "ts": "2026-06-08T01:25:37.736Z",
@@ -2660,76 +2727,6 @@
       "status": "passed",
       "product": "2017 Topps Museum Collection Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780879317077_x80oob",
-      "ts": "2026-06-08T00:41:57.077Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780879289454_0dm5ur",
-      "ts": "2026-06-08T00:41:29.454Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780879260866_036l9f",
-      "ts": "2026-06-08T00:41:00.866Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780879243418_8kb1ax",
-      "ts": "2026-06-08T00:40:43.418Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 80 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Museum Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879243414_7w1mkm",
-      "ts": "2026-06-08T00:40:43.414Z",
-      "type": "visual_test",
-      "title": "Visual validation batch queued",
-      "detail": "1 CV/ChatBot visual test queued. 2017 Topps Museum Collection Baseball",
-      "status": "queued",
-      "product": "",
-      "source": "agent_cycle"
-    },
-    {
-      "id": "log_1780879243405_7cwkjy",
-      "ts": "2026-06-08T00:40:43.405Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780879241005_luv99i",
-      "ts": "2026-06-08T00:40:41.005Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -4626,9 +4623,9 @@
       "product": "2017 Topps Inception Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Inception_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103113084",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:25:40.163Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104053810": {
@@ -4864,9 +4861,36 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-08T01:25:37.723Z",
       "resolved": true
+    },
+    "baseball|2017 topps inception baseball": {
+      "product": "2017 Topps Inception Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Inception_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:25:40.163Z",
+      "resolved": true
+    },
+    "baseball|2017 topps museum collection baseball": {
+      "product": "2017 Topps Museum Collection Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Museum_Collection_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:25:42.364Z",
+      "resolved": true
+    },
+    "baseball|2017_topps_museum_collection_baseball": {
+      "product": "2017 Topps Museum Collection Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Museum_Collection_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:25:42.364Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:25:40.529Z",
+  "saved_at": "2026-06-08T01:25:45.375Z",
   "saved_by": "cm_command_center_operator"
 }

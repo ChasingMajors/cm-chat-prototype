@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:24:36.952Z",
+  "exported_at": "2026-06-08T01:24:52.051Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1926,8 +1926,20 @@
       "updatedAt": "2026-06-08T01:17:00.130Z"
     }
   ],
-  "agent_run_queue": [],
+  "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball"
+  ],
   "activity_log": [
+    {
+      "id": "log_1780881890449_1uf5kn",
+      "ts": "2026-06-08T01:24:50.449Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Museum Collection Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Museum Collection Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780881875350_607exi",
       "ts": "2026-06-08T01:24:35.350Z",
@@ -4530,6 +4542,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:24:38.227Z",
+  "saved_at": "2026-06-08T01:24:53.379Z",
   "saved_by": "cm_command_center_operator"
 }

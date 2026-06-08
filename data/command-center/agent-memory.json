@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T00:40:45.021Z",
+  "exported_at": "2026-06-08T00:41:02.468Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -176,16 +176,16 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27109778151",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T00:40:43.403Z",
-      "updatedAt": "2026-06-08T00:40:43.405Z"
+      "updatedAt": "2026-06-08T00:41:00.865Z"
     },
     {
       "id": "source_watch|hockey|2026 leaf metal hockey",
@@ -240,14 +240,14 @@
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Topps_Museum_Collection_Baseball.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27109778151",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 1427,
       "expectedParallelCount": 35,
       "createdAt": "2026-06-07T22:15:30.776Z",
-      "updatedAt": "2026-06-08T00:40:43.405Z",
+      "updatedAt": "2026-06-08T00:41:00.866Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1929,6 +1929,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1780879260866_036l9f",
+      "ts": "2026-06-08T00:41:00.866Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Museum Collection Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780879243418_8kb1ax",
       "ts": "2026-06-08T00:40:43.418Z",
       "type": "agent_cycle",
@@ -3053,11 +3063,11 @@
       "checkedAt": "2026-06-07T22:10:33.366Z"
     },
     "baseball|2017_Topps_Museum_Collection_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-08T00:40:41.989Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27109778151",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Museum_Collection_Baseball",
@@ -3065,9 +3075,15 @@
       "productName": "2017 Topps Museum Collection Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Museum_Collection_Baseball",
-      "updatedAt": "2026-06-08T00:40:43.402Z",
+      "updatedAt": "2026-06-08T00:41:00.863Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27109778151,
+      "runNumber": 64,
+      "displayTitle": "Visual Product Test - 2017 Topps Museum Collection Baseball",
+      "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
+      "createdAt": "2026-06-08T00:40:42Z",
+      "checkedAt": "2026-06-08T00:41:00.861Z"
     }
   },
   "known_issues": {},
@@ -4060,6 +4076,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T00:40:46.125Z",
+  "saved_at": "2026-06-08T00:41:03.623Z",
   "saved_by": "cm_command_center_operator"
 }

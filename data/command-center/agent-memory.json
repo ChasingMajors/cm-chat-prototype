@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:25:43.978Z",
+  "exported_at": "2026-06-08T01:25:49.050Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1926,8 +1926,20 @@
       "updatedAt": "2026-06-08T01:17:00.130Z"
     }
   ],
-  "agent_run_queue": [],
+  "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Panini_Stars_and_Stripes_USA_Baseball"
+  ],
   "activity_log": [
+    {
+      "id": "log_1780881947447_yhazq3",
+      "ts": "2026-06-08T01:25:47.447Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Panini Stars and Stripes USA Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Panini Stars and Stripes USA Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780881942376_z5z0s3",
       "ts": "2026-06-08T01:25:42.376Z",
@@ -2717,16 +2729,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780879317077_oo22nn",
-      "ts": "2026-06-08T00:41:57.077Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -4891,6 +4893,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:25:45.375Z",
+  "saved_at": "2026-06-08T01:25:50.377Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:34:38.415Z",
+  "exported_at": "2026-06-08T01:34:44.932Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1927,6 +1927,7 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Bowman_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Bowman_Chrome_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Bowman_Draft_Baseball",
@@ -1935,6 +1936,16 @@
     "backend_audit|stale_public_json|baseball|2017_Bowman_Platinum_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780882483330_4hxcz2",
+      "ts": "2026-06-08T01:34:43.330Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2016 Topps Update Series Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2016 Topps Update Series Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780882476812_inrtkq",
       "ts": "2026-06-08T01:34:36.812Z",
@@ -2722,16 +2733,6 @@
       "title": "Covered product auto-resolved",
       "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
       "status": "validated",
-      "product": "2017 Topps Chrome Sapphire Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881989316_evomep",
-      "ts": "2026-06-08T01:26:29.316Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "717 public rows and 1 parallels found.",
-      "status": "covered",
       "product": "2017 Topps Chrome Sapphire Baseball",
       "source": "operator_backend"
     }
@@ -5060,6 +5061,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:34:40.140Z",
+  "saved_at": "2026-06-08T01:34:47.367Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:26:15.975Z",
+  "exported_at": "2026-06-08T01:26:19.953Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -261,11 +261,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Bowman_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Holiday_Bowman_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -273,7 +273,7 @@
       "expectedRowCount": 146,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-08T01:17:00.161Z",
-      "updatedAt": "2026-06-08T01:26:14.373Z"
+      "updatedAt": "2026-06-08T01:26:16.447Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Holiday_Baseball",
@@ -459,11 +459,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Five_Star_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 360 rows / 25 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Five_Star_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -471,7 +471,7 @@
       "expectedRowCount": 360,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-08T01:17:00.158Z",
-      "updatedAt": "2026-06-08T01:17:00.158Z"
+      "updatedAt": "2026-06-08T01:26:18.334Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Finest_Baseball",
@@ -547,11 +547,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Definitive_Collection_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 658 rows / 26 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -559,7 +559,7 @@
       "expectedRowCount": 658,
       "expectedParallelCount": 26,
       "createdAt": "2026-06-08T01:17:00.156Z",
-      "updatedAt": "2026-06-08T01:17:00.157Z"
+      "updatedAt": "2026-06-08T01:26:18.351Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Clearly_Authentic_Baseball",
@@ -1927,8 +1927,6 @@
     }
   ],
   "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Topps_Holiday_Bowman_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Topps_Five_Star_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Definitive_Collection_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Clearly_Authentic_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Update_Series_Baseball",
@@ -1940,6 +1938,86 @@
     "backend_audit|stale_public_json|baseball|2017_Panini_Stars_and_Stripes_USA_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780881978351_npnqhi",
+      "ts": "2026-06-08T01:26:18.351Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Definitive Collection Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881978349_tuh2mj",
+      "ts": "2026-06-08T01:26:18.349Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Definitive Collection Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Definitive Collection Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881978335_irt7fq",
+      "ts": "2026-06-08T01:26:18.335Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Five Star Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881978334_i0z7q2",
+      "ts": "2026-06-08T01:26:18.334Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "360 public rows and 25 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Five Star Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881976463_20gw2z",
+      "ts": "2026-06-08T01:26:16.463Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Five Star Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881976461_37y9rb",
+      "ts": "2026-06-08T01:26:16.461Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Five Star Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Five Star Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881976448_bpihn8",
+      "ts": "2026-06-08T01:26:16.448Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Bowman Holiday Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881976446_n1x57h",
+      "ts": "2026-06-08T01:26:16.446Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "146 public rows and 5 parallels found.",
+      "status": "covered",
+      "product": "2017 Bowman Holiday Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780881974374_s29miv",
       "ts": "2026-06-08T01:26:14.374Z",
@@ -2658,86 +2736,6 @@
       "detail": "Checking current public checklist coverage for this product.",
       "status": "running",
       "product": "2017 Topps Heritage High Number Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881866783_ldqh6m",
-      "ts": "2026-06-08T01:24:26.783Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Heritage High Number Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Heritage High Number Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881866769_nrtiyt",
-      "ts": "2026-06-08T01:24:26.769Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881866767_ao5qmw",
-      "ts": "2026-06-08T01:24:26.767Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "450 public rows and 18 parallels found.",
-      "status": "covered",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881864689_l4q96r",
-      "ts": "2026-06-08T01:24:24.689Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881864686_sf3ywp",
-      "ts": "2026-06-08T01:24:24.686Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Heritage Minor League Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881864673_6vhcm5",
-      "ts": "2026-06-08T01:24:24.673Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Holiday Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881864669_elktqf",
-      "ts": "2026-06-08T01:24:24.669Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "344 public rows and 4 parallels found.",
-      "status": "covered",
-      "product": "2017 Topps Holiday Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881861683_lghqwx",
-      "ts": "2026-06-08T01:24:21.683Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Topps Holiday Baseball",
       "source": "operator_backend"
     }
   ],
@@ -4617,9 +4615,9 @@
       "product": "2017 Bowman Holiday Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Bowman_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103113962",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:26:16.447Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103113084": {
@@ -4671,9 +4669,9 @@
       "product": "2017 Topps Five Star Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Five_Star_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27102983741",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:26:18.334Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27102930523": {
@@ -4900,9 +4898,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-08T01:25:42.364Z",
       "resolved": true
+    },
+    "baseball|2017 bowman holiday baseball": {
+      "product": "2017 Bowman Holiday Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Holiday_Bowman_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:26:16.447Z",
+      "resolved": true
+    },
+    "baseball|2017 topps five star baseball": {
+      "product": "2017 Topps Five Star Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Five_Star_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:26:18.334Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:26:17.079Z",
+  "saved_at": "2026-06-08T01:26:21.610Z",
   "saved_by": "cm_command_center_operator"
 }

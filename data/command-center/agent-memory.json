@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:34:26.927Z",
+  "exported_at": "2026-06-08T01:34:31.833Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1927,10 +1927,32 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Bowman_Draft_Baseball",
+    "backend_audit|stale_public_json|baseball|2017_Bowman_High_Tek_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Bowman_Mega_Box_Chrome_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Bowman_Platinum_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780882470231_c2kypg",
+      "ts": "2026-06-08T01:34:30.231Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Bowman Draft Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Bowman Draft Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780882467759_3at5jw",
+      "ts": "2026-06-08T01:34:27.759Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Bowman High Tek Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Bowman High Tek Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780882465326_m29gvb",
       "ts": "2026-06-08T01:34:25.326Z",
@@ -2710,26 +2732,6 @@
       "status": "started",
       "product": "2017 Topps Chrome Sapphire Baseball",
       "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881984212_yd9xxq",
-      "ts": "2026-06-08T01:26:24.212Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Chrome Update Series Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881984210_r6eewn",
-      "ts": "2026-06-08T01:26:24.210Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "196 public rows and 11 parallels found.",
-      "status": "covered",
-      "product": "2017 Topps Chrome Update Series Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -5056,6 +5058,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:34:28.892Z",
+  "saved_at": "2026-06-08T01:34:35.013Z",
   "saved_by": "cm_command_center_operator"
 }

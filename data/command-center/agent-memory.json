@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:28:04.657Z",
+  "exported_at": "2026-06-08T01:28:11.601Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -877,72 +877,6 @@
       "sport": "baseball",
       "code": "2017_Panini_Chronicles_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 973 rows / 63 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2017",
-      "targetBucket": "2017",
-      "expectedRowCount": 973,
-      "expectedParallelCount": 63,
-      "createdAt": "2026-06-08T01:17:00.151Z",
-      "updatedAt": "2026-06-08T01:17:00.151Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2017_Donruss_Optic_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2017 Donruss Optic Baseball",
-      "sport": "baseball",
-      "code": "2017_Donruss_Optic_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 507 rows / 131 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2017",
-      "targetBucket": "2017",
-      "expectedRowCount": 507,
-      "expectedParallelCount": 131,
-      "createdAt": "2026-06-08T01:17:00.150Z",
-      "updatedAt": "2026-06-08T01:17:00.150Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2017_Donruss_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2017 Donruss Baseball",
-      "sport": "baseball",
-      "code": "2017_Donruss_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 748 rows / 100 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2017",
-      "targetBucket": "2017",
-      "expectedRowCount": 748,
-      "expectedParallelCount": 100,
-      "createdAt": "2026-06-08T01:17:00.150Z",
-      "updatedAt": "2026-06-08T01:17:00.150Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2017_Bowman_s_Best_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2017 Bowman's Best Baseball",
-      "sport": "baseball",
-      "code": "2017_Bowman_s_Best_Baseball",
-      "riskLevel": "high",
       "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
@@ -952,10 +886,76 @@
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
+      "expectedRowCount": 973,
+      "expectedParallelCount": 63,
+      "createdAt": "2026-06-08T01:17:00.151Z",
+      "updatedAt": "2026-06-08T01:28:09.998Z"
+    },
+    {
+      "id": "backend_audit|stale_public_json|baseball|2017_Donruss_Optic_Baseball",
+      "type": "source_import",
+      "source": "deep_backend_audit",
+      "product": "2017 Donruss Optic Baseball",
+      "sport": "baseball",
+      "code": "2017_Donruss_Optic_Baseball",
+      "riskLevel": "high",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Donruss_Optic_Baseball. No import needed.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "2017",
+      "targetBucket": "2017",
+      "expectedRowCount": 507,
+      "expectedParallelCount": 131,
+      "createdAt": "2026-06-08T01:17:00.150Z",
+      "updatedAt": "2026-06-08T01:28:09.981Z"
+    },
+    {
+      "id": "backend_audit|stale_public_json|baseball|2017_Donruss_Baseball",
+      "type": "source_import",
+      "source": "deep_backend_audit",
+      "product": "2017 Donruss Baseball",
+      "sport": "baseball",
+      "code": "2017_Donruss_Baseball",
+      "riskLevel": "high",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Donruss_Baseball. No import needed.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "2017",
+      "targetBucket": "2017",
+      "expectedRowCount": 748,
+      "expectedParallelCount": 100,
+      "createdAt": "2026-06-08T01:17:00.150Z",
+      "updatedAt": "2026-06-08T01:28:08.076Z"
+    },
+    {
+      "id": "backend_audit|stale_public_json|baseball|2017_Bowman_s_Best_Baseball",
+      "type": "source_import",
+      "source": "deep_backend_audit",
+      "product": "2017 Bowman's Best Baseball",
+      "sport": "baseball",
+      "code": "2017_Bowman_s_Best_Baseball",
+      "riskLevel": "high",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Bowman_s_Best_Baseball. No import needed.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "2017",
+      "targetBucket": "2017",
       "expectedRowCount": 403,
       "expectedParallelCount": 29,
       "createdAt": "2026-06-08T01:17:00.149Z",
-      "updatedAt": "2026-06-08T01:28:03.055Z"
+      "updatedAt": "2026-06-08T01:28:05.921Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Platinum_Baseball",
@@ -1927,9 +1927,6 @@
     }
   ],
   "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Bowman_s_Best_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Donruss_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Donruss_Optic_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Panini_Chronicles_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Panini_Contenders_Draft_Picks_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Panini_Diamond_Kings_Baseball",
@@ -1940,6 +1937,126 @@
     "backend_audit|stale_public_json|baseball|2017_Panini_National_Treasures_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780882089998_8pe3yr",
+      "ts": "2026-06-08T01:28:09.998Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Panini Chronicles Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882089997_awx3jr",
+      "ts": "2026-06-08T01:28:09.997Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Panini Chronicles Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Panini Chronicles Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780882089982_2tp3ua",
+      "ts": "2026-06-08T01:28:09.982Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Donruss Optic Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882089980_sq1i1t",
+      "ts": "2026-06-08T01:28:09.980Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "507 public rows and 131 parallels found.",
+      "status": "covered",
+      "product": "2017 Donruss Optic Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882088092_nmr5qt",
+      "ts": "2026-06-08T01:28:08.092Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Donruss Optic Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882088091_jnuyez",
+      "ts": "2026-06-08T01:28:08.091Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Donruss Optic Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Donruss Optic Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780882088077_zn6ycx",
+      "ts": "2026-06-08T01:28:08.077Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Donruss Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882088076_vglmm1",
+      "ts": "2026-06-08T01:28:08.076Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "748 public rows and 100 parallels found.",
+      "status": "covered",
+      "product": "2017 Donruss Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882085937_ql22kz",
+      "ts": "2026-06-08T01:28:05.937Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Donruss Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882085935_4qjk2j",
+      "ts": "2026-06-08T01:28:05.935Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Donruss Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Donruss Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780882085922_0u1d68",
+      "ts": "2026-06-08T01:28:05.922Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Bowman's Best Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882085919_u3t3ry",
+      "ts": "2026-06-08T01:28:05.919Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "403 public rows and 29 parallels found.",
+      "status": "covered",
+      "product": "2017 Bowman's Best Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780882083056_nzl7iv",
       "ts": "2026-06-08T01:28:03.056Z",
@@ -2619,126 +2736,6 @@
       "status": "queued",
       "product": "2017 Panini Stars and Stripes USA Baseball",
       "source": "admin"
-    },
-    {
-      "id": "log_1780881942376_z5z0s3",
-      "ts": "2026-06-08T01:25:42.376Z",
-      "type": "agent_run_queue",
-      "title": "Admin Run Queue complete",
-      "detail": "8 attempted. 0 skipped for approval/details. 0 failed. 0 still queued. 2017 Topps Diamond Icons Baseball: Recheck checklist public JSON 2017 Topps Dynasty Baseball: Recheck checklist public JSON 2017 Topps Finest Baseball: Recheck checklist public JSON 2017 Topps Gallery Baseball: Recheck checklist public JSON 2017 Topps High Tek Baseball: Recheck checklist public JSON",
-      "status": "validated",
-      "product": "",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881942365_lpe5b1",
-      "ts": "2026-06-08T01:25:42.365Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881942363_yf4uj6",
-      "ts": "2026-06-08T01:25:42.363Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "1,427 public rows and 35 parallels found.",
-      "status": "covered",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881940181_ps5gd9",
-      "ts": "2026-06-08T01:25:40.181Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881940178_02vhgn",
-      "ts": "2026-06-08T01:25:40.178Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Museum Collection Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881940164_yvqhue",
-      "ts": "2026-06-08T01:25:40.164Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Inception Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881940162_nxp42z",
-      "ts": "2026-06-08T01:25:40.162Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "351 public rows and 31 parallels found.",
-      "status": "covered",
-      "product": "2017 Topps Inception Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881937736_6zta13",
-      "ts": "2026-06-08T01:25:37.736Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Topps Inception Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881937734_uwtjrf",
-      "ts": "2026-06-08T01:25:37.734Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Inception Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Inception Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881937724_w7q1wz",
-      "ts": "2026-06-08T01:25:37.724Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881937723_6gmjj4",
-      "ts": "2026-06-08T01:25:37.723Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "619 public rows and 18 parallels found.",
-      "status": "covered",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881935644_ykxndo",
-      "ts": "2026-06-08T01:25:35.644Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -4124,7 +4121,7 @@
       "code": "2017_Bowman_s_Best_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:28:05.921Z",
       "resolved": true
     },
     "baseball|2017_bowman_s_best_baseball": {
@@ -4133,7 +4130,7 @@
       "code": "2017_Bowman_s_Best_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:28:05.921Z",
       "resolved": true
     },
     "baseball|2016 topps tribute baseball": {
@@ -4329,9 +4326,9 @@
       "product": "2017 Donruss Baseball",
       "sport": "baseball",
       "code": "2017_Donruss_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104233128",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:28:08.076Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104198895": {
@@ -4347,9 +4344,9 @@
       "product": "2017 Donruss Optic Baseball",
       "sport": "baseball",
       "code": "2017_Donruss_Optic_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104198895",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:28:09.981Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104148131": {
@@ -4990,9 +4987,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-08T01:26:36.262Z",
       "resolved": true
+    },
+    "baseball|2017 donruss baseball": {
+      "product": "2017 Donruss Baseball",
+      "sport": "baseball",
+      "code": "2017_Donruss_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:28:08.076Z",
+      "resolved": true
+    },
+    "baseball|2017 donruss optic baseball": {
+      "product": "2017 Donruss Optic Baseball",
+      "sport": "baseball",
+      "code": "2017_Donruss_Optic_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:28:09.981Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:28:08.315Z",
+  "saved_at": "2026-06-08T01:28:13.297Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:27:40.530Z",
+  "exported_at": "2026-06-08T01:27:45.850Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1927,11 +1927,33 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Panini_Elite_Extra_Edition_Baseball",
+    "backend_audit|stale_public_json|baseball|2017_Panini_Flawless_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Panini_Immaculate_Collection_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Panini_Stars_and_Stripes_USA_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Panini_National_Treasures_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780882064248_ibqr37",
+      "ts": "2026-06-08T01:27:44.248Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Panini Elite Extra Edition Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Panini Elite Extra Edition Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780882061276_2q3xkb",
+      "ts": "2026-06-08T01:27:41.276Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Panini Flawless Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Panini Flawless Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780882058928_z40czt",
       "ts": "2026-06-08T01:27:38.928Z",
@@ -2711,26 +2733,6 @@
       "status": "started",
       "product": "2017 Topps Gallery Baseball",
       "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881931691_m0yjb1",
-      "ts": "2026-06-08T01:25:31.691Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Finest Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881931689_75i3po",
-      "ts": "2026-06-08T01:25:31.689Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "325 public rows and 48 parallels found.",
-      "status": "covered",
-      "product": "2017 Topps Finest Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -4985,6 +4987,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:27:42.102Z",
+  "saved_at": "2026-06-08T01:27:47.507Z",
   "saved_by": "cm_command_center_operator"
 }

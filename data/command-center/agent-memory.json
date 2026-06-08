@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:27:59.970Z",
+  "exported_at": "2026-06-08T01:28:04.657Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -943,11 +943,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_s_Best_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 403 rows / 29 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -955,7 +955,7 @@
       "expectedRowCount": 403,
       "expectedParallelCount": 29,
       "createdAt": "2026-06-08T01:17:00.149Z",
-      "updatedAt": "2026-06-08T01:17:00.150Z"
+      "updatedAt": "2026-06-08T01:28:03.055Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Platinum_Baseball",
@@ -1941,6 +1941,36 @@
   ],
   "activity_log": [
     {
+      "id": "log_1780882083056_nzl7iv",
+      "ts": "2026-06-08T01:28:03.056Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Bowman's Best Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882083054_js5xqw",
+      "ts": "2026-06-08T01:28:03.054Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Bowman's Best Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Bowman's Best Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780882083051_u8fkpj",
+      "ts": "2026-06-08T01:28:03.051Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "10 flagged jobs will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
       "id": "log_1780882078369_xwdlm9",
       "ts": "2026-06-08T01:27:58.369Z",
       "type": "agent_run_queue",
@@ -2708,36 +2738,6 @@
       "detail": "Checking current public checklist coverage for this product.",
       "status": "running",
       "product": "2017 Topps Luminaries Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881935643_aeifs2",
-      "ts": "2026-06-08T01:25:35.643Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Luminaries Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881935638_6idig1",
-      "ts": "2026-06-08T01:25:35.638Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps High Tek Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881935637_ocktqv",
-      "ts": "2026-06-08T01:25:35.637Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "287 public rows and 12 parallels found.",
-      "status": "covered",
-      "product": "2017 Topps High Tek Baseball",
       "source": "operator_backend"
     }
   ],
@@ -4993,6 +4993,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:28:01.118Z",
+  "saved_at": "2026-06-08T01:28:08.315Z",
   "saved_by": "cm_command_center_operator"
 }

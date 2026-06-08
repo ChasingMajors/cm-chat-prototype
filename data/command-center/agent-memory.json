@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T02:10:02.828Z",
+  "exported_at": "2026-06-08T02:10:30.828Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -173,11 +173,11 @@
       "sport": "baseball",
       "code": "2017_Panini_National_Treasures_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27112096529",
       "sourceUrl": "",
       "bucket": "",
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T02:08:42.767Z",
-      "updatedAt": "2026-06-08T02:10:00.551Z"
+      "updatedAt": "2026-06-08T02:10:28.924Z"
     },
     {
       "id": "source_watch|hockey|2026 leaf metal hockey",
@@ -807,11 +807,11 @@
       "sport": "baseball",
       "code": "2017_Panini_National_Treasures_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Panini_National_Treasures_Baseball.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27112096529",
       "sourceUrl": "",
       "bucket": "2017",
@@ -819,7 +819,7 @@
       "expectedRowCount": 2089,
       "expectedParallelCount": 155,
       "createdAt": "2026-06-08T01:17:00.153Z",
-      "updatedAt": "2026-06-08T02:10:00.552Z",
+      "updatedAt": "2026-06-08T02:10:28.924Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1929,6 +1929,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1780884628925_j7got2",
+      "ts": "2026-06-08T02:10:28.925Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Panini National Treasures Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780884628925_71r86w",
+      "ts": "2026-06-08T02:10:28.925Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Panini National Treasures Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780884600554_nejjio",
       "ts": "2026-06-08T02:10:00.554Z",
       "type": "visual_test",
@@ -2707,26 +2727,6 @@
       "status": "covered",
       "product": "2017 Panini Diamond Kings Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882094221_xebleh",
-      "ts": "2026-06-08T01:28:14.221Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Panini Diamond Kings Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882094218_j2i3m8",
-      "ts": "2026-06-08T01:28:14.218Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Panini Diamond Kings Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Panini Diamond Kings Baseball",
-      "source": "admin_run_queue"
     }
   ],
   "visual_tests": {
@@ -3306,9 +3306,9 @@
       "checkedAt": "2026-06-07T20:12:03.056Z"
     },
     "baseball|2017_Panini_National_Treasures_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-08T02:08:41.282Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27112096529",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3318,7 +3318,7 @@
       "productName": "2017 Panini National Treasures Baseball",
       "sport": "baseball",
       "code": "2017_Panini_National_Treasures_Baseball",
-      "updatedAt": "2026-06-08T02:10:00.549Z",
+      "updatedAt": "2026-06-08T02:10:28.920Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27112096529,
@@ -3326,7 +3326,7 @@
       "displayTitle": "Visual Product Test - 2017 Panini National Treasures Baseball",
       "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
       "createdAt": "2026-06-08T02:08:42Z",
-      "checkedAt": "2026-06-08T02:10:00.549Z"
+      "checkedAt": "2026-06-08T02:10:28.920Z"
     },
     "baseball|2017_Topps_Chrome_Update_Series_Baseball": {
       "status": "completed",
@@ -5062,6 +5062,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T02:10:04.065Z",
+  "saved_at": "2026-06-08T02:10:32.673Z",
   "saved_by": "cm_command_center_operator"
 }

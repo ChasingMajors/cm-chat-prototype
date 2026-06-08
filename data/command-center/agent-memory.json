@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:25:59.187Z",
+  "exported_at": "2026-06-08T01:26:04.536Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1927,6 +1927,9 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Topps_Definitive_Collection_Baseball",
+    "backend_audit|stale_public_json|baseball|2017_Topps_Clearly_Authentic_Baseball",
+    "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Update_Series_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
     "backend_audit|stale_public_json|baseball|2017_Topps_Archives_Snapshots_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Archives_Baseball",
@@ -1935,6 +1938,36 @@
     "backend_audit|stale_public_json|baseball|2017_Panini_Stars_and_Stripes_USA_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780881962935_nw1w60",
+      "ts": "2026-06-08T01:26:02.935Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Definitive Collection Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Definitive Collection Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780881961418_7x15l0",
+      "ts": "2026-06-08T01:26:01.418Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Clearly Authentic Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Clearly Authentic Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780881959714_jbncxk",
+      "ts": "2026-06-08T01:25:59.714Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Chrome Update Series Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780881957584_h3tsww",
       "ts": "2026-06-08T01:25:57.584Z",
@@ -2703,36 +2736,6 @@
       "detail": "2017 Topps Heritage High Number Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
       "status": "queued",
       "product": "2017 Topps Heritage High Number Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881845167_p50yx3",
-      "ts": "2026-06-08T01:24:05.167Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Heritage Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881842365_wpw2uj",
-      "ts": "2026-06-08T01:24:02.365Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Gypsy Queen Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881838067_t9b571",
-      "ts": "2026-06-08T01:23:58.067Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Gold Label Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Gold Label Baseball",
       "source": "admin"
     }
   ],
@@ -4898,6 +4901,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:26:00.457Z",
+  "saved_at": "2026-06-08T01:26:06.121Z",
   "saved_by": "cm_command_center_operator"
 }

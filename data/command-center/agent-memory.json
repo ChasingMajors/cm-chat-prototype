@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:26:30.941Z",
+  "exported_at": "2026-06-08T01:26:34.447Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -635,11 +635,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Archives_Snapshots_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Archives_Snapshots_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -647,7 +647,7 @@
       "expectedRowCount": 83,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-08T01:17:00.155Z",
-      "updatedAt": "2026-06-08T01:26:29.339Z"
+      "updatedAt": "2026-06-08T01:26:31.250Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Archives_Baseball",
@@ -657,11 +657,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Archives_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 545 rows / 25 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Archives_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -669,7 +669,7 @@
       "expectedRowCount": 545,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-08T01:17:00.155Z",
-      "updatedAt": "2026-06-08T01:17:00.155Z"
+      "updatedAt": "2026-06-08T01:26:32.834Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Allen_Ginter_X_Baseball",
@@ -679,11 +679,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Allen_Ginter_X_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 556 rows / 7 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -691,7 +691,7 @@
       "expectedRowCount": 556,
       "expectedParallelCount": 7,
       "createdAt": "2026-06-08T01:17:00.154Z",
-      "updatedAt": "2026-06-08T01:17:00.154Z"
+      "updatedAt": "2026-06-08T01:26:32.844Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Allen_Ginter_Baseball",
@@ -1927,13 +1927,91 @@
     }
   ],
   "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Topps_Archives_Snapshots_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Topps_Archives_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Allen_Ginter_X_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Allen_Ginter_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Panini_Stars_and_Stripes_USA_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780881992845_tt7dr6",
+      "ts": "2026-06-08T01:26:32.845Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Allen & Ginter X Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881992843_98hmse",
+      "ts": "2026-06-08T01:26:32.843Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Allen & Ginter X Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Allen & Ginter X Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881992835_a7mmts",
+      "ts": "2026-06-08T01:26:32.835Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Archives Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881992834_mr5c6x",
+      "ts": "2026-06-08T01:26:32.834Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "545 public rows and 25 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Archives Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881991266_k8et12",
+      "ts": "2026-06-08T01:26:31.266Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Archives Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881991264_2v8w4z",
+      "ts": "2026-06-08T01:26:31.264Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Archives Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Archives Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881991250_12sdkx",
+      "ts": "2026-06-08T01:26:31.250Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Archives Snapshots Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881991249_sf9oi0",
+      "ts": "2026-06-08T01:26:31.249Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "83 public rows and 5 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Archives Snapshots Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780881989339_8meski",
       "ts": "2026-06-08T01:26:29.339Z",
@@ -2653,86 +2731,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780881916653_drj19t",
-      "ts": "2026-06-08T01:25:16.653Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Diamond Icons Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Diamond Icons Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881913118_sd9zaf",
-      "ts": "2026-06-08T01:25:13.118Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Dynasty Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Dynasty Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881908785_4dvt4v",
-      "ts": "2026-06-08T01:25:08.785Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Finest Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Finest Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881905983_jb6oo1",
-      "ts": "2026-06-08T01:25:05.983Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Gallery Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Gallery Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881902968_6ckh8x",
-      "ts": "2026-06-08T01:25:02.968Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps High Tek Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps High Tek Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881897716_5cd46d",
-      "ts": "2026-06-08T01:24:57.716Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Luminaries Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881895781_6h47x4",
-      "ts": "2026-06-08T01:24:55.781Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Inception Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Inception Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881890449_1uf5kn",
-      "ts": "2026-06-08T01:24:50.449Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Museum Collection Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -4287,9 +4285,9 @@
       "product": "2017 Topps Archives Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Archives_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104404775",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:26:32.834Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104297373": {
@@ -4305,9 +4303,9 @@
       "product": "2017 Topps Archives Snapshots Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Archives_Snapshots_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104297373",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:26:31.250Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104233128": {
@@ -4948,9 +4946,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-08T01:26:29.317Z",
       "resolved": true
+    },
+    "baseball|2017 topps archives snapshots baseball": {
+      "product": "2017 Topps Archives Snapshots Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Archives_Snapshots_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:26:31.250Z",
+      "resolved": true
+    },
+    "baseball|2017 topps archives baseball": {
+      "product": "2017 Topps Archives Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Archives_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:26:32.834Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:26:32.182Z",
+  "saved_at": "2026-06-08T01:26:35.903Z",
   "saved_by": "cm_command_center_operator"
 }

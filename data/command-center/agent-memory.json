@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:34:22.902Z",
+  "exported_at": "2026-06-08T01:34:26.927Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1926,8 +1926,31 @@
       "updatedAt": "2026-06-08T01:17:00.130Z"
     }
   ],
-  "agent_run_queue": [],
+  "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Bowman_Mega_Box_Chrome_Baseball",
+    "backend_audit|stale_public_json|baseball|2017_Bowman_Platinum_Baseball"
+  ],
   "activity_log": [
+    {
+      "id": "log_1780882465326_m29gvb",
+      "ts": "2026-06-08T01:34:25.326Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Bowman Mega Box Chrome Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780882463329_1yr8w5",
+      "ts": "2026-06-08T01:34:23.329Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Bowman Platinum Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Bowman Platinum Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780882461299_39d27u",
       "ts": "2026-06-08T01:34:21.299Z",
@@ -2707,26 +2730,6 @@
       "status": "covered",
       "product": "2017 Topps Chrome Update Series Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881982253_xhd4iu",
-      "ts": "2026-06-08T01:26:22.253Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Topps Chrome Update Series Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881982251_xjv2cx",
-      "ts": "2026-06-08T01:26:22.251Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Chrome Update Series Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Chrome Update Series Baseball",
-      "source": "admin_run_queue"
     }
   ],
   "visual_tests": {
@@ -5053,6 +5056,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:34:24.125Z",
+  "saved_at": "2026-06-08T01:34:28.892Z",
   "saved_by": "cm_command_center_operator"
 }

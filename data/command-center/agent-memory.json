@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:25:35.359Z",
+  "exported_at": "2026-06-08T01:25:39.338Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -217,11 +217,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Luminaries_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 619 rows / 18 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Luminaries_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -229,7 +229,7 @@
       "expectedRowCount": 619,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-08T01:17:00.162Z",
-      "updatedAt": "2026-06-08T01:17:00.162Z"
+      "updatedAt": "2026-06-08T01:25:37.723Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Inception_Baseball",
@@ -239,11 +239,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Inception_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 351 rows / 31 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -251,7 +251,7 @@
       "expectedRowCount": 351,
       "expectedParallelCount": 31,
       "createdAt": "2026-06-08T01:17:00.162Z",
-      "updatedAt": "2026-06-08T01:17:00.162Z"
+      "updatedAt": "2026-06-08T01:25:37.735Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Holiday_Bowman_Baseball",
@@ -305,11 +305,11 @@
       "sport": "baseball",
       "code": "2017_Topps_High_Tek_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_High_Tek_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -317,7 +317,7 @@
       "expectedRowCount": 287,
       "expectedParallelCount": 12,
       "createdAt": "2026-06-08T01:17:00.160Z",
-      "updatedAt": "2026-06-08T01:25:33.757Z"
+      "updatedAt": "2026-06-08T01:25:35.637Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Minor_League_Baseball",
@@ -1927,12 +1927,90 @@
     }
   ],
   "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Topps_High_Tek_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Topps_Luminaries_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Inception_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780881937736_6zta13",
+      "ts": "2026-06-08T01:25:37.736Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Inception Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881937734_uwtjrf",
+      "ts": "2026-06-08T01:25:37.734Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Inception Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Inception Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881937724_w7q1wz",
+      "ts": "2026-06-08T01:25:37.724Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Luminaries Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881937723_6gmjj4",
+      "ts": "2026-06-08T01:25:37.723Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "619 public rows and 18 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Luminaries Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881935644_ykxndo",
+      "ts": "2026-06-08T01:25:35.644Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Luminaries Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881935643_aeifs2",
+      "ts": "2026-06-08T01:25:35.643Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Luminaries Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Luminaries Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881935638_6idig1",
+      "ts": "2026-06-08T01:25:35.638Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps High Tek Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881935637_ocktqv",
+      "ts": "2026-06-08T01:25:35.637Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "287 public rows and 12 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps High Tek Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780881933757_rdh8gy",
       "ts": "2026-06-08T01:25:33.757Z",
@@ -2650,76 +2728,6 @@
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
       "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879240993_2ylu7f",
-      "ts": "2026-06-08T00:40:40.993Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780879234428",
-      "ts": "2026-06-08T00:40:28.775Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Museum Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879234428",
-      "ts": "2026-06-08T00:40:28.775Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Topps Museum Collection Baseball: Pending checklist publish validation completed for 2017_Topps_Museum_Collection_Baseball. Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879233596",
-      "ts": "2026-06-08T00:40:28.775Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879227219_tiyq9v",
-      "ts": "2026-06-08T00:40:27.219Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780870530778_vna8wk",
-      "ts": "2026-06-07T22:15:30.778Z",
-      "type": "deep_backend_audit",
-      "title": "Deep Sheets Audit complete",
-      "detail": "908 Sheet products checked against 942 public JSON products. 150 issues found. 150 queue cards updated.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780870530777_w52t1v",
-      "ts": "2026-06-07T22:15:30.777Z",
-      "type": "deep_backend_audit",
-      "title": "Backend audit issues queued",
-      "detail": "150 audit findings added to the Agent Action Queue.",
-      "status": "queued",
       "product": "",
       "source": "operator_backend"
     }
@@ -4564,9 +4572,9 @@
       "product": "2017 Topps High Tek Baseball",
       "sport": "baseball",
       "code": "2017_Topps_High_Tek_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103155471",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:25:35.637Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103154655": {
@@ -4636,9 +4644,9 @@
       "product": "2017 Topps Luminaries Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Luminaries_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104053810",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:25:37.723Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27102983741": {
@@ -4838,9 +4846,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-08T01:25:33.740Z",
       "resolved": true
+    },
+    "baseball|2017 topps high tek baseball": {
+      "product": "2017 Topps High Tek Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_High_Tek_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:25:35.637Z",
+      "resolved": true
+    },
+    "baseball|2017 topps luminaries baseball": {
+      "product": "2017 Topps Luminaries Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Luminaries_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:25:37.723Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:25:36.885Z",
+  "saved_at": "2026-06-08T01:25:40.529Z",
   "saved_by": "cm_command_center_operator"
 }

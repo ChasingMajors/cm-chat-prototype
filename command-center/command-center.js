@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc108-needs-attention-recheck-v1-2026-06-07";
+  const COMMAND_CENTER_VERSION = "cc109-attention-auto-clear-v1-2026-06-07";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -5706,6 +5706,7 @@
     const hasAdminApproval = status === "approved" || status === "validated";
     const hasSource = type !== "source_import" || !!(action.sourceUrl || action.runUrl);
     const hasTarget = !!(action.product || action.code);
+    const coverageOnlyAudit = (type === "backend_data_issue" || String(action && action.source || "").toLowerCase() === "deep_backend_audit") && hasTarget;
     const hasExecutionProof = !!action.executionResult;
     const hasValidationProof = hasPositiveValidationProof(action);
     const hasCoverageProof = hasPublicCoverageProof(action);
@@ -5774,11 +5775,19 @@
       };
     }
 
-    if (!hasSource || !hasTarget) {
+    if ((!hasSource && !coverageOnlyAudit) || !hasTarget) {
       return {
         label: "Hold",
         className: "hold",
         detail: "Missing source or target detail. Review before approval."
+      };
+    }
+
+    if (coverageOnlyAudit && !hasExecutionProof) {
+      return {
+        label: "Recheck Ready",
+        className: "ready",
+        detail: "Backend audit item has product identity. Sentinel can safely recheck public JSON without a source write."
       };
     }
 
@@ -7836,6 +7845,15 @@
   }
 
   function getNextAgentRecommendation(actions) {
+    const queued = getQueuedAgentActions(10);
+    if (queued.length) return `Run Agent Cycle to attempt ${formatNumber(queued.length)} admin-queued job${queued.length === 1 ? "" : "s"} first.`;
+
+    const recheckReady = (actions || []).find(action => {
+      const attempt = describeQueuedActionAttempt(action);
+      return attempt && attempt.safe && (attempt.kind === "checklist_coverage_recheck" || attempt.kind === "prv_public_recheck");
+    });
+    if (recheckReady) return `Sentinel can safely recheck public JSON for ${recheckReady.product || recheckReady.code || "the next audit item"}.`;
+
     const pendingValidation = (actions || []).find(action => String(action.status || "").toLowerCase() === "pending_public_validation");
     if (pendingValidation) return `Let Sentinel recheck published JSON for ${pendingValidation.product || pendingValidation.code || "the pending product"}.`;
 
@@ -7870,6 +7888,7 @@
     const latestSuccess = getLatestActivityByStatus(["validated", "completed", "imported", "exported", "queued", "saved"]);
     const validated = resolved.filter(action => String(action.status || "").toLowerCase() === "validated");
     const pendingValidation = actions.filter(action => String(action.status || "").toLowerCase() === "pending_public_validation");
+    const runQueue = getQueuedAgentActions(20);
     const mode = getAutonomyLabel(state.autonomyMode);
     const readiness = renderAutonomyReadiness();
     const heldDetail = summarizeHeldActions(actions);
@@ -7900,6 +7919,13 @@
         title: "Validation",
         detail: `${formatNumber(validated.length)} validated actions with proof. ${formatNumber(pendingValidation.length)} pending published JSON recheck${pendingValidation.length === 1 ? "" : "s"}.`,
         badge: pendingValidation.length ? "pending" : "proof"
+      },
+      {
+        title: "Agent Queue",
+        detail: runQueue.length
+          ? `${formatNumber(runQueue.length)} admin-queued job${runQueue.length === 1 ? "" : "s"} ready for Run Agent Cycle.`
+          : "No admin-queued jobs waiting.",
+        badge: runQueue.length ? "queued" : "clear"
       },
       {
         title: "Attention",

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:25:26.345Z",
+  "exported_at": "2026-06-08T01:25:30.797Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -481,50 +481,6 @@
       "sport": "baseball",
       "code": "2017_Topps_Finest_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 325 rows / 48 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2017",
-      "targetBucket": "2017",
-      "expectedRowCount": 325,
-      "expectedParallelCount": 48,
-      "createdAt": "2026-06-08T01:17:00.158Z",
-      "updatedAt": "2026-06-08T01:17:00.158Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2017_Topps_Dynasty_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2017 Topps Dynasty Baseball",
-      "sport": "baseball",
-      "code": "2017_Topps_Dynasty_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 261 rows / 5 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2017",
-      "targetBucket": "2017",
-      "expectedRowCount": 261,
-      "expectedParallelCount": 5,
-      "createdAt": "2026-06-08T01:17:00.157Z",
-      "updatedAt": "2026-06-08T01:17:00.157Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2017_Topps_Diamond_Icons_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2017 Topps Diamond Icons Baseball",
-      "sport": "baseball",
-      "code": "2017_Topps_Diamond_Icons_Baseball",
-      "riskLevel": "high",
       "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
@@ -534,10 +490,54 @@
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
+      "expectedRowCount": 325,
+      "expectedParallelCount": 48,
+      "createdAt": "2026-06-08T01:17:00.158Z",
+      "updatedAt": "2026-06-08T01:25:29.194Z"
+    },
+    {
+      "id": "backend_audit|stale_public_json|baseball|2017_Topps_Dynasty_Baseball",
+      "type": "source_import",
+      "source": "deep_backend_audit",
+      "product": "2017 Topps Dynasty Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Dynasty_Baseball",
+      "riskLevel": "high",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Dynasty_Baseball. No import needed.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "2017",
+      "targetBucket": "2017",
+      "expectedRowCount": 261,
+      "expectedParallelCount": 5,
+      "createdAt": "2026-06-08T01:17:00.157Z",
+      "updatedAt": "2026-06-08T01:25:29.175Z"
+    },
+    {
+      "id": "backend_audit|stale_public_json|baseball|2017_Topps_Diamond_Icons_Baseball",
+      "type": "source_import",
+      "source": "deep_backend_audit",
+      "product": "2017 Topps Diamond Icons Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Diamond_Icons_Baseball",
+      "riskLevel": "high",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Diamond_Icons_Baseball. No import needed.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "2017",
+      "targetBucket": "2017",
       "expectedRowCount": 546,
       "expectedParallelCount": 26,
       "createdAt": "2026-06-08T01:17:00.157Z",
-      "updatedAt": "2026-06-08T01:25:24.743Z"
+      "updatedAt": "2026-06-08T01:25:26.965Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Definitive_Collection_Baseball",
@@ -1927,8 +1927,6 @@
     }
   ],
   "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Topps_Diamond_Icons_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Topps_Dynasty_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Finest_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_High_Tek_Baseball",
@@ -1937,6 +1935,86 @@
     "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780881929195_mublwf",
+      "ts": "2026-06-08T01:25:29.195Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Finest Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881929192_4sshbt",
+      "ts": "2026-06-08T01:25:29.192Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Finest Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Finest Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881929176_2lkms8",
+      "ts": "2026-06-08T01:25:29.177Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Dynasty Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881929174_6jclyy",
+      "ts": "2026-06-08T01:25:29.174Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "261 public rows and 5 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Dynasty Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881926984_fvsfim",
+      "ts": "2026-06-08T01:25:26.984Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Dynasty Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881926982_m0ki0m",
+      "ts": "2026-06-08T01:25:26.982Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Dynasty Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Dynasty Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881926967_vkezak",
+      "ts": "2026-06-08T01:25:26.967Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Diamond Icons Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881926964_rzpslm",
+      "ts": "2026-06-08T01:25:26.964Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "546 public rows and 26 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Diamond Icons Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780881924743_lcj9za",
       "ts": "2026-06-08T01:25:24.743Z",
@@ -4318,9 +4396,9 @@
       "product": "2017 Topps Diamond Icons Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Diamond_Icons_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103295947",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:25:26.965Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103227296": {
@@ -4336,9 +4414,9 @@
       "product": "2017 Topps Dynasty Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Dynasty_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103227296",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:25:29.175Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103226038": {
@@ -4646,9 +4724,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-08T01:24:35.336Z",
       "resolved": true
+    },
+    "baseball|2017 topps diamond icons baseball": {
+      "product": "2017 Topps Diamond Icons Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Diamond_Icons_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:25:26.965Z",
+      "resolved": true
+    },
+    "baseball|2017 topps dynasty baseball": {
+      "product": "2017 Topps Dynasty Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Dynasty_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:25:29.175Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:25:27.582Z",
+  "saved_at": "2026-06-08T01:25:32.362Z",
   "saved_by": "cm_command_center_operator"
 }

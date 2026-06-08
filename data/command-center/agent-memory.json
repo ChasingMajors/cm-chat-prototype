@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:35:26.790Z",
+  "exported_at": "2026-06-08T01:35:55.790Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:35:07.642Z",
-      "updatedAt": "2026-06-08T01:35:24.872Z"
+      "updatedAt": "2026-06-08T01:35:53.476Z"
     },
     {
       "id": "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
@@ -1197,7 +1197,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.146Z",
-      "updatedAt": "2026-06-08T01:35:24.872Z"
+      "updatedAt": "2026-06-08T01:35:53.475Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Tribute_Baseball",
@@ -1219,7 +1219,7 @@
       "expectedRowCount": 433,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.145Z",
-      "updatedAt": "2026-06-08T01:35:24.872Z"
+      "updatedAt": "2026-06-08T01:35:53.476Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Tier_One_Baseball",
@@ -1930,6 +1930,16 @@
     "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Tribute_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780882553477_q6lg97",
+      "ts": "2026-06-08T01:35:53.477Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Tribute Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780882524873_d7tw6u",
       "ts": "2026-06-08T01:35:24.873Z",
@@ -2717,16 +2727,6 @@
       "title": "Covered product auto-resolved",
       "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
       "status": "validated",
-      "product": "2017 Donruss Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882088076_vglmm1",
-      "ts": "2026-06-08T01:28:08.076Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "748 public rows and 100 parallels found.",
-      "status": "covered",
       "product": "2017 Donruss Baseball",
       "source": "operator_backend"
     }
@@ -3711,7 +3711,7 @@
       "productName": "2016 Topps Tribute Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tribute_Baseball",
-      "updatedAt": "2026-06-08T01:35:24.868Z",
+      "updatedAt": "2026-06-08T01:35:53.473Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27111185459,
@@ -3719,7 +3719,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tribute Baseball",
       "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
       "createdAt": "2026-06-08T01:35:06Z",
-      "checkedAt": "2026-06-08T01:35:24.868Z"
+      "checkedAt": "2026-06-08T01:35:53.473Z"
     },
     "baseball|2016_Topps_Update_Series_Baseball": {
       "status": "completed",
@@ -5064,6 +5064,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:35:28.988Z",
+  "saved_at": "2026-06-08T01:35:57.805Z",
   "saved_by": "cm_command_center_operator"
 }

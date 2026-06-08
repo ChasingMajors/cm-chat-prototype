@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-07T22:15:32.599Z",
+  "exported_at": "2026-06-08T00:40:28.823Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -195,11 +195,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Museum_Collection_Baseball",
       "riskLevel": "high",
-      "status": "validated",
-      "recommendedAction": "No action needed unless source-of-truth sheet review finds newer rows or parallels.",
-      "adminDecision": "auto_validated_covered",
-      "executionResult": "Needs Attention item rechecked against public JSON.",
-      "validationResult": "Public checklist JSON validated: 1,427 rows and 35 parallels in baseball-004.json.",
+      "status": "pending_public_validation",
+      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "adminDecision": "",
+      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
+      "validationResult": "Sheets show 1427 rows / 35 parallels. Public JSON index shows 1 rows / 0 parallels.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -207,7 +207,7 @@
       "expectedRowCount": 1427,
       "expectedParallelCount": 35,
       "createdAt": "2026-06-07T22:15:30.776Z",
-      "updatedAt": "2026-06-08T00:05:41.852Z"
+      "updatedAt": "2026-06-07T22:15:30.776Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Luminaries_Baseball",
@@ -1929,14 +1929,14 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1780877141860_codex_clear",
-      "ts": "2026-06-08T00:05:41.852Z",
-      "type": "agent_action",
-      "title": "Needs Attention auto-cleared",
-      "detail": "1 stale Needs Attention item(s) were validated against public JSON and removed from the run queue.",
-      "status": "validated",
+      "id": "log_1780879227219_tiyq9v",
+      "ts": "2026-06-08T00:40:27.219Z",
+      "type": "agent_cycle",
+      "title": "Running Agent Cycle",
+      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
+      "status": "started",
       "product": "",
-      "source": "codex_live_memory_recheck"
+      "source": "command_center"
     },
     {
       "id": "log_1780870530778_vna8wk",
@@ -3963,6 +3963,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T00:06:33.375Z",
+  "saved_at": "2026-06-08T00:40:30.258Z",
   "saved_by": "cm_command_center_operator"
 }

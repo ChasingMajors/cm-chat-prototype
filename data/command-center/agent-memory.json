@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:23:31.755Z",
+  "exported_at": "2026-06-08T01:23:59.669Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1926,8 +1926,20 @@
       "updatedAt": "2026-06-08T01:17:00.130Z"
     }
   ],
-  "agent_run_queue": [],
+  "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Topps_Gold_Label_Baseball"
+  ],
   "activity_log": [
+    {
+      "id": "log_1780881838067_t9b571",
+      "ts": "2026-06-08T01:23:58.067Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Gold Label Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Gold Label Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780881810153_g42i1c",
       "ts": "2026-06-08T01:23:30.153Z",
@@ -4156,6 +4168,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:23:33.267Z",
+  "saved_at": "2026-06-08T01:24:01.622Z",
   "saved_by": "cm_command_center_operator"
 }

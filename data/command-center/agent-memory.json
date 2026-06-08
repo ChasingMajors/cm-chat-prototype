@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:35:12.790Z",
+  "exported_at": "2026-06-08T01:35:26.790Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -176,16 +176,16 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27111185459",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:35:07.642Z",
-      "updatedAt": "2026-06-08T01:35:07.643Z"
+      "updatedAt": "2026-06-08T01:35:24.872Z"
     },
     {
       "id": "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
@@ -987,11 +987,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_Platinum_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 435 rows / 38 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Bowman_Platinum_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -999,7 +999,7 @@
       "expectedRowCount": 435,
       "expectedParallelCount": 38,
       "createdAt": "2026-06-08T01:17:00.149Z",
-      "updatedAt": "2026-06-08T01:17:00.149Z"
+      "updatedAt": "2026-06-08T01:35:24.255Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Mega_Box_Chrome_Baseball",
@@ -1009,11 +1009,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 248 rows / 17 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Bowman_Mega_Box_Chrome_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1021,7 +1021,7 @@
       "expectedRowCount": 248,
       "expectedParallelCount": 17,
       "createdAt": "2026-06-08T01:17:00.148Z",
-      "updatedAt": "2026-06-08T01:17:00.149Z"
+      "updatedAt": "2026-06-08T01:35:22.483Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_High_Tek_Baseball",
@@ -1031,11 +1031,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_High_Tek_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 195 rows / 24 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Bowman_High_Tek_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1043,7 +1043,7 @@
       "expectedRowCount": 195,
       "expectedParallelCount": 24,
       "createdAt": "2026-06-08T01:17:00.148Z",
-      "updatedAt": "2026-06-08T01:17:00.148Z"
+      "updatedAt": "2026-06-08T01:35:20.613Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Draft_Baseball",
@@ -1053,11 +1053,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 640 rows / 27 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Bowman_Draft_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1065,7 +1065,7 @@
       "expectedRowCount": 640,
       "expectedParallelCount": 27,
       "createdAt": "2026-06-08T01:17:00.148Z",
-      "updatedAt": "2026-06-08T01:17:00.148Z"
+      "updatedAt": "2026-06-08T01:35:18.630Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Chrome_Mini_Baseball",
@@ -1097,11 +1097,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 475 rows / 20 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Bowman_Chrome_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1109,7 +1109,7 @@
       "expectedRowCount": 475,
       "expectedParallelCount": 20,
       "createdAt": "2026-06-08T01:17:00.147Z",
-      "updatedAt": "2026-06-08T01:17:00.147Z"
+      "updatedAt": "2026-06-08T01:35:16.173Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Baseball",
@@ -1119,11 +1119,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Bowman_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1131,7 +1131,7 @@
       "expectedRowCount": 879,
       "expectedParallelCount": 55,
       "createdAt": "2026-06-08T01:17:00.146Z",
-      "updatedAt": "2026-06-08T01:35:11.052Z"
+      "updatedAt": "2026-06-08T01:35:13.971Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball",
@@ -1190,14 +1190,14 @@
       "adminDecision": "run_queue_approved",
       "executionResult": "Large checklist has no parallels",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27111185459",
       "sourceUrl": "",
       "bucket": "2016",
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.146Z",
-      "updatedAt": "2026-06-08T01:35:07.643Z"
+      "updatedAt": "2026-06-08T01:35:24.872Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Tribute_Baseball",
@@ -1212,14 +1212,14 @@
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27111185459",
       "sourceUrl": "",
       "bucket": "2016",
       "targetBucket": "2016",
       "expectedRowCount": 433,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.145Z",
-      "updatedAt": "2026-06-08T01:35:07.643Z"
+      "updatedAt": "2026-06-08T01:35:24.872Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Tier_One_Baseball",
@@ -1927,15 +1927,249 @@
     }
   ],
   "agent_run_queue": [
-    "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Tribute_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Bowman_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Bowman_Chrome_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Bowman_Draft_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Bowman_High_Tek_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Bowman_Mega_Box_Chrome_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Bowman_Platinum_Baseball"
+    "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Tribute_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780882524873_d7tw6u",
+      "ts": "2026-06-08T01:35:24.873Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Tribute Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780882524272_kf8c8r",
+      "ts": "2026-06-08T01:35:24.272Z",
+      "type": "agent_run_queue",
+      "title": "Admin Run Queue complete",
+      "detail": "8 attempted. 0 skipped for approval/details. 0 failed. 1 still queued. 2016 Topps Tribute Baseball: Run CV/ChatBot visual test 2016 Topps Update Series Baseball: Recheck checklist public JSON 2017 Bowman Baseball: Recheck checklist public JSON 2017 Bowman Chrome Baseball: Recheck checklist public JSON 2017 Bowman Draft Baseball: Recheck checklist public JSON",
+      "status": "needs_review",
+      "product": "",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780882524256_2hv7cu",
+      "ts": "2026-06-08T01:35:24.256Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Bowman Platinum Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882524255_yaeo4v",
+      "ts": "2026-06-08T01:35:24.255Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "435 public rows and 38 parallels found.",
+      "status": "covered",
+      "product": "2017 Bowman Platinum Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882522502_vbo919",
+      "ts": "2026-06-08T01:35:22.502Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Bowman Platinum Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882522500_txzga1",
+      "ts": "2026-06-08T01:35:22.500Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Bowman Platinum Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Bowman Platinum Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780882522484_dd3sir",
+      "ts": "2026-06-08T01:35:22.484Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882522482_8yd8fc",
+      "ts": "2026-06-08T01:35:22.482Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "248 public rows and 17 parallels found.",
+      "status": "covered",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882520635_hxirgl",
+      "ts": "2026-06-08T01:35:20.635Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882520632_6qqzuc",
+      "ts": "2026-06-08T01:35:20.632Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Bowman Mega Box Chrome Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780882520614_4068l0",
+      "ts": "2026-06-08T01:35:20.614Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Bowman High Tek Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882520613_3p83vj",
+      "ts": "2026-06-08T01:35:20.613Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "195 public rows and 24 parallels found.",
+      "status": "covered",
+      "product": "2017 Bowman High Tek Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882518658_rr68lw",
+      "ts": "2026-06-08T01:35:18.658Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Bowman High Tek Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882518654_h6unrx",
+      "ts": "2026-06-08T01:35:18.654Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Bowman High Tek Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Bowman High Tek Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780882518631_dhkh84",
+      "ts": "2026-06-08T01:35:18.631Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Bowman Draft Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882518630_qdmu1x",
+      "ts": "2026-06-08T01:35:18.630Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "640 public rows and 27 parallels found.",
+      "status": "covered",
+      "product": "2017 Bowman Draft Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882516204_kz8vc5",
+      "ts": "2026-06-08T01:35:16.204Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Bowman Draft Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882516199_kuy4sl",
+      "ts": "2026-06-08T01:35:16.199Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Bowman Draft Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Bowman Draft Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780882516174_vmecbm",
+      "ts": "2026-06-08T01:35:16.174Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Bowman Chrome Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882516173_qlli0i",
+      "ts": "2026-06-08T01:35:16.173Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "475 public rows and 20 parallels found.",
+      "status": "covered",
+      "product": "2017 Bowman Chrome Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882514075_yifg21",
+      "ts": "2026-06-08T01:35:14.075Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Bowman Chrome Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882514071_0e07nx",
+      "ts": "2026-06-08T01:35:14.071Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Bowman Chrome Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Bowman Chrome Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780882513972_8ukl82",
+      "ts": "2026-06-08T01:35:13.972Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Bowman Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780882513971_td2nnv",
+      "ts": "2026-06-08T01:35:13.971Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "879 public rows and 55 parallels found.",
+      "status": "covered",
+      "product": "2017 Bowman Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780882511052_s8kk52",
       "ts": "2026-06-08T01:35:11.052Z",
@@ -2495,246 +2729,6 @@
       "status": "covered",
       "product": "2017 Donruss Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882085937_ql22kz",
-      "ts": "2026-06-08T01:28:05.937Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Donruss Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882085935_4qjk2j",
-      "ts": "2026-06-08T01:28:05.935Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Donruss Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Donruss Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780882085922_0u1d68",
-      "ts": "2026-06-08T01:28:05.922Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Bowman's Best Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882085919_u3t3ry",
-      "ts": "2026-06-08T01:28:05.919Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "403 public rows and 29 parallels found.",
-      "status": "covered",
-      "product": "2017 Bowman's Best Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882083056_nzl7iv",
-      "ts": "2026-06-08T01:28:03.056Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Bowman's Best Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882083054_js5xqw",
-      "ts": "2026-06-08T01:28:03.054Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Bowman's Best Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Bowman's Best Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780882083051_u8fkpj",
-      "ts": "2026-06-08T01:28:03.051Z",
-      "type": "agent_cycle",
-      "title": "Running Admin Run Queue",
-      "detail": "10 flagged jobs will be attempted before Sentinel chooses other work.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780882078369_xwdlm9",
-      "ts": "2026-06-08T01:27:58.369Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Bowman's Best Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Bowman's Best Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882076181_kaama2",
-      "ts": "2026-06-08T01:27:56.181Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Donruss Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Donruss Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882073640_c1aaqz",
-      "ts": "2026-06-08T01:27:53.640Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Donruss Optic Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Donruss Optic Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882071917_pclkek",
-      "ts": "2026-06-08T01:27:51.917Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Panini Chronicles Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Panini Chronicles Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882069165_84pb8y",
-      "ts": "2026-06-08T01:27:49.165Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Panini Contenders Draft Picks Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Panini Contenders Draft Picks Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882066781_pu1ct1",
-      "ts": "2026-06-08T01:27:46.781Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Panini Diamond Kings Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Panini Diamond Kings Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882064248_ibqr37",
-      "ts": "2026-06-08T01:27:44.248Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Panini Elite Extra Edition Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Panini Elite Extra Edition Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882061276_2q3xkb",
-      "ts": "2026-06-08T01:27:41.276Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Panini Flawless Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Panini Flawless Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882058928_z40czt",
-      "ts": "2026-06-08T01:27:38.928Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Panini Immaculate Collection Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Panini Immaculate Collection Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882054546_o1dpj3",
-      "ts": "2026-06-08T01:27:34.546Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Panini Stars and Stripes USA Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Panini Stars and Stripes USA Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882052874_z08pjl",
-      "ts": "2026-06-08T01:27:32.874Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Panini National Treasures Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Panini National Treasures Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882049344_g6ni9g",
-      "ts": "2026-06-08T01:27:29.344Z",
-      "type": "agent_run_queue",
-      "title": "Removed from Agent Run Queue",
-      "detail": "2017 Panini Stars and Stripes USA Baseball was removed from the explicit run queue.",
-      "status": "removed",
-      "product": "2017 Panini Stars and Stripes USA Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881996282_ae0qf1",
-      "ts": "2026-06-08T01:26:36.282Z",
-      "type": "agent_run_queue",
-      "title": "Admin Run Queue complete",
-      "detail": "10 attempted. 0 skipped for approval/details. 0 failed. 1 still queued. 2017 Bowman Holiday Baseball: Recheck checklist public JSON 2017 Topps Five Star Baseball: Recheck checklist public JSON 2017 Topps Definitive Collection Baseball: Recheck checklist public JSON 2017 Topps Clearly Authentic Baseball: Recheck checklist public JSON 2017 Topps Chrome Update Series Baseball: Recheck checklist public JSON",
-      "status": "needs_review",
-      "product": "",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881996263_szsew7",
-      "ts": "2026-06-08T01:26:36.263Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Allen & Ginter Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881996261_zs5zil",
-      "ts": "2026-06-08T01:26:36.261Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "1,677 public rows and 8 parallels found.",
-      "status": "covered",
-      "product": "2017 Topps Allen & Ginter Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881994928_e6ht3t",
-      "ts": "2026-06-08T01:26:34.928Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Topps Allen & Ginter Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881994927_qp1h7h",
-      "ts": "2026-06-08T01:26:34.927Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Allen & Ginter Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Allen & Ginter Baseball",
-      "source": "admin_run_queue"
     }
   ],
   "visual_tests": {
@@ -3705,11 +3699,11 @@
       "checkedAt": "2026-06-07T22:10:53.656Z"
     },
     "baseball|2016_Topps_Tribute_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-08T01:35:06.008Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27111185459",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2016_Topps_Tribute_Baseball",
@@ -3717,15 +3711,15 @@
       "productName": "2016 Topps Tribute Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tribute_Baseball",
-      "updatedAt": "2026-06-08T01:35:07.640Z",
+      "updatedAt": "2026-06-08T01:35:24.868Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 27106287757,
-      "runNumber": 62,
+      "runId": 27111185459,
+      "runNumber": 65,
       "displayTitle": "Visual Product Test - 2016 Topps Tribute Baseball",
-      "headSha": "0b464a837c7f679086b307e6db5b95086df58f85",
-      "createdAt": "2026-06-07T22:09:15Z",
-      "checkedAt": "2026-06-07T22:10:28.521Z"
+      "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
+      "createdAt": "2026-06-08T01:35:06Z",
+      "checkedAt": "2026-06-08T01:35:24.868Z"
     },
     "baseball|2016_Topps_Update_Series_Baseball": {
       "status": "completed",
@@ -4012,7 +4006,7 @@
       "code": "2017_Bowman_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:35:13.971Z",
       "resolved": true
     },
     "baseball|2017_bowman_baseball": {
@@ -4021,7 +4015,7 @@
       "code": "2017_Bowman_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:35:13.971Z",
       "resolved": true
     },
     "baseball|2017 bowman chrome baseball": {
@@ -4030,7 +4024,7 @@
       "code": "2017_Bowman_Chrome_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:35:16.173Z",
       "resolved": true
     },
     "baseball|2017_bowman_chrome_baseball": {
@@ -4039,7 +4033,7 @@
       "code": "2017_Bowman_Chrome_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:35:16.173Z",
       "resolved": true
     },
     "baseball|2017 bowman chrome mini baseball": {
@@ -4066,7 +4060,7 @@
       "code": "2017_Bowman_Draft_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:35:18.630Z",
       "resolved": true
     },
     "baseball|2017_bowman_draft_baseball": {
@@ -4075,7 +4069,7 @@
       "code": "2017_Bowman_Draft_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:35:18.630Z",
       "resolved": true
     },
     "baseball|2017 bowman high tek baseball": {
@@ -4084,7 +4078,7 @@
       "code": "2017_Bowman_High_Tek_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:35:20.613Z",
       "resolved": true
     },
     "baseball|2017_bowman_high_tek_baseball": {
@@ -4093,7 +4087,7 @@
       "code": "2017_Bowman_High_Tek_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:35:20.613Z",
       "resolved": true
     },
     "baseball|2017 bowman platinum baseball": {
@@ -4102,7 +4096,7 @@
       "code": "2017_Bowman_Platinum_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:35:24.255Z",
       "resolved": true
     },
     "baseball|2017_bowman_platinum_baseball": {
@@ -4111,7 +4105,7 @@
       "code": "2017_Bowman_Platinum_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:35:24.255Z",
       "resolved": true
     },
     "baseball|2017 bowman's best baseball": {
@@ -4271,9 +4265,9 @@
       "product": "2017 Bowman Mega Box Chrome Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104442514",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:35:22.483Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104404775": {
@@ -5058,9 +5052,18 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-08T01:28:24.110Z",
       "resolved": true
+    },
+    "baseball|2017 bowman mega box chrome baseball": {
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "sport": "baseball",
+      "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:35:22.483Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:35:14.756Z",
+  "saved_at": "2026-06-08T01:35:28.988Z",
   "saved_by": "cm_command_center_operator"
 }

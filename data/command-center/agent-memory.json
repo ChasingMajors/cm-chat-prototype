@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:24:15.555Z",
+  "exported_at": "2026-06-08T01:24:23.285Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -283,11 +283,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 344 rows / 4 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -295,7 +295,7 @@
       "expectedRowCount": 344,
       "expectedParallelCount": 4,
       "createdAt": "2026-06-08T01:17:00.161Z",
-      "updatedAt": "2026-06-08T01:17:00.161Z"
+      "updatedAt": "2026-06-08T01:24:21.682Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_High_Tek_Baseball",
@@ -1935,6 +1935,36 @@
     "backend_audit|stale_public_json|baseball|2017_Topps_Gold_Label_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780881861683_lghqwx",
+      "ts": "2026-06-08T01:24:21.683Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Holiday Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881861677_lp0eqf",
+      "ts": "2026-06-08T01:24:21.677Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Holiday Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Holiday Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881861674_l9vaf5",
+      "ts": "2026-06-08T01:24:21.674Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "6 flagged jobs will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1780881853953_hwg7hg",
       "ts": "2026-06-08T01:24:13.953Z",
@@ -4223,6 +4253,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:24:16.679Z",
+  "saved_at": "2026-06-08T01:24:24.911Z",
   "saved_by": "cm_command_center_operator"
 }

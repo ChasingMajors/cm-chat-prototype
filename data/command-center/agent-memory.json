@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:28:25.792Z",
+  "exported_at": "2026-06-08T01:34:22.902Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1926,10 +1926,18 @@
       "updatedAt": "2026-06-08T01:17:00.130Z"
     }
   ],
-  "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Panini_National_Treasures_Baseball"
-  ],
+  "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1780882461299_39d27u",
+      "ts": "2026-06-08T01:34:21.299Z",
+      "type": "agent_run_queue",
+      "title": "Removed from Agent Run Queue",
+      "detail": "2017 Panini National Treasures Baseball was removed from the explicit run queue.",
+      "status": "removed",
+      "product": "2017 Panini National Treasures Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780882104125_n8aqwf",
       "ts": "2026-06-08T01:28:24.125Z",
@@ -2719,16 +2727,6 @@
       "status": "started",
       "product": "2017 Topps Chrome Update Series Baseball",
       "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881982237_1gjfzk",
-      "ts": "2026-06-08T01:26:22.237Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Clearly Authentic Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -5055,6 +5053,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:28:27.681Z",
+  "saved_at": "2026-06-08T01:34:24.125Z",
   "saved_by": "cm_command_center_operator"
 }

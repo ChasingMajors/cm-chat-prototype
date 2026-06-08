@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:25:10.387Z",
+  "exported_at": "2026-06-08T01:25:14.720Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1927,6 +1927,7 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Topps_Dynasty_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Finest_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_High_Tek_Baseball",
@@ -1935,6 +1936,16 @@
     "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780881913118_sd9zaf",
+      "ts": "2026-06-08T01:25:13.118Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Dynasty Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Dynasty Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780881908785_4dvt4v",
       "ts": "2026-06-08T01:25:08.785Z",
@@ -4597,6 +4608,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:25:11.895Z",
+  "saved_at": "2026-06-08T01:25:16.033Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:14:33.827Z",
+  "exported_at": "2026-06-08T01:17:01.796Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,46 +166,6 @@
   ],
   "agent_actions": [
     {
-      "id": "visual_test|github_actions|2017 topps museum collection baseball|2017_topps_museum_collection_baseball",
-      "type": "visual_test",
-      "source": "github_actions",
-      "product": "2017 Topps Museum Collection Baseball",
-      "sport": "baseball",
-      "code": "2017_Topps_Museum_Collection_Baseball",
-      "riskLevel": "low",
-      "status": "validated",
-      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "CV and ChatBot passed via visual test.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27109778151",
-      "sourceUrl": "",
-      "bucket": "",
-      "targetBucket": "",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-08T00:40:43.403Z",
-      "updatedAt": "2026-06-08T00:41:57.076Z"
-    },
-    {
-      "id": "source_watch|hockey|2026 leaf metal hockey",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2026 Leaf Metal Hockey",
-      "sport": "hockey",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
-      "createdAt": "2026-06-08T00:40:28.775Z",
-      "updatedAt": "2026-06-08T00:40:28.775Z"
-    },
-    {
       "id": "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
       "type": "backend_data_issue",
       "source": "deep_backend_audit",
@@ -224,8 +184,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.776Z",
-      "updatedAt": "2026-06-07T22:15:30.776Z"
+      "createdAt": "2026-06-08T01:17:00.163Z",
+      "updatedAt": "2026-06-08T01:17:00.163Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball",
@@ -235,23 +195,19 @@
       "sport": "baseball",
       "code": "2017_Topps_Museum_Collection_Baseball",
       "riskLevel": "high",
-      "status": "validated",
-      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
+      "status": "pending_public_validation",
+      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Pending checklist publish validation completed for 2017_Topps_Museum_Collection_Baseball.",
-      "validationResult": "CV and ChatBot passed via visual test.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27109778151",
+      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
+      "validationResult": "Sheets show 1427 rows / 35 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 1427,
       "expectedParallelCount": 35,
-      "createdAt": "2026-06-07T22:15:30.776Z",
-      "updatedAt": "2026-06-08T00:41:57.076Z",
-      "pendingValidationAttempts": 0,
-      "visualStartedAt": "",
-      "visualRunUrl": "",
-      "autoExecutedAt": "2026-06-08T00:40:28.775Z"
+      "createdAt": "2026-06-08T01:17:00.163Z",
+      "updatedAt": "2026-06-08T01:17:00.163Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Luminaries_Baseball",
@@ -272,8 +228,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 619,
       "expectedParallelCount": 18,
-      "createdAt": "2026-06-07T22:15:30.776Z",
-      "updatedAt": "2026-06-07T22:15:30.776Z"
+      "createdAt": "2026-06-08T01:17:00.162Z",
+      "updatedAt": "2026-06-08T01:17:00.162Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Inception_Baseball",
@@ -294,8 +250,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 351,
       "expectedParallelCount": 31,
-      "createdAt": "2026-06-07T22:15:30.775Z",
-      "updatedAt": "2026-06-07T22:15:30.775Z"
+      "createdAt": "2026-06-08T01:17:00.162Z",
+      "updatedAt": "2026-06-08T01:17:00.162Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Holiday_Bowman_Baseball",
@@ -316,8 +272,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 146,
       "expectedParallelCount": 5,
-      "createdAt": "2026-06-07T22:15:30.775Z",
-      "updatedAt": "2026-06-07T22:15:30.775Z"
+      "createdAt": "2026-06-08T01:17:00.161Z",
+      "updatedAt": "2026-06-08T01:17:00.161Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Holiday_Baseball",
@@ -338,8 +294,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 344,
       "expectedParallelCount": 4,
-      "createdAt": "2026-06-07T22:15:30.775Z",
-      "updatedAt": "2026-06-07T22:15:30.775Z"
+      "createdAt": "2026-06-08T01:17:00.161Z",
+      "updatedAt": "2026-06-08T01:17:00.161Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_High_Tek_Baseball",
@@ -360,8 +316,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 287,
       "expectedParallelCount": 12,
-      "createdAt": "2026-06-07T22:15:30.774Z",
-      "updatedAt": "2026-06-07T22:15:30.774Z"
+      "createdAt": "2026-06-08T01:17:00.160Z",
+      "updatedAt": "2026-06-08T01:17:00.161Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Minor_League_Baseball",
@@ -382,8 +338,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 450,
       "expectedParallelCount": 18,
-      "createdAt": "2026-06-07T22:15:30.774Z",
-      "updatedAt": "2026-06-07T22:15:30.774Z"
+      "createdAt": "2026-06-08T01:17:00.160Z",
+      "updatedAt": "2026-06-08T01:17:00.160Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_High_Number_Baseball",
@@ -404,8 +360,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 795,
       "expectedParallelCount": 13,
-      "createdAt": "2026-06-07T22:15:30.773Z",
-      "updatedAt": "2026-06-07T22:15:30.774Z"
+      "createdAt": "2026-06-08T01:17:00.160Z",
+      "updatedAt": "2026-06-08T01:17:00.160Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Baseball",
@@ -426,8 +382,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 1410,
       "expectedParallelCount": 14,
-      "createdAt": "2026-06-07T22:15:30.773Z",
-      "updatedAt": "2026-06-07T22:15:30.773Z"
+      "createdAt": "2026-06-08T01:17:00.159Z",
+      "updatedAt": "2026-06-08T01:17:00.160Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gypsy_Queen_Baseball",
@@ -448,8 +404,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 620,
       "expectedParallelCount": 30,
-      "createdAt": "2026-06-07T22:15:30.772Z",
-      "updatedAt": "2026-06-07T22:15:30.773Z"
+      "createdAt": "2026-06-08T01:17:00.159Z",
+      "updatedAt": "2026-06-08T01:17:00.159Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gold_Label_Baseball",
@@ -470,8 +426,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 394,
       "expectedParallelCount": 6,
-      "createdAt": "2026-06-07T22:15:30.772Z",
-      "updatedAt": "2026-06-07T22:15:30.772Z"
+      "createdAt": "2026-06-08T01:17:00.159Z",
+      "updatedAt": "2026-06-08T01:17:00.159Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball",
@@ -492,8 +448,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 504,
       "expectedParallelCount": 24,
-      "createdAt": "2026-06-07T22:15:30.771Z",
-      "updatedAt": "2026-06-07T22:15:30.772Z"
+      "createdAt": "2026-06-08T01:17:00.158Z",
+      "updatedAt": "2026-06-08T01:17:00.158Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Five_Star_Baseball",
@@ -514,8 +470,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 360,
       "expectedParallelCount": 25,
-      "createdAt": "2026-06-07T22:15:30.771Z",
-      "updatedAt": "2026-06-07T22:15:30.771Z"
+      "createdAt": "2026-06-08T01:17:00.158Z",
+      "updatedAt": "2026-06-08T01:17:00.158Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Finest_Baseball",
@@ -536,8 +492,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 325,
       "expectedParallelCount": 48,
-      "createdAt": "2026-06-07T22:15:30.770Z",
-      "updatedAt": "2026-06-07T22:15:30.771Z"
+      "createdAt": "2026-06-08T01:17:00.158Z",
+      "updatedAt": "2026-06-08T01:17:00.158Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Dynasty_Baseball",
@@ -558,8 +514,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 261,
       "expectedParallelCount": 5,
-      "createdAt": "2026-06-07T22:15:30.770Z",
-      "updatedAt": "2026-06-07T22:15:30.770Z"
+      "createdAt": "2026-06-08T01:17:00.157Z",
+      "updatedAt": "2026-06-08T01:17:00.157Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Diamond_Icons_Baseball",
@@ -580,8 +536,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 546,
       "expectedParallelCount": 26,
-      "createdAt": "2026-06-07T22:15:30.769Z",
-      "updatedAt": "2026-06-07T22:15:30.770Z"
+      "createdAt": "2026-06-08T01:17:00.157Z",
+      "updatedAt": "2026-06-08T01:17:00.157Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Definitive_Collection_Baseball",
@@ -602,8 +558,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 658,
       "expectedParallelCount": 26,
-      "createdAt": "2026-06-07T22:15:30.769Z",
-      "updatedAt": "2026-06-07T22:15:30.769Z"
+      "createdAt": "2026-06-08T01:17:00.156Z",
+      "updatedAt": "2026-06-08T01:17:00.157Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Clearly_Authentic_Baseball",
@@ -624,8 +580,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 121,
       "expectedParallelCount": 5,
-      "createdAt": "2026-06-07T22:15:30.768Z",
-      "updatedAt": "2026-06-07T22:15:30.768Z"
+      "createdAt": "2026-06-08T01:17:00.156Z",
+      "updatedAt": "2026-06-08T01:17:00.156Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Update_Series_Baseball",
@@ -646,8 +602,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 196,
       "expectedParallelCount": 11,
-      "createdAt": "2026-06-07T22:15:30.768Z",
-      "updatedAt": "2026-06-07T22:15:30.768Z"
+      "createdAt": "2026-06-08T01:17:00.156Z",
+      "updatedAt": "2026-06-08T01:17:00.156Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
@@ -668,8 +624,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 717,
       "expectedParallelCount": 1,
-      "createdAt": "2026-06-07T22:15:30.767Z",
-      "updatedAt": "2026-06-07T22:15:30.767Z"
+      "createdAt": "2026-06-08T01:17:00.155Z",
+      "updatedAt": "2026-06-08T01:17:00.155Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Archives_Snapshots_Baseball",
@@ -690,8 +646,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 83,
       "expectedParallelCount": 5,
-      "createdAt": "2026-06-07T22:15:30.767Z",
-      "updatedAt": "2026-06-07T22:15:30.767Z"
+      "createdAt": "2026-06-08T01:17:00.155Z",
+      "updatedAt": "2026-06-08T01:17:00.155Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Archives_Baseball",
@@ -712,8 +668,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 545,
       "expectedParallelCount": 25,
-      "createdAt": "2026-06-07T22:15:30.766Z",
-      "updatedAt": "2026-06-07T22:15:30.766Z"
+      "createdAt": "2026-06-08T01:17:00.155Z",
+      "updatedAt": "2026-06-08T01:17:00.155Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Allen_Ginter_X_Baseball",
@@ -734,8 +690,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 556,
       "expectedParallelCount": 7,
-      "createdAt": "2026-06-07T22:15:30.765Z",
-      "updatedAt": "2026-06-07T22:15:30.765Z"
+      "createdAt": "2026-06-08T01:17:00.154Z",
+      "updatedAt": "2026-06-08T01:17:00.154Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Allen_Ginter_Baseball",
@@ -756,8 +712,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 1677,
       "expectedParallelCount": 8,
-      "createdAt": "2026-06-07T22:15:30.764Z",
-      "updatedAt": "2026-06-07T22:15:30.764Z"
+      "createdAt": "2026-06-08T01:17:00.154Z",
+      "updatedAt": "2026-06-08T01:17:00.154Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Stars_and_Stripes_USA_Baseball",
@@ -778,8 +734,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 989,
       "expectedParallelCount": 20,
-      "createdAt": "2026-06-07T22:15:30.764Z",
-      "updatedAt": "2026-06-07T22:15:30.764Z"
+      "createdAt": "2026-06-08T01:17:00.153Z",
+      "updatedAt": "2026-06-08T01:17:00.153Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_National_Treasures_Baseball",
@@ -800,30 +756,30 @@
       "targetBucket": "2017",
       "expectedRowCount": 2089,
       "expectedParallelCount": 155,
-      "createdAt": "2026-06-07T22:15:30.763Z",
-      "updatedAt": "2026-06-07T22:15:30.764Z"
+      "createdAt": "2026-06-08T01:17:00.153Z",
+      "updatedAt": "2026-06-08T01:17:00.153Z"
     },
     {
-      "id": "backend_audit|missing_product_metadata|baseball|2017_Panini_Immaculate_Collection_Baseball",
-      "type": "backend_data_issue",
+      "id": "backend_audit|stale_public_json|baseball|2017_Panini_Immaculate_Collection_Baseball",
+      "type": "source_import",
       "source": "deep_backend_audit",
       "product": "2017 Panini Immaculate Collection Baseball",
       "sport": "baseball",
       "code": "2017_Panini_Immaculate_Collection_Baseball",
-      "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "Fill missing metadata in the Products tab, then publish the affected checklist JSON.",
+      "riskLevel": "high",
+      "status": "pending_public_validation",
+      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Product row needs metadata",
-      "validationResult": "Missing: Keywords. Search and routing quality may suffer.",
+      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
+      "validationResult": "Sheets show 1238 rows / 78 parallels. Public JSON index shows 1 rows / 0 parallels.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.763Z",
-      "updatedAt": "2026-06-07T22:15:30.763Z"
+      "expectedRowCount": 1238,
+      "expectedParallelCount": 78,
+      "createdAt": "2026-06-08T01:17:00.153Z",
+      "updatedAt": "2026-06-08T01:17:00.153Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Flawless_Baseball",
@@ -844,8 +800,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 1105,
       "expectedParallelCount": 23,
-      "createdAt": "2026-06-07T22:15:30.763Z",
-      "updatedAt": "2026-06-07T22:15:30.763Z"
+      "createdAt": "2026-06-08T01:17:00.152Z",
+      "updatedAt": "2026-06-08T01:17:00.152Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Elite_Extra_Edition_Baseball",
@@ -866,8 +822,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 835,
       "expectedParallelCount": 31,
-      "createdAt": "2026-06-07T22:15:30.762Z",
-      "updatedAt": "2026-06-07T22:15:30.762Z"
+      "createdAt": "2026-06-08T01:17:00.152Z",
+      "updatedAt": "2026-06-08T01:17:00.152Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Diamond_Kings_Baseball",
@@ -888,8 +844,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 881,
       "expectedParallelCount": 58,
-      "createdAt": "2026-06-07T22:15:30.762Z",
-      "updatedAt": "2026-06-07T22:15:30.762Z"
+      "createdAt": "2026-06-08T01:17:00.151Z",
+      "updatedAt": "2026-06-08T01:17:00.152Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Contenders_Draft_Picks_Baseball",
@@ -910,8 +866,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 233,
       "expectedParallelCount": 39,
-      "createdAt": "2026-06-07T22:15:30.761Z",
-      "updatedAt": "2026-06-07T22:15:30.762Z"
+      "createdAt": "2026-06-08T01:17:00.151Z",
+      "updatedAt": "2026-06-08T01:17:00.151Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Chronicles_Baseball",
@@ -932,8 +888,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 973,
       "expectedParallelCount": 63,
-      "createdAt": "2026-06-07T22:15:30.761Z",
-      "updatedAt": "2026-06-07T22:15:30.761Z"
+      "createdAt": "2026-06-08T01:17:00.151Z",
+      "updatedAt": "2026-06-08T01:17:00.151Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Donruss_Optic_Baseball",
@@ -954,8 +910,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 507,
       "expectedParallelCount": 131,
-      "createdAt": "2026-06-07T22:15:30.760Z",
-      "updatedAt": "2026-06-07T22:15:30.761Z"
+      "createdAt": "2026-06-08T01:17:00.150Z",
+      "updatedAt": "2026-06-08T01:17:00.150Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Donruss_Baseball",
@@ -976,8 +932,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 748,
       "expectedParallelCount": 100,
-      "createdAt": "2026-06-07T22:15:30.760Z",
-      "updatedAt": "2026-06-07T22:15:30.760Z"
+      "createdAt": "2026-06-08T01:17:00.150Z",
+      "updatedAt": "2026-06-08T01:17:00.150Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_s_Best_Baseball",
@@ -998,8 +954,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 403,
       "expectedParallelCount": 29,
-      "createdAt": "2026-06-07T22:15:30.760Z",
-      "updatedAt": "2026-06-07T22:15:30.760Z"
+      "createdAt": "2026-06-08T01:17:00.149Z",
+      "updatedAt": "2026-06-08T01:17:00.150Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Platinum_Baseball",
@@ -1020,8 +976,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 435,
       "expectedParallelCount": 38,
-      "createdAt": "2026-06-07T22:15:30.759Z",
-      "updatedAt": "2026-06-07T22:15:30.759Z"
+      "createdAt": "2026-06-08T01:17:00.149Z",
+      "updatedAt": "2026-06-08T01:17:00.149Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Mega_Box_Chrome_Baseball",
@@ -1042,8 +998,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 248,
       "expectedParallelCount": 17,
-      "createdAt": "2026-06-07T22:15:30.759Z",
-      "updatedAt": "2026-06-07T22:15:30.759Z"
+      "createdAt": "2026-06-08T01:17:00.148Z",
+      "updatedAt": "2026-06-08T01:17:00.149Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_High_Tek_Baseball",
@@ -1064,8 +1020,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 195,
       "expectedParallelCount": 24,
-      "createdAt": "2026-06-07T22:15:30.758Z",
-      "updatedAt": "2026-06-07T22:15:30.758Z"
+      "createdAt": "2026-06-08T01:17:00.148Z",
+      "updatedAt": "2026-06-08T01:17:00.148Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Draft_Baseball",
@@ -1086,8 +1042,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 640,
       "expectedParallelCount": 27,
-      "createdAt": "2026-06-07T22:15:30.755Z",
-      "updatedAt": "2026-06-07T22:15:30.757Z"
+      "createdAt": "2026-06-08T01:17:00.148Z",
+      "updatedAt": "2026-06-08T01:17:00.148Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Chrome_Mini_Baseball",
@@ -1108,8 +1064,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 277,
       "expectedParallelCount": 10,
-      "createdAt": "2026-06-07T22:15:30.752Z",
-      "updatedAt": "2026-06-07T22:15:30.754Z"
+      "createdAt": "2026-06-08T01:17:00.147Z",
+      "updatedAt": "2026-06-08T01:17:00.147Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Chrome_Baseball",
@@ -1130,8 +1086,8 @@
       "targetBucket": "2017",
       "expectedRowCount": 475,
       "expectedParallelCount": 20,
-      "createdAt": "2026-06-07T22:15:30.751Z",
-      "updatedAt": "2026-06-07T22:15:30.751Z"
+      "createdAt": "2026-06-08T01:17:00.147Z",
+      "updatedAt": "2026-06-08T01:17:00.147Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Baseball",
@@ -1152,8 +1108,30 @@
       "targetBucket": "2017",
       "expectedRowCount": 879,
       "expectedParallelCount": 55,
-      "createdAt": "2026-06-07T22:15:30.750Z",
-      "updatedAt": "2026-06-07T22:15:30.750Z"
+      "createdAt": "2026-06-08T01:17:00.146Z",
+      "updatedAt": "2026-06-08T01:17:00.147Z"
+    },
+    {
+      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Update_Series_Baseball",
+      "type": "backend_data_issue",
+      "source": "deep_backend_audit",
+      "product": "2016 Topps Update Series Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Update_Series_Baseball",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
+      "adminDecision": "",
+      "executionResult": "Large checklist has no parallels",
+      "validationResult": "This can be valid, but it is worth review for modern products.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "2016",
+      "targetBucket": "2016",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-08T01:17:00.146Z",
+      "updatedAt": "2026-06-08T01:17:00.146Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Update_Series_Baseball",
@@ -1174,8 +1152,30 @@
       "targetBucket": "2016",
       "expectedRowCount": 1021,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.748Z",
-      "updatedAt": "2026-06-07T22:15:30.748Z"
+      "createdAt": "2026-06-08T01:17:00.146Z",
+      "updatedAt": "2026-06-08T01:17:00.146Z"
+    },
+    {
+      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Tribute_Baseball",
+      "type": "backend_data_issue",
+      "source": "deep_backend_audit",
+      "product": "2016 Topps Tribute Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Tribute_Baseball",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
+      "adminDecision": "",
+      "executionResult": "Large checklist has no parallels",
+      "validationResult": "This can be valid, but it is worth review for modern products.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "2016",
+      "targetBucket": "2016",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-08T01:17:00.146Z",
+      "updatedAt": "2026-06-08T01:17:00.146Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Tribute_Baseball",
@@ -1196,8 +1196,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 433,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.747Z",
-      "updatedAt": "2026-06-07T22:15:30.748Z"
+      "createdAt": "2026-06-08T01:17:00.145Z",
+      "updatedAt": "2026-06-08T01:17:00.145Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Tier_One_Baseball",
@@ -1218,8 +1218,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 880,
       "expectedParallelCount": 18,
-      "createdAt": "2026-06-07T22:15:30.746Z",
-      "updatedAt": "2026-06-07T22:15:30.747Z"
+      "createdAt": "2026-06-08T01:17:00.144Z",
+      "updatedAt": "2026-06-08T01:17:00.145Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Stadium_Club_Baseball",
@@ -1240,8 +1240,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.746Z",
-      "updatedAt": "2026-06-07T22:15:30.746Z"
+      "createdAt": "2026-06-08T01:17:00.144Z",
+      "updatedAt": "2026-06-08T01:17:00.144Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Stadium_Club_Baseball",
@@ -1262,8 +1262,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 558,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.744Z",
-      "updatedAt": "2026-06-07T22:15:30.745Z"
+      "createdAt": "2026-06-08T01:17:00.144Z",
+      "updatedAt": "2026-06-08T01:17:00.144Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Series_2_Baseball",
@@ -1284,8 +1284,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.744Z",
-      "updatedAt": "2026-06-07T22:15:30.744Z"
+      "createdAt": "2026-06-08T01:17:00.143Z",
+      "updatedAt": "2026-06-08T01:17:00.143Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Series_2_Baseball",
@@ -1306,8 +1306,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 2209,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.744Z",
-      "updatedAt": "2026-06-07T22:15:30.744Z"
+      "createdAt": "2026-06-08T01:17:00.143Z",
+      "updatedAt": "2026-06-08T01:17:00.143Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Series_1_Baseball",
@@ -1328,8 +1328,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.743Z",
-      "updatedAt": "2026-06-07T22:15:30.743Z"
+      "createdAt": "2026-06-08T01:17:00.143Z",
+      "updatedAt": "2026-06-08T01:17:00.143Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Series_1_Baseball",
@@ -1350,8 +1350,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 1378,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.743Z",
-      "updatedAt": "2026-06-07T22:15:30.743Z"
+      "createdAt": "2026-06-08T01:17:00.142Z",
+      "updatedAt": "2026-06-08T01:17:00.143Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Heritage_High_Number_Baseball",
@@ -1372,8 +1372,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.743Z",
-      "updatedAt": "2026-06-07T22:15:30.743Z"
+      "createdAt": "2026-06-08T01:17:00.142Z",
+      "updatedAt": "2026-06-08T01:17:00.142Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Heritage_High_Number_Baseball",
@@ -1394,8 +1394,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 758,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.742Z",
-      "updatedAt": "2026-06-07T22:15:30.742Z"
+      "createdAt": "2026-06-08T01:17:00.142Z",
+      "updatedAt": "2026-06-08T01:17:00.142Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Heritage_Baseball",
@@ -1416,8 +1416,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.742Z",
-      "updatedAt": "2026-06-07T22:15:30.742Z"
+      "createdAt": "2026-06-08T01:17:00.142Z",
+      "updatedAt": "2026-06-08T01:17:00.142Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Heritage_Baseball",
@@ -1438,8 +1438,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 1534,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.741Z",
-      "updatedAt": "2026-06-07T22:15:30.742Z"
+      "createdAt": "2026-06-08T01:17:00.141Z",
+      "updatedAt": "2026-06-08T01:17:00.141Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Dynasty_Baseball",
@@ -1460,8 +1460,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.741Z",
-      "updatedAt": "2026-06-07T22:15:30.741Z"
+      "createdAt": "2026-06-08T01:17:00.141Z",
+      "updatedAt": "2026-06-08T01:17:00.141Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Dynasty_Baseball",
@@ -1482,8 +1482,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 168,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.741Z",
-      "updatedAt": "2026-06-07T22:15:30.741Z"
+      "createdAt": "2026-06-08T01:17:00.140Z",
+      "updatedAt": "2026-06-08T01:17:00.141Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Chrome_Baseball",
@@ -1504,8 +1504,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.741Z",
-      "updatedAt": "2026-06-07T22:15:30.741Z"
+      "createdAt": "2026-06-08T01:17:00.140Z",
+      "updatedAt": "2026-06-08T01:17:00.140Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Chrome_Baseball",
@@ -1526,8 +1526,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 459,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.740Z",
-      "updatedAt": "2026-06-07T22:15:30.741Z"
+      "createdAt": "2026-06-08T01:17:00.140Z",
+      "updatedAt": "2026-06-08T01:17:00.140Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Archives_Signature_Series_All_Star_Baseball",
@@ -1548,8 +1548,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.739Z",
-      "updatedAt": "2026-06-07T22:15:30.739Z"
+      "createdAt": "2026-06-08T01:17:00.140Z",
+      "updatedAt": "2026-06-08T01:17:00.140Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Archives_Signature_Series_All_Star_Baseball",
@@ -1570,8 +1570,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 102,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.737Z",
-      "updatedAt": "2026-06-07T22:15:30.737Z"
+      "createdAt": "2026-06-08T01:17:00.139Z",
+      "updatedAt": "2026-06-08T01:17:00.139Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Archives_Baseball",
@@ -1592,8 +1592,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.736Z",
-      "updatedAt": "2026-06-07T22:15:30.736Z"
+      "createdAt": "2026-06-08T01:17:00.139Z",
+      "updatedAt": "2026-06-08T01:17:00.139Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Archives_Baseball",
@@ -1614,8 +1614,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 508,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.736Z",
-      "updatedAt": "2026-06-07T22:15:30.736Z"
+      "createdAt": "2026-06-08T01:17:00.139Z",
+      "updatedAt": "2026-06-08T01:17:00.139Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Panini_Prime_Cuts_Baseball",
@@ -1636,8 +1636,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.736Z",
-      "updatedAt": "2026-06-07T22:15:30.736Z"
+      "createdAt": "2026-06-08T01:17:00.138Z",
+      "updatedAt": "2026-06-08T01:17:00.138Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Panini_Prime_Cuts_Baseball",
@@ -1658,8 +1658,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 846,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.735Z",
-      "updatedAt": "2026-06-07T22:15:30.735Z"
+      "createdAt": "2026-06-08T01:17:00.137Z",
+      "updatedAt": "2026-06-08T01:17:00.138Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Panini_Pantheon_Baseball",
@@ -1680,8 +1680,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.734Z",
-      "updatedAt": "2026-06-07T22:15:30.734Z"
+      "createdAt": "2026-06-08T01:17:00.137Z",
+      "updatedAt": "2026-06-08T01:17:00.137Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Panini_Pantheon_Baseball",
@@ -1702,8 +1702,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 1054,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.734Z",
-      "updatedAt": "2026-06-07T22:15:30.734Z"
+      "createdAt": "2026-06-08T01:17:00.136Z",
+      "updatedAt": "2026-06-08T01:17:00.136Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Panini_National_Treasures_Baseball",
@@ -1724,8 +1724,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.733Z",
-      "updatedAt": "2026-06-07T22:15:30.733Z"
+      "createdAt": "2026-06-08T01:17:00.136Z",
+      "updatedAt": "2026-06-08T01:17:00.136Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Panini_National_Treasures_Baseball",
@@ -1746,8 +1746,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 2191,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.733Z",
-      "updatedAt": "2026-06-07T22:15:30.733Z"
+      "createdAt": "2026-06-08T01:17:00.134Z",
+      "updatedAt": "2026-06-08T01:17:00.134Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Panini_Flawless_Baseball",
@@ -1768,8 +1768,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.733Z",
-      "updatedAt": "2026-06-07T22:15:30.733Z"
+      "createdAt": "2026-06-08T01:17:00.134Z",
+      "updatedAt": "2026-06-08T01:17:00.134Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Panini_Flawless_Baseball",
@@ -1790,8 +1790,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 762,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.732Z",
-      "updatedAt": "2026-06-07T22:15:30.733Z"
+      "createdAt": "2026-06-08T01:17:00.133Z",
+      "updatedAt": "2026-06-08T01:17:00.133Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Panini_Diamond_Kings_Baseball",
@@ -1812,8 +1812,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.732Z",
-      "updatedAt": "2026-06-07T22:15:30.732Z"
+      "createdAt": "2026-06-08T01:17:00.133Z",
+      "updatedAt": "2026-06-08T01:17:00.133Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Panini_Diamond_Kings_Baseball",
@@ -1834,8 +1834,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 1054,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.732Z",
-      "updatedAt": "2026-06-07T22:15:30.732Z"
+      "createdAt": "2026-06-08T01:17:00.132Z",
+      "updatedAt": "2026-06-08T01:17:00.133Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Donruss_Optic_Baseball",
@@ -1856,8 +1856,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.732Z",
-      "updatedAt": "2026-06-07T22:15:30.732Z"
+      "createdAt": "2026-06-08T01:17:00.132Z",
+      "updatedAt": "2026-06-08T01:17:00.132Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Donruss_Optic_Baseball",
@@ -1878,8 +1878,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 463,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.731Z",
-      "updatedAt": "2026-06-07T22:15:30.731Z"
+      "createdAt": "2026-06-08T01:17:00.132Z",
+      "updatedAt": "2026-06-08T01:17:00.132Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Donruss_Baseball",
@@ -1900,8 +1900,8 @@
       "targetBucket": "2016",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.731Z",
-      "updatedAt": "2026-06-07T22:15:30.731Z"
+      "createdAt": "2026-06-08T01:17:00.132Z",
+      "updatedAt": "2026-06-08T01:17:00.132Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Donruss_Baseball",
@@ -1922,12 +1922,32 @@
       "targetBucket": "2016",
       "expectedRowCount": 762,
       "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.731Z",
-      "updatedAt": "2026-06-07T22:15:30.731Z"
+      "createdAt": "2026-06-08T01:17:00.130Z",
+      "updatedAt": "2026-06-08T01:17:00.130Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1780881420165_zii031",
+      "ts": "2026-06-08T01:17:00.165Z",
+      "type": "deep_backend_audit",
+      "title": "Deep Sheets Audit complete",
+      "detail": "908 Sheet products checked against 942 public JSON products. 150 issues found. 150 queue cards updated.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881420163_31xsnk",
+      "ts": "2026-06-08T01:17:00.163Z",
+      "type": "deep_backend_audit",
+      "title": "Backend audit issues queued",
+      "detail": "150 audit findings added to the Agent Action Queue.",
+      "status": "queued",
+      "product": "",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780881272222_jlyolf",
       "ts": "2026-06-08T01:14:32.222Z",
@@ -4116,6 +4136,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:14:35.438Z",
+  "saved_at": "2026-06-08T01:17:03.340Z",
   "saved_by": "cm_command_center_operator"
 }

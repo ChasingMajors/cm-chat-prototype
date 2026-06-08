@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:27:55.242Z",
+  "exported_at": "2026-06-08T01:27:59.970Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1927,6 +1927,8 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Bowman_s_Best_Baseball",
+    "backend_audit|stale_public_json|baseball|2017_Donruss_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Donruss_Optic_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Panini_Chronicles_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Panini_Contenders_Draft_Picks_Baseball",
@@ -1938,6 +1940,26 @@
     "backend_audit|stale_public_json|baseball|2017_Panini_National_Treasures_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780882078369_xwdlm9",
+      "ts": "2026-06-08T01:27:58.369Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Bowman's Best Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Bowman's Best Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780882076181_kaama2",
+      "ts": "2026-06-08T01:27:56.181Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Donruss Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Donruss Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780882073640_c1aaqz",
       "ts": "2026-06-08T01:27:53.640Z",
@@ -2717,26 +2739,6 @@
       "status": "covered",
       "product": "2017 Topps High Tek Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881933757_rdh8gy",
-      "ts": "2026-06-08T01:25:33.757Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Topps High Tek Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881933755_yp4f0m",
-      "ts": "2026-06-08T01:25:33.755Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps High Tek Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps High Tek Baseball",
-      "source": "admin_run_queue"
     }
   ],
   "visual_tests": {
@@ -4991,6 +4993,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:27:56.998Z",
+  "saved_at": "2026-06-08T01:28:01.118Z",
   "saved_by": "cm_command_center_operator"
 }

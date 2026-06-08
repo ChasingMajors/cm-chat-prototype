@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:27:50.766Z",
+  "exported_at": "2026-06-08T01:27:55.242Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1927,6 +1927,8 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Donruss_Optic_Baseball",
+    "backend_audit|stale_public_json|baseball|2017_Panini_Chronicles_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Panini_Contenders_Draft_Picks_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Panini_Diamond_Kings_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Panini_Elite_Extra_Edition_Baseball",
@@ -1936,6 +1938,26 @@
     "backend_audit|stale_public_json|baseball|2017_Panini_National_Treasures_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780882073640_c1aaqz",
+      "ts": "2026-06-08T01:27:53.640Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Donruss Optic Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Donruss Optic Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780882071917_pclkek",
+      "ts": "2026-06-08T01:27:51.917Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Panini Chronicles Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Panini Chronicles Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780882069165_84pb8y",
       "ts": "2026-06-08T01:27:49.165Z",
@@ -2715,26 +2737,6 @@
       "status": "started",
       "product": "2017 Topps High Tek Baseball",
       "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881933741_lxkyia",
-      "ts": "2026-06-08T01:25:33.741Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Gallery Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881933740_3sfnst",
-      "ts": "2026-06-08T01:25:33.740Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "504 public rows and 24 parallels found.",
-      "status": "covered",
-      "product": "2017 Topps Gallery Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -4989,6 +4991,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:27:52.171Z",
+  "saved_at": "2026-06-08T01:27:56.998Z",
   "saved_by": "cm_command_center_operator"
 }

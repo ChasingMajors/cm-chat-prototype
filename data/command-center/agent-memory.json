@@ -166,6 +166,24 @@
   ],
   "agent_actions": [
     {
+      "id": "source_watch|hockey|2026 leaf metal hockey",
+      "type": "source_import",
+      "source": "scheduled_quick_json",
+      "product": "2026 Leaf Metal Hockey",
+      "sport": "hockey",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
+      "createdAt": "2026-06-08T00:40:28.775Z",
+      "updatedAt": "2026-06-08T00:40:28.775Z"
+    },
+    {
       "id": "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
       "type": "backend_data_issue",
       "source": "deep_backend_audit",
@@ -195,11 +213,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Museum_Collection_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "pending_visual_validation",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1427 rows / 35 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "executionResult": "Pending checklist publish validation completed for 2017_Topps_Museum_Collection_Baseball.",
+      "validationResult": "Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -207,7 +225,11 @@
       "expectedRowCount": 1427,
       "expectedParallelCount": 35,
       "createdAt": "2026-06-07T22:15:30.776Z",
-      "updatedAt": "2026-06-07T22:15:30.776Z"
+      "updatedAt": "2026-06-08T00:40:28.775Z",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "autoExecutedAt": "2026-06-08T00:40:28.775Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Luminaries_Baseball",
@@ -1902,32 +1924,40 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-07T22:15:30.730Z",
       "updatedAt": "2026-06-07T22:15:30.730Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Bowman_Draft_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Bowman Draft Baseball",
-      "sport": "baseball",
-      "code": "2016_Bowman_Draft_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 569 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 569,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-07T22:15:30.729Z",
-      "updatedAt": "2026-06-07T22:15:30.730Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1780879234428",
+      "ts": "2026-06-08T00:40:28.775Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Museum Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780879234428",
+      "ts": "2026-06-08T00:40:28.775Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2017 Topps Museum Collection Baseball: Pending checklist publish validation completed for 2017_Topps_Museum_Collection_Baseball. Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2017 Topps Museum Collection Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780879233596",
+      "ts": "2026-06-08T00:40:28.775Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780879227219_tiyq9v",
       "ts": "2026-06-08T00:40:27.219Z",
@@ -3963,6 +3993,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T00:40:30.258Z",
+  "saved_at": "2026-06-08T00:40:34.611Z",
   "saved_by": "cm_command_center_operator"
 }

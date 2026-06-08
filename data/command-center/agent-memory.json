@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:24:23.285Z",
+  "exported_at": "2026-06-08T01:24:28.387Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -283,11 +283,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Holiday_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -295,7 +295,7 @@
       "expectedRowCount": 344,
       "expectedParallelCount": 4,
       "createdAt": "2026-06-08T01:17:00.161Z",
-      "updatedAt": "2026-06-08T01:24:21.682Z"
+      "updatedAt": "2026-06-08T01:24:24.671Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_High_Tek_Baseball",
@@ -327,11 +327,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Heritage_Minor_League_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 450 rows / 18 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Heritage_Minor_League_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -339,7 +339,7 @@
       "expectedRowCount": 450,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-08T01:17:00.160Z",
-      "updatedAt": "2026-06-08T01:17:00.160Z"
+      "updatedAt": "2026-06-08T01:24:26.767Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_High_Number_Baseball",
@@ -349,11 +349,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Heritage_High_Number_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 795 rows / 13 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -361,7 +361,7 @@
       "expectedRowCount": 795,
       "expectedParallelCount": 13,
       "createdAt": "2026-06-08T01:17:00.160Z",
-      "updatedAt": "2026-06-08T01:17:00.160Z"
+      "updatedAt": "2026-06-08T01:24:26.784Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Baseball",
@@ -1927,14 +1927,92 @@
     }
   ],
   "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Topps_Holiday_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Minor_League_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_High_Number_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Gypsy_Queen_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Gold_Label_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780881866785_08pjd6",
+      "ts": "2026-06-08T01:24:26.785Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Heritage High Number Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881866783_ldqh6m",
+      "ts": "2026-06-08T01:24:26.783Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Heritage High Number Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Heritage High Number Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881866769_nrtiyt",
+      "ts": "2026-06-08T01:24:26.769Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Heritage Minor League Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881866767_ao5qmw",
+      "ts": "2026-06-08T01:24:26.767Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "450 public rows and 18 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Heritage Minor League Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881864689_l4q96r",
+      "ts": "2026-06-08T01:24:24.689Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Heritage Minor League Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881864686_sf3ywp",
+      "ts": "2026-06-08T01:24:24.686Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Heritage Minor League Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Heritage Minor League Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881864673_6vhcm5",
+      "ts": "2026-06-08T01:24:24.673Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Holiday Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881864669_elktqf",
+      "ts": "2026-06-08T01:24:24.669Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "344 public rows and 4 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Holiday Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780881861683_lghqwx",
       "ts": "2026-06-08T01:24:21.683Z",
@@ -4048,9 +4126,9 @@
       "product": "2017 Topps Heritage Minor League Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Heritage_Minor_League_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103156514",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:24:26.767Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103155471": {
@@ -4084,9 +4162,9 @@
       "product": "2017 Topps Holiday Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103154655",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:24:24.671Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103113962": {
@@ -4250,9 +4328,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-07T22:12:23.853Z",
       "resolved": true
+    },
+    "baseball|2017 topps holiday baseball": {
+      "product": "2017 Topps Holiday Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Holiday_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:24:24.671Z",
+      "resolved": true
+    },
+    "baseball|2017 topps heritage minor league baseball": {
+      "product": "2017 Topps Heritage Minor League Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Heritage_Minor_League_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:24:26.767Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:24:24.911Z",
+  "saved_at": "2026-06-08T01:24:29.650Z",
   "saved_by": "cm_command_center_operator"
 }

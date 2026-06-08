@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T02:08:07.197Z",
+  "exported_at": "2026-06-08T01:36:22.792Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,24 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "source_watch|hockey|2026 leaf metal hockey",
+      "type": "source_import",
+      "source": "scheduled_quick_json",
+      "product": "2026 Leaf Metal Hockey",
+      "sport": "hockey",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
+      "createdAt": "2026-06-08T02:08:06.615Z",
+      "updatedAt": "2026-06-08T02:08:06.615Z"
+    },
     {
       "id": "visual_test|github_actions|2016 topps tribute baseball|2016_topps_tribute_baseball",
       "type": "visual_test",
@@ -767,11 +785,11 @@
       "sport": "baseball",
       "code": "2017_Panini_National_Treasures_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "pending_visual_validation",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 2089 rows / 155 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "executionResult": "Pending checklist publish validation completed for 2017_Panini_National_Treasures_Baseball.",
+      "validationResult": "Published checklist JSON validated with 2089 rows and 155 parallels. CV/ChatBot visual validation is pending.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -779,7 +797,11 @@
       "expectedRowCount": 2089,
       "expectedParallelCount": 155,
       "createdAt": "2026-06-08T01:17:00.153Z",
-      "updatedAt": "2026-06-08T01:17:00.153Z"
+      "updatedAt": "2026-06-08T02:08:06.615Z",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "autoExecutedAt": "2026-06-08T02:08:06.615Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Immaculate_Collection_Baseball",
@@ -1902,41 +1924,39 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.132Z",
       "updatedAt": "2026-06-08T01:17:00.132Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Donruss_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Donruss Baseball",
-      "sport": "baseball",
-      "code": "2016_Donruss_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-08T01:17:00.132Z",
-      "updatedAt": "2026-06-08T01:17:00.132Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1780884485591_0ae3mx",
-      "ts": "2026-06-08T02:08:05.591Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
+      "id": "log_1780884490144",
+      "ts": "2026-06-08T02:08:06.615Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Panini National Treasures Baseball -> pending_visual_validation (Published checklist JSON validated with 2089 rows and 155 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
       "product": "",
-      "source": "command_center"
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780884490143",
+      "ts": "2026-06-08T02:08:06.615Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2017 Panini National Treasures Baseball: Pending checklist publish validation completed for 2017_Panini_National_Treasures_Baseball. Published checklist JSON validated with 2089 rows and 155 parallels. CV/ChatBot visual validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2017 Panini National Treasures Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780884489586",
+      "ts": "2026-06-08T02:08:06.615Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1780882580738_tjhcf6",
@@ -2707,26 +2727,6 @@
       "status": "started",
       "product": "2017 Panini Chronicles Baseball",
       "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780882089982_2tp3ua",
-      "ts": "2026-06-08T01:28:09.982Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Donruss Optic Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882089980_sq1i1t",
-      "ts": "2026-06-08T01:28:09.980Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "507 public rows and 131 parallels found.",
-      "status": "covered",
-      "product": "2017 Donruss Optic Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -5062,6 +5062,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T02:08:08.670Z",
+  "saved_at": "2026-06-08T02:08:10.195Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:35:55.790Z",
+  "exported_at": "2026-06-08T01:36:22.792Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -173,11 +173,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Tribute_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27111185459",
       "sourceUrl": "",
       "bucket": "",
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:35:07.642Z",
-      "updatedAt": "2026-06-08T01:35:53.476Z"
+      "updatedAt": "2026-06-08T01:36:20.736Z"
     },
     {
       "id": "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
@@ -1185,11 +1185,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Tribute_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "run_queue_approved",
       "executionResult": "Large checklist has no parallels",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27111185459",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1197,7 +1197,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.146Z",
-      "updatedAt": "2026-06-08T01:35:53.475Z"
+      "updatedAt": "2026-06-08T01:36:20.736Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Tribute_Baseball",
@@ -1207,11 +1207,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Tribute_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27111185459",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1219,7 +1219,7 @@
       "expectedRowCount": 433,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.145Z",
-      "updatedAt": "2026-06-08T01:35:53.476Z"
+      "updatedAt": "2026-06-08T01:36:20.737Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2016_Topps_Tier_One_Baseball",
@@ -1926,10 +1926,28 @@
       "updatedAt": "2026-06-08T01:17:00.132Z"
     }
   ],
-  "agent_run_queue": [
-    "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Tribute_Baseball"
-  ],
+  "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1780882580738_tjhcf6",
+      "ts": "2026-06-08T01:36:20.738Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2016 Topps Tribute Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780882580737_1nibx9",
+      "ts": "2026-06-08T01:36:20.737Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "3 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2016 Topps Tribute Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780882553477_q6lg97",
       "ts": "2026-06-08T01:35:53.477Z",
@@ -2708,26 +2726,6 @@
       "detail": "Checking current public checklist coverage for this product.",
       "status": "running",
       "product": "2017 Donruss Optic Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882088091_jnuyez",
-      "ts": "2026-06-08T01:28:08.091Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Donruss Optic Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Donruss Optic Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780882088077_zn6ycx",
-      "ts": "2026-06-08T01:28:08.077Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Donruss Baseball",
       "source": "operator_backend"
     }
   ],
@@ -3699,9 +3697,9 @@
       "checkedAt": "2026-06-07T22:10:53.656Z"
     },
     "baseball|2016_Topps_Tribute_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-08T01:35:06.008Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27111185459",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3711,7 +3709,7 @@
       "productName": "2016 Topps Tribute Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tribute_Baseball",
-      "updatedAt": "2026-06-08T01:35:53.473Z",
+      "updatedAt": "2026-06-08T01:36:20.734Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27111185459,
@@ -3719,7 +3717,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tribute Baseball",
       "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
       "createdAt": "2026-06-08T01:35:06Z",
-      "checkedAt": "2026-06-08T01:35:53.473Z"
+      "checkedAt": "2026-06-08T01:36:20.734Z"
     },
     "baseball|2016_Topps_Update_Series_Baseball": {
       "status": "completed",
@@ -5064,6 +5062,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:35:57.805Z",
+  "saved_at": "2026-06-08T01:36:24.250Z",
   "saved_by": "cm_command_center_operator"
 }

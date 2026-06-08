@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:26:38.793Z",
+  "exported_at": "2026-06-08T01:27:30.947Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1926,10 +1926,18 @@
       "updatedAt": "2026-06-08T01:17:00.130Z"
     }
   ],
-  "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Panini_Stars_and_Stripes_USA_Baseball"
-  ],
+  "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1780882049344_g6ni9g",
+      "ts": "2026-06-08T01:27:29.344Z",
+      "type": "agent_run_queue",
+      "title": "Removed from Agent Run Queue",
+      "detail": "2017 Panini Stars and Stripes USA Baseball was removed from the explicit run queue.",
+      "status": "removed",
+      "product": "2017 Panini Stars and Stripes USA Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780881996282_ae0qf1",
       "ts": "2026-06-08T01:26:36.282Z",
@@ -2717,16 +2725,6 @@
       "title": "Covered product auto-resolved",
       "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
       "status": "validated",
-      "product": "2017 Topps Dynasty Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881929174_6jclyy",
-      "ts": "2026-06-08T01:25:29.174Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "261 public rows and 5 parallels found.",
-      "status": "covered",
       "product": "2017 Topps Dynasty Baseball",
       "source": "operator_backend"
     }
@@ -4983,6 +4981,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:26:42.226Z",
+  "saved_at": "2026-06-08T01:27:32.717Z",
   "saved_by": "cm_command_center_operator"
 }

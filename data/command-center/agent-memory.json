@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:26:19.953Z",
+  "exported_at": "2026-06-08T01:26:25.824Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -547,11 +547,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Definitive_Collection_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Definitive_Collection_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -559,7 +559,7 @@
       "expectedRowCount": 658,
       "expectedParallelCount": 26,
       "createdAt": "2026-06-08T01:17:00.156Z",
-      "updatedAt": "2026-06-08T01:26:18.351Z"
+      "updatedAt": "2026-06-08T01:26:20.196Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Clearly_Authentic_Baseball",
@@ -569,11 +569,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Clearly_Authentic_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 121 rows / 5 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Clearly_Authentic_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -581,7 +581,7 @@
       "expectedRowCount": 121,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-08T01:17:00.156Z",
-      "updatedAt": "2026-06-08T01:17:00.156Z"
+      "updatedAt": "2026-06-08T01:26:22.236Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Update_Series_Baseball",
@@ -591,11 +591,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Update_Series_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 196 rows / 11 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Chrome_Update_Series_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -603,7 +603,7 @@
       "expectedRowCount": 196,
       "expectedParallelCount": 11,
       "createdAt": "2026-06-08T01:17:00.156Z",
-      "updatedAt": "2026-06-08T01:17:00.156Z"
+      "updatedAt": "2026-06-08T01:26:24.211Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
@@ -613,11 +613,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 717 rows / 1 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -625,7 +625,7 @@
       "expectedRowCount": 717,
       "expectedParallelCount": 1,
       "createdAt": "2026-06-08T01:17:00.155Z",
-      "updatedAt": "2026-06-08T01:17:00.155Z"
+      "updatedAt": "2026-06-08T01:26:24.221Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Archives_Snapshots_Baseball",
@@ -1927,9 +1927,6 @@
     }
   ],
   "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Topps_Definitive_Collection_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Topps_Clearly_Authentic_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Update_Series_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
     "backend_audit|stale_public_json|baseball|2017_Topps_Archives_Snapshots_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Archives_Baseball",
@@ -1938,6 +1935,126 @@
     "backend_audit|stale_public_json|baseball|2017_Panini_Stars_and_Stripes_USA_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780881984222_6u8an3",
+      "ts": "2026-06-08T01:26:24.222Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Chrome Sapphire Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881984220_q9wvko",
+      "ts": "2026-06-08T01:26:24.220Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Chrome Sapphire Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Chrome Sapphire Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881984212_yd9xxq",
+      "ts": "2026-06-08T01:26:24.212Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881984210_r6eewn",
+      "ts": "2026-06-08T01:26:24.210Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "196 public rows and 11 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881982253_xhd4iu",
+      "ts": "2026-06-08T01:26:22.253Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881982251_xjv2cx",
+      "ts": "2026-06-08T01:26:22.251Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Chrome Update Series Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881982237_1gjfzk",
+      "ts": "2026-06-08T01:26:22.237Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Clearly Authentic Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881982235_3mcj0r",
+      "ts": "2026-06-08T01:26:22.235Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "121 public rows and 5 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Clearly Authentic Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881980213_4miyfb",
+      "ts": "2026-06-08T01:26:20.213Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Clearly Authentic Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881980211_lc6duy",
+      "ts": "2026-06-08T01:26:20.211Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Clearly Authentic Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Clearly Authentic Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881980197_apnc3d",
+      "ts": "2026-06-08T01:26:20.197Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Definitive Collection Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881980195_sy230u",
+      "ts": "2026-06-08T01:26:20.195Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "658 public rows and 26 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Definitive Collection Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780881978351_npnqhi",
       "ts": "2026-06-08T01:26:18.351Z",
@@ -2616,126 +2733,6 @@
       "detail": "Checking current public checklist coverage for this product.",
       "status": "running",
       "product": "2017 Topps Gold Label Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881873108_1fyg5h",
-      "ts": "2026-06-08T01:24:33.108Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Gold Label Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881873095_b3ka1l",
-      "ts": "2026-06-08T01:24:33.095Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881873093_slxbmf",
-      "ts": "2026-06-08T01:24:33.093Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "620 public rows and 30 parallels found.",
-      "status": "covered",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881870718_h40e68",
-      "ts": "2026-06-08T01:24:30.718Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881870716_uyg17g",
-      "ts": "2026-06-08T01:24:30.716Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Gypsy Queen Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881870703_xuts17",
-      "ts": "2026-06-08T01:24:30.703Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Heritage Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881870701_93e8jd",
-      "ts": "2026-06-08T01:24:30.701Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "1,410 public rows and 14 parallels found.",
-      "status": "covered",
-      "product": "2017 Topps Heritage Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881869050_ms1xav",
-      "ts": "2026-06-08T01:24:29.050Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Topps Heritage Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881869049_962zxv",
-      "ts": "2026-06-08T01:24:29.049Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Heritage Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Heritage Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881869036_l92oqa",
-      "ts": "2026-06-08T01:24:29.036Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Heritage High Number Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881869034_ffy0mx",
-      "ts": "2026-06-08T01:24:29.034Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "795 public rows and 13 parallels found.",
-      "status": "covered",
-      "product": "2017 Topps Heritage High Number Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881866785_08pjd6",
-      "ts": "2026-06-08T01:24:26.785Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Topps Heritage High Number Baseball",
       "source": "operator_backend"
     }
   ],
@@ -4417,9 +4414,9 @@
       "product": "2017 Topps Chrome Update Series Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Update_Series_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103625780",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:26:24.211Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103562421": {
@@ -4453,9 +4450,9 @@
       "product": "2017 Topps Clearly Authentic Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Clearly_Authentic_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103488679",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:26:22.236Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103414055": {
@@ -4471,9 +4468,9 @@
       "product": "2017 Topps Definitive Collection Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Definitive_Collection_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103414055",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:26:20.196Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103295947": {
@@ -4916,9 +4913,36 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-08T01:26:18.334Z",
       "resolved": true
+    },
+    "baseball|2017 topps definitive collection baseball": {
+      "product": "2017 Topps Definitive Collection Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Definitive_Collection_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:26:20.196Z",
+      "resolved": true
+    },
+    "baseball|2017 topps clearly authentic baseball": {
+      "product": "2017 Topps Clearly Authentic Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Clearly_Authentic_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:26:22.236Z",
+      "resolved": true
+    },
+    "baseball|2017 topps chrome update series baseball": {
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Chrome_Update_Series_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:26:24.211Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:26:21.610Z",
+  "saved_at": "2026-06-08T01:26:27.552Z",
   "saved_by": "cm_command_center_operator"
 }

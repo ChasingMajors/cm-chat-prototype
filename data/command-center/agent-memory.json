@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:25:49.050Z",
+  "exported_at": "2026-06-08T01:25:53.067Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1927,9 +1927,31 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Topps_Allen_Ginter_X_Baseball",
+    "backend_audit|stale_public_json|baseball|2017_Topps_Allen_Ginter_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Panini_Stars_and_Stripes_USA_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780881951465_h0x7ao",
+      "ts": "2026-06-08T01:25:51.465Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Allen & Ginter X Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Allen & Ginter X Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780881949516_ld40wl",
+      "ts": "2026-06-08T01:25:49.516Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Allen & Ginter Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Allen & Ginter Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780881947447_yhazq3",
       "ts": "2026-06-08T01:25:47.447Z",
@@ -2709,26 +2731,6 @@
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881420163_31xsnk",
-      "ts": "2026-06-08T01:17:00.163Z",
-      "type": "deep_backend_audit",
-      "title": "Backend audit issues queued",
-      "detail": "150 audit findings added to the Agent Action Queue.",
-      "status": "queued",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881272222_jlyolf",
-      "ts": "2026-06-08T01:14:32.222Z",
-      "type": "deep_backend_audit",
-      "title": "Deep Sheets Audit started",
-      "detail": "Comparing configured source Google Sheets against public checklist JSON. No writes will run.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -4893,6 +4895,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:25:50.377Z",
+  "saved_at": "2026-06-08T01:25:55.114Z",
   "saved_by": "cm_command_center_operator"
 }

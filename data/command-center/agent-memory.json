@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:17:01.796Z",
+  "exported_at": "2026-06-08T01:23:31.755Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1928,6 +1928,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1780881810153_g42i1c",
+      "ts": "2026-06-08T01:23:30.153Z",
+      "type": "public_tool_audit",
+      "title": "Public Tool Audit complete",
+      "detail": "Public data layer score: 100%. Checklist, PRV, release, and signal feeds are reachable.",
+      "status": "validated",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1780881809507_wd1rzi",
+      "ts": "2026-06-08T01:23:29.507Z",
+      "type": "public_tool_audit",
+      "title": "Public Tool Audit started",
+      "detail": "Checking public JSON feeds for Checklist Vault, PRV, releases, and early signals.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1780881420165_zii031",
       "ts": "2026-06-08T01:17:00.165Z",
@@ -4136,6 +4156,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:17:03.340Z",
+  "saved_at": "2026-06-08T01:23:33.267Z",
   "saved_by": "cm_command_center_operator"
 }

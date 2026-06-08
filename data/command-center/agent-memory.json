@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T01:24:28.387Z",
+  "exported_at": "2026-06-08T01:24:32.320Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -349,11 +349,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Heritage_High_Number_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Heritage_High_Number_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -361,7 +361,7 @@
       "expectedRowCount": 795,
       "expectedParallelCount": 13,
       "createdAt": "2026-06-08T01:17:00.160Z",
-      "updatedAt": "2026-06-08T01:24:26.784Z"
+      "updatedAt": "2026-06-08T01:24:29.035Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Baseball",
@@ -371,11 +371,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Heritage_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1410 rows / 14 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Heritage_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -383,7 +383,7 @@
       "expectedRowCount": 1410,
       "expectedParallelCount": 14,
       "createdAt": "2026-06-08T01:17:00.159Z",
-      "updatedAt": "2026-06-08T01:17:00.160Z"
+      "updatedAt": "2026-06-08T01:24:30.702Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gypsy_Queen_Baseball",
@@ -393,11 +393,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Gypsy_Queen_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 620 rows / 30 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -405,7 +405,7 @@
       "expectedRowCount": 620,
       "expectedParallelCount": 30,
       "createdAt": "2026-06-08T01:17:00.159Z",
-      "updatedAt": "2026-06-08T01:17:00.159Z"
+      "updatedAt": "2026-06-08T01:24:30.717Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gold_Label_Baseball",
@@ -1927,12 +1927,90 @@
     }
   ],
   "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_High_Number_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Gypsy_Queen_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Gold_Label_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780881870718_h40e68",
+      "ts": "2026-06-08T01:24:30.718Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Gypsy Queen Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881870716_uyg17g",
+      "ts": "2026-06-08T01:24:30.716Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Gypsy Queen Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Gypsy Queen Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881870703_xuts17",
+      "ts": "2026-06-08T01:24:30.703Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Heritage Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881870701_93e8jd",
+      "ts": "2026-06-08T01:24:30.701Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "1,410 public rows and 14 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Heritage Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881869050_ms1xav",
+      "ts": "2026-06-08T01:24:29.050Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Heritage Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881869049_962zxv",
+      "ts": "2026-06-08T01:24:29.049Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Heritage Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Heritage Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780881869036_l92oqa",
+      "ts": "2026-06-08T01:24:29.036Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Heritage High Number Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780881869034_ffy0mx",
+      "ts": "2026-06-08T01:24:29.034Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "795 public rows and 13 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Heritage High Number Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780881866785_08pjd6",
       "ts": "2026-06-08T01:24:26.785Z",
@@ -4108,9 +4186,9 @@
       "product": "2017 Topps Heritage High Number Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Heritage_High_Number_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103224044",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:24:29.035Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103156514": {
@@ -4306,9 +4384,9 @@
       "product": "2017 Topps Heritage Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Heritage_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27102792208",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-08T01:24:30.702Z",
       "resolved": true
     },
     "baseball|2017 panini immaculate collection baseball": {
@@ -4346,9 +4424,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-08T01:24:26.767Z",
       "resolved": true
+    },
+    "baseball|2017 topps heritage high number baseball": {
+      "product": "2017 Topps Heritage High Number Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Heritage_High_Number_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:24:29.035Z",
+      "resolved": true
+    },
+    "baseball|2017 topps heritage baseball": {
+      "product": "2017 Topps Heritage Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Heritage_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-08T01:24:30.702Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T01:24:29.650Z",
+  "saved_at": "2026-06-08T01:24:33.674Z",
   "saved_by": "cm_command_center_operator"
 }

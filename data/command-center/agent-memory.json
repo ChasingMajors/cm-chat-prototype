@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T02:09:02.828Z",
+  "exported_at": "2026-06-08T02:09:30.829Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T02:08:42.767Z",
-      "updatedAt": "2026-06-08T02:09:00.353Z"
+      "updatedAt": "2026-06-08T02:09:29.009Z"
     },
     {
       "id": "source_watch|hockey|2026 leaf metal hockey",
@@ -819,7 +819,7 @@
       "expectedRowCount": 2089,
       "expectedParallelCount": 155,
       "createdAt": "2026-06-08T01:17:00.153Z",
-      "updatedAt": "2026-06-08T02:09:00.354Z",
+      "updatedAt": "2026-06-08T02:09:29.010Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1929,6 +1929,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1780884569010_6ogl35",
+      "ts": "2026-06-08T02:09:29.010Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Panini National Treasures Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1780884540355_saoc5z",
       "ts": "2026-06-08T02:09:00.355Z",
       "type": "visual_test",
@@ -2717,16 +2727,6 @@
       "status": "validated",
       "product": "2017 Panini Contenders Draft Picks Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882094206_mcdqm5",
-      "ts": "2026-06-08T01:28:14.206Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "233 public rows and 39 parallels found.",
-      "status": "covered",
-      "product": "2017 Panini Contenders Draft Picks Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3318,7 +3318,7 @@
       "productName": "2017 Panini National Treasures Baseball",
       "sport": "baseball",
       "code": "2017_Panini_National_Treasures_Baseball",
-      "updatedAt": "2026-06-08T02:09:00.352Z",
+      "updatedAt": "2026-06-08T02:09:29.006Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27112096529,
@@ -3326,7 +3326,7 @@
       "displayTitle": "Visual Product Test - 2017 Panini National Treasures Baseball",
       "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
       "createdAt": "2026-06-08T02:08:42Z",
-      "checkedAt": "2026-06-08T02:09:00.352Z"
+      "checkedAt": "2026-06-08T02:09:29.006Z"
     },
     "baseball|2017_Topps_Chrome_Update_Series_Baseball": {
       "status": "completed",
@@ -5062,6 +5062,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-08T02:09:04.393Z",
+  "saved_at": "2026-06-08T02:09:32.198Z",
   "saved_by": "cm_command_center_operator"
 }

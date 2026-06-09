@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T23:08:04.305Z",
+  "exported_at": "2026-06-09T23:08:32.195Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T23:07:14.660Z",
-      "updatedAt": "2026-06-09T23:08:01.824Z",
+      "updatedAt": "2026-06-09T23:08:30.593Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27241628592",
       "visualStartedAt": "2026-06-09T23:07:14Z"
     },
@@ -1720,7 +1720,7 @@
       "expectedRowCount": 748,
       "expectedParallelCount": 100,
       "createdAt": "2026-06-09T17:54:02.459Z",
-      "updatedAt": "2026-06-09T23:08:01.824Z",
+      "updatedAt": "2026-06-09T23:08:30.593Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Donruss Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T22:28:24.617Z",
@@ -2165,6 +2165,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781046510593_ins5vs",
+      "ts": "2026-06-09T23:08:30.593Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Donruss Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781046481825_idn0fs",
       "ts": "2026-06-09T23:08:01.825Z",
@@ -2954,16 +2964,6 @@
       "status": "queued",
       "product": "2017 Bowman Holiday Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1781044245628",
-      "ts": "2026-06-09T22:30:43.328Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -3718,7 +3718,7 @@
       "productName": "2017 Donruss Baseball",
       "sport": "baseball",
       "code": "2017_Donruss_Baseball",
-      "updatedAt": "2026-06-09T23:08:01.821Z",
+      "updatedAt": "2026-06-09T23:08:30.591Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27241628592,
@@ -3726,7 +3726,7 @@
       "displayTitle": "Visual Product Test - 2017 Donruss Baseball",
       "headSha": "63763267a7e8791dbaf16fee71c065cc2d916ad9",
       "createdAt": "2026-06-09T23:07:14Z",
-      "checkedAt": "2026-06-09T23:08:01.820Z"
+      "checkedAt": "2026-06-09T23:08:30.591Z"
     },
     "baseball|2017_Topps_Archives_Snapshots_Baseball": {
       "status": "completed",
@@ -5208,6 +5208,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T23:08:05.463Z",
+  "saved_at": "2026-06-09T23:08:33.413Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T22:22:14.170Z",
+  "exported_at": "2026-06-09T22:22:31.860Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -341,11 +341,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239621689",
       "sourceUrl": "",
       "bucket": "",
@@ -353,7 +353,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T22:20:40.393Z",
-      "updatedAt": "2026-06-09T22:22:00.993Z",
+      "updatedAt": "2026-06-09T22:22:30.257Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239621689",
       "visualStartedAt": "2026-06-09T22:20:40Z"
     },
@@ -2110,11 +2110,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239621689",
       "sourceUrl": "",
       "bucket": "2017",
@@ -2122,7 +2122,7 @@
       "expectedRowCount": 277,
       "expectedParallelCount": 10,
       "createdAt": "2026-06-09T17:54:02.456Z",
-      "updatedAt": "2026-06-09T22:22:00.993Z",
+      "updatedAt": "2026-06-09T22:22:30.257Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Chrome Mini Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T22:13:05.558Z",
@@ -2186,6 +2186,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781043750257_z7wawq",
+      "ts": "2026-06-09T22:22:30.257Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Bowman Chrome Mini Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781043750257_k01atc",
+      "ts": "2026-06-09T22:22:30.257Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Bowman Chrome Mini Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781043732569_iioioq",
       "ts": "2026-06-09T22:22:12.569Z",
@@ -2965,26 +2985,6 @@
       "status": "in_progress",
       "product": "2017 Topps Gypsy Queen Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781043461542_d4zjxb",
-      "ts": "2026-06-09T22:17:41.543Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781043453162_j0b8ye",
-      "ts": "2026-06-09T22:17:33.162Z",
-      "type": "visual_test",
-      "title": "Visual validation batch queued",
-      "detail": "0 CV/ChatBot visual tests queued. 2017 Topps Gold Label Baseball; 2017 Topps Gallery Baseball; 2017 Topps Five Star Baseball; 2017 Topps Finest Baseball",
-      "status": "queued",
-      "product": "",
-      "source": "agent_cycle"
     }
   ],
   "last_agent_report": {
@@ -4152,9 +4152,9 @@
       "checkedAt": "2026-06-09T22:20:38.485Z"
     },
     "baseball|2017_Bowman_Chrome_Mini_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T22:20:39.182Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239621689",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -4164,7 +4164,7 @@
       "productName": "2017 Bowman Chrome Mini Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
-      "updatedAt": "2026-06-09T22:22:00.992Z",
+      "updatedAt": "2026-06-09T22:22:30.255Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27239621689,
@@ -4172,7 +4172,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Chrome Mini Baseball",
       "headSha": "f663fb1df3aa2b95c3d169a7982a19f18e8cb3f0",
       "createdAt": "2026-06-09T22:20:40Z",
-      "checkedAt": "2026-06-09T22:22:00.992Z"
+      "checkedAt": "2026-06-09T22:22:30.255Z"
     },
     "baseball|2017_Bowman_Chrome_Baseball": {
       "status": "in_progress",
@@ -5361,6 +5361,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T22:22:15.350Z",
+  "saved_at": "2026-06-09T22:22:32.927Z",
   "saved_by": "cm_command_center_operator"
 }

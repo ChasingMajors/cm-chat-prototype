@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T03:58:45.235Z",
+  "exported_at": "2026-06-09T03:59:02.731Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -176,16 +176,16 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27182901842",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T03:58:43.618Z",
-      "updatedAt": "2026-06-09T03:58:43.618Z"
+      "updatedAt": "2026-06-09T03:59:01.129Z"
     },
     {
       "id": "visual_test|github_actions|2016 topps tier one baseball|2016_topps_tier_one_baseball",
@@ -1418,14 +1418,14 @@
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2016_Topps_Stadium_Club_Baseball.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27182901842",
       "sourceUrl": "",
       "bucket": "2016",
       "targetBucket": "2016",
       "expectedRowCount": 558,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.144Z",
-      "updatedAt": "2026-06-09T03:58:43.619Z",
+      "updatedAt": "2026-06-09T03:59:01.129Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1938,8 +1938,30 @@
       "updatedAt": "2026-06-08T01:17:00.134Z"
     }
   ],
-  "agent_run_queue": [],
+  "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2016_Topps_Heritage_High_Number_Baseball"
+  ],
   "activity_log": [
+    {
+      "id": "log_1780977541129_zueeec",
+      "ts": "2026-06-09T03:59:01.129Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780977539589_o5nz2y",
+      "ts": "2026-06-09T03:58:59.589Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2016 Topps Heritage High Number Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2016 Topps Heritage High Number Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1780977523633_lhtmtf",
       "ts": "2026-06-09T03:58:43.633Z",
@@ -2717,26 +2739,6 @@
       "title": "Covered product auto-resolved",
       "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
       "status": "validated",
-      "product": "2017 Bowman High Tek Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882520613_3p83vj",
-      "ts": "2026-06-08T01:35:20.613Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "195 public rows and 24 parallels found.",
-      "status": "covered",
-      "product": "2017 Bowman High Tek Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882518658_rr68lw",
-      "ts": "2026-06-08T01:35:18.658Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
       "product": "2017 Bowman High Tek Baseball",
       "source": "operator_backend"
     }
@@ -3824,11 +3826,11 @@
       "checkedAt": "2026-06-09T03:42:42.464Z"
     },
     "baseball|2016_Topps_Stadium_Club_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-09T03:58:42.206Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27182901842",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2016_Topps_Stadium_Club_Baseball",
@@ -3836,9 +3838,15 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-09T03:58:43.617Z",
+      "updatedAt": "2026-06-09T03:59:01.127Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27182901842,
+      "runNumber": 69,
+      "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
+      "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
+      "createdAt": "2026-06-09T03:58:43Z",
+      "checkedAt": "2026-06-09T03:59:01.127Z"
     }
   },
   "known_issues": {},
@@ -5173,6 +5181,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T03:58:46.682Z",
+  "saved_at": "2026-06-09T03:59:04.041Z",
   "saved_by": "cm_command_center_operator"
 }

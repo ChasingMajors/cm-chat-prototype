@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T03:30:10.799Z",
+  "exported_at": "2026-06-09T03:30:43.726Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -244,24 +244,6 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T02:08:42.767Z",
       "updatedAt": "2026-06-08T02:10:28.924Z"
-    },
-    {
-      "id": "source_watch|hockey|2026 leaf metal hockey",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2026 Leaf Metal Hockey",
-      "sport": "hockey",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
-      "createdAt": "2026-06-08T02:08:06.615Z",
-      "updatedAt": "2026-06-09T03:25:54.207Z"
     },
     {
       "id": "visual_test|github_actions|2016 topps tribute baseball|2016_topps_tribute_baseball",
@@ -1925,6 +1907,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1780975842123_edsapn",
+      "ts": "2026-06-09T03:30:42.123Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2026 Leaf Metal Hockey was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2026 Leaf Metal Hockey",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780975811333_6fuj0n",
+      "ts": "2026-06-09T03:30:11.333Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "0 rows and 79 parallels parsed.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Lineage Bayern München Soccer",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1780975809195_10n73n",
       "ts": "2026-06-09T03:30:09.195Z",
       "type": "source_import",
@@ -2702,26 +2704,6 @@
       "detail": "2017 Bowman Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
       "status": "queued",
       "product": "2017 Bowman Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882474695_zm6wk3",
-      "ts": "2026-06-08T01:34:34.695Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Bowman Chrome Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Bowman Chrome Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882470231_c2kypg",
-      "ts": "2026-06-08T01:34:30.231Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Bowman Draft Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Bowman Draft Baseball",
       "source": "admin"
     }
   ],
@@ -5078,9 +5060,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-08T01:35:22.483Z",
       "resolved": true
+    },
+    "hockey|https www checklistcenter com 2026-leaf-metal-hockey-card-checklist": {
+      "product": "2026 Leaf Metal Hockey",
+      "sport": "hockey",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T03:30:42.119Z",
+      "resolved": true
+    },
+    "hockey|2026 leaf metal hockey": {
+      "product": "2026 Leaf Metal Hockey",
+      "sport": "hockey",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T03:30:42.120Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T03:30:12.418Z",
+  "saved_at": "2026-06-09T03:30:45.372Z",
   "saved_by": "cm_command_center_operator"
 }

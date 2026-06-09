@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T13:52:59.137Z",
+  "exported_at": "2026-06-09T13:53:19.099Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2016 topps series 1 baseball|2016_topps_series_1_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2016 Topps Series 1 Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Series_1_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27210999357",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T13:53:00.317Z",
+      "updatedAt": "2026-06-09T13:53:17.496Z"
+    },
     {
       "id": "visual_test|github_actions|2016 topps tier one baseball|2016_topps_tier_one_baseball",
       "type": "visual_test",
@@ -1479,19 +1501,19 @@
       "sport": "baseball",
       "code": "2016_Topps_Series_1_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27210999357",
       "sourceUrl": "",
       "bucket": "2016",
       "targetBucket": "2016",
       "expectedRowCount": 1378,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.142Z",
-      "updatedAt": "2026-06-09T13:52:57.534Z"
+      "updatedAt": "2026-06-09T13:53:17.496Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Heritage_High_Number_Baseball",
@@ -1910,34 +1932,32 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.134Z",
       "updatedAt": "2026-06-08T01:17:00.134Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Panini_Flawless_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Panini Flawless Baseball",
-      "sport": "baseball",
-      "code": "2016_Panini_Flawless_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 762 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 762,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-08T01:17:00.133Z",
-      "updatedAt": "2026-06-08T01:17:00.133Z"
     }
   ],
   "agent_run_queue": [
     "backend_audit|stale_public_json|baseball|2016_Topps_Chrome_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781013197497_e0s3ga",
+      "ts": "2026-06-09T13:53:17.497Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Series 1 Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781013180318_qwl3nv",
+      "ts": "2026-06-09T13:53:00.318Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2016 Topps Series 1 Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781013177535_czuiiz",
       "ts": "2026-06-09T13:52:57.535Z",
@@ -2717,26 +2737,6 @@
       "status": "started",
       "product": "2017 Topps Heritage Baseball",
       "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881869036_l92oqa",
-      "ts": "2026-06-08T01:24:29.036Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Topps Heritage High Number Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881869034_ffy0mx",
-      "ts": "2026-06-08T01:24:29.034Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "795 public rows and 13 parallels found.",
-      "status": "covered",
-      "product": "2017 Topps Heritage High Number Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3793,6 +3793,29 @@
       "updatedAt": "2026-06-09T13:50:29.396Z",
       "knownIssue": false,
       "knownIssueNote": ""
+    },
+    "baseball|2016_Topps_Series_1_Baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-09T13:52:58.374Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27210999357",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2016_Topps_Series_1_Baseball",
+      "key": "baseball|2016_Topps_Series_1_Baseball",
+      "productName": "2016 Topps Series 1 Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Series_1_Baseball",
+      "updatedAt": "2026-06-09T13:53:17.494Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27210999357,
+      "runNumber": 70,
+      "displayTitle": "Visual Product Test - 2016 Topps Series 1 Baseball",
+      "headSha": "3611c83d91184aaaf539ee26df57310931efe208",
+      "createdAt": "2026-06-09T13:52:59Z",
+      "checkedAt": "2026-06-09T13:53:17.493Z"
     }
   },
   "known_issues": {},
@@ -4956,6 +4979,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T13:53:00.563Z",
+  "saved_at": "2026-06-09T13:53:20.317Z",
   "saved_by": "cm_command_center_operator"
 }

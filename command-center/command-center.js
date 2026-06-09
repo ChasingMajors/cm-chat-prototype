@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc117-approved-bucket-repair-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc118-visual-proof-drain-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -6983,7 +6983,7 @@
   }
 
   function getPendingVisualValidationBatch(limit) {
-    const max = Math.max(1, Math.min(10, Number(limit || 10)));
+    const max = Math.max(1, Math.min(50, Number(limit || 25)));
     return getActiveAgentActions()
       .filter(action => {
         if (!isPendingVisualValidationAction(action)) return false;
@@ -7289,7 +7289,7 @@
     let visualSummary = "";
     let visualQueuedCount = 0;
     if (visualBatch.length) {
-      const visualResult = await runPendingVisualValidationBatch({ silentStart: true, limit: 10 });
+      const visualResult = await runPendingVisualValidationBatch({ silentStart: true, limit: 50 });
       visualQueuedCount = Number(visualResult && visualResult.queued || 0);
       visualSummary = visualResult && visualResult.queued
         ? ` Queued ${visualResult.queued} CV/ChatBot visual test${visualResult.queued === 1 ? "" : "s"}.`
@@ -8006,6 +8006,9 @@
     const pendingValidation = (actions || []).find(action => String(action.status || "").toLowerCase() === "pending_public_validation");
     if (pendingValidation) return `Let Sentinel recheck published JSON for ${pendingValidation.product || pendingValidation.code || "the pending product"}.`;
 
+    const pendingVisualCount = (actions || []).filter(action => String(action.status || "").toLowerCase() === "pending_visual_validation").length;
+    if (pendingVisualCount) return `Public JSON is repaired for ${formatNumber(pendingVisualCount)} product${pendingVisualCount === 1 ? "" : "s"}. Run Agent Cycle to queue CV/ChatBot visual tests and close proof.`;
+
     const needsAdmin = (actions || []).find(action => {
       const status = String(action.status || "").toLowerCase();
       return status === "needs_admin" || status === "approval_required";
@@ -8037,6 +8040,7 @@
     const latestSuccess = getLatestActivityByStatus(["validated", "completed", "imported", "exported", "queued", "saved"]);
     const validated = resolved.filter(action => String(action.status || "").toLowerCase() === "validated");
     const pendingValidation = actions.filter(action => String(action.status || "").toLowerCase() === "pending_public_validation");
+    const pendingVisualValidation = actions.filter(action => String(action.status || "").toLowerCase() === "pending_visual_validation");
     const runQueue = getQueuedAgentActions(20);
     const mode = getAutonomyLabel(state.autonomyMode);
     const readiness = renderAutonomyReadiness();
@@ -8064,6 +8068,14 @@
           badge: `${formatNumber(report.completed_count || report.proof.length)} proof`
         });
       }
+    }
+
+    if (pendingVisualValidation.length) {
+      cards.push({
+        title: "Public JSON Repaired",
+        detail: `${formatNumber(pendingVisualValidation.length)} product${pendingVisualValidation.length === 1 ? "" : "s"} have public JSON proof and now need CV/ChatBot visual validation.`,
+        badge: "visual proof"
+      });
     }
 
     cards.push(

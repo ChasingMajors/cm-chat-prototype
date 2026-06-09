@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T20:11:44.545Z",
+  "exported_at": "2026-06-09T20:11:49.032Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1065,7 +1065,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:06.979Z",
-      "updatedAt": "2026-06-09T20:11:20.315Z"
+      "updatedAt": "2026-06-09T20:11:47.404Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps gallery baseball|2017_topps_gallery_baseball",
@@ -1087,7 +1087,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:04.926Z",
-      "updatedAt": "2026-06-09T20:11:42.941Z"
+      "updatedAt": "2026-06-09T20:11:47.430Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps gold label baseball|2017_topps_gold_label_baseball",
@@ -1704,7 +1704,7 @@
       "expectedRowCount": 504,
       "expectedParallelCount": 24,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-09T20:11:42.941Z",
+      "updatedAt": "2026-06-09T20:11:47.430Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Gallery Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1729,7 +1729,7 @@
       "expectedRowCount": 360,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-09T20:11:20.315Z",
+      "updatedAt": "2026-06-09T20:11:47.404Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Five Star Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1987,6 +1987,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781035907431_ul51w6",
+      "ts": "2026-06-09T20:11:47.431Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Gallery Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781035907405_zytx7j",
+      "ts": "2026-06-09T20:11:47.405Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Five Star Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781035902941_iqi5ov",
       "ts": "2026-06-09T20:11:42.941Z",
@@ -2766,26 +2786,6 @@
       "status": "queued",
       "product": "2017 Topps Archives Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781035818815_e81xcj",
-      "ts": "2026-06-09T20:10:18.815Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Allen & Ginter X Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781035816927_pevoe2",
-      "ts": "2026-06-09T20:10:16.927Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3086,7 +3086,7 @@
       "productName": "2017 Topps Gallery Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gallery_Baseball",
-      "updatedAt": "2026-06-09T20:11:42.940Z",
+      "updatedAt": "2026-06-09T20:11:47.428Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3094,7 +3094,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:11:42.940Z"
+      "checkedAt": "2026-06-09T20:11:47.428Z"
     },
     "baseball|2017_Topps_Five_Star_Baseball": {
       "status": "queued",
@@ -3109,7 +3109,7 @@
       "productName": "2017 Topps Five Star Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Five_Star_Baseball",
-      "updatedAt": "2026-06-09T20:11:20.314Z",
+      "updatedAt": "2026-06-09T20:11:47.402Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3117,7 +3117,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:11:20.314Z"
+      "checkedAt": "2026-06-09T20:11:47.402Z"
     },
     "baseball|2017_Topps_Luminaries_Baseball": {
       "status": "completed",
@@ -5318,6 +5318,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T20:11:45.863Z",
+  "saved_at": "2026-06-09T20:11:54.766Z",
   "saved_by": "cm_command_center_operator"
 }

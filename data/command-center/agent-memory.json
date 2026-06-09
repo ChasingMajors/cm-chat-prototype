@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T18:18:37.758Z",
+  "exported_at": "2026-06-09T18:18:57.193Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,6 +166,28 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2021 panini stars and stripes usa baseball|2021_panini_stars_stripes_usa_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2021 Panini Stars & Stripes USA Baseball",
+      "sport": "baseball",
+      "code": "2021_panini_stars_stripes_usa_baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27226639905",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T18:18:38.756Z",
+      "updatedAt": "2026-06-09T18:18:55.591Z"
+    },
+    {
       "id": "visual_test|github_actions|2021 topps tier one baseball|2021_topps_tier_one_baseball",
       "type": "visual_test",
       "source": "github_actions",
@@ -276,19 +298,19 @@
       "sport": "baseball",
       "code": "2021_panini_stars_stripes_usa_baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2021_panini_stars_stripes_usa_baseball.",
-      "validationResult": "CV/ChatBot visual test requested by Agent Cycle...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27226639905",
       "sourceUrl": "",
       "bucket": "2021",
       "targetBucket": "2021",
       "expectedRowCount": 1199,
       "expectedParallelCount": 46,
       "createdAt": "2026-06-09T18:11:10.178Z",
-      "updatedAt": "2026-06-09T18:18:36.156Z",
+      "updatedAt": "2026-06-09T18:18:55.591Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1900,32 +1922,50 @@
       "expectedParallelCount": 91,
       "createdAt": "2026-06-09T18:11:10.168Z",
       "updatedAt": "2026-06-09T18:11:10.168Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2022_panini_three_and_two_debut_edition_baseball",
-      "type": "checklist_publish",
-      "source": "deep_backend_audit",
-      "product": "2022 Panini Three & Two Baseball",
-      "sport": "baseball",
-      "code": "2022_panini_three_and_two_debut_edition_baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet data ahead of public JSON.",
-      "validationResult": "Sheets show 1684 rows / 143 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2022",
-      "targetBucket": "2022",
-      "expectedRowCount": 1684,
-      "expectedParallelCount": 143,
-      "createdAt": "2026-06-09T18:11:10.168Z",
-      "updatedAt": "2026-06-09T18:11:10.168Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781029135591_018jlt",
+      "ts": "2026-06-09T18:18:55.591Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2021 Panini Stars & Stripes USA Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781029118771_udpu8k",
+      "ts": "2026-06-09T18:18:38.771Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 78 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2021 Panini Stars & Stripes USA Baseball -> pending_visual_validation (Published checklist JSON validated with 1199 rows and 46 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781029118766_slk77c",
+      "ts": "2026-06-09T18:18:38.766Z",
+      "type": "visual_test",
+      "title": "Visual validation batch queued",
+      "detail": "1 CV/ChatBot visual test queued. 2021 Panini Stars & Stripes USA Baseball",
+      "status": "queued",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1781029118757_uzq12p",
+      "ts": "2026-06-09T18:18:38.757Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2021 Panini Stars & Stripes USA Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781029116150_gnfyaw",
       "ts": "2026-06-09T18:18:36.150Z",
@@ -2685,46 +2725,6 @@
       "status": "queued",
       "product": "2017 Topps Gypsy Queen Baseball",
       "source": "admin"
-    },
-    {
-      "id": "log_1780881838067_t9b571",
-      "ts": "2026-06-08T01:23:58.067Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Gold Label Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881810153_g42i1c",
-      "ts": "2026-06-08T01:23:30.153Z",
-      "type": "public_tool_audit",
-      "title": "Public Tool Audit complete",
-      "detail": "Public data layer score: 100%. Checklist, PRV, release, and signal feeds are reachable.",
-      "status": "validated",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780881809507_wd1rzi",
-      "ts": "2026-06-08T01:23:29.507Z",
-      "type": "public_tool_audit",
-      "title": "Public Tool Audit started",
-      "detail": "Checking public JSON feeds for Checklist Vault, PRV, releases, and early signals.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780881420165_zii031",
-      "ts": "2026-06-08T01:17:00.165Z",
-      "type": "deep_backend_audit",
-      "title": "Deep Sheets Audit complete",
-      "detail": "908 Sheet products checked against 942 public JSON products. 150 issues found. 150 queue cards updated.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -3812,6 +3812,29 @@
       "headSha": "9cd31831a2dbaac08fa32b5190f53b710894244f",
       "createdAt": "2026-06-09T18:12:18Z",
       "checkedAt": "2026-06-09T18:13:58.807Z"
+    },
+    "baseball|2021_panini_stars_stripes_usa_baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-09T18:18:36.899Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27226639905",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2021_panini_stars_stripes_usa_baseball",
+      "key": "baseball|2021_panini_stars_stripes_usa_baseball",
+      "productName": "2021 Panini Stars & Stripes USA Baseball",
+      "sport": "baseball",
+      "code": "2021_panini_stars_stripes_usa_baseball",
+      "updatedAt": "2026-06-09T18:18:55.589Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27226639905,
+      "runNumber": 73,
+      "displayTitle": "Visual Product Test - 2021 Panini Stars & Stripes USA Baseball",
+      "headSha": "9cd31831a2dbaac08fa32b5190f53b710894244f",
+      "createdAt": "2026-06-09T18:18:38Z",
+      "checkedAt": "2026-06-09T18:18:55.589Z"
     }
   },
   "known_issues": {},
@@ -4885,6 +4908,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T18:18:38.997Z",
+  "saved_at": "2026-06-09T18:18:58.669Z",
   "saved_by": "cm_command_center_operator"
 }

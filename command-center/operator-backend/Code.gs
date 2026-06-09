@@ -19,6 +19,7 @@
  * - saveAgentMemory
  * - runScheduledSourceWatch
  * - runScheduledAgentSweep
+ * - installDailyAgentSweepTrigger
  *
  * Current safety:
  * - Sheet writes require Script Property CM_OPERATOR_KEY.
@@ -26,7 +27,8 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-09-operator-cc110-security-sweep";
+const CM_OPERATOR_VERSION = "2026-06-09-operator-cc111-agentic-repair-loop";
+const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
 const CM_APP_DATA_BASE = "https://app.chasingmajors.com/data/v1";
 const CM_CHECKLISTCENTER_HOME = "https://www.checklistcenter.com/";
 const CM_CHECKLISTCENTER_POSTS_API = "https://www.checklistcenter.com/wp-json/wp/v2/posts?per_page=20&_fields=link,title,date,slug";
@@ -252,14 +254,19 @@ function doGet(e) {
     if (action === "runScheduledAgentSweep") {
       return json_(runScheduledAgentSweep_({
         mode: p.mode || "",
-        key: p.key || ""
+        key: p.key || "",
+        maxAutoActions: p.maxAutoActions || p.max_auto_actions || ""
       }));
+    }
+
+    if (action === "installDailyAgentSweepTrigger") {
+      return json_(installDailyAgentSweepTrigger_(p));
     }
 
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "runDeepBackendAudit", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync", "runScheduledAgentSweep"]
+      supported_actions: ["health", "sourceWatch", "runDeepBackendAudit", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync", "runScheduledAgentSweep", "installDailyAgentSweepTrigger"]
     });
   } catch (err) {
     return json_({
@@ -352,10 +359,14 @@ function doPost(e) {
       return json_(runScheduledAgentSweep_(body));
     }
 
+    if (action === "installDailyAgentSweepTrigger") {
+      return json_(installDailyAgentSweepTrigger_(body));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "runDeepBackendAudit", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync", "runScheduledAgentSweep"]
+      supported_actions: ["sourceWatch", "runDeepBackendAudit", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync", "runScheduledAgentSweep", "installDailyAgentSweepTrigger"]
     });
   } catch (err) {
     return json_({
@@ -3318,6 +3329,44 @@ function runScheduledAgentSweep_(input) {
   };
 }
 
+
+function installDailyAgentSweepTrigger_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const hourRaw = Number(input && (input.hour || input.atHour || input.at_hour || 9));
+  const hour = Number.isFinite(hourRaw) ? Math.max(0, Math.min(23, Math.floor(hourRaw))) : 9;
+  const existing = ScriptApp.getProjectTriggers().filter(function(trigger) {
+    return trigger && trigger.getHandlerFunction && trigger.getHandlerFunction() === "runScheduledAgentSweepTrigger";
+  });
+
+  let created = false;
+  if (!existing.length) {
+    ScriptApp.newTrigger("runScheduledAgentSweepTrigger")
+      .timeBased()
+      .everyDays(1)
+      .atHour(hour)
+      .create();
+    created = true;
+  }
+
+  const after = ScriptApp.getProjectTriggers().filter(function(trigger) {
+    return trigger && trigger.getHandlerFunction && trigger.getHandlerFunction() === "runScheduledAgentSweepTrigger";
+  });
+
+  return {
+    ok: true,
+    status: created ? "installed" : "already_installed",
+    handler: "runScheduledAgentSweepTrigger",
+    cadence: "daily",
+    hour: hour,
+    trigger_count: after.length,
+    message: created
+      ? "Daily CM Sentinel agent sweep trigger installed."
+      : "Daily CM Sentinel agent sweep trigger already exists.",
+    updated_at: new Date().toISOString()
+  };
+}
+
 function runScheduledPrvSyncTrigger() {
   const key = PropertiesService.getScriptProperties().getProperty(CM_OPERATOR_KEY_PROPERTY);
   if (!key) {
@@ -3370,7 +3419,7 @@ function runScheduledAgentSweepTrigger() {
     return runScheduledAgentSweep_({
       key: key,
       mode: "deep_sheets",
-      maxAutoActions: 6
+      maxAutoActions: 10
     });
   } catch (err) {
     const result = {
@@ -3579,9 +3628,18 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
     visualStartedAt: result.visualStartedAt || action.visualStartedAt || "",
     visualRunUrl: result.runUrl || action.visualRunUrl || "",
     runUrl: result.runUrl || action.runUrl || "",
+    repairProof: buildAgentRepairProof_(action, result, finalStatus),
     autoExecutedAt: now,
     updatedAt: now
   });
+
+  if (finalStatus === "failed" && (wasPendingVisualValidation || wasVisualInFlight)) {
+    appendVisualFailureFixTask_(memory, action, result, now);
+  }
+
+  if (finalStatus === "failed" && wasPendingPublicValidation) {
+    appendPublicValidationFixTask_(memory, action, result, now);
+  }
 
   memory.activity_log = prependMemoryActivity_(memory.activity_log || [], {
     id: "log_" + Date.now(),
@@ -3932,21 +3990,27 @@ function runScheduledChecklistPendingValidationAction_(action, key) {
   const validated = publicRows > 0 && meetsExpectedRows && meetsExpectedParallels;
   const detail = "Checked " + sport + " " + (targetBucket || "current") + " code " + code + ".";
 
+  const exhausted = attempts >= CM_PUBLIC_VALIDATION_RETRY_LIMIT;
+  const retryDetail = "Expected " + (expectedRows || "any") + " rows / " + (expectedParallels || "any") + " parallels; found " + publicRows + " rows / " + publicParallels + " parallels. " + (publish ? summarizePublishResult_(publish) + " " : "") + detail + " Recheck: " + summarizePublicChecklistValidation_(publicValidation);
+
   return {
-    ok: true,
+    ok: !exhausted || validated,
     validated: validated,
-    status: validated ? "pending_visual_validation" : attempts >= 3 ? "needs_review" : "pending_public_validation",
+    status: validated ? "pending_visual_validation" : exhausted ? "failed" : "pending_public_validation",
     sport: sport,
     code: code,
     targetBucket: targetBucket,
     pendingValidationAttempts: validated ? 0 : attempts,
     executionResult: validated
       ? "Pending checklist publish validation completed for " + code + "."
-      : "Pending checklist publish validation rechecked for " + code + ".",
+      : exhausted
+        ? "Pending checklist publish validation failed after " + attempts + " attempts for " + code + "."
+        : "Pending checklist publish validation rechecked for " + code + ".",
     validationResult: validated
       ? "Published checklist JSON validated with " + publicRows + " rows and " + publicParallels + " parallels. CV/ChatBot visual validation is pending."
-      : "Published checklist JSON is still pending or stale after " + attempts + " check(s). Expected " + (expectedRows || "any") + " rows / " + (expectedParallels || "any") + " parallels; found " + publicRows + " rows / " + publicParallels + " parallels. " + (publish ? summarizePublishResult_(publish) + " " : "") + detail + " Recheck: " + summarizePublicChecklistValidation_(publicValidation)
-    ,
+      : exhausted
+        ? "Agent attempted public checklist JSON validation " + attempts + " times and failed. " + retryDetail
+        : "Published checklist JSON is still pending or stale after " + attempts + " check(s). " + retryDetail,
     pendingVisualValidation: validated
   };
 }
@@ -4136,7 +4200,7 @@ function runScheduledVisualAutoAction_(action, key) {
       visualStartedAt: startedAt,
       runUrl: status.run_url || action.visualRunUrl || action.runUrl || "",
       executionResult: "CV/ChatBot visual test failed.",
-      validationResult: "GitHub Actions visual test failed for " + productName + ". Review the visual report."
+      validationResult: "GitHub Actions visual test failed for " + productName + ". Exact checks: " + buildVisualFailureQuerySummary_(productName) + ". Review the visual report."
     };
   }
 
@@ -4148,6 +4212,92 @@ function runScheduledVisualAutoAction_(action, key) {
     executionResult: "CV/ChatBot visual test is still running.",
     validationResult: status.note || "GitHub Actions has not produced a final visual result yet."
   };
+}
+
+
+function buildAgentRepairProof_(action, result, finalStatus) {
+  const product = safeString_(action && action.product).trim() || safeString_(result && result.product).trim() || "Product";
+  const status = safeString_(finalStatus).trim().toLowerCase();
+  const execution = safeString_(result && result.executionResult).trim();
+  const validation = safeString_(result && result.validationResult).trim();
+  if (status === "validated") return "Agent completed repair for " + product + ": " + (execution || "work completed") + " " + (validation || "validation passed");
+  if (status === "pending_visual_validation") return "Agent fixed/published " + product + " and verified public JSON. Visual CV/ChatBot proof is next.";
+  if (status === "pending_public_validation") return "Agent attempted publish validation for " + product + ". Public JSON is not final yet; retry is scheduled.";
+  if (status === "failed") return "Agent attempted repair for " + product + " but it failed. " + (validation || execution || "A fix task was created when possible.");
+  return execution || validation || "Agent action recorded.";
+}
+
+function buildVisualFailureQuerySummary_(productName) {
+  productName = safeString_(productName).trim();
+  if (!productName) return "missing product query";
+  return [productName, "Show me " + productName + " checklist", productName + " details"].join(" | ");
+}
+
+function appendVisualFailureFixTask_(memory, action, result, now) {
+  const product = safeString_(action && action.product).trim() || "Unknown product";
+  const sport = safeString_(action && action.sport).trim();
+  const code = safeString_(action && action.code).trim();
+  const taskId = "fix_visual|" + normalize_(sport) + "|" + (code || normalize_(product));
+  memory.tasks = upsertMemoryTask_(memory.tasks || [], {
+    id: taskId,
+    title: "Fix CV/ChatBot visual validation for " + product,
+    type: "visual_validation_fix",
+    status: "queued",
+    priority: "high",
+    product: product,
+    sport: sport,
+    code: code,
+    source: "operator_backend",
+    runUrl: result && result.runUrl || action && (action.visualRunUrl || action.runUrl) || "",
+    detail: "Visual test failed. Exact checks: " + buildVisualFailureQuerySummary_(product) + ". Inspect the GitHub Actions report, fix ChatBot/CV routing or search behavior, then rerun the visual test.",
+    createdAt: now,
+    updatedAt: now
+  });
+  memory.activity_log = prependMemoryActivity_(memory.activity_log || [], {
+    id: "log_" + Date.now() + "_visual_fix",
+    ts: now,
+    type: "fix_task",
+    title: "Visual fix task created",
+    detail: product + ": " + buildVisualFailureQuerySummary_(product),
+    status: "queued",
+    product: product,
+    source: "operator_backend"
+  });
+}
+
+function appendPublicValidationFixTask_(memory, action, result, now) {
+  const product = safeString_(action && action.product).trim() || "Unknown product";
+  const sport = safeString_(action && action.sport).trim();
+  const code = safeString_(action && action.code).trim();
+  const attempts = Number(result && result.pendingValidationAttempts || action && action.pendingValidationAttempts || 0);
+  if (attempts < CM_PUBLIC_VALIDATION_RETRY_LIMIT) return;
+  const taskId = "fix_public_validation|" + normalize_(sport) + "|" + (code || normalize_(product));
+  memory.tasks = upsertMemoryTask_(memory.tasks || [], {
+    id: taskId,
+    title: "Fix public JSON validation for " + product,
+    type: "public_validation_fix",
+    status: "queued",
+    priority: "high",
+    product: product,
+    sport: sport,
+    code: code,
+    source: "operator_backend",
+    detail: "Agent retried public JSON validation " + attempts + " time(s) and still could not prove the product is live. Check Static Data Exporter publish, product code, shard manifest, and public JSON propagation.",
+    createdAt: now,
+    updatedAt: now
+  });
+}
+
+function upsertMemoryTask_(tasks, task) {
+  const out = Array.isArray(tasks) ? tasks.slice() : [];
+  for (let i = 0; i < out.length; i++) {
+    if (out[i] && out[i].id === task.id) {
+      out[i] = Object.assign({}, out[i], task, { createdAt: out[i].createdAt || task.createdAt });
+      return out.slice(0, 80);
+    }
+  }
+  out.unshift(task);
+  return out.slice(0, 80);
 }
 
 function patchMemoryAction_(actions, id, patch) {

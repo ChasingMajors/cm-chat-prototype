@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc110-security-agent-sweep-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc111-agentic-repair-loop-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -86,6 +86,7 @@
     scanPrvSourcesBtn: document.getElementById("scanPrvSourcesBtn"),
     agentCycleBtn: document.getElementById("agentCycleBtn"),
     backendAgentSweepBtn: document.getElementById("backendAgentSweepBtn"),
+    installDailyAgentTriggerBtn: document.getElementById("installDailyAgentTriggerBtn"),
     sourceWatchQuickBtn: document.getElementById("sourceWatchQuickBtn"),
     sourceWatchDeepBtn: document.getElementById("sourceWatchDeepBtn"),
     prvSourceWatchBtn: document.getElementById("prvSourceWatchBtn"),
@@ -2505,6 +2506,54 @@
     renderAgentActions();
     renderActionLanes();
     renderRunSummary();
+  }
+
+
+  async function installDailyAgentSweepTrigger() {
+    const endpoint = readOperatorEndpoint();
+    const key = readOperatorKey();
+    if (!endpoint || !key) {
+      renderSentinelNotice("Operator Backend needed", "Save the Apps Script endpoint and admin write key before installing the daily trigger.", "warning");
+      return;
+    }
+
+    logActivity({
+      type: "automation",
+      status: "started",
+      source: "admin",
+      title: "Daily Agent trigger install started",
+      detail: "Requesting Apps Script trigger for runScheduledAgentSweepTrigger."
+    });
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=installDailyAgentSweepTrigger"
+        + "&hour=9"
+        + "&key=" + encodeURIComponent(key);
+      const data = await fetchJson(url, { timeoutMs: 60000 });
+      if (!data || !data.ok) throw new Error(data && data.error ? data.error : "Trigger install failed.");
+      renderSentinelNotice("Daily Agent trigger ready", data.message || "runScheduledAgentSweepTrigger is scheduled daily.", "success");
+      logActivity({
+        type: "automation",
+        status: data.status || "ready",
+        source: "operator_backend",
+        title: "Daily Agent trigger ready",
+        detail: `${data.handler || "runScheduledAgentSweepTrigger"} • ${data.cadence || "daily"} • trigger count ${data.trigger_count || 1}`
+      });
+      renderActivityLog();
+    } catch (err) {
+      renderSentinelNotice("Daily Agent trigger failed", err && err.message ? err.message : "Could not install daily trigger.", "error");
+      logActivity({
+        type: "automation",
+        status: "failed",
+        source: "operator_backend",
+        title: "Daily Agent trigger failed",
+        detail: err && err.message ? err.message : "Could not install daily trigger."
+      });
+      renderActivityLog();
+      throw err;
+    }
   }
 
   async function runBackendAgentSweep(options) {
@@ -6153,6 +6202,7 @@
             <div class="agent-action-results">
               ${action.executionResult ? `<span><strong>Execution</strong>${escapeHtml(action.executionResult)}</span>` : ""}
               ${action.validationResult ? `<span><strong>Validation</strong>${escapeHtml(action.validationResult)}</span>` : ""}
+              ${action.repairProof ? `<span><strong>Repair Proof</strong>${escapeHtml(action.repairProof)}</span>` : ""}
             </div>
           ` : ""}
           ${renderActionExecutionPosture(action)}
@@ -8187,6 +8237,7 @@
   els.scanPrvSourcesBtn.addEventListener("click", () => runLauncher(els.scanPrvSourcesBtn, runPrvSourceWatchWithBackend, { running: "Scanning", success: "Scan done" }));
   els.agentCycleBtn.addEventListener("click", () => runLauncher(els.agentCycleBtn, runAgentCycle, { running: "Working", success: "Cycle done" }));
   if (els.backendAgentSweepBtn) els.backendAgentSweepBtn.addEventListener("click", () => runLauncher(els.backendAgentSweepBtn, runBackendAgentSweep, { running: "Sweeping", success: "Sweep done" }));
+  if (els.installDailyAgentTriggerBtn) els.installDailyAgentTriggerBtn.addEventListener("click", () => runLauncher(els.installDailyAgentTriggerBtn, installDailyAgentSweepTrigger, { running: "Installing", success: "Trigger ready" }));
   els.clearDoneBtn.addEventListener("click", clearDoneTasks);
   els.clearResolvedAgentActionsBtn.addEventListener("click", clearResolvedAgentActions);
   els.clearActivityLogBtn.addEventListener("click", clearActivityLog);

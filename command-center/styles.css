@@ -1067,6 +1067,27 @@ a {
     linear-gradient(180deg, rgba(255,255,255,0.9), rgba(244,249,255,0.7));
 }
 
+.command-output-panel.command-output-active {
+  border-color: rgba(255,190,64,0.72);
+  box-shadow:
+    0 0 0 4px rgba(255,190,64,0.18),
+    0 24px 70px rgba(255,190,64,0.22);
+  animation: sentinelFocusPulse 1.35s ease-in-out infinite;
+}
+
+@keyframes sentinelFocusPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 4px rgba(255,190,64,0.15),
+      0 24px 70px rgba(255,190,64,0.16);
+  }
+  50% {
+    box-shadow:
+      0 0 0 7px rgba(255,190,64,0.27),
+      0 28px 76px rgba(255,190,64,0.28);
+  }
+}
+
 .command-output-panel .source-check-result {
   max-height: 520px;
   overflow: auto;

@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc120-agent-cockpit-focus-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc121-visual-proof-dedupe-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -410,6 +410,16 @@
   function isTerminalVisualRecord(record) {
     const result = String(record && (record.result || record.conclusion || record.status) || "").toLowerCase();
     return result === "passed" || result === "success" || result === "failed" || result === "failure";
+  }
+
+  function isPassedVisualRecord(record) {
+    const result = String(record && (record.result || record.conclusion || record.status) || "").toLowerCase();
+    return result === "passed" || result === "success";
+  }
+
+  function getVisualRecordForAction(action) {
+    if (!action) return null;
+    return state.visualTests[getVisualProductKey(buildVisualTestPlanFromAction(action))] || null;
   }
 
   function saveVisualRecord(plan, patch) {
@@ -5018,6 +5028,8 @@
 
   function renderSourceCheckMessage(title, detail, severity, options) {
     options = options || {};
+    if (!els.sourceCheckResult) return;
+    setCommandOutputActive(severity === "info" && /running|working|queueing|checking|auditing|writing|publishing|rechecking|refreshing/i.test(String(title || detail || "")));
     const badgeClass = severity === "critical" ? "critical" : severity === "warning" ? "warning" : "info";
     els.sourceCheckResult.innerHTML = `
       <div class="source-result-card">
@@ -5031,6 +5043,12 @@
       </div>
     `;
     if (!options.noFocus) focusSourceCheckResult();
+  }
+
+  function setCommandOutputActive(active) {
+    const panel = els.sourceCheckResult && els.sourceCheckResult.closest ? els.sourceCheckResult.closest(".command-output-panel") : null;
+    if (!panel) return;
+    panel.classList.toggle("command-output-active", !!active);
   }
 
   function renderSentinelNotice(title, detail, severity) {
@@ -5848,6 +5866,11 @@
       validation.includes("error") ||
       validation.includes("missing")
     );
+  }
+
+  function hasPassedVisualProof(action) {
+    const validation = String(action && action.validationResult || "").toLowerCase();
+    return validation.includes("cv and chatbot passed") || validation.includes("visual test passed") || isPassedVisualRecord(getVisualRecordForAction(action));
   }
 
   function getActionExecutionPosture(action) {
@@ -6997,6 +7020,14 @@
     return getActiveAgentActions()
       .filter(action => {
         if (!isPendingVisualValidationAction(action)) return false;
+        if (hasPassedVisualProof(action)) {
+          updateAgentAction(action.id, {
+            status: "validated",
+            recommendedAction: "No action needed. Existing CV/ChatBot visual proof was found.",
+            validationResult: "CV and ChatBot passed via existing visual proof."
+          });
+          return false;
+        }
         const type = String(action.type || "").toLowerCase();
         if (type !== "source_import" && type !== "checklist_publish" && type !== "visual_test") return false;
         return !!action.product;

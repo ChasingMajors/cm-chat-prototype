@@ -1317,6 +1317,7 @@
       sport: action && action.sport
     });
     plan.sourceActionId = action && action.id ? action.id : "";
+    plan.startedAt = action && (action.visualStartedAt || action.startedAt) ? (action.visualStartedAt || action.startedAt) : "";
     return plan;
   }
 
@@ -1346,10 +1347,11 @@
     return matches;
   }
 
-  function updateRelatedProductActionFromVisual(plan, result, runUrl) {
+  function updateRelatedProductActionFromVisual(plan, result, runUrl, meta) {
     const actions = findRelatedProductActions(plan);
     if (!actions.length) return null;
 
+    const info = meta || {};
     const normalized = String(result || "").toLowerCase();
     const isPassed = normalized === "passed" || normalized === "success";
     const isFailed = normalized === "failed" || normalized === "failure";
@@ -1373,7 +1375,9 @@
           : isPassed
             ? "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete."
             : "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
-        runUrl: runUrl || action.runUrl || ""
+        runUrl: runUrl || info.runUrl || action.runUrl || "",
+        visualRunUrl: runUrl || info.runUrl || action.visualRunUrl || action.runUrl || "",
+        visualStartedAt: info.startedAt || action.visualStartedAt || plan.startedAt || ""
       });
 
       if (isFailed && !state.tasks.some(task => task.sourceId === action.id && task.kind === "fix")) {
@@ -3944,7 +3948,7 @@
         + "&productName=" + encodeURIComponent(plan.productName || "")
         + "&sport=" + encodeURIComponent(plan.sport || "")
         + "&code=" + encodeURIComponent(plan.code || "")
-        + "&startedAt=" + encodeURIComponent(existing.startedAt || "")
+        + "&startedAt=" + encodeURIComponent(existing.startedAt || plan.startedAt || "")
         + "&key=" + encodeURIComponent(key);
 
       const data = await fetchJson(url, { timeoutMs: 60000 });
@@ -4334,7 +4338,10 @@
       executionResult: "GitHub Actions visual test queued.",
       runUrl: data.workflow_url || data.actions_url || ""
     });
-    updateRelatedProductActionFromVisual(plan, "queued", data.workflow_url || data.actions_url || "");
+    updateRelatedProductActionFromVisual(plan, "queued", data.workflow_url || data.actions_url || "", {
+      startedAt: data.started_at || record.startedAt || "",
+      runUrl: data.workflow_url || data.actions_url || ""
+    });
     logActivity({
       type: "visual_test",
       status: "queued",
@@ -4425,7 +4432,10 @@
       validationResult: data.result || data.status || "",
       runUrl: data.run_url || ""
     });
-    updateRelatedProductActionFromVisual(plan, data.result || data.conclusion || data.status || "", data.run_url || "");
+    updateRelatedProductActionFromVisual(plan, data.result || data.conclusion || data.status || "", data.run_url || "", {
+      startedAt: data.started_at || data.created_at || plan.startedAt || "",
+      runUrl: data.run_url || ""
+    });
     logActivity({
       type: "visual_test",
       status: data.result || data.status || "",
@@ -6995,7 +7005,7 @@
   }
 
   function getRunningVisualValidationBatch(limit) {
-    const max = Math.max(1, Math.min(8, Number(limit || 5)));
+    const max = Math.max(1, Math.min(50, Number(limit || 10)));
     return getActiveAgentActions()
       .filter(action => {
         const type = String(action.type || "").toLowerCase();
@@ -7052,9 +7062,13 @@
     `;
   }
 
+  function waitForVisualQueue(ms) {
+    return new Promise(resolve => setTimeout(resolve, Math.max(0, Number(ms || 0))));
+  }
+
   async function refreshRunningVisualValidationBatch(options) {
     const opts = options || {};
-    const running = getRunningVisualValidationBatch(opts.limit || 5);
+    const running = getRunningVisualValidationBatch(opts.limit || 10);
     if (!running.length) return { ok: true, checked: 0, detail: "No running visual tests to refresh." };
 
     if (!readOperatorEndpoint() || !readOperatorKey()) {
@@ -7074,7 +7088,8 @@
       if (status === "failed" || status === "fix_queued") failed += 1;
     }
 
-    const detail = `${checked} visual test${checked === 1 ? "" : "s"} refreshed. ${closed} passed. ${failed} need repair.`;
+    const stillRunning = Math.max(0, checked - closed - failed);
+    const detail = `${checked} visual test${checked === 1 ? "" : "s"} refreshed. ${closed} passed. ${failed} need repair. ${stillRunning} still queued/running.`;
     if (!opts.silent) {
       logActivity({
         type: "visual_test",
@@ -7087,12 +7102,16 @@
       renderActivityLog();
     }
 
-    return { ok: failed === 0, checked, closed, failed, detail };
+    if (opts.saveMemory !== false && readOperatorEndpoint() && readOperatorKey()) {
+      await saveBackendAgentMemoryNow({ silent: true });
+    }
+
+    return { ok: failed === 0, checked, closed, failed, stillRunning, detail };
   }
 
   async function runPendingVisualValidationBatch(options) {
     const opts = options || {};
-    const pending = getPendingVisualValidationBatch(opts.limit || 10);
+    const pending = getPendingVisualValidationBatch(opts.limit || 20);
     if (!pending.length) return { ok: true, queued: 0, detail: "No pending visual validations found." };
 
     if (!readOperatorEndpoint() || !readOperatorKey()) {
@@ -7132,6 +7151,27 @@
 
     for (const action of pending) {
       const plan = buildVisualTestPlanFromAction(action);
+      const visualRecord = state.visualTests[getVisualProductKey(plan)] || null;
+      const hasExistingVisualRun = !!(action.visualStartedAt || plan.startedAt || visualRecord?.startedAt);
+      if (hasExistingVisualRun) {
+        updateAgentAction(action.id, {
+          status: "queued",
+          validationResult: "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate."
+        });
+        const refreshedPlan = Object.assign({}, plan, {
+          startedAt: action.visualStartedAt || plan.startedAt || visualRecord?.startedAt || ""
+        });
+        await refreshAgentVisualTestStatus(refreshedPlan, { silent: true });
+        queuedActions.push(action);
+        labels.push(action.product || action.code || "product");
+        renderVisualQueueSummary({
+          selected: pending,
+          queued: queuedActions,
+          failed: failedActions,
+          detail: `${queued} new visual test${queued === 1 ? "" : "s"} queued. ${queuedActions.length - queued} existing run${queuedActions.length - queued === 1 ? "" : "s"} refreshed.`
+        });
+        continue;
+      }
       updateAgentAction(action.id, {
         status: "running",
         validationResult: "CV/ChatBot visual test requested by Agent Cycle..."
@@ -7179,7 +7219,37 @@
     renderAgentActions();
     renderActionLanes();
 
-    return { ok: failed === 0, queued, failed, detail };
+    let refreshResult = null;
+    if (queued > 0 || queuedActions.length > 0) {
+      await waitForVisualQueue(opts.followupDelayMs === undefined ? 4500 : opts.followupDelayMs);
+      refreshResult = await refreshRunningVisualValidationBatch({ silent: true, limit: opts.refreshLimit || 20 });
+      if (refreshResult && refreshResult.checked) {
+        logActivity({
+          type: "visual_test",
+          status: refreshResult.failed ? "needs_review" : "checked",
+          source: "agent_cycle",
+          title: "Visual validation follow-up refreshed",
+          detail: refreshResult.detail
+        });
+        renderActivityLog();
+        renderAgentActions();
+        renderActionLanes();
+      }
+    }
+
+    if (readOperatorEndpoint() && readOperatorKey()) {
+      await saveBackendAgentMemoryNow({ silent: true });
+    }
+
+    return {
+      ok: failed === 0 && !(refreshResult && refreshResult.failed),
+      queued,
+      failed,
+      refreshed: refreshResult ? refreshResult.checked || 0 : 0,
+      passed: refreshResult ? refreshResult.closed || 0 : 0,
+      stillRunning: refreshResult ? refreshResult.stillRunning || 0 : 0,
+      detail: refreshResult && refreshResult.checked ? `${detail} ${refreshResult.detail}` : detail
+    };
   }
 
   function getPendingPublicValidationBatch(limit) {
@@ -7285,15 +7355,19 @@
     }
 
     await loadBackendAgentMemory();
-    const visualBatch = getPendingVisualValidationBatch(10);
+    const firstVisualRefresh = await refreshRunningVisualValidationBatch({ silent: true, limit: 30 });
+    const visualBatch = getPendingVisualValidationBatch(20);
     let visualSummary = "";
     let visualQueuedCount = 0;
     if (visualBatch.length) {
-      const visualResult = await runPendingVisualValidationBatch({ silentStart: true, limit: 50 });
+      const visualResult = await runPendingVisualValidationBatch({ silentStart: true, limit: 20, refreshLimit: 30 });
       visualQueuedCount = Number(visualResult && visualResult.queued || 0);
       visualSummary = visualResult && visualResult.queued
-        ? ` Queued ${visualResult.queued} CV/ChatBot visual test${visualResult.queued === 1 ? "" : "s"}.`
+        ? ` Queued ${visualResult.queued} CV/ChatBot visual test${visualResult.queued === 1 ? "" : "s"} and refreshed ${visualResult.refreshed || 0}.`
         : "";
+    }
+    if (firstVisualRefresh && firstVisualRefresh.checked) {
+      visualSummary = ` Refreshed ${firstVisualRefresh.checked} existing visual test${firstVisualRefresh.checked === 1 ? "" : "s"} before dispatch.${visualSummary}`;
     }
     const activeCount = getActiveAgentActions().length;
     const detail = `${waves} wave${waves === 1 ? "" : "s"} ran. ${totalAuto} safe action${totalAuto === 1 ? "" : "s"} executed.${visualSummary} ${activeCount} active queue item${activeCount === 1 ? "" : "s"} remain.${stopReason ? " Stopped because: " + stopReason : ""}`;

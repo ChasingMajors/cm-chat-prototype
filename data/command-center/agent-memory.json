@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T21:39:11.111Z",
+  "exported_at": "2026-06-09T21:39:14.719Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -209,7 +209,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T21:38:11.278Z",
-      "updatedAt": "2026-06-09T21:38:46.174Z",
+      "updatedAt": "2026-06-09T21:39:12.880Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:00:29.075Z"
     },
@@ -353,7 +353,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T21:37:59.983Z",
-      "updatedAt": "2026-06-09T21:38:54.760Z",
+      "updatedAt": "2026-06-09T21:39:13.103Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:00:12.448Z"
     },
@@ -377,7 +377,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T21:37:58.429Z",
-      "updatedAt": "2026-06-09T21:38:54.733Z",
+      "updatedAt": "2026-06-09T21:39:11.134Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:00:10.192Z"
     },
@@ -1207,7 +1207,7 @@
       "expectedRowCount": 261,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-09T17:54:02.466Z",
-      "updatedAt": "2026-06-09T21:38:54.733Z",
+      "updatedAt": "2026-06-09T21:39:11.134Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Dynasty Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T21:35:50.009Z",
@@ -1234,7 +1234,7 @@
       "expectedRowCount": 546,
       "expectedParallelCount": 26,
       "createdAt": "2026-06-09T17:54:02.466Z",
-      "updatedAt": "2026-06-09T21:38:54.761Z",
+      "updatedAt": "2026-06-09T21:39:13.104Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Diamond Icons Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T21:35:50.009Z",
@@ -1396,7 +1396,7 @@
       "expectedRowCount": 545,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T17:54:02.464Z",
-      "updatedAt": "2026-06-09T21:38:46.174Z",
+      "updatedAt": "2026-06-09T21:39:12.880Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Archives Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T21:35:50.009Z",
@@ -2143,6 +2143,56 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781041153117_cmjw7t",
+      "ts": "2026-06-09T21:39:13.117Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 3 safe actions executed. Refreshed 1 existing visual test before dispatch. 68 active queue items remain. Stopped because: A wave ended with 2017 Topps Inception Baseball needing validation or admin review. Wave 1: baseball 2017 -> pending_visual_validation (40 product(s) validated, 0 pending, 0 failed.); baseball 2016 -> pending_visual_validation (16 product(s) validated, 0 pending, 0 failed.); 2017 Topps Inception Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781041153112_pdezq5",
+      "ts": "2026-06-09T21:39:13.112Z",
+      "type": "visual_test",
+      "title": "Visual validation follow-up refreshed",
+      "detail": "30 visual tests refreshed. 2 passed. 0 need repair. 28 still queued/running.",
+      "status": "checked",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1781041153104_0x2f3n",
+      "ts": "2026-06-09T21:39:13.104Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Diamond Icons Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781041152881_hohl2k",
+      "ts": "2026-06-09T21:39:12.881Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Archives Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781041151134_majr0x",
+      "ts": "2026-06-09T21:39:11.134Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Dynasty Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781041149508_m86jcx",
       "ts": "2026-06-09T21:39:09.508Z",
@@ -2892,56 +2942,6 @@
       "status": "queued",
       "product": "2017 Topps Five Star Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781041072655_2wiber",
-      "ts": "2026-06-09T21:37:52.655Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gallery Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041071001_dfgtbk",
-      "ts": "2026-06-09T21:37:51.001Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041068638_jyu2fv",
-      "ts": "2026-06-09T21:37:48.638Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041066759_amtrqm",
-      "ts": "2026-06-09T21:37:46.759Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041065196_8wo0ah",
-      "ts": "2026-06-09T21:37:45.196Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage High Number Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3472,7 +3472,7 @@
       "productName": "2017 Topps Dynasty Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Dynasty_Baseball",
-      "updatedAt": "2026-06-09T21:38:54.731Z",
+      "updatedAt": "2026-06-09T21:39:11.133Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3480,7 +3480,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T21:38:54.731Z"
+      "checkedAt": "2026-06-09T21:39:11.133Z"
     },
     "baseball|2017_Topps_Diamond_Icons_Baseball": {
       "status": "queued",
@@ -3495,7 +3495,7 @@
       "productName": "2017 Topps Diamond Icons Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Diamond_Icons_Baseball",
-      "updatedAt": "2026-06-09T21:38:54.760Z",
+      "updatedAt": "2026-06-09T21:39:13.102Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3503,7 +3503,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T21:38:54.760Z"
+      "checkedAt": "2026-06-09T21:39:13.102Z"
     },
     "baseball|2017_Topps_Definitive_Collection_Baseball": {
       "status": "queued",
@@ -3748,7 +3748,7 @@
       "productName": "2017 Topps Archives Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Archives_Baseball",
-      "updatedAt": "2026-06-09T21:38:46.173Z",
+      "updatedAt": "2026-06-09T21:39:12.879Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3756,7 +3756,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T21:38:46.173Z"
+      "checkedAt": "2026-06-09T21:39:12.879Z"
     },
     "baseball|2017_Bowman_Mega_Box_Chrome_Baseball": {
       "status": "queued",
@@ -5174,6 +5174,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T21:39:12.039Z",
+  "saved_at": "2026-06-09T21:39:15.989Z",
   "saved_by": "cm_command_center_operator"
 }

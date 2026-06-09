@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T20:23:53.401Z",
+  "exported_at": "2026-06-09T20:24:02.440Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -176,18 +176,18 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "",
+      "executionResult": "GitHub Actions visual test queued.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:18:28.039Z",
-      "updatedAt": "2026-06-09T20:23:51.797Z",
-      "visualRunUrl": "",
-      "visualStartedAt": "2026-06-09T18:31:36.979Z"
+      "updatedAt": "2026-06-09T20:24:00.837Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "visualStartedAt": "2026-06-09T20:23:59.160Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps museum collection baseball|2017_topps_museum_collection_baseball",
@@ -316,9 +316,9 @@
       "expectedRowCount": 619,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-09T17:54:02.470Z",
-      "updatedAt": "2026-06-09T20:23:51.798Z",
+      "updatedAt": "2026-06-09T20:24:00.837Z",
       "pendingValidationAttempts": 0,
-      "visualStartedAt": "2026-06-09T18:31:36.979Z",
+      "visualStartedAt": "2026-06-09T20:23:59.160Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-09T18:31:33.939Z"
@@ -1933,6 +1933,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781036640838_bdi51x",
+      "ts": "2026-06-09T20:24:00.838Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Topps Luminaries Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781036631798_o33jrf",
       "ts": "2026-06-09T20:23:51.798Z",
       "type": "visual_test",
@@ -2721,16 +2731,6 @@
       "status": "queued",
       "product": "2017 Topps Dynasty Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781036229163_8uitit",
-      "ts": "2026-06-09T20:17:09.163Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Chrome Update Series Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": null,
@@ -3038,7 +3038,7 @@
       "status": "queued",
       "result": "queued",
       "conclusion": "",
-      "startedAt": "2026-06-07T20:34:41.807Z",
+      "startedAt": "2026-06-09T20:23:59.160Z",
       "runUrl": "",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
@@ -3047,7 +3047,7 @@
       "productName": "2017 Topps Luminaries Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Luminaries_Baseball",
-      "updatedAt": "2026-06-09T20:23:51.795Z",
+      "updatedAt": "2026-06-09T20:24:00.836Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4933,6 +4933,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T20:23:54.357Z",
+  "saved_at": "2026-06-09T20:24:03.420Z",
   "saved_by": "cm_command_center_operator"
 }

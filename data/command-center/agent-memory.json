@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T13:49:44.372Z",
+  "exported_at": "2026-06-09T13:49:54.467Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1457,11 +1457,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Series_1_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1378 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1469,7 +1469,7 @@
       "expectedRowCount": 1378,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.142Z",
-      "updatedAt": "2026-06-08T01:17:00.143Z"
+      "updatedAt": "2026-06-09T13:49:52.866Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Heritage_High_Number_Baseball",
@@ -1501,11 +1501,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Heritage_High_Number_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2016_Topps_Heritage_High_Number_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1513,7 +1513,7 @@
       "expectedRowCount": 758,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.142Z",
-      "updatedAt": "2026-06-09T13:49:42.769Z"
+      "updatedAt": "2026-06-09T13:49:52.849Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Heritage_Baseball",
@@ -1913,13 +1913,52 @@
     }
   ],
   "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2016_Topps_Heritage_High_Number_Baseball",
     "backend_audit|stale_public_json|baseball|2016_Topps_Series_1_Baseball",
     "backend_audit|stale_public_json|baseball|2016_Topps_Series_2_Baseball",
     "backend_audit|stale_public_json|baseball|2016_Topps_Stadium_Club_Baseball",
     "backend_audit|stale_public_json|baseball|2016_Topps_Tier_One_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781012992866_rnrhz7",
+      "ts": "2026-06-09T13:49:52.866Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2016 Topps Series 1 Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781012992864_wjzy2b",
+      "ts": "2026-06-09T13:49:52.864Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2016 Topps Series 1 Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2016 Topps Series 1 Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1781012992850_ytfx2d",
+      "ts": "2026-06-09T13:49:52.850Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2016 Topps Heritage High Number Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781012992847_8ania4",
+      "ts": "2026-06-09T13:49:52.847Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "758 public rows and 0 parallels found.",
+      "status": "covered",
+      "product": "2016 Topps Heritage High Number Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1781012982770_o0mcf6",
       "ts": "2026-06-09T13:49:42.770Z",
@@ -2679,46 +2718,6 @@
       "status": "queued",
       "product": "",
       "source": "agent_cycle"
-    },
-    {
-      "id": "log_1780879243405_7cwkjy",
-      "ts": "2026-06-08T00:40:43.405Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780879241005_luv99i",
-      "ts": "2026-06-08T00:40:41.005Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879240993_2ylu7f",
-      "ts": "2026-06-08T00:40:40.993Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780879234428",
-      "ts": "2026-06-08T00:40:28.775Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Museum Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -4826,9 +4825,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-08T01:25:31.690Z",
       "resolved": true
+    },
+    "baseball|2016 topps heritage high number baseball": {
+      "product": "2016 Topps Heritage High Number Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Heritage_High_Number_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T13:49:52.849Z",
+      "resolved": true
+    },
+    "baseball|2016_topps_heritage_high_number_baseball": {
+      "product": "2016 Topps Heritage High Number Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Heritage_High_Number_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T13:49:52.849Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T13:49:45.609Z",
+  "saved_at": "2026-06-09T13:49:55.642Z",
   "saved_by": "cm_command_center_operator"
 }

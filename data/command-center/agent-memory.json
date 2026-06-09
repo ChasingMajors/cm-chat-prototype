@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T20:00:23.656Z",
+  "exported_at": "2026-06-09T20:00:27.756Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -308,16 +308,16 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232217709",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:09.390Z",
-      "updatedAt": "2026-06-09T20:00:09.391Z"
+      "updatedAt": "2026-06-09T20:00:26.153Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps five star baseball|2017_topps_five_star_baseball",
@@ -330,16 +330,16 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232215126",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:06.979Z",
-      "updatedAt": "2026-06-09T20:00:06.980Z"
+      "updatedAt": "2026-06-09T20:00:24.173Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps gallery baseball|2017_topps_gallery_baseball",
@@ -996,14 +996,14 @@
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232215126",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 360,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-09T20:00:06.980Z",
+      "updatedAt": "2026-06-09T20:00:24.174Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Five Star Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1021,14 +1021,14 @@
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232217709",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 325,
       "expectedParallelCount": 48,
       "createdAt": "2026-06-09T17:54:02.466Z",
-      "updatedAt": "2026-06-09T20:00:09.391Z",
+      "updatedAt": "2026-06-09T20:00:26.153Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Finest Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -2066,6 +2066,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781035226153_xdhxcq",
+      "ts": "2026-06-09T20:00:26.153Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Finest Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781035224174_tkja3m",
+      "ts": "2026-06-09T20:00:24.174Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Five Star Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781035222046_cmh0f0",
       "ts": "2026-06-09T20:00:22.046Z",
       "type": "visual_test",
@@ -2844,26 +2864,6 @@
       "status": "covered",
       "product": "2017 Topps Heritage Minor League Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881864689_l4q96r",
-      "ts": "2026-06-08T01:24:24.689Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881864686_sf3ywp",
-      "ts": "2026-06-08T01:24:24.686Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Heritage Minor League Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "admin_run_queue"
     }
   ],
   "last_agent_report": {
@@ -3175,11 +3175,11 @@
       "checkedAt": "2026-06-09T20:00:21.667Z"
     },
     "baseball|2017_Topps_Five_Star_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-09T20:00:05.589Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232215126",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Five_Star_Baseball",
@@ -3187,15 +3187,15 @@
       "productName": "2017 Topps Five Star Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Five_Star_Baseball",
-      "updatedAt": "2026-06-09T20:00:06.978Z",
+      "updatedAt": "2026-06-09T20:00:24.172Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 27102983741,
-      "runNumber": 31,
+      "runId": 27232215126,
+      "runNumber": 88,
       "displayTitle": "Visual Product Test - 2017 Topps Five Star Baseball",
-      "headSha": "1a48c71200fda4d2610c373561968f4b280ac994",
-      "createdAt": "2026-06-07T19:49:54Z",
-      "checkedAt": "2026-06-07T19:52:01.539Z"
+      "headSha": "6d4df191a465148f5c0a800989ffff6b3c8717db",
+      "createdAt": "2026-06-09T20:00:06Z",
+      "checkedAt": "2026-06-09T20:00:24.172Z"
     },
     "baseball|2017_Topps_Luminaries_Baseball": {
       "status": "completed",
@@ -3359,11 +3359,11 @@
       "checkedAt": "2026-06-09T20:00:11.803Z"
     },
     "baseball|2017_Topps_Finest_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-09T20:00:07.662Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232217709",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Finest_Baseball",
@@ -3371,15 +3371,15 @@
       "productName": "2017 Topps Finest Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Finest_Baseball",
-      "updatedAt": "2026-06-09T20:00:09.390Z",
+      "updatedAt": "2026-06-09T20:00:26.151Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 27103226038,
-      "runNumber": 39,
+      "runId": 27232217709,
+      "runNumber": 89,
       "displayTitle": "Visual Product Test - 2017 Topps Finest Baseball",
-      "headSha": "e86b3dd79214b47cb044c0888228ac4e72788e7d",
-      "createdAt": "2026-06-07T20:00:09Z",
-      "checkedAt": "2026-06-07T20:01:21.003Z"
+      "headSha": "6d4df191a465148f5c0a800989ffff6b3c8717db",
+      "createdAt": "2026-06-09T20:00:08Z",
+      "checkedAt": "2026-06-09T20:00:26.151Z"
     },
     "baseball|2017_Topps_Dynasty_Baseball": {
       "status": "queued",
@@ -5005,6 +5005,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T20:00:24.623Z",
+  "saved_at": "2026-06-09T20:00:28.664Z",
   "saved_by": "cm_command_center_operator"
 }

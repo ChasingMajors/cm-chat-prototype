@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-08T02:10:30.828Z",
+  "exported_at": "2026-06-09T03:26:07.030Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1925,6 +1925,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1780975565427_htnm70",
+      "ts": "2026-06-09T03:26:05.427Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780975565412_3vdqg3",
+      "ts": "2026-06-09T03:26:05.412Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1780975560892",
       "ts": "2026-06-09T03:25:54.207Z",
       "type": "agent_sweep",
@@ -2701,26 +2721,6 @@
       "title": "Covered product auto-resolved",
       "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
       "status": "validated",
-      "product": "2017 Panini Elite Extra Edition Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882098669_2mq50u",
-      "ts": "2026-06-08T01:28:18.669Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "835 public rows and 31 parallels found.",
-      "status": "covered",
-      "product": "2017 Panini Elite Extra Edition Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882096600_455dli",
-      "ts": "2026-06-08T01:28:16.600Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
       "product": "2017 Panini Elite Extra Edition Baseball",
       "source": "operator_backend"
     }
@@ -5058,6 +5058,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T03:26:00.944Z",
+  "saved_at": "2026-06-09T03:26:08.628Z",
   "saved_by": "cm_command_center_operator"
 }

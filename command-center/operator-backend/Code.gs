@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-09-operator-cc115-drain-public-validation";
+const CM_OPERATOR_VERSION = "2026-06-09-operator-cc116-bucket-json-repair";
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
 const CM_SENTINEL_ALERT_EMAIL_PROPERTY = "CM_SENTINEL_ALERT_EMAIL";
 const CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY = "CM_SENTINEL_ALERT_WEBHOOK_URL";
@@ -3953,6 +3953,10 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
 
   const actions = Array.isArray(memory.agent_actions) ? memory.agent_actions : [];
   normalizeQueuedSourceImportActions_(actions, now);
+
+  const bucketRepair = runScheduledChecklistBucketRepairIfAvailable_(memory, key, now);
+  if (bucketRepair && bucketRepair.ran) return bucketRepair;
+
   const action = findNextScheduledAutoAction_(actions, memory);
   if (!action) {
     return {
@@ -4109,6 +4113,125 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
     executionResult: executionResult,
     validationResult: validationResult
   };
+}
+
+function runScheduledChecklistBucketRepairIfAvailable_(memory, key, now) {
+  const actions = Array.isArray(memory && memory.agent_actions) ? memory.agent_actions : [];
+  const group = findBestPendingChecklistBucketRepairGroup_(actions);
+  if (!group || !group.actions.length) return null;
+
+  const publish = publishChecklistAfterImport_({
+    sport: group.sport,
+    target_bucket: group.bucket,
+    year: group.bucket,
+    code: group.actions[0].code || ""
+  }, key);
+
+  const publishOk = !!(publish && publish.ok);
+  let validatedCount = 0;
+  let pendingCount = 0;
+  let failedCount = 0;
+  const details = [];
+
+  group.actions.forEach(function(action) {
+    const code = safeString_(action && action.code).trim();
+    const product = safeString_(action && action.product).trim() || code || "Product";
+    const expectedRows = Number(action && (action.expectedRowCount || action.expected_row_count) || 0);
+    const expectedParallels = Number(action && (action.expectedParallelCount || action.expected_parallel_count) || 0);
+    const publicValidation = code ? waitForPublicChecklistProduct_(group.sport, code) : null;
+    const publicRows = Number(publicValidation && publicValidation.row_count || 0);
+    const publicParallels = Number(publicValidation && publicValidation.parallel_count || 0);
+    const meetsRows = expectedRows <= 0 || publicRows >= expectedRows;
+    const meetsParallels = expectedParallels <= 0 || publicParallels >= expectedParallels;
+    const validated = publishOk && publicRows > 0 && meetsRows && meetsParallels;
+    const attempts = Number(action && action.pendingValidationAttempts || 0) + 1;
+    const exhausted = attempts >= CM_PUBLIC_VALIDATION_RETRY_LIMIT;
+
+    let status = "pending_public_validation";
+    if (validated) status = "pending_visual_validation";
+    else if (!publishOk || exhausted) status = "failed";
+
+    if (status === "pending_visual_validation") validatedCount += 1;
+    else if (status === "pending_public_validation") pendingCount += 1;
+    else failedCount += 1;
+
+    patchMemoryAction_(actions, action.id, {
+      status: status,
+      sport: group.sport,
+      targetBucket: group.bucket,
+      pendingValidationAttempts: validated ? 0 : attempts,
+      executionResult: "Bucket-level checklist JSON repair ran for " + group.sport + " " + group.bucket + ".",
+      validationResult: validated
+        ? "Published checklist JSON validated with " + publicRows + " rows and " + publicParallels + " parallels after bucket repair. CV/ChatBot visual validation is pending."
+        : "Bucket repair did not fully validate this product yet. Expected " + (expectedRows || "any") + " rows / " + (expectedParallels || "any") + " parallels; found " + publicRows + " rows / " + publicParallels + " parallels. " + (publish ? summarizePublishResult_(publish) : "Publish did not return ok.") + " " + summarizePublicChecklistValidation_(publicValidation),
+      repairProof: validated
+        ? "Agent repaired stale public JSON for " + product + " by publishing " + group.sport + " " + group.bucket + " and validating public JSON."
+        : "Agent attempted bucket repair for " + product + " but public JSON still needs review.",
+      autoExecutedAt: now,
+      updatedAt: now
+    });
+
+    details.push(product + " -> " + status);
+  });
+
+  memory.activity_log = prependMemoryActivity_(memory.activity_log || [], {
+    id: "log_" + Date.now() + "_bucket_repair",
+    ts: now,
+    type: "auto_action",
+    title: "Bucket-level checklist repair completed",
+    detail: group.sport + " " + group.bucket + ": " + validatedCount + " validated, " + pendingCount + " pending, " + failedCount + " failed. " + details.slice(0, 6).join("; "),
+    status: failedCount ? "failed" : pendingCount ? "pending_public_validation" : "pending_visual_validation",
+    product: group.sport + " " + group.bucket,
+    source: "operator_backend"
+  });
+
+  return {
+    ran: true,
+    mode: safeString_(memory && memory.autonomy_mode).trim() || "approval_required",
+    type: "checklist_bucket_repair",
+    product: group.sport + " " + group.bucket,
+    status: failedCount ? "failed" : pendingCount ? "pending_public_validation" : "pending_visual_validation",
+    ok: failedCount === 0,
+    validated: validatedCount > 0 && pendingCount === 0 && failedCount === 0,
+    pendingVisualValidation: validatedCount > 0,
+    executionResult: "Bucket-level checklist JSON repair ran for " + group.sport + " " + group.bucket + ".",
+    validationResult: validatedCount + " product(s) validated, " + pendingCount + " pending, " + failedCount + " failed.",
+    repairedCount: validatedCount,
+    pendingCount: pendingCount,
+    failedCount: failedCount
+  };
+}
+
+function findBestPendingChecklistBucketRepairGroup_(actions) {
+  const groups = {};
+  (Array.isArray(actions) ? actions : []).forEach(function(action) {
+    if (!action) return;
+    const status = safeString_(action.status).trim().toLowerCase();
+    const type = safeString_(action.type).trim().toLowerCase();
+    if (status !== "pending_public_validation") return;
+    if (type !== "checklist_publish" && type !== "backend_data_issue" && type !== "source_import") return;
+    const sport = normalize_(action.sport);
+    const code = safeString_(action.code).trim();
+    const bucket = getPublishBucketForChecklist_(sport, safeString_(action.targetBucket || action.bucket || action.year).trim());
+    if (!isAllowedSport_(sport) || !code || !bucket) return;
+    const key = sport + "|" + bucket;
+    if (!groups[key]) groups[key] = {
+      sport: sport,
+      bucket: bucket,
+      actions: []
+    };
+    groups[key].actions.push(action);
+  });
+
+  const out = Object.keys(groups).map(function(key) {
+    return groups[key];
+  }).filter(function(group) {
+    return group.actions.length > 1;
+  }).sort(function(a, b) {
+    return b.actions.length - a.actions.length;
+  });
+
+  return out[0] || null;
 }
 
 function normalizeAgentRunQueue_(memory) {

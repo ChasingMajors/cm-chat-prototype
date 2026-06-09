@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T13:49:19.223Z",
+  "exported_at": "2026-06-09T13:49:32.609Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1913,10 +1913,32 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2016_Topps_Series_1_Baseball",
+    "backend_audit|stale_public_json|baseball|2016_Topps_Series_2_Baseball",
     "backend_audit|stale_public_json|baseball|2016_Topps_Stadium_Club_Baseball",
     "backend_audit|stale_public_json|baseball|2016_Topps_Tier_One_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781012971007_sj285k",
+      "ts": "2026-06-09T13:49:31.007Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2016 Topps Series 1 Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2016 Topps Series 1 Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1781012960199_bixrsu",
+      "ts": "2026-06-09T13:49:20.199Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2016 Topps Series 2 Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2016 Topps Series 2 Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1781012957620_8uvcxd",
       "ts": "2026-06-09T13:49:17.620Z",
@@ -2694,16 +2716,6 @@
       "title": "Deep Sheets Audit complete",
       "detail": "908 Sheet products checked against 942 public JSON products. 150 issues found. 150 queue cards updated.",
       "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780870530777_w52t1v",
-      "ts": "2026-06-07T22:15:30.777Z",
-      "type": "deep_backend_audit",
-      "title": "Backend audit issues queued",
-      "detail": "150 audit findings added to the Agent Action Queue.",
-      "status": "queued",
       "product": "",
       "source": "operator_backend"
     }
@@ -4816,6 +4828,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T13:49:20.554Z",
+  "saved_at": "2026-06-09T13:49:33.966Z",
   "saved_by": "cm_command_center_operator"
 }

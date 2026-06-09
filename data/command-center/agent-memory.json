@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T03:38:29.697Z",
+  "exported_at": "2026-06-09T03:38:35.913Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1889,6 +1889,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1780976314308_y6sui4",
+      "ts": "2026-06-09T03:38:34.308Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync started",
+      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
+      "status": "started",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1780976308094_4pi34e",
       "ts": "2026-06-09T03:38:28.094Z",
       "type": "agent_action",
@@ -2671,16 +2681,6 @@
     {
       "id": "log_1780882486898_ph01qi",
       "ts": "2026-06-08T01:34:46.898Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2016 Topps Update Series Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2016 Topps Update Series Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882483330_4hxcz2",
-      "ts": "2026-06-08T01:34:43.330Z",
       "type": "agent_run_queue",
       "title": "Added to Agent Run Queue",
       "detail": "2016 Topps Update Series Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
@@ -5081,6 +5081,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T03:38:31.111Z",
+  "saved_at": "2026-06-09T03:38:37.458Z",
   "saved_by": "cm_command_center_operator"
 }

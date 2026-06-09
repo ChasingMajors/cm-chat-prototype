@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T21:37:45.124Z",
+  "exported_at": "2026-06-09T21:37:48.370Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,54 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps heritage baseball|2017_topps_heritage_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Heritage Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Heritage_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T21:37:46.758Z",
+      "updatedAt": "2026-06-09T21:37:46.758Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-06-09T19:59:55.613Z"
+    },
+    {
+      "id": "visual_test|github_actions|2017 topps heritage high number baseball|2017_topps_heritage_high_number_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Heritage High Number Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Heritage_High_Number_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T21:37:45.195Z",
+      "updatedAt": "2026-06-09T21:37:45.195Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-06-09T19:59:53.537Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps heritage minor league baseball|2017_topps_heritage_minor_league_baseball",
       "type": "visual_test",
@@ -623,10 +671,10 @@
       "code": "2017_Topps_Heritage_High_Number_Baseball",
       "riskLevel": "high",
       "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -634,10 +682,12 @@
       "expectedRowCount": 795,
       "expectedParallelCount": 13,
       "createdAt": "2026-06-09T17:54:02.468Z",
-      "updatedAt": "2026-06-09T21:37:43.521Z",
+      "updatedAt": "2026-06-09T21:37:45.196Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Heritage High Number Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-09T21:35:50.009Z"
+      "autoExecutedAt": "2026-06-09T21:35:50.009Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-06-09T19:59:53.537Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Baseball",
@@ -648,10 +698,10 @@
       "code": "2017_Topps_Heritage_Baseball",
       "riskLevel": "high",
       "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Queued for CV/ChatBot visual test dispatch (6 of 20).",
+      "validationResult": "CV/ChatBot visual test queued or running.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -659,10 +709,12 @@
       "expectedRowCount": 1410,
       "expectedParallelCount": 14,
       "createdAt": "2026-06-09T17:54:02.468Z",
-      "updatedAt": "2026-06-09T21:37:34.457Z",
+      "updatedAt": "2026-06-09T21:37:46.758Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Heritage Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-09T21:35:50.009Z"
+      "autoExecutedAt": "2026-06-09T21:35:50.009Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-06-09T19:59:55.613Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gypsy_Queen_Baseball",
@@ -676,7 +728,7 @@
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Queued for CV/ChatBot visual test dispatch (7 of 20).",
+      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -684,7 +736,7 @@
       "expectedRowCount": 620,
       "expectedParallelCount": 30,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-09T21:37:34.457Z",
+      "updatedAt": "2026-06-09T21:37:46.768Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Gypsy Queen Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T21:35:50.009Z"
@@ -2052,57 +2104,30 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.445Z",
       "updatedAt": "2026-06-09T17:54:02.445Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Panini_Prime_Cuts_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Panini Prime Cuts Baseball",
-      "sport": "baseball",
-      "code": "2016_Panini_Prime_Cuts_Baseball",
-      "riskLevel": "high",
-      "status": "pending_visual_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Bucket-level checklist JSON repair ran for baseball 2016.",
-      "validationResult": "Published checklist JSON validated with 846 rows and 0 parallels after bucket repair. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 846,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.444Z",
-      "updatedAt": "2026-06-09T21:35:50.009Z",
-      "pendingValidationAttempts": 0,
-      "repairProof": "Agent repaired stale public JSON for 2016 Panini Prime Cuts Baseball by publishing baseball 2016 and validating public JSON.",
-      "autoExecutedAt": "2026-06-09T21:35:50.009Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Panini_Pantheon_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Panini Pantheon Baseball",
-      "sport": "baseball",
-      "code": "2016_Panini_Pantheon_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.444Z",
-      "updatedAt": "2026-06-09T17:54:02.444Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781041066759_amtrqm",
+      "ts": "2026-06-09T21:37:46.759Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Heritage Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781041065196_8wo0ah",
+      "ts": "2026-06-09T21:37:45.196Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Heritage High Number Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781041063512_p7t4zq",
       "ts": "2026-06-09T21:37:43.512Z",
@@ -2882,26 +2907,6 @@
       "status": "queued",
       "product": "2017 Topps Heritage Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781036248599_j6kbzv",
-      "ts": "2026-06-09T20:17:28.599Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gallery Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781036246986_vze44g",
-      "ts": "2026-06-09T20:17:26.986Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Holiday Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3133,7 +3138,7 @@
       "productName": "2017 Topps Heritage Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Heritage_Baseball",
-      "updatedAt": "2026-06-09T20:01:08.148Z",
+      "updatedAt": "2026-06-09T21:37:46.757Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3141,7 +3146,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:01:08.148Z"
+      "checkedAt": "2026-06-09T21:37:46.757Z"
     },
     "baseball|2017_Topps_Gypsy_Queen_Baseball": {
       "status": "in_progress",
@@ -3386,7 +3391,7 @@
       "productName": "2017 Topps Heritage High Number Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Heritage_High_Number_Baseball",
-      "updatedAt": "2026-06-09T20:01:05.367Z",
+      "updatedAt": "2026-06-09T21:37:45.194Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3394,7 +3399,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:01:05.367Z"
+      "checkedAt": "2026-06-09T21:37:45.194Z"
     },
     "baseball|2017_Topps_Finest_Baseball": {
       "status": "in_progress",
@@ -5134,6 +5139,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T21:37:45.943Z",
+  "saved_at": "2026-06-09T21:37:49.137Z",
   "saved_by": "cm_command_center_operator"
 }

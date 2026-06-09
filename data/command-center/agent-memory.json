@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T03:59:31.296Z",
+  "exported_at": "2026-06-09T03:59:58.299Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -173,11 +173,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27182901842",
       "sourceUrl": "",
       "bucket": "",
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T03:58:43.618Z",
-      "updatedAt": "2026-06-09T03:59:28.782Z"
+      "updatedAt": "2026-06-09T03:59:56.240Z"
     },
     {
       "id": "visual_test|github_actions|2016 topps tier one baseball|2016_topps_tier_one_baseball",
@@ -1413,11 +1413,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2016_Topps_Stadium_Club_Baseball.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27182901842",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1425,7 +1425,7 @@
       "expectedRowCount": 558,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.144Z",
-      "updatedAt": "2026-06-09T03:59:28.782Z",
+      "updatedAt": "2026-06-09T03:59:56.240Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1942,6 +1942,26 @@
     "backend_audit|stale_public_json|baseball|2016_Topps_Heritage_High_Number_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780977596247_r13zcm",
+      "ts": "2026-06-09T03:59:56.247Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780977596246_2gj7hj",
+      "ts": "2026-06-09T03:59:56.246Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780977568782_fp7aqs",
       "ts": "2026-06-09T03:59:28.782Z",
@@ -2721,26 +2741,6 @@
       "status": "covered",
       "product": "2017 Bowman Mega Box Chrome Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882520635_hxirgl",
-      "ts": "2026-06-08T01:35:20.635Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Bowman Mega Box Chrome Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882520632_6qqzuc",
-      "ts": "2026-06-08T01:35:20.632Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Bowman Mega Box Chrome Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Bowman Mega Box Chrome Baseball",
-      "source": "admin_run_queue"
     }
   ],
   "visual_tests": {
@@ -3826,9 +3826,9 @@
       "checkedAt": "2026-06-09T03:42:42.464Z"
     },
     "baseball|2016_Topps_Stadium_Club_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T03:58:42.206Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27182901842",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3838,7 +3838,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-09T03:59:28.780Z",
+      "updatedAt": "2026-06-09T03:59:56.227Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27182901842,
@@ -3846,7 +3846,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
       "createdAt": "2026-06-09T03:58:43Z",
-      "checkedAt": "2026-06-09T03:59:28.780Z"
+      "checkedAt": "2026-06-09T03:59:56.227Z"
     }
   },
   "known_issues": {},
@@ -5181,6 +5181,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T03:59:33.255Z",
+  "saved_at": "2026-06-09T04:00:00.494Z",
   "saved_by": "cm_command_center_operator"
 }

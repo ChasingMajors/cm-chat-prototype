@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc112-sentinel-alerts-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc113-agent-report-alerts-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -54,6 +54,7 @@
     autonomyMode: readAutonomyMode(),
     visualTests: readJsonStore(VISUAL_TEST_KEY, {}),
     sentinelSelfTest: readJsonStore(SENTINEL_SELF_TEST_KEY, null),
+    lastAgentReport: null,
     knownIssues: readJsonStore(KNOWN_ISSUE_KEY, {}),
     sourceIgnores: readJsonStore(SOURCE_IGNORE_KEY, {}),
     visualPollTimers: {},
@@ -2669,6 +2670,9 @@
           : "";
       const detail = `Checklist: ${formatNumber(checklistCount)} action${checklistCount === 1 ? "" : "s"}. PRV: ${formatNumber(prvCount)} action${prvCount === 1 ? "" : "s"}. PRV sync: ${prvSyncSkipped ? "skipped" : (prvSyncOk ? "passed" : "needs review")}.${autoText}`;
       const severity = checklistCount || prvCount || (!prvSyncSkipped && !prvSyncOk) || (autoAction && autoAction.ran && autoAction.status !== "validated") ? "warning" : "success";
+      if (data && data.report) {
+        state.lastAgentReport = data.report;
+      }
 
       if (!options.silent) {
         logActivity({
@@ -2681,6 +2685,7 @@
         renderActivityLog();
         renderSentinelNotice("Backend Agent Sweep complete", detail, severity);
         renderSourceCheckMessage("Backend Agent Sweep complete", detail, severity, { noFocus: true });
+        renderRunSummary();
       }
       await loadBackendAgentMemory();
       return data;
@@ -5099,6 +5104,7 @@
       agent_actions: state.agentActions || [],
       agent_run_queue: state.agentRunQueue || [],
       activity_log: state.activityLog || [],
+      last_agent_report: state.lastAgentReport || null,
       visual_tests: state.visualTests || {},
       known_issues: state.knownIssues || {},
       source_ignores: state.sourceIgnores || {},
@@ -5169,6 +5175,7 @@
     state.agentActions = Array.isArray(payload.agent_actions) ? payload.agent_actions : [];
     state.agentRunQueue = Array.isArray(payload.agent_run_queue) ? payload.agent_run_queue : [];
     state.activityLog = Array.isArray(payload.activity_log) ? payload.activity_log : [];
+    state.lastAgentReport = payload.last_agent_report && typeof payload.last_agent_report === "object" ? payload.last_agent_report : null;
     state.visualTests = payload.visual_tests && typeof payload.visual_tests === "object" ? payload.visual_tests : {};
     state.knownIssues = payload.known_issues && typeof payload.known_issues === "object" ? payload.known_issues : {};
     state.sourceIgnores = payload.source_ignores && typeof payload.source_ignores === "object" ? payload.source_ignores : {};
@@ -8011,8 +8018,31 @@
     const readiness = renderAutonomyReadiness();
     const heldDetail = summarizeHeldActions(actions);
     const nextRecommendation = getNextAgentRecommendation(actions);
+    const report = state.lastAgentReport && typeof state.lastAgentReport === "object" ? state.lastAgentReport : null;
 
-    const cards = [
+    const cards = [];
+
+    if (report) {
+      cards.push({
+        title: "Daily Agent Report",
+        detail: report.summary || "Sentinel generated an operating report.",
+        badge: report.status || "report"
+      });
+      cards.push({
+        title: "Admin Next Step",
+        detail: report.next_step || nextRecommendation,
+        badge: report.needs_admin_count || report.blocked_count ? "review" : "clear"
+      });
+      if (Array.isArray(report.proof) && report.proof.length) {
+        cards.push({
+          title: "Agent Proof",
+          detail: report.proof[0],
+          badge: `${formatNumber(report.completed_count || report.proof.length)} proof`
+        });
+      }
+    }
+
+    cards.push(
       {
         title: "Last Sweep",
         detail: latestSweep ? latestSweep.detail || latestSweep.status || "Sweep completed." : "No backend sweep has been logged yet.",
@@ -8057,7 +8087,7 @@
         detail: nextRecommendation,
         badge: pending.length || blocked.length ? "admin" : "agent"
       }
-    ];
+    );
 
     els.runSummaryList.innerHTML = cards.map(card => `
       <div class="run-summary-card">

@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-09-operator-cc112-sentinel-alerts";
+const CM_OPERATOR_VERSION = "2026-06-09-operator-cc113-agent-report-alerts";
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
 const CM_SENTINEL_ALERT_EMAIL_PROPERTY = "CM_SENTINEL_ALERT_EMAIL";
 const CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY = "CM_SENTINEL_ALERT_WEBHOOK_URL";
@@ -3280,6 +3280,21 @@ function runScheduledAgentSweep_(input) {
   if (checklistError) detailParts.push("Checklist error: " + checklistError);
   if (prvError) detailParts.push("PRV source error: " + prvError);
 
+  const agentReport = buildSentinelAgentReport_({
+    now: now,
+    checklistWatch: checklistWatch,
+    prvWatch: prvWatch,
+    checklistActionable: checklistActionable,
+    prvActionable: prvActionable,
+    checklistError: checklistError,
+    prvError: prvError,
+    prvSync: prvSync,
+    autoResult: autoResult,
+    sportInference: sportInference,
+    skippedIgnored: skippedChecklistIgnored + skippedPrvIgnored
+  });
+  memory.last_agent_report = agentReport;
+
   memory.activity_log = prependMemoryActivity_(memory.activity_log || [], {
     id: "log_" + Date.now(),
     ts: now,
@@ -3302,6 +3317,7 @@ function runScheduledAgentSweep_(input) {
     prvError: prvError,
     prvSync: prvSync,
     autoResult: autoResult,
+    report: agentReport,
     sportInference: sportInference
   }, memory);
 
@@ -3351,6 +3367,7 @@ function runScheduledAgentSweep_(input) {
     auto_action: autoResult && autoResult.primary ? autoResult.primary : autoResult,
     auto_actions: autoResult,
     alert: alertResult,
+    report: agentReport,
     sport_inference: sportInference,
     memory_path: saveResult.path || "",
     memory_sha: saveResult.sha || "",
@@ -3409,8 +3426,100 @@ function authorizeSentinelMailAppOnce() {
   };
 }
 
+function buildSentinelAgentReport_(input) {
+  const now = safeString_(input && input.now).trim() || new Date().toISOString();
+  const checklistActionable = Array.isArray(input && input.checklistActionable) ? input.checklistActionable : [];
+  const prvActionable = Array.isArray(input && input.prvActionable) ? input.prvActionable : [];
+  const auto = input && input.autoResult ? input.autoResult : {};
+  const autoList = Array.isArray(auto.results) ? auto.results : auto.primary ? [auto.primary] : auto.ran ? [auto] : [];
+  const completed = [];
+  const needsAdmin = [];
+  const blocked = [];
+  const proof = [];
+
+  autoList.forEach(function(item) {
+    const status = safeString_(item && item.status).trim();
+    const product = safeString_(item && item.product).trim() || safeString_(item && item.type).trim() || "Agent action";
+    const detail = safeString_(item && (item.validationResult || item.executionResult || item.error)).trim();
+    const line = product + " -> " + (status || "unknown") + (detail ? ": " + detail : "");
+
+    if (status === "validated" || status === "pending_visual_validation") {
+      completed.push(line);
+      proof.push(line);
+    } else if (status === "failed" || status === "known_issue" || status === "blocked") {
+      blocked.push(line);
+    } else if (status === "needs_admin" || status === "pending_public_validation" || status === "queued" || status === "running") {
+      needsAdmin.push(line);
+    }
+  });
+
+  checklistActionable.forEach(function(item) {
+    needsAdmin.push("Checklist review: " + summarizeSourceWatchItem_(item));
+  });
+  prvActionable.forEach(function(item) {
+    needsAdmin.push("PRV review: " + summarizeSourceWatchItem_(item));
+  });
+
+  if (input && input.checklistError) blocked.push("Checklist watch failed: " + input.checklistError);
+  if (input && input.prvError) blocked.push("PRV watch failed: " + input.prvError);
+  if (input && input.prvSync && input.prvSync.ok === false) blocked.push("PRV JSON sync failed: " + (input.prvSync.detail || input.prvSync.error || "No detail returned."));
+  if (input && input.sportInference && input.sportInference.ok === false) {
+    blocked.push("Sport inference guard failed: " + Number(input.sportInference.failed_count || 0) + " failure(s).");
+  }
+
+  const status = blocked.length
+    ? "issue"
+    : needsAdmin.length
+      ? "needs_admin"
+      : completed.length
+        ? "progress"
+        : "clear";
+  const nextStep = blocked.length
+    ? "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe."
+    : needsAdmin.length
+      ? "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle."
+      : completed.length
+        ? "No admin action needed. Let Sentinel continue daily monitoring and visual validation."
+        : "No immediate action. Sentinel can run again on schedule.";
+
+  return {
+    ok: status !== "issue",
+    status: status,
+    generated_at: now,
+    checked: {
+      checklist_count: Number(input && input.checklistWatch && input.checklistWatch.fetched_count || 0),
+      prv_count: Number(input && input.prvWatch && input.prvWatch.fetched_count || 0),
+      skipped_ignored: Number(input && input.skippedIgnored || 0)
+    },
+    completed_count: completed.length,
+    needs_admin_count: needsAdmin.length,
+    blocked_count: blocked.length,
+    completed: completed.slice(0, 12),
+    needs_admin: needsAdmin.slice(0, 12),
+    blocked: blocked.slice(0, 12),
+    proof: proof.slice(0, 12),
+    next_step: nextStep,
+    summary: "Checked " + Number(input && input.checklistWatch && input.checklistWatch.fetched_count || 0) + " checklist source item(s) and " + Number(input && input.prvWatch && input.prvWatch.fetched_count || 0) + " PRV source item(s). " +
+      completed.length + " completed/progress item(s), " + needsAdmin.length + " needs-admin item(s), " + blocked.length + " blocked/issue item(s)."
+  };
+}
+
+function summarizeSourceWatchItem_(item) {
+  item = item || {};
+  const title = safeString_(item.title || item.product || item.display_name || item.code).trim() || "Unknown product";
+  const sport = safeString_(item.sport).trim();
+  const status = safeString_(item.status).trim() || "review";
+  const found = safeString_(item.found || item.source || item.coverage_source).trim();
+  const pieces = [title];
+  if (sport) pieces.push(sport);
+  pieces.push(status);
+  if (found) pieces.push("found: " + found);
+  return pieces.join(" | ");
+}
+
 function maybeSendSentinelSweepAlert_(sweep, memory) {
   const now = safeString_(sweep && sweep.now).trim() || new Date().toISOString();
+  const report = sweep && sweep.report ? sweep.report : null;
   const lines = [];
   const criticalLines = [];
   const reviewLines = [];
@@ -3465,6 +3574,14 @@ function maybeSendSentinelSweepAlert_(sweep, memory) {
   if (repairLines.length) {
     lines.push("Agent progress:");
     repairLines.slice(0, 5).forEach(function(line) { lines.push("- " + line); });
+  }
+  if (report && report.next_step) {
+    lines.push("Next step:");
+    lines.push("- " + report.next_step);
+  }
+  if (report && report.summary) {
+    lines.push("Report:");
+    lines.push("- " + report.summary);
   }
 
   const severity = criticalLines.length ? "critical" : "needs_review";

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T13:50:24.490Z",
+  "exported_at": "2026-06-09T13:52:04.340Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2016 topps tier one baseball|2016_topps_tier_one_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2016 Topps Tier One Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Tier_One_Baseball",
+      "riskLevel": "low",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27182347885",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T13:50:29.397Z",
+      "updatedAt": "2026-06-09T13:50:29.398Z"
+    },
     {
       "id": "prv_sync_incident_full_vault",
       "type": "prv_sync_incident",
@@ -1321,19 +1343,19 @@
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2016_Topps_Tier_One_Baseball.",
-      "validationResult": "CV/ChatBot visual test requested by Agent Cycle...",
-      "runUrl": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27182347885",
       "sourceUrl": "",
       "bucket": "2016",
       "targetBucket": "2016",
       "expectedRowCount": 880,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-08T01:17:00.144Z",
-      "updatedAt": "2026-06-09T03:40:59.713Z",
+      "updatedAt": "2026-06-09T13:50:29.398Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1369,11 +1391,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 558 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2016_Topps_Stadium_Club_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1381,7 +1403,7 @@
       "expectedRowCount": 558,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.144Z",
-      "updatedAt": "2026-06-08T01:17:00.144Z"
+      "updatedAt": "2026-06-09T13:50:27.168Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Series_2_Baseball",
@@ -1413,11 +1435,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Series_2_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2016_Topps_Series_2_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1425,7 +1447,7 @@
       "expectedRowCount": 2209,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.143Z",
-      "updatedAt": "2026-06-09T13:50:22.885Z"
+      "updatedAt": "2026-06-09T13:50:24.985Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Series_1_Baseball",
@@ -1913,12 +1935,120 @@
     }
   ],
   "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2016_Topps_Series_1_Baseball",
-    "backend_audit|stale_public_json|baseball|2016_Topps_Series_2_Baseball",
-    "backend_audit|stale_public_json|baseball|2016_Topps_Stadium_Club_Baseball",
-    "backend_audit|stale_public_json|baseball|2016_Topps_Tier_One_Baseball"
+    "backend_audit|stale_public_json|baseball|2016_Topps_Dynasty_Baseball",
+    "backend_audit|stale_public_json|baseball|2016_Topps_Series_1_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781013122737_hdhto7",
+      "ts": "2026-06-09T13:52:02.737Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2016 Topps Dynasty Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2016 Topps Dynasty Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1781013029409_6kusqa",
+      "ts": "2026-06-09T13:50:29.409Z",
+      "type": "agent_run_queue",
+      "title": "Admin Run Queue complete",
+      "detail": "5 attempted. 0 skipped for approval/details. 0 failed. 1 still queued. 2016 Topps Heritage High Number Baseball: Recheck checklist public JSON 2016 Topps Series 1 Baseball: Recheck checklist public JSON 2016 Topps Series 2 Baseball: Recheck checklist public JSON 2016 Topps Stadium Club Baseball: Recheck checklist public JSON 2016 Topps Tier One Baseball: Refresh visual test status",
+      "status": "needs_review",
+      "product": "",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1781013029399_h9ug5v",
+      "ts": "2026-06-09T13:50:29.399Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781013029399_psqnfw",
+      "ts": "2026-06-09T13:50:29.399Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781013027180_7ecp1k",
+      "ts": "2026-06-09T13:50:27.180Z",
+      "type": "agent_run_queue",
+      "title": "Refresh visual test status",
+      "detail": "2016 Topps Tier One Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1781013027169_msxmai",
+      "ts": "2026-06-09T13:50:27.169Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781013027168_vtr586",
+      "ts": "2026-06-09T13:50:27.168Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "558 public rows and 0 parallels found.",
+      "status": "covered",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781013025000_pqdmnw",
+      "ts": "2026-06-09T13:50:25.000Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781013024998_6xpzcw",
+      "ts": "2026-06-09T13:50:24.998Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2016 Topps Stadium Club Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1781013024986_q5txmk",
+      "ts": "2026-06-09T13:50:24.986Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2016 Topps Series 2 Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781013024984_73j75x",
+      "ts": "2026-06-09T13:50:24.984Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "2,209 public rows and 0 parallels found.",
+      "status": "covered",
+      "product": "2016 Topps Series 2 Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1781013022885_3fqud0",
       "ts": "2026-06-09T13:50:22.885Z",
@@ -2608,116 +2738,6 @@
       "status": "queued",
       "product": "2017 Topps Heritage High Number Baseball",
       "source": "admin"
-    },
-    {
-      "id": "log_1780881845167_p50yx3",
-      "ts": "2026-06-08T01:24:05.167Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Heritage Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881842365_wpw2uj",
-      "ts": "2026-06-08T01:24:02.365Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Gypsy Queen Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881838067_t9b571",
-      "ts": "2026-06-08T01:23:58.067Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Gold Label Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881810153_g42i1c",
-      "ts": "2026-06-08T01:23:30.153Z",
-      "type": "public_tool_audit",
-      "title": "Public Tool Audit complete",
-      "detail": "Public data layer score: 100%. Checklist, PRV, release, and signal feeds are reachable.",
-      "status": "validated",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780881809507_wd1rzi",
-      "ts": "2026-06-08T01:23:29.507Z",
-      "type": "public_tool_audit",
-      "title": "Public Tool Audit started",
-      "detail": "Checking public JSON feeds for Checklist Vault, PRV, releases, and early signals.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780881420165_zii031",
-      "ts": "2026-06-08T01:17:00.165Z",
-      "type": "deep_backend_audit",
-      "title": "Deep Sheets Audit complete",
-      "detail": "908 Sheet products checked against 942 public JSON products. 150 issues found. 150 queue cards updated.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881420163_31xsnk",
-      "ts": "2026-06-08T01:17:00.163Z",
-      "type": "deep_backend_audit",
-      "title": "Backend audit issues queued",
-      "detail": "150 audit findings added to the Agent Action Queue.",
-      "status": "queued",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881272222_jlyolf",
-      "ts": "2026-06-08T01:14:32.222Z",
-      "type": "deep_backend_audit",
-      "title": "Deep Sheets Audit started",
-      "detail": "Comparing configured source Google Sheets against public checklist JSON. No writes will run.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780879317077_oo22nn",
-      "ts": "2026-06-08T00:41:57.077Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780879317077_x80oob",
-      "ts": "2026-06-08T00:41:57.077Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780879289454_0dm5ur",
-      "ts": "2026-06-08T00:41:29.454Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
     }
   ],
   "visual_tests": {
@@ -3755,6 +3775,25 @@
       "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
       "createdAt": "2026-06-08T00:40:42Z",
       "checkedAt": "2026-06-08T00:41:57.071Z"
+    },
+    "baseball|2016_Topps_Tier_One_Baseball": {
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
+      "runId": 27182347885,
+      "runNumber": 68,
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27182347885",
+      "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
+      "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
+      "createdAt": "2026-06-09T03:41:01Z",
+      "checkedAt": "2026-06-09T13:50:29.396Z",
+      "key": "baseball|2016_Topps_Tier_One_Baseball",
+      "productName": "2016 Topps Tier One Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Tier_One_Baseball",
+      "updatedAt": "2026-06-09T13:50:29.396Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -4843,9 +4882,45 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-09T13:49:52.849Z",
       "resolved": true
+    },
+    "baseball|2016 topps series 2 baseball": {
+      "product": "2016 Topps Series 2 Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Series_2_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T13:50:24.985Z",
+      "resolved": true
+    },
+    "baseball|2016_topps_series_2_baseball": {
+      "product": "2016 Topps Series 2 Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Series_2_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T13:50:24.985Z",
+      "resolved": true
+    },
+    "baseball|2016 topps stadium club baseball": {
+      "product": "2016 Topps Stadium Club Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Stadium_Club_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T13:50:27.168Z",
+      "resolved": true
+    },
+    "baseball|2016_topps_stadium_club_baseball": {
+      "product": "2016 Topps Stadium Club Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Stadium_Club_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T13:50:27.168Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T13:50:27.604Z",
+  "saved_at": "2026-06-09T13:52:06.347Z",
   "saved_by": "cm_command_center_operator"
 }

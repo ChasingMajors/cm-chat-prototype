@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T18:18:33.039Z",
+  "exported_at": "2026-06-09T18:18:37.758Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -276,11 +276,11 @@
       "sport": "baseball",
       "code": "2021_panini_stars_stripes_usa_baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2021_panini_stars_stripes_usa_baseball.",
-      "validationResult": "Published checklist JSON validated with 1199 rows and 46 parallels. CV/ChatBot visual validation is pending.",
+      "validationResult": "CV/ChatBot visual test requested by Agent Cycle...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2021",
@@ -288,7 +288,7 @@
       "expectedRowCount": 1199,
       "expectedParallelCount": 46,
       "createdAt": "2026-06-09T18:11:10.178Z",
-      "updatedAt": "2026-06-09T18:18:23.381Z",
+      "updatedAt": "2026-06-09T18:18:36.156Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1927,8 +1927,8 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1781029111437_jwxmwv",
-      "ts": "2026-06-09T18:18:31.437Z",
+      "id": "log_1781029116150_gnfyaw",
+      "ts": "2026-06-09T18:18:36.150Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -1937,8 +1937,8 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1781029111420_po1llg",
-      "ts": "2026-06-09T18:18:31.420Z",
+      "id": "log_1781029116137_jw62z2",
+      "ts": "2026-06-09T18:18:36.137Z",
       "type": "memory",
       "title": "Agent memory imported",
       "detail": "Queue, log, approvals, known issues, and visual status were restored.",
@@ -4885,6 +4885,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T18:18:34.499Z",
+  "saved_at": "2026-06-09T18:18:38.997Z",
   "saved_by": "cm_command_center_operator"
 }

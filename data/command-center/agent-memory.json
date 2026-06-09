@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T18:13:05.422Z",
+  "exported_at": "2026-06-09T18:13:33.458Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T18:12:19.146Z",
-      "updatedAt": "2026-06-09T18:13:03.819Z"
+      "updatedAt": "2026-06-09T18:13:31.856Z"
     },
     {
       "id": "prv_watch|basketball|2025-26 topps motif basketball",
@@ -261,7 +261,7 @@
       "expectedRowCount": 1132,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T18:11:10.178Z",
-      "updatedAt": "2026-06-09T18:13:03.819Z",
+      "updatedAt": "2026-06-09T18:13:31.856Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1922,6 +1922,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781028811857_tv2tmo",
+      "ts": "2026-06-09T18:13:31.857Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2021 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781028783820_fc5g5h",
       "ts": "2026-06-09T18:13:03.820Z",
       "type": "visual_test",
@@ -2710,16 +2720,6 @@
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879243414_7w1mkm",
-      "ts": "2026-06-08T00:40:43.414Z",
-      "type": "visual_test",
-      "title": "Visual validation batch queued",
-      "detail": "1 CV/ChatBot visual test queued. 2017 Topps Museum Collection Baseball",
-      "status": "queued",
-      "product": "",
-      "source": "agent_cycle"
     }
   ],
   "last_agent_report": {
@@ -3798,7 +3798,7 @@
       "productName": "2021 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2021_topps_tier_one_baseball",
-      "updatedAt": "2026-06-09T18:13:03.817Z",
+      "updatedAt": "2026-06-09T18:13:31.853Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27226291581,
@@ -3806,7 +3806,7 @@
       "displayTitle": "Visual Product Test - 2021 Topps Tier One Baseball",
       "headSha": "9cd31831a2dbaac08fa32b5190f53b710894244f",
       "createdAt": "2026-06-09T18:12:18Z",
-      "checkedAt": "2026-06-09T18:13:03.817Z"
+      "checkedAt": "2026-06-09T18:13:31.851Z"
     }
   },
   "known_issues": {},
@@ -4880,6 +4880,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T18:13:06.613Z",
+  "saved_at": "2026-06-09T18:13:35.019Z",
   "saved_by": "cm_command_center_operator"
 }

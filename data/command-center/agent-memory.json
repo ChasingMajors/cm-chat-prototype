@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T17:52:44.656Z",
+  "exported_at": "2026-06-09T17:52:49.475Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1935,10 +1935,21 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2016_Topps_Series_1_Baseball",
     "backend_audit|stale_public_json|baseball|2016_Topps_Series_2_Baseball",
     "backend_audit|stale_public_json|baseball|2016_Topps_Stadium_Club_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781027567873_6pa2w7",
+      "ts": "2026-06-09T17:52:47.873Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2016 Topps Series 1 Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2016 Topps Series 1 Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1781027563054_1ihfcl",
       "ts": "2026-06-09T17:52:43.054Z",
@@ -2728,16 +2739,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780870530778_vna8wk",
-      "ts": "2026-06-07T22:15:30.778Z",
-      "type": "deep_backend_audit",
-      "title": "Deep Sheets Audit complete",
-      "detail": "908 Sheet products checked against 942 public JSON products. 150 issues found. 150 queue cards updated.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": null,
@@ -4868,6 +4869,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T17:52:46.035Z",
+  "saved_at": "2026-06-09T17:52:50.627Z",
   "saved_by": "cm_command_center_operator"
 }

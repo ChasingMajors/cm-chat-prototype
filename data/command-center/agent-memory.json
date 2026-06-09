@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T20:17:28.589Z",
+  "exported_at": "2026-06-09T20:17:35.422Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -946,16 +946,16 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27233163738",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:18.186Z",
-      "updatedAt": "2026-06-09T20:17:16.975Z"
+      "updatedAt": "2026-06-09T20:17:33.820Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps definitive collection baseball|2017_topps_definitive_collection_baseball",
@@ -1087,7 +1087,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:04.926Z",
-      "updatedAt": "2026-06-09T20:17:01.439Z"
+      "updatedAt": "2026-06-09T20:17:28.599Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps gold label baseball|2017_topps_gold_label_baseball",
@@ -1153,7 +1153,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T19:59:57.410Z",
-      "updatedAt": "2026-06-09T20:17:16.499Z"
+      "updatedAt": "2026-06-09T20:17:33.551Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps heritage high number baseball|2017_topps_heritage_high_number_baseball",
@@ -1629,7 +1629,7 @@
       "expectedRowCount": 1410,
       "expectedParallelCount": 14,
       "createdAt": "2026-06-09T17:54:02.468Z",
-      "updatedAt": "2026-06-09T20:17:16.499Z",
+      "updatedAt": "2026-06-09T20:17:33.552Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Heritage Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1704,7 +1704,7 @@
       "expectedRowCount": 504,
       "expectedParallelCount": 24,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-09T20:17:01.440Z",
+      "updatedAt": "2026-06-09T20:17:28.599Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Gallery Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1847,14 +1847,14 @@
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27233163738",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 121,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-09T17:54:02.465Z",
-      "updatedAt": "2026-06-09T20:17:16.976Z",
+      "updatedAt": "2026-06-09T20:17:33.820Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Clearly Authentic Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1987,6 +1987,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781036253820_ax723n",
+      "ts": "2026-06-09T20:17:33.820Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Clearly Authentic Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781036253552_md9yho",
+      "ts": "2026-06-09T20:17:33.552Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Heritage Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781036248599_j6kbzv",
+      "ts": "2026-06-09T20:17:28.599Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Gallery Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781036246986_vze44g",
       "ts": "2026-06-09T20:17:26.986Z",
@@ -2756,36 +2786,6 @@
       "status": "queued",
       "product": "2017 Topps Gold Label Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781036158927_cxiprj",
-      "ts": "2026-06-09T20:15:58.927Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781036155369_m2pxp3",
-      "ts": "2026-06-09T20:15:55.369Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781036155031_rhrjor",
-      "ts": "2026-06-09T20:15:55.031Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Archives Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3017,7 +3017,7 @@
       "productName": "2017 Topps Heritage Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Heritage_Baseball",
-      "updatedAt": "2026-06-09T20:17:16.497Z",
+      "updatedAt": "2026-06-09T20:17:33.549Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3025,7 +3025,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:17:16.497Z"
+      "checkedAt": "2026-06-09T20:17:33.549Z"
     },
     "baseball|2017_Topps_Gypsy_Queen_Baseball": {
       "status": "queued",
@@ -3086,7 +3086,7 @@
       "productName": "2017 Topps Gallery Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gallery_Baseball",
-      "updatedAt": "2026-06-09T20:17:01.438Z",
+      "updatedAt": "2026-06-09T20:17:28.598Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3094,7 +3094,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:17:01.438Z"
+      "checkedAt": "2026-06-09T20:17:28.598Z"
     },
     "baseball|2017_Topps_Five_Star_Baseball": {
       "status": "queued",
@@ -3373,11 +3373,11 @@
       "checkedAt": "2026-06-09T20:17:09.309Z"
     },
     "baseball|2017_Topps_Clearly_Authentic_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-09T20:17:15.257Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27233163738",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Clearly_Authentic_Baseball",
@@ -3385,15 +3385,15 @@
       "productName": "2017 Topps Clearly Authentic Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Clearly_Authentic_Baseball",
-      "updatedAt": "2026-06-09T20:17:16.973Z",
+      "updatedAt": "2026-06-09T20:17:33.818Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": "",
-      "runNumber": "",
-      "displayTitle": "",
-      "headSha": "",
-      "createdAt": "",
-      "checkedAt": "2026-06-09T20:17:12.440Z"
+      "runId": 27233163738,
+      "runNumber": 133,
+      "displayTitle": "Visual Product Test - 2017 Topps Clearly Authentic Baseball",
+      "headSha": "50ffa61bca86651ea3d3388adac42ad13f854fe1",
+      "createdAt": "2026-06-09T20:17:16Z",
+      "checkedAt": "2026-06-09T20:17:33.818Z"
     },
     "baseball|2017_Panini_National_Treasures_Baseball": {
       "status": "queued",
@@ -5318,6 +5318,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T20:17:29.529Z",
+  "saved_at": "2026-06-09T20:17:36.931Z",
   "saved_by": "cm_command_center_operator"
 }

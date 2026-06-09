@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T13:54:43.110Z",
+  "exported_at": "2026-06-09T13:55:39.465Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1939,6 +1939,26 @@
   ],
   "activity_log": [
     {
+      "id": "log_1781013337863_1kqi0z",
+      "ts": "2026-06-09T13:55:37.863Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "0 rows and 79 parallels parsed.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Lineage Bayern München Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781013336374_2j9dn6",
+      "ts": "2026-06-09T13:55:36.374Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Topps Lineage Bayern München Soccer",
+      "source": "admin"
+    },
+    {
       "id": "log_1781013281509_kgizbt",
       "ts": "2026-06-09T13:54:41.509Z",
       "type": "visual_test",
@@ -2717,26 +2737,6 @@
       "status": "covered",
       "product": "2017 Topps Gypsy Queen Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881870718_h40e68",
-      "ts": "2026-06-08T01:24:30.718Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881870716_uyg17g",
-      "ts": "2026-06-08T01:24:30.716Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Gypsy Queen Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "admin_run_queue"
     }
   ],
   "visual_tests": {
@@ -4979,6 +4979,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T13:54:47.006Z",
+  "saved_at": "2026-06-09T13:55:40.886Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-09-operator-cc113-agent-report-alerts";
+const CM_OPERATOR_VERSION = "2026-06-09-operator-cc114-audit-repair-queue";
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
 const CM_SENTINEL_ALERT_EMAIL_PROPERTY = "CM_SENTINEL_ALERT_EMAIL";
 const CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY = "CM_SENTINEL_ALERT_WEBHOOK_URL";
@@ -833,6 +833,7 @@ function runDeepBackendAudit_(input) {
     if (issue.severity === "high") stats.errors += 1;
     else stats.warnings += 1;
   });
+  issues.sort(compareBackendAuditIssues_);
 
   const durationMs = new Date().getTime() - startedAt.getTime();
   return {
@@ -850,6 +851,30 @@ function runDeepBackendAudit_(input) {
     duration_ms: durationMs,
     updated_at: new Date().toISOString()
   };
+}
+
+function compareBackendAuditIssues_(a, b) {
+  function score(issue) {
+    issue = issue || {};
+    const severity = safeString_(issue.severity).trim().toLowerCase();
+    const type = safeString_(issue.type).trim().toLowerCase();
+    let out = 0;
+    if (severity === "high") out += 1000;
+    else if (severity === "medium") out += 500;
+    else if (severity === "low") out += 100;
+
+    if (type === "missing_public_json") out += 300;
+    if (type === "stale_public_json") out += 260;
+    if (type === "duplicate_product_code") out += 240;
+    if (type === "missing_product_metadata") out += 80;
+    if (type === "missing_or_unparsed_parallels") out -= 120;
+
+    const rows = Number(issue.expected_row_count || issue.expectedRowCount || 0);
+    out += Math.min(100, Math.floor(rows / 100));
+    return out;
+  }
+
+  return score(b) - score(a);
 }
 
 function pushBackendAuditIssue_(issues, input) {
@@ -3994,7 +4019,7 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
   try {
     if (wasPendingVisualValidation || wasVisualInFlight) {
       result = runScheduledVisualAutoAction_(action, key);
-    } else if (isCoverageOnlyAudit || (action.type === "source_import" && wasPendingPublicValidation)) {
+    } else if (isCoverageOnlyAudit || ((action.type === "source_import" || action.type === "checklist_publish" || action.type === "backend_data_issue") && wasPendingPublicValidation)) {
       result = runScheduledChecklistPendingValidationAction_(action, key);
     } else if (action.type === "source_import") {
       result = runScheduledChecklistAutoAction_(action, key);
@@ -4202,7 +4227,7 @@ function findNextScheduledAutoAction_(actions, memory) {
     const action = actions[i] || {};
     const status = safeString_(action.status).trim().toLowerCase();
     if (status !== "pending_public_validation") continue;
-    if (action.type !== "source_import" && action.type !== "prv_source_review") continue;
+    if (action.type !== "source_import" && action.type !== "checklist_publish" && action.type !== "backend_data_issue" && action.type !== "prv_source_review") continue;
     return action;
   }
 
@@ -4210,7 +4235,7 @@ function findNextScheduledAutoAction_(actions, memory) {
     const action = actions[i] || {};
     const status = safeString_(action.status).trim().toLowerCase();
     if (status !== "approval_required" && status !== "needs_admin" && status !== "approved") continue;
-    if (action.type !== "source_import" && action.type !== "prv_source_review") continue;
+    if (action.type !== "source_import" && action.type !== "checklist_publish" && action.type !== "prv_source_review") continue;
     if (safeString_(action.executionResult).toLowerCase().indexOf("full-auto execution started") > -1) continue;
     return action;
   }

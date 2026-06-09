@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc113-agent-report-alerts-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc114-audit-repair-queue-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -841,12 +841,19 @@
   function queueDeepBackendAuditIssues(issues) {
     const actionable = Array.isArray(issues) ? issues : [];
     let createdOrUpdated = 0;
+    let skippedReportOnly = 0;
 
     actionable.forEach(issue => {
       const staleJson = issue.type === "stale_public_json" || issue.status === "pending_public_validation";
+      const missingJson = issue.type === "missing_public_json";
+      const reportOnly = issue.severity === "low" || issue.type === "missing_or_unparsed_parallels";
+      if (reportOnly) {
+        skippedReportOnly += 1;
+        return;
+      }
       const action = upsertAgentAction({
         id: issue.id || "",
-        type: staleJson ? "source_import" : "backend_data_issue",
+        type: staleJson || missingJson ? "checklist_publish" : "backend_data_issue",
         source: "deep_backend_audit",
         product: issue.product || issue.matched_name || "Backend data issue",
         sport: issue.sport || "",
@@ -854,12 +861,12 @@
         bucket: issue.bucket || "",
         targetBucket: issue.bucket || "",
         riskLevel: issue.severity === "high" ? "high" : issue.severity === "low" ? "low" : "medium",
-        status: staleJson ? "pending_public_validation" : "needs_admin",
+        status: staleJson || missingJson ? "pending_public_validation" : "needs_admin",
         recommendedAction: issue.recommended_action || "Review the source data, fix the issue, publish JSON, and validate the public tools.",
         expectedRowCount: issue.expected_row_count || issue.expectedRowCount || 0,
         expectedParallelCount: issue.expected_parallel_count || issue.expectedParallelCount || 0,
-        executionResult: staleJson
-          ? "Deep backend audit found source Sheet counts ahead of public JSON."
+        executionResult: staleJson || missingJson
+          ? "Deep backend audit found source Sheet data ahead of public JSON."
           : issue.title || "Deep backend audit found a source-of-truth issue.",
         validationResult: issue.detail || issue.reason || "",
         sourceUrl: issue.source_url || ""
@@ -873,7 +880,15 @@
         status: "queued",
         source: "operator_backend",
         title: "Backend audit issues queued",
-        detail: `${createdOrUpdated} audit finding${createdOrUpdated === 1 ? "" : "s"} added to the Agent Action Queue.`
+        detail: `${createdOrUpdated} actionable audit finding${createdOrUpdated === 1 ? "" : "s"} added to the Agent Action Queue.${skippedReportOnly ? " " + skippedReportOnly + " low-priority report-only warning(s) were kept out of the queue." : ""}`
+      });
+    } else if (skippedReportOnly) {
+      logActivity({
+        type: "deep_backend_audit",
+        status: "report_only",
+        source: "operator_backend",
+        title: "Backend audit report-only warnings skipped",
+        detail: `${skippedReportOnly} low-priority warning${skippedReportOnly === 1 ? "" : "s"} were kept out of the Agent Action Queue.`
       });
     }
 
@@ -7172,7 +7187,7 @@
       .filter(action => {
         if (!isPendingPublicValidationAction(action)) return false;
         const type = String(action.type || "").toLowerCase();
-        if (type !== "source_import" && type !== "checklist_publish" && type !== "prv_source_review" && type !== "prv_publish") return false;
+        if (type !== "source_import" && type !== "checklist_publish" && type !== "backend_data_issue" && type !== "prv_source_review" && type !== "prv_publish") return false;
         return !!(action.product || action.code);
       })
       .slice(0, max);
@@ -7184,7 +7199,7 @@
       const type = String(action.type || "").toLowerCase();
       const validation = String(action.validationResult || "").toLowerCase();
       if (status === "running" || status === "failed" || status === "blocked" || status === "known_issue") return false;
-      if (type !== "source_import" && type !== "checklist_publish" && type !== "prv_source_review" && type !== "prv_publish") return false;
+      if (type !== "source_import" && type !== "checklist_publish" && type !== "backend_data_issue" && type !== "prv_source_review" && type !== "prv_publish") return false;
       if (validation.includes("visual test") || validation.includes("cv/chatbot")) return false;
       if (status === "pending_visual_validation") return false;
       if (status === "pending_public_validation") return !!(action.code || action.product);
@@ -7213,7 +7228,7 @@
       return runBackendAgentSweep();
     }
 
-    const maxWaves = 4;
+    const maxWaves = 8;
     let waves = 0;
     let totalAuto = 0;
     let stopReason = "";

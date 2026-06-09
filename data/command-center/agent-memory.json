@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T13:52:34.075Z",
+  "exported_at": "2026-06-09T13:52:40.981Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1934,8 +1934,20 @@
       "updatedAt": "2026-06-08T01:17:00.133Z"
     }
   ],
-  "agent_run_queue": [],
+  "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2016_Topps_Chrome_Baseball"
+  ],
   "activity_log": [
+    {
+      "id": "log_1781013159378_vm0qx1",
+      "ts": "2026-06-09T13:52:39.378Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2016 Topps Chrome Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2016 Topps Chrome Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1781013152471_p91syp",
       "ts": "2026-06-09T13:52:32.471Z",
@@ -2725,16 +2737,6 @@
       "status": "running",
       "product": "2017 Topps Heritage High Number Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881866783_ldqh6m",
-      "ts": "2026-06-08T01:24:26.783Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Heritage High Number Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Heritage High Number Baseball",
-      "source": "admin_run_queue"
     }
   ],
   "visual_tests": {
@@ -4954,6 +4956,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T13:52:35.045Z",
+  "saved_at": "2026-06-09T13:52:42.064Z",
   "saved_by": "cm_command_center_operator"
 }

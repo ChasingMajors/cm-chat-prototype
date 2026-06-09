@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T13:44:15.688Z",
+  "exported_at": "2026-06-09T13:49:01.683Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1912,17 +1912,19 @@
       "updatedAt": "2026-06-08T01:17:00.133Z"
     }
   ],
-  "agent_run_queue": [],
+  "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2016_Topps_Tier_One_Baseball"
+  ],
   "activity_log": [
     {
-      "id": "log_1781012654071_sekxs4",
-      "ts": "2026-06-09T13:44:14.072Z",
-      "type": "sentinel_self_test",
-      "title": "Sentinel self-test passed",
-      "detail": "Cockpit behavior test passed in GitHub Actions.",
-      "status": "validated",
-      "product": "",
-      "source": "github_actions"
+      "id": "log_1781012940079_jjc1ik",
+      "ts": "2026-06-09T13:49:00.079Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2016 Topps Tier One Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "admin"
     },
     {
       "id": "log_1781012586392_rvlrmq",
@@ -4783,6 +4785,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T13:44:17.045Z",
+  "saved_at": "2026-06-09T13:49:03.305Z",
   "saved_by": "cm_command_center_operator"
 }

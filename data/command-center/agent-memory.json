@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T18:29:01.066Z",
+  "exported_at": "2026-06-09T18:29:15.922Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1922,6 +1922,36 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781029754319_9anom2",
+      "ts": "2026-06-09T18:29:14.319Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 2 safe actions executed. 80 active queue items remain. Stopped because: A wave ended with 2017 Topps Museum Collection Baseball needing validation or admin review. Wave 1: 2017 Topps Museum Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.); 2017 Topps Museum Collection Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781029754317_fyibtw",
+      "ts": "2026-06-09T18:29:14.317Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781029754301_w0xq2h",
+      "ts": "2026-06-09T18:29:14.301Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781029748870",
       "ts": "2026-06-09T18:29:00.694Z",
       "type": "agent_sweep",
@@ -2689,36 +2719,6 @@
       "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
       "status": "validated",
       "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879227219_tiyq9v",
-      "ts": "2026-06-08T00:40:27.219Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780870530778_vna8wk",
-      "ts": "2026-06-07T22:15:30.778Z",
-      "type": "deep_backend_audit",
-      "title": "Deep Sheets Audit complete",
-      "detail": "908 Sheet products checked against 942 public JSON products. 150 issues found. 150 queue cards updated.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780870530777_w52t1v",
-      "ts": "2026-06-07T22:15:30.777Z",
-      "type": "deep_backend_audit",
-      "title": "Backend audit issues queued",
-      "detail": "150 audit findings added to the Agent Action Queue.",
-      "status": "queued",
-      "product": "",
       "source": "operator_backend"
     }
   ],
@@ -4858,6 +4858,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T18:29:08.975Z",
+  "saved_at": "2026-06-09T18:29:17.015Z",
   "saved_by": "cm_command_center_operator"
 }

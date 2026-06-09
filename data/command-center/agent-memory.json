@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T03:29:23.271Z",
+  "exported_at": "2026-06-09T03:30:10.799Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -203,7 +203,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-motif-nba",
       "createdAt": "2026-06-09T03:25:54.207Z",
-      "updatedAt": "2026-06-09T03:26:38.616Z"
+      "updatedAt": "2026-06-09T03:29:23.418Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps lineage bayern m nchen soccer",
@@ -1925,6 +1925,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1780975809195_10n73n",
+      "ts": "2026-06-09T03:30:09.195Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Topps Lineage Bayern München Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1780975763429_g1gpi2",
+      "ts": "2026-06-09T03:29:23.429Z",
+      "type": "prv_source_review",
+      "title": "PRV preview completed",
+      "detail": "0 print-run rows parsed.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Motif Basketball",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1780975761668_3spigr",
       "ts": "2026-06-09T03:29:21.668Z",
       "type": "prv_source_review",
@@ -2702,26 +2722,6 @@
       "detail": "2017 Bowman Draft Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
       "status": "queued",
       "product": "2017 Bowman Draft Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882467759_3at5jw",
-      "ts": "2026-06-08T01:34:27.759Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Bowman High Tek Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Bowman High Tek Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882465326_m29gvb",
-      "ts": "2026-06-08T01:34:25.326Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Bowman Mega Box Chrome Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Bowman Mega Box Chrome Baseball",
       "source": "admin"
     }
   ],
@@ -5081,6 +5081,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T03:29:24.763Z",
+  "saved_at": "2026-06-09T03:30:12.418Z",
   "saved_by": "cm_command_center_operator"
 }

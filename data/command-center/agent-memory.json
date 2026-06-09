@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T21:48:28.876Z",
+  "exported_at": "2026-06-09T21:48:33.469Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -473,7 +473,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T21:37:51.000Z",
-      "updatedAt": "2026-06-09T21:48:05.215Z",
+      "updatedAt": "2026-06-09T21:48:31.866Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:00:00.739Z"
     },
@@ -521,7 +521,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T21:37:46.758Z",
-      "updatedAt": "2026-06-09T21:48:05.238Z",
+      "updatedAt": "2026-06-09T21:48:31.843Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T19:59:55.613Z"
     },
@@ -1045,7 +1045,7 @@
       "expectedRowCount": 1410,
       "expectedParallelCount": 14,
       "createdAt": "2026-06-09T17:54:02.468Z",
-      "updatedAt": "2026-06-09T21:48:05.238Z",
+      "updatedAt": "2026-06-09T21:48:31.843Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Heritage Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T21:35:50.009Z",
@@ -1099,7 +1099,7 @@
       "expectedRowCount": 394,
       "expectedParallelCount": 6,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-09T21:48:05.215Z",
+      "updatedAt": "2026-06-09T21:48:31.866Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Gold Label Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T21:35:50.009Z",
@@ -2144,6 +2144,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781041711867_cpr83u",
+      "ts": "2026-06-09T21:48:31.867Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Gold Label Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781041711843_u9h1gm",
+      "ts": "2026-06-09T21:48:31.843Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Heritage Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781041707272_abxdjm",
       "ts": "2026-06-09T21:48:27.272Z",
       "type": "visual_test",
@@ -2922,26 +2942,6 @@
       "status": "queued",
       "product": "2017 Topps Gypsy Queen Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781041588665_bxg6yj",
-      "ts": "2026-06-09T21:46:28.665Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041588641_c5r34c",
-      "ts": "2026-06-09T21:46:28.641Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3173,7 +3173,7 @@
       "productName": "2017 Topps Heritage Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Heritage_Baseball",
-      "updatedAt": "2026-06-09T21:48:05.237Z",
+      "updatedAt": "2026-06-09T21:48:31.841Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3181,7 +3181,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T21:48:05.237Z"
+      "checkedAt": "2026-06-09T21:48:31.841Z"
     },
     "baseball|2017_Topps_Gypsy_Queen_Baseball": {
       "status": "queued",
@@ -3219,7 +3219,7 @@
       "productName": "2017 Topps Gold Label Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gold_Label_Baseball",
-      "updatedAt": "2026-06-09T21:48:05.213Z",
+      "updatedAt": "2026-06-09T21:48:31.865Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3227,7 +3227,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T21:48:05.213Z"
+      "checkedAt": "2026-06-09T21:48:31.865Z"
     },
     "baseball|2017_Topps_Gallery_Baseball": {
       "status": "queued",
@@ -5174,6 +5174,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T21:48:30.030Z",
+  "saved_at": "2026-06-09T21:48:34.426Z",
   "saved_by": "cm_command_center_operator"
 }

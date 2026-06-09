@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc118-visual-proof-drain-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc120-agent-cockpit-focus-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -5508,24 +5508,24 @@
   }
 
   function setLoading() {
-    els.systemState.textContent = "Auditing";
-    els.opportunityCount.textContent = "-";
-    els.criticalCount.textContent = "-";
-    els.lastAudit.textContent = "-";
-    els.nextActionList.innerHTML = `<div class="skeleton-card"></div>`;
-    els.briefList.innerHTML = `<div class="skeleton-line"></div><div class="skeleton-line short"></div>`;
-    els.opportunityList.innerHTML = `<div class="skeleton-card"></div><div class="skeleton-card"></div>`;
+    if (els.systemState) els.systemState.textContent = "Auditing";
+    if (els.opportunityCount) els.opportunityCount.textContent = "-";
+    if (els.criticalCount) els.criticalCount.textContent = "-";
+    if (els.lastAudit) els.lastAudit.textContent = "-";
+    if (els.nextActionList) els.nextActionList.innerHTML = `<div class="skeleton-card"></div>`;
+    if (els.briefList) els.briefList.innerHTML = `<div class="skeleton-line"></div><div class="skeleton-line short"></div>`;
+    if (els.opportunityList) els.opportunityList.innerHTML = `<div class="skeleton-card"></div><div class="skeleton-card"></div>`;
   }
 
   function renderError(err) {
-    els.systemState.textContent = "Error";
-    els.briefList.innerHTML = `
+    if (els.systemState) els.systemState.textContent = "Error";
+    if (els.briefList) els.briefList.innerHTML = `
       <div class="brief-item">
         <strong>Audit could not complete</strong>
         <span>${escapeHtml(err && err.message ? err.message : String(err))}</span>
       </div>
     `;
-    els.opportunityList.innerHTML = "";
+    if (els.opportunityList) els.opportunityList.innerHTML = "";
   }
 
   function getVisibleOpportunities() {
@@ -5540,12 +5540,12 @@
     const critical = opportunities.filter(o => o.severity === "critical");
 
     if (els.buildVersion) els.buildVersion.textContent = COMMAND_CENTER_VERSION;
-    els.systemState.textContent = "Ready";
-    els.autonomyState.textContent = getAutonomyLabel(state.autonomyMode);
+    if (els.systemState) els.systemState.textContent = "Ready";
+    if (els.autonomyState) els.autonomyState.textContent = getAutonomyLabel(state.autonomyMode);
     renderAutonomyReadiness();
-    els.opportunityCount.textContent = formatNumber(opportunities.length);
-    els.criticalCount.textContent = formatNumber(critical.length);
-    els.lastAudit.textContent = state.audit && state.audit.generatedAt
+    if (els.opportunityCount) els.opportunityCount.textContent = formatNumber(opportunities.length);
+    if (els.criticalCount) els.criticalCount.textContent = formatNumber(critical.length);
+    if (els.lastAudit) els.lastAudit.textContent = state.audit && state.audit.generatedAt
       ? state.audit.generatedAt.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
       : "-";
 
@@ -7342,15 +7342,14 @@
         break;
       }
 
-      const blockingAutoResult = data.auto_actions && data.auto_actions.results
+      const reviewAutoResult = data.auto_actions && data.auto_actions.results
         ? data.auto_actions.results.find(result => {
           const status = String(result && result.status || "").toLowerCase();
           return status && status !== "validated" && status !== "pending_visual_validation";
         })
         : null;
-      if (blockingAutoResult) {
-        stopReason = `A wave ended with ${blockingAutoResult.product || blockingAutoResult.type || "an item"} needing validation or admin review.`;
-        break;
+      if (reviewAutoResult) {
+        waveSummaries.push(`Review needed: ${reviewAutoResult.product || reviewAutoResult.type || "an item"} -> ${reviewAutoResult.status || "needs review"}. Sentinel will keep clearing other safe work.`);
       }
     }
 

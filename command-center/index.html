@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=cc119" />
+  <link rel="stylesheet" href="./styles.css?v=cc120" />
 </head>
 <body>
   <div class="sentinel-app">
@@ -42,7 +42,8 @@
           <div class="kicker">CM Sentinel</div>
           <h1>Good morning, Admin.</h1>
           <p class="lede">Everything important is here: data health, missing products, approval-ready work, and the next action the agent needs.</p>
-          <div class="build-version">HTML cc119-visual-status-tracking-v1-2026-06-09</div>
+          <div class="build-version">HTML cc120-agent-cockpit-focus-v1-2026-06-09</div>
+          <div class="build-version build-version-secondary">JSON Index: <span id="buildVersion">HTML cc120</span></div>
         </div>
         <div class="hero-side">
         <div class="hero-pill">
@@ -61,45 +62,6 @@
           </div>
         </div>
       </header>
-
-      <section class="status-strip" id="statusStrip" aria-label="System status">
-        <div class="status-card">
-          <span class="status-icon blue">▣</span>
-          <span class="status-label">Checklist Vault</span>
-          <strong id="opportunityCount">-</strong>
-          <em>Open items</em>
-        </div>
-        <div class="status-card">
-          <span class="status-icon purple">▥</span>
-          <span class="status-label">Print Run Vault</span>
-          <strong>Sync</strong>
-          <em>Manual control ready</em>
-        </div>
-        <div class="status-card">
-          <span class="status-icon green">●</span>
-          <span class="status-label">ChatBot</span>
-          <strong>Live</strong>
-          <em>Visual tests on demand</em>
-        </div>
-        <div class="status-card">
-          <span class="status-icon orange">□</span>
-          <span class="status-label">Release Schedule</span>
-          <strong>JSON</strong>
-          <em>Static feed</em>
-        </div>
-        <div class="status-card">
-          <span class="status-icon blue">≋</span>
-          <span class="status-label">Google Sheets</span>
-          <strong>Source</strong>
-          <em>Approval required</em>
-        </div>
-        <div class="status-card version-card">
-          <span class="status-icon teal">⌁</span>
-          <span class="status-label">JSON Index</span>
-          <strong id="buildVersion">HTML cc119</strong>
-          <em>Current build</em>
-        </div>
-      </section>
 
       <section class="workflow-grid" aria-label="Workflows">
         <button id="agentCycleBtn" class="workflow-tile primary-workflow" type="button">
@@ -129,29 +91,37 @@
         </a>
       </section>
 
-      <section class="command-row" aria-label="Sentinel command area">
-        <section class="assistant-panel">
-          <div class="assistant-orb" aria-hidden="true"></div>
-          <div class="assistant-content">
-            <h2>How can I help you today?</h2>
-            <div class="quick-prompts">
-              <button type="button" data-sentinel-click="agent">Run Agent Cycle</button>
-              <button type="button" data-sentinel-click="syncPrv">Sync PRV JSON</button>
-              <button type="button" data-sentinel-click="audit">Run health check</button>
-              <button type="button" data-sentinel-click="checklists">Audit backend data</button>
-              <button type="button" data-sentinel-click="prv">Find PRV updates</button>
-            </div>
-            <div class="assistant-input-row">
-              <input id="sentinelCommandInput" type="text" placeholder="Ask CM Sentinel anything..." aria-label="Ask CM Sentinel anything" />
-              <button id="sentinelCommandBtn" type="button" aria-label="Send command">Send</button>
-            </div>
+      <section class="panel source-check-panel command-output-panel" id="productVerifier">
+        <div class="panel-head">
+          <div>
+            <h2>Live Status & Product Verifier</h2>
+            <p>Agent Cycle progress, visual-test updates, and one-product verification all show here.</p>
           </div>
-        </section>
+        </div>
+        <div class="source-check-form">
+          <input id="sourceTitleInput" type="text" value="2025-26 Panini Select EuroLeague Basketball" aria-label="Source product title" />
+          <select id="sourceSportInput" class="filter-select" aria-label="Source sport">
+            <option value="baseball">Baseball</option>
+            <option value="basketball" selected>Basketball</option>
+            <option value="football">Football</option>
+            <option value="hockey">Hockey</option>
+            <option value="soccer">Soccer</option>
+          </select>
+          <button id="sourceCheckBtn" class="primary-btn" type="button">Check Product</button>
+        </div>
+        <div id="sourceCheckResult" class="source-check-result">
+          <div class="brief-item">
+            <strong>Ready</strong>
+            <span>Run Agent Cycle or check one supported sports-card product title.</span>
+          </div>
+        </div>
+      </section>
 
+      <section class="command-row" aria-label="Sentinel operating brief">
         <section class="panel run-summary-panel command-brief-panel">
           <div class="panel-head">
             <div>
-              <h2>Command Brief</h2>
+              <h2>Operating Brief</h2>
               <p>What Sentinel checked, changed, held, and recommends next.</p>
             </div>
           </div>
@@ -223,43 +193,17 @@
         </div>
       </section>
 
-      <section class="panel source-check-panel" id="productVerifier">
-        <div class="panel-head">
-          <div>
-            <h2>Product Verifier</h2>
-            <p>Check one product across backend coverage, public JSON, Checklist Vault, PRV, and ChatBot.</p>
-          </div>
-        </div>
-        <div class="source-check-form">
-          <input id="sourceTitleInput" type="text" value="2025-26 Panini Select EuroLeague Basketball" aria-label="Source product title" />
-          <select id="sourceSportInput" class="filter-select" aria-label="Source sport">
-            <option value="baseball">Baseball</option>
-            <option value="basketball" selected>Basketball</option>
-            <option value="football">Football</option>
-            <option value="hockey">Hockey</option>
-            <option value="soccer">Soccer</option>
-          </select>
-          <button id="sourceCheckBtn" class="primary-btn" type="button">Check Product</button>
-        </div>
-        <div id="sourceCheckResult" class="source-check-result">
-          <div class="brief-item">
-            <strong>Ready</strong>
-            <span>Enter a supported sports-card product title and validate it against live Chasing Majors data.</span>
-          </div>
-        </div>
-      </section>
-
       <details class="advanced-operations">
         <summary>
-          <strong>Advanced Operations</strong>
-          <span>Endpoint settings, source watches, memory, guardrails, and deeper reports.</span>
+          <strong>Settings & Advanced Operations</strong>
+          <span>Backend endpoints, source watches, memory, guardrails, and deeper reports.</span>
         </summary>
 
         <section class="panel source-check-panel" id="prvImportBuilder">
           <div class="panel-head">
             <div>
-              <h2>Source Watch Controls</h2>
-              <p>Use these when you need direct source scans or backend settings.</p>
+              <h2>Backend Settings & Source Tools</h2>
+              <p>Endpoint settings and direct source scans live here so the main cockpit stays clean.</p>
             </div>
           </div>
           <div class="source-watch-actions">
@@ -435,6 +379,6 @@
     </main>
   </div>
 
-  <script defer src="./command-center.js?v=cc119"></script>
+  <script defer src="./command-center.js?v=cc120"></script>
 </body>
 </html>

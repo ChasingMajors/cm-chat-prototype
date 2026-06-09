@@ -358,6 +358,12 @@ a {
   font-weight: 800;
 }
 
+.build-version-secondary {
+  margin-left: 6px;
+  color: #2e5a92;
+  background: rgba(255,255,255,0.54);
+}
+
 .version-card strong {
   font-size: 14px;
   line-height: 1.25;
@@ -387,7 +393,7 @@ a {
 
 .command-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+  grid-template-columns: 1fr;
   gap: 14px;
   align-items: start;
   margin-top: 14px;
@@ -651,8 +657,8 @@ a {
 }
 
 .command-brief-panel .run-summary-list {
-  grid-template-columns: 1fr;
-  max-height: 330px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-height: none;
   overflow: auto;
   padding-right: 4px;
 }
@@ -1052,6 +1058,18 @@ a {
 
 .source-check-panel {
   margin-top: 14px;
+}
+
+.command-output-panel {
+  border-color: rgba(36,136,255,0.24);
+  background:
+    radial-gradient(circle at top right, rgba(36,136,255,0.13), transparent 32%),
+    linear-gradient(180deg, rgba(255,255,255,0.9), rgba(244,249,255,0.7));
+}
+
+.command-output-panel .source-check-result {
+  max-height: 520px;
+  overflow: auto;
 }
 
 .source-check-form {

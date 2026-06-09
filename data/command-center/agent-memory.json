@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T21:35:45.345Z",
+  "exported_at": "2026-06-09T21:37:32.401Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2095,6 +2095,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781041050798_fpfao1",
+      "ts": "2026-06-09T21:37:30.798Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781041050780_jba60l",
+      "ts": "2026-06-09T21:37:30.780Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781041046827",
       "ts": "2026-06-09T21:35:50.009Z",
       "type": "agent_sweep",
@@ -2872,26 +2892,6 @@
       "detail": "No GitHub run visible yet.",
       "status": "queued",
       "product": "2017 Topps Gold Label Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781036239774_mcsnly",
-      "ts": "2026-06-09T20:17:19.774Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781036236976_njk59h",
-      "ts": "2026-06-09T20:17:16.976Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps Clearly Authentic Baseball",
       "source": "github_actions"
     }
   ],
@@ -5125,6 +5125,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T21:37:26.933Z",
+  "saved_at": "2026-06-09T21:37:33.473Z",
   "saved_by": "cm_command_center_operator"
 }

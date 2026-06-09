@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T03:27:22.991Z",
+  "exported_at": "2026-06-09T03:27:50.650Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T03:26:09.631Z",
-      "updatedAt": "2026-06-09T03:27:21.388Z"
+      "updatedAt": "2026-06-09T03:27:49.045Z"
     },
     {
       "id": "prv_watch|basketball|2025-26 topps motif basketball",
@@ -1189,7 +1189,7 @@
       "expectedRowCount": 277,
       "expectedParallelCount": 10,
       "createdAt": "2026-06-08T01:17:00.147Z",
-      "updatedAt": "2026-06-09T03:27:21.389Z",
+      "updatedAt": "2026-06-09T03:27:49.045Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1924,6 +1924,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1780975669048_0cq9o4",
+      "ts": "2026-06-09T03:27:49.049Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Bowman Chrome Mini Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780975641389_x07q1l",
       "ts": "2026-06-09T03:27:21.389Z",
@@ -2713,16 +2723,6 @@
       "status": "started",
       "product": "2017 Panini Stars and Stripes USA Baseball",
       "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780882102278_2e3t30",
-      "ts": "2026-06-08T01:28:22.278Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Panini Immaculate Collection Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3774,7 +3774,7 @@
       "productName": "2017 Bowman Chrome Mini Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
-      "updatedAt": "2026-06-09T03:27:21.385Z",
+      "updatedAt": "2026-06-09T03:27:49.041Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27181880379,
@@ -3782,7 +3782,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Chrome Mini Baseball",
       "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
       "createdAt": "2026-06-09T03:26:09Z",
-      "checkedAt": "2026-06-09T03:27:21.385Z"
+      "checkedAt": "2026-06-09T03:27:49.041Z"
     }
   },
   "known_issues": {},
@@ -5081,6 +5081,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T03:27:24.566Z",
+  "saved_at": "2026-06-09T03:27:51.863Z",
   "saved_by": "cm_command_center_operator"
 }

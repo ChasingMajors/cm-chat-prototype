@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T14:55:53.048Z",
+  "exported_at": "2026-06-09T15:00:02.144Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1915,114 +1915,14 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1781016951444_70qome",
-      "ts": "2026-06-09T14:55:51.444Z",
-      "type": "automation",
-      "title": "Daily Agent trigger failed",
-      "detail": "Unknown action",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781016949966_70t00v",
-      "ts": "2026-06-09T14:55:49.966Z",
+      "id": "log_1781017200539_anxu68",
+      "ts": "2026-06-09T15:00:00.540Z",
       "type": "automation",
       "title": "Daily Agent trigger install started",
       "detail": "Requesting Apps Script trigger for runScheduledAgentSweepTrigger.",
       "status": "started",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1781016893794_yflygv",
-      "ts": "2026-06-09T14:54:53.794Z",
-      "type": "agent_run_queue",
-      "title": "Admin Run Queue complete",
-      "detail": "1 attempted. 0 skipped for approval/details. 0 failed. 0 still queued. 2016 Topps Chrome Baseball: Recheck checklist public JSON",
-      "status": "validated",
-      "product": "",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1781016893781_aohxwl",
-      "ts": "2026-06-09T14:54:53.781Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2016 Topps Chrome Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781016893778_tv9sc1",
-      "ts": "2026-06-09T14:54:53.778Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "459 public rows and 0 parallels found.",
-      "status": "covered",
-      "product": "2016 Topps Chrome Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781016888516_71ez2g",
-      "ts": "2026-06-09T14:54:48.516Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2016 Topps Chrome Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781016888512_928wdj",
-      "ts": "2026-06-09T14:54:48.512Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2016 Topps Chrome Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2016 Topps Chrome Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1781016888502_c4wacs",
-      "ts": "2026-06-09T14:54:48.502Z",
-      "type": "agent_cycle",
-      "title": "Running Admin Run Queue",
-      "detail": "1 flagged job will be attempted before Sentinel chooses other work.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1781016839394_oxgbfh",
-      "ts": "2026-06-09T14:53:59.394Z",
-      "type": "sentinel_self_test",
-      "title": "Sentinel self-test passed",
-      "detail": "Cockpit behavior test passed in GitHub Actions.",
-      "status": "validated",
-      "product": "",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781016771129_xzne1f",
-      "ts": "2026-06-09T14:52:51.129Z",
-      "type": "sentinel_self_test",
-      "title": "Sentinel self-test queued",
-      "detail": "GitHub Actions is starting the cockpit behavior test.",
-      "status": "queued",
-      "product": "",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781016767789_57hvo1",
-      "ts": "2026-06-09T14:52:47.789Z",
-      "type": "sentinel_self_test",
-      "title": "Sentinel self-test requested",
-      "detail": "Queueing GitHub Actions to test CM Sentinel behavior.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     },
     {
       "id": "log_1781012586392_rvlrmq",
@@ -2713,6 +2613,66 @@
       "status": "imported",
       "product": "",
       "source": "admin"
+    },
+    {
+      "id": "log_1780879234428",
+      "ts": "2026-06-08T00:40:28.775Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Museum Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780879234428",
+      "ts": "2026-06-08T00:40:28.775Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2017 Topps Museum Collection Baseball: Pending checklist publish validation completed for 2017_Topps_Museum_Collection_Baseball. Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2017 Topps Museum Collection Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780879233596",
+      "ts": "2026-06-08T00:40:28.775Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780879227219_tiyq9v",
+      "ts": "2026-06-08T00:40:27.219Z",
+      "type": "agent_cycle",
+      "title": "Running Agent Cycle",
+      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1780870530778_vna8wk",
+      "ts": "2026-06-07T22:15:30.778Z",
+      "type": "deep_backend_audit",
+      "title": "Deep Sheets Audit complete",
+      "detail": "908 Sheet products checked against 942 public JSON products. 150 issues found. 150 queue cards updated.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780870530777_w52t1v",
+      "ts": "2026-06-07T22:15:30.777Z",
+      "type": "deep_backend_audit",
+      "title": "Backend audit issues queued",
+      "detail": "150 audit findings added to the Agent Action Queue.",
+      "status": "queued",
+      "product": "",
+      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -4820,27 +4780,9 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-08T01:25:31.690Z",
       "resolved": true
-    },
-    "baseball|2016 topps chrome baseball": {
-      "product": "2016 Topps Chrome Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Chrome_Baseball",
-      "sourceUrl": "",
-      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-09T14:54:53.780Z",
-      "resolved": true
-    },
-    "baseball|2016_topps_chrome_baseball": {
-      "product": "2016 Topps Chrome Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Chrome_Baseball",
-      "sourceUrl": "",
-      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-09T14:54:53.780Z",
-      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T14:55:54.242Z",
+  "saved_at": "2026-06-09T15:00:03.656Z",
   "saved_by": "cm_command_center_operator"
 }

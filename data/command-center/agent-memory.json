@@ -2,52 +2,12 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T20:26:10.083Z",
+  "exported_at": "2026-06-09T21:35:45.345Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
   "tasks": [
-    {
-      "id": "task_1781036768481_jf39lu",
-      "sourceId": "backend_audit|stale_public_json|baseball|2017_Topps_Luminaries_Baseball",
-      "title": "Fix: 2017 Topps Luminaries Baseball",
-      "kind": "fix",
-      "severity": "critical",
-      "status": "queued",
-      "createdAt": "2026-06-09T20:26:08.481Z",
-      "updatedAt": "2026-06-09T20:26:08.481Z",
-      "why": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
-      "objective": "Treat this as a product-specific app behavior failure and use the visual report as proof.",
-      "steps": [
-        "Open the visual report linked on the card.",
-        "Compare the failing query with the product code and public JSON coverage.",
-        "Fix the broken route, search alias, or ChatBot intent in sandbox.",
-        "Rerun Test CV/ChatBot from this product card.",
-        "Keep the item in Review/Hold until the rerun passes."
-      ],
-      "guardrail": "Fix in sandbox first. Do not mark validated until JSON coverage or CV/ChatBot visual proof passes."
-    },
-    {
-      "id": "task_1781036768479_vyzerz",
-      "sourceId": "visual_test|github_actions|2017 topps luminaries baseball|2017_topps_luminaries_baseball",
-      "title": "Fix: 2017 Topps Luminaries Baseball",
-      "kind": "fix",
-      "severity": "critical",
-      "status": "queued",
-      "createdAt": "2026-06-09T20:26:08.479Z",
-      "updatedAt": "2026-06-09T20:26:08.479Z",
-      "why": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
-      "objective": "Open the visual report, identify the failing query or page, patch sandbox behavior, then rerun CV/ChatBot validation.",
-      "steps": [
-        "Open the GitHub Actions visual report and note the failing test label.",
-        "Identify whether the failure is ChatBot query routing, Checklist Vault product loading, or expected-test wording.",
-        "Patch the sandbox file only, then run syntax checks.",
-        "Push the fix and rerun the same product visual test.",
-        "Mark validated only after the visual test passes."
-      ],
-      "guardrail": "Fix in sandbox first. Do not mark validated until JSON coverage or CV/ChatBot visual proof passes."
-    },
     {
       "id": "task_1780870327230_55h9qw",
       "sourceId": "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball",
@@ -4973,6 +4933,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T20:26:12.181Z",
+  "saved_at": "2026-06-09T21:35:46.698Z",
   "saved_by": "cm_command_center_operator"
 }

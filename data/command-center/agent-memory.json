@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T03:58:40.796Z",
+  "exported_at": "2026-06-09T03:58:45.235Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2016 topps stadium club baseball|2016_topps_stadium_club_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2016 Topps Stadium Club Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Stadium_Club_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T03:58:43.618Z",
+      "updatedAt": "2026-06-09T03:58:43.618Z"
+    },
     {
       "id": "visual_test|github_actions|2016 topps tier one baseball|2016_topps_tier_one_baseball",
       "type": "visual_test",
@@ -1391,19 +1413,19 @@
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2016_Topps_Stadium_Club_Baseball.",
-      "validationResult": "Published checklist JSON validated with 558 rows and 0 parallels. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "2016",
       "targetBucket": "2016",
       "expectedRowCount": 558,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.144Z",
-      "updatedAt": "2026-06-09T03:58:28.995Z",
+      "updatedAt": "2026-06-09T03:58:43.619Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1914,35 +1936,43 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.134Z",
       "updatedAt": "2026-06-08T01:17:00.134Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Panini_Flawless_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Panini Flawless Baseball",
-      "sport": "baseball",
-      "code": "2016_Panini_Flawless_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 762 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 762,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-08T01:17:00.133Z",
-      "updatedAt": "2026-06-08T01:17:00.133Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1780977519193_6dc0mj",
-      "ts": "2026-06-09T03:58:39.193Z",
+      "id": "log_1780977523633_lhtmtf",
+      "ts": "2026-06-09T03:58:43.633Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 29 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2016 Topps Stadium Club Baseball -> pending_visual_validation (Published checklist JSON validated with 558 rows and 0 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780977523628_tgpn70",
+      "ts": "2026-06-09T03:58:43.628Z",
+      "type": "visual_test",
+      "title": "Visual validation batch queued",
+      "detail": "1 CV/ChatBot visual test queued. 2016 Topps Stadium Club Baseball",
+      "status": "queued",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1780977523619_pb520s",
+      "ts": "2026-06-09T03:58:43.619Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1780977521255_ptd5ix",
+      "ts": "2026-06-09T03:58:41.255Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -1951,8 +1981,8 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1780977519177_w0l3l3",
-      "ts": "2026-06-09T03:58:39.177Z",
+      "id": "log_1780977521245_5te3jp",
+      "ts": "2026-06-09T03:58:41.246Z",
       "type": "memory",
       "title": "Agent memory imported",
       "detail": "Queue, log, approvals, known issues, and visual status were restored.",
@@ -2708,36 +2738,6 @@
       "detail": "Checking current public checklist coverage for this product.",
       "status": "running",
       "product": "2017 Bowman High Tek Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882518654_h6unrx",
-      "ts": "2026-06-08T01:35:18.654Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Bowman High Tek Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Bowman High Tek Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780882518631_dhkh84",
-      "ts": "2026-06-08T01:35:18.631Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Bowman Draft Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882518630_qdmu1x",
-      "ts": "2026-06-08T01:35:18.630Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "640 public rows and 27 parallels found.",
-      "status": "covered",
-      "product": "2017 Bowman Draft Baseball",
       "source": "operator_backend"
     }
   ],
@@ -3822,6 +3822,23 @@
       "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
       "createdAt": "2026-06-09T03:41:01Z",
       "checkedAt": "2026-06-09T03:42:42.464Z"
+    },
+    "baseball|2016_Topps_Stadium_Club_Baseball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-09T03:58:42.206Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2016_Topps_Stadium_Club_Baseball",
+      "key": "baseball|2016_Topps_Stadium_Club_Baseball",
+      "productName": "2016 Topps Stadium Club Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Stadium_Club_Baseball",
+      "updatedAt": "2026-06-09T03:58:43.617Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -5156,6 +5173,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T03:58:42.067Z",
+  "saved_at": "2026-06-09T03:58:46.682Z",
   "saved_by": "cm_command_center_operator"
 }

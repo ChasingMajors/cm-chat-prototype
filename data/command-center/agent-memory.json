@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T21:37:36.068Z",
+  "exported_at": "2026-06-09T21:37:41.599Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,54 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps holiday baseball|2017_topps_holiday_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Holiday Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Holiday_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T21:37:39.986Z",
+      "updatedAt": "2026-06-09T21:37:39.986Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-06-09T19:59:46.527Z"
+    },
+    {
+      "id": "visual_test|github_actions|2017 bowman holiday baseball|2017_topps_holiday_bowman_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Bowman Holiday Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Holiday_Bowman_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T21:37:36.587Z",
+      "updatedAt": "2026-06-09T21:37:36.588Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-06-09T19:59:44.143Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps inception baseball|2017_topps_inception_baseball",
       "type": "visual_test",
@@ -419,10 +467,10 @@
       "code": "2017_Topps_Holiday_Bowman_Baseball",
       "riskLevel": "high",
       "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -430,10 +478,12 @@
       "expectedRowCount": 146,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-09T17:54:02.470Z",
-      "updatedAt": "2026-06-09T21:37:34.466Z",
+      "updatedAt": "2026-06-09T21:37:36.588Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Holiday Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-09T21:35:50.009Z"
+      "autoExecutedAt": "2026-06-09T21:35:50.009Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-06-09T19:59:44.143Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Holiday_Baseball",
@@ -444,10 +494,10 @@
       "code": "2017_Topps_Holiday_Baseball",
       "riskLevel": "high",
       "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Queued for CV/ChatBot visual test dispatch (2 of 20).",
+      "validationResult": "CV/ChatBot visual test queued or running.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -455,10 +505,12 @@
       "expectedRowCount": 344,
       "expectedParallelCount": 4,
       "createdAt": "2026-06-09T17:54:02.469Z",
-      "updatedAt": "2026-06-09T21:37:34.456Z",
+      "updatedAt": "2026-06-09T21:37:39.987Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Holiday Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-09T21:35:50.009Z"
+      "autoExecutedAt": "2026-06-09T21:35:50.009Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-06-09T19:59:46.527Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_High_Tek_Baseball",
@@ -472,7 +524,7 @@
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Queued for CV/ChatBot visual test dispatch (3 of 20).",
+      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -480,7 +532,7 @@
       "expectedRowCount": 287,
       "expectedParallelCount": 12,
       "createdAt": "2026-06-09T17:54:02.469Z",
-      "updatedAt": "2026-06-09T21:37:34.456Z",
+      "updatedAt": "2026-06-09T21:37:39.998Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps High Tek Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T21:35:50.009Z"
@@ -2042,57 +2094,30 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.443Z",
       "updatedAt": "2026-06-09T17:54:02.443Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Panini_National_Treasures_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Panini National Treasures Baseball",
-      "sport": "baseball",
-      "code": "2016_Panini_National_Treasures_Baseball",
-      "riskLevel": "high",
-      "status": "pending_visual_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Bucket-level checklist JSON repair ran for baseball 2016.",
-      "validationResult": "Published checklist JSON validated with 2191 rows and 0 parallels after bucket repair. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 2191,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.443Z",
-      "updatedAt": "2026-06-09T21:35:50.009Z",
-      "pendingValidationAttempts": 0,
-      "repairProof": "Agent repaired stale public JSON for 2016 Panini National Treasures Baseball by publishing baseball 2016 and validating public JSON.",
-      "autoExecutedAt": "2026-06-09T21:35:50.009Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Panini_Flawless_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Panini Flawless Baseball",
-      "sport": "baseball",
-      "code": "2016_Panini_Flawless_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.443Z",
-      "updatedAt": "2026-06-09T17:54:02.443Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781041059987_q3zxsz",
+      "ts": "2026-06-09T21:37:39.987Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Holiday Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781041056588_qjsl59",
+      "ts": "2026-06-09T21:37:36.588Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Holiday Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781041054446_kxtmnw",
       "ts": "2026-06-09T21:37:34.446Z",
@@ -2872,26 +2897,6 @@
       "status": "queued",
       "product": "2017 Panini Stars and Stripes USA Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781036240298_5csvpc",
-      "ts": "2026-06-09T20:17:20.298Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781036239973_pf1lbc",
-      "ts": "2026-06-09T20:17:19.973Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Archives Snapshots Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3284,7 +3289,7 @@
       "productName": "2017 Bowman Holiday Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Bowman_Baseball",
-      "updatedAt": "2026-06-09T20:00:59.600Z",
+      "updatedAt": "2026-06-09T21:37:36.587Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3292,7 +3297,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:00:59.600Z"
+      "checkedAt": "2026-06-09T21:37:36.587Z"
     },
     "baseball|2017_Topps_Holiday_Baseball": {
       "status": "queued",
@@ -3307,7 +3312,7 @@
       "productName": "2017 Topps Holiday Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Baseball",
-      "updatedAt": "2026-06-09T20:00:58.751Z",
+      "updatedAt": "2026-06-09T21:37:39.984Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3315,7 +3320,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:00:58.751Z"
+      "checkedAt": "2026-06-09T21:37:39.984Z"
     },
     "baseball|2017_Topps_High_Tek_Baseball": {
       "status": "queued",
@@ -5124,6 +5129,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T21:37:36.977Z",
+  "saved_at": "2026-06-09T21:37:42.617Z",
   "saved_by": "cm_command_center_operator"
 }

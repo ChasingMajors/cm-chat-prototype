@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T03:41:20.958Z",
+  "exported_at": "2026-06-09T03:41:48.294Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T03:41:02.600Z",
-      "updatedAt": "2026-06-09T03:41:19.356Z"
+      "updatedAt": "2026-06-09T03:41:46.690Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -1355,7 +1355,7 @@
       "expectedRowCount": 880,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-08T01:17:00.144Z",
-      "updatedAt": "2026-06-09T03:41:19.356Z",
+      "updatedAt": "2026-06-09T03:41:46.691Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1936,6 +1936,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1780976506691_oz6crk",
+      "ts": "2026-06-09T03:41:46.691Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780976479356_ne0bpl",
       "ts": "2026-06-09T03:41:19.356Z",
@@ -2725,16 +2735,6 @@
       "status": "running",
       "product": "2017 Bowman Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882511049_hw32r0",
-      "ts": "2026-06-08T01:35:11.049Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Bowman Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Bowman Baseball",
-      "source": "admin_run_queue"
     }
   ],
   "visual_tests": {
@@ -3809,7 +3809,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-09T03:41:19.353Z",
+      "updatedAt": "2026-06-09T03:41:46.686Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27182347885,
@@ -3817,7 +3817,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
       "createdAt": "2026-06-09T03:41:01Z",
-      "checkedAt": "2026-06-09T03:41:19.353Z"
+      "checkedAt": "2026-06-09T03:41:46.685Z"
     }
   },
   "known_issues": {},
@@ -5152,6 +5152,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T03:41:22.145Z",
+  "saved_at": "2026-06-09T03:41:49.802Z",
   "saved_by": "cm_command_center_operator"
 }

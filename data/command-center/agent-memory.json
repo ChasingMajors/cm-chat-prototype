@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T23:02:50.707Z",
+  "exported_at": "2026-06-09T23:02:55.215Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2158,6 +2158,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781046173613_52egui",
+      "ts": "2026-06-09T23:02:53.613Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "8 waves ran. 10 safe actions executed. Refreshed 1 existing visual test before dispatch. 24 active queue items remain. Wave 1: baseball 2017 -> pending_visual_validation (40 product(s) validated, 0 pending, 0 failed.); baseball 2016 -> pending_visual_validation (16 product(s) validated, 0 pending, 0 failed.); 2017 Topps Inception Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.) Review needed: 2017 Topps Inception Baseball -> queued. Sentinel will keep clearing other safe work. Wave 2: 2017 Bowman Holiday Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.) Review needed: 2017 Bowman Holiday Baseball -> queued. Sentinel will keep clearing other safe work.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781046169106_x03rfr",
       "ts": "2026-06-09T23:02:49.106Z",
       "type": "visual_test",
@@ -2945,16 +2955,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Topps Holiday Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781042565223_jh4vdi",
-      "ts": "2026-06-09T22:02:45.223Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Bowman Holiday Baseball",
       "source": "github_actions"
     }
   ],
@@ -5182,6 +5182,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T23:02:51.834Z",
+  "saved_at": "2026-06-09T23:02:56.219Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T13:55:39.465Z",
+  "exported_at": "2026-06-09T13:55:52.180Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -323,11 +323,11 @@
       "sport": "baseball",
       "code": "2017_Topps_New_Era_Baseball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Fill missing metadata in the Products tab, then publish the affected checklist JSON.",
       "adminDecision": "",
       "executionResult": "Product row needs metadata",
-      "validationResult": "Missing: Keywords. Search and routing quality may suffer.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -335,7 +335,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.163Z",
-      "updatedAt": "2026-06-08T01:17:00.163Z"
+      "updatedAt": "2026-06-09T13:55:50.576Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Museum_Collection_Baseball",
@@ -1939,6 +1939,16 @@
   ],
   "activity_log": [
     {
+      "id": "log_1781013350577_yt8hhk",
+      "ts": "2026-06-09T13:55:50.577Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps New Era Baseball",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781013337863_1kqi0z",
       "ts": "2026-06-09T13:55:37.863Z",
       "type": "source_import",
@@ -2725,16 +2735,6 @@
       "title": "Covered product auto-resolved",
       "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
       "status": "validated",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881873093_slxbmf",
-      "ts": "2026-06-08T01:24:33.093Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "620 public rows and 30 parallels found.",
-      "status": "covered",
       "product": "2017 Topps Gypsy Queen Baseball",
       "source": "operator_backend"
     }
@@ -4979,6 +4979,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T13:55:40.886Z",
+  "saved_at": "2026-06-09T13:55:53.676Z",
   "saved_by": "cm_command_center_operator"
 }

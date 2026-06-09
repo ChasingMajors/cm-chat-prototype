@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T13:49:54.467Z",
+  "exported_at": "2026-06-09T13:50:24.490Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1413,11 +1413,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Series_2_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 2209 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1425,7 +1425,7 @@
       "expectedRowCount": 2209,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.143Z",
-      "updatedAt": "2026-06-08T01:17:00.143Z"
+      "updatedAt": "2026-06-09T13:50:22.885Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Series_1_Baseball",
@@ -1457,11 +1457,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Series_1_Baseball",
       "riskLevel": "high",
-      "status": "running",
+      "status": "failed",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "validationResult": "Timed out after 30s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=validateSourceProduct&title=2016%20Topps%20Series%201%20Baseball&sport=baseball&mode=quick_json",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1469,7 +1469,7 @@
       "expectedRowCount": 1378,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.142Z",
-      "updatedAt": "2026-06-09T13:49:52.866Z"
+      "updatedAt": "2026-06-09T13:50:22.875Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Heritage_High_Number_Baseball",
@@ -1919,6 +1919,36 @@
     "backend_audit|stale_public_json|baseball|2016_Topps_Tier_One_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781013022885_3fqud0",
+      "ts": "2026-06-09T13:50:22.885Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2016 Topps Series 2 Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781013022884_nhd15j",
+      "ts": "2026-06-09T13:50:22.884Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2016 Topps Series 2 Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2016 Topps Series 2 Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1781013022875_83tri7",
+      "ts": "2026-06-09T13:50:22.875Z",
+      "type": "validation",
+      "title": "Coverage recheck failed",
+      "detail": "Timed out after 30s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec?action=validateSourceProduct&title=2016%20Topps%20Series%201%20Baseball&sport=baseball&mode=quick_json",
+      "status": "failed",
+      "product": "2016 Topps Series 1 Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1781012992866_rnrhz7",
       "ts": "2026-06-09T13:49:52.866Z",
@@ -2688,36 +2718,6 @@
       "status": "in_progress",
       "product": "2017 Topps Museum Collection Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780879260866_036l9f",
-      "ts": "2026-06-08T00:41:00.866Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780879243418_8kb1ax",
-      "ts": "2026-06-08T00:40:43.418Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 80 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Museum Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879243414_7w1mkm",
-      "ts": "2026-06-08T00:40:43.414Z",
-      "type": "visual_test",
-      "title": "Visual validation batch queued",
-      "detail": "1 CV/ChatBot visual test queued. 2017 Topps Museum Collection Baseball",
-      "status": "queued",
-      "product": "",
-      "source": "agent_cycle"
     }
   ],
   "visual_tests": {
@@ -4846,6 +4846,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T13:49:55.642Z",
+  "saved_at": "2026-06-09T13:50:27.604Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-09-operator-cc117-approved-bucket-repair";
+const CM_OPERATOR_VERSION = "2026-06-09-operator-cc119-visual-run-match";
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
 const CM_SENTINEL_ALERT_EMAIL_PROPERTY = "CM_SENTINEL_ALERT_EMAIL";
 const CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY = "CM_SENTINEL_ALERT_WEBHOOK_URL";
@@ -2736,7 +2736,7 @@ function getVisualProductTestStatus_(input) {
     };
   }
 
-  const apiUrl = githubApiUrl_("/actions/workflows/" + encodeURIComponent(CM_VISUAL_TEST_WORKFLOW) + "/runs?event=workflow_dispatch&per_page=25");
+  const apiUrl = githubApiUrl_("/actions/workflows/" + encodeURIComponent(CM_VISUAL_TEST_WORKFLOW) + "/runs?event=workflow_dispatch&per_page=100");
   const res = githubFetch_(apiUrl, token, { method: "get" });
   const status = res.getResponseCode();
   const text = res.getContentText();
@@ -2797,7 +2797,7 @@ function findVisualProductRun_(runs, productName, startedAt) {
   const target = normalize_(productName);
   const startedMs = startedAt ? Date.parse(startedAt) : 0;
 
-  const matches = (runs || []).filter(function(run) {
+  const exactMatches = (runs || []).filter(function(run) {
     const title = normalize_(run.display_title || run.name || "");
     if (target && title.indexOf(target) === -1) return false;
 
@@ -2809,7 +2809,21 @@ function findVisualProductRun_(runs, productName, startedAt) {
     return true;
   });
 
-  return matches.length ? matches[0] : null;
+  if (exactMatches.length) return exactMatches[0];
+
+  if (!startedMs) return null;
+
+  const nearbyRuns = (runs || []).filter(function(run) {
+    const createdMs = Date.parse(run.created_at || "");
+    if (!Number.isFinite(createdMs)) return false;
+    return createdMs >= startedMs - 120000 && createdMs <= startedMs + 15 * 60 * 1000;
+  }).sort(function(a, b) {
+    const aMs = Date.parse(a.created_at || "") || 0;
+    const bMs = Date.parse(b.created_at || "") || 0;
+    return Math.abs(aMs - startedMs) - Math.abs(bMs - startedMs);
+  });
+
+  return nearbyRuns.length ? nearbyRuns[0] : null;
 }
 
 function buildVisualProductTrackingKey_(productName, sport, code) {

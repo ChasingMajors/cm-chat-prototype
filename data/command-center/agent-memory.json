@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T20:16:28.348Z",
+  "exported_at": "2026-06-09T20:16:34.356Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -823,7 +823,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:34.830Z",
-      "updatedAt": "2026-06-09T20:16:05.466Z"
+      "updatedAt": "2026-06-09T20:16:32.754Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps allen and ginter x baseball|2017_topps_allen_ginter_x_baseball",
@@ -1087,7 +1087,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:04.926Z",
-      "updatedAt": "2026-06-09T20:16:02.915Z"
+      "updatedAt": "2026-06-09T20:16:29.636Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps gold label baseball|2017_topps_gold_label_baseball",
@@ -1704,7 +1704,7 @@
       "expectedRowCount": 504,
       "expectedParallelCount": 24,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-09T20:16:02.916Z",
+      "updatedAt": "2026-06-09T20:16:29.636Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Gallery Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1987,6 +1987,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781036192754_o2rhbz",
+      "ts": "2026-06-09T20:16:32.754Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Allen & Ginter Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781036189636_szgxks",
+      "ts": "2026-06-09T20:16:29.636Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Gallery Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781036186745_wwf7cq",
       "ts": "2026-06-09T20:16:26.745Z",
@@ -2766,26 +2786,6 @@
       "status": "queued",
       "product": "2017 Topps Heritage Minor League Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781036101474_1gu051",
-      "ts": "2026-06-09T20:15:01.474Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781036100352_l75bn0",
-      "ts": "2026-06-09T20:15:00.352Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage High Number Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3086,7 +3086,7 @@
       "productName": "2017 Topps Gallery Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gallery_Baseball",
-      "updatedAt": "2026-06-09T20:16:02.915Z",
+      "updatedAt": "2026-06-09T20:16:29.634Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3094,7 +3094,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:16:02.915Z"
+      "checkedAt": "2026-06-09T20:16:29.634Z"
     },
     "baseball|2017_Topps_Five_Star_Baseball": {
       "status": "queued",
@@ -3661,7 +3661,7 @@
       "productName": "2017 Topps Allen & Ginter Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Allen_Ginter_Baseball",
-      "updatedAt": "2026-06-09T20:16:05.464Z",
+      "updatedAt": "2026-06-09T20:16:32.753Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3669,7 +3669,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:16:05.464Z"
+      "checkedAt": "2026-06-09T20:16:32.753Z"
     },
     "baseball|2017_Panini_Stars_and_Stripes_USA_Baseball": {
       "status": "queued",
@@ -5318,6 +5318,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T20:16:29.323Z",
+  "saved_at": "2026-06-09T20:16:35.650Z",
   "saved_by": "cm_command_center_operator"
 }

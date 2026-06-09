@@ -79,7 +79,7 @@ async function testViewport(viewport) {
     const initialText = await page.locator("body").innerText({ timeout: 10000 });
     result.checks.push(assertIncludes(initialText, "CM Sentinel", "CM Sentinel brand visible"));
     result.checks.push(assertIncludes(initialText, "Agent Action Queue", "Agent Action Queue visible"));
-    result.checks.push(assertIncludes(initialText, "Public Tool Excellence", "Public Tool Excellence visible"));
+    result.checks.push(assertIncludes(initialText, "Public Tool Audit", "Public Tool Audit visible"));
     result.checks.push(assertIncludes(initialText, "Run Agent Cycle", "Run Agent Cycle visible"));
 
     await clickAndWait(page, "#publicToolAuditBtn", /Public Tool Audit complete|Public data layer score|feed issue/i, 45000);
@@ -87,7 +87,7 @@ async function testViewport(viewport) {
     result.checks.push(assertIncludes(publicAuditText, "Public Tool Audit complete", "Public Tool Audit completes"));
     result.checks.push(assertAnyIncludes(publicAuditText, ["Checklist Vault", "Print Run Vault", "Release Schedule"], "Public tool cards render"));
 
-    await clickAndWait(page, "#refreshBtn", /Auditing|Open items|Admin Brief|Data Health/i, 45000);
+    await clickAndWait(page, '[data-sentinel-click="audit"]', /Auditing|Open items|Command Brief|Data Health|Health check/i, 45000);
     const healthText = await page.locator("body").innerText({ timeout: 10000 });
     result.checks.push(assertNotIncludes(healthText, "Command Center runtime error", "No runtime error shown"));
     result.checks.push(assertNotIncludes(healthText, "Audit could not complete", "Health audit does not hard-fail"));

@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc109-attention-auto-clear-v1-2026-06-07";
+  const COMMAND_CENTER_VERSION = "cc110-security-agent-sweep-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -289,15 +289,25 @@
 
   function readOperatorKey() {
     try {
-      return String(localStorage.getItem(OPERATOR_WRITE_KEY) || "").trim();
-    } catch (err) {
-      return "";
-    }
+      const sessionValue = String(sessionStorage.getItem(OPERATOR_WRITE_KEY) || "").trim();
+      if (sessionValue) return sessionValue;
+
+      const legacyValue = String(localStorage.getItem(OPERATOR_WRITE_KEY) || "").trim();
+      if (legacyValue) {
+        sessionStorage.setItem(OPERATOR_WRITE_KEY, legacyValue);
+        localStorage.removeItem(OPERATOR_WRITE_KEY);
+        return legacyValue;
+      }
+    } catch (err) {}
+    return "";
   }
 
   function writeOperatorKey(value) {
     try {
-      localStorage.setItem(OPERATOR_WRITE_KEY, String(value || "").trim());
+      const nextValue = String(value || "").trim();
+      if (nextValue) sessionStorage.setItem(OPERATOR_WRITE_KEY, nextValue);
+      else sessionStorage.removeItem(OPERATOR_WRITE_KEY);
+      localStorage.removeItem(OPERATOR_WRITE_KEY);
     } catch (err) {}
   }
 
@@ -5239,12 +5249,18 @@
       ACTIVITY_LOG_KEY,
       VISUAL_TEST_KEY,
       KNOWN_ISSUE_KEY,
-      SOURCE_IGNORE_KEY
+      SOURCE_IGNORE_KEY,
+      AGENT_RUN_QUEUE_KEY
     ].forEach(key => {
       try {
         localStorage.removeItem(key);
       } catch (err) {}
     });
+
+    try {
+      sessionStorage.removeItem(OPERATOR_WRITE_KEY);
+      localStorage.removeItem(OPERATOR_WRITE_KEY);
+    } catch (err) {}
 
     state.approvals = {};
     state.tasks = [];

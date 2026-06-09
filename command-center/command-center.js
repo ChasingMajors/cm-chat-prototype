@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc121-visual-proof-dedupe-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc122-queue-breakdown-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -7325,6 +7325,55 @@
     return "";
   }
 
+  function getAgentQueueBreakdown(actions) {
+    const list = Array.isArray(actions) ? actions : getActiveAgentActions();
+    const counts = {
+      total: list.length,
+      pendingVisual: 0,
+      pendingPublic: 0,
+      needsAdmin: 0,
+      running: 0,
+      failed: 0,
+      knownIssue: 0,
+      blocked: 0,
+      queued: 0,
+      approved: 0,
+      other: 0
+    };
+
+    list.forEach(action => {
+      const status = String(action && action.status || "").toLowerCase();
+      if (status === "pending_visual_validation") counts.pendingVisual += 1;
+      else if (status === "pending_public_validation") counts.pendingPublic += 1;
+      else if (status === "needs_admin" || status === "approval_required") counts.needsAdmin += 1;
+      else if (status === "running" || status === "in_progress") counts.running += 1;
+      else if (status === "failed") counts.failed += 1;
+      else if (status === "known_issue") counts.knownIssue += 1;
+      else if (status === "blocked") counts.blocked += 1;
+      else if (status === "queued") counts.queued += 1;
+      else if (status === "approved" || status === "ready") counts.approved += 1;
+      else counts.other += 1;
+    });
+
+    const parts = [
+      counts.pendingVisual ? `${formatNumber(counts.pendingVisual)} pending CV/ChatBot visual proof` : "",
+      counts.pendingPublic ? `${formatNumber(counts.pendingPublic)} pending public JSON recheck` : "",
+      counts.needsAdmin ? `${formatNumber(counts.needsAdmin)} need admin decision` : "",
+      counts.running ? `${formatNumber(counts.running)} running` : "",
+      counts.queued ? `${formatNumber(counts.queued)} queued/in flight` : "",
+      counts.failed ? `${formatNumber(counts.failed)} failed` : "",
+      counts.knownIssue ? `${formatNumber(counts.knownIssue)} known issue` : "",
+      counts.blocked ? `${formatNumber(counts.blocked)} blocked` : "",
+      counts.approved ? `${formatNumber(counts.approved)} approved/ready` : "",
+      counts.other ? `${formatNumber(counts.other)} other` : ""
+    ].filter(Boolean);
+
+    return {
+      counts,
+      summary: counts.total ? `${formatNumber(counts.total)} remain: ${parts.join(", ")}.` : "Queue is clear."
+    };
+  }
+
   async function runBackendAgentDrainCycle() {
     if (!readOperatorEndpoint() || !readOperatorKey()) {
       return runBackendAgentSweep();
@@ -7399,8 +7448,9 @@
     if (firstVisualRefresh && firstVisualRefresh.checked) {
       visualSummary = ` Refreshed ${firstVisualRefresh.checked} existing visual test${firstVisualRefresh.checked === 1 ? "" : "s"} before dispatch.${visualSummary}`;
     }
-    const activeCount = getActiveAgentActions().length;
-    const detail = `${waves} wave${waves === 1 ? "" : "s"} ran. ${totalAuto} safe action${totalAuto === 1 ? "" : "s"} executed.${visualSummary} ${activeCount} active queue item${activeCount === 1 ? "" : "s"} remain.${stopReason ? " Stopped because: " + stopReason : ""}`;
+    const queueBreakdown = getAgentQueueBreakdown();
+    const activeCount = queueBreakdown.counts.total;
+    const detail = `${waves} wave${waves === 1 ? "" : "s"} ran. ${totalAuto} safe action${totalAuto === 1 ? "" : "s"} executed.${visualSummary} ${queueBreakdown.summary}${stopReason ? " Stopped because: " + stopReason : ""}`;
 
     logActivity({
       type: "agent_cycle",
@@ -8146,6 +8196,7 @@
     const pendingValidation = actions.filter(action => String(action.status || "").toLowerCase() === "pending_public_validation");
     const pendingVisualValidation = actions.filter(action => String(action.status || "").toLowerCase() === "pending_visual_validation");
     const runQueue = getQueuedAgentActions(20);
+    const queueBreakdown = getAgentQueueBreakdown(actions);
     const mode = getAutonomyLabel(state.autonomyMode);
     const readiness = renderAutonomyReadiness();
     const heldDetail = summarizeHeldActions(actions);
@@ -8181,6 +8232,12 @@
         badge: "visual proof"
       });
     }
+
+    cards.push({
+      title: "Queue Breakdown",
+      detail: queueBreakdown.summary,
+      badge: queueBreakdown.counts.total ? "open" : "clear"
+    });
 
     cards.push(
       {

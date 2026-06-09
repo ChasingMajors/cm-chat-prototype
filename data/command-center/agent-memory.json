@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T18:30:26.088Z",
+  "exported_at": "2026-06-09T18:31:26.103Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -202,24 +202,6 @@
       "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-motif-nba",
-      "createdAt": "2026-06-09T18:29:00.694Z",
-      "updatedAt": "2026-06-09T18:29:00.694Z"
-    },
-    {
-      "id": "source_watch|hockey|2026 leaf metal hockey",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2026 Leaf Metal Hockey",
-      "sport": "hockey",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
       "createdAt": "2026-06-09T18:29:00.694Z",
       "updatedAt": "2026-06-09T18:29:00.694Z"
     },
@@ -1922,6 +1904,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781029884501_chq4uq",
+      "ts": "2026-06-09T18:31:24.501Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2026 Leaf Metal Hockey was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2026 Leaf Metal Hockey",
+      "source": "admin"
+    },
+    {
       "id": "log_1781029824486_t2r6px",
       "ts": "2026-06-09T18:30:24.486Z",
       "type": "visual_test",
@@ -2710,16 +2702,6 @@
       "status": "queued",
       "product": "2017 Topps Museum Collection Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780879241005_luv99i",
-      "ts": "2026-06-08T00:40:41.005Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -4855,9 +4837,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-08T01:25:31.690Z",
       "resolved": true
+    },
+    "hockey|https www checklistcenter com 2026-leaf-metal-hockey-card-checklist": {
+      "product": "2026 Leaf Metal Hockey",
+      "sport": "hockey",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T18:31:24.499Z",
+      "resolved": true
+    },
+    "hockey|2026 leaf metal hockey": {
+      "product": "2026 Leaf Metal Hockey",
+      "sport": "hockey",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T18:31:24.499Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T18:30:27.327Z",
+  "saved_at": "2026-06-09T18:31:27.357Z",
   "saved_by": "cm_command_center_operator"
 }

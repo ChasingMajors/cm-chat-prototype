@@ -3382,6 +3382,33 @@ function testSentinelAlert_(input) {
   }, result || {});
 }
 
+function testSentinelAlert() {
+  const key = PropertiesService.getScriptProperties().getProperty(CM_OPERATOR_KEY_PROPERTY);
+  if (!key) throw new Error("Missing Script Property " + CM_OPERATOR_KEY_PROPERTY + ".");
+  return testSentinelAlert_({
+    key: key
+  });
+}
+
+function authorizeSentinelMailAppOnce() {
+  const props = PropertiesService.getScriptProperties();
+  const email = safeString_(props.getProperty(CM_SENTINEL_ALERT_EMAIL_PROPERTY)).trim() ||
+    safeString_(Session.getActiveUser().getEmail()).trim();
+  if (!email) throw new Error("Set Script Property " + CM_SENTINEL_ALERT_EMAIL_PROPERTY + " before authorizing MailApp.");
+
+  MailApp.sendEmail({
+    to: email,
+    subject: "CM Sentinel email authorization",
+    body: "MailApp is authorized for CM Sentinel admin alerts."
+  });
+
+  return {
+    ok: true,
+    sent_to: email,
+    updated_at: new Date().toISOString()
+  };
+}
+
 function maybeSendSentinelSweepAlert_(sweep, memory) {
   const now = safeString_(sweep && sweep.now).trim() || new Date().toISOString();
   const lines = [];

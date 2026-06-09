@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T13:49:38.910Z",
+  "exported_at": "2026-06-09T13:49:44.372Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1501,11 +1501,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Heritage_High_Number_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 758 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1513,7 +1513,7 @@
       "expectedRowCount": 758,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.142Z",
-      "updatedAt": "2026-06-08T01:17:00.142Z"
+      "updatedAt": "2026-06-09T13:49:42.769Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Heritage_Baseball",
@@ -1920,6 +1920,36 @@
     "backend_audit|stale_public_json|baseball|2016_Topps_Tier_One_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781012982770_o0mcf6",
+      "ts": "2026-06-09T13:49:42.770Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2016 Topps Heritage High Number Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781012982766_3jnp9t",
+      "ts": "2026-06-09T13:49:42.766Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2016 Topps Heritage High Number Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2016 Topps Heritage High Number Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1781012982762_c5gzdr",
+      "ts": "2026-06-09T13:49:42.762Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "5 flagged jobs will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1781012977308_lap88g",
       "ts": "2026-06-09T13:49:37.308Z",
@@ -2689,36 +2719,6 @@
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879234428",
-      "ts": "2026-06-08T00:40:28.775Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Topps Museum Collection Baseball: Pending checklist publish validation completed for 2017_Topps_Museum_Collection_Baseball. Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879233596",
-      "ts": "2026-06-08T00:40:28.775Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879227219_tiyq9v",
-      "ts": "2026-06-08T00:40:27.219Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "visual_tests": {
@@ -4829,6 +4829,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T13:49:40.300Z",
+  "saved_at": "2026-06-09T13:49:45.609Z",
   "saved_by": "cm_command_center_operator"
 }

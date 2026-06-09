@@ -166,6 +166,42 @@
   ],
   "agent_actions": [
     {
+      "id": "prv_watch|basketball|2025-26 topps motif basketball",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2025-26 Topps Motif Basketball",
+      "sport": "basketball",
+      "code": "",
+      "riskLevel": "low",
+      "status": "known_issue",
+      "recommendedAction": "Source post appears paid/locked. Public HTML does not expose writable print-run rows. Keep as known issue unless admin has another source.",
+      "adminDecision": "",
+      "executionResult": "PRV source was scanned and held before auto execution.",
+      "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-motif-nba",
+      "createdAt": "2026-06-09T15:57:03.659Z",
+      "updatedAt": "2026-06-09T15:57:03.659Z"
+    },
+    {
+      "id": "source_watch|hockey|2026 leaf metal hockey",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026 Leaf Metal Hockey",
+      "sport": "hockey",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
+      "createdAt": "2026-06-09T15:57:03.659Z",
+      "updatedAt": "2026-06-09T15:57:03.659Z"
+    },
+    {
       "id": "prv_sync_incident_full_vault",
       "type": "prv_sync_incident",
       "source": "operator_backend",
@@ -177,7 +213,7 @@
       "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
       "adminDecision": "",
       "executionResult": "Scheduled PRV full JSON sync completed through Static Data Exporter.",
-      "validationResult": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "validationResult": "Scheduled PRV JSON sync completed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "",
@@ -185,7 +221,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T03:39:00.348Z",
-      "updatedAt": "2026-06-09T03:40:48.522Z"
+      "updatedAt": "2026-06-09T15:57:03.659Z"
     },
     {
       "id": "visual_test|github_actions|2017 bowman chrome mini baseball|2017_bowman_chrome_mini_baseball",
@@ -212,7 +248,7 @@
     {
       "id": "source_watch|soccer|2025-26 topps lineage bayern m nchen soccer",
       "type": "source_import",
-      "source": "scheduled_quick_json",
+      "source": "scheduled_deep_sheets",
       "product": "2025-26 Topps Lineage Bayern München Soccer",
       "sport": "soccer",
       "code": "",
@@ -225,7 +261,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-lineage-bayern-munchen-soccer-card-checklist/",
       "createdAt": "2026-06-09T03:25:54.207Z",
-      "updatedAt": "2026-06-09T03:40:48.522Z"
+      "updatedAt": "2026-06-09T15:57:03.659Z"
     },
     {
       "id": "visual_test|github_actions|2017 panini national treasures baseball|2017_panini_national_treasures_baseball",
@@ -1321,23 +1357,24 @@
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
       "riskLevel": "high",
-      "status": "running",
+      "status": "queued",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Pending checklist publish validation completed for 2016_Topps_Tier_One_Baseball.",
-      "validationResult": "CV/ChatBot visual test requested by Agent Cycle...",
-      "runUrl": "",
+      "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
+      "validationResult": "Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "2016",
       "targetBucket": "2016",
       "expectedRowCount": 880,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-08T01:17:00.144Z",
-      "updatedAt": "2026-06-09T03:40:59.713Z",
+      "updatedAt": "2026-06-09T15:57:03.659Z",
       "pendingValidationAttempts": 0,
-      "visualStartedAt": "",
-      "visualRunUrl": "",
-      "autoExecutedAt": "2026-06-09T03:40:48.522Z"
+      "visualStartedAt": "2026-06-09T15:59:42.894Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "autoExecutedAt": "2026-06-09T15:57:03.659Z",
+      "repairProof": "CV/ChatBot visual test queued in GitHub Actions."
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Stadium_Club_Baseball",
@@ -1888,32 +1925,40 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.134Z",
       "updatedAt": "2026-06-08T01:17:00.134Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Panini_Flawless_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Panini Flawless Baseball",
-      "sport": "baseball",
-      "code": "2016_Panini_Flawless_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 762 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 762,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-08T01:17:00.133Z",
-      "updatedAt": "2026-06-08T01:17:00.133Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781020784479",
+      "ts": "2026-06-09T15:57:03.659Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 2 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: passed. 5 admin-ignored source item(s) skipped. Auto actions: 1 run. 2016 Topps Tier One Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781020784478",
+      "ts": "2026-06-09T15:57:03.659Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2016 Topps Tier One Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "status": "queued",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781020782865",
+      "ts": "2026-06-09T15:57:03.659Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1781018618548_6q2sfu",
       "ts": "2026-06-09T15:23:38.548Z",
@@ -4783,6 +4828,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T15:23:42.183Z",
+  "saved_at": "2026-06-09T15:59:44.533Z",
   "saved_by": "cm_command_center_operator"
 }

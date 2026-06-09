@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T14:54:00.997Z",
+  "exported_at": "2026-06-09T14:54:50.118Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1633,11 +1633,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Chrome_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 459 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1645,7 +1645,7 @@
       "expectedRowCount": 459,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.140Z",
-      "updatedAt": "2026-06-08T01:17:00.140Z"
+      "updatedAt": "2026-06-09T14:54:48.515Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Archives_Signature_Series_All_Star_Baseball",
@@ -1916,6 +1916,36 @@
     "backend_audit|stale_public_json|baseball|2016_Topps_Chrome_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781016888516_71ez2g",
+      "ts": "2026-06-09T14:54:48.516Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2016 Topps Chrome Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781016888512_928wdj",
+      "ts": "2026-06-09T14:54:48.512Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2016 Topps Chrome Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2016 Topps Chrome Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1781016888502_c4wacs",
+      "ts": "2026-06-09T14:54:48.502Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "1 flagged job will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1781016839394_oxgbfh",
       "ts": "2026-06-09T14:53:59.394Z",
@@ -2683,16 +2713,6 @@
       "title": "Deep Sheets Audit complete",
       "detail": "908 Sheet products checked against 942 public JSON products. 150 issues found. 150 queue cards updated.",
       "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780870530777_w52t1v",
-      "ts": "2026-06-07T22:15:30.777Z",
-      "type": "deep_backend_audit",
-      "title": "Backend audit issues queued",
-      "detail": "150 audit findings added to the Agent Action Queue.",
-      "status": "queued",
       "product": "",
       "source": "operator_backend"
     }
@@ -4805,6 +4825,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T14:54:02.328Z",
+  "saved_at": "2026-06-09T14:54:54.741Z",
   "saved_by": "cm_command_center_operator"
 }

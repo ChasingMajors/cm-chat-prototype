@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T22:20:36.570Z",
+  "exported_at": "2026-06-09T22:20:40.090Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,30 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 bowman draft baseball|2017_bowman_draft_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Bowman Draft Baseball",
+      "sport": "baseball",
+      "code": "2017_Bowman_Draft_Baseball",
+      "riskLevel": "low",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232274142",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T22:20:38.485Z",
+      "updatedAt": "2026-06-09T22:20:38.485Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232274142",
+      "visualStartedAt": "2026-06-09T20:01:06Z"
+    },
     {
       "id": "visual_test|github_actions|2017 bowman high tek baseball|2017_bowman_high_tek_baseball",
       "type": "visual_test",
@@ -1867,22 +1891,24 @@
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
-      "runUrl": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232274142",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 640,
       "expectedParallelCount": 27,
       "createdAt": "2026-06-09T17:54:02.457Z",
-      "updatedAt": "2026-06-09T22:20:34.968Z",
+      "updatedAt": "2026-06-09T22:20:38.485Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Draft Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-09T22:13:05.558Z"
+      "autoExecutedAt": "2026-06-09T22:13:05.558Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232274142",
+      "visualStartedAt": "2026-06-09T20:01:06Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Chrome_Mini_Baseball",
@@ -1892,11 +1918,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
       "riskLevel": "high",
-      "status": "queued",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Queued for CV/ChatBot visual test dispatch (2 of 9).",
+      "validationResult": "CV/ChatBot visual test requested by Agent Cycle...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1904,7 +1930,7 @@
       "expectedRowCount": 277,
       "expectedParallelCount": 10,
       "createdAt": "2026-06-09T17:54:02.456Z",
-      "updatedAt": "2026-06-09T22:20:34.961Z",
+      "updatedAt": "2026-06-09T22:20:38.488Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Chrome Mini Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T22:13:05.558Z"
@@ -2146,35 +2172,30 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.450Z",
       "updatedAt": "2026-06-09T17:54:02.450Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Series_2_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Series 2 Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Series_2_Baseball",
-      "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Bucket-level checklist JSON repair ran for baseball 2016.",
-      "validationResult": "Queued for CV/ChatBot visual test dispatch (9 of 9).",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 2209,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.449Z",
-      "updatedAt": "2026-06-09T22:20:34.963Z",
-      "pendingValidationAttempts": 0,
-      "repairProof": "Agent repaired stale public JSON for 2016 Topps Series 2 Baseball by publishing baseball 2016 and validating public JSON.",
-      "autoExecutedAt": "2026-06-09T22:13:05.558Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781043638486_lptl12",
+      "ts": "2026-06-09T22:20:38.486Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Bowman Draft Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781043638485_6cyjjm",
+      "ts": "2026-06-09T22:20:38.485Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Bowman Draft Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781043634951_afx81h",
       "ts": "2026-06-09T22:20:34.951Z",
@@ -2953,26 +2974,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Topps Gallery Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781043384793_wcdhwg",
-      "ts": "2026-06-09T22:16:24.793Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781043384793_12kgtz",
-      "ts": "2026-06-09T22:16:24.793Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Gold Label Baseball",
       "source": "github_actions"
     }
   ],
@@ -4118,11 +4119,11 @@
       "checkedAt": "2026-06-09T22:20:34.948Z"
     },
     "baseball|2017_Bowman_Draft_Baseball": {
-      "status": "queued",
-      "result": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T20:01:05.393Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232274142",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Bowman_Draft_Baseball",
@@ -4130,9 +4131,15 @@
       "productName": "2017 Bowman Draft Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
-      "updatedAt": "2026-06-09T20:01:06.984Z",
+      "updatedAt": "2026-06-09T22:20:38.485Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27232274142,
+      "runNumber": 114,
+      "displayTitle": "Visual Product Test - 2017 Bowman Draft Baseball",
+      "headSha": "6d4df191a465148f5c0a800989ffff6b3c8717db",
+      "createdAt": "2026-06-09T20:01:06Z",
+      "checkedAt": "2026-06-09T22:20:38.485Z"
     }
   },
   "known_issues": {},
@@ -5206,6 +5213,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T22:20:37.541Z",
+  "saved_at": "2026-06-09T22:20:41.113Z",
   "saved_by": "cm_command_center_operator"
 }

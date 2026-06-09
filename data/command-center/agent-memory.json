@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T03:30:43.726Z",
+  "exported_at": "2026-06-09T03:38:29.697Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -186,24 +186,6 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T03:26:09.631Z",
       "updatedAt": "2026-06-09T03:29:06.345Z"
-    },
-    {
-      "id": "prv_watch|basketball|2025-26 topps motif basketball",
-      "type": "prv_source_review",
-      "source": "scheduled_prv_quick_json",
-      "product": "2025-26 Topps Motif Basketball",
-      "sport": "basketball",
-      "code": "",
-      "riskLevel": "low",
-      "status": "known_issue",
-      "recommendedAction": "Open the source and review whether this post has a new layout or no extractable print-run table.",
-      "adminDecision": "",
-      "executionResult": "Source found, but the PRV parser returned 0 print-run rows.",
-      "validationResult": "Parser review needed before this can write PRV sheet data.",
-      "runUrl": "",
-      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-motif-nba",
-      "createdAt": "2026-06-09T03:25:54.207Z",
-      "updatedAt": "2026-06-09T03:29:23.418Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps lineage bayern m nchen soccer",
@@ -1907,6 +1889,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1780976308094_4pi34e",
+      "ts": "2026-06-09T03:38:28.094Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2025-26 Topps Motif Basketball was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2025-26 Topps Motif Basketball",
+      "source": "admin"
+    },
+    {
       "id": "log_1780975842123_edsapn",
       "ts": "2026-06-09T03:30:42.123Z",
       "type": "agent_action",
@@ -2694,16 +2686,6 @@
       "detail": "2016 Topps Update Series Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
       "status": "queued",
       "product": "2016 Topps Update Series Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882476812_inrtkq",
-      "ts": "2026-06-08T01:34:36.812Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Bowman Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Bowman Baseball",
       "source": "admin"
     }
   ],
@@ -5078,9 +5060,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-09T03:30:42.120Z",
       "resolved": true
+    },
+    "basketball|https slabsquatch substack com p 202526-topps-motif-nba": {
+      "product": "2025-26 Topps Motif Basketball",
+      "sport": "basketball",
+      "code": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-motif-nba",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T03:38:28.089Z",
+      "resolved": true
+    },
+    "basketball|2025-26 topps motif basketball": {
+      "product": "2025-26 Topps Motif Basketball",
+      "sport": "basketball",
+      "code": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-motif-nba",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T03:38:28.089Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T03:30:45.372Z",
+  "saved_at": "2026-06-09T03:38:31.111Z",
   "saved_by": "cm_command_center_operator"
 }

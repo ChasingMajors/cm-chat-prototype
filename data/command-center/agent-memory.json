@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T18:13:33.458Z",
+  "exported_at": "2026-06-09T18:14:00.410Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -173,11 +173,11 @@
       "sport": "baseball",
       "code": "2021_topps_tier_one_baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27226291581",
       "sourceUrl": "",
       "bucket": "",
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T18:12:19.146Z",
-      "updatedAt": "2026-06-09T18:13:31.856Z"
+      "updatedAt": "2026-06-09T18:13:58.808Z"
     },
     {
       "id": "prv_watch|basketball|2025-26 topps motif basketball",
@@ -249,11 +249,11 @@
       "sport": "baseball",
       "code": "2021_topps_tier_one_baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2021_topps_tier_one_baseball.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27226291581",
       "sourceUrl": "",
       "bucket": "2021",
@@ -261,7 +261,7 @@
       "expectedRowCount": 1132,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T18:11:10.178Z",
-      "updatedAt": "2026-06-09T18:13:31.856Z",
+      "updatedAt": "2026-06-09T18:13:58.809Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1922,6 +1922,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781028838809_j961s4",
+      "ts": "2026-06-09T18:13:58.809Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2021 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781028838809_l9w3v2",
+      "ts": "2026-06-09T18:13:58.809Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2021 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781028811857_tv2tmo",
       "ts": "2026-06-09T18:13:31.857Z",
       "type": "visual_test",
@@ -2700,26 +2720,6 @@
       "status": "in_progress",
       "product": "2017 Topps Museum Collection Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780879260866_036l9f",
-      "ts": "2026-06-08T00:41:00.866Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780879243418_8kb1ax",
-      "ts": "2026-06-08T00:40:43.418Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 80 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Museum Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -3786,9 +3786,9 @@
       "checkedAt": "2026-06-08T00:41:57.071Z"
     },
     "baseball|2021_topps_tier_one_baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T18:12:16.932Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27226291581",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3798,7 +3798,7 @@
       "productName": "2021 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2021_topps_tier_one_baseball",
-      "updatedAt": "2026-06-09T18:13:31.853Z",
+      "updatedAt": "2026-06-09T18:13:58.807Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27226291581,
@@ -3806,7 +3806,7 @@
       "displayTitle": "Visual Product Test - 2021 Topps Tier One Baseball",
       "headSha": "9cd31831a2dbaac08fa32b5190f53b710894244f",
       "createdAt": "2026-06-09T18:12:18Z",
-      "checkedAt": "2026-06-09T18:13:31.851Z"
+      "checkedAt": "2026-06-09T18:13:58.807Z"
     }
   },
   "known_issues": {},
@@ -4880,6 +4880,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T18:13:35.019Z",
+  "saved_at": "2026-06-09T18:14:01.846Z",
   "saved_by": "cm_command_center_operator"
 }

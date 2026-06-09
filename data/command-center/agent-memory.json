@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T20:10:18.530Z",
+  "exported_at": "2026-06-09T20:10:23.761Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -836,16 +836,16 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232770193",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:32.862Z",
-      "updatedAt": "2026-06-09T20:10:01.764Z"
+      "updatedAt": "2026-06-09T20:10:18.814Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps archives baseball|2017_topps_archives_baseball",
@@ -867,7 +867,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:30.768Z",
-      "updatedAt": "2026-06-09T20:09:54.686Z"
+      "updatedAt": "2026-06-09T20:10:21.694Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps archives snapshots baseball|2017_topps_archives_snapshots_baseball",
@@ -1087,7 +1087,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:04.926Z",
-      "updatedAt": "2026-06-09T20:09:55.340Z"
+      "updatedAt": "2026-06-09T20:10:22.159Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps gold label baseball|2017_topps_gold_label_baseball",
@@ -1704,7 +1704,7 @@
       "expectedRowCount": 504,
       "expectedParallelCount": 24,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-09T20:09:55.340Z",
+      "updatedAt": "2026-06-09T20:10:22.160Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Gallery Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1954,7 +1954,7 @@
       "expectedRowCount": 545,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T17:54:02.464Z",
-      "updatedAt": "2026-06-09T20:09:54.686Z",
+      "updatedAt": "2026-06-09T20:10:21.694Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Archives Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1972,14 +1972,14 @@
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232770193",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 556,
       "expectedParallelCount": 7,
       "createdAt": "2026-06-09T17:54:02.463Z",
-      "updatedAt": "2026-06-09T20:10:01.764Z",
+      "updatedAt": "2026-06-09T20:10:18.814Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Allen & Ginter X Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1987,6 +1987,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781035822160_xckjjz",
+      "ts": "2026-06-09T20:10:22.160Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Gallery Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781035821694_2xidk0",
+      "ts": "2026-06-09T20:10:21.694Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Archives Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781035818815_e81xcj",
+      "ts": "2026-06-09T20:10:18.815Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Allen & Ginter X Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781035816927_pevoe2",
       "ts": "2026-06-09T20:10:16.927Z",
@@ -2756,36 +2786,6 @@
       "status": "queued",
       "product": "2017 Topps Five Star Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781035745132_y1tev2",
-      "ts": "2026-06-09T20:09:05.132Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Archives Snapshots Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781035741384_8i95wj",
-      "ts": "2026-06-09T20:09:01.384Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gallery Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781035740917_in5hla",
-      "ts": "2026-06-09T20:09:00.917Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Chrome Sapphire Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3086,7 +3086,7 @@
       "productName": "2017 Topps Gallery Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gallery_Baseball",
-      "updatedAt": "2026-06-09T20:09:55.339Z",
+      "updatedAt": "2026-06-09T20:10:22.157Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3094,7 +3094,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:09:55.339Z"
+      "checkedAt": "2026-06-09T20:10:22.157Z"
     },
     "baseball|2017_Topps_Five_Star_Baseball": {
       "status": "queued",
@@ -3592,7 +3592,7 @@
       "productName": "2017 Topps Archives Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Archives_Baseball",
-      "updatedAt": "2026-06-09T20:09:54.684Z",
+      "updatedAt": "2026-06-09T20:10:21.692Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3600,7 +3600,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:09:54.684Z"
+      "checkedAt": "2026-06-09T20:10:21.692Z"
     },
     "baseball|2017_Bowman_Mega_Box_Chrome_Baseball": {
       "status": "completed",
@@ -3626,11 +3626,11 @@
       "checkedAt": "2026-06-09T20:03:07.853Z"
     },
     "baseball|2017_Topps_Allen_Ginter_X_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-09T20:10:00.255Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232770193",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Allen_Ginter_X_Baseball",
@@ -3638,15 +3638,15 @@
       "productName": "2017 Topps Allen & Ginter X Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Allen_Ginter_X_Baseball",
-      "updatedAt": "2026-06-09T20:10:01.762Z",
+      "updatedAt": "2026-06-09T20:10:18.813Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": "",
-      "runNumber": "",
-      "displayTitle": "",
-      "headSha": "",
-      "createdAt": "",
-      "checkedAt": "2026-06-09T20:09:56.488Z"
+      "runId": 27232770193,
+      "runNumber": 129,
+      "displayTitle": "Visual Product Test - 2017 Topps Allen & Ginter X Baseball",
+      "headSha": "6d4df191a465148f5c0a800989ffff6b3c8717db",
+      "createdAt": "2026-06-09T20:10:01Z",
+      "checkedAt": "2026-06-09T20:10:18.813Z"
     },
     "baseball|2017_Topps_Allen_Ginter_Baseball": {
       "status": "queued",
@@ -5318,6 +5318,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T20:10:19.525Z",
+  "saved_at": "2026-06-09T20:10:24.853Z",
   "saved_by": "cm_command_center_operator"
 }

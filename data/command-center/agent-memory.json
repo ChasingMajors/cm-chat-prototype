@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T18:18:23.845Z",
+  "exported_at": "2026-06-09T18:14:00.410Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -221,7 +221,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
       "createdAt": "2026-06-09T18:12:06.500Z",
-      "updatedAt": "2026-06-09T18:12:06.500Z"
+      "updatedAt": "2026-06-09T18:18:23.381Z"
     },
     {
       "id": "source_watch|soccer|2025-26 topps lineage bayern m nchen soccer",
@@ -239,7 +239,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-lineage-bayern-munchen-soccer-card-checklist/",
       "createdAt": "2026-06-09T18:12:06.500Z",
-      "updatedAt": "2026-06-09T18:12:06.500Z"
+      "updatedAt": "2026-06-09T18:18:23.381Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2021_topps_tier_one_baseball",
@@ -276,11 +276,11 @@
       "sport": "baseball",
       "code": "2021_panini_stars_stripes_usa_baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "pending_visual_validation",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet data ahead of public JSON.",
-      "validationResult": "Sheets show 1199 rows / 46 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "executionResult": "Pending checklist publish validation completed for 2021_panini_stars_stripes_usa_baseball.",
+      "validationResult": "Published checklist JSON validated with 1199 rows and 46 parallels. CV/ChatBot visual validation is pending.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2021",
@@ -288,7 +288,12 @@
       "expectedRowCount": 1199,
       "expectedParallelCount": 46,
       "createdAt": "2026-06-09T18:11:10.178Z",
-      "updatedAt": "2026-06-09T18:11:10.178Z"
+      "updatedAt": "2026-06-09T18:18:23.381Z",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "Agent fixed/published 2021 Panini Stars & Stripes USA Baseball and verified public JSON. Visual CV/ChatBot proof is next.",
+      "autoExecutedAt": "2026-06-09T18:18:23.381Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2019_Panini_Leather_Lumber_Baseball",
@@ -1922,14 +1927,34 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1781029102238_wk1ntw",
-      "ts": "2026-06-09T18:18:22.238Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
+      "id": "log_1781029107645",
+      "ts": "2026-06-09T18:18:23.381Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 2 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 1 run. 2021 Panini Stars & Stripes USA Baseball -> pending_visual_validation (Published checklist JSON validated with 1199 rows and 46 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
       "product": "",
-      "source": "command_center"
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781029107645",
+      "ts": "2026-06-09T18:18:23.381Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2021 Panini Stars & Stripes USA Baseball: Pending checklist publish validation completed for 2021_panini_stars_stripes_usa_baseball. Published checklist JSON validated with 1199 rows and 46 parallels. CV/ChatBot visual validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2021 Panini Stars & Stripes USA Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781029107044",
+      "ts": "2026-06-09T18:18:23.381Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1781028838809_j961s4",
@@ -2700,32 +2725,12 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1780879317077_oo22nn",
-      "ts": "2026-06-08T00:41:57.077Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780879317077_x80oob",
-      "ts": "2026-06-08T00:41:57.077Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-06-09T18:12:06.500Z",
+    "generated_at": "2026-06-09T18:18:23.381Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 9,
@@ -2735,7 +2740,7 @@
     "needs_admin_count": 3,
     "blocked_count": 0,
     "completed": [
-      "2021 Topps Tier One Baseball -> pending_visual_validation: Published checklist JSON validated with 1132 rows and 25 parallels. CV/ChatBot visual validation is pending."
+      "2021 Panini Stars & Stripes USA Baseball -> pending_visual_validation: Published checklist JSON validated with 1199 rows and 46 parallels. CV/ChatBot visual validation is pending."
     ],
     "needs_admin": [
       "Checklist review: 2025-26 Topps Lineage Bayern München Soccer | soccer | missing",
@@ -2744,7 +2749,7 @@
     ],
     "blocked": [],
     "proof": [
-      "2021 Topps Tier One Baseball -> pending_visual_validation: Published checklist JSON validated with 1132 rows and 25 parallels. CV/ChatBot visual validation is pending."
+      "2021 Panini Stars & Stripes USA Baseball -> pending_visual_validation: Published checklist JSON validated with 1199 rows and 46 parallels. CV/ChatBot visual validation is pending."
     ],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
     "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 1 completed/progress item(s), 3 needs-admin item(s), 0 blocked/issue item(s)."
@@ -4880,6 +4885,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T18:18:25.461Z",
+  "saved_at": "2026-06-09T18:18:27.808Z",
   "saved_by": "cm_command_center_operator"
 }

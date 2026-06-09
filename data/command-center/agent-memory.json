@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T13:43:04.837Z",
+  "exported_at": "2026-06-09T13:44:15.688Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1914,6 +1914,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781012654071_sekxs4",
+      "ts": "2026-06-09T13:44:14.072Z",
+      "type": "sentinel_self_test",
+      "title": "Sentinel self-test passed",
+      "detail": "Cockpit behavior test passed in GitHub Actions.",
+      "status": "validated",
+      "product": "",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781012586392_rvlrmq",
+      "ts": "2026-06-09T13:43:06.392Z",
+      "type": "sentinel_self_test",
+      "title": "Sentinel self-test queued",
+      "detail": "GitHub Actions is starting the cockpit behavior test.",
+      "status": "queued",
+      "product": "",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781012583231_8s9xvm",
       "ts": "2026-06-09T13:43:03.232Z",
@@ -4763,6 +4783,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T13:43:06.186Z",
+  "saved_at": "2026-06-09T13:44:17.045Z",
   "saved_by": "cm_command_center_operator"
 }

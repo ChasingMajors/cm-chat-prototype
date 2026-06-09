@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T13:52:18.709Z",
+  "exported_at": "2026-06-09T13:52:29.994Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1567,11 +1567,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Heritage_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1534 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1579,7 +1579,7 @@
       "expectedRowCount": 1534,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.141Z",
-      "updatedAt": "2026-06-08T01:17:00.141Z"
+      "updatedAt": "2026-06-09T13:52:28.390Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Dynasty_Baseball",
@@ -1939,6 +1939,36 @@
     "backend_audit|stale_public_json|baseball|2016_Topps_Dynasty_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781013148390_86wnpy",
+      "ts": "2026-06-09T13:52:28.390Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2016 Topps Heritage Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781013148387_nsmbhz",
+      "ts": "2026-06-09T13:52:28.387Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2016 Topps Heritage Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2016 Topps Heritage Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1781013148384_pabeh9",
+      "ts": "2026-06-09T13:52:28.384Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "2 flagged jobs will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1781013137107_rjqatn",
       "ts": "2026-06-09T13:52:17.107Z",
@@ -2708,36 +2738,6 @@
       "status": "running",
       "product": "2017 Topps Holiday Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881861677_lp0eqf",
-      "ts": "2026-06-08T01:24:21.677Z",
-      "type": "agent_run_queue",
-      "title": "Recheck checklist public JSON",
-      "detail": "2017 Topps Holiday Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2017 Topps Holiday Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780881861674_l9vaf5",
-      "ts": "2026-06-08T01:24:21.674Z",
-      "type": "agent_cycle",
-      "title": "Running Admin Run Queue",
-      "detail": "6 flagged jobs will be attempted before Sentinel chooses other work.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780881853953_hwg7hg",
-      "ts": "2026-06-08T01:24:13.953Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Holiday Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Holiday Baseball",
-      "source": "admin"
     }
   ],
   "visual_tests": {
@@ -4921,6 +4921,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T13:52:20.146Z",
+  "saved_at": "2026-06-09T13:52:31.450Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T03:59:02.731Z",
+  "exported_at": "2026-06-09T03:59:31.296Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T03:58:43.618Z",
-      "updatedAt": "2026-06-09T03:59:01.129Z"
+      "updatedAt": "2026-06-09T03:59:28.782Z"
     },
     {
       "id": "visual_test|github_actions|2016 topps tier one baseball|2016_topps_tier_one_baseball",
@@ -1425,7 +1425,7 @@
       "expectedRowCount": 558,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.144Z",
-      "updatedAt": "2026-06-09T03:59:01.129Z",
+      "updatedAt": "2026-06-09T03:59:28.782Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1942,6 +1942,16 @@
     "backend_audit|stale_public_json|baseball|2016_Topps_Heritage_High_Number_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1780977568782_fp7aqs",
+      "ts": "2026-06-09T03:59:28.782Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780977541129_zueeec",
       "ts": "2026-06-09T03:59:01.129Z",
@@ -2731,16 +2741,6 @@
       "status": "started",
       "product": "2017 Bowman Mega Box Chrome Baseball",
       "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780882520614_4068l0",
-      "ts": "2026-06-08T01:35:20.614Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Bowman High Tek Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -3838,7 +3838,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-09T03:59:01.127Z",
+      "updatedAt": "2026-06-09T03:59:28.780Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27182901842,
@@ -3846,7 +3846,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
       "createdAt": "2026-06-09T03:58:43Z",
-      "checkedAt": "2026-06-09T03:59:01.127Z"
+      "checkedAt": "2026-06-09T03:59:28.780Z"
     }
   },
   "known_issues": {},
@@ -5181,6 +5181,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T03:59:04.041Z",
+  "saved_at": "2026-06-09T03:59:33.255Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T23:07:34.700Z",
+  "exported_at": "2026-06-09T23:08:04.305Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T23:07:14.660Z",
-      "updatedAt": "2026-06-09T23:07:33.098Z",
+      "updatedAt": "2026-06-09T23:08:01.824Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27241628592",
       "visualStartedAt": "2026-06-09T23:07:14Z"
     },
@@ -1720,7 +1720,7 @@
       "expectedRowCount": 748,
       "expectedParallelCount": 100,
       "createdAt": "2026-06-09T17:54:02.459Z",
-      "updatedAt": "2026-06-09T23:07:33.098Z",
+      "updatedAt": "2026-06-09T23:08:01.824Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Donruss Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T22:28:24.617Z",
@@ -2165,6 +2165,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781046481825_idn0fs",
+      "ts": "2026-06-09T23:08:01.825Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Donruss Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781046453098_e7ieia",
       "ts": "2026-06-09T23:07:33.098Z",
@@ -2954,16 +2964,6 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1781044237341",
-      "ts": "2026-06-09T22:28:24.617Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 3 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 3 run. baseball 2017 -> pending_visual_validation (40 product(s) validated, 0 pending, 0 failed.); baseball 2016 -> pending_visual_validation (16 product(s) validated, 0 pending, 0 failed.); 2017 Topps Inception Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -3718,7 +3718,7 @@
       "productName": "2017 Donruss Baseball",
       "sport": "baseball",
       "code": "2017_Donruss_Baseball",
-      "updatedAt": "2026-06-09T23:07:33.096Z",
+      "updatedAt": "2026-06-09T23:08:01.821Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27241628592,
@@ -3726,7 +3726,7 @@
       "displayTitle": "Visual Product Test - 2017 Donruss Baseball",
       "headSha": "63763267a7e8791dbaf16fee71c065cc2d916ad9",
       "createdAt": "2026-06-09T23:07:14Z",
-      "checkedAt": "2026-06-09T23:07:33.096Z"
+      "checkedAt": "2026-06-09T23:08:01.820Z"
     },
     "baseball|2017_Topps_Archives_Snapshots_Baseball": {
       "status": "completed",
@@ -5208,6 +5208,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T23:07:35.911Z",
+  "saved_at": "2026-06-09T23:08:05.463Z",
   "saved_by": "cm_command_center_operator"
 }

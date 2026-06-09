@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T18:19:51.320Z",
+  "exported_at": "2026-06-09T18:20:18.377Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -173,11 +173,11 @@
       "sport": "baseball",
       "code": "2021_panini_stars_stripes_usa_baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27226639905",
       "sourceUrl": "",
       "bucket": "",
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T18:18:38.756Z",
-      "updatedAt": "2026-06-09T18:19:49.717Z"
+      "updatedAt": "2026-06-09T18:20:16.772Z"
     },
     {
       "id": "visual_test|github_actions|2021 topps tier one baseball|2021_topps_tier_one_baseball",
@@ -298,11 +298,11 @@
       "sport": "baseball",
       "code": "2021_panini_stars_stripes_usa_baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2021_panini_stars_stripes_usa_baseball.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27226639905",
       "sourceUrl": "",
       "bucket": "2021",
@@ -310,7 +310,7 @@
       "expectedRowCount": 1199,
       "expectedParallelCount": 46,
       "createdAt": "2026-06-09T18:11:10.178Z",
-      "updatedAt": "2026-06-09T18:19:49.717Z",
+      "updatedAt": "2026-06-09T18:20:16.773Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1927,6 +1927,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781029216776_y1tjnx",
+      "ts": "2026-06-09T18:20:16.776Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2021 Panini Stars & Stripes USA Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781029216775_xl9eb6",
+      "ts": "2026-06-09T18:20:16.775Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2021 Panini Stars & Stripes USA Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781029189718_99v4lr",
       "ts": "2026-06-09T18:19:49.718Z",
       "type": "visual_test",
@@ -2704,26 +2724,6 @@
       "detail": "2017 Topps Holiday Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
       "status": "queued",
       "product": "2017 Topps Holiday Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881850733_9na50g",
-      "ts": "2026-06-08T01:24:10.733Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Heritage Minor League Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881847750_vcy57v",
-      "ts": "2026-06-08T01:24:07.750Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Heritage High Number Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Heritage High Number Baseball",
       "source": "admin"
     }
   ],
@@ -3814,9 +3814,9 @@
       "checkedAt": "2026-06-09T18:13:58.807Z"
     },
     "baseball|2021_panini_stars_stripes_usa_baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T18:18:36.899Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27226639905",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3826,7 +3826,7 @@
       "productName": "2021 Panini Stars & Stripes USA Baseball",
       "sport": "baseball",
       "code": "2021_panini_stars_stripes_usa_baseball",
-      "updatedAt": "2026-06-09T18:19:49.712Z",
+      "updatedAt": "2026-06-09T18:20:16.769Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27226639905,
@@ -3834,7 +3834,7 @@
       "displayTitle": "Visual Product Test - 2021 Panini Stars & Stripes USA Baseball",
       "headSha": "9cd31831a2dbaac08fa32b5190f53b710894244f",
       "createdAt": "2026-06-09T18:18:38Z",
-      "checkedAt": "2026-06-09T18:19:49.712Z"
+      "checkedAt": "2026-06-09T18:20:16.768Z"
     }
   },
   "known_issues": {},
@@ -4908,6 +4908,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T18:19:52.573Z",
+  "saved_at": "2026-06-09T18:20:19.810Z",
   "saved_by": "cm_command_center_operator"
 }

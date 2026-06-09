@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-09-operator-cc116-bucket-json-repair";
+const CM_OPERATOR_VERSION = "2026-06-09-operator-cc117-approved-bucket-repair";
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
 const CM_SENTINEL_ALERT_EMAIL_PROPERTY = "CM_SENTINEL_ALERT_EMAIL";
 const CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY = "CM_SENTINEL_ALERT_WEBHOOK_URL";
@@ -3280,7 +3280,8 @@ function runScheduledAgentSweep_(input) {
     memory,
     input && input.key,
     now,
-    getScheduledAutoActionLimit_(input)
+    getScheduledAutoActionLimit_(input),
+    !!(input && (input.adminApprovedRun || input.admin_approved_run))
   );
 
   const detailParts = [
@@ -3880,12 +3881,12 @@ function getScheduledAutoActionLimit_(input) {
   return Math.min(10, Math.floor(raw));
 }
 
-function maybeRunScheduledAutoActions_(memory, key, now, maxActions) {
+function maybeRunScheduledAutoActions_(memory, key, now, maxActions, adminApprovedRun) {
   const mode = safeString_(memory && memory.autonomy_mode).trim() || "approval_required";
   const limit = Math.max(1, Math.min(10, Number(maxActions || 1)));
   const queuedIds = normalizeAgentRunQueue_(memory);
 
-  if (mode !== "full_auto" && mode !== "guarded_auto") {
+  if (mode !== "full_auto" && mode !== "guarded_auto" && !adminApprovedRun) {
     return {
       ran: false,
       count: 0,
@@ -3898,7 +3899,7 @@ function maybeRunScheduledAutoActions_(memory, key, now, maxActions) {
 
   const results = [];
   for (let i = 0; i < limit; i++) {
-    const result = maybeRunScheduledAutoAction_(memory, key, now);
+    const result = maybeRunScheduledAutoAction_(memory, key, now, adminApprovedRun);
     if (!result || !result.ran) {
       if (!results.length) {
         return {
@@ -3941,9 +3942,9 @@ function maybeRunScheduledAutoActions_(memory, key, now, maxActions) {
   };
 }
 
-function maybeRunScheduledAutoAction_(memory, key, now) {
+function maybeRunScheduledAutoAction_(memory, key, now, adminApprovedRun) {
   const mode = safeString_(memory && memory.autonomy_mode).trim() || "approval_required";
-  if (mode !== "full_auto" && mode !== "guarded_auto") {
+  if (mode !== "full_auto" && mode !== "guarded_auto" && !adminApprovedRun) {
     return {
       ran: false,
       mode: mode,
@@ -3977,13 +3978,13 @@ function maybeRunScheduledAutoAction_(memory, key, now) {
     safeString_(action.validationResult).toLowerCase().indexOf("visual") > -1;
   const isCoverageOnlyAudit = (action.type === "backend_data_issue" || action.source === "deep_backend_audit") &&
     !!safeString_(action.code).trim();
-  if (mode === "guarded_auto" && actionStatus !== "pending_public_validation" && !wasPendingVisualValidation && !wasVisualInFlight) {
+  if ((mode === "guarded_auto" || adminApprovedRun) && actionStatus !== "pending_public_validation" && !wasPendingVisualValidation && !wasVisualInFlight) {
     return {
       ran: false,
       mode: mode,
       action_id: action.id,
       product: action.product || "",
-      reason: "Guarded auto only self-heals pending public or visual validation. Switch to Full auto for approved writes."
+      reason: "This run only self-heals pending public or visual validation. Switch to Full auto for approved writes."
     };
   }
 

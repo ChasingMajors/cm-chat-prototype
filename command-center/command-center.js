@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc116-bucket-json-repair-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc117-approved-bucket-repair-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -2662,7 +2662,8 @@
         mode: "quick_json",
         maxAutoActions: 10,
         skipPrvSync: true,
-        fastMode: true
+        fastMode: true,
+        adminApprovedRun: true
       }, { timeoutMs: 150000 });
 
       if (!data || !data.ok) {
@@ -7227,6 +7228,8 @@
     if (!readOperatorEndpoint() || !readOperatorKey()) {
       return runBackendAgentSweep();
     }
+
+    await saveBackendAgentMemoryNow({ silent: true });
 
     const maxWaves = 8;
     let waves = 0;

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T13:49:12.033Z",
+  "exported_at": "2026-06-09T13:49:19.223Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1917,6 +1917,26 @@
     "backend_audit|stale_public_json|baseball|2016_Topps_Tier_One_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781012957620_8uvcxd",
+      "ts": "2026-06-09T13:49:17.620Z",
+      "type": "agent_run_queue",
+      "title": "Removed from Agent Run Queue",
+      "detail": "2016 Topps Series 2 Baseball was removed from the explicit run queue.",
+      "status": "removed",
+      "product": "2016 Topps Series 2 Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1781012953714_1m8jwo",
+      "ts": "2026-06-09T13:49:13.714Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2016 Topps Series 2 Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2016 Topps Series 2 Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1781012950430_ofgk4z",
       "ts": "2026-06-09T13:49:10.430Z",
@@ -4796,6 +4816,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T13:49:13.405Z",
+  "saved_at": "2026-06-09T13:49:20.554Z",
   "saved_by": "cm_command_center_operator"
 }

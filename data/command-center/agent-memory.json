@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T22:28:19.344Z",
+  "exported_at": "2026-06-09T22:31:28.501Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2105,6 +2105,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781044286899_5yb24s",
+      "ts": "2026-06-09T22:31:26.899Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781044286888_xu1cwh",
+      "ts": "2026-06-09T22:31:26.888Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781044282240",
       "ts": "2026-06-09T22:31:16.842Z",
       "type": "agent_sweep",
@@ -2882,26 +2902,6 @@
       "detail": "No GitHub run visible yet.",
       "status": "queued",
       "product": "2017 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041915020_r1x1mk",
-      "ts": "2026-06-09T21:51:55.020Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Dynasty Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041914690_f44g85",
-      "ts": "2026-06-09T21:51:54.690Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Diamond Icons Baseball",
       "source": "github_actions"
     }
   ],
@@ -5129,6 +5129,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T22:31:22.594Z",
+  "saved_at": "2026-06-09T22:31:29.437Z",
   "saved_by": "cm_command_center_operator"
 }

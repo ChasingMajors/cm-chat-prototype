@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T18:19:24.323Z",
+  "exported_at": "2026-06-09T18:19:51.320Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T18:18:38.756Z",
-      "updatedAt": "2026-06-09T18:19:22.719Z"
+      "updatedAt": "2026-06-09T18:19:49.717Z"
     },
     {
       "id": "visual_test|github_actions|2021 topps tier one baseball|2021_topps_tier_one_baseball",
@@ -310,7 +310,7 @@
       "expectedRowCount": 1199,
       "expectedParallelCount": 46,
       "createdAt": "2026-06-09T18:11:10.178Z",
-      "updatedAt": "2026-06-09T18:19:22.719Z",
+      "updatedAt": "2026-06-09T18:19:49.717Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1927,6 +1927,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781029189718_99v4lr",
+      "ts": "2026-06-09T18:19:49.718Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2021 Panini Stars & Stripes USA Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781029162719_t8fvng",
       "ts": "2026-06-09T18:19:22.719Z",
       "type": "visual_test",
@@ -2714,16 +2724,6 @@
       "detail": "2017 Topps Heritage High Number Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
       "status": "queued",
       "product": "2017 Topps Heritage High Number Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780881845167_p50yx3",
-      "ts": "2026-06-08T01:24:05.167Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2017 Topps Heritage Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Baseball",
       "source": "admin"
     }
   ],
@@ -3826,7 +3826,7 @@
       "productName": "2021 Panini Stars & Stripes USA Baseball",
       "sport": "baseball",
       "code": "2021_panini_stars_stripes_usa_baseball",
-      "updatedAt": "2026-06-09T18:19:22.707Z",
+      "updatedAt": "2026-06-09T18:19:49.712Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27226639905,
@@ -3834,7 +3834,7 @@
       "displayTitle": "Visual Product Test - 2021 Panini Stars & Stripes USA Baseball",
       "headSha": "9cd31831a2dbaac08fa32b5190f53b710894244f",
       "createdAt": "2026-06-09T18:18:38Z",
-      "checkedAt": "2026-06-09T18:19:22.707Z"
+      "checkedAt": "2026-06-09T18:19:49.712Z"
     }
   },
   "known_issues": {},
@@ -4908,6 +4908,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T18:19:25.527Z",
+  "saved_at": "2026-06-09T18:19:52.573Z",
   "saved_by": "cm_command_center_operator"
 }

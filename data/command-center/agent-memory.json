@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T22:15:19.303Z",
+  "exported_at": "2026-06-09T22:13:06.214Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -181,7 +181,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
       "createdAt": "2026-06-09T22:13:05.558Z",
-      "updatedAt": "2026-06-09T22:15:10.080Z"
+      "updatedAt": "2026-06-09T22:15:18.550Z"
     },
     {
       "id": "source_watch|basketball|2025-26 panini origins euroleague basketball",
@@ -199,7 +199,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-origins-euroleague-basketball-card-checklist/",
       "createdAt": "2026-06-09T22:13:05.558Z",
-      "updatedAt": "2026-06-09T22:15:10.080Z"
+      "updatedAt": "2026-06-09T22:15:18.550Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps luminaries baseball|2017_topps_luminaries_baseball",
@@ -281,7 +281,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-lineage-bayern-munchen-soccer-card-checklist/",
       "createdAt": "2026-06-09T18:29:00.694Z",
-      "updatedAt": "2026-06-09T22:15:10.080Z"
+      "updatedAt": "2026-06-09T22:15:18.550Z"
     },
     {
       "id": "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
@@ -394,11 +394,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Bowman_Baseball",
       "riskLevel": "high",
-      "status": "queued",
+      "status": "validated",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
-      "validationResult": "Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "adminDecision": "auto_deduped",
+      "executionResult": "Duplicate queued action collapsed into backend_audit|stale_public_json|baseball|2017_Topps_Inception_Baseball.",
+      "validationResult": "Same source/product already handled by the active queue item.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "2017",
@@ -406,7 +406,7 @@
       "expectedRowCount": 146,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-09T17:54:02.470Z",
-      "updatedAt": "2026-06-09T22:15:10.080Z",
+      "updatedAt": "2026-06-09T22:15:18.550Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-09T22:15:10.080Z",
@@ -421,22 +421,24 @@
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "queued",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Published checklist JSON validated with 344 rows and 4 parallels after bucket repair. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
+      "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
+      "validationResult": "Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 344,
       "expectedParallelCount": 4,
       "createdAt": "2026-06-09T17:54:02.469Z",
-      "updatedAt": "2026-06-09T22:13:05.558Z",
+      "updatedAt": "2026-06-09T22:15:18.550Z",
       "pendingValidationAttempts": 0,
-      "repairProof": "Agent repaired stale public JSON for 2017 Topps Holiday Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-09T22:13:05.558Z"
+      "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
+      "autoExecutedAt": "2026-06-09T22:15:18.550Z",
+      "visualStartedAt": "2026-06-09T22:15:20.853Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_High_Tek_Baseball",
@@ -2097,24 +2099,34 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1781043317701_vnz3ej",
-      "ts": "2026-06-09T22:15:17.701Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
+      "id": "log_1781043321869",
+      "ts": "2026-06-09T22:15:18.550Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 3 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Holiday Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
+      "status": "needs_review",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1781043317689_t642w0",
-      "ts": "2026-06-09T22:15:17.689Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
+      "id": "log_1781043321868",
+      "ts": "2026-06-09T22:15:18.550Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2017 Topps Holiday Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "status": "queued",
+      "product": "2017 Topps Holiday Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781043320823",
+      "ts": "2026-06-09T22:15:18.550Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1781043314154",
@@ -2885,22 +2897,12 @@
       "status": "queued",
       "product": "2017 Topps Heritage Minor League Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781041899832_1p3uzd",
-      "ts": "2026-06-09T21:51:39.832Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage High Number Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-06-09T22:15:10.080Z",
+    "generated_at": "2026-06-09T22:15:18.550Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 9,
@@ -2911,7 +2913,7 @@
     "blocked_count": 0,
     "completed": [],
     "needs_admin": [
-      "2017 Bowman Holiday Baseball -> queued: Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "2017 Topps Holiday Baseball -> queued: Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
       "Checklist review: 2025-26 Panini Origins EuroLeague Basketball | basketball | missing",
       "Checklist review: 2025-26 Topps Lineage Bayern München Soccer | soccer | missing",
       "Checklist review: 2026 Leaf Metal Hockey | hockey | missing",
@@ -5121,6 +5123,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T22:15:20.454Z",
+  "saved_at": "2026-06-09T22:15:22.050Z",
   "saved_by": "cm_command_center_operator"
 }

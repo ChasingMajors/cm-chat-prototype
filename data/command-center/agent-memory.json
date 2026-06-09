@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T18:12:17.632Z",
+  "exported_at": "2026-06-09T18:12:38.188Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,6 +166,28 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2021 topps tier one baseball|2021_topps_tier_one_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2021 Topps Tier One Baseball",
+      "sport": "baseball",
+      "code": "2021_topps_tier_one_baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27226291581",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T18:12:19.146Z",
+      "updatedAt": "2026-06-09T18:12:36.586Z"
+    },
+    {
       "id": "prv_watch|basketball|2025-26 topps motif basketball",
       "type": "prv_source_review",
       "source": "scheduled_prv_quick_json",
@@ -227,19 +249,19 @@
       "sport": "baseball",
       "code": "2021_topps_tier_one_baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2021_topps_tier_one_baseball.",
-      "validationResult": "CV/ChatBot visual test requested by Agent Cycle...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27226291581",
       "sourceUrl": "",
       "bucket": "2021",
       "targetBucket": "2021",
       "expectedRowCount": 1132,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T18:11:10.178Z",
-      "updatedAt": "2026-06-09T18:12:16.030Z",
+      "updatedAt": "2026-06-09T18:12:36.586Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1895,32 +1917,50 @@
       "expectedParallelCount": 143,
       "createdAt": "2026-06-09T18:11:10.168Z",
       "updatedAt": "2026-06-09T18:11:10.168Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2020_topps_triple_threads_baseball",
-      "type": "checklist_publish",
-      "source": "deep_backend_audit",
-      "product": "2020 Topps Triple Threads Baseball",
-      "sport": "baseball",
-      "code": "2020_topps_triple_threads_baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet data ahead of public JSON.",
-      "validationResult": "Sheets show 1682 rows / 82 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2020",
-      "targetBucket": "2020",
-      "expectedRowCount": 1682,
-      "expectedParallelCount": 82,
-      "createdAt": "2026-06-09T18:11:10.168Z",
-      "updatedAt": "2026-06-09T18:11:10.168Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781028756586_n8tzwi",
+      "ts": "2026-06-09T18:12:36.586Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2021 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781028739162_i53pvn",
+      "ts": "2026-06-09T18:12:19.162Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 80 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2021 Topps Tier One Baseball -> pending_visual_validation (Published checklist JSON validated with 1132 rows and 25 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781028739157_h28zr6",
+      "ts": "2026-06-09T18:12:19.157Z",
+      "type": "visual_test",
+      "title": "Visual validation batch queued",
+      "detail": "1 CV/ChatBot visual test queued. 2021 Topps Tier One Baseball",
+      "status": "queued",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1781028739147_2gb05k",
+      "ts": "2026-06-09T18:12:19.147Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2021 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781028736024_ahstp8",
       "ts": "2026-06-09T18:12:16.024Z",
@@ -2680,46 +2720,6 @@
       "status": "queued",
       "product": "2017 Topps Museum Collection Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780879241005_luv99i",
-      "ts": "2026-06-08T00:40:41.005Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879240993_2ylu7f",
-      "ts": "2026-06-08T00:40:40.993Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780879234428",
-      "ts": "2026-06-08T00:40:28.775Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Museum Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879234428",
-      "ts": "2026-06-08T00:40:28.775Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Topps Museum Collection Baseball: Pending checklist publish validation completed for 2017_Topps_Museum_Collection_Baseball. Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -3784,6 +3784,29 @@
       "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
       "createdAt": "2026-06-08T00:40:42Z",
       "checkedAt": "2026-06-08T00:41:57.071Z"
+    },
+    "baseball|2021_topps_tier_one_baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-09T18:12:16.932Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27226291581",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2021_topps_tier_one_baseball",
+      "key": "baseball|2021_topps_tier_one_baseball",
+      "productName": "2021 Topps Tier One Baseball",
+      "sport": "baseball",
+      "code": "2021_topps_tier_one_baseball",
+      "updatedAt": "2026-06-09T18:12:36.585Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27226291581,
+      "runNumber": 72,
+      "displayTitle": "Visual Product Test - 2021 Topps Tier One Baseball",
+      "headSha": "9cd31831a2dbaac08fa32b5190f53b710894244f",
+      "createdAt": "2026-06-09T18:12:18Z",
+      "checkedAt": "2026-06-09T18:12:36.585Z"
     }
   },
   "known_issues": {},
@@ -4857,6 +4880,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T18:12:19.103Z",
+  "saved_at": "2026-06-09T18:12:39.508Z",
   "saved_by": "cm_command_center_operator"
 }

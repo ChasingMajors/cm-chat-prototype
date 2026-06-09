@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T22:03:32.063Z",
+  "exported_at": "2026-06-09T22:03:36.860Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,30 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps definitive collection baseball|2017_topps_definitive_collection_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Definitive Collection Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Definitive_Collection_Baseball",
+      "riskLevel": "low",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232224801",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T22:03:33.973Z",
+      "updatedAt": "2026-06-09T22:03:33.974Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232224801",
+      "visualStartedAt": "2026-06-09T20:00:15Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps diamond icons baseball|2017_topps_diamond_icons_baseball",
       "type": "visual_test",
@@ -485,11 +509,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Inception_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27238752266",
       "sourceUrl": "",
       "bucket": "",
@@ -497,7 +521,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T22:02:38.246Z",
-      "updatedAt": "2026-06-09T22:03:06.557Z",
+      "updatedAt": "2026-06-09T22:03:35.256Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27238752266",
       "visualStartedAt": "2026-06-09T22:02:28Z"
     },
@@ -703,11 +727,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Inception_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27238752266",
       "sourceUrl": "",
       "bucket": "2017",
@@ -715,7 +739,7 @@
       "expectedRowCount": 351,
       "expectedParallelCount": 31,
       "createdAt": "2026-06-09T17:54:02.470Z",
-      "updatedAt": "2026-06-09T22:03:06.557Z",
+      "updatedAt": "2026-06-09T22:03:35.257Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-09T22:00:25.054Z",
@@ -1081,22 +1105,24 @@
       "sport": "baseball",
       "code": "2017_Topps_Definitive_Collection_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
-      "runUrl": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232224801",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 658,
       "expectedParallelCount": 26,
       "createdAt": "2026-06-09T17:54:02.465Z",
-      "updatedAt": "2026-06-09T22:03:30.461Z",
+      "updatedAt": "2026-06-09T22:03:33.974Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Definitive Collection Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-09T22:00:25.054Z"
+      "autoExecutedAt": "2026-06-09T22:00:25.054Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232224801",
+      "visualStartedAt": "2026-06-09T20:00:15Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Clearly_Authentic_Baseball",
@@ -1110,7 +1136,7 @@
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Queued for CV/ChatBot visual test dispatch (15 of 20).",
+      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1118,7 +1144,7 @@
       "expectedRowCount": 121,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-09T17:54:02.465Z",
-      "updatedAt": "2026-06-09T22:02:41.557Z",
+      "updatedAt": "2026-06-09T22:03:33.981Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Clearly Authentic Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T22:00:25.054Z"
@@ -2098,35 +2124,50 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.447Z",
       "updatedAt": "2026-06-09T17:54:02.447Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Dynasty_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Dynasty Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Dynasty_Baseball",
-      "riskLevel": "high",
-      "status": "pending_visual_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Bucket-level checklist JSON repair ran for baseball 2016.",
-      "validationResult": "Published checklist JSON validated with 168 rows and 0 parallels after bucket repair. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 168,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.447Z",
-      "updatedAt": "2026-06-09T22:00:25.054Z",
-      "pendingValidationAttempts": 0,
-      "repairProof": "Agent repaired stale public JSON for 2016 Topps Dynasty Baseball by publishing baseball 2016 and validating public JSON.",
-      "autoExecutedAt": "2026-06-09T22:00:25.054Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781042615257_a71jlm",
+      "ts": "2026-06-09T22:03:35.257Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Topps Inception Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781042615257_x257f9",
+      "ts": "2026-06-09T22:03:35.257Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Topps Inception Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781042613975_1xfuq1",
+      "ts": "2026-06-09T22:03:33.975Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Topps Definitive Collection Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781042613975_wxiu49",
+      "ts": "2026-06-09T22:03:33.975Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Topps Definitive Collection Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781042610452_plfz13",
       "ts": "2026-06-09T22:03:30.452Z",
@@ -2886,46 +2927,6 @@
       "status": "queued",
       "product": "2017 Topps Holiday Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781041918603_0ipu5u",
-      "ts": "2026-06-09T21:51:58.603Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041915350_qro8y3",
-      "ts": "2026-06-09T21:51:55.350Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041915020_r1x1mk",
-      "ts": "2026-06-09T21:51:55.020Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Dynasty Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041914690_f44g85",
-      "ts": "2026-06-09T21:51:54.690Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Diamond Icons Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3283,9 +3284,9 @@
       "checkedAt": "2026-06-09T20:26:08.471Z"
     },
     "baseball|2017_Topps_Inception_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-07T19:55:24.068Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27238752266",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3295,7 +3296,7 @@
       "productName": "2017 Topps Inception Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Inception_Baseball",
-      "updatedAt": "2026-06-09T22:03:06.555Z",
+      "updatedAt": "2026-06-09T22:03:35.255Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27238752266,
@@ -3303,7 +3304,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Inception Baseball",
       "headSha": "6f9262a3939fc4e580662b9ada13f1288ba158f4",
       "createdAt": "2026-06-09T22:02:28Z",
-      "checkedAt": "2026-06-09T22:03:06.555Z"
+      "checkedAt": "2026-06-09T22:03:35.255Z"
     },
     "baseball|2017_Topps_Holiday_Bowman_Baseball": {
       "status": "completed",
@@ -3490,11 +3491,11 @@
       "checkedAt": "2026-06-09T22:03:30.449Z"
     },
     "baseball|2017_Topps_Definitive_Collection_Baseball": {
-      "status": "queued",
-      "result": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T20:00:14.593Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232224801",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Definitive_Collection_Baseball",
@@ -3502,15 +3503,15 @@
       "productName": "2017 Topps Definitive Collection Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Definitive_Collection_Baseball",
-      "updatedAt": "2026-06-09T21:52:57.234Z",
+      "updatedAt": "2026-06-09T22:03:33.972Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": "",
-      "runNumber": "",
-      "displayTitle": "",
-      "headSha": "",
-      "createdAt": "",
-      "checkedAt": "2026-06-09T21:52:57.234Z"
+      "runId": 27232224801,
+      "runNumber": 92,
+      "displayTitle": "Visual Product Test - 2017 Topps Definitive Collection Baseball",
+      "headSha": "6d4df191a465148f5c0a800989ffff6b3c8717db",
+      "createdAt": "2026-06-09T20:00:15Z",
+      "checkedAt": "2026-06-09T22:03:33.972Z"
     },
     "baseball|2017_Topps_Clearly_Authentic_Baseball": {
       "status": "completed",
@@ -5158,6 +5159,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T22:03:33.333Z",
+  "saved_at": "2026-06-09T22:03:38.019Z",
   "saved_by": "cm_command_center_operator"
 }

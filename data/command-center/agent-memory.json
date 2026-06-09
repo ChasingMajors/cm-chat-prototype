@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T22:32:21.082Z",
+  "exported_at": "2026-06-09T23:02:08.305Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,30 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps chrome update series baseball|2017_topps_chrome_update_series_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Chrome_Update_Series_Baseball",
+      "riskLevel": "low",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232229072",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T23:02:06.653Z",
+      "updatedAt": "2026-06-09T23:02:06.654Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232229072",
+      "visualStartedAt": "2026-06-09T20:00:19Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps definitive collection baseball|2017_topps_definitive_collection_baseball",
       "type": "visual_test",
@@ -341,11 +365,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Gypsy_Queen_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27240112891",
       "sourceUrl": "",
       "bucket": "",
@@ -353,7 +377,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T22:31:54.735Z",
-      "updatedAt": "2026-06-09T22:31:54.736Z",
+      "updatedAt": "2026-06-09T23:02:06.056Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27240112891",
       "visualStartedAt": "2026-06-09T22:31:45Z"
     },
@@ -748,11 +772,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Gypsy_Queen_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27240112891",
       "sourceUrl": "",
       "bucket": "2017",
@@ -760,7 +784,7 @@
       "expectedRowCount": 620,
       "expectedParallelCount": 30,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-09T22:31:54.736Z",
+      "updatedAt": "2026-06-09T23:02:06.056Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-09T22:31:38.444Z",
@@ -989,22 +1013,24 @@
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Update_Series_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
-      "runUrl": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232229072",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 196,
       "expectedParallelCount": 11,
       "createdAt": "2026-06-09T17:54:02.465Z",
-      "updatedAt": "2026-06-09T22:32:18.741Z",
+      "updatedAt": "2026-06-09T23:02:06.656Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Chrome Update Series Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-09T22:28:24.617Z"
+      "autoExecutedAt": "2026-06-09T22:28:24.617Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232229072",
+      "visualStartedAt": "2026-06-09T20:00:19Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
@@ -1043,7 +1069,7 @@
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Queued for CV/ChatBot visual test dispatch (9 of 20).",
+      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1051,7 +1077,7 @@
       "expectedRowCount": 83,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-09T17:54:02.464Z",
-      "updatedAt": "2026-06-09T22:31:54.751Z",
+      "updatedAt": "2026-06-09T23:02:06.675Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Archives Snapshots Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T22:28:24.617Z"
@@ -2097,35 +2123,50 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.445Z",
       "updatedAt": "2026-06-09T17:54:02.445Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Archives_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Archives Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Archives_Baseball",
-      "riskLevel": "high",
-      "status": "pending_visual_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Bucket-level checklist JSON repair ran for baseball 2016.",
-      "validationResult": "Published checklist JSON validated with 508 rows and 0 parallels after bucket repair. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 508,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.445Z",
-      "updatedAt": "2026-06-09T22:28:24.617Z",
-      "pendingValidationAttempts": 0,
-      "repairProof": "Agent repaired stale public JSON for 2016 Topps Archives Baseball by publishing baseball 2016 and validating public JSON.",
-      "autoExecutedAt": "2026-06-09T22:28:24.617Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781046126658_zk2nss",
+      "ts": "2026-06-09T23:02:06.658Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781046126657_2cze6e",
+      "ts": "2026-06-09T23:02:06.657Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781046126058_k9pfpq",
+      "ts": "2026-06-09T23:02:06.058Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Topps Gypsy Queen Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781046126057_u7dt1b",
+      "ts": "2026-06-09T23:02:06.057Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Topps Gypsy Queen Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781044338722_o2rml9",
       "ts": "2026-06-09T22:32:18.722Z",
@@ -2885,46 +2926,6 @@
       "status": "queued",
       "product": "2017 Topps Gypsy Queen Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781041958895_q4ws5n",
-      "ts": "2026-06-09T21:52:38.895Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Chrome Update Series Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041958859_7dt1v2",
-      "ts": "2026-06-09T21:52:38.859Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041954056_fqzp25",
-      "ts": "2026-06-09T21:52:34.056Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041953094_utxa7t",
-      "ts": "2026-06-09T21:52:33.094Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage High Number Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3161,9 +3162,9 @@
       "checkedAt": "2026-06-09T21:53:05.509Z"
     },
     "baseball|2017_Topps_Gypsy_Queen_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T19:59:58.341Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27240112891",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3173,7 +3174,7 @@
       "productName": "2017 Topps Gypsy Queen Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gypsy_Queen_Baseball",
-      "updatedAt": "2026-06-09T22:31:54.734Z",
+      "updatedAt": "2026-06-09T23:02:06.037Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27240112891,
@@ -3181,7 +3182,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Gypsy Queen Baseball",
       "headSha": "63763267a7e8791dbaf16fee71c065cc2d916ad9",
       "createdAt": "2026-06-09T22:31:45Z",
-      "checkedAt": "2026-06-09T22:31:54.734Z"
+      "checkedAt": "2026-06-09T23:02:06.035Z"
     },
     "baseball|2017_Topps_Gold_Label_Baseball": {
       "status": "completed",
@@ -3552,11 +3553,11 @@
       "checkedAt": "2026-06-09T20:00:56.127Z"
     },
     "baseball|2017_Topps_Chrome_Update_Series_Baseball": {
-      "status": "queued",
-      "result": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T20:00:18.778Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232229072",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Chrome_Update_Series_Baseball",
@@ -3564,15 +3565,15 @@
       "productName": "2017 Topps Chrome Update Series Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Update_Series_Baseball",
-      "updatedAt": "2026-06-09T21:53:05.734Z",
+      "updatedAt": "2026-06-09T23:02:06.652Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": "",
-      "runNumber": "",
-      "displayTitle": "",
-      "headSha": "",
-      "createdAt": "",
-      "checkedAt": "2026-06-09T21:53:05.734Z"
+      "runId": 27232229072,
+      "runNumber": 94,
+      "displayTitle": "Visual Product Test - 2017 Topps Chrome Update Series Baseball",
+      "headSha": "6d4df191a465148f5c0a800989ffff6b3c8717db",
+      "createdAt": "2026-06-09T20:00:19Z",
+      "checkedAt": "2026-06-09T23:02:06.652Z"
     },
     "baseball|2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition": {
       "status": "completed",
@@ -5151,6 +5152,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T23:02:03.547Z",
+  "saved_at": "2026-06-09T23:02:09.647Z",
   "saved_by": "cm_command_center_operator"
 }

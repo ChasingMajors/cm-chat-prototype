@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T18:29:15.922Z",
+  "exported_at": "2026-06-09T18:29:58.707Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,6 +166,28 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2017 topps museum collection baseball|2017_topps_museum_collection_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Museum Collection Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Museum_Collection_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27227215045",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T18:29:57.091Z",
+      "updatedAt": "2026-06-09T18:29:57.092Z"
+    },
+    {
       "id": "prv_watch|basketball|2025-26 topps motif basketball",
       "type": "prv_source_review",
       "source": "scheduled_prv_quick_json",
@@ -250,18 +272,18 @@
       "code": "2017_Topps_Museum_Collection_Baseball",
       "riskLevel": "high",
       "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
-      "validationResult": "Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27227215045",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 1427,
       "expectedParallelCount": 35,
       "createdAt": "2026-06-09T17:54:02.470Z",
-      "updatedAt": "2026-06-09T18:29:00.694Z",
+      "updatedAt": "2026-06-09T18:29:57.093Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "2026-06-09T18:29:07.534Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -1895,32 +1917,30 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.442Z",
       "updatedAt": "2026-06-09T17:54:02.442Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Donruss_Optic_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Donruss Optic Baseball",
-      "sport": "baseball",
-      "code": "2016_Donruss_Optic_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.442Z",
-      "updatedAt": "2026-06-09T17:54:02.442Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781029797104_96u774",
+      "ts": "2026-06-09T18:29:57.104Z",
+      "type": "visual_test",
+      "title": "Visual test statuses refreshed",
+      "detail": "1 visual test refreshed. 0 passed. 0 need repair.",
+      "status": "checked",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1781029797093_i524k2",
+      "ts": "2026-06-09T18:29:57.093Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Museum Collection Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781029754319_9anom2",
       "ts": "2026-06-09T18:29:14.319Z",
@@ -2699,26 +2719,6 @@
       "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Museum Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.)",
       "status": "needs_review",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879234428",
-      "ts": "2026-06-08T00:40:28.775Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2017 Topps Museum Collection Baseball: Pending checklist publish validation completed for 2017_Topps_Museum_Collection_Baseball. Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879233596",
-      "ts": "2026-06-08T00:40:28.775Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     }
   ],
@@ -3764,11 +3764,11 @@
       "checkedAt": "2026-06-07T22:10:33.366Z"
     },
     "baseball|2017_Topps_Museum_Collection_Baseball": {
-      "status": "completed",
-      "result": "passed",
-      "conclusion": "success",
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
       "startedAt": "2026-06-08T00:40:41.989Z",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27109778151",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27227215045",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Museum_Collection_Baseball",
@@ -3776,15 +3776,15 @@
       "productName": "2017 Topps Museum Collection Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Museum_Collection_Baseball",
-      "updatedAt": "2026-06-08T00:41:57.071Z",
+      "updatedAt": "2026-06-09T18:29:57.089Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 27109778151,
-      "runNumber": 64,
+      "runId": 27227215045,
+      "runNumber": 74,
       "displayTitle": "Visual Product Test - 2017 Topps Museum Collection Baseball",
-      "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
-      "createdAt": "2026-06-08T00:40:42Z",
-      "checkedAt": "2026-06-08T00:41:57.071Z"
+      "headSha": "0037e500942cc0244257ea4ce5ec32a60144803d",
+      "createdAt": "2026-06-09T18:29:08Z",
+      "checkedAt": "2026-06-09T18:29:57.089Z"
     }
   },
   "known_issues": {},
@@ -4858,6 +4858,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T18:29:17.015Z",
+  "saved_at": "2026-06-09T18:29:59.620Z",
   "saved_by": "cm_command_center_operator"
 }

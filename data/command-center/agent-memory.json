@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T20:17:43.279Z",
+  "exported_at": "2026-06-09T20:17:48.886Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -889,7 +889,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:28.274Z",
-      "updatedAt": "2026-06-09T20:17:19.972Z"
+      "updatedAt": "2026-06-09T20:17:46.635Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps chrome sapphire baseball|2017_topps_chrome_baseball_complete_set_sapphire_edition",
@@ -1197,7 +1197,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T19:59:52.413Z",
-      "updatedAt": "2026-06-09T20:17:20.298Z"
+      "updatedAt": "2026-06-09T20:17:47.283Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps high tek baseball|2017_topps_high_tek_baseball",
@@ -1579,7 +1579,7 @@
       "expectedRowCount": 450,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-09T17:54:02.469Z",
-      "updatedAt": "2026-06-09T20:17:20.298Z",
+      "updatedAt": "2026-06-09T20:17:47.283Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Heritage Minor League Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1929,7 +1929,7 @@
       "expectedRowCount": 83,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-09T17:54:02.464Z",
-      "updatedAt": "2026-06-09T20:17:19.973Z",
+      "updatedAt": "2026-06-09T20:17:46.635Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Archives Snapshots Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1987,6 +1987,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781036267283_m36t7t",
+      "ts": "2026-06-09T20:17:47.283Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Heritage Minor League Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781036266635_kr9g32",
+      "ts": "2026-06-09T20:17:46.635Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Archives Snapshots Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781036261677_op6nzh",
       "ts": "2026-06-09T20:17:41.677Z",
@@ -2766,26 +2786,6 @@
       "status": "queued",
       "product": "2017 Panini Immaculate Collection Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781036175563_spoygi",
-      "ts": "2026-06-09T20:16:15.563Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Chrome Update Series Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781036175294_47yv3h",
-      "ts": "2026-06-09T20:16:15.294Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Holiday Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3247,7 +3247,7 @@
       "productName": "2017 Topps Heritage Minor League Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Heritage_Minor_League_Baseball",
-      "updatedAt": "2026-06-09T20:17:20.297Z",
+      "updatedAt": "2026-06-09T20:17:47.281Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3255,7 +3255,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:17:20.297Z"
+      "checkedAt": "2026-06-09T20:17:47.281Z"
     },
     "baseball|2017_Topps_Heritage_High_Number_Baseball": {
       "status": "queued",
@@ -3569,7 +3569,7 @@
       "productName": "2017 Topps Archives Snapshots Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Archives_Snapshots_Baseball",
-      "updatedAt": "2026-06-09T20:17:19.971Z",
+      "updatedAt": "2026-06-09T20:17:46.633Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3577,7 +3577,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:17:19.971Z"
+      "checkedAt": "2026-06-09T20:17:46.633Z"
     },
     "baseball|2017_Topps_Archives_Baseball": {
       "status": "queued",
@@ -5318,6 +5318,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T20:17:44.488Z",
+  "saved_at": "2026-06-09T20:17:50.273Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T23:02:55.215Z",
+  "exported_at": "2026-06-09T23:04:18.516Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -668,24 +668,6 @@
       "updatedAt": "2026-06-09T23:02:06.056Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27240112891",
       "visualStartedAt": "2026-06-09T22:31:45Z"
-    },
-    {
-      "id": "source_watch|hockey|2026 leaf metal hockey",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2026 Leaf Metal Hockey",
-      "sport": "hockey",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
-      "createdAt": "2026-06-09T22:28:24.617Z",
-      "updatedAt": "2026-06-09T22:31:38.444Z"
     },
     {
       "id": "source_watch|basketball|2025-26 panini origins euroleague basketball",
@@ -2158,6 +2140,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781046256914_qeozif",
+      "ts": "2026-06-09T23:04:16.914Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2026 Leaf Metal Hockey was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2026 Leaf Metal Hockey",
+      "source": "admin"
+    },
+    {
       "id": "log_1781046173613_52egui",
       "ts": "2026-06-09T23:02:53.613Z",
       "type": "agent_cycle",
@@ -2944,16 +2936,6 @@
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "passed",
-      "product": "2017 Topps Holiday Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781042568675_pb8a61",
-      "ts": "2026-06-09T22:02:48.675Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
       "product": "2017 Topps Holiday Baseball",
       "source": "github_actions"
     }
@@ -5179,9 +5161,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-08T01:25:31.690Z",
       "resolved": true
+    },
+    "hockey|https www checklistcenter com 2026-leaf-metal-hockey-card-checklist": {
+      "product": "2026 Leaf Metal Hockey",
+      "sport": "hockey",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T23:04:16.910Z",
+      "resolved": true
+    },
+    "hockey|2026 leaf metal hockey": {
+      "product": "2026 Leaf Metal Hockey",
+      "sport": "hockey",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T23:04:16.910Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T23:02:56.219Z",
+  "saved_at": "2026-06-09T23:04:20.095Z",
   "saved_by": "cm_command_center_operator"
 }

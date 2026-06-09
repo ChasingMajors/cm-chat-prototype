@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T03:38:35.913Z",
+  "exported_at": "2026-06-09T03:39:01.951Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "prv_sync_incident_full_vault",
+      "type": "prv_sync_incident",
+      "source": "operator_backend",
+      "product": "Print Run Vault JSON Sync",
+      "sport": "",
+      "code": "prv_full_sync",
+      "riskLevel": "high",
+      "status": "validated",
+      "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
+      "adminDecision": "",
+      "executionResult": "PRV full JSON sync completed through Static Data Exporter.",
+      "validationResult": "80 public PRV products and 3,265 product rows validated across 1 shard.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T03:39:00.348Z",
+      "updatedAt": "2026-06-09T03:39:00.348Z"
+    },
     {
       "id": "visual_test|github_actions|2017 bowman chrome mini baseball|2017_bowman_chrome_mini_baseball",
       "type": "visual_test",
@@ -1889,6 +1911,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1780976340349_3zgs7i",
+      "ts": "2026-06-09T03:39:00.349Z",
+      "type": "prv_sync_incident",
+      "title": "PRV sync incident recovered",
+      "detail": "80 public PRV products and 3,265 product rows validated across 1 shard.",
+      "status": "validated",
+      "product": "Print Run Vault JSON Sync",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780976340345_k4wto6",
+      "ts": "2026-06-09T03:39:00.345Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync completed",
+      "detail": "80 public PRV products and 3,265 product rows validated across 1 shard.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1780976314308_y6sui4",
       "ts": "2026-06-09T03:38:34.308Z",
       "type": "prv_publish",
@@ -2666,26 +2708,6 @@
       "detail": "2016 Topps Tribute Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
       "status": "queued",
       "product": "2016 Topps Tribute Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882491254_0zna7w",
-      "ts": "2026-06-08T01:34:51.254Z",
-      "type": "agent_run_queue",
-      "title": "Removed from Agent Run Queue",
-      "detail": "2016 Topps Update Series Baseball was removed from the explicit run queue.",
-      "status": "removed",
-      "product": "2016 Topps Update Series Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1780882486898_ph01qi",
-      "ts": "2026-06-08T01:34:46.898Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2016 Topps Update Series Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2016 Topps Update Series Baseball",
       "source": "admin"
     }
   ],
@@ -5081,6 +5103,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T03:38:37.458Z",
+  "saved_at": "2026-06-09T03:39:03.101Z",
   "saved_by": "cm_command_center_operator"
 }

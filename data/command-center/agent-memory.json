@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T18:11:11.783Z",
+  "exported_at": "2026-06-09T18:12:17.632Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -227,11 +227,11 @@
       "sport": "baseball",
       "code": "2021_topps_tier_one_baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2021_topps_tier_one_baseball.",
-      "validationResult": "Published checklist JSON validated with 1132 rows and 25 parallels. CV/ChatBot visual validation is pending.",
+      "validationResult": "CV/ChatBot visual test requested by Agent Cycle...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2021",
@@ -239,7 +239,7 @@
       "expectedRowCount": 1132,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T18:11:10.178Z",
-      "updatedAt": "2026-06-09T18:12:06.500Z",
+      "updatedAt": "2026-06-09T18:12:16.030Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1922,6 +1922,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781028736024_ahstp8",
+      "ts": "2026-06-09T18:12:16.024Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781028736011_ueyhex",
+      "ts": "2026-06-09T18:12:16.011Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781028730454_alert",
       "ts": "2026-06-09T18:12:06.500Z",
       "type": "admin_alert",
@@ -2700,26 +2720,6 @@
       "status": "pending_visual_validation",
       "product": "2017 Topps Museum Collection Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879233596",
-      "ts": "2026-06-08T00:40:28.775Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879227219_tiyq9v",
-      "ts": "2026-06-08T00:40:27.219Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "last_agent_report": {
@@ -4857,6 +4857,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T18:12:10.509Z",
+  "saved_at": "2026-06-09T18:12:19.103Z",
   "saved_by": "cm_command_center_operator"
 }

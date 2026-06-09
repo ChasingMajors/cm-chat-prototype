@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T04:02:13.791Z",
+  "exported_at": "2026-06-09T04:02:18.129Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1549,11 +1549,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Heritage_High_Number_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2016_Topps_Heritage_High_Number_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1561,7 +1561,7 @@
       "expectedRowCount": 758,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.142Z",
-      "updatedAt": "2026-06-09T04:02:12.189Z"
+      "updatedAt": "2026-06-09T04:02:16.508Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Heritage_Baseball",
@@ -1938,10 +1938,38 @@
       "updatedAt": "2026-06-08T01:17:00.134Z"
     }
   ],
-  "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2016_Topps_Heritage_High_Number_Baseball"
-  ],
+  "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1780977736528_lmdk32",
+      "ts": "2026-06-09T04:02:16.528Z",
+      "type": "agent_run_queue",
+      "title": "Admin Run Queue complete",
+      "detail": "1 attempted. 0 skipped for approval/details. 0 failed. 0 still queued. 2016 Topps Heritage High Number Baseball: Recheck checklist public JSON",
+      "status": "validated",
+      "product": "",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1780977736510_d5blun",
+      "ts": "2026-06-09T04:02:16.510Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2016 Topps Heritage High Number Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780977736505_6sm97f",
+      "ts": "2026-06-09T04:02:16.505Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "758 public rows and 0 parallels found.",
+      "status": "covered",
+      "product": "2016 Topps Heritage High Number Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780977732189_j94wgw",
       "ts": "2026-06-09T04:02:12.189Z",
@@ -2711,36 +2739,6 @@
       "status": "needs_review",
       "product": "",
       "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780882524256_2hv7cu",
-      "ts": "2026-06-08T01:35:24.256Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Bowman Platinum Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882524255_yaeo4v",
-      "ts": "2026-06-08T01:35:24.255Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "435 public rows and 38 parallels found.",
-      "status": "covered",
-      "product": "2017 Bowman Platinum Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882522502_vbo919",
-      "ts": "2026-06-08T01:35:22.502Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Bowman Platinum Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -5178,9 +5176,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-09T03:38:28.089Z",
       "resolved": true
+    },
+    "baseball|2016 topps heritage high number baseball": {
+      "product": "2016 Topps Heritage High Number Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Heritage_High_Number_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T04:02:16.508Z",
+      "resolved": true
+    },
+    "baseball|2016_topps_heritage_high_number_baseball": {
+      "product": "2016 Topps Heritage High Number Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Heritage_High_Number_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-09T04:02:16.508Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T04:02:15.539Z",
+  "saved_at": "2026-06-09T04:02:20.217Z",
   "saved_by": "cm_command_center_operator"
 }

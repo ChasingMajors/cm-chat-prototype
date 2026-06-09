@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T22:17:47.269Z",
+  "exported_at": "2026-06-09T22:18:16.102Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -653,11 +653,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Gypsy_Queen_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239423636",
       "sourceUrl": "",
       "bucket": "",
@@ -665,7 +665,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T22:16:21.374Z",
-      "updatedAt": "2026-06-09T22:17:45.652Z",
+      "updatedAt": "2026-06-09T22:18:14.498Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239423636",
       "visualStartedAt": "2026-06-09T22:16:12Z"
     },
@@ -1060,11 +1060,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Gypsy_Queen_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239423636",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1072,7 +1072,7 @@
       "expectedRowCount": 620,
       "expectedParallelCount": 30,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-09T22:17:45.652Z",
+      "updatedAt": "2026-06-09T22:18:14.499Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-09T22:16:07.183Z",
@@ -2158,6 +2158,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781043494499_vouhc2",
+      "ts": "2026-06-09T22:18:14.499Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Topps Gypsy Queen Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781043494499_4o7lbh",
+      "ts": "2026-06-09T22:18:14.499Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Topps Gypsy Queen Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781043465667_vof5xa",
       "ts": "2026-06-09T22:17:45.667Z",
       "type": "agent_cycle",
@@ -2936,26 +2956,6 @@
       "status": "validated",
       "product": "2017 Topps Heritage Minor League Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781042572760_q2dq9x",
-      "ts": "2026-06-09T22:02:52.760Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps High Tek Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781042572759_87w8bt",
-      "ts": "2026-06-09T22:02:52.759Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps High Tek Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3192,9 +3192,9 @@
       "checkedAt": "2026-06-09T21:53:05.509Z"
     },
     "baseball|2017_Topps_Gypsy_Queen_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T19:59:58.341Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239423636",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3204,7 +3204,7 @@
       "productName": "2017 Topps Gypsy Queen Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gypsy_Queen_Baseball",
-      "updatedAt": "2026-06-09T22:17:45.651Z",
+      "updatedAt": "2026-06-09T22:18:14.496Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27239423636,
@@ -3212,7 +3212,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Gypsy Queen Baseball",
       "headSha": "f663fb1df3aa2b95c3d169a7982a19f18e8cb3f0",
       "createdAt": "2026-06-09T22:16:12Z",
-      "checkedAt": "2026-06-09T22:17:45.651Z"
+      "checkedAt": "2026-06-09T22:18:14.496Z"
     },
     "baseball|2017_Topps_Gold_Label_Baseball": {
       "status": "completed",
@@ -5182,6 +5182,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T22:17:48.433Z",
+  "saved_at": "2026-06-09T22:18:17.587Z",
   "saved_by": "cm_command_center_operator"
 }

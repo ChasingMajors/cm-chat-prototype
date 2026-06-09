@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T20:13:00.972Z",
+  "exported_at": "2026-06-09T20:13:08.415Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1241,7 +1241,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T19:59:48.144Z",
-      "updatedAt": "2026-06-09T20:12:49.790Z"
+      "updatedAt": "2026-06-09T20:13:06.814Z"
     },
     {
       "id": "visual_test|github_actions|2017 bowman holiday baseball|2017_topps_holiday_bowman_baseball",
@@ -1263,7 +1263,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T19:59:45.542Z",
-      "updatedAt": "2026-06-09T20:12:49.697Z"
+      "updatedAt": "2026-06-09T20:13:06.673Z"
     },
     {
       "id": "source_watch|hockey|2026 leaf metal hockey",
@@ -1504,7 +1504,7 @@
       "expectedRowCount": 146,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-09T17:54:02.470Z",
-      "updatedAt": "2026-06-09T20:12:49.697Z",
+      "updatedAt": "2026-06-09T20:13:06.673Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Holiday Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1529,7 +1529,7 @@
       "expectedRowCount": 344,
       "expectedParallelCount": 4,
       "createdAt": "2026-06-09T17:54:02.469Z",
-      "updatedAt": "2026-06-09T20:12:49.790Z",
+      "updatedAt": "2026-06-09T20:13:06.815Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Holiday Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1987,6 +1987,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781035986815_06mxqp",
+      "ts": "2026-06-09T20:13:06.815Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Holiday Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781035986673_xego0k",
+      "ts": "2026-06-09T20:13:06.674Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Holiday Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781035979369_4dq2cl",
       "ts": "2026-06-09T20:12:59.369Z",
@@ -2766,26 +2786,6 @@
       "status": "queued",
       "product": "2017 Topps Gallery Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781035907405_zytx7j",
-      "ts": "2026-06-09T20:11:47.405Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Five Star Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781035902941_iqi5ov",
-      "ts": "2026-06-09T20:11:42.941Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gallery Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3178,7 +3178,7 @@
       "productName": "2017 Bowman Holiday Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Bowman_Baseball",
-      "updatedAt": "2026-06-09T20:12:49.696Z",
+      "updatedAt": "2026-06-09T20:13:06.672Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3186,7 +3186,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:12:49.696Z"
+      "checkedAt": "2026-06-09T20:13:06.672Z"
     },
     "baseball|2017_Topps_Holiday_Baseball": {
       "status": "queued",
@@ -3201,7 +3201,7 @@
       "productName": "2017 Topps Holiday Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Baseball",
-      "updatedAt": "2026-06-09T20:12:49.789Z",
+      "updatedAt": "2026-06-09T20:13:06.814Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3209,7 +3209,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:12:49.789Z"
+      "checkedAt": "2026-06-09T20:13:06.814Z"
     },
     "baseball|2017_Topps_High_Tek_Baseball": {
       "status": "completed",
@@ -5318,6 +5318,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T20:13:01.996Z",
+  "saved_at": "2026-06-09T20:13:09.369Z",
   "saved_by": "cm_command_center_operator"
 }

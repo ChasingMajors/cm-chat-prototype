@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T15:00:17.713Z",
+  "exported_at": "2026-06-09T15:06:09.460Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1915,6 +1915,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781017567856_685isp",
+      "ts": "2026-06-09T15:06:07.856Z",
+      "type": "automation",
+      "title": "Daily Agent trigger ready",
+      "detail": "runScheduledAgentSweepTrigger • daily • trigger count 1",
+      "status": "already_installed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781017566349_il22av",
+      "ts": "2026-06-09T15:06:06.349Z",
+      "type": "automation",
+      "title": "Daily Agent trigger install started",
+      "detail": "Requesting Apps Script trigger for runScheduledAgentSweepTrigger.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781017216111_ls2lq1",
       "ts": "2026-06-09T15:00:16.111Z",
       "type": "automation",
@@ -2691,16 +2711,6 @@
       "title": "Deep Sheets Audit complete",
       "detail": "908 Sheet products checked against 942 public JSON products. 150 issues found. 150 queue cards updated.",
       "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780870530777_w52t1v",
-      "ts": "2026-06-07T22:15:30.777Z",
-      "type": "deep_backend_audit",
-      "title": "Backend audit issues queued",
-      "detail": "150 audit findings added to the Agent Action Queue.",
-      "status": "queued",
       "product": "",
       "source": "operator_backend"
     }
@@ -4813,6 +4823,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T15:00:19.771Z",
+  "saved_at": "2026-06-09T15:06:10.737Z",
   "saved_by": "cm_command_center_operator"
 }

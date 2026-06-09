@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T18:31:34.588Z",
+  "exported_at": "2026-06-09T18:31:26.103Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -221,7 +221,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-lineage-bayern-munchen-soccer-card-checklist/",
       "createdAt": "2026-06-09T18:29:00.694Z",
-      "updatedAt": "2026-06-09T18:29:00.694Z"
+      "updatedAt": "2026-06-09T18:31:33.939Z"
     },
     {
       "id": "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
@@ -280,19 +280,24 @@
       "sport": "baseball",
       "code": "2017_Topps_Luminaries_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "queued",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 619 rows / 18 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
+      "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
+      "validationResult": "Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 619,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-09T17:54:02.470Z",
-      "updatedAt": "2026-06-09T17:54:02.470Z"
+      "updatedAt": "2026-06-09T18:31:33.939Z",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "2026-06-09T18:31:36.979Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
+      "autoExecutedAt": "2026-06-09T18:31:33.939Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Inception_Baseball",
@@ -1904,14 +1909,54 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1781029892985_cov4zz",
-      "ts": "2026-06-09T18:31:32.985Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
+      "id": "log_1781029898744_alert",
+      "ts": "2026-06-09T18:31:33.939Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
       "product": "",
-      "source": "command_center"
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781029898461",
+      "ts": "2026-06-09T18:31:33.939Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 6 admin-ignored source item(s) skipped. Auto actions: 2 run. 2017 Topps Luminaries Baseball -> pending_visual_validation (Published checklist JSON validated with 619 rows and 18 parallels. CV/ChatBot visual validation is pending.); 2017 Topps Luminaries Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781029898460",
+      "ts": "2026-06-09T18:31:33.939Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2017 Topps Luminaries Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "status": "queued",
+      "product": "2017 Topps Luminaries Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781029896959",
+      "ts": "2026-06-09T18:31:33.939Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2017 Topps Luminaries Baseball: Pending checklist publish validation completed for 2017_Topps_Luminaries_Baseball. Published checklist JSON validated with 619 rows and 18 parallels. CV/ChatBot visual validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2017 Topps Luminaries Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781029896391",
+      "ts": "2026-06-09T18:31:33.939Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1781029884501_chq4uq",
@@ -2662,75 +2707,34 @@
       "status": "validated",
       "product": "2017 Topps Museum Collection Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1780879289454_0dm5ur",
-      "ts": "2026-06-08T00:41:29.454Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780879260866_036l9f",
-      "ts": "2026-06-08T00:41:00.866Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780879243418_8kb1ax",
-      "ts": "2026-06-08T00:40:43.418Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 wave ran. 1 safe action executed. Queued 1 CV/ChatBot visual test. 80 active queue items remain. Stopped because: A wave ended with an item needing validation or admin review. Wave 1: 2017 Topps Museum Collection Baseball -> pending_visual_validation (Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780879243414_7w1mkm",
-      "ts": "2026-06-08T00:40:43.414Z",
-      "type": "visual_test",
-      "title": "Visual validation batch queued",
-      "detail": "1 CV/ChatBot visual test queued. 2017 Topps Museum Collection Baseball",
-      "status": "queued",
-      "product": "",
-      "source": "agent_cycle"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-06-09T18:29:00.694Z",
+    "generated_at": "2026-06-09T18:31:33.939Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 9,
-      "skipped_ignored": 5
+      "skipped_ignored": 6
     },
     "completed_count": 1,
-    "needs_admin_count": 4,
+    "needs_admin_count": 3,
     "blocked_count": 0,
     "completed": [
-      "2017 Topps Museum Collection Baseball -> pending_visual_validation: Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending."
+      "2017 Topps Luminaries Baseball -> pending_visual_validation: Published checklist JSON validated with 619 rows and 18 parallels. CV/ChatBot visual validation is pending."
     ],
     "needs_admin": [
-      "2017 Topps Museum Collection Baseball -> queued: Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "2017 Topps Luminaries Baseball -> queued: Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
       "Checklist review: 2025-26 Topps Lineage Bayern München Soccer | soccer | missing",
-      "Checklist review: 2026 Leaf Metal Hockey | hockey | missing",
       "PRV review: 2025-26 Topps Motif Basketball | basketball | known_issue"
     ],
     "blocked": [],
     "proof": [
-      "2017 Topps Museum Collection Baseball -> pending_visual_validation: Published checklist JSON validated with 1427 rows and 35 parallels. CV/ChatBot visual validation is pending."
+      "2017 Topps Luminaries Baseball -> pending_visual_validation: Published checklist JSON validated with 619 rows and 18 parallels. CV/ChatBot visual validation is pending."
     ],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 1 completed/progress item(s), 4 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 1 completed/progress item(s), 3 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4858,6 +4862,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T18:31:35.759Z",
+  "saved_at": "2026-06-09T18:31:38.781Z",
   "saved_by": "cm_command_center_operator"
 }

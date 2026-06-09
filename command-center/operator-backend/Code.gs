@@ -4220,17 +4220,34 @@ function buildAgentRepairProof_(action, result, finalStatus) {
   const status = safeString_(finalStatus).trim().toLowerCase();
   const execution = safeString_(result && result.executionResult).trim();
   const validation = safeString_(result && result.validationResult).trim();
-  if (status === "validated") return "Agent completed repair for " + product + ": " + (execution || "work completed") + " " + (validation || "validation passed");
-  if (status === "pending_visual_validation") return "Agent fixed/published " + product + " and verified public JSON. Visual CV/ChatBot proof is next.";
-  if (status === "pending_public_validation") return "Agent attempted publish validation for " + product + ". Public JSON is not final yet; retry is scheduled.";
-  if (status === "failed") return "Agent attempted repair for " + product + " but it failed. " + (validation || execution || "A fix task was created when possible.");
+
+  if (status === "validated") {
+    return "Agent completed repair for " + product + ": " + (execution || "work completed") + " " + (validation || "validation passed");
+  }
+
+  if (status === "pending_visual_validation") {
+    return "Agent fixed/published " + product + " and verified public JSON. Visual CV/ChatBot proof is next.";
+  }
+
+  if (status === "pending_public_validation") {
+    return "Agent attempted publish validation for " + product + ". Public JSON is not final yet; retry is scheduled.";
+  }
+
+  if (status === "failed") {
+    return "Agent attempted repair for " + product + " but it failed. " + (validation || execution || "A fix task was created when possible.");
+  }
+
   return execution || validation || "Agent action recorded.";
 }
 
 function buildVisualFailureQuerySummary_(productName) {
   productName = safeString_(productName).trim();
   if (!productName) return "missing product query";
-  return [productName, "Show me " + productName + " checklist", productName + " details"].join(" | ");
+  return [
+    productName,
+    "Show me " + productName + " checklist",
+    productName + " details"
+  ].join(" | ");
 }
 
 function appendVisualFailureFixTask_(memory, action, result, now) {

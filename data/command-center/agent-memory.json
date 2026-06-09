@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T22:21:04.471Z",
+  "exported_at": "2026-06-09T22:21:10.480Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -176,18 +176,18 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239634184",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T22:20:57.872Z",
-      "updatedAt": "2026-06-09T22:20:57.872Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
-      "visualStartedAt": "2026-06-09T22:20:56.607Z"
+      "updatedAt": "2026-06-09T22:21:05.732Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239634184",
+      "visualStartedAt": "2026-06-09T22:20:57Z"
     },
     {
       "id": "visual_test|github_actions|2016 topps stadium club baseball|2016_topps_stadium_club_baseball",
@@ -200,18 +200,18 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239632610",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T22:20:55.903Z",
-      "updatedAt": "2026-06-09T22:20:55.903Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
-      "visualStartedAt": "2026-06-09T22:20:54.726Z"
+      "updatedAt": "2026-06-09T22:21:08.878Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239632610",
+      "visualStartedAt": "2026-06-09T22:20:55Z"
     },
     {
       "id": "visual_test|github_actions|2016 topps tier one baseball|2016_topps_tier_one_baseball",
@@ -2187,6 +2187,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781043668879_bu0s2h",
+      "ts": "2026-06-09T22:21:08.879Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781043665733_t0lvpz",
+      "ts": "2026-06-09T22:21:05.733Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Series 2 Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781043662869_nf9boz",
       "ts": "2026-06-09T22:21:02.869Z",
       "type": "visual_test",
@@ -2964,26 +2984,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Topps Chrome Sapphire Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781043414718_annk0t",
-      "ts": "2026-06-09T22:16:54.718Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Chrome Update Series Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781043414717_q4grfx",
-      "ts": "2026-06-09T22:16:54.717Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Chrome Update Series Baseball",
       "source": "github_actions"
     }
   ],
@@ -4238,11 +4238,11 @@
       "knownIssueNote": ""
     },
     "baseball|2016_Topps_Stadium_Club_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-09T22:20:54.726Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239632610",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2016_Topps_Stadium_Club_Baseball",
@@ -4250,16 +4250,22 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-09T22:20:55.902Z",
+      "updatedAt": "2026-06-09T22:21:08.877Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27239632610,
+      "runNumber": 159,
+      "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
+      "headSha": "f663fb1df3aa2b95c3d169a7982a19f18e8cb3f0",
+      "createdAt": "2026-06-09T22:20:55Z",
+      "checkedAt": "2026-06-09T22:21:08.877Z"
     },
     "baseball|2016_Topps_Series_2_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-09T22:20:56.607Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239634184",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2016_Topps_Series_2_Baseball",
@@ -4267,9 +4273,15 @@
       "productName": "2016 Topps Series 2 Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Series_2_Baseball",
-      "updatedAt": "2026-06-09T22:20:57.871Z",
+      "updatedAt": "2026-06-09T22:21:05.731Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27239634184,
+      "runNumber": 160,
+      "displayTitle": "Visual Product Test - 2016 Topps Series 2 Baseball",
+      "headSha": "f663fb1df3aa2b95c3d169a7982a19f18e8cb3f0",
+      "createdAt": "2026-06-09T22:20:57Z",
+      "checkedAt": "2026-06-09T22:21:05.731Z"
     }
   },
   "known_issues": {},
@@ -5343,6 +5355,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T22:21:05.574Z",
+  "saved_at": "2026-06-09T22:21:11.565Z",
   "saved_by": "cm_command_center_operator"
 }

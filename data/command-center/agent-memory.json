@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T03:26:11.247Z",
+  "exported_at": "2026-06-09T03:26:28.382Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -176,16 +176,16 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27181880379",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T03:26:09.631Z",
-      "updatedAt": "2026-06-09T03:26:09.632Z"
+      "updatedAt": "2026-06-09T03:26:26.778Z"
     },
     {
       "id": "prv_watch|basketball|2025-26 topps motif basketball",
@@ -1182,14 +1182,14 @@
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation completed for 2017_Bowman_Chrome_Mini_Baseball.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27181880379",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 277,
       "expectedParallelCount": 10,
       "createdAt": "2026-06-08T01:17:00.147Z",
-      "updatedAt": "2026-06-09T03:26:09.633Z",
+      "updatedAt": "2026-06-09T03:26:26.779Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
@@ -1924,6 +1924,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1780975586779_gkce1q",
+      "ts": "2026-06-09T03:26:26.779Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Bowman Chrome Mini Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1780975569644_d1r6f6",
       "ts": "2026-06-09T03:26:09.644Z",
@@ -2711,16 +2721,6 @@
       "title": "Covered product auto-resolved",
       "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
       "status": "validated",
-      "product": "2017 Panini Flawless Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882100195_yvo5c6",
-      "ts": "2026-06-08T01:28:20.195Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "1,105 public rows and 23 parallels found.",
-      "status": "covered",
       "product": "2017 Panini Flawless Baseball",
       "source": "operator_backend"
     }
@@ -3762,11 +3762,11 @@
       "checkedAt": "2026-06-08T00:41:57.071Z"
     },
     "baseball|2017_Bowman_Chrome_Mini_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-09T03:26:08.388Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27181880379",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Bowman_Chrome_Mini_Baseball",
@@ -3774,9 +3774,15 @@
       "productName": "2017 Bowman Chrome Mini Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
-      "updatedAt": "2026-06-09T03:26:09.630Z",
+      "updatedAt": "2026-06-09T03:26:26.775Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27181880379,
+      "runNumber": 67,
+      "displayTitle": "Visual Product Test - 2017 Bowman Chrome Mini Baseball",
+      "headSha": "819d68827af28d9d510de9b2d4d52de0e8e9c79d",
+      "createdAt": "2026-06-09T03:26:09Z",
+      "checkedAt": "2026-06-09T03:26:26.775Z"
     }
   },
   "known_issues": {},
@@ -5075,6 +5081,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T03:26:14.138Z",
+  "saved_at": "2026-06-09T03:26:29.899Z",
   "saved_by": "cm_command_center_operator"
 }

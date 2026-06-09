@@ -27,8 +27,14 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-09-operator-cc111-agentic-repair-loop";
+const CM_OPERATOR_VERSION = "2026-06-09-operator-cc112-sentinel-alerts";
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
+const CM_SENTINEL_ALERT_EMAIL_PROPERTY = "CM_SENTINEL_ALERT_EMAIL";
+const CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY = "CM_SENTINEL_ALERT_WEBHOOK_URL";
+const CM_SENTINEL_ALERT_SMS_WEBHOOK_URL_PROPERTY = "CM_SENTINEL_ALERT_SMS_WEBHOOK_URL";
+const CM_SENTINEL_ALERT_LAST_KEY_PROPERTY = "CM_SENTINEL_ALERT_LAST_KEY";
+const CM_SENTINEL_ALERT_LAST_AT_PROPERTY = "CM_SENTINEL_ALERT_LAST_AT";
+const CM_SENTINEL_ALERT_DEDUPE_MINUTES = 180;
 const CM_APP_DATA_BASE = "https://app.chasingmajors.com/data/v1";
 const CM_CHECKLISTCENTER_HOME = "https://www.checklistcenter.com/";
 const CM_CHECKLISTCENTER_POSTS_API = "https://www.checklistcenter.com/wp-json/wp/v2/posts?per_page=20&_fields=link,title,date,slug";
@@ -263,10 +269,14 @@ function doGet(e) {
       return json_(installDailyAgentSweepTrigger_(p));
     }
 
+    if (action === "testSentinelAlert") {
+      return json_(testSentinelAlert_(p));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["health", "sourceWatch", "runDeepBackendAudit", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync", "runScheduledAgentSweep", "installDailyAgentSweepTrigger"]
+      supported_actions: ["health", "sourceWatch", "runDeepBackendAudit", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync", "runScheduledAgentSweep", "installDailyAgentSweepTrigger", "testSentinelAlert"]
     });
   } catch (err) {
     return json_({
@@ -363,10 +373,14 @@ function doPost(e) {
       return json_(installDailyAgentSweepTrigger_(body));
     }
 
+    if (action === "testSentinelAlert") {
+      return json_(testSentinelAlert_(body));
+    }
+
     return json_({
       ok: false,
       error: "Unknown action",
-      supported_actions: ["sourceWatch", "runDeepBackendAudit", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync", "runScheduledAgentSweep", "installDailyAgentSweepTrigger"]
+      supported_actions: ["sourceWatch", "runDeepBackendAudit", "prvSourceWatch", "previewPrvSource", "executePrvSourceImport", "publishPrvVaultStaticData", "validatePrvVaultProduct", "validateSourceProduct", "previewSourceImport", "findChecklistCenterSource", "executeSourceImport", "publishImportedChecklist", "dispatchVisualProductTest", "getVisualProductTestStatus", "dispatchSentinelSelfTest", "getSentinelSelfTestStatus", "loadAgentMemory", "saveAgentMemory", "runScheduledSourceWatch", "runScheduledPrvSync", "runScheduledAgentSweep", "installDailyAgentSweepTrigger", "testSentinelAlert"]
     });
   } catch (err) {
     return json_({
@@ -3276,6 +3290,21 @@ function runScheduledAgentSweep_(input) {
     product: "",
     source: "operator_backend"
   });
+
+  const alertResult = maybeSendSentinelSweepAlert_({
+    ok: !checklistError && !prvError && !!prvSync.ok && sportInference.ok,
+    status: checklistActionable.length || prvActionable.length || !prvSync.ok || !sportInference.ok ? "needs_review" : "validated",
+    now: now,
+    detail: detailParts.join(" "),
+    checklistActionable: checklistActionable,
+    prvActionable: prvActionable,
+    checklistError: checklistError,
+    prvError: prvError,
+    prvSync: prvSync,
+    autoResult: autoResult,
+    sportInference: sportInference
+  }, memory);
+
   memory.saved_at = now;
 
   let saveResult = {};
@@ -3321,12 +3350,255 @@ function runScheduledAgentSweep_(input) {
     },
     auto_action: autoResult && autoResult.primary ? autoResult.primary : autoResult,
     auto_actions: autoResult,
+    alert: alertResult,
     sport_inference: sportInference,
     memory_path: saveResult.path || "",
     memory_sha: saveResult.sha || "",
     memory_error: saveResult.error || "",
     updated_at: now
   };
+}
+
+function testSentinelAlert_(input) {
+  requireOperatorKey_(input && input.key);
+
+  const now = new Date().toISOString();
+  const result = sendSentinelAdminAlert_({
+    severity: "test",
+    title: "CM Sentinel test alert",
+    summary: "This is a test alert from CM Sentinel. The agent notification layer is connected.",
+    lines: [
+      "No action is required.",
+      "If you received this, Sentinel can notify admin when an agent sweep finds a problem."
+    ],
+    dedupeKey: "manual_test_" + now,
+    force: true,
+    now: now
+  });
+
+  return Object.assign({
+    ok: true,
+    status: "sent"
+  }, result || {});
+}
+
+function maybeSendSentinelSweepAlert_(sweep, memory) {
+  const now = safeString_(sweep && sweep.now).trim() || new Date().toISOString();
+  const lines = [];
+  const criticalLines = [];
+  const reviewLines = [];
+  const repairLines = [];
+
+  if (sweep && sweep.checklistError) criticalLines.push("Checklist source watch failed: " + sweep.checklistError);
+  if (sweep && sweep.prvError) criticalLines.push("PRV source watch failed: " + sweep.prvError);
+  if (sweep && sweep.prvSync && sweep.prvSync.ok === false) criticalLines.push("PRV JSON sync failed: " + (sweep.prvSync.detail || sweep.prvSync.error || "No detail returned."));
+  if (sweep && sweep.sportInference && sweep.sportInference.ok === false) {
+    criticalLines.push("Sport inference guard failed for " + Number(sweep.sportInference.failed_count || 0) + " case(s).");
+  }
+
+  const auto = sweep && sweep.autoResult ? sweep.autoResult : {};
+  const autoList = Array.isArray(auto.results) ? auto.results : auto.primary ? [auto.primary] : auto.ran ? [auto] : [];
+  autoList.forEach(function(item) {
+    const status = safeString_(item && item.status).trim();
+    const product = safeString_(item && item.product).trim() || safeString_(item && item.type).trim() || "Agent action";
+    const detail = safeString_(item && (item.validationResult || item.executionResult || item.error)).trim();
+    if (status === "failed" || status === "known_issue" || status === "needs_admin" || status === "blocked") {
+      reviewLines.push(product + " -> " + status + (detail ? ": " + detail : ""));
+    } else if (status === "validated" || status === "pending_visual_validation") {
+      repairLines.push(product + " -> " + status + (detail ? ": " + detail : ""));
+    }
+  });
+
+  const checklistActionable = Array.isArray(sweep && sweep.checklistActionable) ? sweep.checklistActionable : [];
+  const prvActionable = Array.isArray(sweep && sweep.prvActionable) ? sweep.prvActionable : [];
+  checklistActionable.slice(0, 5).forEach(function(item) {
+    reviewLines.push("Checklist needs review: " + (item.title || item.product || item.code || "Unknown product") + " (" + (item.status || "review") + ")");
+  });
+  prvActionable.slice(0, 5).forEach(function(item) {
+    reviewLines.push("PRV needs review: " + (item.title || item.product || item.code || "Unknown product") + " (" + (item.status || "review") + ")");
+  });
+
+  if (!criticalLines.length && !reviewLines.length) {
+    return {
+      ok: true,
+      status: "not_needed",
+      detail: repairLines.length ? "Agent repairs recorded; no admin escalation needed." : "Sweep had no alert-worthy issues."
+    };
+  }
+
+  if (criticalLines.length) {
+    lines.push("Critical:");
+    criticalLines.forEach(function(line) { lines.push("- " + line); });
+  }
+  if (reviewLines.length) {
+    lines.push("Needs admin:");
+    reviewLines.slice(0, 10).forEach(function(line) { lines.push("- " + line); });
+    if (reviewLines.length > 10) lines.push("- +" + (reviewLines.length - 10) + " more review item(s) in CM Sentinel.");
+  }
+  if (repairLines.length) {
+    lines.push("Agent progress:");
+    repairLines.slice(0, 5).forEach(function(line) { lines.push("- " + line); });
+  }
+
+  const severity = criticalLines.length ? "critical" : "needs_review";
+  const title = severity === "critical" ? "CM Sentinel needs admin now" : "CM Sentinel found items for admin review";
+  const summary = (sweep && sweep.detail) ? sweep.detail : "Agent sweep completed with items needing review.";
+  const dedupeKey = [
+    severity,
+    criticalLines.join("|"),
+    reviewLines.slice(0, 8).join("|")
+  ].join("::");
+
+  const alert = sendSentinelAdminAlert_({
+    severity: severity,
+    title: title,
+    summary: summary,
+    lines: lines,
+    dedupeKey: dedupeKey,
+    now: now
+  });
+
+  if (memory && alert && alert.status !== "skipped_no_destination" && alert.status !== "deduped") {
+    memory.activity_log = prependMemoryActivity_(memory.activity_log || [], {
+      id: "log_" + Date.now() + "_alert",
+      ts: now,
+      type: "admin_alert",
+      title: title,
+      detail: alert.detail || summary,
+      status: alert.ok ? "sent" : "failed",
+      product: "",
+      source: "operator_backend"
+    });
+  }
+
+  return alert;
+}
+
+function sendSentinelAdminAlert_(alert) {
+  const props = PropertiesService.getScriptProperties();
+  const email = safeString_(props.getProperty(CM_SENTINEL_ALERT_EMAIL_PROPERTY)).trim();
+  const webhookUrl = safeString_(props.getProperty(CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY)).trim();
+  const smsWebhookUrl = safeString_(props.getProperty(CM_SENTINEL_ALERT_SMS_WEBHOOK_URL_PROPERTY)).trim();
+  const now = safeString_(alert && alert.now).trim() || new Date().toISOString();
+  const title = safeString_(alert && alert.title).trim() || "CM Sentinel alert";
+  const summary = safeString_(alert && alert.summary).trim();
+  const lines = Array.isArray(alert && alert.lines) ? alert.lines : [];
+  const body = [summary].concat(lines).filter(Boolean).join("\n");
+  const dedupeKey = hashSentinelAlertKey_(safeString_(alert && alert.dedupeKey).trim() || title + "\n" + body);
+
+  if (!alert.force && isSentinelAlertDeduped_(props, dedupeKey, now)) {
+    return {
+      ok: true,
+      status: "deduped",
+      detail: "Alert already sent recently."
+    };
+  }
+
+  if (!email && !webhookUrl && !smsWebhookUrl) {
+    return {
+      ok: true,
+      status: "skipped_no_destination",
+      detail: "Set " + CM_SENTINEL_ALERT_EMAIL_PROPERTY + ", " + CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY + ", or " + CM_SENTINEL_ALERT_SMS_WEBHOOK_URL_PROPERTY + " to send external alerts."
+    };
+  }
+
+  const failures = [];
+  const sent = [];
+  const payload = {
+    app: "CM Sentinel",
+    severity: alert && alert.severity || "needs_review",
+    title: title,
+    summary: summary,
+    body: body,
+    lines: lines,
+    timestamp: now
+  };
+
+  if (email) {
+    try {
+      MailApp.sendEmail({
+        to: email,
+        subject: title,
+        body: body || title
+      });
+      sent.push("email");
+    } catch (err) {
+      failures.push("email: " + (err && err.message ? err.message : String(err)));
+    }
+  }
+
+  if (webhookUrl) {
+    const result = postSentinelAlertWebhook_(webhookUrl, payload);
+    if (result.ok) sent.push("webhook");
+    else failures.push("webhook: " + result.error);
+  }
+
+  if (smsWebhookUrl) {
+    const smsPayload = Object.assign({}, payload, {
+      body: (title + ": " + summary).slice(0, 280)
+    });
+    const result = postSentinelAlertWebhook_(smsWebhookUrl, smsPayload);
+    if (result.ok) sent.push("sms_webhook");
+    else failures.push("sms_webhook: " + result.error);
+  }
+
+  if (sent.length) {
+    props.setProperty(CM_SENTINEL_ALERT_LAST_KEY_PROPERTY, dedupeKey);
+    props.setProperty(CM_SENTINEL_ALERT_LAST_AT_PROPERTY, now);
+  }
+
+  return {
+    ok: failures.length === 0,
+    status: failures.length ? "partial_or_failed" : "sent",
+    sent: sent,
+    failures: failures,
+    detail: sent.length ? "Alert sent via " + sent.join(", ") + "." : failures.join(" ")
+  };
+}
+
+function postSentinelAlertWebhook_(url, payload) {
+  try {
+    const res = UrlFetchApp.fetch(url, {
+      method: "post",
+      contentType: "application/json",
+      muteHttpExceptions: true,
+      payload: JSON.stringify(payload || {})
+    });
+    const status = res.getResponseCode();
+    if (status < 200 || status >= 300) {
+      return {
+        ok: false,
+        error: "HTTP " + status + ": " + res.getContentText().slice(0, 240)
+      };
+    }
+    return {
+      ok: true,
+      status: status
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err && err.message ? err.message : String(err)
+    };
+  }
+}
+
+function isSentinelAlertDeduped_(props, key, now) {
+  const lastKey = safeString_(props.getProperty(CM_SENTINEL_ALERT_LAST_KEY_PROPERTY)).trim();
+  const lastAt = safeString_(props.getProperty(CM_SENTINEL_ALERT_LAST_AT_PROPERTY)).trim();
+  if (!lastKey || !lastAt || lastKey !== key) return false;
+  const lastMs = new Date(lastAt).getTime();
+  const nowMs = new Date(now).getTime();
+  if (!lastMs || !nowMs) return false;
+  return nowMs - lastMs < CM_SENTINEL_ALERT_DEDUPE_MINUTES * 60 * 1000;
+}
+
+function hashSentinelAlertKey_(value) {
+  const bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, value || "");
+  return bytes.map(function(byte) {
+    const n = byte < 0 ? byte + 256 : byte;
+    return ("0" + n.toString(16)).slice(-2);
+  }).join("");
 }
 
 

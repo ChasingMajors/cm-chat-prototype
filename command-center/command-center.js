@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc111-agentic-repair-loop-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc112-sentinel-alerts-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -87,6 +87,7 @@
     agentCycleBtn: document.getElementById("agentCycleBtn"),
     backendAgentSweepBtn: document.getElementById("backendAgentSweepBtn"),
     installDailyAgentTriggerBtn: document.getElementById("installDailyAgentTriggerBtn"),
+    testSentinelAlertBtn: document.getElementById("testSentinelAlertBtn"),
     sourceWatchQuickBtn: document.getElementById("sourceWatchQuickBtn"),
     sourceWatchDeepBtn: document.getElementById("sourceWatchDeepBtn"),
     prvSourceWatchBtn: document.getElementById("prvSourceWatchBtn"),
@@ -2550,6 +2551,57 @@
         source: "operator_backend",
         title: "Daily Agent trigger failed",
         detail: err && err.message ? err.message : "Could not install daily trigger."
+      });
+      renderActivityLog();
+      throw err;
+    }
+  }
+
+  async function testSentinelAdminAlert() {
+    const endpoint = readOperatorEndpoint();
+    const key = readOperatorKey();
+    if (!endpoint || !key) {
+      renderSentinelNotice("Operator Backend needed", "Save the Apps Script endpoint and admin write key before sending a test alert.", "warning");
+      return;
+    }
+
+    logActivity({
+      type: "admin_alert",
+      status: "started",
+      source: "admin",
+      title: "Admin alert test started",
+      detail: "Requesting a CM Sentinel test alert from the operator backend."
+    });
+
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=testSentinelAlert"
+        + "&key=" + encodeURIComponent(key);
+      const data = await fetchJson(url, { timeoutMs: 60000 });
+      if (!data || !data.ok) throw new Error(data && data.error ? data.error : "Test alert failed.");
+
+      renderSentinelNotice(
+        "Admin alert test complete",
+        data.detail || "Sentinel attempted the configured admin alert destinations.",
+        data.status === "skipped_no_destination" ? "warning" : "success"
+      );
+      logActivity({
+        type: "admin_alert",
+        status: data.status || "sent",
+        source: "operator_backend",
+        title: "Admin alert test complete",
+        detail: data.detail || "Alert test completed."
+      });
+      renderActivityLog();
+    } catch (err) {
+      renderSentinelNotice("Admin alert test failed", err && err.message ? err.message : "Could not send test alert.", "error");
+      logActivity({
+        type: "admin_alert",
+        status: "failed",
+        source: "operator_backend",
+        title: "Admin alert test failed",
+        detail: err && err.message ? err.message : "Could not send test alert."
       });
       renderActivityLog();
       throw err;
@@ -8238,6 +8290,7 @@
   els.agentCycleBtn.addEventListener("click", () => runLauncher(els.agentCycleBtn, runAgentCycle, { running: "Working", success: "Cycle done" }));
   if (els.backendAgentSweepBtn) els.backendAgentSweepBtn.addEventListener("click", () => runLauncher(els.backendAgentSweepBtn, runBackendAgentSweep, { running: "Sweeping", success: "Sweep done" }));
   if (els.installDailyAgentTriggerBtn) els.installDailyAgentTriggerBtn.addEventListener("click", () => runLauncher(els.installDailyAgentTriggerBtn, installDailyAgentSweepTrigger, { running: "Installing", success: "Trigger ready" }));
+  if (els.testSentinelAlertBtn) els.testSentinelAlertBtn.addEventListener("click", () => runLauncher(els.testSentinelAlertBtn, testSentinelAdminAlert, { running: "Sending", success: "Alert tested" }));
   els.clearDoneBtn.addEventListener("click", clearDoneTasks);
   els.clearResolvedAgentActionsBtn.addEventListener("click", clearResolvedAgentActions);
   els.clearActivityLogBtn.addEventListener("click", clearActivityLog);

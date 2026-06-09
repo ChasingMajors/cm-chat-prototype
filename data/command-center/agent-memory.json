@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T22:21:45.866Z",
+  "exported_at": "2026-06-09T22:21:58.899Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -389,11 +389,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_High_Tek_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239611329",
       "sourceUrl": "",
       "bucket": "",
@@ -401,7 +401,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T22:20:34.950Z",
-      "updatedAt": "2026-06-09T22:21:28.913Z",
+      "updatedAt": "2026-06-09T22:21:57.295Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239611329",
       "visualStartedAt": "2026-06-09T22:20:25Z"
     },
@@ -2056,11 +2056,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_High_Tek_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239611329",
       "sourceUrl": "",
       "bucket": "2017",
@@ -2068,7 +2068,7 @@
       "expectedRowCount": 195,
       "expectedParallelCount": 24,
       "createdAt": "2026-06-09T17:54:02.457Z",
-      "updatedAt": "2026-06-09T22:21:28.915Z",
+      "updatedAt": "2026-06-09T22:21:57.296Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-09T22:20:22.584Z",
@@ -2186,6 +2186,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781043717296_im5ofx",
+      "ts": "2026-06-09T22:21:57.296Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Bowman High Tek Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781043717296_oodoeq",
+      "ts": "2026-06-09T22:21:57.296Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Bowman High Tek Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781043704263_iodptr",
       "ts": "2026-06-09T22:21:44.263Z",
@@ -2964,26 +2984,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Panini Flawless Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781043442635_kixbe4",
-      "ts": "2026-06-09T22:17:22.635Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Panini Immaculate Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781043442635_n4s8vl",
-      "ts": "2026-06-09T22:17:22.635Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Panini Immaculate Collection Baseball",
       "source": "github_actions"
     }
   ],
@@ -4106,9 +4106,9 @@
       "knownIssueNote": ""
     },
     "baseball|2017_Bowman_High_Tek_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T20:01:03.287Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239611329",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -4118,7 +4118,7 @@
       "productName": "2017 Bowman High Tek Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_High_Tek_Baseball",
-      "updatedAt": "2026-06-09T22:21:28.911Z",
+      "updatedAt": "2026-06-09T22:21:57.295Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27239611329,
@@ -4126,7 +4126,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman High Tek Baseball",
       "headSha": "f663fb1df3aa2b95c3d169a7982a19f18e8cb3f0",
       "createdAt": "2026-06-09T22:20:25Z",
-      "checkedAt": "2026-06-09T22:21:28.911Z"
+      "checkedAt": "2026-06-09T22:21:57.295Z"
     },
     "baseball|2017_Bowman_Draft_Baseball": {
       "status": "completed",
@@ -5361,6 +5361,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T22:21:46.937Z",
+  "saved_at": "2026-06-09T22:21:59.773Z",
   "saved_by": "cm_command_center_operator"
 }

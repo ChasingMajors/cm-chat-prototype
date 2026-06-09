@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T22:13:06.214Z",
+  "exported_at": "2026-06-09T22:15:28.852Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2099,6 +2099,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781043327250_zxn5qv",
+      "ts": "2026-06-09T22:15:27.250Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781043327236_wlybxi",
+      "ts": "2026-06-09T22:15:27.236Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781043321869",
       "ts": "2026-06-09T22:15:18.550Z",
       "type": "agent_sweep",
@@ -2876,26 +2896,6 @@
       "detail": "No GitHub run visible yet.",
       "status": "queued",
       "product": "2017 Topps Chrome Update Series Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041905054_3sp3xv",
-      "ts": "2026-06-09T21:51:45.054Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041900343_a2gkwx",
-      "ts": "2026-06-09T21:51:40.343Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Minor League Baseball",
       "source": "github_actions"
     }
   ],
@@ -5123,6 +5123,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T22:15:22.050Z",
+  "saved_at": "2026-06-09T22:15:29.969Z",
   "saved_by": "cm_command_center_operator"
 }

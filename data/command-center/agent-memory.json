@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T23:06:12.426Z",
+  "exported_at": "2026-06-09T23:07:13.796Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1684,11 +1684,11 @@
       "sport": "baseball",
       "code": "2017_Donruss_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Published checklist JSON validated with 748 rows and 100 parallels after bucket repair. CV/ChatBot visual validation is pending.",
+      "validationResult": "CV/ChatBot visual test requested from progress rail...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1696,7 +1696,7 @@
       "expectedRowCount": 748,
       "expectedParallelCount": 100,
       "createdAt": "2026-06-09T17:54:02.459Z",
-      "updatedAt": "2026-06-09T22:28:24.617Z",
+      "updatedAt": "2026-06-09T23:07:12.194Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Donruss Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T22:28:24.617Z"
@@ -5182,6 +5182,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T23:06:13.669Z",
+  "saved_at": "2026-06-09T23:07:15.225Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -207,7 +207,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T03:39:00.348Z",
-      "updatedAt": "2026-06-09T03:40:48.522Z"
+      "updatedAt": "2026-06-09T03:58:28.995Z"
     },
     {
       "id": "visual_test|github_actions|2017 bowman chrome mini baseball|2017_bowman_chrome_mini_baseball",
@@ -247,7 +247,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-lineage-bayern-munchen-soccer-card-checklist/",
       "createdAt": "2026-06-09T03:25:54.207Z",
-      "updatedAt": "2026-06-09T03:40:48.522Z"
+      "updatedAt": "2026-06-09T03:58:28.995Z"
     },
     {
       "id": "visual_test|github_actions|2017 panini national treasures baseball|2017_panini_national_treasures_baseball",
@@ -1391,11 +1391,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "pending_visual_validation",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 558 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "executionResult": "Pending checklist publish validation completed for 2016_Topps_Stadium_Club_Baseball.",
+      "validationResult": "Published checklist JSON validated with 558 rows and 0 parallels. CV/ChatBot visual validation is pending.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1403,7 +1403,11 @@
       "expectedRowCount": 558,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-08T01:17:00.144Z",
-      "updatedAt": "2026-06-08T01:17:00.144Z"
+      "updatedAt": "2026-06-09T03:58:28.995Z",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "autoExecutedAt": "2026-06-09T03:58:28.995Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Series_2_Baseball",
@@ -1936,6 +1940,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1780977514909",
+      "ts": "2026-06-09T03:58:28.995Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 7 admin-ignored source item(s) skipped. Auto actions: 1 run. 2016 Topps Stadium Club Baseball -> pending_visual_validation (Published checklist JSON validated with 558 rows and 0 parallels. CV/ChatBot visual validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780977514909",
+      "ts": "2026-06-09T03:58:28.995Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2016 Topps Stadium Club Baseball: Pending checklist publish validation completed for 2016_Topps_Stadium_Club_Baseball. Published checklist JSON validated with 558 rows and 0 parallels. CV/ChatBot visual validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1780977513537",
+      "ts": "2026-06-09T03:58:28.995Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1780977507831_q0oksv",
       "ts": "2026-06-09T03:58:27.831Z",
@@ -2705,36 +2739,6 @@
       "status": "started",
       "product": "2017 Bowman Draft Baseball",
       "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1780882516174_vmecbm",
-      "ts": "2026-06-08T01:35:16.174Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Bowman Chrome Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882516173_qlli0i",
-      "ts": "2026-06-08T01:35:16.173Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "475 public rows and 20 parallels found.",
-      "status": "covered",
-      "product": "2017 Bowman Chrome Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1780882514075_yifg21",
-      "ts": "2026-06-08T01:35:14.075Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Bowman Chrome Baseball",
-      "source": "operator_backend"
     }
   ],
   "visual_tests": {
@@ -5152,6 +5156,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T03:58:31.108Z",
+  "saved_at": "2026-06-09T03:58:34.993Z",
   "saved_by": "cm_command_center_operator"
 }

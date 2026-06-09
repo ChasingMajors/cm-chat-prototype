@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T18:31:26.103Z",
+  "exported_at": "2026-06-09T18:31:45.826Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1909,6 +1909,36 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781029904224_kinxth",
+      "ts": "2026-06-09T18:31:44.224Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 wave ran. 2 safe actions executed. 77 active queue items remain. Stopped because: A wave ended with 2017 Topps Luminaries Baseball needing validation or admin review. Wave 1: 2017 Topps Luminaries Baseball -> pending_visual_validation (Published checklist JSON validated with 619 rows and 18 parallels. CV/ChatBot visual validation is pending.); 2017 Topps Luminaries Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781029904222_4s8sft",
+      "ts": "2026-06-09T18:31:44.222Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781029904209_vv2w4j",
+      "ts": "2026-06-09T18:31:44.209Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781029898744_alert",
       "ts": "2026-06-09T18:31:33.939Z",
       "type": "admin_alert",
@@ -2677,36 +2707,6 @@
       "status": "queued",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1780881272222_jlyolf",
-      "ts": "2026-06-08T01:14:32.222Z",
-      "type": "deep_backend_audit",
-      "title": "Deep Sheets Audit started",
-      "detail": "Comparing configured source Google Sheets against public checklist JSON. No writes will run.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1780879317077_oo22nn",
-      "ts": "2026-06-08T00:41:57.077Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1780879317077_x80oob",
-      "ts": "2026-06-08T00:41:57.077Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Museum Collection Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -4862,6 +4862,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T18:31:38.781Z",
+  "saved_at": "2026-06-09T18:31:46.937Z",
   "saved_by": "cm_command_center_operator"
 }

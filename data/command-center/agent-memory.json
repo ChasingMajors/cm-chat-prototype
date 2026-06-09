@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T22:21:37.741Z",
+  "exported_at": "2026-06-09T22:21:45.866Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -209,7 +209,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T22:20:55.903Z",
-      "updatedAt": "2026-06-09T22:21:08.878Z",
+      "updatedAt": "2026-06-09T22:21:37.776Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239632610",
       "visualStartedAt": "2026-06-09T22:20:55Z"
     },
@@ -233,7 +233,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T22:20:53.976Z",
-      "updatedAt": "2026-06-09T22:21:15.586Z",
+      "updatedAt": "2026-06-09T22:21:44.263Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239631386",
       "visualStartedAt": "2026-06-09T22:20:53Z"
     },
@@ -305,7 +305,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T22:20:44.474Z",
-      "updatedAt": "2026-06-09T22:21:15.696Z",
+      "updatedAt": "2026-06-09T22:21:38.773Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27239624806",
       "visualStartedAt": "2026-06-09T22:20:44Z"
     },
@@ -2176,7 +2176,7 @@
       "expectedRowCount": 879,
       "expectedParallelCount": 55,
       "createdAt": "2026-06-09T17:54:02.455Z",
-      "updatedAt": "2026-06-09T22:21:15.697Z",
+      "updatedAt": "2026-06-09T22:21:38.773Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T22:13:05.558Z",
@@ -2186,6 +2186,56 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781043704263_iodptr",
+      "ts": "2026-06-09T22:21:44.263Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781043698787_nkqcnp",
+      "ts": "2026-06-09T22:21:38.787Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "8 waves ran. 8 safe actions executed. Refreshed 1 existing visual test before dispatch. Queued 6 CV/ChatBot visual tests and refreshed 11. 18 active queue items remain. Wave 1: 2017 Panini Contenders Draft Picks Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.) Review needed: 2017 Panini Contenders Draft Picks Baseball -> queued. Sentinel will keep clearing other safe work. Wave 2: 2017 Panini Chronicles Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.) Review needed: 2017 Panini Chronicles Baseball -> queued. Sentinel will keep clearing other safe work.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781043698782_y17wqn",
+      "ts": "2026-06-09T22:21:38.782Z",
+      "type": "visual_test",
+      "title": "Visual validation follow-up refreshed",
+      "detail": "11 visual tests refreshed. 0 passed. 0 need repair. 11 still queued/running.",
+      "status": "checked",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1781043698774_24kmb8",
+      "ts": "2026-06-09T22:21:38.774Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Bowman Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781043697777_3qtlfk",
+      "ts": "2026-06-09T22:21:37.777Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781043696140_vrw4f7",
       "ts": "2026-06-09T22:21:36.140Z",
@@ -2934,56 +2984,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Panini Immaculate Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781043439254_8tlo3z",
-      "ts": "2026-06-09T22:17:19.254Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Panini National Treasures Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781043439253_7l89uy",
-      "ts": "2026-06-09T22:17:19.253Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Panini National Treasures Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781043438468_a3p7mj",
-      "ts": "2026-06-09T22:17:18.468Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781043435598_9ynzi7",
-      "ts": "2026-06-09T22:17:15.598Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Panini Stars and Stripes USA Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781043435598_37m5fe",
-      "ts": "2026-06-09T22:17:15.598Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Panini Stars and Stripes USA Baseball",
       "source": "github_actions"
     }
   ],
@@ -4210,7 +4210,7 @@
       "productName": "2017 Bowman Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Baseball",
-      "updatedAt": "2026-06-09T22:21:15.695Z",
+      "updatedAt": "2026-06-09T22:21:38.772Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27239624806,
@@ -4218,7 +4218,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Baseball",
       "headSha": "f663fb1df3aa2b95c3d169a7982a19f18e8cb3f0",
       "createdAt": "2026-06-09T22:20:44Z",
-      "checkedAt": "2026-06-09T22:21:15.695Z"
+      "checkedAt": "2026-06-09T22:21:38.771Z"
     },
     "baseball|2016_Topps_Tier_One_Baseball": {
       "status": "in_progress",
@@ -4233,7 +4233,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-09T22:21:15.584Z",
+      "updatedAt": "2026-06-09T22:21:44.261Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27239631386,
@@ -4241,7 +4241,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "f663fb1df3aa2b95c3d169a7982a19f18e8cb3f0",
       "createdAt": "2026-06-09T22:20:53Z",
-      "checkedAt": "2026-06-09T22:21:15.584Z"
+      "checkedAt": "2026-06-09T22:21:44.261Z"
     },
     "baseball|2016_Topps_Stadium_Club_Baseball": {
       "status": "in_progress",
@@ -4256,7 +4256,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-09T22:21:08.877Z",
+      "updatedAt": "2026-06-09T22:21:37.775Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27239632610,
@@ -4264,7 +4264,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "f663fb1df3aa2b95c3d169a7982a19f18e8cb3f0",
       "createdAt": "2026-06-09T22:20:55Z",
-      "checkedAt": "2026-06-09T22:21:08.877Z"
+      "checkedAt": "2026-06-09T22:21:37.775Z"
     },
     "baseball|2016_Topps_Series_2_Baseball": {
       "status": "in_progress",
@@ -5361,6 +5361,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T22:21:38.810Z",
+  "saved_at": "2026-06-09T22:21:46.937Z",
   "saved_by": "cm_command_center_operator"
 }

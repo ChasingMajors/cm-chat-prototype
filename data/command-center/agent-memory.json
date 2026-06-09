@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T20:04:22.999Z",
+  "exported_at": "2026-06-09T20:04:29.388Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -305,11 +305,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Series_2_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232291038",
       "sourceUrl": "",
       "bucket": "",
@@ -317,7 +317,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:01:24.958Z",
-      "updatedAt": "2026-06-09T20:03:57.141Z"
+      "updatedAt": "2026-06-09T20:04:24.396Z"
     },
     {
       "id": "visual_test|github_actions|2016 topps stadium club baseball|2016_topps_stadium_club_baseball",
@@ -569,11 +569,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_s_Best_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232266817",
       "sourceUrl": "",
       "bucket": "",
@@ -581,7 +581,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:58.728Z",
-      "updatedAt": "2026-06-09T20:03:59.345Z"
+      "updatedAt": "2026-06-09T20:04:26.413Z"
     },
     {
       "id": "visual_test|github_actions|2017 donruss baseball|2017_donruss_baseball",
@@ -845,7 +845,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:32.862Z",
-      "updatedAt": "2026-06-09T20:03:58.985Z"
+      "updatedAt": "2026-06-09T20:04:25.673Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps archives baseball|2017_topps_archives_baseball",
@@ -867,7 +867,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:30.768Z",
-      "updatedAt": "2026-06-09T20:03:56.383Z"
+      "updatedAt": "2026-06-09T20:04:23.045Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps archives snapshots baseball|2017_topps_archives_snapshots_baseball",
@@ -1065,7 +1065,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:06.979Z",
-      "updatedAt": "2026-06-09T20:04:00.686Z"
+      "updatedAt": "2026-06-09T20:04:27.785Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps gallery baseball|2017_topps_gallery_baseball",
@@ -1087,7 +1087,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:04.926Z",
-      "updatedAt": "2026-06-09T20:03:57.883Z"
+      "updatedAt": "2026-06-09T20:04:24.550Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps gold label baseball|2017_topps_gold_label_baseball",
@@ -1241,7 +1241,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T19:59:48.144Z",
-      "updatedAt": "2026-06-09T20:04:07.398Z"
+      "updatedAt": "2026-06-09T20:04:24.184Z"
     },
     {
       "id": "visual_test|github_actions|2017 bowman holiday baseball|2017_topps_holiday_bowman_baseball",
@@ -1263,7 +1263,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T19:59:45.542Z",
-      "updatedAt": "2026-06-09T20:04:08.878Z"
+      "updatedAt": "2026-06-09T20:04:25.605Z"
     },
     {
       "id": "source_watch|hockey|2026 leaf metal hockey",
@@ -1504,7 +1504,7 @@
       "expectedRowCount": 146,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-09T17:54:02.470Z",
-      "updatedAt": "2026-06-09T20:04:08.878Z",
+      "updatedAt": "2026-06-09T20:04:25.605Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Holiday Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1529,7 +1529,7 @@
       "expectedRowCount": 344,
       "expectedParallelCount": 4,
       "createdAt": "2026-06-09T17:54:02.469Z",
-      "updatedAt": "2026-06-09T20:04:07.398Z",
+      "updatedAt": "2026-06-09T20:04:24.184Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Holiday Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1704,7 +1704,7 @@
       "expectedRowCount": 504,
       "expectedParallelCount": 24,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-09T20:03:57.883Z",
+      "updatedAt": "2026-06-09T20:04:24.550Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Gallery Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1729,7 +1729,7 @@
       "expectedRowCount": 360,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-09T20:04:00.686Z",
+      "updatedAt": "2026-06-09T20:04:27.785Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Five Star Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1954,7 +1954,7 @@
       "expectedRowCount": 545,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T17:54:02.464Z",
-      "updatedAt": "2026-06-09T20:03:56.383Z",
+      "updatedAt": "2026-06-09T20:04:23.046Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Archives Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1979,7 +1979,7 @@
       "expectedRowCount": 556,
       "expectedParallelCount": 7,
       "createdAt": "2026-06-09T17:54:02.463Z",
-      "updatedAt": "2026-06-09T20:03:58.985Z",
+      "updatedAt": "2026-06-09T20:04:25.673Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Allen & Ginter X Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1987,6 +1987,106 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781035467786_v5ippu",
+      "ts": "2026-06-09T20:04:27.786Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Five Star Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781035466414_vrh8lw",
+      "ts": "2026-06-09T20:04:26.414Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Bowman's Best Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781035466413_p2q2ut",
+      "ts": "2026-06-09T20:04:26.413Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "1 matching queue item now have visual proof.",
+      "status": "validated",
+      "product": "2017 Bowman's Best Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781035465674_ku635n",
+      "ts": "2026-06-09T20:04:25.674Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Allen & Ginter X Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781035465606_g5rmop",
+      "ts": "2026-06-09T20:04:25.606Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Holiday Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781035464550_oolk3p",
+      "ts": "2026-06-09T20:04:24.550Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Gallery Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781035464397_qjwam3",
+      "ts": "2026-06-09T20:04:24.397Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2016 Topps Series 2 Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781035464397_zmsp5s",
+      "ts": "2026-06-09T20:04:24.397Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "1 matching queue item now have visual proof.",
+      "status": "validated",
+      "product": "2016 Topps Series 2 Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781035464184_izsw66",
+      "ts": "2026-06-09T20:04:24.184Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Holiday Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781035463046_9y1c60",
+      "ts": "2026-06-09T20:04:23.046Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Archives Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781035461397_k80mn7",
       "ts": "2026-06-09T20:04:21.397Z",
@@ -2686,106 +2786,6 @@
       "status": "queued",
       "product": "2017 Panini Immaculate Collection Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781035419211_iu7t4t",
-      "ts": "2026-06-09T20:03:39.211Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Finest Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781035418072_mmd65e",
-      "ts": "2026-06-09T20:03:38.072Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Dynasty Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781035418046_14xyqy",
-      "ts": "2026-06-09T20:03:38.046Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Panini National Treasures Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781035417486_hvf2i4",
-      "ts": "2026-06-09T20:03:37.486Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Allen & Ginter Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781035417469_yljz45",
-      "ts": "2026-06-09T20:03:37.469Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Heritage Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781035415993_gmt9r0",
-      "ts": "2026-06-09T20:03:35.993Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Panini Stars and Stripes USA Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781035414069_5rbbv0",
-      "ts": "2026-06-09T20:03:34.069Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Heritage High Number Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781035413808_xv6yr9",
-      "ts": "2026-06-09T20:03:33.808Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Five Star Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781035412131_n8pkzy",
-      "ts": "2026-06-09T20:03:32.131Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Bowman's Best Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781035411780_915h03",
-      "ts": "2026-06-09T20:03:31.780Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Allen & Ginter X Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3086,7 +3086,7 @@
       "productName": "2017 Topps Gallery Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gallery_Baseball",
-      "updatedAt": "2026-06-09T20:03:57.882Z",
+      "updatedAt": "2026-06-09T20:04:24.549Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3094,7 +3094,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:03:57.882Z"
+      "checkedAt": "2026-06-09T20:04:24.549Z"
     },
     "baseball|2017_Topps_Five_Star_Baseball": {
       "status": "queued",
@@ -3109,7 +3109,7 @@
       "productName": "2017 Topps Five Star Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Five_Star_Baseball",
-      "updatedAt": "2026-06-09T20:04:00.684Z",
+      "updatedAt": "2026-06-09T20:04:27.783Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3117,7 +3117,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:04:00.684Z"
+      "checkedAt": "2026-06-09T20:04:27.783Z"
     },
     "baseball|2017_Topps_Luminaries_Baseball": {
       "status": "completed",
@@ -3178,7 +3178,7 @@
       "productName": "2017 Bowman Holiday Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Bowman_Baseball",
-      "updatedAt": "2026-06-09T20:04:08.877Z",
+      "updatedAt": "2026-06-09T20:04:25.603Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3186,7 +3186,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:04:08.877Z"
+      "checkedAt": "2026-06-09T20:04:25.603Z"
     },
     "baseball|2017_Topps_Holiday_Baseball": {
       "status": "queued",
@@ -3201,7 +3201,7 @@
       "productName": "2017 Topps Holiday Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Baseball",
-      "updatedAt": "2026-06-09T20:04:07.397Z",
+      "updatedAt": "2026-06-09T20:04:24.182Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3209,7 +3209,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:04:07.397Z"
+      "checkedAt": "2026-06-09T20:04:24.182Z"
     },
     "baseball|2017_Topps_High_Tek_Baseball": {
       "status": "queued",
@@ -3592,7 +3592,7 @@
       "productName": "2017 Topps Archives Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Archives_Baseball",
-      "updatedAt": "2026-06-09T20:03:56.382Z",
+      "updatedAt": "2026-06-09T20:04:23.044Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3600,7 +3600,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:03:56.382Z"
+      "checkedAt": "2026-06-09T20:04:23.044Z"
     },
     "baseball|2017_Bowman_Mega_Box_Chrome_Baseball": {
       "status": "completed",
@@ -3638,7 +3638,7 @@
       "productName": "2017 Topps Allen & Ginter X Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Allen_Ginter_X_Baseball",
-      "updatedAt": "2026-06-09T20:03:58.984Z",
+      "updatedAt": "2026-06-09T20:04:25.672Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3646,7 +3646,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:03:58.984Z"
+      "checkedAt": "2026-06-09T20:04:25.672Z"
     },
     "baseball|2017_Topps_Allen_Ginter_Baseball": {
       "status": "queued",
@@ -3879,9 +3879,9 @@
       "checkedAt": "2026-06-09T20:04:06.045Z"
     },
     "baseball|2017_Bowman_s_Best_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T20:00:57.241Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232266817",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3891,7 +3891,7 @@
       "productName": "2017 Bowman's Best Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_s_Best_Baseball",
-      "updatedAt": "2026-06-09T20:03:59.344Z",
+      "updatedAt": "2026-06-09T20:04:26.411Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27232266817,
@@ -3899,7 +3899,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman's Best Baseball",
       "headSha": "6d4df191a465148f5c0a800989ffff6b3c8717db",
       "createdAt": "2026-06-09T20:00:58Z",
-      "checkedAt": "2026-06-09T20:03:59.344Z"
+      "checkedAt": "2026-06-09T20:04:26.411Z"
     },
     "baseball|2017_Bowman_Platinum_Baseball": {
       "status": "completed",
@@ -4086,9 +4086,9 @@
       "checkedAt": "2026-06-09T20:03:54.751Z"
     },
     "baseball|2016_Topps_Series_2_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T20:01:23.385Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232291038",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -4098,7 +4098,7 @@
       "productName": "2016 Topps Series 2 Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Series_2_Baseball",
-      "updatedAt": "2026-06-09T20:03:57.140Z",
+      "updatedAt": "2026-06-09T20:04:24.395Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27232291038,
@@ -4106,7 +4106,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Series 2 Baseball",
       "headSha": "6d4df191a465148f5c0a800989ffff6b3c8717db",
       "createdAt": "2026-06-09T20:01:24Z",
-      "checkedAt": "2026-06-09T20:03:57.140Z"
+      "checkedAt": "2026-06-09T20:04:24.395Z"
     },
     "baseball|2016_Topps_Series_1_Baseball": {
       "status": "completed",
@@ -5318,6 +5318,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T20:04:24.047Z",
+  "saved_at": "2026-06-09T20:04:30.520Z",
   "saved_by": "cm_command_center_operator"
 }

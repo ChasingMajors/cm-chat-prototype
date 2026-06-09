@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T23:09:37.316Z",
+  "exported_at": "2026-06-09T23:10:05.857Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T23:09:17.180Z",
-      "updatedAt": "2026-06-09T23:09:35.711Z",
+      "updatedAt": "2026-06-09T23:10:04.252Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27241710366",
       "visualStartedAt": "2026-06-09T23:09:16Z"
     },
@@ -1771,7 +1771,7 @@
       "expectedRowCount": 403,
       "expectedParallelCount": 29,
       "createdAt": "2026-06-09T17:54:02.459Z",
-      "updatedAt": "2026-06-09T23:09:35.713Z",
+      "updatedAt": "2026-06-09T23:10:04.253Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman's Best Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T22:28:24.617Z",
@@ -2169,6 +2169,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781046604253_msjcpg",
+      "ts": "2026-06-09T23:10:04.253Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Bowman's Best Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781046575714_73zxvc",
       "ts": "2026-06-09T23:09:35.714Z",
@@ -2957,16 +2967,6 @@
       "detail": "2017 Topps High Tek Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
       "status": "queued",
       "product": "2017 Topps High Tek Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781044261782",
-      "ts": "2026-06-09T22:30:59.309Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     }
   ],
@@ -4067,7 +4067,7 @@
       "productName": "2017 Bowman's Best Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_s_Best_Baseball",
-      "updatedAt": "2026-06-09T23:09:35.709Z",
+      "updatedAt": "2026-06-09T23:10:04.246Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27241710366,
@@ -4075,7 +4075,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman's Best Baseball",
       "headSha": "63763267a7e8791dbaf16fee71c065cc2d916ad9",
       "createdAt": "2026-06-09T23:09:16Z",
-      "checkedAt": "2026-06-09T23:09:35.709Z"
+      "checkedAt": "2026-06-09T23:10:04.246Z"
     },
     "baseball|2017_Bowman_Platinum_Baseball": {
       "status": "queued",
@@ -5218,6 +5218,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T23:09:38.651Z",
+  "saved_at": "2026-06-09T23:10:07.055Z",
   "saved_by": "cm_command_center_operator"
 }

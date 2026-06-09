@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T22:19:42.546Z",
+  "exported_at": "2026-06-09T22:20:33.178Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2174,6 +2174,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781043631575_tyjgyh",
+      "ts": "2026-06-09T22:20:31.575Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781043631564_9le7bl",
+      "ts": "2026-06-09T22:20:31.564Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781043626087",
       "ts": "2026-06-09T22:20:22.584Z",
       "type": "agent_sweep",
@@ -2952,26 +2972,6 @@
       "status": "in_progress",
       "product": "2017 Topps Gypsy Queen Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781043377839_e4aiim",
-      "ts": "2026-06-09T22:16:17.839Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781043377827_o9olyi",
-      "ts": "2026-06-09T22:16:17.827Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
     }
   ],
   "last_agent_report": {
@@ -5198,6 +5198,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T22:20:26.338Z",
+  "saved_at": "2026-06-09T22:20:34.289Z",
   "saved_by": "cm_command_center_operator"
 }

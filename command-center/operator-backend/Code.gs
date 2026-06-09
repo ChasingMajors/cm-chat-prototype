@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-09-operator-cc114-audit-repair-queue";
+const CM_OPERATOR_VERSION = "2026-06-09-operator-cc115-drain-public-validation";
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
 const CM_SENTINEL_ALERT_EMAIL_PROPERTY = "CM_SENTINEL_ALERT_EMAIL";
 const CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY = "CM_SENTINEL_ALERT_WEBHOOK_URL";
@@ -3919,7 +3919,9 @@ function maybeRunScheduledAutoActions_(memory, key, now, maxActions) {
     const hasMoreQueuedWork = normalizeAgentRunQueue_(memory).some(function(id) {
       return !!findMemoryActionById_(memory.agent_actions || [], id);
     });
-    if (result.status !== "validated" && !hasMoreQueuedWork) break;
+    const status = safeString_(result.status).trim().toLowerCase();
+    const canContinue = result.validated || status === "validated" || status === "pending_visual_validation";
+    if (!canContinue && !hasMoreQueuedWork) break;
   }
 
   removeResolvedAgentRunQueueItems_(memory);

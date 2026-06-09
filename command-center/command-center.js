@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc114-audit-repair-queue-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc115-drain-public-validation-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -7269,8 +7269,14 @@
         break;
       }
 
-      if (data.auto_actions && data.auto_actions.results && data.auto_actions.results.some(result => result && result.status && result.status !== "validated")) {
-        stopReason = "A wave ended with an item needing validation or admin review.";
+      const blockingAutoResult = data.auto_actions && data.auto_actions.results
+        ? data.auto_actions.results.find(result => {
+          const status = String(result && result.status || "").toLowerCase();
+          return status && status !== "validated" && status !== "pending_visual_validation";
+        })
+        : null;
+      if (blockingAutoResult) {
+        stopReason = `A wave ended with ${blockingAutoResult.product || blockingAutoResult.type || "an item"} needing validation or admin review.`;
         break;
       }
     }

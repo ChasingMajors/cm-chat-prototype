@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-09T20:13:47.483Z",
+  "exported_at": "2026-06-09T20:13:57.003Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -801,7 +801,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:37.067Z",
-      "updatedAt": "2026-06-09T20:13:38.149Z"
+      "updatedAt": "2026-06-09T20:13:55.401Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps allen and ginter baseball|2017_topps_allen_ginter_baseball",
@@ -933,7 +933,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:00:20.086Z",
-      "updatedAt": "2026-06-09T20:13:21.457Z"
+      "updatedAt": "2026-06-09T20:13:48.195Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps clearly authentic baseball|2017_topps_clearly_authentic_baseball",
@@ -1879,7 +1879,7 @@
       "expectedRowCount": 196,
       "expectedParallelCount": 11,
       "createdAt": "2026-06-09T17:54:02.465Z",
-      "updatedAt": "2026-06-09T20:13:21.457Z",
+      "updatedAt": "2026-06-09T20:13:48.195Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Chrome Update Series Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-09T19:57:33.550Z"
@@ -1987,6 +1987,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781036035401_sb48zm",
+      "ts": "2026-06-09T20:13:55.401Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Panini Stars and Stripes USA Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781036028195_9w3gbd",
+      "ts": "2026-06-09T20:13:48.195Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781036025881_erum0j",
       "ts": "2026-06-09T20:13:45.881Z",
@@ -2766,26 +2786,6 @@
       "status": "queued",
       "product": "2017 Topps Five Star Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781035943777_hplv3d",
-      "ts": "2026-06-09T20:12:23.777Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Panini National Treasures Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781035943729_27mlj7",
-      "ts": "2026-06-09T20:12:23.729Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Panini Immaculate Collection Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3431,7 +3431,7 @@
       "productName": "2017 Topps Chrome Update Series Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Update_Series_Baseball",
-      "updatedAt": "2026-06-09T20:13:21.456Z",
+      "updatedAt": "2026-06-09T20:13:48.193Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3439,7 +3439,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:13:21.456Z"
+      "checkedAt": "2026-06-09T20:13:48.193Z"
     },
     "baseball|2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition": {
       "status": "completed",
@@ -3684,7 +3684,7 @@
       "productName": "2017 Panini Stars and Stripes USA Baseball",
       "sport": "baseball",
       "code": "2017_Panini_Stars_and_Stripes_USA_Baseball",
-      "updatedAt": "2026-06-09T20:13:38.147Z",
+      "updatedAt": "2026-06-09T20:13:55.398Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3692,7 +3692,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-09T20:13:38.147Z"
+      "checkedAt": "2026-06-09T20:13:55.398Z"
     },
     "baseball|2017_Panini_Flawless_Baseball": {
       "status": "queued",
@@ -5318,6 +5318,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-09T20:13:48.502Z",
+  "saved_at": "2026-06-09T20:13:58.137Z",
   "saved_by": "cm_command_center_operator"
 }

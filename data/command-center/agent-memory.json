@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:59:09.030Z",
+  "exported_at": "2026-06-10T01:59:13.399Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -375,11 +375,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Holiday_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -387,7 +387,7 @@
       "expectedRowCount": 344,
       "expectedParallelCount": 4,
       "createdAt": "2026-06-09T17:54:02.469Z",
-      "updatedAt": "2026-06-10T01:59:07.427Z"
+      "updatedAt": "2026-06-10T01:59:09.346Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_High_Tek_Baseball",
@@ -397,11 +397,11 @@
       "sport": "baseball",
       "code": "2017_Topps_High_Tek_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 287 rows / 12 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_High_Tek_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -409,7 +409,7 @@
       "expectedRowCount": 287,
       "expectedParallelCount": 12,
       "createdAt": "2026-06-09T17:54:02.469Z",
-      "updatedAt": "2026-06-09T17:54:02.469Z"
+      "updatedAt": "2026-06-10T01:59:11.782Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Minor_League_Baseball",
@@ -419,11 +419,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Heritage_Minor_League_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 450 rows / 18 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -431,7 +431,7 @@
       "expectedRowCount": 450,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-09T17:54:02.469Z",
-      "updatedAt": "2026-06-09T17:54:02.469Z"
+      "updatedAt": "2026-06-10T01:59:11.796Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_High_Number_Baseball",
@@ -1931,8 +1931,6 @@
     }
   ],
   "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Topps_Holiday_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Topps_High_Tek_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Minor_League_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_High_Number_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Baseball",
@@ -1940,6 +1938,86 @@
     "backend_audit|stale_public_json|baseball|2017_Topps_Gold_Label_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781056751797_606grc",
+      "ts": "2026-06-10T01:59:11.797Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Heritage Minor League Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781056751795_xdc4zq",
+      "ts": "2026-06-10T01:59:11.795Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Heritage Minor League Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Heritage Minor League Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1781056751783_n46yb0",
+      "ts": "2026-06-10T01:59:11.783Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps High Tek Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781056751782_1s2mnn",
+      "ts": "2026-06-10T01:59:11.782Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "287 public rows and 12 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps High Tek Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781056749361_ap3p8f",
+      "ts": "2026-06-10T01:59:09.361Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps High Tek Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781056749359_8y78hl",
+      "ts": "2026-06-10T01:59:09.359Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps High Tek Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps High Tek Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1781056749347_cxdjbv",
+      "ts": "2026-06-10T01:59:09.347Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Holiday Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781056749345_kunt4n",
+      "ts": "2026-06-10T01:59:09.345Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "344 public rows and 4 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Holiday Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1781056747427_mbpyqp",
       "ts": "2026-06-10T01:59:07.427Z",
@@ -2658,86 +2736,6 @@
       "detail": "No GitHub run visible yet.",
       "status": "queued",
       "product": "2017 Topps Five Star Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041935455_9smooq",
-      "ts": "2026-06-09T21:52:15.455Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041935434_b2qy6e",
-      "ts": "2026-06-09T21:52:15.434Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041934223_ch8fur",
-      "ts": "2026-06-09T21:52:14.223Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041932123_ejhtwg",
-      "ts": "2026-06-09T21:52:12.123Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Chrome Update Series Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041931934_5so6yt",
-      "ts": "2026-06-09T21:52:11.934Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041928036_ckyjk2",
-      "ts": "2026-06-09T21:52:08.036Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Topps Archives Snapshots Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041927405_y5qfly",
-      "ts": "2026-06-09T21:52:07.405Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Minor League Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041926554_xj9ci1",
-      "ts": "2026-06-09T21:52:06.554Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage High Number Baseball",
       "source": "github_actions"
     }
   ],
@@ -4673,9 +4671,9 @@
       "product": "2017 Topps High Tek Baseball",
       "sport": "baseball",
       "code": "2017_Topps_High_Tek_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103155471",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-10T01:59:11.782Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103154655": {
@@ -4693,7 +4691,7 @@
       "code": "2017_Topps_Holiday_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-08T01:24:24.671Z",
+      "ignoredAt": "2026-06-10T01:59:09.346Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103113962": {
@@ -4864,7 +4862,7 @@
       "code": "2017_Topps_Holiday_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-08T01:24:24.671Z",
+      "ignoredAt": "2026-06-10T01:59:09.346Z",
       "resolved": true
     },
     "baseball|2017 topps heritage minor league baseball": {
@@ -4956,9 +4954,18 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-10T01:59:07.412Z",
       "resolved": true
+    },
+    "baseball|2017 topps high tek baseball": {
+      "product": "2017 Topps High Tek Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_High_Tek_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-10T01:59:11.782Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:59:10.688Z",
+  "saved_at": "2026-06-10T01:59:14.941Z",
   "saved_by": "cm_command_center_operator"
 }

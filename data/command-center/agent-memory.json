@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:44:52.691Z",
+  "exported_at": "2026-06-10T01:42:23.245Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -181,7 +181,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
       "createdAt": "2026-06-10T01:43:08.040Z",
-      "updatedAt": "2026-06-10T01:43:08.040Z"
+      "updatedAt": "2026-06-10T01:44:51.364Z"
     },
     {
       "id": "source_watch|basketball|2025-26 panini origins euroleague basketball",
@@ -199,7 +199,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-origins-euroleague-basketball-card-checklist/",
       "createdAt": "2026-06-10T01:43:08.040Z",
-      "updatedAt": "2026-06-10T01:43:08.040Z"
+      "updatedAt": "2026-06-10T01:44:51.364Z"
     },
     {
       "id": "source_watch|basketball|2025-26 bowman sapphire basketball",
@@ -217,7 +217,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-bowman-sapphire-basketball-card-checklist/",
       "createdAt": "2026-06-10T01:43:08.040Z",
-      "updatedAt": "2026-06-10T01:43:08.040Z"
+      "updatedAt": "2026-06-10T01:44:51.364Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps luminaries baseball|2017_topps_luminaries_baseball",
@@ -299,7 +299,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-lineage-bayern-munchen-soccer-card-checklist/",
       "createdAt": "2026-06-09T18:29:00.694Z",
-      "updatedAt": "2026-06-10T01:43:08.040Z"
+      "updatedAt": "2026-06-10T01:44:51.364Z"
     },
     {
       "id": "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
@@ -412,22 +412,24 @@
       "sport": "baseball",
       "code": "2017_Topps_Holiday_Bowman_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "queued",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Published checklist JSON validated with 146 rows and 5 parallels after bucket repair. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
+      "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
+      "validationResult": "Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 146,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-09T17:54:02.470Z",
-      "updatedAt": "2026-06-10T01:43:08.040Z",
+      "updatedAt": "2026-06-10T01:44:51.364Z",
       "pendingValidationAttempts": 0,
-      "repairProof": "Agent repaired stale public JSON for 2017 Bowman Holiday Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-10T01:43:08.040Z"
+      "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
+      "autoExecutedAt": "2026-06-10T01:44:51.364Z",
+      "visualStartedAt": "2026-06-10T01:44:53.698Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Holiday_Baseball",
@@ -2088,24 +2090,34 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1781055890735_mpqtrq",
-      "ts": "2026-06-10T01:44:50.735Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
+      "id": "log_1781055894699",
+      "ts": "2026-06-10T01:44:51.364Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 4 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Bowman Holiday Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
+      "status": "needs_review",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1781055890717_eb4fqx",
-      "ts": "2026-06-10T01:44:50.717Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
+      "id": "log_1781055894697",
+      "ts": "2026-06-10T01:44:51.364Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2017 Bowman Holiday Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "status": "queued",
+      "product": "2017 Bowman Holiday Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781055893676",
+      "ts": "2026-06-10T01:44:51.364Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1781055886009",
@@ -2876,36 +2888,23 @@
       "status": "queued",
       "product": "2017 Topps Chrome Update Series Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781041905054_3sp3xv",
-      "ts": "2026-06-09T21:51:45.054Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-06-10T01:43:08.040Z",
+    "generated_at": "2026-06-10T01:44:51.364Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 9,
       "skipped_ignored": 5
     },
-    "completed_count": 2,
+    "completed_count": 0,
     "needs_admin_count": 6,
     "blocked_count": 0,
-    "completed": [
-      "baseball 2017 -> pending_visual_validation: 40 product(s) validated, 0 pending, 0 failed.",
-      "baseball 2016 -> pending_visual_validation: 15 product(s) validated, 0 pending, 0 failed."
-    ],
+    "completed": [],
     "needs_admin": [
-      "2017 Topps Inception Baseball -> queued: Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "2017 Bowman Holiday Baseball -> queued: Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
       "Checklist review: 2025-26 Bowman Sapphire Basketball | basketball | missing",
       "Checklist review: 2025-26 Panini Origins EuroLeague Basketball | basketball | missing",
       "Checklist review: 2025-26 Topps Lineage Bayern München Soccer | soccer | missing",
@@ -2913,12 +2912,9 @@
       "PRV review: 2025-26 Topps Motif Basketball | basketball | known_issue"
     ],
     "blocked": [],
-    "proof": [
-      "baseball 2017 -> pending_visual_validation: 40 product(s) validated, 0 pending, 0 failed.",
-      "baseball 2016 -> pending_visual_validation: 15 product(s) validated, 0 pending, 0 failed."
-    ],
+    "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 2 completed/progress item(s), 6 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 0 completed/progress item(s), 6 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -5119,6 +5115,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:44:54.170Z",
+  "saved_at": "2026-06-10T01:44:54.877Z",
   "saved_by": "cm_command_center_operator"
 }

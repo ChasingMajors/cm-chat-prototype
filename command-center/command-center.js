@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc122-queue-breakdown-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc123-public-validation-drain-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -7284,7 +7284,7 @@
   }
 
   function getPendingPublicValidationBatch(limit) {
-    const max = Math.max(1, Math.min(8, Number(limit || 5)));
+    const max = Math.max(1, Math.min(60, Number(limit || 25)));
     return getActiveAgentActions()
       .filter(action => {
         if (!isPendingPublicValidationAction(action)) return false;
@@ -7381,7 +7381,7 @@
 
     await saveBackendAgentMemoryNow({ silent: true });
 
-    const maxWaves = 8;
+    const maxWaves = 24;
     let waves = 0;
     let totalAuto = 0;
     let stopReason = "";
@@ -7450,7 +7450,7 @@
     }
     const queueBreakdown = getAgentQueueBreakdown();
     const activeCount = queueBreakdown.counts.total;
-    const detail = `${waves} wave${waves === 1 ? "" : "s"} ran. ${totalAuto} safe action${totalAuto === 1 ? "" : "s"} executed.${visualSummary} ${queueBreakdown.summary}${stopReason ? " Stopped because: " + stopReason : ""}`;
+    const detail = `${waves} of ${maxWaves} wave${waves === 1 ? "" : "s"} ran. ${totalAuto} safe action${totalAuto === 1 ? "" : "s"} executed.${visualSummary} ${queueBreakdown.summary}${stopReason ? " Stopped because: " + stopReason : ""}`;
 
     logActivity({
       type: "agent_cycle",
@@ -7477,14 +7477,15 @@
     };
   }
 
-  async function runPendingPublicValidationBatch() {
-    const pending = getPendingPublicValidationBatch(6);
+  async function runPendingPublicValidationBatch(options) {
+    const opts = options || {};
+    const pending = getPendingPublicValidationBatch(opts.limit || 50);
     if (!pending.length) return { ok: true, ran: 0, detail: "No pending public validations found." };
 
     if (readOperatorEndpoint() && readOperatorKey()) {
       renderAgentCycleMessage(
         "Self-healing pending validations",
-        `${pending.length} pending public validation item${pending.length === 1 ? "" : "s"} found. Sentinel is handing the batch to the backend worker so stale JSON can be republished when needed.`,
+        `${pending.length} pending public validation item${pending.length === 1 ? "" : "s"} found. Sentinel is handing the queue to the backend worker so stale JSON can be republished when needed.`,
         "info"
       );
       return runBackendAgentDrainCycle();
@@ -7765,6 +7766,11 @@
       return runAdminRunQueue();
     }
 
+    const pendingBatch = getPendingPublicValidationBatch(50);
+    if (pendingBatch.length > 1) {
+      return runPendingPublicValidationBatch({ limit: 50 });
+    }
+
     const runningVisuals = getRunningVisualValidationBatch(5);
     if (runningVisuals.length) {
       return refreshRunningVisualValidationBatch({ limit: 5 });
@@ -7777,11 +7783,6 @@
     const visualBatch = getPendingVisualValidationBatch(10);
     if (visualBatch.length > 1) {
       return runPendingVisualValidationBatch({ limit: 10 });
-    }
-
-    const pendingBatch = getPendingPublicValidationBatch(6);
-    if (pendingBatch.length > 1) {
-      return runPendingPublicValidationBatch();
     }
 
     const step = getAgentCycleStep();

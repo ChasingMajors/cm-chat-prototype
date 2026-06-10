@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T03:38:30.153Z",
+  "exported_at": "2026-06-10T03:38:33.964Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T03:38:15.295Z",
-      "updatedAt": "2026-06-10T03:38:28.551Z"
+      "updatedAt": "2026-06-10T03:38:32.362Z"
     },
     {
       "id": "visual_test|github_actions|2016 panini prime cuts baseball|2016_panini_prime_cuts_baseball",
@@ -2116,6 +2116,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781062712361_uyiub3",
+      "ts": "2026-06-10T03:38:32.361Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Bowman Sapphire Basketball",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781062708550_1ajp74",
       "ts": "2026-06-10T03:38:28.550Z",
       "type": "checklist_publish",
@@ -2903,16 +2913,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
       "product": "2016 Topps Chrome Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057358545_sp1gm3",
-      "ts": "2026-06-10T02:09:18.545Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Heritage Baseball",
       "source": "github_actions"
     }
   ],
@@ -5486,6 +5486,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T03:38:31.251Z",
+  "saved_at": "2026-06-10T03:38:35.227Z",
   "saved_by": "cm_command_center_operator"
 }

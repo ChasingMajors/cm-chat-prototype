@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T02:03:33.445Z",
+  "exported_at": "2026-06-10T02:01:24.170Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -181,7 +181,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
       "createdAt": "2026-06-10T02:01:30.254Z",
-      "updatedAt": "2026-06-10T02:03:23.189Z"
+      "updatedAt": "2026-06-10T02:03:32.763Z"
     },
     {
       "id": "source_watch|basketball|2025-26 panini origins euroleague basketball",
@@ -199,7 +199,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-origins-euroleague-basketball-card-checklist/",
       "createdAt": "2026-06-10T02:01:30.254Z",
-      "updatedAt": "2026-06-10T02:03:23.189Z"
+      "updatedAt": "2026-06-10T02:03:32.763Z"
     },
     {
       "id": "source_watch|basketball|2025-26 bowman sapphire basketball",
@@ -217,7 +217,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-bowman-sapphire-basketball-card-checklist/",
       "createdAt": "2026-06-10T02:01:30.254Z",
-      "updatedAt": "2026-06-10T02:03:23.189Z"
+      "updatedAt": "2026-06-10T02:03:32.763Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps luminaries baseball|2017_topps_luminaries_baseball",
@@ -299,7 +299,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-lineage-bayern-munchen-soccer-card-checklist/",
       "createdAt": "2026-06-09T18:29:00.694Z",
-      "updatedAt": "2026-06-10T02:03:23.189Z"
+      "updatedAt": "2026-06-10T02:03:32.763Z"
     },
     {
       "id": "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
@@ -610,11 +610,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Five_Star_Baseball",
       "riskLevel": "high",
-      "status": "queued",
+      "status": "validated",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
-      "validationResult": "Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "adminDecision": "auto_deduped",
+      "executionResult": "Duplicate queued action collapsed into backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball.",
+      "validationResult": "Same source/product already handled by the active queue item.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "2017",
@@ -622,7 +622,7 @@
       "expectedRowCount": 360,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-10T02:03:23.189Z",
+      "updatedAt": "2026-06-10T02:03:32.763Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:03:23.189Z",
@@ -637,22 +637,24 @@
       "sport": "baseball",
       "code": "2017_Topps_Finest_Baseball",
       "riskLevel": "high",
-      "status": "pending_visual_validation",
+      "status": "queued",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
-      "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Published checklist JSON validated with 325 rows and 48 parallels after bucket repair. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
+      "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
+      "validationResult": "Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 325,
       "expectedParallelCount": 48,
       "createdAt": "2026-06-09T17:54:02.466Z",
-      "updatedAt": "2026-06-10T02:01:30.254Z",
+      "updatedAt": "2026-06-10T02:03:32.763Z",
       "pendingValidationAttempts": 0,
-      "repairProof": "Agent repaired stale public JSON for 2017 Topps Finest Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-10T02:01:30.254Z"
+      "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
+      "autoExecutedAt": "2026-06-10T02:03:32.763Z",
+      "visualStartedAt": "2026-06-10T02:03:34.974Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Dynasty_Baseball",
@@ -2063,24 +2065,34 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1781057011843_4q7cyl",
-      "ts": "2026-06-10T02:03:31.843Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
+      "id": "log_1781057015959",
+      "ts": "2026-06-10T02:03:32.763Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 4 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Finest Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
+      "status": "needs_review",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1781057011832_fh7cau",
-      "ts": "2026-06-10T02:03:31.832Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
+      "id": "log_1781057015958",
+      "ts": "2026-06-10T02:03:32.763Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2017 Topps Finest Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "status": "queued",
+      "product": "2017 Topps Finest Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781057014951",
+      "ts": "2026-06-10T02:03:32.763Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1781057006719",
@@ -2851,22 +2863,12 @@
       "status": "queued",
       "product": "2017 Topps Gypsy Queen Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781041905471_p47axs",
-      "ts": "2026-06-09T21:51:45.471Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-06-10T02:03:23.189Z",
+    "generated_at": "2026-06-10T02:03:32.763Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 9,
@@ -2877,7 +2879,7 @@
     "blocked_count": 0,
     "completed": [],
     "needs_admin": [
-      "2017 Topps Five Star Baseball -> queued: Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "2017 Topps Finest Baseball -> queued: Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
       "Checklist review: 2025-26 Bowman Sapphire Basketball | basketball | missing",
       "Checklist review: 2025-26 Panini Origins EuroLeague Basketball | basketball | missing",
       "Checklist review: 2025-26 Topps Lineage Bayern München Soccer | soccer | missing",
@@ -5088,6 +5090,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T02:03:35.249Z",
+  "saved_at": "2026-06-10T02:03:36.066Z",
   "saved_by": "cm_command_center_operator"
 }

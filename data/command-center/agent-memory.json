@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T03:38:53.325Z",
+  "exported_at": "2026-06-10T03:39:03.809Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T03:38:15.295Z",
-      "updatedAt": "2026-06-10T03:38:51.723Z"
+      "updatedAt": "2026-06-10T03:39:02.207Z"
     },
     {
       "id": "visual_test|github_actions|2016 panini prime cuts baseball|2016_panini_prime_cuts_baseball",
@@ -2116,6 +2116,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781062742207_kilcik",
+      "ts": "2026-06-10T03:39:02.207Z",
+      "type": "source_import",
+      "title": "Import blocked before sheet write",
+      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781062731724_5ixtkt",
       "ts": "2026-06-10T03:38:51.724Z",
       "type": "source_import",
@@ -2903,16 +2913,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
       "product": "2016 Topps Stadium Club Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057362072_50iixs",
-      "ts": "2026-06-10T02:09:22.072Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Chrome Baseball",
       "source": "github_actions"
     }
   ],
@@ -5486,6 +5486,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T03:38:54.514Z",
+  "saved_at": "2026-06-10T03:39:04.821Z",
   "saved_by": "cm_command_center_operator"
 }

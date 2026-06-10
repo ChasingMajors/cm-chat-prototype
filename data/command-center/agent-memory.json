@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:59:51.739Z",
+  "exported_at": "2026-06-10T01:59:57.006Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1931,9 +1931,31 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Topps_Finest_Baseball",
+    "backend_audit|stale_public_json|baseball|2017_Topps_Five_Star_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781056795404_ido6i9",
+      "ts": "2026-06-10T01:59:55.404Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Finest Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Finest Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1781056793271_ymmez8",
+      "ts": "2026-06-10T01:59:53.271Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Five Star Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Five Star Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1781056790137_2pxb54",
       "ts": "2026-06-10T01:59:50.137Z",
@@ -2712,26 +2734,6 @@
       "detail": "No GitHub run visible yet.",
       "status": "queued",
       "product": "2017 Topps Definitive Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041971441_107nat",
-      "ts": "2026-06-09T21:52:51.441Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Archives Snapshots Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041968294_knluuc",
-      "ts": "2026-06-09T21:52:48.294Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Dynasty Baseball",
       "source": "github_actions"
     }
   ],
@@ -4962,6 +4964,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:59:54.184Z",
+  "saved_at": "2026-06-10T01:59:58.237Z",
   "saved_by": "cm_command_center_operator"
 }

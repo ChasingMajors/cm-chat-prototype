@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T02:05:53.434Z",
+  "exported_at": "2026-06-10T02:06:36.726Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2093,6 +2093,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781057195123_v3nops",
+      "ts": "2026-06-10T02:06:35.123Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781057195116_72wem4",
+      "ts": "2026-06-10T02:06:35.116Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781057186479",
       "ts": "2026-06-10T02:06:21.472Z",
       "type": "agent_sweep",
@@ -2870,26 +2890,6 @@
       "detail": "baseball 2016: 16 validated, 0 pending, 0 failed. 2016 Topps Update Series Baseball -> pending_visual_validation; 2016 Topps Tribute Baseball -> pending_visual_validation; 2016 Topps Tier One Baseball -> pending_visual_validation; 2016 Topps Stadium Club Baseball -> pending_visual_validation; 2016 Topps Series 2 Baseball -> pending_visual_validation; 2016 Topps Series 1 Baseball -> pending_visual_validation",
       "status": "pending_visual_validation",
       "product": "baseball 2016",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781042509769_bucket_repair",
-      "ts": "2026-06-09T22:00:25.054Z",
-      "type": "auto_action",
-      "title": "Bucket-level checklist repair completed",
-      "detail": "baseball 2017: 40 validated, 0 pending, 0 failed. 2017 Topps Inception Baseball -> pending_visual_validation; 2017 Bowman Holiday Baseball -> pending_visual_validation; 2017 Topps Holiday Baseball -> pending_visual_validation; 2017 Topps High Tek Baseball -> pending_visual_validation; 2017 Topps Heritage Minor League Baseball -> pending_visual_validation; 2017 Topps Heritage High Number Baseball -> pending_visual_validation",
-      "status": "pending_visual_validation",
-      "product": "baseball 2017",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781042427772",
-      "ts": "2026-06-09T22:00:25.054Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     }
   ],
@@ -5117,6 +5117,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T02:06:26.665Z",
+  "saved_at": "2026-06-10T02:06:38.383Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:59:23.343Z",
+  "exported_at": "2026-06-10T01:59:51.739Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1930,8 +1930,20 @@
       "updatedAt": "2026-06-09T17:54:02.442Z"
     }
   ],
-  "agent_run_queue": [],
+  "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball"
+  ],
   "activity_log": [
+    {
+      "id": "log_1781056790137_2pxb54",
+      "ts": "2026-06-10T01:59:50.137Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Gallery Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Gallery Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1781056761740_e0g5jd",
       "ts": "2026-06-10T01:59:21.740Z",
@@ -2720,16 +2732,6 @@
       "detail": "No GitHub run visible yet.",
       "status": "queued",
       "product": "2017 Topps Dynasty Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041968211_n8dzjd",
-      "ts": "2026-06-09T21:52:48.211Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Diamond Icons Baseball",
       "source": "github_actions"
     }
   ],
@@ -4960,6 +4962,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:59:25.204Z",
+  "saved_at": "2026-06-10T01:59:54.184Z",
   "saved_by": "cm_command_center_operator"
 }

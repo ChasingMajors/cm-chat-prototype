@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T02:07:08.956Z",
+  "exported_at": "2026-06-10T02:07:30.782Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2101,6 +2101,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781057249180_mllzq1",
+      "ts": "2026-06-10T02:07:29.180Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781057249169_9jk2in",
+      "ts": "2026-06-10T02:07:29.169Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781057242868",
       "ts": "2026-06-10T02:07:18.001Z",
       "type": "agent_sweep",
@@ -2878,26 +2898,6 @@
       "detail": "CV/ChatBot behavior check started.",
       "status": "queued",
       "product": "2017 Topps Luminaries Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781055009932_6v758e",
-      "ts": "2026-06-10T01:30:09.932Z",
-      "type": "visual_test",
-      "title": "Visual test requested",
-      "detail": "Queue card requested CV/ChatBot validation.",
-      "status": "requested",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "agent_action_queue"
-    },
-    {
-      "id": "log_1781042576404_0foqmc",
-      "ts": "2026-06-09T22:02:56.404Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Heritage Minor League Baseball",
       "source": "github_actions"
     }
   ],
@@ -5125,6 +5125,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T02:07:23.267Z",
+  "saved_at": "2026-06-10T02:07:32.235Z",
   "saved_by": "cm_command_center_operator"
 }

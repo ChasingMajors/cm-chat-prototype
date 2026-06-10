@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:58:54.445Z",
+  "exported_at": "2026-06-10T01:59:00.384Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1931,6 +1931,7 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Inception_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Holiday_Bowman_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Holiday_Baseball",
@@ -1942,6 +1943,36 @@
     "backend_audit|stale_public_json|baseball|2017_Topps_Gold_Label_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781056738781_4w5npd",
+      "ts": "2026-06-10T01:58:58.781Z",
+      "type": "agent_run_queue",
+      "title": "Removed from Agent Run Queue",
+      "detail": "2025-26 Topps Lineage Bayern München Soccer was removed from the explicit run queue.",
+      "status": "removed",
+      "product": "2025-26 Topps Lineage Bayern München Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1781056737496_brk9av",
+      "ts": "2026-06-10T01:58:57.496Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2025-26 Topps Lineage Bayern München Soccer will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2025-26 Topps Lineage Bayern München Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1781056735027_aj05on",
+      "ts": "2026-06-10T01:58:55.027Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps New Era Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps New Era Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1781056732842_2879hn",
       "ts": "2026-06-10T01:58:52.842Z",
@@ -2710,36 +2741,6 @@
       "detail": "No GitHub run visible yet.",
       "status": "queued",
       "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041905471_p47axs",
-      "ts": "2026-06-09T21:51:45.471Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041905402_032be0",
-      "ts": "2026-06-09T21:51:45.402Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Chrome Update Series Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041905054_3sp3xv",
-      "ts": "2026-06-09T21:51:45.054Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Heritage Baseball",
       "source": "github_actions"
     }
   ],
@@ -4943,6 +4944,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:58:55.743Z",
+  "saved_at": "2026-06-10T01:59:01.672Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T02:00:11.728Z",
+  "exported_at": "2026-06-10T02:00:15.917Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -683,11 +683,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Update_Series_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 196 rows / 11 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -695,7 +695,7 @@
       "expectedRowCount": 196,
       "expectedParallelCount": 11,
       "createdAt": "2026-06-09T17:54:02.465Z",
-      "updatedAt": "2026-06-09T17:54:02.465Z"
+      "updatedAt": "2026-06-10T02:00:14.315Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
@@ -705,11 +705,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 717 rows / 1 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -717,7 +717,7 @@
       "expectedRowCount": 717,
       "expectedParallelCount": 1,
       "createdAt": "2026-06-09T17:54:02.464Z",
-      "updatedAt": "2026-06-09T17:54:02.464Z"
+      "updatedAt": "2026-06-10T02:00:14.301Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Archives_Snapshots_Baseball",
@@ -1931,7 +1931,6 @@
     }
   ],
   "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
     "backend_audit|stale_public_json|baseball|2017_Topps_Chrome_Update_Series_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Clearly_Authentic_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Definitive_Collection_Baseball",
@@ -1942,6 +1941,76 @@
     "backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781056814316_stx7l3",
+      "ts": "2026-06-10T02:00:14.316Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781056814314_0ixff4",
+      "ts": "2026-06-10T02:00:14.314Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Chrome Update Series Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Chrome Update Series Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1781056814301_35ipk5",
+      "ts": "2026-06-10T02:00:14.301Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Chrome Sapphire Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781056814300_4ng8mz",
+      "ts": "2026-06-10T02:00:14.300Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "717 public rows and 1 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Chrome Sapphire Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781056812434_5cjtco",
+      "ts": "2026-06-10T02:00:12.434Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Chrome Sapphire Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781056812431_vumxf2",
+      "ts": "2026-06-10T02:00:12.431Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Chrome Sapphire Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Chrome Sapphire Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1781056812427_94rmbg",
+      "ts": "2026-06-10T02:00:12.427Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "9 flagged jobs will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1781056810126_4unidm",
       "ts": "2026-06-10T02:00:10.126Z",
@@ -2671,76 +2740,6 @@
       "status": "loaded",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1781042554824_c0j865",
-      "ts": "2026-06-09T22:02:34.824Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1781042548652",
-      "ts": "2026-06-09T22:00:25.054Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 3 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 3 run. baseball 2017 -> pending_visual_validation (40 product(s) validated, 0 pending, 0 failed.); baseball 2016 -> pending_visual_validation (16 product(s) validated, 0 pending, 0 failed.); 2017 Topps Inception Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781042548652",
-      "ts": "2026-06-09T22:00:25.054Z",
-      "type": "auto_action",
-      "title": "Full-auto action needs review",
-      "detail": "2017 Topps Inception Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
-      "status": "queued",
-      "product": "2017 Topps Inception Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781042547410_bucket_repair",
-      "ts": "2026-06-09T22:00:25.054Z",
-      "type": "auto_action",
-      "title": "Bucket-level checklist repair completed",
-      "detail": "baseball 2016: 16 validated, 0 pending, 0 failed. 2016 Topps Update Series Baseball -> pending_visual_validation; 2016 Topps Tribute Baseball -> pending_visual_validation; 2016 Topps Tier One Baseball -> pending_visual_validation; 2016 Topps Stadium Club Baseball -> pending_visual_validation; 2016 Topps Series 2 Baseball -> pending_visual_validation; 2016 Topps Series 1 Baseball -> pending_visual_validation",
-      "status": "pending_visual_validation",
-      "product": "baseball 2016",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781042509769_bucket_repair",
-      "ts": "2026-06-09T22:00:25.054Z",
-      "type": "auto_action",
-      "title": "Bucket-level checklist repair completed",
-      "detail": "baseball 2017: 40 validated, 0 pending, 0 failed. 2017 Topps Inception Baseball -> pending_visual_validation; 2017 Bowman Holiday Baseball -> pending_visual_validation; 2017 Topps Holiday Baseball -> pending_visual_validation; 2017 Topps High Tek Baseball -> pending_visual_validation; 2017 Topps Heritage Minor League Baseball -> pending_visual_validation; 2017 Topps Heritage High Number Baseball -> pending_visual_validation",
-      "status": "pending_visual_validation",
-      "product": "baseball 2017",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781042427772",
-      "ts": "2026-06-09T22:00:25.054Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781041985735_63kzby",
-      "ts": "2026-06-09T21:53:05.735Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Chrome Update Series Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": null,
@@ -4495,9 +4494,9 @@
       "product": "2017 Topps Chrome Sapphire Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104011765",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-10T02:00:14.301Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103625780": {
@@ -4967,9 +4966,18 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-10T01:59:11.782Z",
       "resolved": true
+    },
+    "baseball|2017 topps chrome sapphire baseball": {
+      "product": "2017 Topps Chrome Sapphire Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-10T02:00:14.301Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T02:00:13.340Z",
+  "saved_at": "2026-06-10T02:00:17.175Z",
   "saved_by": "cm_command_center_operator"
 }

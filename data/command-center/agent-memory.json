@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:59:19.292Z",
+  "exported_at": "2026-06-10T01:59:23.343Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -485,11 +485,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Gypsy_Queen_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Gypsy_Queen_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -497,7 +497,7 @@
       "expectedRowCount": 620,
       "expectedParallelCount": 30,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-10T01:59:17.689Z"
+      "updatedAt": "2026-06-10T01:59:19.484Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gold_Label_Baseball",
@@ -507,11 +507,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Gold_Label_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 394 rows / 6 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Topps_Gold_Label_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -519,7 +519,7 @@
       "expectedRowCount": 394,
       "expectedParallelCount": 6,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-09T17:54:02.467Z"
+      "updatedAt": "2026-06-10T01:59:21.726Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball",
@@ -1930,11 +1930,78 @@
       "updatedAt": "2026-06-09T17:54:02.442Z"
     }
   ],
-  "agent_run_queue": [
-    "backend_audit|stale_public_json|baseball|2017_Topps_Gypsy_Queen_Baseball",
-    "backend_audit|stale_public_json|baseball|2017_Topps_Gold_Label_Baseball"
-  ],
+  "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781056761740_e0g5jd",
+      "ts": "2026-06-10T01:59:21.740Z",
+      "type": "agent_run_queue",
+      "title": "Admin Run Queue complete",
+      "detail": "9 attempted. 0 skipped for approval/details. 0 failed. 0 still queued. 2017 Topps Inception Baseball: Recheck checklist public JSON 2017 Bowman Holiday Baseball: Recheck checklist public JSON 2017 Topps Holiday Baseball: Recheck checklist public JSON 2017 Topps High Tek Baseball: Recheck checklist public JSON 2017 Topps Heritage Minor League Baseball: Recheck checklist public JSON",
+      "status": "validated",
+      "product": "",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1781056761727_bmeiia",
+      "ts": "2026-06-10T01:59:21.727Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Gold Label Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781056761725_srh9oq",
+      "ts": "2026-06-10T01:59:21.725Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "394 public rows and 6 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Gold Label Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781056759499_m6f46f",
+      "ts": "2026-06-10T01:59:19.499Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Topps Gold Label Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781056759497_au4vqi",
+      "ts": "2026-06-10T01:59:19.497Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2017 Topps Gold Label Baseball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2017 Topps Gold Label Baseball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1781056759485_5yowmc",
+      "ts": "2026-06-10T01:59:19.485Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Topps Gypsy Queen Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781056759483_nlrut2",
+      "ts": "2026-06-10T01:59:19.483Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "620 public rows and 30 parallels found.",
+      "status": "covered",
+      "product": "2017 Topps Gypsy Queen Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1781056757689_hmei73",
       "ts": "2026-06-10T01:59:17.689Z",
@@ -2663,76 +2730,6 @@
       "detail": "No GitHub run visible yet.",
       "status": "queued",
       "product": "2017 Topps Diamond Icons Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041968104_nbh0te",
-      "ts": "2026-06-09T21:52:48.104Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Finest Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041964102_ge1zo2",
-      "ts": "2026-06-09T21:52:44.102Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gallery Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041963169_hy9ikm",
-      "ts": "2026-06-09T21:52:43.169Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Five Star Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041962333_7fbyev",
-      "ts": "2026-06-09T21:52:42.333Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gold Label Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041962005_993zch",
-      "ts": "2026-06-09T21:52:42.005Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041961389_u27o4z",
-      "ts": "2026-06-09T21:52:41.389Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gypsy Queen Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041958895_q4ws5n",
-      "ts": "2026-06-09T21:52:38.895Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Chrome Update Series Baseball",
       "source": "github_actions"
     }
   ],
@@ -4796,7 +4793,7 @@
       "code": "2017_Topps_Gold_Label_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-08T01:24:35.336Z",
+      "ignoredAt": "2026-06-10T01:59:21.726Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27102825509": {
@@ -4814,7 +4811,7 @@
       "code": "2017_Topps_Gypsy_Queen_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-08T01:24:33.093Z",
+      "ignoredAt": "2026-06-10T01:59:19.484Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27102792208": {
@@ -4895,7 +4892,7 @@
       "code": "2017_Topps_Gypsy_Queen_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-08T01:24:33.093Z",
+      "ignoredAt": "2026-06-10T01:59:19.484Z",
       "resolved": true
     },
     "baseball|2017 topps gold label baseball": {
@@ -4904,7 +4901,7 @@
       "code": "2017_Topps_Gold_Label_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-08T01:24:35.336Z",
+      "ignoredAt": "2026-06-10T01:59:21.726Z",
       "resolved": true
     },
     "baseball|2017 topps diamond icons baseball": {
@@ -4963,6 +4960,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:59:21.259Z",
+  "saved_at": "2026-06-10T01:59:25.204Z",
   "saved_by": "cm_command_center_operator"
 }

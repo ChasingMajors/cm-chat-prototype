@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T03:39:14.546Z",
+  "exported_at": "2026-06-10T03:39:37.786Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -173,10 +173,10 @@
       "sport": "basketball",
       "code": "2025_26_bowman_sapphire_basketball",
       "riskLevel": "low",
-      "status": "running",
+      "status": "failed",
       "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
+      "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
       "validationResult": "Import did not write to Google Sheets.",
       "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_bowman_sapphire_basketball&sport=basketball&type=product",
       "sourceUrl": "",
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T03:38:15.295Z",
-      "updatedAt": "2026-06-10T03:39:12.944Z"
+      "updatedAt": "2026-06-10T03:39:36.183Z"
     },
     {
       "id": "visual_test|github_actions|2016 panini prime cuts baseball|2016_panini_prime_cuts_baseball",
@@ -2116,6 +2116,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781062776185_t0x8ww",
+      "ts": "2026-06-10T03:39:36.185Z",
+      "type": "source_import",
+      "title": "Import blocked before sheet write",
+      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781062752943_zlp0l9",
       "ts": "2026-06-10T03:39:12.943Z",
       "type": "checklist_publish",
@@ -2903,16 +2913,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
       "product": "2016 Topps Series 2 Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057365733_2p4910",
-      "ts": "2026-06-10T02:09:25.733Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Dynasty Baseball",
       "source": "github_actions"
     }
   ],
@@ -5486,6 +5486,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T03:39:15.592Z",
+  "saved_at": "2026-06-10T03:39:38.957Z",
   "saved_by": "cm_command_center_operator"
 }

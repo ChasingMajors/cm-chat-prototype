@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:50:23.080Z",
+  "exported_at": "2026-06-10T01:50:29.690Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2178,6 +2178,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781056227805_b2zo1i",
+      "ts": "2026-06-10T01:50:27.805Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "24 of 24 waves ran. 26 safe actions executed. Refreshed 1 existing visual test before dispatch. Queued 4 CV/ChatBot visual tests and refreshed 10. 20 remain: 2 pending CV/ChatBot visual proof, 9 need admin decision, 8 queued/in flight, 1 known issue. Wave 1: baseball 2017 -> pending_visual_validation (40 product(s) validated, 0 pending, 0 failed.); baseball 2016 -> pending_visual_validation (15 product(s) validated, 0 pending, 0 failed.); 2017 Topps Inception Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.) Review needed: 2017 Topps Inception Baseball -> queued. Sentinel will keep clearing other safe work. Wave 2: 2017 Bowman Holiday Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.) Review needed: 2017 Bowman Holiday Baseball -> queued. Sentinel will keep clearing other safe work.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781056223064_npr9g2",
       "ts": "2026-06-10T01:50:23.064Z",
       "type": "visual_test",
@@ -2965,16 +2975,6 @@
       "detail": "2017 Topps Clearly Authentic Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
       "status": "queued",
       "product": "2017 Topps Clearly Authentic Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781056040209",
-      "ts": "2026-06-10T01:47:17.157Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     }
   ],
@@ -5319,6 +5319,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:50:25.486Z",
+  "saved_at": "2026-06-10T01:50:31.057Z",
   "saved_by": "cm_command_center_operator"
 }

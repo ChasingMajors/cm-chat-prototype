@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:50:29.690Z",
+  "exported_at": "2026-06-10T01:50:37.690Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -245,11 +245,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247685715",
       "sourceUrl": "",
       "bucket": "",
@@ -257,7 +257,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T01:49:26.243Z",
-      "updatedAt": "2026-06-10T01:50:06.756Z",
+      "updatedAt": "2026-06-10T01:50:36.085Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247685715",
       "visualStartedAt": "2026-06-10T01:49:25Z"
     },
@@ -1886,11 +1886,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247685715",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1898,7 +1898,7 @@
       "expectedRowCount": 277,
       "expectedParallelCount": 10,
       "createdAt": "2026-06-09T17:54:02.456Z",
-      "updatedAt": "2026-06-10T01:50:06.757Z",
+      "updatedAt": "2026-06-10T01:50:36.085Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Chrome Mini Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-10T01:43:08.040Z",
@@ -2177,6 +2177,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781056236086_1s23jc",
+      "ts": "2026-06-10T01:50:36.086Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Bowman Chrome Mini Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781056236086_vrs6ye",
+      "ts": "2026-06-10T01:50:36.086Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Bowman Chrome Mini Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781056227805_b2zo1i",
       "ts": "2026-06-10T01:50:27.805Z",
@@ -2956,26 +2976,6 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1781056041462",
-      "ts": "2026-06-10T01:47:17.157Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 4 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Clearly Authentic Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781056041461",
-      "ts": "2026-06-10T01:47:17.157Z",
-      "type": "auto_action",
-      "title": "Full-auto action needs review",
-      "detail": "2017 Topps Clearly Authentic Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
-      "status": "queued",
-      "product": "2017 Topps Clearly Authentic Baseball",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -4156,9 +4156,9 @@
       "checkedAt": "2026-06-10T01:49:24.146Z"
     },
     "baseball|2017_Bowman_Chrome_Mini_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-10T01:49:25.045Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247685715",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -4168,7 +4168,7 @@
       "productName": "2017 Bowman Chrome Mini Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
-      "updatedAt": "2026-06-10T01:50:06.754Z",
+      "updatedAt": "2026-06-10T01:50:36.083Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27247685715,
@@ -4176,7 +4176,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Chrome Mini Baseball",
       "headSha": "17d84d5dcf9feb398e6e433a1cf27927edfaffd0",
       "createdAt": "2026-06-10T01:49:25Z",
-      "checkedAt": "2026-06-10T01:50:06.754Z"
+      "checkedAt": "2026-06-10T01:50:36.083Z"
     },
     "baseball|2017_Bowman_Chrome_Baseball": {
       "status": "in_progress",
@@ -5319,6 +5319,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:50:31.057Z",
+  "saved_at": "2026-06-10T01:50:39.207Z",
   "saved_by": "cm_command_center_operator"
 }

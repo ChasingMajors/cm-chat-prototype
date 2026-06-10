@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc125-visual-proof-drain-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc126-admin-decision-boundary-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -7368,7 +7368,7 @@
       if (validation.includes("visual test") || validation.includes("cv/chatbot")) return false;
       if (status === "pending_visual_validation") return false;
       if (status === "pending_public_validation") return !!(action.code || action.product);
-      return !!(action.sourceUrl || action.runUrl || action.code);
+      return false;
     }).length;
   }
 
@@ -8219,6 +8219,40 @@
     return `${parts.join(", ")} held from auto execution.`;
   }
 
+  function summarizeAdminDecisionActions(actions) {
+    const needsAdmin = (actions || []).filter(action => {
+      const status = String(action.status || "").toLowerCase();
+      return status === "needs_admin" || status === "approval_required";
+    });
+    if (!needsAdmin.length) return "No admin decision cards remain.";
+
+    const groups = {
+      checklist: 0,
+      prv: 0,
+      metadata: 0,
+      visual: 0,
+      other: 0
+    };
+
+    needsAdmin.forEach(action => {
+      const type = String(action.type || "").toLowerCase();
+      const text = `${action.executionResult || ""} ${action.validationResult || ""} ${action.recommendedAction || ""}`.toLowerCase();
+      if (type === "prv_source_review" || type === "prv_publish" || text.includes("prv") || text.includes("print run")) groups.prv += 1;
+      else if (text.includes("metadata") || text.includes("keyword") || text.includes("missing product code") || text.includes("missing source")) groups.metadata += 1;
+      else if (text.includes("visual") || text.includes("chatbot") || text.includes("cv/chatbot")) groups.visual += 1;
+      else if (type === "source_import" || type === "checklist_publish" || type === "backend_data_issue") groups.checklist += 1;
+      else groups.other += 1;
+    });
+
+    return [
+      groups.checklist ? `${formatNumber(groups.checklist)} checklist decision${groups.checklist === 1 ? "" : "s"}` : "",
+      groups.prv ? `${formatNumber(groups.prv)} PRV decision${groups.prv === 1 ? "" : "s"}` : "",
+      groups.metadata ? `${formatNumber(groups.metadata)} metadata/source issue${groups.metadata === 1 ? "" : "s"}` : "",
+      groups.visual ? `${formatNumber(groups.visual)} visual validation decision${groups.visual === 1 ? "" : "s"}` : "",
+      groups.other ? `${formatNumber(groups.other)} other decision${groups.other === 1 ? "" : "s"}` : ""
+    ].filter(Boolean).join(", ") + ".";
+  }
+
   function getNextAgentRecommendation(actions) {
     const queued = getQueuedAgentActions(10);
     if (queued.length) return `Run Agent Cycle to attempt ${formatNumber(queued.length)} admin-queued job${queued.length === 1 ? "" : "s"} first.`;
@@ -8272,6 +8306,7 @@
     const mode = getAutonomyLabel(state.autonomyMode);
     const readiness = renderAutonomyReadiness();
     const heldDetail = summarizeHeldActions(actions);
+    const adminDecisionDetail = summarizeAdminDecisionActions(actions);
     const nextRecommendation = getNextAgentRecommendation(actions);
     const report = state.lastAgentReport && typeof state.lastAgentReport === "object" ? state.lastAgentReport : null;
 
@@ -8310,6 +8345,14 @@
       detail: queueBreakdown.summary,
       badge: queueBreakdown.counts.total ? "open" : "clear"
     });
+
+    if (queueBreakdown.counts.needsAdmin) {
+      cards.push({
+        title: "Admin Decisions",
+        detail: adminDecisionDetail,
+        badge: `${formatNumber(queueBreakdown.counts.needsAdmin)} review`
+      });
+    }
 
     cards.push(
       {

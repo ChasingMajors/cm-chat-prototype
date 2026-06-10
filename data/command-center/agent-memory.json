@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:50:08.690Z",
+  "exported_at": "2026-06-10T01:50:14.690Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T01:49:31.886Z",
-      "updatedAt": "2026-06-10T01:49:40.426Z",
+      "updatedAt": "2026-06-10T01:50:08.960Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247688921",
       "visualStartedAt": "2026-06-10T01:49:31Z"
     },
@@ -209,7 +209,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T01:49:30.153Z",
-      "updatedAt": "2026-06-10T01:49:44.467Z",
+      "updatedAt": "2026-06-10T01:50:12.674Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247687936",
       "visualStartedAt": "2026-06-10T01:49:29Z"
     },
@@ -233,7 +233,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T01:49:28.186Z",
-      "updatedAt": "2026-06-10T01:49:51.217Z",
+      "updatedAt": "2026-06-10T01:50:10.528Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247686819",
       "visualStartedAt": "2026-06-10T01:49:27Z"
     },
@@ -1925,7 +1925,7 @@
       "expectedRowCount": 475,
       "expectedParallelCount": 20,
       "createdAt": "2026-06-09T17:54:02.456Z",
-      "updatedAt": "2026-06-10T01:49:51.219Z",
+      "updatedAt": "2026-06-10T01:50:10.529Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Chrome Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-10T01:43:08.040Z",
@@ -1952,7 +1952,7 @@
       "expectedRowCount": 879,
       "expectedParallelCount": 55,
       "createdAt": "2026-06-09T17:54:02.455Z",
-      "updatedAt": "2026-06-10T01:49:44.468Z",
+      "updatedAt": "2026-06-10T01:50:12.675Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-10T01:43:08.040Z",
@@ -2073,7 +2073,7 @@
       "expectedRowCount": 880,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-09T17:54:02.450Z",
-      "updatedAt": "2026-06-10T01:49:40.426Z",
+      "updatedAt": "2026-06-10T01:50:08.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Tier One Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-10T01:43:08.040Z",
@@ -2177,6 +2177,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781056212675_wqvcgu",
+      "ts": "2026-06-10T01:50:12.675Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Bowman Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781056210530_uzk4kd",
+      "ts": "2026-06-10T01:50:10.530Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Bowman Chrome Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781056208960_ceupox",
+      "ts": "2026-06-10T01:50:08.960Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781056206758_6oytly",
       "ts": "2026-06-10T01:50:06.758Z",
@@ -2940,36 +2970,6 @@
     {
       "id": "log_1781056030419",
       "ts": "2026-06-10T01:47:08.357Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781056023179",
-      "ts": "2026-06-10T01:46:57.958Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 4 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Diamond Icons Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781056023178",
-      "ts": "2026-06-10T01:46:57.958Z",
-      "type": "auto_action",
-      "title": "Full-auto action needs review",
-      "detail": "2017 Topps Diamond Icons Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
-      "status": "queued",
-      "product": "2017 Topps Diamond Icons Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781056021793",
-      "ts": "2026-06-10T01:46:57.958Z",
       "type": "prv_sync",
       "title": "Scheduled PRV sync complete",
       "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
@@ -4191,7 +4191,7 @@
       "productName": "2017 Bowman Chrome Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Baseball",
-      "updatedAt": "2026-06-10T01:49:51.215Z",
+      "updatedAt": "2026-06-10T01:50:10.526Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27247686819,
@@ -4199,7 +4199,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Chrome Baseball",
       "headSha": "17d84d5dcf9feb398e6e433a1cf27927edfaffd0",
       "createdAt": "2026-06-10T01:49:27Z",
-      "checkedAt": "2026-06-10T01:49:51.215Z"
+      "checkedAt": "2026-06-10T01:50:10.526Z"
     },
     "baseball|2017_Bowman_Baseball": {
       "status": "in_progress",
@@ -4214,7 +4214,7 @@
       "productName": "2017 Bowman Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Baseball",
-      "updatedAt": "2026-06-10T01:49:44.465Z",
+      "updatedAt": "2026-06-10T01:50:12.673Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27247687936,
@@ -4222,7 +4222,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Baseball",
       "headSha": "17d84d5dcf9feb398e6e433a1cf27927edfaffd0",
       "createdAt": "2026-06-10T01:49:29Z",
-      "checkedAt": "2026-06-10T01:49:44.465Z"
+      "checkedAt": "2026-06-10T01:50:12.673Z"
     },
     "baseball|2016_Topps_Tier_One_Baseball": {
       "status": "in_progress",
@@ -4237,7 +4237,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-10T01:49:40.423Z",
+      "updatedAt": "2026-06-10T01:50:08.958Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27247688921,
@@ -4245,7 +4245,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "17d84d5dcf9feb398e6e433a1cf27927edfaffd0",
       "createdAt": "2026-06-10T01:49:31Z",
-      "checkedAt": "2026-06-10T01:49:40.423Z"
+      "checkedAt": "2026-06-10T01:50:08.958Z"
     }
   },
   "known_issues": {},
@@ -5319,6 +5319,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:50:10.426Z",
+  "saved_at": "2026-06-10T01:50:16.804Z",
   "saved_by": "cm_command_center_operator"
 }

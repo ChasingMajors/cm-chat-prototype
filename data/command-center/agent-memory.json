@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:58:40.793Z",
+  "exported_at": "2026-06-10T01:58:44.733Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1931,11 +1931,33 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Minor_League_Baseball",
+    "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_High_Number_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Heritage_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Gypsy_Queen_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Gold_Label_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781056723130_bfae89",
+      "ts": "2026-06-10T01:58:43.130Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Heritage Minor League Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Heritage Minor League Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1781056721159_46mjb4",
+      "ts": "2026-06-10T01:58:41.159Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Heritage High Number Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Heritage High Number Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1781056719189_q19yqx",
       "ts": "2026-06-10T01:58:39.189Z",
@@ -2714,26 +2736,6 @@
       "detail": "No GitHub run visible yet.",
       "status": "queued",
       "product": "2017 Topps Definitive Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041897110_madm29",
-      "ts": "2026-06-09T21:51:37.110Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman Holiday Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041897043_w9hlht",
-      "ts": "2026-06-09T21:51:37.043Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Holiday Baseball",
       "source": "github_actions"
     }
   ],
@@ -4937,6 +4939,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:58:41.946Z",
+  "saved_at": "2026-06-10T01:58:46.065Z",
   "saved_by": "cm_command_center_operator"
 }

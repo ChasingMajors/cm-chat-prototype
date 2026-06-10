@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T02:10:20.493Z",
+  "exported_at": "2026-06-10T03:37:49.895Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -317,11 +317,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Heritage_High_Number_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248374157",
       "sourceUrl": "",
       "bucket": "",
@@ -329,7 +329,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T02:08:39.477Z",
-      "updatedAt": "2026-06-10T02:09:59.292Z",
+      "updatedAt": "2026-06-10T02:10:22.480Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248374157",
       "visualStartedAt": "2026-06-10T02:08:39Z"
     },
@@ -377,7 +377,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T02:08:32.924Z",
-      "updatedAt": "2026-06-10T02:09:49.535Z",
+      "updatedAt": "2026-06-10T02:10:26.686Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248369685",
       "visualStartedAt": "2026-06-10T02:08:31Z"
     },
@@ -401,7 +401,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T02:08:28.006Z",
-      "updatedAt": "2026-06-10T02:09:47.045Z",
+      "updatedAt": "2026-06-10T02:10:22.191Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248367286",
       "visualStartedAt": "2026-06-10T02:08:26Z"
     },
@@ -2079,7 +2079,7 @@
       "expectedRowCount": 558,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.450Z",
-      "updatedAt": "2026-06-10T02:09:47.048Z",
+      "updatedAt": "2026-06-10T02:10:22.191Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Stadium Club Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-10T02:01:30.254Z",
@@ -2128,7 +2128,7 @@
       "expectedRowCount": 2209,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.449Z",
-      "updatedAt": "2026-06-10T02:09:49.535Z",
+      "updatedAt": "2026-06-10T02:10:26.686Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Series 2 Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-10T02:01:30.254Z",
@@ -2138,6 +2138,96 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781062668287_jy32jb",
+      "ts": "2026-06-10T03:37:48.287Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Bowman Sapphire Basketball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1781057426697_l0256u",
+      "ts": "2026-06-10T02:10:26.697Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "24 of 24 waves ran. 26 safe actions executed. Refreshed 1 existing visual test before dispatch. Queued 14 CV/ChatBot visual tests and refreshed 20. 11 remain: 9 need admin decision, 1 running, 1 known issue. Wave 1: baseball 2017 -> pending_visual_validation (31 product(s) validated, 0 pending, 0 failed.); baseball 2016 -> pending_visual_validation (15 product(s) validated, 0 pending, 0 failed.); 2017 Topps Gallery Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.) Review needed: 2017 Topps Gallery Baseball -> queued. Sentinel will keep clearing other safe work. Wave 2: 2017 Topps Five Star Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.) Review needed: 2017 Topps Five Star Baseball -> queued. Sentinel will keep clearing other safe work.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781057426693_vhs5r1",
+      "ts": "2026-06-10T02:10:26.693Z",
+      "type": "visual_test",
+      "title": "Visual validation follow-up refreshed",
+      "detail": "20 visual tests refreshed. 11 passed. 0 need repair. 9 still queued/running.",
+      "status": "checked",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1781057426686_cwgu2w",
+      "ts": "2026-06-10T02:10:26.686Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2016 Topps Series 2 Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781057426686_tux1om",
+      "ts": "2026-06-10T02:10:26.686Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2016 Topps Series 2 Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781057422481_bjxx74",
+      "ts": "2026-06-10T02:10:22.481Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2016 Topps Heritage High Number Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781057422480_rf6djn",
+      "ts": "2026-06-10T02:10:22.480Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "1 matching queue item now have visual proof.",
+      "status": "validated",
+      "product": "2016 Topps Heritage High Number Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781057422192_falmz8",
+      "ts": "2026-06-10T02:10:22.192Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781057422191_zcq75j",
+      "ts": "2026-06-10T02:10:22.191Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781057418891_t6y5z3",
       "ts": "2026-06-10T02:10:18.891Z",
@@ -2846,96 +2936,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
       "product": "2017 Bowman Chrome Mini Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057352950_zrjblz",
-      "ts": "2026-06-10T02:09:12.950Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057352649_rorocy",
-      "ts": "2026-06-10T02:09:12.649Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Panini Prime Cuts Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057351422_t7wgqx",
-      "ts": "2026-06-10T02:09:11.422Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Heritage High Number Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057350434_rofa1i",
-      "ts": "2026-06-10T02:09:10.434Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Series 1 Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057348673_q2db7w",
-      "ts": "2026-06-10T02:09:08.673Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Panini Prime Cuts Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057347219_rfn89l",
-      "ts": "2026-06-10T02:09:07.219Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057345931_53fsvs",
-      "ts": "2026-06-10T02:09:05.931Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Series 2 Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057340761_d8tgih",
-      "ts": "2026-06-10T02:09:00.761Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Archives Signature Series All-Star Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057340721_0gu96t",
-      "ts": "2026-06-10T02:09:00.721Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Stadium Club Baseball",
       "source": "github_actions"
     }
   ],
@@ -4220,7 +4220,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-10T02:09:47.044Z",
+      "updatedAt": "2026-06-10T02:10:22.190Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27248367286,
@@ -4228,7 +4228,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
       "createdAt": "2026-06-10T02:08:26Z",
-      "checkedAt": "2026-06-10T02:09:47.044Z"
+      "checkedAt": "2026-06-10T02:10:22.190Z"
     },
     "baseball|2016_Topps_Series_2_Baseball": {
       "status": "completed",
@@ -4243,7 +4243,7 @@
       "productName": "2016 Topps Series 2 Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Series_2_Baseball",
-      "updatedAt": "2026-06-10T02:09:49.534Z",
+      "updatedAt": "2026-06-10T02:10:26.685Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27248369685,
@@ -4251,7 +4251,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Series 2 Baseball",
       "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
       "createdAt": "2026-06-10T02:08:31Z",
-      "checkedAt": "2026-06-10T02:09:49.534Z"
+      "checkedAt": "2026-06-10T02:10:26.685Z"
     },
     "baseball|2016_Topps_Series_1_Baseball": {
       "status": "completed",
@@ -4277,9 +4277,9 @@
       "checkedAt": "2026-06-10T02:09:59.298Z"
     },
     "baseball|2016_Topps_Heritage_High_Number_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-10T02:08:38.211Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248374157",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -4289,7 +4289,7 @@
       "productName": "2016 Topps Heritage High Number Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Heritage_High_Number_Baseball",
-      "updatedAt": "2026-06-10T02:09:59.292Z",
+      "updatedAt": "2026-06-10T02:10:22.479Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27248374157,
@@ -4297,7 +4297,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Heritage High Number Baseball",
       "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
       "createdAt": "2026-06-10T02:08:39Z",
-      "checkedAt": "2026-06-10T02:09:59.292Z"
+      "checkedAt": "2026-06-10T02:10:22.479Z"
     },
     "baseball|2016_Topps_Heritage_Baseball": {
       "status": "completed",
@@ -5509,6 +5509,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T02:10:27.286Z",
+  "saved_at": "2026-06-10T03:37:51.442Z",
   "saved_by": "cm_command_center_operator"
 }

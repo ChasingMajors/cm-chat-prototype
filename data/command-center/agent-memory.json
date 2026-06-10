@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T02:09:20.542Z",
+  "exported_at": "2026-06-10T02:09:27.335Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -257,7 +257,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T02:08:47.231Z",
-      "updatedAt": "2026-06-10T02:09:18.921Z",
+      "updatedAt": "2026-06-10T02:09:22.072Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248378017",
       "visualStartedAt": "2026-06-10T02:08:46Z"
     },
@@ -281,7 +281,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T02:08:44.187Z",
-      "updatedAt": "2026-06-10T02:09:18.412Z",
+      "updatedAt": "2026-06-10T02:09:25.732Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248376576",
       "visualStartedAt": "2026-06-10T02:08:43Z"
     },
@@ -401,7 +401,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T02:08:28.006Z",
-      "updatedAt": "2026-06-10T02:09:00.721Z",
+      "updatedAt": "2026-06-10T02:09:22.708Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248367286",
       "visualStartedAt": "2026-06-10T02:08:26Z"
     },
@@ -2079,7 +2079,7 @@
       "expectedRowCount": 558,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.450Z",
-      "updatedAt": "2026-06-10T02:09:00.721Z",
+      "updatedAt": "2026-06-10T02:09:22.708Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Stadium Club Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-10T02:01:30.254Z",
@@ -2138,6 +2138,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781057365733_2p4910",
+      "ts": "2026-06-10T02:09:25.733Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Dynasty Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781057362709_im2n7e",
+      "ts": "2026-06-10T02:09:22.709Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781057362072_50iixs",
+      "ts": "2026-06-10T02:09:22.072Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Chrome Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781057358941_712zop",
       "ts": "2026-06-10T02:09:18.941Z",
@@ -2901,36 +2931,6 @@
     {
       "id": "log_1781057217799",
       "ts": "2026-06-10T02:06:55.442Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781057208747",
-      "ts": "2026-06-10T02:06:45.343Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 3 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Panini Diamond Kings Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781057208746",
-      "ts": "2026-06-10T02:06:45.343Z",
-      "type": "auto_action",
-      "title": "Full-auto action needs review",
-      "detail": "2017 Panini Diamond Kings Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
-      "status": "queued",
-      "product": "2017 Panini Diamond Kings Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781057207616",
-      "ts": "2026-06-10T02:06:45.343Z",
       "type": "prv_sync",
       "title": "Scheduled PRV sync complete",
       "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
@@ -4220,7 +4220,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-10T02:09:00.720Z",
+      "updatedAt": "2026-06-10T02:09:22.706Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27248367286,
@@ -4228,7 +4228,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
       "createdAt": "2026-06-10T02:08:26Z",
-      "checkedAt": "2026-06-10T02:09:00.719Z"
+      "checkedAt": "2026-06-10T02:09:22.706Z"
     },
     "baseball|2016_Topps_Series_2_Baseball": {
       "status": "in_progress",
@@ -4335,7 +4335,7 @@
       "productName": "2016 Topps Dynasty Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Dynasty_Baseball",
-      "updatedAt": "2026-06-10T02:09:18.412Z",
+      "updatedAt": "2026-06-10T02:09:25.731Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27248376576,
@@ -4343,7 +4343,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Dynasty Baseball",
       "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
       "createdAt": "2026-06-10T02:08:43Z",
-      "checkedAt": "2026-06-10T02:09:18.412Z"
+      "checkedAt": "2026-06-10T02:09:25.731Z"
     },
     "baseball|2016_Topps_Chrome_Baseball": {
       "status": "in_progress",
@@ -4358,7 +4358,7 @@
       "productName": "2016 Topps Chrome Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Chrome_Baseball",
-      "updatedAt": "2026-06-10T02:09:18.920Z",
+      "updatedAt": "2026-06-10T02:09:22.070Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27248378017,
@@ -4366,7 +4366,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Chrome Baseball",
       "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
       "createdAt": "2026-06-10T02:08:46Z",
-      "checkedAt": "2026-06-10T02:09:18.920Z"
+      "checkedAt": "2026-06-10T02:09:22.070Z"
     },
     "baseball|2016_Topps_Archives_Signature_Series_All_Star_Baseball": {
       "status": "in_progress",
@@ -5509,6 +5509,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T02:09:22.216Z",
+  "saved_at": "2026-06-10T02:09:29.364Z",
   "saved_by": "cm_command_center_operator"
 }

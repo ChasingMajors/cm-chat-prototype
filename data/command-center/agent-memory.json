@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:32:00.129Z",
+  "exported_at": "2026-06-10T01:35:38.465Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1933,34 +1933,14 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1781055118526_for2u5",
-      "ts": "2026-06-10T01:31:58.526Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781055118525_hpd75j",
-      "ts": "2026-06-10T01:31:58.525Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781055089654_f90jw4",
-      "ts": "2026-06-10T01:31:29.654Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Luminaries Baseball",
-      "source": "github_actions"
+      "id": "log_1781055338461_8rn1qo",
+      "ts": "2026-06-10T01:35:38.461Z",
+      "type": "agent_cycle",
+      "title": "Self-healing pending validations",
+      "detail": "50 pending public validation items found. Sentinel is handing the queue to the backend worker so stale JSON can be republished when needed.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
     },
     {
       "id": "log_1781055060808_exvofp",
@@ -2731,6 +2711,26 @@
       "status": "queued",
       "product": "2017 Topps Holiday Baseball",
       "source": "github_actions"
+    },
+    {
+      "id": "log_1781041775275_alyik7",
+      "ts": "2026-06-09T21:49:35.275Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Archives Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781041775132_wzpdeq",
+      "ts": "2026-06-09T21:49:35.132Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Topps Dynasty Baseball",
+      "source": "github_actions"
     }
   ],
   "last_agent_report": null,
@@ -3035,11 +3035,11 @@
       "checkedAt": "2026-06-09T21:52:43.167Z"
     },
     "baseball|2017_Topps_Luminaries_Baseball": {
-      "status": "completed",
-      "result": "passed",
-      "conclusion": "success",
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
       "startedAt": "2026-06-10T01:30:11.273Z",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247017863",
+      "runUrl": "",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Luminaries_Baseball",
@@ -3047,15 +3047,15 @@
       "productName": "2017 Topps Luminaries Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Luminaries_Baseball",
-      "updatedAt": "2026-06-10T01:31:58.518Z",
+      "updatedAt": "2026-06-10T01:30:13.390Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 27247017863,
-      "runNumber": 173,
+      "runId": 27233533851,
+      "runNumber": 134,
       "displayTitle": "Visual Product Test - 2017 Topps Luminaries Baseball",
-      "headSha": "944f5732db730aa88f0ea96855f62904b1a65d7f",
-      "createdAt": "2026-06-10T01:30:12Z",
-      "checkedAt": "2026-06-10T01:31:58.518Z"
+      "headSha": "50ffa61bca86651ea3d3388adac42ad13f854fe1",
+      "createdAt": "2026-06-09T20:24:00Z",
+      "checkedAt": "2026-06-09T20:26:08.471Z"
     },
     "baseball|2017_Topps_Inception_Baseball": {
       "status": "in_progress",
@@ -4933,6 +4933,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:32:03.104Z",
+  "saved_at": "2026-06-10T01:35:40.131Z",
   "saved_by": "cm_command_center_operator"
 }

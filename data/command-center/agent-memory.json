@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:51:19.689Z",
+  "exported_at": "2026-06-10T01:54:22.860Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2178,6 +2178,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781056461250_unt4xu",
+      "ts": "2026-06-10T01:54:21.250Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Bowman Sapphire Basketball",
+      "source": "admin"
+    },
+    {
       "id": "log_1781056277263_hmilsl",
       "ts": "2026-06-10T01:51:17.263Z",
       "type": "visual_test",
@@ -2966,16 +2976,6 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1781056068343",
-      "ts": "2026-06-10T01:47:45.148Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 4 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Chrome Sapphire Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -5319,6 +5319,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:51:21.227Z",
+  "saved_at": "2026-06-10T01:54:25.084Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T02:05:53.434Z",
+  "exported_at": "2026-06-10T02:06:45.872Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2095,6 +2095,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781057204269_idg9gu",
+      "ts": "2026-06-10T02:06:44.269Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781057204254_bxvh87",
+      "ts": "2026-06-10T02:06:44.254Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781057200354",
       "ts": "2026-06-10T02:06:35.980Z",
       "type": "agent_sweep",
@@ -2873,26 +2893,6 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1781042548652",
-      "ts": "2026-06-09T22:00:25.054Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 3 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 3 run. baseball 2017 -> pending_visual_validation (40 product(s) validated, 0 pending, 0 failed.); baseball 2016 -> pending_visual_validation (16 product(s) validated, 0 pending, 0 failed.); 2017 Topps Inception Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781042548652",
-      "ts": "2026-06-09T22:00:25.054Z",
-      "type": "auto_action",
-      "title": "Full-auto action needs review",
-      "detail": "2017 Topps Inception Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
-      "status": "queued",
-      "product": "2017 Topps Inception Baseball",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -5119,6 +5119,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T02:06:40.606Z",
+  "saved_at": "2026-06-10T02:06:48.298Z",
   "saved_by": "cm_command_center_operator"
 }

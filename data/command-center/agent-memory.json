@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:31:31.258Z",
+  "exported_at": "2026-06-10T01:32:00.129Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -173,11 +173,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Luminaries_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247017863",
       "sourceUrl": "",
       "bucket": "",
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T20:18:28.039Z",
-      "updatedAt": "2026-06-10T01:31:29.650Z",
+      "updatedAt": "2026-06-10T01:31:58.521Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247017863",
       "visualStartedAt": "2026-06-10T01:30:12Z"
     },
@@ -304,11 +304,11 @@
       "sport": "baseball",
       "code": "2017_Topps_Luminaries_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247017863",
       "sourceUrl": "",
       "bucket": "2017",
@@ -316,7 +316,7 @@
       "expectedRowCount": 619,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-09T17:54:02.470Z",
-      "updatedAt": "2026-06-10T01:31:29.650Z",
+      "updatedAt": "2026-06-10T01:31:58.525Z",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "2026-06-10T01:30:12Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247017863",
@@ -1933,6 +1933,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781055118526_for2u5",
+      "ts": "2026-06-10T01:31:58.526Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Topps Luminaries Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781055118525_hpd75j",
+      "ts": "2026-06-10T01:31:58.525Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Topps Luminaries Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781055089654_f90jw4",
       "ts": "2026-06-10T01:31:29.654Z",
       "type": "visual_test",
@@ -2711,26 +2731,6 @@
       "status": "queued",
       "product": "2017 Topps Holiday Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781041775275_alyik7",
-      "ts": "2026-06-09T21:49:35.275Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041775132_wzpdeq",
-      "ts": "2026-06-09T21:49:35.132Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Dynasty Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": null,
@@ -3035,9 +3035,9 @@
       "checkedAt": "2026-06-09T21:52:43.167Z"
     },
     "baseball|2017_Topps_Luminaries_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-10T01:30:11.273Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247017863",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3047,7 +3047,7 @@
       "productName": "2017 Topps Luminaries Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Luminaries_Baseball",
-      "updatedAt": "2026-06-10T01:31:29.646Z",
+      "updatedAt": "2026-06-10T01:31:58.518Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27247017863,
@@ -3055,7 +3055,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Luminaries Baseball",
       "headSha": "944f5732db730aa88f0ea96855f62904b1a65d7f",
       "createdAt": "2026-06-10T01:30:12Z",
-      "checkedAt": "2026-06-10T01:31:29.646Z"
+      "checkedAt": "2026-06-10T01:31:58.518Z"
     },
     "baseball|2017_Topps_Inception_Baseball": {
       "status": "in_progress",
@@ -4933,6 +4933,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:31:34.627Z",
+  "saved_at": "2026-06-10T01:32:03.104Z",
   "saved_by": "cm_command_center_operator"
 }

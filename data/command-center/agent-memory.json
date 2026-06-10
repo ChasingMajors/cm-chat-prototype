@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T02:05:17.538Z",
+  "exported_at": "2026-06-10T02:05:41.372Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2085,6 +2085,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781057139770_9nwvso",
+      "ts": "2026-06-10T02:05:39.770Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781057139757_4a9qsv",
+      "ts": "2026-06-10T02:05:39.757Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781057134089_alert",
       "ts": "2026-06-10T02:05:30.169Z",
       "type": "admin_alert",
@@ -2862,26 +2882,6 @@
       "detail": "No GitHub run visible yet.",
       "status": "queued",
       "product": "2017 Topps Gallery Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041963169_hy9ikm",
-      "ts": "2026-06-09T21:52:43.169Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Five Star Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041962333_7fbyev",
-      "ts": "2026-06-09T21:52:42.333Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Gold Label Baseball",
       "source": "github_actions"
     }
   ],
@@ -5109,6 +5109,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T02:05:34.123Z",
+  "saved_at": "2026-06-10T02:05:43.570Z",
   "saved_by": "cm_command_center_operator"
 }

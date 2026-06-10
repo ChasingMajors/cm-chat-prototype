@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:59:57.006Z",
+  "exported_at": "2026-06-10T02:00:01.591Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1931,11 +1931,33 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Topps_Diamond_Icons_Baseball",
+    "backend_audit|stale_public_json|baseball|2017_Topps_Dynasty_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Finest_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Five_Star_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781056799990_uya3fb",
+      "ts": "2026-06-10T01:59:59.990Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Diamond Icons Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Diamond Icons Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1781056797758_4bzgon",
+      "ts": "2026-06-10T01:59:57.758Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Dynasty Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Dynasty Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1781056795404_ido6i9",
       "ts": "2026-06-10T01:59:55.404Z",
@@ -2714,26 +2736,6 @@
       "detail": "No GitHub run visible yet.",
       "status": "queued",
       "product": "2017 Bowman Holiday Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041977262_gp252n",
-      "ts": "2026-06-09T21:52:57.262Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Holiday Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041977237_26ldd0",
-      "ts": "2026-06-09T21:52:57.237Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Definitive Collection Baseball",
       "source": "github_actions"
     }
   ],
@@ -4964,6 +4966,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:59:58.237Z",
+  "saved_at": "2026-06-10T02:00:02.853Z",
   "saved_by": "cm_command_center_operator"
 }

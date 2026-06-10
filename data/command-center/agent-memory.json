@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:54:54.916Z",
+  "exported_at": "2026-06-10T01:55:01.238Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -177,7 +177,7 @@
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
       "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "validationResult": "CV/ChatBot visual test requested from progress rail...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "",
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T01:54:42.160Z",
-      "updatedAt": "2026-06-10T01:54:53.314Z"
+      "updatedAt": "2026-06-10T01:54:59.636Z"
     },
     {
       "id": "visual_test|github_actions|2016 topps tier one baseball|2016_topps_tier_one_baseball",
@@ -2157,6 +2157,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781056495975_zuaq8e",
+      "ts": "2026-06-10T01:54:55.975Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Bowman Sapphire Basketball",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781056493313_p8dvl1",
       "ts": "2026-06-10T01:54:53.313Z",
       "type": "checklist_publish",
@@ -2944,16 +2954,6 @@
       "detail": "2017 Topps Archives Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
       "status": "queued",
       "product": "2017 Topps Archives Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781056092646",
-      "ts": "2026-06-10T01:48:10.418Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     }
   ],
@@ -5298,6 +5298,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:54:56.651Z",
+  "saved_at": "2026-06-10T01:55:02.357Z",
   "saved_by": "cm_command_center_operator"
 }

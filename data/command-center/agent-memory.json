@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T03:37:49.895Z",
+  "exported_at": "2026-06-10T03:37:55.418Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2139,6 +2139,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781062673816_30tonf",
+      "ts": "2026-06-10T03:37:53.816Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1781062670281_iwu9bc",
+      "ts": "2026-06-10T03:37:50.281Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "447 rows and 32 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Bowman Sapphire Basketball",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781062668287_jy32jb",
       "ts": "2026-06-10T03:37:48.287Z",
       "type": "source_import",
@@ -2916,26 +2936,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
       "product": "2016 Topps Archives Signature Series All-Star Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057355017_fup0zn",
-      "ts": "2026-06-10T02:09:15.017Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Bowman Chrome Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057354999_mjz3lt",
-      "ts": "2026-06-10T02:09:14.999Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Bowman Chrome Mini Baseball",
       "source": "github_actions"
     }
   ],
@@ -5509,6 +5509,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T03:37:51.442Z",
+  "saved_at": "2026-06-10T03:37:56.786Z",
   "saved_by": "cm_command_center_operator"
 }

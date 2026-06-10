@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:54:31.317Z",
+  "exported_at": "2026-06-10T01:54:43.773Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,28 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "checklist_publish|operator_backend|2025-26 bowman sapphire basketball|2025_26_bowman_sapphire_basketball",
+      "type": "checklist_publish",
+      "source": "operator_backend",
+      "product": "2025-26 Bowman Sapphire Basketball",
+      "sport": "basketball",
+      "code": "2025_26_bowman_sapphire_basketball",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "adminDecision": "",
+      "executionResult": "Sheet write completed; publish needs review.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-10T01:54:42.160Z",
+      "updatedAt": "2026-06-10T01:54:42.160Z"
+    },
     {
       "id": "visual_test|github_actions|2016 topps tier one baseball|2016_topps_tier_one_baseball",
       "type": "visual_test",
@@ -702,24 +724,6 @@
       "validationResult": "",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-origins-euroleague-basketball-card-checklist/",
-      "createdAt": "2026-06-10T01:43:08.040Z",
-      "updatedAt": "2026-06-10T01:48:10.418Z"
-    },
-    {
-      "id": "source_watch|basketball|2025-26 bowman sapphire basketball",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2025-26 Bowman Sapphire Basketball",
-      "sport": "basketball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Basketball source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-bowman-sapphire-basketball-card-checklist/",
       "createdAt": "2026-06-10T01:43:08.040Z",
       "updatedAt": "2026-06-10T01:48:10.418Z"
     },
@@ -2148,35 +2152,30 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.450Z",
       "updatedAt": "2026-06-09T17:54:02.450Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Series_2_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Series 2 Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Series_2_Baseball",
-      "riskLevel": "high",
-      "status": "pending_visual_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Bucket-level checklist JSON repair ran for baseball 2016.",
-      "validationResult": "Published checklist JSON validated with 2209 rows and 0 parallels after bucket repair. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 2209,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.449Z",
-      "updatedAt": "2026-06-10T01:43:08.040Z",
-      "pendingValidationAttempts": 0,
-      "repairProof": "Agent repaired stale public JSON for 2016 Topps Series 2 Baseball by publishing baseball 2016 and validating public JSON.",
-      "autoExecutedAt": "2026-06-10T01:43:08.040Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781056482171_n0afu2",
+      "ts": "2026-06-10T01:54:42.171Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Bowman Sapphire Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781056482161_urvrio",
+      "ts": "2026-06-10T01:54:42.161Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "447 checklist rows and 32 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Bowman Sapphire Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1781056469715_pzjiys",
       "ts": "2026-06-10T01:54:29.715Z",
@@ -2955,26 +2954,6 @@
       "detail": "Checklist: 4 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Archives Snapshots Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
       "status": "needs_review",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781056085519",
-      "ts": "2026-06-10T01:48:01.744Z",
-      "type": "auto_action",
-      "title": "Full-auto action needs review",
-      "detail": "2017 Topps Archives Snapshots Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
-      "status": "queued",
-      "product": "2017 Topps Archives Snapshots Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781056084545",
-      "ts": "2026-06-10T01:48:01.744Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     }
   ],
@@ -5319,6 +5298,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:54:33.418Z",
+  "saved_at": "2026-06-10T01:54:45.498Z",
   "saved_by": "cm_command_center_operator"
 }

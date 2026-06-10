@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:50:47.690Z",
+  "exported_at": "2026-06-10T01:51:19.689Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -173,11 +173,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247688921",
       "sourceUrl": "",
       "bucket": "",
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T01:49:31.886Z",
-      "updatedAt": "2026-06-10T01:50:19.587Z",
+      "updatedAt": "2026-06-10T01:51:17.262Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247688921",
       "visualStartedAt": "2026-06-10T01:49:31Z"
     },
@@ -2061,11 +2061,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2016.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247688921",
       "sourceUrl": "",
       "bucket": "2016",
@@ -2073,7 +2073,7 @@
       "expectedRowCount": 880,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-09T17:54:02.450Z",
-      "updatedAt": "2026-06-10T01:50:19.587Z",
+      "updatedAt": "2026-06-10T01:51:17.262Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Tier One Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-10T01:43:08.040Z",
@@ -2177,6 +2177,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781056277263_hmilsl",
+      "ts": "2026-06-10T01:51:17.263Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781056277263_baajsh",
+      "ts": "2026-06-10T01:51:17.263Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781056248032_al0fpj",
+      "ts": "2026-06-10T01:50:48.032Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781056245422_i9wt1q",
       "ts": "2026-06-10T01:50:45.422Z",
@@ -2943,36 +2973,6 @@
       "type": "agent_sweep",
       "title": "Scheduled Agent Sweep complete",
       "detail": "Checklist: 4 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Chrome Sapphire Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781056068342",
-      "ts": "2026-06-10T01:47:45.148Z",
-      "type": "auto_action",
-      "title": "Full-auto action needs review",
-      "detail": "2017 Topps Chrome Sapphire Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
-      "status": "queued",
-      "product": "2017 Topps Chrome Sapphire Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781056067318",
-      "ts": "2026-06-10T01:47:45.148Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781056059171",
-      "ts": "2026-06-10T01:47:33.805Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 4 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Chrome Update Series Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
@@ -4225,9 +4225,9 @@
       "checkedAt": "2026-06-10T01:50:45.419Z"
     },
     "baseball|2016_Topps_Tier_One_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-10T01:49:30.863Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247688921",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -4237,7 +4237,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-10T01:50:19.585Z",
+      "updatedAt": "2026-06-10T01:51:17.260Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27247688921,
@@ -4245,7 +4245,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "17d84d5dcf9feb398e6e433a1cf27927edfaffd0",
       "createdAt": "2026-06-10T01:49:31Z",
-      "checkedAt": "2026-06-10T01:50:19.585Z"
+      "checkedAt": "2026-06-10T01:51:17.260Z"
     }
   },
   "known_issues": {},
@@ -5319,6 +5319,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:50:48.715Z",
+  "saved_at": "2026-06-10T01:51:21.227Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:54:43.773Z",
+  "exported_at": "2026-06-10T01:54:54.916Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -173,10 +173,10 @@
       "sport": "basketball",
       "code": "2025_26_bowman_sapphire_basketball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed; publish needs review.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "CV/ChatBot validation needs review.",
       "runUrl": "",
       "sourceUrl": "",
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T01:54:42.160Z",
-      "updatedAt": "2026-06-10T01:54:42.160Z"
+      "updatedAt": "2026-06-10T01:54:53.314Z"
     },
     {
       "id": "visual_test|github_actions|2016 topps tier one baseball|2016_topps_tier_one_baseball",
@@ -2157,6 +2157,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781056493313_p8dvl1",
+      "ts": "2026-06-10T01:54:53.313Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Bowman Sapphire Basketball",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781056482171_n0afu2",
       "ts": "2026-06-10T01:54:42.171Z",
       "type": "checklist_publish",
@@ -2944,16 +2954,6 @@
       "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
       "status": "validated",
       "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781056085520",
-      "ts": "2026-06-10T01:48:01.744Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 4 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 5 admin-ignored source item(s) skipped. Auto actions: 1 run. 2017 Topps Archives Snapshots Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
-      "status": "needs_review",
-      "product": "",
       "source": "operator_backend"
     }
   ],
@@ -5298,6 +5298,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:54:45.498Z",
+  "saved_at": "2026-06-10T01:54:56.651Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T01:42:23.245Z",
+  "exported_at": "2026-06-10T01:45:36.693Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2098,6 +2098,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781055935081_bzl3z5",
+      "ts": "2026-06-10T01:45:35.081Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781055935068_dzvkzh",
+      "ts": "2026-06-10T01:45:35.068Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781055930691",
       "ts": "2026-06-10T01:45:27.433Z",
       "type": "agent_sweep",
@@ -2875,26 +2895,6 @@
       "detail": "No GitHub run visible yet.",
       "status": "queued",
       "product": "2017 Topps Heritage High Number Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041924259_d6a0vj",
-      "ts": "2026-06-09T21:52:04.259Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Archives Snapshots Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041924062_lv7sux",
-      "ts": "2026-06-09T21:52:04.062Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman Holiday Baseball",
       "source": "github_actions"
     }
   ],
@@ -5123,6 +5123,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T01:45:30.752Z",
+  "saved_at": "2026-06-10T01:45:38.058Z",
   "saved_by": "cm_command_center_operator"
 }

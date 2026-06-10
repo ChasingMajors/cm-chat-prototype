@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc123-public-validation-drain-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc124-nonfatal-review-sweep-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -7325,6 +7325,14 @@
     return "";
   }
 
+  function getBackendSweepFatalError(data) {
+    if (!data) return "Backend sweep did not return data.";
+    if (data.error) return data.error;
+    const hasStructuredSweepData = !!(data.checklist || data.prv || data.prv_sync || data.auto_actions || data.auto_action || data.report);
+    if (data.ok === false && !hasStructuredSweepData) return "Backend sweep returned an unreadable issue.";
+    return "";
+  }
+
   function getAgentQueueBreakdown(actions) {
     const list = Array.isArray(actions) ? actions : getActiveAgentActions();
     const counts = {
@@ -7411,9 +7419,13 @@
           ? `${data.auto_action.product || data.auto_action.type || "action"} -> ${data.auto_action.status || data.auto_action.reason || "complete"}`
           : stopReason || "No backend auto action result.";
       waveSummaries.push(`Wave ${wave}: ${summary}`);
+      if (data && data.ok === false) {
+        waveSummaries.push("Backend returned review findings, not a fatal cycle error. Sentinel continued with safe work.");
+      }
 
-      if (!data || data.ok === false) {
-        stopReason = data && data.error ? data.error : "Backend sweep returned an issue.";
+      const fatalSweepError = getBackendSweepFatalError(data);
+      if (fatalSweepError) {
+        stopReason = fatalSweepError;
         break;
       }
 

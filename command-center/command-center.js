@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc124-nonfatal-review-sweep-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc125-visual-proof-drain-v1-2026-06-09";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -457,7 +457,7 @@
       clearTimeout(state.visualPollTimers[key]);
     }
 
-    const delayMs = nextAttempt === 1 ? 15000 : 25000;
+    const delayMs = nextAttempt === 1 ? 6000 : 18000;
     state.visualPollTimers[key] = setTimeout(() => {
       delete state.visualPollTimers[key];
       refreshAgentVisualTestStatus(plan, {
@@ -7283,6 +7283,69 @@
     };
   }
 
+  async function runVisualProofDrainCycle(options) {
+    const opts = options || {};
+    const runningBefore = getRunningVisualValidationBatch(opts.runningLimit || 30);
+    const pendingBefore = getPendingVisualValidationBatch(opts.pendingLimit || 20);
+    if (!runningBefore.length && !pendingBefore.length) {
+      return { ok: true, checked: 0, queued: 0, failed: 0, detail: "No visual proof work is pending." };
+    }
+
+    renderAgentCycleMessage(
+      "Draining CV/ChatBot visual proof",
+      `${runningBefore.length} queued/running and ${pendingBefore.length} pending visual proof item${runningBefore.length + pendingBefore.length === 1 ? "" : "s"} found. Sentinel will refresh existing runs before queuing anything new.`,
+      "info"
+    );
+
+    const firstRefresh = runningBefore.length
+      ? await refreshRunningVisualValidationBatch({ silent: true, limit: opts.runningLimit || 30, saveMemory: false })
+      : { checked: 0, closed: 0, failed: 0, stillRunning: 0 };
+
+    const pendingAfterRefresh = getPendingVisualValidationBatch(opts.pendingLimit || 20);
+    const queueResult = pendingAfterRefresh.length
+      ? await runPendingVisualValidationBatch({
+        silentStart: true,
+        limit: opts.pendingLimit || 20,
+        refreshLimit: opts.runningLimit || 30,
+        followupDelayMs: opts.followupDelayMs === undefined ? 3500 : opts.followupDelayMs
+      })
+      : { queued: 0, failed: 0, refreshed: 0, passed: 0, stillRunning: 0 };
+
+    const secondRefresh = await refreshRunningVisualValidationBatch({ silent: true, limit: opts.runningLimit || 30 });
+    const remainingRunning = getRunningVisualValidationBatch(opts.runningLimit || 30).length;
+    const remainingPending = getPendingVisualValidationBatch(opts.pendingLimit || 20).length;
+    const failed = Number(firstRefresh.failed || 0) + Number(queueResult.failed || 0) + Number(secondRefresh.failed || 0);
+    const checked = Number(firstRefresh.checked || 0) + Number(queueResult.refreshed || 0) + Number(secondRefresh.checked || 0);
+    const passed = Number(firstRefresh.closed || 0) + Number(queueResult.passed || 0) + Number(secondRefresh.closed || 0);
+    const queued = Number(queueResult.queued || 0);
+    const detail = `${checked} visual status check${checked === 1 ? "" : "s"} refreshed. ${queued} new test${queued === 1 ? "" : "s"} queued. ${passed} passed. ${failed} need repair. ${remainingPending} pending and ${remainingRunning} queued/running remain.`;
+
+    logActivity({
+      type: "visual_test",
+      status: failed ? "needs_review" : remainingPending || remainingRunning ? "running" : "validated",
+      source: "agent_cycle",
+      title: "Visual proof drain complete",
+      detail
+    });
+    renderSentinelNotice("Visual proof drain complete", detail, failed ? "warning" : remainingPending || remainingRunning ? "info" : "success");
+    renderSourceCheckMessage("Visual proof drain complete", detail, failed ? "warning" : remainingPending || remainingRunning ? "info" : "success", { noFocus: true });
+    renderActivityLog();
+    renderAgentActions();
+    renderActionLanes();
+    renderRunSummary();
+
+    return {
+      ok: failed === 0,
+      checked,
+      queued,
+      passed,
+      failed,
+      remainingPending,
+      remainingRunning,
+      detail
+    };
+  }
+
   function getPendingPublicValidationBatch(limit) {
     const max = Math.max(1, Math.min(60, Number(limit || 25)));
     return getActiveAgentActions()
@@ -7783,18 +7846,14 @@
       return runPendingPublicValidationBatch({ limit: 50 });
     }
 
-    const runningVisuals = getRunningVisualValidationBatch(5);
-    if (runningVisuals.length) {
-      return refreshRunningVisualValidationBatch({ limit: 5 });
+    const runningVisuals = getRunningVisualValidationBatch(30);
+    const visualBatch = getPendingVisualValidationBatch(20);
+    if (runningVisuals.length || visualBatch.length) {
+      return runVisualProofDrainCycle({ runningLimit: 30, pendingLimit: 20 });
     }
 
     if (readOperatorEndpoint() && readOperatorKey() && countActiveSafeAutoCandidates() > 1) {
       return runBackendAgentDrainCycle();
-    }
-
-    const visualBatch = getPendingVisualValidationBatch(10);
-    if (visualBatch.length > 1) {
-      return runPendingVisualValidationBatch({ limit: 10 });
     }
 
     const step = getAgentCycleStep();

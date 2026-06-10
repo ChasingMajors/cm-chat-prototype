@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T02:01:24.170Z",
+  "exported_at": "2026-06-10T02:03:56.280Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2067,6 +2067,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781057034677_3q73nu",
+      "ts": "2026-06-10T02:03:54.677Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781057034667_yal8yy",
+      "ts": "2026-06-10T02:03:54.667Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781057028331",
       "ts": "2026-06-10T02:03:44.520Z",
       "type": "agent_sweep",
@@ -2844,26 +2864,6 @@
       "detail": "No GitHub run visible yet.",
       "status": "queued",
       "product": "2017 Topps Dynasty Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041914690_f44g85",
-      "ts": "2026-06-09T21:51:54.690Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Diamond Icons Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781041914510_pwvrkk",
-      "ts": "2026-06-09T21:51:54.510Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Topps Finest Baseball",
       "source": "github_actions"
     }
   ],
@@ -5092,6 +5092,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-10T02:03:48.475Z",
+  "saved_at": "2026-06-10T02:03:57.480Z",
   "saved_by": "cm_command_center_operator"
 }

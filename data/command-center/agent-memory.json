@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-12T13:15:38.048Z",
+  "exported_at": "2026-06-12T13:15:46.205Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -213,11 +213,11 @@
       "sport": "hockey",
       "code": "2025_26_sp_authentic_hockey",
       "riskLevel": "medium",
-      "status": "fix_queued",
+      "status": "running",
       "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
       "sourceUrl": "",
       "bucket": "",
@@ -225,7 +225,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-12T13:14:16.076Z",
-      "updatedAt": "2026-06-12T13:15:36.440Z",
+      "updatedAt": "2026-06-12T13:15:44.603Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
       "visualStartedAt": "2026-06-12T13:14:14Z"
     },
@@ -2177,6 +2177,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781270144604_9zm44l",
+      "ts": "2026-06-12T13:15:44.604Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2025-26 SP Authentic Hockey",
+      "source": "agent_action_queue"
+    },
+    {
       "id": "log_1781270136446_nscmas",
       "ts": "2026-06-12T13:15:36.446Z",
       "type": "visual_test",
@@ -2964,16 +2974,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
       "product": "2016 Panini Prime Cuts Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057393927_mpsyew",
-      "ts": "2026-06-10T02:09:53.927Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Bowman Chrome Baseball",
       "source": "github_actions"
     }
   ],
@@ -5594,6 +5594,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-12T13:15:37.998Z",
+  "saved_at": "2026-06-12T13:15:46.306Z",
   "saved_by": "cm_command_center_operator"
 }

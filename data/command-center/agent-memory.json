@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-12T13:14:17.679Z",
+  "exported_at": "2026-06-12T13:14:29.673Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -176,18 +176,18 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-12T13:14:16.076Z",
-      "updatedAt": "2026-06-12T13:14:16.076Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
-      "visualStartedAt": "2026-06-12T13:14:12.919Z"
+      "updatedAt": "2026-06-12T13:14:28.071Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
+      "visualStartedAt": "2026-06-12T13:14:14Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 sp authentic hockey|2025_26_sp_authentic_hockey",
@@ -200,18 +200,18 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
+      "executionResult": "Sheet write completed; publish needs review.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-12T13:14:02.445Z",
-      "updatedAt": "2026-06-12T13:14:16.077Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
-      "visualStartedAt": "2026-06-12T13:14:12.919Z"
+      "updatedAt": "2026-06-12T13:14:28.071Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
+      "visualStartedAt": "2026-06-12T13:14:14Z"
     },
     {
       "id": "visual_test|github_actions|2025-26 bowman sapphire basketball|2025_26_bowman_sapphire_basketball",
@@ -2137,6 +2137,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781270068071_ubs2zz",
+      "ts": "2026-06-12T13:14:28.071Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 SP Authentic Hockey",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781270066594_82vr8q",
+      "ts": "2026-06-12T13:14:26.594Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "2,004 checklist rows and 17 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 SP Authentic Hockey",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781270056077_bfqm0z",
       "ts": "2026-06-12T13:14:16.077Z",
       "type": "visual_test",
@@ -2914,26 +2934,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Bowman Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057389536_hfe56l",
-      "ts": "2026-06-10T02:09:49.536Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2016 Topps Series 2 Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057389536_a8v194",
-      "ts": "2026-06-10T02:09:49.536Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2016 Topps Series 2 Baseball",
       "source": "github_actions"
     }
   ],
@@ -4460,11 +4460,11 @@
       "checkedAt": "2026-06-12T13:11:36.717Z"
     },
     "hockey|2025_26_sp_authentic_hockey": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-12T13:14:12.919Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "hockey|2025_26_sp_authentic_hockey",
@@ -4472,9 +4472,15 @@
       "productName": "2025-26 SP Authentic Hockey",
       "sport": "hockey",
       "code": "2025_26_sp_authentic_hockey",
-      "updatedAt": "2026-06-12T13:14:16.075Z",
+      "updatedAt": "2026-06-12T13:14:28.070Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27417968733,
+      "runNumber": 245,
+      "displayTitle": "Visual Product Test - 2025-26 SP Authentic Hockey",
+      "headSha": "a95bf1ddccf4fa38718f8d4a8847e17fada43435",
+      "createdAt": "2026-06-12T13:14:14Z",
+      "checkedAt": "2026-06-12T13:14:28.069Z"
     }
   },
   "known_issues": {},
@@ -5548,6 +5554,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-12T13:14:17.702Z",
+  "saved_at": "2026-06-12T13:14:29.524Z",
   "saved_by": "cm_command_center_operator"
 }

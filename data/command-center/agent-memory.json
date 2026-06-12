@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-12T13:09:38.375Z",
+  "exported_at": "2026-06-12T13:09:44.143Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,6 +166,30 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2025-26 bowman sapphire basketball|2025_26_bowman_sapphire_basketball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2025-26 Bowman Sapphire Basketball",
+      "sport": "basketball",
+      "code": "2025_26_bowman_sapphire_basketball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-12T13:09:42.540Z",
+      "updatedAt": "2026-06-12T13:09:42.540Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "visualStartedAt": "2026-06-12T13:09:39.449Z"
+    },
+    {
       "id": "source_watch|soccer|2025-26 panini pitch kings la liga soccer",
       "type": "source_import",
       "source": "scheduled_quick_json",
@@ -209,19 +233,21 @@
       "sport": "basketball",
       "code": "2025_26_bowman_sapphire_basketball",
       "riskLevel": "low",
-      "status": "running",
-      "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "Import did not write to Google Sheets.",
-      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_bowman_sapphire_basketball&sport=basketball&type=product",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T03:38:15.295Z",
-      "updatedAt": "2026-06-12T13:09:36.773Z"
+      "updatedAt": "2026-06-12T13:09:42.541Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "visualStartedAt": "2026-06-12T13:09:39.449Z"
     },
     {
       "id": "visual_test|github_actions|2016 panini prime cuts baseball|2016_panini_prime_cuts_baseball",
@@ -2098,37 +2124,20 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.450Z",
       "updatedAt": "2026-06-09T17:54:02.450Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Stadium_Club_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Stadium Club Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Stadium_Club_Baseball",
-      "riskLevel": "high",
-      "status": "validated",
-      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
-      "adminDecision": "",
-      "executionResult": "Bucket-level checklist JSON repair ran for baseball 2016.",
-      "validationResult": "CV and ChatBot passed via visual test.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248367286",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 558,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.450Z",
-      "updatedAt": "2026-06-10T02:10:22.191Z",
-      "pendingValidationAttempts": 0,
-      "repairProof": "Agent repaired stale public JSON for 2016 Topps Stadium Club Baseball by publishing baseball 2016 and validating public JSON.",
-      "autoExecutedAt": "2026-06-10T02:01:30.254Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248367286",
-      "visualStartedAt": "2026-06-10T02:08:26Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781269782541_71gp90",
+      "ts": "2026-06-12T13:09:42.541Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2025-26 Bowman Sapphire Basketball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781269776772_1yi3wt",
       "ts": "2026-06-12T13:09:36.772Z",
@@ -2917,16 +2926,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Bowman Chrome Mini Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057376060_iew29o",
-      "ts": "2026-06-10T02:09:36.060Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Series 1 Baseball",
       "source": "github_actions"
     }
   ],
@@ -4428,6 +4427,23 @@
       "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
       "createdAt": "2026-06-10T02:08:58Z",
       "checkedAt": "2026-06-10T02:10:18.677Z"
+    },
+    "basketball|2025_26_bowman_sapphire_basketball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-12T13:09:39.449Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "basketball|2025_26_bowman_sapphire_basketball",
+      "key": "basketball|2025_26_bowman_sapphire_basketball",
+      "productName": "2025-26 Bowman Sapphire Basketball",
+      "sport": "basketball",
+      "code": "2025_26_bowman_sapphire_basketball",
+      "updatedAt": "2026-06-12T13:09:42.539Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -5501,6 +5517,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-12T13:09:38.144Z",
+  "saved_at": "2026-06-12T13:09:44.440Z",
   "saved_by": "cm_command_center_operator"
 }

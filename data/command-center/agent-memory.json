@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-12T13:15:46.205Z",
+  "exported_at": "2026-06-12T13:15:59.626Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -212,22 +212,22 @@
       "product": "2025-26 SP Authentic Hockey",
       "sport": "hockey",
       "code": "2025_26_sp_authentic_hockey",
-      "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27418047586",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-12T13:14:16.076Z",
-      "updatedAt": "2026-06-12T13:15:44.603Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
-      "visualStartedAt": "2026-06-12T13:14:14Z"
+      "updatedAt": "2026-06-12T13:15:57.977Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27418047586",
+      "visualStartedAt": "2026-06-12T13:15:45Z"
     },
     {
       "id": "checklist_publish|operator_backend|2025-26 sp authentic hockey|2025_26_sp_authentic_hockey",
@@ -237,21 +237,21 @@
       "sport": "hockey",
       "code": "2025_26_sp_authentic_hockey",
       "riskLevel": "medium",
-      "status": "fix_queued",
-      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27418047586",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-12T13:14:02.445Z",
-      "updatedAt": "2026-06-12T13:15:36.444Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
-      "visualStartedAt": "2026-06-12T13:14:14Z"
+      "updatedAt": "2026-06-12T13:15:57.977Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27418047586",
+      "visualStartedAt": "2026-06-12T13:15:45Z"
     },
     {
       "id": "visual_test|github_actions|2025-26 bowman sapphire basketball|2025_26_bowman_sapphire_basketball",
@@ -2177,6 +2177,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781270157979_slya1a",
+      "ts": "2026-06-12T13:15:57.979Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 SP Authentic Hockey",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781270147086_qewa0x",
+      "ts": "2026-06-12T13:15:47.086Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2025-26 SP Authentic Hockey",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781270144604_9zm44l",
       "ts": "2026-06-12T13:15:44.604Z",
       "type": "visual_test",
@@ -2954,26 +2974,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Bowman Chrome Mini Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057396474_oapf3b",
-      "ts": "2026-06-10T02:09:56.474Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057395800_p2dq72",
-      "ts": "2026-06-10T02:09:55.800Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Panini Prime Cuts Baseball",
       "source": "github_actions"
     }
   ],
@@ -4500,11 +4500,11 @@
       "checkedAt": "2026-06-12T13:11:36.717Z"
     },
     "hockey|2025_26_sp_authentic_hockey": {
-      "status": "completed",
-      "result": "failed",
-      "conclusion": "failure",
-      "startedAt": "2026-06-12T13:14:12.919Z",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-06-12T13:15:44.134Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27418047586",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "hockey|2025_26_sp_authentic_hockey",
@@ -4512,15 +4512,15 @@
       "productName": "2025-26 SP Authentic Hockey",
       "sport": "hockey",
       "code": "2025_26_sp_authentic_hockey",
-      "updatedAt": "2026-06-12T13:15:36.432Z",
+      "updatedAt": "2026-06-12T13:15:57.975Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 27417968733,
-      "runNumber": 245,
+      "runId": 27418047586,
+      "runNumber": 246,
       "displayTitle": "Visual Product Test - 2025-26 SP Authentic Hockey",
       "headSha": "a95bf1ddccf4fa38718f8d4a8847e17fada43435",
-      "createdAt": "2026-06-12T13:14:14Z",
-      "checkedAt": "2026-06-12T13:15:36.432Z"
+      "createdAt": "2026-06-12T13:15:45Z",
+      "checkedAt": "2026-06-12T13:15:57.975Z"
     }
   },
   "known_issues": {},
@@ -5594,6 +5594,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-12T13:15:46.306Z",
+  "saved_at": "2026-06-12T13:15:59.792Z",
   "saved_by": "cm_command_center_operator"
 }

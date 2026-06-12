@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-12T13:13:52.604Z",
+  "exported_at": "2026-06-12T13:14:04.057Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,6 +166,28 @@
   ],
   "agent_actions": [
     {
+      "id": "checklist_publish|operator_backend|2025-26 sp authentic hockey|2025_26_sp_authentic_hockey",
+      "type": "checklist_publish",
+      "source": "operator_backend",
+      "product": "2025-26 SP Authentic Hockey",
+      "sport": "hockey",
+      "code": "2025_26_sp_authentic_hockey",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "adminDecision": "",
+      "executionResult": "Sheet write completed; publish needs review.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-12T13:14:02.445Z",
+      "updatedAt": "2026-06-12T13:14:02.445Z"
+    },
+    {
       "id": "visual_test|github_actions|2025-26 bowman sapphire basketball|2025_26_bowman_sapphire_basketball",
       "type": "visual_test",
       "source": "github_actions",
@@ -204,24 +226,6 @@
       "validationResult": "",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-pitch-kings-la-liga-soccer-card-checklist/",
-      "createdAt": "2026-06-12T13:09:09.922Z",
-      "updatedAt": "2026-06-12T13:09:09.922Z"
-    },
-    {
-      "id": "source_watch|hockey|2025-26 sp authentic hockey",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2025-26 SP Authentic Hockey",
-      "sport": "hockey",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-sp-authentic-hockey-card-checklist/",
       "createdAt": "2026-06-12T13:09:09.922Z",
       "updatedAt": "2026-06-12T13:09:09.922Z"
     },
@@ -2102,32 +2106,30 @@
       "autoExecutedAt": "2026-06-10T02:01:30.254Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248365366",
       "visualStartedAt": "2026-06-10T02:08:23Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Stadium_Club_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Stadium Club Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Stadium_Club_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.450Z",
-      "updatedAt": "2026-06-09T17:54:02.450Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781270042455_o2ni84",
+      "ts": "2026-06-12T13:14:02.455Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 SP Authentic Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781270042448_vopl70",
+      "ts": "2026-06-12T13:14:02.448Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "2,004 checklist rows and 17 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 SP Authentic Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1781270031001_w55pij",
       "ts": "2026-06-12T13:13:51.001Z",
@@ -2906,26 +2908,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "passed",
       "product": "2016 Topps Stadium Club Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057387048_pf8fmf",
-      "ts": "2026-06-10T02:09:47.048Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2016 Topps Stadium Club Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057386984_axzlvk",
-      "ts": "2026-06-10T02:09:46.984Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Tier One Baseball",
       "source": "github_actions"
     }
   ],
@@ -5523,6 +5505,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-12T13:13:52.706Z",
+  "saved_at": "2026-06-12T13:14:04.100Z",
   "saved_by": "cm_command_center_operator"
 }

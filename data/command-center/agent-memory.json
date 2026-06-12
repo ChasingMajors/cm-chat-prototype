@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-12T13:13:44.040Z",
+  "exported_at": "2026-06-12T13:13:52.604Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2129,6 +2129,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781270031001_w55pij",
+      "ts": "2026-06-12T13:13:51.001Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1781270024431_u6ml3v",
+      "ts": "2026-06-12T13:13:44.431Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "2,004 rows and 17 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 SP Authentic Hockey",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781270022436_rpv8oc",
       "ts": "2026-06-12T13:13:42.436Z",
       "type": "source_import",
@@ -2906,26 +2926,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
       "product": "2016 Topps Tier One Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057383717_ll199l",
-      "ts": "2026-06-10T02:09:43.717Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2016 Topps Stadium Club Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057383716_nhve1j",
-      "ts": "2026-06-10T02:09:43.717Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2016 Topps Stadium Club Baseball",
       "source": "github_actions"
     }
   ],
@@ -5523,6 +5523,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-12T13:13:45.197Z",
+  "saved_at": "2026-06-12T13:13:52.706Z",
   "saved_by": "cm_command_center_operator"
 }

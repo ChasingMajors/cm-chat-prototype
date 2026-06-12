@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-12T13:09:23.073Z",
+  "exported_at": "2026-06-12T13:09:38.375Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -209,10 +209,10 @@
       "sport": "basketball",
       "code": "2025_26_bowman_sapphire_basketball",
       "riskLevel": "low",
-      "status": "failed",
+      "status": "running",
       "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
       "adminDecision": "",
-      "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "Import did not write to Google Sheets.",
       "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_bowman_sapphire_basketball&sport=basketball&type=product",
       "sourceUrl": "",
@@ -221,7 +221,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T03:38:15.295Z",
-      "updatedAt": "2026-06-10T03:39:36.183Z"
+      "updatedAt": "2026-06-12T13:09:36.773Z"
     },
     {
       "id": "visual_test|github_actions|2016 panini prime cuts baseball|2016_panini_prime_cuts_baseball",
@@ -2130,8 +2130,28 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1781269761470_z4ohdf",
-      "ts": "2026-06-12T13:09:21.470Z",
+      "id": "log_1781269776772_1yi3wt",
+      "ts": "2026-06-12T13:09:36.772Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Bowman Sapphire Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781269763799_2hjfji",
+      "ts": "2026-06-12T13:09:23.799Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 of 24 wave ran. 0 safe actions executed. 12 remain: 9 need admin decision, 1 running, 1 failed, 1 known issue. Stopped because: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes. Wave 1: action -> This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781269763797_q2subl",
+      "ts": "2026-06-12T13:09:23.797Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -2140,8 +2160,8 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1781269761455_v2wwgh",
-      "ts": "2026-06-12T13:09:21.455Z",
+      "id": "log_1781269763781_y80sp9",
+      "ts": "2026-06-12T13:09:23.782Z",
       "type": "memory",
       "title": "Agent memory imported",
       "detail": "Queue, log, approvals, known issues, and visual status were restored.",
@@ -2907,26 +2927,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
       "product": "2016 Topps Series 1 Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057375684_kdgw11",
-      "ts": "2026-06-10T02:09:35.684Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Heritage High Number Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057374653_kkh8fj",
-      "ts": "2026-06-10T02:09:34.653Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Archives Baseball",
       "source": "github_actions"
     }
   ],
@@ -5501,6 +5501,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-12T13:09:23.027Z",
+  "saved_at": "2026-06-12T13:09:38.144Z",
   "saved_by": "cm_command_center_operator"
 }

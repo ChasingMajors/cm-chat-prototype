@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-12T13:11:38.324Z",
+  "exported_at": "2026-06-12T13:13:44.040Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2129,6 +2129,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781270022436_rpv8oc",
+      "ts": "2026-06-12T13:13:42.436Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 SP Authentic Hockey",
+      "source": "admin"
+    },
+    {
       "id": "log_1781269896721_p5co3h",
       "ts": "2026-06-12T13:11:36.721Z",
       "type": "visual_test",
@@ -2916,16 +2926,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2016 Topps Stadium Club Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057383610_sgwo4d",
-      "ts": "2026-06-10T02:09:43.610Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Chrome Baseball",
       "source": "github_actions"
     }
   ],
@@ -5523,6 +5523,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-12T13:11:38.242Z",
+  "saved_at": "2026-06-12T13:13:45.197Z",
   "saved_by": "cm_command_center_operator"
 }

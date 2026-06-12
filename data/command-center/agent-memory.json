@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-12T13:09:54.509Z",
+  "exported_at": "2026-06-12T13:10:05.292Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -233,11 +233,11 @@
       "sport": "basketball",
       "code": "2025_26_bowman_sapphire_basketball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "failed",
+      "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "validationResult": "Import did not write to Google Sheets.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417731100",
       "sourceUrl": "",
       "bucket": "",
@@ -245,7 +245,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T03:38:15.295Z",
-      "updatedAt": "2026-06-12T13:09:52.907Z",
+      "updatedAt": "2026-06-12T13:10:03.689Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417731100",
       "visualStartedAt": "2026-06-12T13:09:40Z"
     },
@@ -2129,6 +2129,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781269803690_favo5h",
+      "ts": "2026-06-12T13:10:03.690Z",
+      "type": "source_import",
+      "title": "Import blocked before sheet write",
+      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781269792907_q9cmc9",
       "ts": "2026-06-12T13:09:52.907Z",
       "type": "visual_test",
@@ -2916,16 +2926,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Bowman Chrome Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057376475_5fgm7z",
-      "ts": "2026-06-10T02:09:36.475Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Bowman Chrome Mini Baseball",
       "source": "github_actions"
     }
   ],
@@ -5523,6 +5523,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-12T13:09:54.587Z",
+  "saved_at": "2026-06-12T13:10:05.105Z",
   "saved_by": "cm_command_center_operator"
 }

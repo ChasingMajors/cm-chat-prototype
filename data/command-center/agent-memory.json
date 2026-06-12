@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-12T13:11:15.912Z",
+  "exported_at": "2026-06-12T13:11:38.324Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -173,11 +173,11 @@
       "sport": "basketball",
       "code": "2025_26_bowman_sapphire_basketball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417763054",
       "sourceUrl": "",
       "bucket": "",
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-12T13:09:42.540Z",
-      "updatedAt": "2026-06-12T13:11:14.309Z",
+      "updatedAt": "2026-06-12T13:11:36.719Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417763054",
       "visualStartedAt": "2026-06-12T13:10:16Z"
     },
@@ -233,11 +233,11 @@
       "sport": "basketball",
       "code": "2025_26_bowman_sapphire_basketball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417763054",
       "sourceUrl": "",
       "bucket": "",
@@ -245,7 +245,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-10T03:38:15.295Z",
-      "updatedAt": "2026-06-12T13:11:14.309Z",
+      "updatedAt": "2026-06-12T13:11:36.720Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417763054",
       "visualStartedAt": "2026-06-12T13:10:16Z"
     },
@@ -2129,6 +2129,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781269896721_p5co3h",
+      "ts": "2026-06-12T13:11:36.721Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2025-26 Bowman Sapphire Basketball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781269896720_8ytrgr",
+      "ts": "2026-06-12T13:11:36.720Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2025-26 Bowman Sapphire Basketball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781269874309_ger87r",
       "ts": "2026-06-12T13:11:14.309Z",
       "type": "visual_test",
@@ -2906,26 +2926,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
       "product": "2016 Topps Chrome Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057380777_h4syn5",
-      "ts": "2026-06-10T02:09:40.777Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Tier One Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057380193_q5b3mx",
-      "ts": "2026-06-10T02:09:40.193Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Bowman Baseball",
       "source": "github_actions"
     }
   ],
@@ -4429,9 +4429,9 @@
       "checkedAt": "2026-06-10T02:10:18.677Z"
     },
     "basketball|2025_26_bowman_sapphire_basketball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-12T13:10:15.625Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417763054",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -4441,7 +4441,7 @@
       "productName": "2025-26 Bowman Sapphire Basketball",
       "sport": "basketball",
       "code": "2025_26_bowman_sapphire_basketball",
-      "updatedAt": "2026-06-12T13:11:14.306Z",
+      "updatedAt": "2026-06-12T13:11:36.717Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27417763054,
@@ -4449,7 +4449,7 @@
       "displayTitle": "Visual Product Test - 2025-26 Bowman Sapphire Basketball",
       "headSha": "a95bf1ddccf4fa38718f8d4a8847e17fada43435",
       "createdAt": "2026-06-12T13:10:16Z",
-      "checkedAt": "2026-06-12T13:11:14.306Z"
+      "checkedAt": "2026-06-12T13:11:36.717Z"
     }
   },
   "known_issues": {},
@@ -5523,6 +5523,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-12T13:11:15.719Z",
+  "saved_at": "2026-06-12T13:11:38.242Z",
   "saved_by": "cm_command_center_operator"
 }

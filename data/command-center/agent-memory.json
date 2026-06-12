@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-12T13:14:34.887Z",
+  "exported_at": "2026-06-12T13:14:52.430Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-12T13:14:16.076Z",
-      "updatedAt": "2026-06-12T13:14:28.071Z",
+      "updatedAt": "2026-06-12T13:14:50.827Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
       "visualStartedAt": "2026-06-12T13:14:14Z"
     },
@@ -197,11 +197,11 @@
       "sport": "hockey",
       "code": "2025_26_sp_authentic_hockey",
       "riskLevel": "medium",
-      "status": "failed",
-      "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "validationResult": "Import did not write to Google Sheets.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
       "sourceUrl": "",
       "bucket": "",
@@ -209,7 +209,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-12T13:14:02.445Z",
-      "updatedAt": "2026-06-12T13:14:33.284Z",
+      "updatedAt": "2026-06-12T13:14:50.828Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27417968733",
       "visualStartedAt": "2026-06-12T13:14:14Z"
     },
@@ -2137,6 +2137,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781270090829_abdd10",
+      "ts": "2026-06-12T13:14:50.829Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 SP Authentic Hockey",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781270073285_1ttshh",
       "ts": "2026-06-12T13:14:33.285Z",
       "type": "source_import",
@@ -2924,16 +2934,6 @@
       "detail": "1 matching queue item now have visual proof.",
       "status": "validated",
       "product": "2016 Topps Heritage Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057390367_g8pxxv",
-      "ts": "2026-06-10T02:09:50.368Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Bowman Baseball",
       "source": "github_actions"
     }
   ],
@@ -4472,7 +4472,7 @@
       "productName": "2025-26 SP Authentic Hockey",
       "sport": "hockey",
       "code": "2025_26_sp_authentic_hockey",
-      "updatedAt": "2026-06-12T13:14:28.070Z",
+      "updatedAt": "2026-06-12T13:14:50.824Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27417968733,
@@ -4480,7 +4480,7 @@
       "displayTitle": "Visual Product Test - 2025-26 SP Authentic Hockey",
       "headSha": "a95bf1ddccf4fa38718f8d4a8847e17fada43435",
       "createdAt": "2026-06-12T13:14:14Z",
-      "checkedAt": "2026-06-12T13:14:28.069Z"
+      "checkedAt": "2026-06-12T13:14:50.824Z"
     }
   },
   "known_issues": {},
@@ -5554,6 +5554,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-12T13:14:34.847Z",
+  "saved_at": "2026-06-12T13:14:52.845Z",
   "saved_by": "cm_command_center_operator"
 }

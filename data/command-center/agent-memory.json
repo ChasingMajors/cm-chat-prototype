@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-10T03:39:37.786Z",
+  "exported_at": "2026-06-12T13:09:06.169Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,42 +165,6 @@
     }
   ],
   "agent_actions": [
-    {
-      "id": "source_watch|soccer|2025-26 panini pitch kings la liga soccer",
-      "type": "source_import",
-      "source": "scheduled_deep_sheets",
-      "product": "2025-26 Panini Pitch Kings La Liga Soccer",
-      "sport": "soccer",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-pitch-kings-la-liga-soccer-card-checklist/",
-      "createdAt": "2026-06-11T15:57:04.008Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z"
-    },
-    {
-      "id": "prv_sync_incident_full_vault",
-      "type": "prv_sync_incident",
-      "source": "scheduled_prv_sync",
-      "product": "Print Run Vault JSON Sync",
-      "sport": "",
-      "code": "prv_full_sync",
-      "riskLevel": "high",
-      "status": "validated",
-      "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
-      "adminDecision": "",
-      "executionResult": "Scheduled PRV full JSON sync completed through Static Data Exporter.",
-      "validationResult": "Scheduled PRV JSON sync completed.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "createdAt": "2026-06-10T15:57:05.121Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z"
-    },
     {
       "id": "checklist_publish|operator_backend|2025-26 bowman sapphire basketball|2025_26_bowman_sapphire_basketball",
       "type": "checklist_publish",
@@ -730,7 +694,7 @@
     {
       "id": "source_watch|hockey|2026 leaf metal hockey",
       "type": "source_import",
-      "source": "scheduled_deep_sheets",
+      "source": "scheduled_quick_json",
       "product": "2026 Leaf Metal Hockey",
       "sport": "hockey",
       "code": "",
@@ -743,12 +707,12 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
       "createdAt": "2026-06-10T02:01:30.254Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z"
+      "updatedAt": "2026-06-10T02:07:29.960Z"
     },
     {
       "id": "source_watch|basketball|2025-26 panini origins euroleague basketball",
       "type": "source_import",
-      "source": "scheduled_deep_sheets",
+      "source": "scheduled_quick_json",
       "product": "2025-26 Panini Origins EuroLeague Basketball",
       "sport": "basketball",
       "code": "",
@@ -761,7 +725,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-origins-euroleague-basketball-card-checklist/",
       "createdAt": "2026-06-10T02:01:30.254Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z"
+      "updatedAt": "2026-06-10T02:07:29.960Z"
     },
     {
       "id": "visual_test|github_actions|2017 topps luminaries baseball|2017_topps_luminaries_baseball",
@@ -830,7 +794,7 @@
     {
       "id": "source_watch|soccer|2025-26 topps lineage bayern m nchen soccer",
       "type": "source_import",
-      "source": "scheduled_deep_sheets",
+      "source": "scheduled_quick_json",
       "product": "2025-26 Topps Lineage Bayern München Soccer",
       "sport": "soccer",
       "code": "",
@@ -843,7 +807,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-lineage-bayern-munchen-soccer-card-checklist/",
       "createdAt": "2026-06-09T18:29:00.694Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z"
+      "updatedAt": "2026-06-10T02:07:29.960Z"
     },
     {
       "id": "backend_audit|missing_product_metadata|baseball|2017_Topps_New_Era_Baseball",
@@ -1166,7 +1130,7 @@
       "expectedRowCount": 360,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:03:23.189Z",
@@ -1193,7 +1157,7 @@
       "expectedRowCount": 325,
       "expectedParallelCount": 48,
       "createdAt": "2026-06-09T17:54:02.466Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:03:32.763Z",
@@ -1220,7 +1184,7 @@
       "expectedRowCount": 261,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-09T17:54:02.466Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:03:44.520Z",
@@ -1247,7 +1211,7 @@
       "expectedRowCount": 546,
       "expectedParallelCount": 26,
       "createdAt": "2026-06-09T17:54:02.466Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:03:55.399Z",
@@ -1274,7 +1238,7 @@
       "expectedRowCount": 658,
       "expectedParallelCount": 26,
       "createdAt": "2026-06-09T17:54:02.465Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:04:04.708Z",
@@ -1301,7 +1265,7 @@
       "expectedRowCount": 121,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-09T17:54:02.465Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:04:15.156Z",
@@ -1328,7 +1292,7 @@
       "expectedRowCount": 196,
       "expectedParallelCount": 11,
       "createdAt": "2026-06-09T17:54:02.465Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:04:24.699Z",
@@ -1355,7 +1319,7 @@
       "expectedRowCount": 717,
       "expectedParallelCount": 1,
       "createdAt": "2026-06-09T17:54:02.464Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:04:35.121Z",
@@ -1382,7 +1346,7 @@
       "expectedRowCount": 83,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-09T17:54:02.464Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:04:45.307Z",
@@ -1409,7 +1373,7 @@
       "expectedRowCount": 545,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T17:54:02.464Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:04:56.181Z",
@@ -1436,7 +1400,7 @@
       "expectedRowCount": 556,
       "expectedParallelCount": 7,
       "createdAt": "2026-06-09T17:54:02.463Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:05:06.527Z",
@@ -1463,7 +1427,7 @@
       "expectedRowCount": 1677,
       "expectedParallelCount": 8,
       "createdAt": "2026-06-09T17:54:02.463Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:05:30.169Z",
@@ -1490,7 +1454,7 @@
       "expectedRowCount": 989,
       "expectedParallelCount": 20,
       "createdAt": "2026-06-09T17:54:02.462Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:05:40.620Z",
@@ -1517,7 +1481,7 @@
       "expectedRowCount": 2089,
       "expectedParallelCount": 155,
       "createdAt": "2026-06-09T17:54:02.462Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:05:54.829Z",
@@ -1544,7 +1508,7 @@
       "expectedRowCount": 1238,
       "expectedParallelCount": 78,
       "createdAt": "2026-06-09T17:54:02.462Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:06:06.876Z",
@@ -1571,7 +1535,7 @@
       "expectedRowCount": 1105,
       "expectedParallelCount": 23,
       "createdAt": "2026-06-09T17:54:02.461Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:06:21.472Z",
@@ -1598,7 +1562,7 @@
       "expectedRowCount": 835,
       "expectedParallelCount": 31,
       "createdAt": "2026-06-09T17:54:02.461Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:06:35.980Z",
@@ -1625,7 +1589,7 @@
       "expectedRowCount": 881,
       "expectedParallelCount": 58,
       "createdAt": "2026-06-09T17:54:02.461Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:06:45.343Z",
@@ -1652,7 +1616,7 @@
       "expectedRowCount": 233,
       "expectedParallelCount": 39,
       "createdAt": "2026-06-09T17:54:02.460Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:06:55.442Z",
@@ -1679,7 +1643,7 @@
       "expectedRowCount": 973,
       "expectedParallelCount": 63,
       "createdAt": "2026-06-09T17:54:02.460Z",
-      "updatedAt": "2026-06-11T15:57:04.008Z",
+      "updatedAt": "2026-06-10T02:07:29.960Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-10T02:07:18.001Z",
@@ -2125,70 +2089,32 @@
       "autoExecutedAt": "2026-06-10T02:01:30.254Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248367286",
       "visualStartedAt": "2026-06-10T02:08:26Z"
+    },
+    {
+      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Series_2_Baseball",
+      "type": "backend_data_issue",
+      "source": "deep_backend_audit",
+      "product": "2016 Topps Series 2 Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Series_2_Baseball",
+      "riskLevel": "low",
+      "status": "needs_admin",
+      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
+      "adminDecision": "",
+      "executionResult": "Large checklist has no parallels",
+      "validationResult": "This can be valid, but it is worth review for modern products.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "2016",
+      "targetBucket": "2016",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-09T17:54:02.450Z",
+      "updatedAt": "2026-06-09T17:54:02.450Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
-    {
-      "id": "log_1781193664478_alert",
-      "ts": "2026-06-11T15:57:04.008Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781193663234",
-      "ts": "2026-06-11T15:57:04.008Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 4 actionable from 20 checked. PRV: 1 actionable from 8 checked. PRV sync: passed. 5 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781193663229",
-      "ts": "2026-06-11T15:57:04.008Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781107347167_alert",
-      "ts": "2026-06-10T15:57:05.121Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel needs admin now",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781107345125",
-      "ts": "2026-06-10T15:57:05.121Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 3 actionable from 20 checked. PRV: 1 actionable from 8 checked. PRV sync: failed. 5 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781107345118",
-      "ts": "2026-06-10T15:57:05.121Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync failed",
-      "detail": "Scheduled PRV JSON sync returned a review response.",
-      "status": "failed",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
     {
       "id": "log_1781062776185_t0x8ww",
       "ts": "2026-06-10T03:39:36.185Z",
@@ -2928,15 +2854,75 @@
       "status": "in_progress",
       "product": "2016 Topps Heritage High Number Baseball",
       "source": "github_actions"
+    },
+    {
+      "id": "log_1781057374653_kkh8fj",
+      "ts": "2026-06-10T02:09:34.653Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Archives Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781057373802_ocique",
+      "ts": "2026-06-10T02:09:33.802Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Panini Prime Cuts Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781057372689_ddtf4d",
+      "ts": "2026-06-10T02:09:32.689Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Series 1 Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781057372670_daj5o2",
+      "ts": "2026-06-10T02:09:32.670Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Heritage High Number Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781057369250_sxizbx",
+      "ts": "2026-06-10T02:09:29.250Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Heritage Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781057367951_cv88zj",
+      "ts": "2026-06-10T02:09:27.951Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Series 2 Baseball",
+      "source": "github_actions"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-06-11T15:57:04.008Z",
+    "generated_at": "2026-06-10T02:07:29.960Z",
     "checked": {
       "checklist_count": 20,
-      "prv_count": 8,
+      "prv_count": 9,
       "skipped_ignored": 5
     },
     "completed_count": 0,
@@ -2944,16 +2930,16 @@
     "blocked_count": 0,
     "completed": [],
     "needs_admin": [
-      "Checklist review: 2025-26 Panini Pitch Kings La Liga Soccer | soccer | missing",
+      "2017 Donruss Optic Baseball -> queued: Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
       "Checklist review: 2025-26 Panini Origins EuroLeague Basketball | basketball | missing",
       "Checklist review: 2025-26 Topps Lineage Bayern München Soccer | soccer | missing",
       "Checklist review: 2026 Leaf Metal Hockey | hockey | missing",
-      "PRV review: 2025-26 Topps Motif Basketball | basketball | missing"
+      "PRV review: 2025-26 Topps Motif Basketball | basketball | known_issue"
     ],
     "blocked": [],
     "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 8 PRV source item(s). 0 completed/progress item(s), 5 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 0 completed/progress item(s), 5 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -5500,6 +5486,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-11T16:01:04.680Z",
+  "saved_at": "2026-06-12T13:09:06.737Z",
   "saved_by": "cm_command_center_operator"
 }

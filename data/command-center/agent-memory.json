@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:45:07.845Z",
+  "exported_at": "2026-06-16T18:45:14.278Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -209,7 +209,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:43:43.404Z",
-      "updatedAt": "2026-06-16T18:45:06.241Z",
+      "updatedAt": "2026-06-16T18:45:12.676Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640052732",
       "visualStartedAt": "2026-06-16T18:43:42Z"
     },
@@ -269,11 +269,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640046282",
       "sourceUrl": "",
       "bucket": "",
@@ -281,7 +281,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:43:36.353Z",
-      "updatedAt": "2026-06-16T18:44:46.862Z",
+      "updatedAt": "2026-06-16T18:45:09.506Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640046282",
       "visualStartedAt": "2026-06-16T18:43:35Z"
     },
@@ -1815,11 +1815,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640046282",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1827,7 +1827,7 @@
       "expectedRowCount": 277,
       "expectedParallelCount": 10,
       "createdAt": "2026-06-09T17:54:02.456Z",
-      "updatedAt": "2026-06-16T18:44:46.863Z",
+      "updatedAt": "2026-06-16T18:45:09.507Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Chrome Mini Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:39:56.145Z",
@@ -2002,7 +2002,7 @@
       "expectedRowCount": 880,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-09T17:54:02.450Z",
-      "updatedAt": "2026-06-16T18:45:06.241Z",
+      "updatedAt": "2026-06-16T18:45:12.676Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Tier One Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:39:56.145Z",
@@ -2083,6 +2083,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781635512676_422g63",
+      "ts": "2026-06-16T18:45:12.676Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781635509508_2t50h2",
+      "ts": "2026-06-16T18:45:09.508Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Bowman Chrome Mini Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781635509507_i2w46n",
+      "ts": "2026-06-16T18:45:09.507Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Bowman Chrome Mini Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781635506242_8t9eag",
       "ts": "2026-06-16T18:45:06.242Z",
@@ -2851,36 +2881,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "passed",
       "product": "2017 Panini Immaculate Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781635353974_7ros67",
-      "ts": "2026-06-16T18:42:33.974Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Panini Immaculate Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781635350115_hynko7",
-      "ts": "2026-06-16T18:42:30.115Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Panini National Treasures Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781635350114_k56e12",
-      "ts": "2026-06-16T18:42:30.114Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Panini National Treasures Baseball",
       "source": "github_actions"
     }
   ],
@@ -4850,9 +4850,9 @@
       "checkedAt": "2026-06-16T18:45:05.041Z"
     },
     "baseball|2017_Bowman_Chrome_Mini_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-16T18:43:34.632Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640046282",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -4862,7 +4862,7 @@
       "productName": "2017 Bowman Chrome Mini Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
-      "updatedAt": "2026-06-16T18:44:46.860Z",
+      "updatedAt": "2026-06-16T18:45:09.504Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640046282,
@@ -4870,12 +4870,12 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Chrome Mini Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:35Z",
-      "checkedAt": "2026-06-16T18:44:46.860Z"
+      "checkedAt": "2026-06-16T18:45:09.504Z"
     },
     "baseball|2017_bowman_chrome_mini_baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-16T18:43:34.632Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640046282",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -4885,7 +4885,7 @@
       "productName": "2017 Bowman Chrome Mini Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
-      "updatedAt": "2026-06-16T18:44:46.860Z",
+      "updatedAt": "2026-06-16T18:45:09.504Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640046282,
@@ -4893,12 +4893,12 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Chrome Mini Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:35Z",
-      "checkedAt": "2026-06-16T18:44:46.860Z"
+      "checkedAt": "2026-06-16T18:45:09.504Z"
     },
     "baseball|2017 bowman chrome mini baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-16T18:43:34.632Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640046282",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -4908,7 +4908,7 @@
       "productName": "2017 Bowman Chrome Mini Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
-      "updatedAt": "2026-06-16T18:44:46.860Z",
+      "updatedAt": "2026-06-16T18:45:09.504Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640046282,
@@ -4916,7 +4916,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Chrome Mini Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:35Z",
-      "checkedAt": "2026-06-16T18:44:46.860Z"
+      "checkedAt": "2026-06-16T18:45:09.504Z"
     },
     "baseball|2017_Bowman_Chrome_Baseball": {
       "status": "completed",
@@ -5069,7 +5069,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-16T18:45:06.239Z",
+      "updatedAt": "2026-06-16T18:45:12.674Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640052732,
@@ -5077,7 +5077,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:42Z",
-      "checkedAt": "2026-06-16T18:45:06.239Z"
+      "checkedAt": "2026-06-16T18:45:12.674Z"
     },
     "baseball|2016_topps_tier_one_baseball": {
       "status": "in_progress",
@@ -5092,7 +5092,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-16T18:45:06.239Z",
+      "updatedAt": "2026-06-16T18:45:12.674Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640052732,
@@ -5100,7 +5100,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:42Z",
-      "checkedAt": "2026-06-16T18:45:06.239Z"
+      "checkedAt": "2026-06-16T18:45:12.674Z"
     },
     "baseball|2016 topps tier one baseball": {
       "status": "in_progress",
@@ -5115,7 +5115,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-16T18:45:06.239Z",
+      "updatedAt": "2026-06-16T18:45:12.674Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640052732,
@@ -5123,7 +5123,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:42Z",
-      "checkedAt": "2026-06-16T18:45:06.239Z"
+      "checkedAt": "2026-06-16T18:45:12.674Z"
     },
     "baseball|2016_Topps_Stadium_Club_Baseball": {
       "status": "completed",
@@ -5476,9 +5476,9 @@
       "product": "2017 Bowman Chrome Mini Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
-      "sourceUrl": "",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640046282",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-16T18:45:09.507Z",
       "resolved": true
     },
     "baseball|2017 bowman draft baseball": {
@@ -6425,9 +6425,18 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-16T18:45:05.728Z",
       "resolved": true
+    },
+    "baseball|https github com chasingmajors cm-chat-prototype actions runs 27640046282": {
+      "product": "2017 Bowman Chrome Mini Baseball",
+      "sport": "baseball",
+      "code": "2017_Bowman_Chrome_Mini_Baseball",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640046282",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-16T18:45:09.507Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:45:08.846Z",
+  "saved_at": "2026-06-16T18:45:15.599Z",
   "saved_by": "cm_command_center_operator"
 }

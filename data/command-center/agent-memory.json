@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T17:10:25.835Z",
+  "exported_at": "2026-06-16T17:10:34.347Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -197,11 +197,11 @@
       "sport": "basketball",
       "code": "2025_26_panini_origins_euroleague_basketball",
       "riskLevel": "medium",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "failed",
+      "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed; publish needs review.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "validationResult": "Import did not write to Google Sheets.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27634932367",
       "sourceUrl": "",
       "bucket": "",
@@ -209,7 +209,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T17:10:00.798Z",
-      "updatedAt": "2026-06-16T17:10:24.233Z",
+      "updatedAt": "2026-06-16T17:10:32.743Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27634932367",
       "visualStartedAt": "2026-06-16T17:10:13Z"
     },
@@ -2118,6 +2118,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781629832744_8rlbs4",
+      "ts": "2026-06-16T17:10:32.744Z",
+      "type": "source_import",
+      "title": "Import blocked before sheet write",
+      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781629824233_txd6m7",
       "ts": "2026-06-16T17:10:24.233Z",
       "type": "visual_test",
@@ -2905,16 +2915,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
       "product": "2016 Topps Tier One Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057380193_q5b3mx",
-      "ts": "2026-06-10T02:09:40.193Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Bowman Baseball",
       "source": "github_actions"
     }
   ],
@@ -5203,6 +5203,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T17:10:28.236Z",
+  "saved_at": "2026-06-16T17:10:35.423Z",
   "saved_by": "cm_command_center_operator"
 }

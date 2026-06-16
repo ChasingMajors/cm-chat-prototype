@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:37:19.007Z",
+  "exported_at": "2026-06-16T18:37:24.008Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:36:22.396Z",
-      "updatedAt": "2026-06-16T18:36:58.563Z",
+      "updatedAt": "2026-06-16T18:37:22.170Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639635608",
       "visualStartedAt": "2026-06-16T18:36:22Z"
     },
@@ -377,7 +377,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:35:45.369Z",
-      "updatedAt": "2026-06-16T18:36:56.651Z",
+      "updatedAt": "2026-06-16T18:37:19.930Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:00:59.189Z"
     },
@@ -1719,7 +1719,7 @@
       "expectedRowCount": 435,
       "expectedParallelCount": 38,
       "createdAt": "2026-06-09T17:54:02.458Z",
-      "updatedAt": "2026-06-16T18:36:56.651Z",
+      "updatedAt": "2026-06-16T18:37:19.930Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Platinum Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:32:24.026Z",
@@ -2051,7 +2051,7 @@
       "expectedRowCount": 558,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.450Z",
-      "updatedAt": "2026-06-16T18:36:58.564Z",
+      "updatedAt": "2026-06-16T18:37:22.170Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Stadium Club Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:32:24.026Z",
@@ -2083,6 +2083,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781635042171_783u6b",
+      "ts": "2026-06-16T18:37:22.171Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781635039931_7rcxwh",
+      "ts": "2026-06-16T18:37:19.931Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Platinum Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781635036782_m16o0z",
       "ts": "2026-06-16T18:37:16.782Z",
@@ -2862,26 +2882,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1781634500732_eip0ja",
-      "ts": "2026-06-16T18:28:20.732Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781634500687_pksmli",
-      "ts": "2026-06-16T18:28:20.687Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
     }
   ],
   "last_agent_report": {
@@ -4011,7 +4011,7 @@
       "productName": "2017 Bowman Platinum Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Platinum_Baseball",
-      "updatedAt": "2026-06-16T18:36:56.648Z",
+      "updatedAt": "2026-06-16T18:37:19.928Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4019,7 +4019,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:36:56.648Z"
+      "checkedAt": "2026-06-16T18:37:19.928Z"
     },
     "baseball|2017_Bowman_High_Tek_Baseball": {
       "status": "completed",
@@ -4678,7 +4678,7 @@
       "productName": "2017 Bowman Platinum Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Platinum_Baseball",
-      "updatedAt": "2026-06-16T18:36:56.648Z",
+      "updatedAt": "2026-06-16T18:37:19.928Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4686,7 +4686,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:36:56.648Z"
+      "checkedAt": "2026-06-16T18:37:19.928Z"
     },
     "baseball|2017 bowman platinum baseball": {
       "status": "queued",
@@ -4701,7 +4701,7 @@
       "productName": "2017 Bowman Platinum Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Platinum_Baseball",
-      "updatedAt": "2026-06-16T18:36:56.648Z",
+      "updatedAt": "2026-06-16T18:37:19.928Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4709,7 +4709,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:36:56.648Z"
+      "checkedAt": "2026-06-16T18:37:19.928Z"
     },
     "baseball|2017_bowman_mega_box_chrome_baseball": {
       "status": "queued",
@@ -5138,7 +5138,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-16T18:36:58.561Z",
+      "updatedAt": "2026-06-16T18:37:22.168Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639635608,
@@ -5146,7 +5146,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:22Z",
-      "checkedAt": "2026-06-16T18:36:58.561Z"
+      "checkedAt": "2026-06-16T18:37:22.168Z"
     },
     "baseball|2016_topps_stadium_club_baseball": {
       "status": "in_progress",
@@ -5161,7 +5161,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-16T18:36:58.561Z",
+      "updatedAt": "2026-06-16T18:37:22.168Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639635608,
@@ -5169,7 +5169,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:22Z",
-      "checkedAt": "2026-06-16T18:36:58.561Z"
+      "checkedAt": "2026-06-16T18:37:22.168Z"
     },
     "baseball|2016 topps stadium club baseball": {
       "status": "in_progress",
@@ -5184,7 +5184,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-16T18:36:58.561Z",
+      "updatedAt": "2026-06-16T18:37:22.168Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639635608,
@@ -5192,7 +5192,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:22Z",
-      "checkedAt": "2026-06-16T18:36:58.561Z"
+      "checkedAt": "2026-06-16T18:37:22.168Z"
     }
   },
   "known_issues": {},
@@ -6392,6 +6392,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:37:20.589Z",
+  "saved_at": "2026-06-16T18:37:25.345Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2797,10 +2797,16 @@ function findVisualProductRun_(runs, productName, startedAt) {
   const target = normalize_(productName);
   const startedMs = startedAt ? Date.parse(startedAt) : 0;
 
-  const exactMatches = (runs || []).filter(function(run) {
+  const exactTitleMatches = (runs || []).filter(function(run) {
     const title = normalize_(run.display_title || run.name || "");
-    if (target && title.indexOf(target) === -1) return false;
+    return !target || title.indexOf(target) > -1;
+  }).sort(function(a, b) {
+    const aMs = Date.parse(a.created_at || "") || 0;
+    const bMs = Date.parse(b.created_at || "") || 0;
+    return bMs - aMs;
+  });
 
+  const exactMatches = exactTitleMatches.filter(function(run) {
     if (startedMs) {
       const createdMs = Date.parse(run.created_at || "");
       if (Number.isFinite(createdMs) && createdMs < startedMs - 120000) return false;
@@ -2811,9 +2817,16 @@ function findVisualProductRun_(runs, productName, startedAt) {
 
   if (exactMatches.length) return exactMatches[0];
 
+  const completedExactMatch = exactTitleMatches.filter(function(run) {
+    return run.status === "completed" && (run.conclusion === "success" || run.conclusion === "failure");
+  })[0];
+  if (completedExactMatch) return completedExactMatch;
+
   if (!startedMs) return null;
 
   const nearbyRuns = (runs || []).filter(function(run) {
+    const title = normalize_(run.display_title || run.name || "");
+    if (target && title.indexOf(target) === -1) return false;
     const createdMs = Date.parse(run.created_at || "");
     if (!Number.isFinite(createdMs)) return false;
     return createdMs >= startedMs - 120000 && createdMs <= startedMs + 15 * 60 * 1000;

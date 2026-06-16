@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc133-collapse-stale-visual-rows-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc134-no-fake-visual-running-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -7496,8 +7496,13 @@
       validation.includes("no matching github run") ||
       validation.includes("no matching run") ||
       validation.includes("waiting for github actions") ||
+      validation.includes("visual test requested") ||
+      validation.includes("visual test is queued") ||
+      validation.includes("retest queued") ||
       validation === "queued" ||
-      status === "queued"
+      status === "queued" ||
+      status === "running" ||
+      status === "in_progress"
     );
     if (!isVisual && !isPublic && !isAdmin) return null;
 
@@ -7509,10 +7514,10 @@
     } else if (waitingForGithubRun) {
       state = "queued";
       label = "Queued";
-    } else if (status === "running" || status === "in_progress" || (status === "queued" && (action.visualStartedAt || action.runUrl || action.visualRunUrl))) {
+    } else if ((status === "running" || status === "in_progress") && (!isVisual || hasVisualRun)) {
       state = "running";
-      label = isVisual ? "Running" : "Running";
-    } else if (status === "queued" || status === "pending_visual_validation" || status === "pending_public_validation" || isActionInRunQueue(action.id)) {
+      label = "Running";
+    } else if (status === "queued" || status === "pending_visual_validation" || status === "pending_public_validation" || (isVisual && !hasVisualRun && (action.visualStartedAt || action.runUrl || action.visualRunUrl)) || isActionInRunQueue(action.id)) {
       state = "queued";
       label = status === "pending_public_validation" ? "Pending public JSON" : status === "pending_visual_validation" ? "Queued" : "Queued";
     } else if (status === "failed" || status === "fix_queued" || status === "fix_attempted" || status === "blocked" || isAdmin) {
@@ -7554,8 +7559,8 @@
     const status = String(action && action.status || "").toLowerCase();
     const validation = String(action && action.validationResult || "");
     if (label === "Complete") return "Proof recorded";
-    if (label === "Running") return hasConcreteVisualRun(action) ? "GitHub Actions in progress" : "In progress";
-    if (label === "Queued" && /no github run visible|no matching github run|no matching run|waiting for github actions/i.test(validation)) return "Waiting for GitHub Actions";
+    if (label === "Running") return hasConcreteVisualRun(action) ? "GitHub Actions in progress" : "Backend work in progress";
+    if (label === "Queued" && /no github run visible|no matching github run|no matching run|waiting for github actions|visual test requested|visual test is queued|retest queued/i.test(validation)) return "Waiting for GitHub Actions";
     if (label === "Queued") return "Waiting to run";
     if (label === "Pending public JSON") return "Waiting for public JSON proof";
     if (label === "Admin decision") return "Needs approval, hold, or ignore";

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T17:17:03.259Z",
+  "exported_at": "2026-06-16T17:17:18.097Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,30 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps gold label baseball|2017_topps_gold_label_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Gold Label Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Gold_Label_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27635331280",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-16T17:17:05.266Z",
+      "updatedAt": "2026-06-16T17:17:16.495Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27635331280",
+      "visualStartedAt": "2026-06-16T17:17:04Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps luminaries baseball|2017_topps_luminaries_baseball",
       "type": "visual_test",
@@ -507,19 +531,21 @@
       "sport": "baseball",
       "code": "2017_Topps_Gold_Label_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test requested from progress rail...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27635331280",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 394,
       "expectedParallelCount": 6,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-16T17:17:01.656Z"
+      "updatedAt": "2026-06-16T17:17:16.495Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27635331280",
+      "visualStartedAt": "2026-06-16T17:17:04Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball",
@@ -1906,32 +1932,30 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.442Z",
       "updatedAt": "2026-06-09T17:54:02.442Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Panini_Diamond_Kings_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Panini Diamond Kings Baseball",
-      "sport": "baseball",
-      "code": "2016_Panini_Diamond_Kings_Baseball",
-      "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1054 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 1054,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.442Z",
-      "updatedAt": "2026-06-09T17:54:02.442Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781630236495_sg0yln",
+      "ts": "2026-06-16T17:17:16.495Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "queued",
+      "product": "2017 Topps Gold Label Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781630225268_tpqcnq",
+      "ts": "2026-06-16T17:17:05.268Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2017 Topps Gold Label Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781057389536_hfe56l",
       "ts": "2026-06-10T02:09:49.536Z",
@@ -2711,26 +2735,6 @@
       "status": "queued",
       "product": "2017 Bowman Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781057298223_cwnruw",
-      "ts": "2026-06-10T02:08:18.223Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Bowman Chrome Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057296125_4atrw9",
-      "ts": "2026-06-10T02:08:16.125Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Bowman Chrome Mini Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": null,
@@ -2969,8 +2973,8 @@
       "status": "queued",
       "result": "queued",
       "conclusion": "",
-      "startedAt": "2026-06-09T20:00:00.739Z",
-      "runUrl": "",
+      "startedAt": "2026-06-16T17:17:03.268Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27635331280",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Gold_Label_Baseball",
@@ -2978,15 +2982,15 @@
       "productName": "2017 Topps Gold Label Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gold_Label_Baseball",
-      "updatedAt": "2026-06-09T21:52:42.331Z",
+      "updatedAt": "2026-06-16T17:17:16.493Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": "",
-      "runNumber": "",
-      "displayTitle": "",
-      "headSha": "",
-      "createdAt": "",
-      "checkedAt": "2026-06-09T21:52:42.331Z"
+      "runId": 27635331280,
+      "runNumber": 253,
+      "displayTitle": "Visual Product Test - 2017 Topps Gold Label Baseball",
+      "headSha": "752e9fd6d5474d874677cfc2adbc390f32d0a540",
+      "createdAt": "2026-06-16T17:17:04Z",
+      "checkedAt": "2026-06-16T17:17:16.493Z"
     },
     "baseball|2017_Topps_Gallery_Baseball": {
       "status": "queued",
@@ -4933,6 +4937,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T17:17:05.041Z",
+  "saved_at": "2026-06-16T17:17:19.523Z",
   "saved_by": "cm_command_center_operator"
 }

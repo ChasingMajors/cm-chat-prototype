@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:38:11.007Z",
+  "exported_at": "2026-06-16T18:38:17.005Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -209,7 +209,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:36:19.516Z",
-      "updatedAt": "2026-06-16T18:38:03.675Z",
+      "updatedAt": "2026-06-16T18:38:13.705Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639632420",
       "visualStartedAt": "2026-06-16T18:36:18Z"
     },
@@ -377,7 +377,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:35:45.369Z",
-      "updatedAt": "2026-06-16T18:37:52.035Z",
+      "updatedAt": "2026-06-16T18:38:15.293Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:00:59.189Z"
     },
@@ -1719,7 +1719,7 @@
       "expectedRowCount": 435,
       "expectedParallelCount": 38,
       "createdAt": "2026-06-09T17:54:02.458Z",
-      "updatedAt": "2026-06-16T18:37:52.036Z",
+      "updatedAt": "2026-06-16T18:38:15.293Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Platinum Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:32:24.026Z",
@@ -2002,7 +2002,7 @@
       "expectedRowCount": 880,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-09T17:54:02.450Z",
-      "updatedAt": "2026-06-16T18:38:03.676Z",
+      "updatedAt": "2026-06-16T18:38:13.706Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Tier One Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:32:24.026Z",
@@ -2083,6 +2083,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781635095294_dsjl8c",
+      "ts": "2026-06-16T18:38:15.294Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Platinum Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781635093707_944l9p",
+      "ts": "2026-06-16T18:38:13.707Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781635093706_9rd34f",
+      "ts": "2026-06-16T18:38:13.706Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781635088937_bv5wpm",
       "ts": "2026-06-16T18:38:08.937Z",
@@ -2851,36 +2881,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "passed",
       "product": "2017 Donruss Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781634936456_4osnk3",
-      "ts": "2026-06-16T18:35:36.456Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Donruss Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781634936048_ozz55h",
-      "ts": "2026-06-16T18:35:36.048Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781634932284_oyg4hf",
-      "ts": "2026-06-16T18:35:32.284Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Donruss Optic Baseball",
       "source": "github_actions"
     }
   ],
@@ -4011,7 +4011,7 @@
       "productName": "2017 Bowman Platinum Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Platinum_Baseball",
-      "updatedAt": "2026-06-16T18:37:52.033Z",
+      "updatedAt": "2026-06-16T18:38:15.289Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4019,7 +4019,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:37:52.033Z"
+      "checkedAt": "2026-06-16T18:38:15.289Z"
     },
     "baseball|2017_Bowman_High_Tek_Baseball": {
       "status": "completed",
@@ -4678,7 +4678,7 @@
       "productName": "2017 Bowman Platinum Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Platinum_Baseball",
-      "updatedAt": "2026-06-16T18:37:52.033Z",
+      "updatedAt": "2026-06-16T18:38:15.289Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4686,7 +4686,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:37:52.033Z"
+      "checkedAt": "2026-06-16T18:38:15.289Z"
     },
     "baseball|2017 bowman platinum baseball": {
       "status": "queued",
@@ -4701,7 +4701,7 @@
       "productName": "2017 Bowman Platinum Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Platinum_Baseball",
-      "updatedAt": "2026-06-16T18:37:52.033Z",
+      "updatedAt": "2026-06-16T18:38:15.289Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4709,7 +4709,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:37:52.033Z"
+      "checkedAt": "2026-06-16T18:38:15.289Z"
     },
     "baseball|2017_bowman_mega_box_chrome_baseball": {
       "status": "queued",
@@ -5069,7 +5069,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-16T18:38:03.672Z",
+      "updatedAt": "2026-06-16T18:38:13.703Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639632420,
@@ -5077,7 +5077,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:18Z",
-      "checkedAt": "2026-06-16T18:38:03.672Z"
+      "checkedAt": "2026-06-16T18:38:13.703Z"
     },
     "baseball|2016_topps_tier_one_baseball": {
       "status": "completed",
@@ -5092,7 +5092,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-16T18:38:03.672Z",
+      "updatedAt": "2026-06-16T18:38:13.703Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639632420,
@@ -5100,7 +5100,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:18Z",
-      "checkedAt": "2026-06-16T18:38:03.672Z"
+      "checkedAt": "2026-06-16T18:38:13.703Z"
     },
     "baseball|2016 topps tier one baseball": {
       "status": "completed",
@@ -5115,7 +5115,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-16T18:38:03.672Z",
+      "updatedAt": "2026-06-16T18:38:13.703Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639632420,
@@ -5123,7 +5123,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:18Z",
-      "checkedAt": "2026-06-16T18:38:03.672Z"
+      "checkedAt": "2026-06-16T18:38:13.703Z"
     },
     "baseball|2016_Topps_Stadium_Club_Baseball": {
       "status": "completed",
@@ -6441,7 +6441,7 @@
       "code": "2016_Topps_Tier_One_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639632420",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:38:03.676Z",
+      "ignoredAt": "2026-06-16T18:38:13.706Z",
       "resolved": true
     },
     "baseball|2016_topps_tier_one_baseball": {
@@ -6450,11 +6450,11 @@
       "code": "2016_Topps_Tier_One_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639632420",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:38:03.676Z",
+      "ignoredAt": "2026-06-16T18:38:13.706Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:38:12.305Z",
+  "saved_at": "2026-06-16T18:38:18.326Z",
   "saved_by": "cm_command_center_operator"
 }

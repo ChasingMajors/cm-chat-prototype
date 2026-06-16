@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc127-agent-cycle-backend-fallback-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc128-visual-proof-dedupe-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -365,6 +365,19 @@
     return [sport, code || name].filter(Boolean).join("|");
   }
 
+  function getVisualProductAliasKeys(planOrItem) {
+    const sport = normalize(planOrItem && (planOrItem.sport || planOrItem.selected_sport || ""));
+    const code = String(planOrItem && (planOrItem.code || planOrItem.Code || planOrItem.matched_code || "") || "").trim();
+    const normalizedCode = normalize(code);
+    const name = normalize(planOrItem && (planOrItem.productName || planOrItem.product || planOrItem.name || planOrItem.matched_name || planOrItem.title || ""));
+    const keys = [];
+    [code, normalizedCode, name].forEach(value => {
+      const key = [sport, value].filter(Boolean).join("|");
+      if (key && !keys.includes(key)) keys.push(key);
+    });
+    return keys;
+  }
+
   function buildSourceIgnoreKey(input) {
     const sport = normalize(input && input.sport);
     const sourceUrl = normalize(input && (input.sourceUrl || input.source_url || input.url || input.runUrl || ""));
@@ -419,7 +432,24 @@
 
   function getVisualRecordForAction(action) {
     if (!action) return null;
-    return state.visualTests[getVisualProductKey(buildVisualTestPlanFromAction(action))] || null;
+    const plan = buildVisualTestPlanFromAction(action);
+    const keys = getVisualProductAliasKeys(Object.assign({}, plan, {
+      product: action.product || plan.productName || "",
+      matched_code: action.code || plan.code || ""
+    }));
+    for (const key of keys) {
+      if (state.visualTests[key]) return state.visualTests[key];
+    }
+    const sport = normalize(action.sport || plan.sport || "");
+    const product = normalize(action.product || plan.productName || "");
+    const code = normalize(action.code || plan.code || "");
+    return Object.values(state.visualTests || {}).find(record => {
+      if (!record) return false;
+      if (sport && normalize(record.sport || "") !== sport) return false;
+      const recordCode = normalize(record.code || "");
+      const recordProduct = normalize(record.productName || record.product || record.displayName || "");
+      return !!((code && recordCode && code === recordCode) || (product && recordProduct && product === recordProduct));
+    }) || null;
   }
 
   function saveVisualRecord(plan, patch) {
@@ -439,6 +469,9 @@
     });
 
     state.visualTests[key] = record;
+    getVisualProductAliasKeys(plan).forEach(aliasKey => {
+      if (aliasKey) state.visualTests[aliasKey] = Object.assign({}, record, { key: aliasKey });
+    });
     writeVisualTests();
     return record;
   }
@@ -823,9 +856,10 @@
     const actionCode = String(action.code || "").trim();
     const inputCode = String(input.code || input.matched_code || "").trim();
     if (actionCode && inputCode && actionCode === inputCode) return true;
+    if (actionCode && inputCode && normalize(actionCode) === normalize(inputCode)) return true;
 
     const actionProduct = normalize(action.product || "");
-    const inputProduct = normalize(input.product || input.title || input.matched_name || "");
+    const inputProduct = normalize(input.product || input.productName || input.title || input.matched_name || "");
     return !!(actionProduct && inputProduct && actionProduct === inputProduct);
   }
 
@@ -1496,15 +1530,17 @@
       direct = state.agentActions.find(action => action.id === plan.sourceActionId) || null;
     }
 
-    const sport = normalize(plan && plan.sport);
-    const code = String(plan && plan.code || "").trim();
-    const product = normalize(plan && plan.productName);
+    const input = {
+      product: plan && plan.productName || "",
+      productName: plan && plan.productName || "",
+      sport: plan && plan.sport || "",
+      code: plan && plan.code || "",
+      matched_code: plan && plan.code || ""
+    };
     const matches = state.agentActions.filter(action => {
       const type = String(action.type || "").toLowerCase();
       if (type !== "source_import" && type !== "checklist_publish" && type !== "visual_test") return false;
-      if (sport && normalize(action.sport) !== sport) return false;
-      if (code && String(action.code || "").trim() === code) return true;
-      return product && normalize(action.product) === product;
+      return sameProductAction(action, input);
     });
 
     if (direct && !matches.some(action => action.id === direct.id)) matches.unshift(direct);
@@ -1544,6 +1580,15 @@
         visualStartedAt: info.startedAt || action.visualStartedAt || plan.startedAt || ""
       });
 
+      if (isPassed) {
+        rememberResolvedSourceAction(Object.assign({}, action, {
+          status: "validated",
+          validationResult,
+          runUrl: runUrl || info.runUrl || action.runUrl || ""
+        }));
+        removeActionFromRunQueue(action.id, { silent: true, source: "visual_proof" });
+      }
+
       if (isFailed && !state.tasks.some(task => task.sourceId === action.id && task.kind === "fix")) {
         createFixTaskFromAgentAction(Object.assign({}, action, {
           status: "failed",
@@ -1554,6 +1599,7 @@
     });
 
     if (isPassed) {
+      writeSourceIgnores();
       logActivity({
         type: "agent_action",
         status: "validated",
@@ -3895,7 +3941,12 @@
     const isPrv = item.target_tool === "prv";
     const visualPlan = buildVisualTestPlan(item);
     const visualKey = getVisualProductKey(visualPlan);
-    const visualRecord = state.visualTests[visualKey] || null;
+    const visualRecord = getVisualRecordForAction({
+      type: "source_import",
+      product: visualPlan.productName || item.matched_name || item.title || "",
+      sport: visualPlan.sport || item.sport || "",
+      code: visualPlan.code || item.matched_code || ""
+    }) || state.visualTests[visualKey] || null;
     const knownIssue = state.knownIssues[visualKey] || null;
     const visualLabel = knownIssue ? "Known issue" : getVisualStatusLabel(visualRecord);
     const visualClass = knownIssue ? "warning" : getVisualStatusClass(visualRecord);
@@ -3934,7 +3985,12 @@
   function renderVisualTestPlan(item) {
     const plan = buildVisualTestPlan(item);
     const visualKey = getVisualProductKey(plan);
-    const currentRecord = state.visualTests[visualKey] || null;
+    const currentRecord = getVisualRecordForAction({
+      type: "visual_test",
+      product: plan.productName || "",
+      sport: plan.sport || "",
+      code: plan.code || ""
+    }) || state.visualTests[visualKey] || null;
     const knownIssue = state.knownIssues[visualKey] || null;
     els.sourceCheckResult.innerHTML = `
       <div class="visual-test-card">
@@ -7439,7 +7495,7 @@
 
     for (const action of pending) {
       const plan = buildVisualTestPlanFromAction(action);
-      const visualRecord = state.visualTests[getVisualProductKey(plan)] || null;
+      const visualRecord = getVisualRecordForAction(action) || state.visualTests[getVisualProductKey(plan)] || null;
       const hasExistingVisualRun = !!(action.visualStartedAt || plan.startedAt || visualRecord?.startedAt);
       if (hasExistingVisualRun) {
         updateAgentAction(action.id, {

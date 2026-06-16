@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T16:44:00.117Z",
+  "exported_at": "2026-06-16T16:44:06.227Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1973,6 +1973,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781628244624_cvnxwx",
+      "ts": "2026-06-16T16:44:04.624Z",
+      "type": "agent_cycle",
+      "title": "Running Agent Cycle",
+      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
       "id": "log_1781628240100_zy4rnm",
       "ts": "2026-06-16T16:44:00.100Z",
       "type": "agent_cycle",
@@ -2761,16 +2771,6 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1781269753596_alert",
-      "ts": "2026-06-12T13:09:09.922Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -5413,6 +5413,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T16:44:02.033Z",
+  "saved_at": "2026-06-16T16:44:07.594Z",
   "saved_by": "cm_command_center_operator"
 }

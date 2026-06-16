@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T17:24:11.072Z",
+  "exported_at": "2026-06-16T17:24:17.012Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1933,6 +1933,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781630655410_pizpnq",
+      "ts": "2026-06-16T17:24:15.410Z",
+      "type": "agent_cycle",
+      "title": "Running Agent Cycle",
+      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
       "id": "log_1781630651067_wncoy6",
       "ts": "2026-06-16T17:24:11.067Z",
       "type": "agent_cycle",
@@ -2720,16 +2730,6 @@
       "detail": "CV/ChatBot behavior check started.",
       "status": "queued",
       "product": "2016 Topps Stadium Club Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057304030_ejc1co",
-      "ts": "2026-06-10T02:08:24.030Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2016 Topps Tier One Baseball",
       "source": "github_actions"
     }
   ],
@@ -4933,6 +4933,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T17:24:12.733Z",
+  "saved_at": "2026-06-16T17:24:18.485Z",
   "saved_by": "cm_command_center_operator"
 }

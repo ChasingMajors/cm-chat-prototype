@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc131-clarity-contrast-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc132-visual-run-truth-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -4645,6 +4645,19 @@
     renderActivityLog();
   }
 
+  function getVisualRunState(data) {
+    const result = String(data && (data.result || data.conclusion || "") || "").toLowerCase();
+    const status = String(data && data.status || "").toLowerCase();
+    const note = String(data && data.note || "").toLowerCase();
+    const hasRun = !!(data && (data.run_id || data.run_url));
+    if (result === "passed" || result === "success" || data && data.conclusion === "success") return "passed";
+    if (result === "failed" || result === "failure" || data && data.conclusion === "failure") return "failed";
+    if (note.includes("no matching github run") || note.includes("no github run") || note.includes("no matching run") || (!hasRun && (result === "queued" || status === "queued"))) return "queued";
+    if (status === "queued" || result === "queued") return "queued";
+    if (status === "in_progress" || status === "running" || result === "running" || hasRun) return "running";
+    return "queued";
+  }
+
   function renderVisualStatusResult(data, plan, options) {
     const opts = options || {};
     if (!data || !data.ok) {
@@ -4670,21 +4683,26 @@
       createdAt: data.created_at || "",
       checkedAt: new Date().toISOString()
     });
+    const visualState = getVisualRunState(data);
+    const visualStatus = visualState === "passed" ? "validated" : visualState === "failed" ? "failed" : visualState === "running" ? "running" : "queued";
+    const visualResultText = data.note || data.result || data.status || visualState;
     upsertAgentAction({
       type: "visual_test",
       source: "github_actions",
       product: plan.productName || data.product_name || "",
       sport: plan.sport || data.sport || "",
       code: plan.code || data.product_code || "",
-      riskLevel: data.result === "failed" ? "medium" : "low",
-      status: data.result === "passed" ? "validated" : data.result === "failed" ? "failed" : data.result || "running",
-      recommendedAction: data.result === "failed"
+      riskLevel: visualState === "failed" ? "medium" : "low",
+      status: visualStatus,
+      recommendedAction: visualState === "failed"
         ? "Review failed visual report and prepare a product/query-specific fix."
-        : "Visual validation complete.",
-      validationResult: data.result || data.status || "",
+        : visualState === "queued"
+          ? "Waiting for GitHub Actions to expose the workflow run."
+          : "Visual validation complete.",
+      validationResult: visualResultText,
       runUrl: data.run_url || ""
     });
-    updateRelatedProductActionFromVisual(plan, data.result || data.conclusion || data.status || "", data.run_url || "", {
+    updateRelatedProductActionFromVisual(plan, visualState, data.run_url || "", {
       startedAt: data.started_at || data.created_at || plan.startedAt || "",
       runUrl: data.run_url || ""
     });
@@ -4704,9 +4722,9 @@
     renderActivityLog();
     if (opts.silent) {
       renderAgentCycleMonitor(
-        data.result === "passed" ? "Visual proof complete" : data.result === "failed" ? "Visual proof needs repair" : "Visual proof running",
-        `${plan.productName || data.product_name || "Product"} - ${data.result === "passed" ? "Complete" : data.result === "failed" ? "Needs repair" : "Running"}.`,
-        data.result === "failed" ? "warning" : data.result === "passed" ? "success" : "info"
+        visualState === "passed" ? "Visual proof complete" : visualState === "failed" ? "Visual proof needs repair" : visualState === "running" ? "Visual proof running" : "Visual proof queued",
+        `${plan.productName || data.product_name || "Product"} - ${visualState === "passed" ? "Complete" : visualState === "failed" ? "Needs repair" : visualState === "running" ? "Running" : "Waiting for GitHub Actions"}.`,
+        visualState === "failed" ? "warning" : visualState === "passed" ? "success" : "info"
       );
     } else {
       renderVisualTestPlan(plan);
@@ -7447,6 +7465,15 @@
     const isVisual = type === "visual_test" || status === "pending_visual_validation" || validation.includes("visual") || validation.includes("cv/chatbot") || validation.includes("cv and chatbot");
     const isPublic = type === "source_import" || type === "checklist_publish" || type === "prv_publish" || type === "prv_source_review" || status === "pending_public_validation" || validation.includes("public json") || execution.includes("publish");
     const isAdmin = status === "needs_admin" || status === "approval_required" || status === "known_issue" || type === "backend_data_issue";
+    const hasVisualRun = !!(action.runUrl || action.visualRunUrl || action.runId || action.visualRunId);
+    const waitingForGithubRun = isVisual && !hasVisualRun && (
+      validation.includes("no github run visible") ||
+      validation.includes("no matching github run") ||
+      validation.includes("no matching run") ||
+      validation.includes("waiting for github actions") ||
+      validation === "queued" ||
+      status === "queued"
+    );
     if (!isVisual && !isPublic && !isAdmin) return null;
 
     let state = "pending";
@@ -7454,6 +7481,9 @@
     if (hasPassedVisualProof(action) || status === "validated" || status === "done" || status === "ignored") {
       state = "complete";
       label = status === "ignored" ? "Ignored" : "Complete";
+    } else if (waitingForGithubRun) {
+      state = "queued";
+      label = "Queued";
     } else if (status === "running" || status === "in_progress" || (status === "queued" && (action.visualStartedAt || action.runUrl || action.visualRunUrl))) {
       state = "running";
       label = isVisual ? "Running" : "Running";
@@ -7492,6 +7522,7 @@
     const validation = String(action && action.validationResult || "");
     if (label === "Complete") return "Proof recorded";
     if (label === "Running") return action.runUrl || action.visualRunUrl ? "GitHub Actions in progress" : "In progress";
+    if (label === "Queued" && /no github run visible|no matching github run|no matching run|waiting for github actions/i.test(validation)) return "Waiting for GitHub Actions";
     if (label === "Queued") return "Waiting to run";
     if (label === "Pending public JSON") return "Waiting for public JSON proof";
     if (label === "Admin decision") return "Needs approval, hold, or ignore";

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T01:36:08.794Z",
+  "exported_at": "2026-06-16T01:36:30.825Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1223,7 +1223,7 @@
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1231,7 +1231,7 @@
       "expectedRowCount": 394,
       "expectedParallelCount": 6,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-10T01:59:19.499Z"
+      "updatedAt": "2026-06-16T01:36:29.222Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball",
@@ -2168,6 +2168,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781573789224_2wopvk",
+      "ts": "2026-06-16T01:36:29.224Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2017 Topps Gold Label Baseball",
+      "source": "agent_action_queue"
+    },
+    {
       "id": "log_1781573767188_gpv01h",
       "ts": "2026-06-16T01:36:07.188Z",
       "type": "agent_cycle",
@@ -2954,16 +2964,6 @@
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "passed",
-      "product": "2016 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057418891_ptdnh7",
-      "ts": "2026-06-10T02:10:18.891Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "1 matching queue item now have visual proof.",
-      "status": "validated",
       "product": "2016 Topps Archives Baseball",
       "source": "github_actions"
     }
@@ -5585,6 +5585,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T01:36:10.110Z",
+  "saved_at": "2026-06-16T01:36:31.852Z",
   "saved_by": "cm_command_center_operator"
 }

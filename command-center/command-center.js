@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc132-visual-run-truth-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc133-collapse-stale-visual-rows-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -1556,6 +1556,7 @@
     const normalized = String(result || "").toLowerCase();
     const isPassed = normalized === "passed" || normalized === "success";
     const isFailed = normalized === "failed" || normalized === "failure";
+    const concreteRunUrl = isConcreteGithubRunUrl(runUrl || info.runUrl) ? (runUrl || info.runUrl) : "";
 
     actions.forEach(action => {
       const priorValidation = String(action.validationResult || "");
@@ -1576,8 +1577,8 @@
           : isPassed
             ? "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete."
             : "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
-        runUrl: runUrl || info.runUrl || action.runUrl || "",
-        visualRunUrl: runUrl || info.runUrl || action.visualRunUrl || action.runUrl || "",
+        runUrl: concreteRunUrl || (isConcreteGithubRunUrl(action.runUrl) ? action.runUrl : ""),
+        visualRunUrl: concreteRunUrl || (isConcreteGithubRunUrl(action.visualRunUrl) ? action.visualRunUrl : ""),
         visualStartedAt: info.startedAt || action.visualStartedAt || plan.startedAt || ""
       });
 
@@ -1585,7 +1586,7 @@
         rememberResolvedSourceAction(Object.assign({}, action, {
           status: "validated",
           validationResult,
-          runUrl: runUrl || info.runUrl || action.runUrl || ""
+          runUrl: concreteRunUrl || (isConcreteGithubRunUrl(action.runUrl) ? action.runUrl : "")
         }));
         removeActionFromRunQueue(action.id, { silent: true, source: "visual_proof" });
       }
@@ -4585,7 +4586,7 @@
       status: "queued",
       recommendedAction: "Run CV and ChatBot visual checks after publish.",
       executionResult: "GitHub Actions visual test queued.",
-      runUrl: data.workflow_url || data.actions_url || ""
+      runUrl: isConcreteGithubRunUrl(data.run_url) ? data.run_url : ""
     });
     updateRelatedProductActionFromVisual(plan, "queued", data.workflow_url || data.actions_url || "", {
       startedAt: data.started_at || record.startedAt || "",
@@ -4658,6 +4659,20 @@
     return "queued";
   }
 
+  function isConcreteGithubRunUrl(value) {
+    return /\/actions\/runs\/\d+/i.test(String(value || ""));
+  }
+
+  function hasConcreteVisualRun(action) {
+    if (!action) return false;
+    return !!(
+      action.runId ||
+      action.visualRunId ||
+      isConcreteGithubRunUrl(action.runUrl) ||
+      isConcreteGithubRunUrl(action.visualRunUrl)
+    );
+  }
+
   function renderVisualStatusResult(data, plan, options) {
     const opts = options || {};
     if (!data || !data.ok) {
@@ -4700,7 +4715,7 @@
           ? "Waiting for GitHub Actions to expose the workflow run."
           : "Visual validation complete.",
       validationResult: visualResultText,
-      runUrl: data.run_url || ""
+      runUrl: isConcreteGithubRunUrl(data.run_url) ? data.run_url : ""
     });
     updateRelatedProductActionFromVisual(plan, visualState, data.run_url || "", {
       startedAt: data.started_at || data.created_at || plan.startedAt || "",
@@ -7430,8 +7445,7 @@
   }
 
   function getAgentCycleMonitorRows(context) {
-    const rows = [];
-    const seen = new Set();
+    const rowMap = new Map();
     const selected = []
       .concat(Array.isArray(context.selected) ? context.selected : [])
       .concat(Array.isArray(context.queued) ? context.queued : [])
@@ -7444,16 +7458,26 @@
     actions.forEach(action => {
       const row = buildAgentCycleMonitorRow(action);
       if (!row) return;
-      const key = row.key || `${row.group}|${row.title}|${row.status}`;
-      if (seen.has(key)) return;
-      seen.add(key);
-      rows.push(row);
+      const key = row.key || `${row.group}|${row.title}`;
+      const existing = rowMap.get(key);
+      rowMap.set(key, chooseAgentCycleMonitorRow(existing, row));
     });
 
+    const rows = Array.from(rowMap.values());
     return rows.sort((a, b) => {
       const rank = { running: 0, queued: 1, attention: 2, pending: 3, complete: 4, idle: 5 };
       return (rank[a.state] || 9) - (rank[b.state] || 9);
     });
+  }
+
+  function chooseAgentCycleMonitorRow(existing, incoming) {
+    if (!existing) return incoming;
+    const priority = { complete: 5, running: 4, attention: 3, queued: 2, pending: 1, idle: 0 };
+    if ((priority[incoming.state] || 0) > (priority[existing.state] || 0)) return incoming;
+    if ((priority[incoming.state] || 0) < (priority[existing.state] || 0)) return existing;
+    const incomingUpdated = Date.parse(incoming.updatedAt || "") || 0;
+    const existingUpdated = Date.parse(existing.updatedAt || "") || 0;
+    return incomingUpdated >= existingUpdated ? incoming : existing;
   }
 
   function buildAgentCycleMonitorRow(action) {
@@ -7465,7 +7489,8 @@
     const isVisual = type === "visual_test" || status === "pending_visual_validation" || validation.includes("visual") || validation.includes("cv/chatbot") || validation.includes("cv and chatbot");
     const isPublic = type === "source_import" || type === "checklist_publish" || type === "prv_publish" || type === "prv_source_review" || status === "pending_public_validation" || validation.includes("public json") || execution.includes("publish");
     const isAdmin = status === "needs_admin" || status === "approval_required" || status === "known_issue" || type === "backend_data_issue";
-    const hasVisualRun = !!(action.runUrl || action.visualRunUrl || action.runId || action.visualRunId);
+    const visualRecord = isVisual ? getVisualRecordForAction(action) : null;
+    const hasVisualRun = hasConcreteVisualRun(action);
     const waitingForGithubRun = isVisual && !hasVisualRun && (
       validation.includes("no github run visible") ||
       validation.includes("no matching github run") ||
@@ -7478,7 +7503,7 @@
 
     let state = "pending";
     let label = titleCase(status || "pending");
-    if (hasPassedVisualProof(action) || status === "validated" || status === "done" || status === "ignored") {
+    if (isPassedVisualRecord(visualRecord) || hasPassedVisualProof(action) || status === "validated" || status === "done" || status === "ignored") {
       state = "complete";
       label = status === "ignored" ? "Ignored" : "Complete";
     } else if (waitingForGithubRun) {
@@ -7496,7 +7521,7 @@
     }
 
     return {
-      key: action.id || buildAgentActionId(action),
+      key: buildAgentCycleMonitorKey(action, isVisual, isAdmin),
       group: isVisual ? "visual" : isAdmin ? "admin" : "public",
       state,
       title: action.product || action.code || action.title || action.type || "Queue item",
@@ -7504,6 +7529,14 @@
       detail: buildCompactAgentCycleDetail(action, label),
       updatedAt: action.updatedAt || ""
     };
+  }
+
+  function buildAgentCycleMonitorKey(action, isVisual, isAdmin) {
+    const group = isVisual ? "visual" : isAdmin ? "admin" : "public";
+    const sport = normalize(action && action.sport || "");
+    const code = normalize(action && action.code || "");
+    const product = normalize(action && (action.product || action.title) || "");
+    return [group, sport, code || product || normalize(action && action.type || "")].filter(Boolean).join("|");
   }
 
   function countAgentCycleMonitor(rows) {
@@ -7521,7 +7554,7 @@
     const status = String(action && action.status || "").toLowerCase();
     const validation = String(action && action.validationResult || "");
     if (label === "Complete") return "Proof recorded";
-    if (label === "Running") return action.runUrl || action.visualRunUrl ? "GitHub Actions in progress" : "In progress";
+    if (label === "Running") return hasConcreteVisualRun(action) ? "GitHub Actions in progress" : "In progress";
     if (label === "Queued" && /no github run visible|no matching github run|no matching run|waiting for github actions/i.test(validation)) return "Waiting for GitHub Actions";
     if (label === "Queued") return "Waiting to run";
     if (label === "Pending public JSON") return "Waiting for public JSON proof";

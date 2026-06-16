@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:29:06.210Z",
+  "exported_at": "2026-06-16T18:29:11.077Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1057,11 +1057,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_s_Best_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Bowman_s_Best_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1069,7 +1069,7 @@
       "expectedRowCount": 403,
       "expectedParallelCount": 29,
       "createdAt": "2026-06-09T17:54:02.459Z",
-      "updatedAt": "2026-06-16T18:29:04.607Z"
+      "updatedAt": "2026-06-16T18:29:06.251Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Platinum_Baseball",
@@ -1079,11 +1079,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_Platinum_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 435 rows / 38 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Bowman_Platinum_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1091,7 +1091,7 @@
       "expectedRowCount": 435,
       "expectedParallelCount": 38,
       "createdAt": "2026-06-09T17:54:02.458Z",
-      "updatedAt": "2026-06-09T17:54:02.458Z"
+      "updatedAt": "2026-06-16T18:29:08.041Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Mega_Box_Chrome_Baseball",
@@ -1101,11 +1101,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 248 rows / 17 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2017_Bowman_Mega_Box_Chrome_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1113,7 +1113,7 @@
       "expectedRowCount": 248,
       "expectedParallelCount": 17,
       "createdAt": "2026-06-09T17:54:02.458Z",
-      "updatedAt": "2026-06-09T17:54:02.458Z"
+      "updatedAt": "2026-06-16T18:29:09.459Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_High_Tek_Baseball",
@@ -1123,11 +1123,11 @@
       "sport": "baseball",
       "code": "2017_Bowman_High_Tek_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 195 rows / 24 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1135,7 +1135,7 @@
       "expectedRowCount": 195,
       "expectedParallelCount": 24,
       "createdAt": "2026-06-09T17:54:02.457Z",
-      "updatedAt": "2026-06-09T17:54:02.457Z"
+      "updatedAt": "2026-06-16T18:29:09.475Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Draft_Baseball",
@@ -1933,6 +1933,96 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781634549475_ekf56f",
+      "ts": "2026-06-16T18:29:09.475Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Bowman High Tek Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781634549460_lprvjn",
+      "ts": "2026-06-16T18:29:09.460Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781634549458_a2qanh",
+      "ts": "2026-06-16T18:29:09.458Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "248 public rows and 17 parallels found.",
+      "status": "covered",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781634548057_ptu5n5",
+      "ts": "2026-06-16T18:29:08.057Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781634548042_m6gemw",
+      "ts": "2026-06-16T18:29:08.042Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Bowman Platinum Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781634548040_bbeiu0",
+      "ts": "2026-06-16T18:29:08.040Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "435 public rows and 38 parallels found.",
+      "status": "covered",
+      "product": "2017 Bowman Platinum Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781634546266_a40wo6",
+      "ts": "2026-06-16T18:29:06.266Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2017 Bowman Platinum Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781634546252_av244l",
+      "ts": "2026-06-16T18:29:06.252Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2017 Bowman's Best Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781634546251_lka4bp",
+      "ts": "2026-06-16T18:29:06.251Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "403 public rows and 29 parallels found.",
+      "status": "covered",
+      "product": "2017 Bowman's Best Baseball",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781634544608_s1g27w",
       "ts": "2026-06-16T18:29:04.608Z",
       "type": "validation",
@@ -2638,96 +2728,6 @@
       "type": "agent_cycle",
       "title": "Rechecking pending validations",
       "detail": "47 pending public validation items found. Sentinel will only recheck public JSON in the browser and will not publish or write source data.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1781634500751_ghiln1",
-      "ts": "2026-06-16T18:28:20.751Z",
-      "type": "agent_cycle",
-      "title": "Backend unavailable, rechecking public JSON",
-      "detail": "The backend worker did not return usable data. Sentinel will continue with read-only public JSON rechecks and leave publish/write decisions in review.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1781634500735_g6yddd",
-      "ts": "2026-06-16T18:28:20.735Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle blocked",
-      "detail": "1 of 24 wave ran. 0 safe actions executed. 68 remain: 47 pending public JSON recheck, 18 need admin decision, 1 running, 1 queued/in flight, 1 known issue. Blocked because: Timed out after 150s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec Wave 1: No backend auto action result. Backend returned review findings, not a fatal cycle error. Sentinel continued with safe work.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781634500732_eip0ja",
-      "ts": "2026-06-16T18:28:20.732Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781634500687_pksmli",
-      "ts": "2026-06-16T18:28:20.687Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1781634347137_axhiac",
-      "ts": "2026-06-16T18:25:47.137Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1781634343194_u6b4b2",
-      "ts": "2026-06-16T18:25:43.194Z",
-      "type": "agent_cycle",
-      "title": "Self-healing pending validations",
-      "detail": "47 pending public validation items found. Sentinel is handing the queue to the backend worker so stale JSON can be republished when needed.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1781633423457_1twvqi",
-      "ts": "2026-06-16T18:10:23.457Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1781633419312_dwimtj",
-      "ts": "2026-06-16T18:10:19.312Z",
-      "type": "agent_cycle",
-      "title": "Self-healing pending validations",
-      "detail": "47 pending public validation items found. Sentinel is handing the queue to the backend worker so stale JSON can be republished when needed.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1781631662007_ndz9sr",
-      "ts": "2026-06-16T17:41:02.007Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
       "status": "started",
       "product": "",
       "source": "command_center"
@@ -4190,7 +4190,7 @@
       "code": "2017_Bowman_Platinum_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-16T18:29:08.041Z",
       "resolved": true
     },
     "baseball|2017_bowman_platinum_baseball": {
@@ -4199,7 +4199,7 @@
       "code": "2017_Bowman_Platinum_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-16T18:29:08.041Z",
       "resolved": true
     },
     "baseball|2017 bowman's best baseball": {
@@ -4208,7 +4208,7 @@
       "code": "2017_Bowman_s_Best_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-16T18:29:06.251Z",
       "resolved": true
     },
     "baseball|2017_bowman_s_best_baseball": {
@@ -4217,7 +4217,7 @@
       "code": "2017_Bowman_s_Best_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-16T18:29:06.251Z",
       "resolved": true
     },
     "baseball|2016 topps tribute baseball": {
@@ -4359,9 +4359,9 @@
       "product": "2017 Bowman Mega Box Chrome Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104442514",
+      "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-16T18:29:09.459Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104404775": {
@@ -5101,9 +5101,18 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-16T18:29:04.592Z",
       "resolved": true
+    },
+    "baseball|2017 bowman mega box chrome baseball": {
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "sport": "baseball",
+      "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-16T18:29:09.459Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:29:07.411Z",
+  "saved_at": "2026-06-16T18:29:12.094Z",
   "saved_by": "cm_command_center_operator"
 }

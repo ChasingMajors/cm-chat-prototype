@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T17:36:04.924Z",
+  "exported_at": "2026-06-16T17:36:28.136Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T17:27:59.675Z",
-      "updatedAt": "2026-06-16T17:36:03.322Z",
+      "updatedAt": "2026-06-16T17:36:26.531Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:00:59.189Z"
     },
@@ -1765,7 +1765,7 @@
       "expectedRowCount": 435,
       "expectedParallelCount": 38,
       "createdAt": "2026-06-09T17:54:02.458Z",
-      "updatedAt": "2026-06-16T17:36:03.322Z",
+      "updatedAt": "2026-06-16T17:36:26.531Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Platinum Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T17:24:39.604Z",
@@ -2113,6 +2113,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781631386531_a4d42w",
+      "ts": "2026-06-16T17:36:26.531Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Platinum Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781631363322_7l4jem",
       "ts": "2026-06-16T17:36:03.322Z",
@@ -2901,16 +2911,6 @@
       "detail": "2017 Topps Gallery Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
       "status": "queued",
       "product": "2017 Topps Gallery Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781630751893_bucket_repair",
-      "ts": "2026-06-16T17:24:39.604Z",
-      "type": "auto_action",
-      "title": "Bucket-level checklist repair completed",
-      "detail": "baseball 2016: 15 validated, 0 pending, 0 failed. 2016 Topps Update Series Baseball -> pending_visual_validation; 2016 Topps Tribute Baseball -> pending_visual_validation; 2016 Topps Tier One Baseball -> pending_visual_validation; 2016 Topps Stadium Club Baseball -> pending_visual_validation; 2016 Topps Series 2 Baseball -> pending_visual_validation; 2016 Topps Series 1 Baseball -> pending_visual_validation",
-      "status": "pending_visual_validation",
-      "product": "baseball 2016",
       "source": "operator_backend"
     }
   ],
@@ -4041,7 +4041,7 @@
       "productName": "2017 Bowman Platinum Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Platinum_Baseball",
-      "updatedAt": "2026-06-16T17:36:03.318Z",
+      "updatedAt": "2026-06-16T17:36:26.527Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4049,7 +4049,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T17:36:03.318Z"
+      "checkedAt": "2026-06-16T17:36:26.527Z"
     },
     "baseball|2017_Bowman_High_Tek_Baseball": {
       "status": "queued",
@@ -5064,7 +5064,7 @@
       "productName": "2017 Bowman Platinum Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Platinum_Baseball",
-      "updatedAt": "2026-06-16T17:36:03.318Z",
+      "updatedAt": "2026-06-16T17:36:26.527Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -5072,7 +5072,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T17:36:03.318Z"
+      "checkedAt": "2026-06-16T17:36:26.527Z"
     },
     "baseball|2017 bowman platinum baseball": {
       "status": "queued",
@@ -5087,7 +5087,7 @@
       "productName": "2017 Bowman Platinum Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Platinum_Baseball",
-      "updatedAt": "2026-06-16T17:36:03.318Z",
+      "updatedAt": "2026-06-16T17:36:26.527Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -5095,7 +5095,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T17:36:03.318Z"
+      "checkedAt": "2026-06-16T17:36:26.527Z"
     }
   },
   "known_issues": {},
@@ -6358,6 +6358,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T17:36:06.367Z",
+  "saved_at": "2026-06-16T17:36:29.404Z",
   "saved_by": "cm_command_center_operator"
 }

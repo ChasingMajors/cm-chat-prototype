@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc129-agent-cycle-live-board-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc130-live-status-verifier-split-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -117,6 +117,7 @@
     guardrailList: document.getElementById("guardrailList"),
     operatorTaskList: document.getElementById("operatorTaskList"),
     sourceCheckResult: document.getElementById("sourceCheckResult"),
+    sourceVerifierResult: document.getElementById("sourceVerifierResult"),
     publicToolAuditResult: document.getElementById("publicToolAuditResult"),
     briefList: document.getElementById("briefList"),
     opportunityList: document.getElementById("opportunityList"),
@@ -2391,22 +2392,22 @@
     const sport = normalize(els.sourceSportInput.value || "");
 
     if (!state.audit || !Array.isArray(state.audit.checklistIndex)) {
-      renderSourceCheckMessage("Audit still loading", "Wait for System to show Ready, then validate the source again.", "warning");
+      renderProductVerifierMessage("Audit still loading", "Wait for System to show Ready, then validate the source again.", "warning");
       return;
     }
 
     if (!sourceTitle) {
-      renderSourceCheckMessage("Missing source title", "Enter the product title from the source page.", "warning");
+      renderProductVerifierMessage("Missing source title", "Enter the product title from the source page.", "warning");
       return;
     }
 
     if (!isAllowedSport(sport)) {
-      renderSourceCheckMessage("Unsupported sport", "Only baseball, football, basketball, hockey, and soccer are supported.", "critical");
+      renderProductVerifierMessage("Unsupported sport", "Only baseball, football, basketball, hockey, and soccer are supported.", "critical");
       return;
     }
 
     if (hasBlockedSourceTerm(sourceTitle)) {
-      renderSourceCheckMessage("Ignored source category", "This looks like MMA, WWE, racing, entertainment, or another blocked category. No task created.", "warning");
+      renderProductVerifierMessage("Ignored source category", "This looks like MMA, WWE, racing, entertainment, or another blocked category. No task created.", "warning");
       return;
     }
 
@@ -2418,7 +2419,7 @@
       const rows = Array.isArray(payload.rows) ? payload.rows.length : 0;
       const parallels = Array.isArray(payload.parallels) ? payload.parallels.length : 0;
 
-      els.sourceCheckResult.innerHTML = `
+      setProductVerifierResult(`
         <div class="source-result-card covered">
           <div class="opp-top">
             <div>
@@ -2435,14 +2436,14 @@
           </div>
           <p>No Google Sheet update is needed unless the source has newer rows or parallel details than Chasing Majors currently has.</p>
         </div>
-      `;
+      `);
       return;
     }
 
     const task = createSourceImportTask(sourceTitle, sport);
     renderOperatorTasks();
 
-    els.sourceCheckResult.innerHTML = `
+    setProductVerifierResult(`
       <div class="source-result-card missing">
         <div class="opp-top">
           <div>
@@ -2457,7 +2458,7 @@
           <span class="pill">Task: ${escapeHtml(task.status)}</span>
         </div>
       </div>
-    `;
+    `);
   }
 
   async function validateSourceProductWithBackend() {
@@ -2471,11 +2472,11 @@
     const sport = normalize(els.sourceSportInput.value || "");
 
     if (!title) {
-      renderSourceCheckMessage("Missing source title", "Enter the product title from the source page.", "warning");
+      renderProductVerifierMessage("Missing source title", "Enter the product title from the source page.", "warning");
       return;
     }
 
-    renderSourceCheckMessage("Validating source", "Calling the Operator Backend now.", "info");
+    renderProductVerifierMessage("Validating source", "Calling the Operator Backend now.", "info");
     logActivity({
       type: "source_check",
       status: "started",
@@ -2494,7 +2495,7 @@
         + "&sport=" + encodeURIComponent(sport)
         + "&mode=quick_json";
       const data = await fetchJson(url, { timeoutMs: 60000 });
-      renderBackendValidationResult(data);
+      renderBackendValidationResult(data, { target: "verifier" });
       logActivity({
         type: "source_check",
         status: data && data.status ? data.status : data && data.ok ? "completed" : "failed",
@@ -2505,7 +2506,7 @@
       });
       renderActivityLog();
     } catch (err) {
-      renderSourceCheckMessage("Backend validation failed", err && err.message ? err.message : String(err), "critical");
+      renderProductVerifierMessage("Backend validation failed", err && err.message ? err.message : String(err), "critical");
       logActivity({
         type: "source_check",
         status: "failed",
@@ -3789,15 +3790,42 @@
     }
   }
 
-  function renderBackendValidationResult(data) {
+  function getProductVerifierTarget() {
+    return els.sourceVerifierResult || els.sourceCheckResult;
+  }
+
+  function setProductVerifierResult(html) {
+    const target = getProductVerifierTarget();
+    if (target) target.innerHTML = html;
+  }
+
+  function renderProductVerifierMessage(title, detail, severity) {
+    const badgeClass = severity === "critical" ? "critical" : severity === "warning" ? "warning" : "info";
+    setProductVerifierResult(`
+      <div class="source-result-card">
+        <div class="opp-top">
+          <div>
+            <h3>${escapeHtml(title)}</h3>
+            <p>${escapeHtml(detail)}</p>
+          </div>
+          <span class="badge ${badgeClass}">${escapeHtml(severity || "info")}</span>
+        </div>
+      </div>
+    `);
+  }
+
+  function renderBackendValidationResult(data, options) {
+    const opts = options || {};
+    const target = opts.target === "verifier" ? getProductVerifierTarget() : els.sourceCheckResult;
     if (!data || !data.ok) {
-      renderSourceCheckMessage("Validation failed", data && data.error ? data.error : "Unknown backend response.", "critical");
+      if (opts.target === "verifier") renderProductVerifierMessage("Validation failed", data && data.error ? data.error : "Unknown backend response.", "critical");
+      else renderSourceCheckMessage("Validation failed", data && data.error ? data.error : "Unknown backend response.", "critical");
       return;
     }
 
     if (data.status === "covered") {
       const resolvedCount = autoResolveCoveredSourceCheck(data);
-      els.sourceCheckResult.innerHTML = `
+      target.innerHTML = `
         <div class="source-result-card covered">
           <div class="opp-top">
             <div>
@@ -3815,14 +3843,14 @@
           ${resolvedCount ? `<div class="task-guardrail">${escapeHtml(`${resolvedCount} matching Agent Action Queue card${resolvedCount === 1 ? "" : "s"} auto-resolved and remembered.`)}</div>` : ""}
         </div>
       `;
-      focusSourceCheckResult();
+      if (opts.target !== "verifier") focusSourceCheckResult();
       return;
     }
 
     if (data.status === "missing") {
       const task = createSourceImportTask(data.title || els.sourceTitleInput.value, data.sport || els.sourceSportInput.value);
       renderOperatorTasks();
-      els.sourceCheckResult.innerHTML = `
+      target.innerHTML = `
         <div class="source-result-card missing">
           <div class="opp-top">
             <div>
@@ -3838,11 +3866,12 @@
           </div>
         </div>
       `;
-      focusSourceCheckResult();
+      if (opts.target !== "verifier") focusSourceCheckResult();
       return;
     }
 
-    renderSourceCheckMessage(titleCase(data.status || "Needs review"), data.reason || data.recommended_action || "Review source match.", data.status === "ignored" ? "warning" : "info");
+    if (opts.target === "verifier") renderProductVerifierMessage(titleCase(data.status || "Needs review"), data.reason || data.recommended_action || "Review source match.", data.status === "ignored" ? "warning" : "info");
+    else renderSourceCheckMessage(titleCase(data.status || "Needs review"), data.reason || data.recommended_action || "Review source match.", data.status === "ignored" ? "warning" : "info");
   }
 
   function renderSourceWatchResults(data) {

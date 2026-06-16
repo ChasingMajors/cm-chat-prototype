@@ -111,35 +111,34 @@ body {
 
 .sidebar-command-group {
   display: grid;
-  gap: 6px;
-  margin: -2px 0 4px 10px;
-  padding-left: 10px;
-  border-left: 2px solid rgba(36,136,255,0.16);
+  gap: 2px;
+  margin: -3px 0 4px 8px;
+  padding: 2px 0 2px 10px;
+  border-left: 1px solid rgba(36,136,255,0.18);
 }
 
 .sidebar-command {
   position: relative;
   width: 100%;
-  min-height: 46px;
-  border: 1px solid rgba(36,136,255,0.13);
-  background: rgba(255,255,255,0.48);
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 0;
+  background: transparent;
   box-shadow: none;
   cursor: pointer;
   display: grid;
   align-content: center;
-  gap: 2px;
+  gap: 1px;
   text-align: left;
 }
 
 .sidebar-command:hover,
 .sidebar-command.primary-workflow:hover {
-  border-color: rgba(36,136,255,0.30);
-  background: rgba(255,255,255,0.82);
+  background: rgba(36,136,255,0.09);
 }
 
 .sidebar-command.primary-workflow {
-  border-color: rgba(36,136,255,0.22);
-  background: rgba(36,136,255,0.08);
+  background: transparent;
 }
 
 .sidebar-command strong {
@@ -154,7 +153,7 @@ body {
 .sidebar-command span {
   overflow: hidden;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 9px;
   line-height: 1.1;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1121,6 +1120,12 @@ a {
   margin-top: 14px;
 }
 
+.product-verifier-card {
+  margin-top: 12px;
+  border-color: rgba(36,136,255,0.14);
+  background: rgba(255,255,255,0.74);
+}
+
 .command-output-panel {
   border-color: rgba(36,136,255,0.24);
   background:
@@ -1186,6 +1191,10 @@ a {
 .source-check-result {
   margin-top: 10px;
   scroll-margin-top: 14px;
+}
+
+.source-verifier-result {
+  margin-top: 10px;
 }
 
 .source-check-result.source-check-focus > *:first-child {

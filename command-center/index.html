@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=cc129" />
+  <link rel="stylesheet" href="./styles.css?v=cc130" />
 </head>
 <body>
   <div class="sentinel-app">
@@ -63,8 +63,8 @@
           <div class="kicker">CM Sentinel</div>
           <h1>Good morning, Admin.</h1>
           <p class="lede">Everything important is here: data health, missing products, approval-ready work, and the next action the agent needs.</p>
-          <div class="build-version">HTML cc129-agent-cycle-live-board-v1-2026-06-16</div>
-          <div class="build-version build-version-secondary">JSON Index: <span id="buildVersion">HTML cc129</span></div>
+          <div class="build-version">HTML cc130-live-status-verifier-split-v1-2026-06-16</div>
+          <div class="build-version build-version-secondary">JSON Index: <span id="buildVersion">HTML cc130</span></div>
         </div>
         <div class="hero-side">
         <div class="hero-pill">
@@ -84,11 +84,26 @@
         </div>
       </header>
 
-      <section class="panel source-check-panel command-output-panel" id="productVerifier">
+      <section class="panel source-check-panel command-output-panel" id="liveStatus">
         <div class="panel-head">
           <div>
-            <h2>Live Status & Product Verifier</h2>
-            <p>Agent Cycle progress, visual-test updates, and one-product verification all show here.</p>
+            <h2>Live Status</h2>
+            <p>Agent Cycle progress, visual-test updates, queued work, and completed proof show here.</p>
+          </div>
+        </div>
+        <div id="sourceCheckResult" class="source-check-result">
+          <div class="brief-item">
+            <strong>Ready</strong>
+            <span>Run Agent Cycle to see found, queued, running, completed, and blocked work.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel product-verifier-card" id="productVerifier">
+        <div class="panel-head">
+          <div>
+            <h2>Product Verifier</h2>
+            <p>Check one supported sports-card product title.</p>
           </div>
         </div>
         <div class="source-check-form">
@@ -102,10 +117,10 @@
           </select>
           <button id="sourceCheckBtn" class="primary-btn" type="button">Check Product</button>
         </div>
-        <div id="sourceCheckResult" class="source-check-result">
-          <div class="brief-item">
+        <div id="sourceVerifierResult" class="source-verifier-result">
+          <div class="brief-item compact">
             <strong>Ready</strong>
-            <span>Run Agent Cycle or check one supported sports-card product title.</span>
+            <span>Enter a product title and run a quick coverage check.</span>
           </div>
         </div>
       </section>
@@ -372,6 +387,6 @@
     </main>
   </div>
 
-  <script defer src="./command-center.js?v=cc129"></script>
+  <script defer src="./command-center.js?v=cc130"></script>
 </body>
 </html>

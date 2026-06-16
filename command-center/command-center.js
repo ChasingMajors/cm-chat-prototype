@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc128-visual-proof-dedupe-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc129-agent-cycle-live-board-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -4172,7 +4172,7 @@
         + "&key=" + encodeURIComponent(key);
 
       const data = await fetchJson(url, { timeoutMs: 60000 });
-      renderVisualStatusResult(data, plan);
+      renderVisualStatusResult(data, plan, { silent: !!opts.silent });
       if (!isTerminalVisualRecord(data)) {
         scheduleVisualStatusPoll(plan, (opts.pollAttempt || 1) + 1);
       }
@@ -4616,13 +4616,16 @@
     renderActivityLog();
   }
 
-  function renderVisualStatusResult(data, plan) {
+  function renderVisualStatusResult(data, plan, options) {
+    const opts = options || {};
     if (!data || !data.ok) {
-      renderSourceCheckMessage(
-        "Visual status check failed",
-        data && data.error ? data.error : "Unknown backend response.",
-        "critical"
-      );
+      if (!opts.silent) {
+        renderSourceCheckMessage(
+          "Visual status check failed",
+          data && data.error ? data.error : "Unknown backend response.",
+          "critical"
+        );
+      }
       return;
     }
 
@@ -4667,10 +4670,18 @@
         : data.run_url ? "GitHub Actions run linked in the Agent Action Queue." : "No GitHub run visible yet."
     });
 
-    renderVisualTestPlan(plan);
     renderAgentActions();
     renderActionLanes();
     renderActivityLog();
+    if (opts.silent) {
+      renderAgentCycleMonitor(
+        data.result === "passed" ? "Visual proof complete" : data.result === "failed" ? "Visual proof needs repair" : "Visual proof running",
+        `${plan.productName || data.product_name || "Product"} - ${data.result === "passed" ? "Complete" : data.result === "failed" ? "Needs repair" : "Running"}.`,
+        data.result === "failed" ? "warning" : data.result === "passed" ? "success" : "info"
+      );
+    } else {
+      renderVisualTestPlan(plan);
+    }
     if (!isTerminalVisualRecord(data)) scheduleVisualStatusPoll(plan, 1);
   }
 
@@ -7296,7 +7307,7 @@
 
   function renderAgentCycleMessage(title, detail, severity) {
     renderSentinelNotice(title, detail, severity || "info");
-    renderSourceCheckMessage(title, detail, severity || "info", { noFocus: true });
+    renderAgentCycleMonitor(title, detail, severity || "info");
     logActivity({
       type: "agent_cycle",
       status: severity === "critical" ? "blocked" : "started",
@@ -7305,6 +7316,161 @@
       detail
     });
     renderActivityLog();
+  }
+
+  function renderAgentCycleMonitor(title, detail, severity, context) {
+    if (!els.sourceCheckResult) return;
+    const input = context || {};
+    const rows = getAgentCycleMonitorRows(input);
+    const counts = countAgentCycleMonitor(rows);
+    const current = rows.find(row => row.state === "running") || rows.find(row => row.state === "queued") || null;
+    const badgeClass = severity === "critical" ? "critical" : severity === "warning" ? "warning" : severity === "success" ? "opportunity" : "info";
+    const working = severity !== "success" && severity !== "critical" && (counts.running || counts.queued || /running|working|queueing|draining|refreshing|dispatching/i.test(String(title || detail || "")));
+    setCommandOutputActive(working);
+
+    els.sourceCheckResult.innerHTML = `
+      <div class="agent-cycle-monitor ${escapeHtml(badgeClass)}">
+        <div class="opp-top">
+          <div>
+            <h3>${escapeHtml(title || "Agent Cycle")}</h3>
+            <p>${escapeHtml(detail || "Sentinel is checking the queue.")}</p>
+          </div>
+          <span class="badge ${badgeClass}">${escapeHtml(working ? "working" : severity || "info")}</span>
+        </div>
+        <div class="cycle-stat-grid">
+          <span><strong>${formatNumber(counts.found)}</strong><em>Found</em></span>
+          <span><strong>${formatNumber(counts.complete)}</strong><em>Done</em></span>
+          <span><strong>${formatNumber(counts.running)}</strong><em>Running</em></span>
+          <span><strong>${formatNumber(counts.queued)}</strong><em>Queued</em></span>
+          <span><strong>${formatNumber(counts.attention)}</strong><em>Review</em></span>
+        </div>
+        <div class="cycle-current-task ${current ? "" : "empty"}">
+          <strong>${current ? "Working now" : "No active job is running"}</strong>
+          <span>${escapeHtml(current ? `${current.title} - ${current.status}` : "Waiting for the next queued job or result.")}</span>
+        </div>
+        ${renderCycleMonitorSection("CV / ChatBot Visual Test", rows.filter(row => row.group === "visual"))}
+        ${renderCycleMonitorSection("Public JSON / Source Work", rows.filter(row => row.group === "public"))}
+        ${renderCycleMonitorSection("Admin Decisions & Known Issues", rows.filter(row => row.group === "admin"))}
+        ${rows.length ? "" : `
+          <div class="cycle-empty-state">
+            <strong>No queue rows yet</strong>
+            <span>Run Agent Cycle will populate this with found, running, queued, completed, and blocked work.</span>
+          </div>
+        `}
+      </div>
+    `;
+  }
+
+  function renderCycleMonitorSection(label, rows) {
+    if (!rows.length) return "";
+    return `
+      <div class="cycle-monitor-section">
+        <h4>${escapeHtml(label)}</h4>
+        <div class="cycle-monitor-list">
+          ${rows.slice(0, 12).map(row => `
+            <div class="cycle-monitor-row ${escapeHtml(row.state)}">
+              <span class="cycle-status-dot"></span>
+              <div>
+                <strong>${escapeHtml(row.title)}</strong>
+                ${row.detail ? `<em>${escapeHtml(row.detail)}</em>` : ""}
+              </div>
+              <b>${escapeHtml(row.status)}</b>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  function getAgentCycleMonitorRows(context) {
+    const rows = [];
+    const seen = new Set();
+    const selected = []
+      .concat(Array.isArray(context.selected) ? context.selected : [])
+      .concat(Array.isArray(context.queued) ? context.queued : [])
+      .concat(Array.isArray(context.failed) ? context.failed : []);
+    const actions = []
+      .concat(selected)
+      .concat(getActiveAgentActions())
+      .concat(getResolvedAgentActions().slice(0, 40));
+
+    actions.forEach(action => {
+      const row = buildAgentCycleMonitorRow(action);
+      if (!row) return;
+      const key = row.key || `${row.group}|${row.title}|${row.status}`;
+      if (seen.has(key)) return;
+      seen.add(key);
+      rows.push(row);
+    });
+
+    return rows.sort((a, b) => {
+      const rank = { running: 0, queued: 1, attention: 2, pending: 3, complete: 4, idle: 5 };
+      return (rank[a.state] || 9) - (rank[b.state] || 9);
+    });
+  }
+
+  function buildAgentCycleMonitorRow(action) {
+    if (!action) return null;
+    const type = String(action.type || "").toLowerCase();
+    const status = String(action.status || "").toLowerCase();
+    const validation = String(action.validationResult || "").toLowerCase();
+    const execution = String(action.executionResult || "").toLowerCase();
+    const isVisual = type === "visual_test" || status === "pending_visual_validation" || validation.includes("visual") || validation.includes("cv/chatbot") || validation.includes("cv and chatbot");
+    const isPublic = type === "source_import" || type === "checklist_publish" || type === "prv_publish" || type === "prv_source_review" || status === "pending_public_validation" || validation.includes("public json") || execution.includes("publish");
+    const isAdmin = status === "needs_admin" || status === "approval_required" || status === "known_issue" || type === "backend_data_issue";
+    if (!isVisual && !isPublic && !isAdmin) return null;
+
+    let state = "pending";
+    let label = titleCase(status || "pending");
+    if (hasPassedVisualProof(action) || status === "validated" || status === "done" || status === "ignored") {
+      state = "complete";
+      label = status === "ignored" ? "Ignored" : "Complete";
+    } else if (status === "running" || status === "in_progress" || (status === "queued" && (action.visualStartedAt || action.runUrl || action.visualRunUrl))) {
+      state = "running";
+      label = isVisual ? "Running" : "Running";
+    } else if (status === "queued" || status === "pending_visual_validation" || status === "pending_public_validation" || isActionInRunQueue(action.id)) {
+      state = "queued";
+      label = status === "pending_public_validation" ? "Pending public JSON" : status === "pending_visual_validation" ? "Queued" : "Queued";
+    } else if (status === "failed" || status === "fix_queued" || status === "fix_attempted" || status === "blocked" || isAdmin) {
+      state = "attention";
+      label = status === "known_issue" ? "Known issue" : status === "needs_admin" || status === "approval_required" ? "Admin decision" : status === "failed" ? "Needs repair" : titleCase(status);
+    }
+
+    return {
+      key: action.id || buildAgentActionId(action),
+      group: isVisual ? "visual" : isAdmin ? "admin" : "public",
+      state,
+      title: action.product || action.code || action.title || action.type || "Queue item",
+      status: label,
+      detail: buildCompactAgentCycleDetail(action, label),
+      updatedAt: action.updatedAt || ""
+    };
+  }
+
+  function countAgentCycleMonitor(rows) {
+    const counts = { found: rows.length, complete: 0, running: 0, queued: 0, attention: 0 };
+    rows.forEach(row => {
+      if (row.state === "complete") counts.complete += 1;
+      else if (row.state === "running") counts.running += 1;
+      else if (row.state === "queued" || row.state === "pending") counts.queued += 1;
+      else if (row.state === "attention") counts.attention += 1;
+    });
+    return counts;
+  }
+
+  function buildCompactAgentCycleDetail(action, label) {
+    const status = String(action && action.status || "").toLowerCase();
+    const validation = String(action && action.validationResult || "");
+    if (label === "Complete") return "Proof recorded";
+    if (label === "Running") return action.runUrl || action.visualRunUrl ? "GitHub Actions in progress" : "In progress";
+    if (label === "Queued") return "Waiting to run";
+    if (label === "Pending public JSON") return "Waiting for public JSON proof";
+    if (label === "Admin decision") return "Needs approval, hold, or ignore";
+    if (label === "Known issue") return "Held from auto-run";
+    if (label === "Needs repair") return "Failed proof";
+    if (/passed/i.test(validation)) return "Proof recorded";
+    if (/failed/i.test(validation) || status === "failed") return "Failed proof";
+    return "";
   }
 
   function runVisualTestForAction(action, isRetest) {
@@ -7368,42 +7534,12 @@
     const queued = Array.isArray(input && input.queued) ? input.queued : [];
     const failed = Array.isArray(input && input.failed) ? input.failed : [];
     const running = getRunningVisualValidationBatch(20);
-
-    els.sourceCheckResult.innerHTML = `
-      <div class="visual-test-card">
-        <div class="opp-top">
-          <div>
-            <h3>CV/ChatBot Visual Test Queue</h3>
-            <p>${escapeHtml(input && input.detail ? input.detail : "Sentinel is queueing product behavior checks.")}</p>
-          </div>
-          <span class="badge ${failed.length ? "warning" : "info"}">${escapeHtml(queued.length ? "in flight" : "queued")}</span>
-        </div>
-        <div class="opp-meta">
-          <span class="pill">Selected: ${formatNumber(selected.length)}</span>
-          <span class="pill">Queued: ${formatNumber(queued.length)}</span>
-          <span class="pill">Running/In flight: ${formatNumber(running.length)}</span>
-          <span class="pill">Failed to queue: ${formatNumber(failed.length)}</span>
-        </div>
-        <div class="source-watch-list">
-          ${selected.slice(0, 10).map((action, index) => {
-            const isQueued = queued.some(item => item.id === action.id);
-            const isFailed = failed.some(item => item.id === action.id);
-            return `
-              <div class="source-watch-item">
-                <div class="opp-top">
-                  <div>
-                    <strong>${escapeHtml(action.product || action.code || "Product")}</strong>
-                    <p>${escapeHtml(isFailed ? "Visual test failed to queue." : isQueued ? "Visual test is queued in GitHub Actions." : "Waiting to dispatch visual test.")}</p>
-                  </div>
-                  <span class="badge ${isFailed ? "critical" : isQueued ? "info" : "warning"}">${isFailed ? "failed" : isQueued ? "queued" : (index + 1) + " of " + selected.length}</span>
-                </div>
-              </div>
-            `;
-          }).join("")}
-        </div>
-        <div class="task-guardrail">Run Agent Cycle again to refresh queued visual tests and close passed/failed results.</div>
-      </div>
-    `;
+    renderAgentCycleMonitor(
+      "CV/ChatBot Visual Tests",
+      input && input.detail ? input.detail : `${running.length} running, ${queued.length} queued, ${failed.length} need review.`,
+      failed.length ? "warning" : "info",
+      { selected, queued, failed }
+    );
   }
 
   function waitForVisualQueue(ms) {

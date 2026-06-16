@@ -89,7 +89,8 @@ body {
   gap: 8px;
 }
 
-.sentinel-nav a {
+.sentinel-nav a,
+.sidebar-command {
   min-height: 42px;
   padding: 0 14px;
   border-radius: 13px;
@@ -106,6 +107,57 @@ body {
   color: #fff;
   background: linear-gradient(135deg, #4aa3ff, #1978f5);
   box-shadow: 0 14px 28px rgba(36,136,255,0.22);
+}
+
+.sidebar-command-group {
+  display: grid;
+  gap: 6px;
+  margin: -2px 0 4px 10px;
+  padding-left: 10px;
+  border-left: 2px solid rgba(36,136,255,0.16);
+}
+
+.sidebar-command {
+  position: relative;
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(36,136,255,0.13);
+  background: rgba(255,255,255,0.48);
+  box-shadow: none;
+  cursor: pointer;
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  text-align: left;
+}
+
+.sidebar-command:hover,
+.sidebar-command.primary-workflow:hover {
+  border-color: rgba(36,136,255,0.30);
+  background: rgba(255,255,255,0.82);
+}
+
+.sidebar-command.primary-workflow {
+  border-color: rgba(36,136,255,0.22);
+  background: rgba(36,136,255,0.08);
+}
+
+.sidebar-command strong {
+  overflow: hidden;
+  color: #173866;
+  font-size: 12px;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidebar-command span {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .sidebar-health {
@@ -569,6 +621,9 @@ a {
 .workflow-tile.launcher-running,
 .workflow-tile.launcher-success,
 .workflow-tile.launcher-failed,
+.sidebar-command.launcher-running,
+.sidebar-command.launcher-success,
+.sidebar-command.launcher-failed,
 .quick-prompts button.launcher-running,
 .quick-prompts button.launcher-success,
 .quick-prompts button.launcher-failed,
@@ -582,6 +637,7 @@ a {
 }
 
 .workflow-tile.launcher-running,
+.sidebar-command.launcher-running,
 .quick-prompts button.launcher-running,
 .primary-btn.launcher-running,
 .ghost-btn.launcher-running {
@@ -590,6 +646,7 @@ a {
 }
 
 .workflow-tile.launcher-success,
+.sidebar-command.launcher-success,
 .quick-prompts button.launcher-success,
 .primary-btn.launcher-success,
 .ghost-btn.launcher-success {
@@ -598,6 +655,7 @@ a {
 }
 
 .workflow-tile.launcher-failed,
+.sidebar-command.launcher-failed,
 .quick-prompts button.launcher-failed,
 .primary-btn.launcher-failed,
 .ghost-btn.launcher-failed {
@@ -606,6 +664,7 @@ a {
 }
 
 .workflow-tile[data-launcher-label]::after,
+.sidebar-command[data-launcher-label]::after,
 .quick-prompts button[data-launcher-label]::after,
 .primary-btn[data-launcher-label]::after,
 .ghost-btn[data-launcher-label]::after {
@@ -627,6 +686,7 @@ a {
 }
 
 .workflow-tile.launcher-success[data-launcher-label]::after,
+.sidebar-command.launcher-success[data-launcher-label]::after,
 .quick-prompts button.launcher-success[data-launcher-label]::after,
 .primary-btn.launcher-success[data-launcher-label]::after,
 .ghost-btn.launcher-success[data-launcher-label]::after {
@@ -636,6 +696,7 @@ a {
 }
 
 .workflow-tile.launcher-failed[data-launcher-label]::after,
+.sidebar-command.launcher-failed[data-launcher-label]::after,
 .quick-prompts button.launcher-failed[data-launcher-label]::after,
 .primary-btn.launcher-failed[data-launcher-label]::after,
 .ghost-btn.launcher-failed[data-launcher-label]::after {
@@ -1914,6 +1975,163 @@ h2 {
   background: linear-gradient(180deg, rgba(255,174,66,0.08), rgba(255,255,255,0.035));
 }
 
+.agent-cycle-monitor {
+  border: 1px solid rgba(255,190,64,0.38);
+  background: rgba(18,24,38,0.94);
+  border-radius: 12px;
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.agent-cycle-monitor .opp-top h3 {
+  margin: 0 0 3px;
+  font-size: 15px;
+}
+
+.agent-cycle-monitor .opp-top p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.cycle-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.cycle-stat-grid span,
+.cycle-current-task,
+.cycle-empty-state {
+  min-width: 0;
+  padding: 8px 9px;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 9px;
+  background: rgba(255,255,255,0.045);
+}
+
+.cycle-stat-grid strong {
+  display: block;
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1;
+}
+
+.cycle-stat-grid em,
+.cycle-current-task span,
+.cycle-empty-state span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.cycle-current-task {
+  display: grid;
+  gap: 2px;
+  border-color: rgba(255,190,64,0.28);
+  background: rgba(255,190,64,0.08);
+}
+
+.cycle-current-task.empty {
+  border-color: rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.035);
+}
+
+.cycle-current-task strong,
+.cycle-empty-state strong {
+  font-size: 12px;
+}
+
+.cycle-monitor-section {
+  display: grid;
+  gap: 6px;
+}
+
+.cycle-monitor-section h4 {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.cycle-monitor-list {
+  display: grid;
+  gap: 5px;
+}
+
+.cycle-monitor-row {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 8px;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 9px;
+  background: rgba(255,255,255,0.035);
+}
+
+.cycle-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(160,174,192,0.9);
+}
+
+.cycle-monitor-row.running .cycle-status-dot {
+  background: #ffbe40;
+  box-shadow: 0 0 0 4px rgba(255,190,64,0.14);
+}
+
+.cycle-monitor-row.queued .cycle-status-dot,
+.cycle-monitor-row.pending .cycle-status-dot {
+  background: #39a0ff;
+}
+
+.cycle-monitor-row.complete .cycle-status-dot {
+  background: #33d17a;
+}
+
+.cycle-monitor-row.attention .cycle-status-dot {
+  background: #ff5d5d;
+}
+
+.cycle-monitor-row strong {
+  display: block;
+  overflow: hidden;
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cycle-monitor-row em {
+  display: block;
+  overflow: hidden;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 10px;
+  font-style: normal;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cycle-monitor-row b {
+  color: var(--text);
+  font-size: 10px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .source-watch-summary,
 .source-watch-item,
 .import-preview-card,
@@ -2390,6 +2608,7 @@ h2 {
   .visual-expectations,
   .visual-status-panel,
   .visual-runner-copy,
+  .cycle-stat-grid,
   .preview-row {
     grid-template-columns: 1fr;
   }

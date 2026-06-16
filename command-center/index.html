@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=cc128" />
+  <link rel="stylesheet" href="./styles.css?v=cc129" />
 </head>
 <body>
   <div class="sentinel-app">
@@ -21,7 +21,28 @@
 
       <nav class="sentinel-nav" aria-label="Primary">
         <a href="#commandCenter" class="active">Command Center</a>
-        <a href="#productVerifier">Product Verifier</a>
+        <div class="sidebar-command-group" aria-label="Command Center actions">
+          <button id="agentCycleBtn" class="sidebar-command primary-workflow" type="button">
+            <strong>Run Agent Cycle</strong>
+            <span>Safe queued work</span>
+          </button>
+          <button id="sourceWatchDeepBtn" class="sidebar-command" type="button">
+            <strong>Deep Sheets Audit</strong>
+            <span>Read-only source check</span>
+          </button>
+          <button id="syncPrvJsonBtn" class="sidebar-command primary-workflow" type="button">
+            <strong>Sync PRV JSON</strong>
+            <span>Publish manual edits</span>
+          </button>
+          <button id="publicToolAuditBtn" class="sidebar-command" type="button">
+            <strong>Public Tool Audit</strong>
+            <span>Leadership readiness</span>
+          </button>
+          <a class="sidebar-command" href="#productVerifier">
+            <strong>Product Verifier</strong>
+            <span>Check one product</span>
+          </a>
+        </div>
         <a href="#prvImportBuilder">PRV Import Builder</a>
         <a href="#dataExplorer">Data Explorer</a>
         <a href="#alerts">Alerts</a>
@@ -42,8 +63,8 @@
           <div class="kicker">CM Sentinel</div>
           <h1>Good morning, Admin.</h1>
           <p class="lede">Everything important is here: data health, missing products, approval-ready work, and the next action the agent needs.</p>
-          <div class="build-version">HTML cc128-visual-proof-dedupe-v1-2026-06-16</div>
-          <div class="build-version build-version-secondary">JSON Index: <span id="buildVersion">HTML cc128</span></div>
+          <div class="build-version">HTML cc129-agent-cycle-live-board-v1-2026-06-16</div>
+          <div class="build-version build-version-secondary">JSON Index: <span id="buildVersion">HTML cc129</span></div>
         </div>
         <div class="hero-side">
         <div class="hero-pill">
@@ -62,34 +83,6 @@
           </div>
         </div>
       </header>
-
-      <section class="workflow-grid" aria-label="Workflows">
-        <button id="agentCycleBtn" class="workflow-tile primary-workflow" type="button">
-          <span>◇</span>
-          <strong>Run Agent Cycle</strong>
-          <em>Runs safe queued work</em>
-        </button>
-        <button id="sourceWatchDeepBtn" class="workflow-tile" type="button">
-          <span>⌁</span>
-          <strong>Deep Sheets Audit</strong>
-          <em>Read-only source check</em>
-        </button>
-        <button id="syncPrvJsonBtn" class="workflow-tile primary-workflow" type="button">
-          <span>↥</span>
-          <strong>Sync PRV JSON</strong>
-          <em>Publish manual Sheet edits</em>
-        </button>
-        <button id="publicToolAuditBtn" class="workflow-tile" type="button">
-          <span>◎</span>
-          <strong>Public Tool Audit</strong>
-          <em>Leadership readiness</em>
-        </button>
-        <a class="workflow-tile" href="#productVerifier">
-          <span>⌕</span>
-          <strong>Product Verifier</strong>
-          <em>Check one product</em>
-        </a>
-      </section>
 
       <section class="panel source-check-panel command-output-panel" id="productVerifier">
         <div class="panel-head">
@@ -379,6 +372,6 @@
     </main>
   </div>
 
-  <script defer src="./command-center.js?v=cc128"></script>
+  <script defer src="./command-center.js?v=cc129"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:44:40.454Z",
+  "exported_at": "2026-06-16T18:44:44.883Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:43:45.665Z",
-      "updatedAt": "2026-06-16T18:44:21.301Z",
+      "updatedAt": "2026-06-16T18:44:43.280Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640055354",
       "visualStartedAt": "2026-06-16T18:43:45Z"
     },
@@ -209,7 +209,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:43:43.404Z",
-      "updatedAt": "2026-06-16T18:44:20.787Z",
+      "updatedAt": "2026-06-16T18:44:42.821Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640052732",
       "visualStartedAt": "2026-06-16T18:43:42Z"
     },
@@ -305,7 +305,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:43:33.759Z",
-      "updatedAt": "2026-06-16T18:44:38.851Z",
+      "updatedAt": "2026-06-16T18:44:42.778Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:01:05.393Z"
     },
@@ -1800,7 +1800,7 @@
       "expectedRowCount": 640,
       "expectedParallelCount": 27,
       "createdAt": "2026-06-09T17:54:02.457Z",
-      "updatedAt": "2026-06-16T18:44:38.851Z",
+      "updatedAt": "2026-06-16T18:44:42.778Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Draft Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:39:56.145Z",
@@ -2002,7 +2002,7 @@
       "expectedRowCount": 880,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-09T17:54:02.450Z",
-      "updatedAt": "2026-06-16T18:44:20.788Z",
+      "updatedAt": "2026-06-16T18:44:42.821Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Tier One Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:39:56.145Z",
@@ -2051,7 +2051,7 @@
       "expectedRowCount": 558,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.450Z",
-      "updatedAt": "2026-06-16T18:44:21.302Z",
+      "updatedAt": "2026-06-16T18:44:43.280Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Stadium Club Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:39:56.145Z",
@@ -2083,6 +2083,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781635483280_142uov",
+      "ts": "2026-06-16T18:44:43.280Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781635482821_7merw0",
+      "ts": "2026-06-16T18:44:42.821Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781635482778_ppgl2i",
+      "ts": "2026-06-16T18:44:42.778Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Draft Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781635478851_me3cds",
       "ts": "2026-06-16T18:44:38.851Z",
@@ -2852,36 +2882,6 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1781635190927_g3fq60",
-      "ts": "2026-06-16T18:39:50.927Z",
-      "type": "agent_cycle",
-      "title": "Self-healing pending validations",
-      "detail": "37 pending public validation items found. Sentinel is handing the queue to the backend worker so stale JSON can be republished when needed.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1781635186038_i889kx",
-      "ts": "2026-06-16T18:39:46.038Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman Platinum Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781635182025_kqadf1",
-      "ts": "2026-06-16T18:39:42.025Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman Draft Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -4057,7 +4057,7 @@
       "productName": "2017 Bowman Draft Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
-      "updatedAt": "2026-06-16T18:44:38.849Z",
+      "updatedAt": "2026-06-16T18:44:42.776Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4065,7 +4065,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:44:38.849Z"
+      "checkedAt": "2026-06-16T18:44:42.776Z"
     },
     "baseball|2017_topps_gold_label_baseball": {
       "status": "completed",
@@ -4816,7 +4816,7 @@
       "productName": "2017 Bowman Draft Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
-      "updatedAt": "2026-06-16T18:44:38.849Z",
+      "updatedAt": "2026-06-16T18:44:42.776Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4824,7 +4824,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:44:38.849Z"
+      "checkedAt": "2026-06-16T18:44:42.776Z"
     },
     "baseball|2017 bowman draft baseball": {
       "status": "queued",
@@ -4839,7 +4839,7 @@
       "productName": "2017 Bowman Draft Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
-      "updatedAt": "2026-06-16T18:44:38.849Z",
+      "updatedAt": "2026-06-16T18:44:42.776Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4847,7 +4847,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:44:38.849Z"
+      "checkedAt": "2026-06-16T18:44:42.776Z"
     },
     "baseball|2017_Bowman_Chrome_Mini_Baseball": {
       "status": "in_progress",
@@ -5069,7 +5069,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-16T18:44:20.785Z",
+      "updatedAt": "2026-06-16T18:44:42.820Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640052732,
@@ -5077,7 +5077,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:42Z",
-      "checkedAt": "2026-06-16T18:44:20.785Z"
+      "checkedAt": "2026-06-16T18:44:42.820Z"
     },
     "baseball|2016_topps_tier_one_baseball": {
       "status": "in_progress",
@@ -5092,7 +5092,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-16T18:44:20.785Z",
+      "updatedAt": "2026-06-16T18:44:42.820Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640052732,
@@ -5100,7 +5100,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:42Z",
-      "checkedAt": "2026-06-16T18:44:20.785Z"
+      "checkedAt": "2026-06-16T18:44:42.820Z"
     },
     "baseball|2016 topps tier one baseball": {
       "status": "in_progress",
@@ -5115,7 +5115,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-16T18:44:20.785Z",
+      "updatedAt": "2026-06-16T18:44:42.820Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640052732,
@@ -5123,7 +5123,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:42Z",
-      "checkedAt": "2026-06-16T18:44:20.785Z"
+      "checkedAt": "2026-06-16T18:44:42.820Z"
     },
     "baseball|2016_Topps_Stadium_Club_Baseball": {
       "status": "in_progress",
@@ -5138,7 +5138,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-16T18:44:21.299Z",
+      "updatedAt": "2026-06-16T18:44:43.278Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640055354,
@@ -5146,7 +5146,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:45Z",
-      "checkedAt": "2026-06-16T18:44:21.299Z"
+      "checkedAt": "2026-06-16T18:44:43.278Z"
     },
     "baseball|2016_topps_stadium_club_baseball": {
       "status": "in_progress",
@@ -5161,7 +5161,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-16T18:44:21.299Z",
+      "updatedAt": "2026-06-16T18:44:43.278Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640055354,
@@ -5169,7 +5169,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:45Z",
-      "checkedAt": "2026-06-16T18:44:21.299Z"
+      "checkedAt": "2026-06-16T18:44:43.278Z"
     },
     "baseball|2016 topps stadium club baseball": {
       "status": "in_progress",
@@ -5184,7 +5184,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-16T18:44:21.299Z",
+      "updatedAt": "2026-06-16T18:44:43.278Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640055354,
@@ -5192,7 +5192,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:45Z",
-      "checkedAt": "2026-06-16T18:44:21.299Z"
+      "checkedAt": "2026-06-16T18:44:43.278Z"
     }
   },
   "known_issues": {},
@@ -6392,6 +6392,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:44:41.416Z",
+  "saved_at": "2026-06-16T18:44:45.951Z",
   "saved_by": "cm_command_center_operator"
 }

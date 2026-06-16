@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:29:43.069Z",
+  "exported_at": "2026-06-16T18:29:48.066Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1761,11 +1761,11 @@
       "sport": "baseball",
       "code": "2016_Panini_Prime_Cuts_Baseball",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Coverage recheck started...",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2016_Panini_Prime_Cuts_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1773,7 +1773,7 @@
       "expectedRowCount": 846,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.444Z",
-      "updatedAt": "2026-06-16T18:29:40.867Z"
+      "updatedAt": "2026-06-16T18:29:43.637Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Panini_Pantheon_Baseball",
@@ -1805,11 +1805,11 @@
       "sport": "baseball",
       "code": "2016_Panini_Pantheon_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 1054 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
+      "adminDecision": "auto_validated_covered",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2016_Panini_Pantheon_Baseball. No import needed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1817,7 +1817,7 @@
       "expectedRowCount": 1054,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.444Z",
-      "updatedAt": "2026-06-09T17:54:02.444Z"
+      "updatedAt": "2026-06-16T18:29:46.107Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Panini_National_Treasures_Baseball",
@@ -1849,11 +1849,11 @@
       "sport": "baseball",
       "code": "2016_Panini_National_Treasures_Baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet counts ahead of public JSON.",
-      "validationResult": "Sheets show 2191 rows / 0 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2016",
@@ -1861,7 +1861,7 @@
       "expectedRowCount": 2191,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.443Z",
-      "updatedAt": "2026-06-09T17:54:02.443Z"
+      "updatedAt": "2026-06-16T18:29:46.133Z"
     },
     {
       "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Panini_Flawless_Baseball",
@@ -1932,6 +1932,66 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781634586134_5g95v6",
+      "ts": "2026-06-16T18:29:46.134Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2016 Panini National Treasures Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781634586108_4d86b1",
+      "ts": "2026-06-16T18:29:46.108Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2016 Panini Pantheon Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781634586106_qzmpx4",
+      "ts": "2026-06-16T18:29:46.106Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "1,054 public rows and 0 parallels found.",
+      "status": "covered",
+      "product": "2016 Panini Pantheon Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781634583664_7mcudh",
+      "ts": "2026-06-16T18:29:43.664Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2016 Panini Pantheon Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781634583638_q5y2ev",
+      "ts": "2026-06-16T18:29:43.638Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2016 Panini Prime Cuts Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781634583634_u381qb",
+      "ts": "2026-06-16T18:29:43.634Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "846 public rows and 0 parallels found.",
+      "status": "covered",
+      "product": "2016 Panini Prime Cuts Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1781634580868_bslklr",
       "ts": "2026-06-16T18:29:40.868Z",
@@ -2670,66 +2730,6 @@
       "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
       "status": "validated",
       "product": "2017 Panini Diamond Kings Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781634538176_ew1i6m",
-      "ts": "2026-06-16T18:28:58.176Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "881 public rows and 58 parallels found.",
-      "status": "covered",
-      "product": "2017 Panini Diamond Kings Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781634536525_4z0n82",
-      "ts": "2026-06-16T18:28:56.525Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Panini Diamond Kings Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781634536511_kvnqrx",
-      "ts": "2026-06-16T18:28:56.511Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Panini Elite Extra Edition Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781634536510_qaq57y",
-      "ts": "2026-06-16T18:28:56.510Z",
-      "type": "validation",
-      "title": "Coverage rechecked",
-      "detail": "835 public rows and 31 parallels found.",
-      "status": "covered",
-      "product": "2017 Panini Elite Extra Edition Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781634534788_fcj75m",
-      "ts": "2026-06-16T18:28:54.788Z",
-      "type": "validation",
-      "title": "Coverage recheck started",
-      "detail": "Checking current public checklist coverage for this product.",
-      "status": "running",
-      "product": "2017 Panini Elite Extra Edition Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781634534773_mot3qd",
-      "ts": "2026-06-16T18:28:54.773Z",
-      "type": "agent_action",
-      "title": "Covered product auto-resolved",
-      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
-      "status": "validated",
-      "product": "2017 Panini Flawless Baseball",
       "source": "operator_backend"
     }
   ],
@@ -5290,9 +5290,45 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-16T18:29:40.857Z",
       "resolved": true
+    },
+    "baseball|2016 panini prime cuts baseball": {
+      "product": "2016 Panini Prime Cuts Baseball",
+      "sport": "baseball",
+      "code": "2016_Panini_Prime_Cuts_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-16T18:29:43.637Z",
+      "resolved": true
+    },
+    "baseball|2016_panini_prime_cuts_baseball": {
+      "product": "2016 Panini Prime Cuts Baseball",
+      "sport": "baseball",
+      "code": "2016_Panini_Prime_Cuts_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-16T18:29:43.637Z",
+      "resolved": true
+    },
+    "baseball|2016 panini pantheon baseball": {
+      "product": "2016 Panini Pantheon Baseball",
+      "sport": "baseball",
+      "code": "2016_Panini_Pantheon_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-16T18:29:46.107Z",
+      "resolved": true
+    },
+    "baseball|2016_panini_pantheon_baseball": {
+      "product": "2016 Panini Pantheon Baseball",
+      "sport": "baseball",
+      "code": "2016_Panini_Pantheon_Baseball",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-16T18:29:46.107Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:29:44.123Z",
+  "saved_at": "2026-06-16T18:29:49.674Z",
   "saved_by": "cm_command_center_operator"
 }

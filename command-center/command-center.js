@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc139-startup-backend-sync-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc140-durable-rejects-public-proof-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -62,7 +62,9 @@
     backendMemorySaveTimer: null,
     backendMemorySaving: false,
     backendMemorySuspendAutoSave: false,
-    backendMemoryAutoLoaded: false
+    backendMemoryAutoLoaded: false,
+    publicChecklistManifestCache: {},
+    publicChecklistShardCache: {}
   };
 
   const els = {
@@ -1064,6 +1066,7 @@
     const actionable = Array.isArray(issues) ? issues : [];
     let createdOrUpdated = 0;
     let skippedReportOnly = 0;
+    let skippedIgnored = 0;
 
     actionable.forEach(issue => {
       const staleJson = issue.type === "stale_public_json" || issue.status === "pending_public_validation";
@@ -1073,13 +1076,25 @@
         skippedReportOnly += 1;
         return;
       }
-      const action = upsertAgentAction({
-        id: issue.id || "",
+      const queueInput = {
         type: staleJson || missingJson ? "checklist_publish" : "backend_data_issue",
         source: "deep_backend_audit",
         product: issue.product || issue.matched_name || "Backend data issue",
         sport: issue.sport || "",
         code: issue.code || issue.matched_code || "",
+        sourceUrl: issue.source_url || ""
+      };
+      if (isSourceIgnored(queueInput) || isResolvedSourceIgnored(queueInput)) {
+        skippedIgnored += 1;
+        return;
+      }
+      const action = upsertAgentAction({
+        id: issue.id || "",
+        type: queueInput.type,
+        source: queueInput.source,
+        product: queueInput.product,
+        sport: queueInput.sport,
+        code: queueInput.code,
         bucket: issue.bucket || "",
         targetBucket: issue.bucket || "",
         riskLevel: issue.severity === "high" ? "high" : issue.severity === "low" ? "low" : "medium",
@@ -1091,7 +1106,7 @@
           ? "Deep backend audit found source Sheet data ahead of public JSON."
           : issue.title || "Deep backend audit found a source-of-truth issue.",
         validationResult: issue.detail || issue.reason || "",
-        sourceUrl: issue.source_url || ""
+        sourceUrl: queueInput.sourceUrl
       });
       if (action) createdOrUpdated += 1;
     });
@@ -1102,15 +1117,15 @@
         status: "queued",
         source: "operator_backend",
         title: "Backend audit issues queued",
-        detail: `${createdOrUpdated} actionable audit finding${createdOrUpdated === 1 ? "" : "s"} added to the Agent Action Queue.${skippedReportOnly ? " " + skippedReportOnly + " low-priority report-only warning(s) were kept out of the queue." : ""}`
+        detail: `${createdOrUpdated} actionable audit finding${createdOrUpdated === 1 ? "" : "s"} added to the Agent Action Queue.${skippedReportOnly ? " " + skippedReportOnly + " low-priority report-only warning(s) were kept out of the queue." : ""}${skippedIgnored ? " " + skippedIgnored + " admin-ignored item(s) were skipped." : ""}`
       });
-    } else if (skippedReportOnly) {
+    } else if (skippedReportOnly || skippedIgnored) {
       logActivity({
         type: "deep_backend_audit",
-        status: "report_only",
+        status: skippedIgnored ? "ignored" : "report_only",
         source: "operator_backend",
-        title: "Backend audit report-only warnings skipped",
-        detail: `${skippedReportOnly} low-priority warning${skippedReportOnly === 1 ? "" : "s"} were kept out of the Agent Action Queue.`
+        title: skippedIgnored ? "Backend audit skipped ignored items" : "Backend audit report-only warnings skipped",
+        detail: `${skippedReportOnly ? skippedReportOnly + " low-priority warning(s)" : ""}${skippedReportOnly && skippedIgnored ? " and " : ""}${skippedIgnored ? skippedIgnored + " admin-ignored item(s)" : ""} were kept out of the Agent Action Queue.`
       });
     }
 
@@ -1269,6 +1284,25 @@
       reason: "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       ignoredAt: new Date().toISOString(),
       resolved: true
+      };
+    });
+    return true;
+  }
+
+  function rememberIgnoredSourceAction(action, reason) {
+    if (!action) return false;
+    const keys = [buildSourceIgnoreKey(action), buildSourceProductIgnoreKey(action)].filter(Boolean);
+    if (!keys.length) return false;
+
+    keys.forEach(key => {
+      state.sourceIgnores[key] = {
+        product: action.product || "",
+        sport: action.sport || "",
+        code: action.code || "",
+        sourceUrl: action.sourceUrl || action.runUrl || "",
+        reason: reason || "Admin ignored this source/product. Future scans should not requeue it unless source ignores are cleared.",
+        ignoredAt: new Date().toISOString(),
+        resolved: true
       };
     });
     return true;
@@ -3851,6 +3885,106 @@
     }
   }
 
+  async function fetchPublicChecklistManifestForSport(sport) {
+    const key = normalize(sport);
+    if (!key || !SPORTS.includes(key)) return null;
+    if (!state.publicChecklistManifestCache[key]) {
+      state.publicChecklistManifestCache[key] = fetchJson(`${DATA_BASE}/checklists/products/${key}.json`, {
+        timeoutMs: 12000,
+        cache: "no-store"
+      }).catch(err => {
+        delete state.publicChecklistManifestCache[key];
+        throw err;
+      });
+    }
+    return state.publicChecklistManifestCache[key];
+  }
+
+  async function fetchPublicChecklistShard(shard) {
+    const key = String(shard || "").trim();
+    if (!key) return null;
+    if (!state.publicChecklistShardCache[key]) {
+      state.publicChecklistShardCache[key] = fetchJson(`${DATA_BASE}/checklists/products/${encodeURIComponent(key)}`, {
+        timeoutMs: 12000,
+        cache: "no-store"
+      }).catch(err => {
+        delete state.publicChecklistShardCache[key];
+        throw err;
+      });
+    }
+    return state.publicChecklistShardCache[key];
+  }
+
+  async function getPublicChecklistCoverageForAction(action) {
+    const sport = normalize(action && action.sport);
+    const code = String(action && action.code || "").trim();
+    if (!sport || !code) return null;
+
+    const manifest = await fetchPublicChecklistManifestForSport(sport);
+    const productMap = manifest && (manifest.product_map || manifest.productMap) ? (manifest.product_map || manifest.productMap) : {};
+    const shardName = productMap[code];
+    if (!shardName) return null;
+
+    const shard = await fetchPublicChecklistShard(shardName);
+    const products = shard && shard.products && typeof shard.products === "object" ? shard.products : {};
+    const product = products[code];
+    if (!product) return null;
+
+    const rows = getPayloadRows(product, ["rows", "checklist", "cards", "items"]);
+    const parallels = getPayloadRows(product, ["parallels", "parallel_rows", "parallelRows"]);
+    return {
+      code,
+      sport,
+      shard: shardName,
+      rowCount: rows.length,
+      parallelCount: parallels.length
+    };
+  }
+
+  async function reconcilePendingPublicValidationActions(options) {
+    const opts = options || {};
+    const pending = (state.agentActions || []).filter(isPendingPublicValidationAction);
+    if (!pending.length) return 0;
+
+    let resolved = 0;
+    for (const action of pending) {
+      try {
+        const coverage = await getPublicChecklistCoverageForAction(action);
+        if (!coverage) continue;
+        const expectedRows = Number(action.expectedRowCount || 0);
+        const expectedParallels = Number(action.expectedParallelCount || 0);
+        const rowsCovered = expectedRows <= 0 || coverage.rowCount >= expectedRows;
+        const parallelsCovered = expectedParallels <= 0 || coverage.parallelCount >= expectedParallels;
+        if (!rowsCovered || !parallelsCovered) continue;
+
+        Object.assign(action, {
+          status: "pending_visual_validation",
+          validationResult: `Public JSON covered: ${formatNumber(coverage.rowCount)} rows, ${formatNumber(coverage.parallelCount)} parallels in ${coverage.shard}. Visual CV/ChatBot proof still pending.`,
+          recommendedAction: "Public JSON is live. Run CV/ChatBot visual validation next.",
+          updatedAt: new Date().toISOString()
+        });
+        resolved += 1;
+      } catch (err) {}
+    }
+
+    if (!resolved) return 0;
+
+    writeAgentActions();
+    logActivity({
+      type: "validation",
+      status: "covered",
+      source: "public_json",
+      title: "Public JSON proof reconciled",
+      detail: `${resolved} pending public JSON card${resolved === 1 ? "" : "s"} moved forward because live public JSON already contains the product data.`,
+      noAutoSave: !!opts.noAutoSave
+    });
+    renderAgentActions();
+    renderActionLanes();
+    renderActivityLog();
+    updateMemoryStatus("Public JSON proof reconciled.", `${resolved} covered`);
+    return resolved;
+  }
+
   function getProductVerifierTarget() {
     return els.sourceVerifierResult || els.sourceCheckResult;
   }
@@ -5751,6 +5885,7 @@
       });
       renderActivityLog();
       updateMemoryStatus("Backend memory loaded.", data.sha ? `sha ${String(data.sha).slice(0, 7)}` : "loaded");
+      await reconcilePendingPublicValidationActions({ noAutoSave: true });
       if (Number(importResult.reconciledCount || 0) > 0) {
         await saveBackendAgentMemoryNow({ silent: true });
       }
@@ -7118,6 +7253,12 @@
 
     els.agentActionList.querySelectorAll("[data-agent-status]").forEach(btn => {
       btn.addEventListener("click", () => {
+        const nextStatus = btn.dataset.agentStatus;
+        const currentAction = state.agentActions.find(item => item.id === btn.dataset.agentActionId);
+        if (currentAction && nextStatus === "ignored" && rememberIgnoredSourceAction(currentAction, "Admin ignored this queue card from the Command Center.")) {
+          writeSourceIgnores();
+          removeActionFromRunQueue(currentAction.id, { silent: true, source: "admin" });
+        }
         const action = updateAgentAction(btn.dataset.agentActionId, {
           status: btn.dataset.agentStatus,
           adminDecision: btn.dataset.agentStatus
@@ -9370,5 +9511,6 @@
   els.typeFilter.addEventListener("change", renderOpportunities);
   render();
   autoLoadBackendAgentMemoryIfEmpty();
+  reconcilePendingPublicValidationActions();
   setTimeout(runAudit, 250);
 })();

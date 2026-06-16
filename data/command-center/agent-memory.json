@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:38:28.005Z",
+  "exported_at": "2026-06-16T18:38:34.008Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -305,7 +305,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:36:00.138Z",
-      "updatedAt": "2026-06-16T18:38:08.937Z",
+      "updatedAt": "2026-06-16T18:38:31.598Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:01:05.393Z"
     },
@@ -1800,7 +1800,7 @@
       "expectedRowCount": 640,
       "expectedParallelCount": 27,
       "createdAt": "2026-06-09T17:54:02.457Z",
-      "updatedAt": "2026-06-16T18:38:08.937Z",
+      "updatedAt": "2026-06-16T18:38:31.598Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Draft Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:32:24.026Z",
@@ -2083,6 +2083,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781635111599_gqjhd6",
+      "ts": "2026-06-16T18:38:31.599Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Draft Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781635106281_o041sl",
       "ts": "2026-06-16T18:38:26.281Z",
@@ -2870,16 +2880,6 @@
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "passed",
-      "product": "2017 Bowman's Best Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781634941425_opfzft",
-      "ts": "2026-06-16T18:35:41.425Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
       "product": "2017 Bowman's Best Baseball",
       "source": "github_actions"
     }
@@ -4057,7 +4057,7 @@
       "productName": "2017 Bowman Draft Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
-      "updatedAt": "2026-06-16T18:38:08.933Z",
+      "updatedAt": "2026-06-16T18:38:31.594Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4065,7 +4065,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:38:08.933Z"
+      "checkedAt": "2026-06-16T18:38:31.594Z"
     },
     "baseball|2017_topps_gold_label_baseball": {
       "status": "completed",
@@ -4816,7 +4816,7 @@
       "productName": "2017 Bowman Draft Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
-      "updatedAt": "2026-06-16T18:38:08.933Z",
+      "updatedAt": "2026-06-16T18:38:31.594Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4824,7 +4824,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:38:08.933Z"
+      "checkedAt": "2026-06-16T18:38:31.594Z"
     },
     "baseball|2017 bowman draft baseball": {
       "status": "queued",
@@ -4839,7 +4839,7 @@
       "productName": "2017 Bowman Draft Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
-      "updatedAt": "2026-06-16T18:38:08.933Z",
+      "updatedAt": "2026-06-16T18:38:31.594Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4847,7 +4847,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:38:08.933Z"
+      "checkedAt": "2026-06-16T18:38:31.594Z"
     },
     "baseball|2017_Bowman_Chrome_Mini_Baseball": {
       "status": "completed",
@@ -6455,6 +6455,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:38:29.197Z",
+  "saved_at": "2026-06-16T18:38:36.092Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:50:48.958Z",
+  "exported_at": "2026-06-16T18:50:52.490Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,30 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 bowman high tek baseball|2017_bowman_high_tek_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Bowman High Tek Baseball",
+      "sport": "baseball",
+      "code": "2017_Bowman_High_Tek_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-16T18:50:50.868Z",
+      "updatedAt": "2026-06-16T18:50:50.868Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-06-09T20:01:03.287Z"
+    },
     {
       "id": "visual_test|github_actions|2017 bowman mega box chrome baseball|2017_bowman_mega_box_chrome_baseball",
       "type": "visual_test",
@@ -1594,10 +1618,10 @@
       "code": "2017_Bowman_High_Tek_Baseball",
       "riskLevel": "high",
       "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1605,10 +1629,12 @@
       "expectedRowCount": 195,
       "expectedParallelCount": 24,
       "createdAt": "2026-06-09T17:54:02.457Z",
-      "updatedAt": "2026-06-16T18:50:47.356Z",
+      "updatedAt": "2026-06-16T18:50:50.869Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman High Tek Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-16T18:47:47.498Z"
+      "autoExecutedAt": "2026-06-16T18:47:47.498Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-06-09T20:01:03.287Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Draft_Baseball",
@@ -1622,7 +1648,7 @@
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Queued for CV/ChatBot visual test dispatch (15 of 20).",
+      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1630,7 +1656,7 @@
       "expectedRowCount": 640,
       "expectedParallelCount": 27,
       "createdAt": "2026-06-09T17:54:02.457Z",
-      "updatedAt": "2026-06-16T18:49:48.837Z",
+      "updatedAt": "2026-06-16T18:50:50.888Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Draft Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:47:47.498Z"
@@ -2038,35 +2064,20 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.448Z",
       "updatedAt": "2026-06-09T17:54:02.448Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Heritage_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Heritage Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Heritage_Baseball",
-      "riskLevel": "high",
-      "status": "pending_visual_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Bucket-level checklist JSON repair ran for baseball 2016.",
-      "validationResult": "Published checklist JSON validated with 1534 rows and 0 parallels after bucket repair. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 1534,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.447Z",
-      "updatedAt": "2026-06-16T18:47:47.498Z",
-      "pendingValidationAttempts": 0,
-      "repairProof": "Agent repaired stale public JSON for 2016 Topps Heritage Baseball by publishing baseball 2016 and validating public JSON.",
-      "autoExecutedAt": "2026-06-16T18:47:47.498Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781635850869_clkf0q",
+      "ts": "2026-06-16T18:50:50.869Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman High Tek Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781635847340_j730sx",
       "ts": "2026-06-16T18:50:47.340Z",
@@ -2850,16 +2861,6 @@
     {
       "id": "log_1781635482778_ppgl2i",
       "ts": "2026-06-16T18:44:42.778Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman Draft Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781635478851_me3cds",
-      "ts": "2026-06-16T18:44:38.851Z",
       "type": "visual_test",
       "title": "Visual test status updated",
       "detail": "No GitHub run visible yet.",
@@ -4018,9 +4019,15 @@
       "productName": "2017 Bowman High Tek Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_High_Tek_Baseball",
-      "updatedAt": "2026-06-09T20:01:04.688Z",
+      "updatedAt": "2026-06-16T18:50:50.866Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": "",
+      "runNumber": "",
+      "displayTitle": "",
+      "headSha": "",
+      "createdAt": "",
+      "checkedAt": "2026-06-16T18:50:50.866Z"
     },
     "baseball|2017_Bowman_Draft_Baseball": {
       "status": "queued",
@@ -4728,6 +4735,52 @@
       "headSha": "",
       "createdAt": "",
       "checkedAt": "2026-06-16T18:50:47.338Z"
+    },
+    "baseball|2017_bowman_high_tek_baseball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-09T20:01:03.287Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Bowman_High_Tek_Baseball",
+      "key": "baseball|2017_bowman_high_tek_baseball",
+      "productName": "2017 Bowman High Tek Baseball",
+      "sport": "baseball",
+      "code": "2017_Bowman_High_Tek_Baseball",
+      "updatedAt": "2026-06-16T18:50:50.866Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": "",
+      "runNumber": "",
+      "displayTitle": "",
+      "headSha": "",
+      "createdAt": "",
+      "checkedAt": "2026-06-16T18:50:50.866Z"
+    },
+    "baseball|2017 bowman high tek baseball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-09T20:01:03.287Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Bowman_High_Tek_Baseball",
+      "key": "baseball|2017 bowman high tek baseball",
+      "productName": "2017 Bowman High Tek Baseball",
+      "sport": "baseball",
+      "code": "2017_Bowman_High_Tek_Baseball",
+      "updatedAt": "2026-06-16T18:50:50.866Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": "",
+      "runNumber": "",
+      "displayTitle": "",
+      "headSha": "",
+      "createdAt": "",
+      "checkedAt": "2026-06-16T18:50:50.866Z"
     }
   },
   "known_issues": {},
@@ -5891,6 +5944,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:50:50.004Z",
+  "saved_at": "2026-06-16T18:50:53.646Z",
   "saved_by": "cm_command_center_operator"
 }

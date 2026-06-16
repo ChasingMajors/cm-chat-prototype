@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc140-durable-rejects-public-proof-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc141-preview-before-write-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -3595,6 +3595,7 @@
   async function executeSourceImport(sourceUrl, sport, actionId) {
     const endpoint = readOperatorEndpoint();
     const key = readOperatorKey();
+    const action = actionId ? state.agentActions.find(item => item.id === actionId) : null;
 
     if (!endpoint) {
       renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before writing to Sheets.", "warning");
@@ -3606,8 +3607,13 @@
       return;
     }
 
+    if (action && !hasChecklistPreviewProof(action)) {
+      renderSourceCheckMessage("Preview required before sheet write", "Sentinel will preview this source first. No sheet write was attempted.", "warning");
+      await previewSourceImport(sourceUrl, sport || action.sport || "", action.id);
+      return;
+    }
+
     renderSourceCheckMessage("Writing to Google Sheet", "The Operator Backend is updating the mapped source sheet and validating the result.", "info");
-    const action = actionId ? state.agentActions.find(item => item.id === actionId) : null;
     logActivity({
       type: "source_import",
       status: "started",
@@ -6722,7 +6728,14 @@
       }
       if (stepKey === "sheet") {
         if (!sourceUrl) renderSourceCheckMessage("Source URL missing", "This checklist card does not have a source URL to write.", "warning");
-        else executeSourceImport(sourceUrl, action.sport || "", action.id);
+        else if (!hasChecklistPreviewProof(action)) {
+          renderSourceCheckMessage("Preview required before sheet write", "Sentinel will preview this source first. No sheet write was attempted.", "warning");
+          previewSourceImport(sourceUrl, action.sport || "", action.id);
+        } else executeSourceImport(sourceUrl, action.sport || "", action.id);
+        return;
+      }
+      if (stepKey === "publish") {
+        recheckActionCoverage(action.id);
         return;
       }
     }
@@ -7299,6 +7312,18 @@
     const status = String(action && action.status || "").toLowerCase();
     const decision = String(action && action.adminDecision || "").toLowerCase();
     return status === "approved" || decision === "approved";
+  }
+
+  function hasChecklistPreviewProof(action) {
+    const text = String(action && (action.executionResult || "") || "").toLowerCase()
+      + " "
+      + String(action && (action.validationResult || "") || "").toLowerCase();
+    return text.includes("preview parsed") || text.includes("import preview") || text.includes("preview rows") || text.includes("sample rows");
+  }
+
+  function hasChecklistSheetWriteProof(action) {
+    const text = String(action && (action.executionResult || "") || "").toLowerCase();
+    return text.includes("sheet write") || text.includes("google sheet") || text.includes("checklist data written") || text.includes("source sheet");
   }
 
   function isHoldAction(action) {
@@ -8469,11 +8494,14 @@
       return { kind: "checklist_coverage_recheck", label: "Recheck checklist public JSON", safe: true };
     }
     if (type === "source_import") {
-      if ((status === "approved" || status === "ready" || hasAdminApproval(action)) && (action.sourceUrl || action.runUrl)) {
+      if ((action.sourceUrl || action.runUrl) && !hasChecklistPreviewProof(action)) {
+        return { kind: "checklist_preview", label: "Preview checklist source", safe: true };
+      }
+      if ((status === "approved" || status === "ready" || hasAdminApproval(action)) && hasChecklistPreviewProof(action) && (action.sourceUrl || action.runUrl)) {
         return { kind: "execute_import", label: "Write approved checklist import", safe: true };
       }
-      if ((action.sourceUrl || action.runUrl) && !execution.includes("preview parsed") && !execution.includes("import preview")) {
-        return { kind: "checklist_preview", label: "Preview checklist source", safe: true };
+      if (hasChecklistSheetWriteProof(action) && (action.code || action.product)) {
+        return { kind: "checklist_coverage_recheck", label: "Recheck checklist public JSON", safe: true };
       }
       if (action.product || action.code) {
         return { kind: "checklist_coverage_recheck", label: "Recheck checklist public JSON", safe: true };

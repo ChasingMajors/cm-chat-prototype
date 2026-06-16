@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T17:09:40.395Z",
+  "exported_at": "2026-06-16T17:09:45.188Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2088,6 +2088,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781629783587_27hbvz",
+      "ts": "2026-06-16T17:09:43.587Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781629778792_lc5tn4",
       "ts": "2026-06-16T17:09:38.792Z",
       "type": "source_import",
@@ -2875,16 +2885,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Bowman Chrome Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057376475_5fgm7z",
-      "ts": "2026-06-10T02:09:36.475Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Bowman Chrome Mini Baseball",
       "source": "github_actions"
     }
   ],
@@ -5150,6 +5150,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T17:09:41.714Z",
+  "saved_at": "2026-06-16T17:09:46.326Z",
   "saved_by": "cm_command_center_operator"
 }

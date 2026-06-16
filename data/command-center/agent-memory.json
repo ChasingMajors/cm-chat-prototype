@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:13:13.479Z",
+  "exported_at": "2026-06-16T18:13:18.347Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,30 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 panini national treasures baseball|2017_panini_national_treasures_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Panini National Treasures Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_National_Treasures_Baseball",
+      "riskLevel": "low",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248283991",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-16T18:13:16.728Z",
+      "updatedAt": "2026-06-16T18:13:16.728Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248283991",
+      "visualStartedAt": "2026-06-10T02:06:01Z"
+    },
     {
       "id": "visual_test|github_actions|2017 panini stars and stripes usa baseball|2017_panini_stars_and_stripes_usa_baseball",
       "type": "visual_test",
@@ -401,7 +425,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:12:29.524Z",
-      "updatedAt": "2026-06-16T18:12:52.126Z",
+      "updatedAt": "2026-06-16T18:13:15.023Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27638263041",
       "visualStartedAt": "2026-06-16T18:12:08Z"
     },
@@ -861,7 +885,7 @@
       "expectedRowCount": 504,
       "expectedParallelCount": 24,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-16T18:12:52.127Z",
+      "updatedAt": "2026-06-16T18:13:15.023Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-16T18:10:24.657Z",
@@ -1219,22 +1243,24 @@
       "sport": "baseball",
       "code": "2017_Panini_National_Treasures_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
-      "runUrl": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248283991",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 2089,
       "expectedParallelCount": 155,
       "createdAt": "2026-06-09T17:54:02.462Z",
-      "updatedAt": "2026-06-16T18:13:11.878Z",
+      "updatedAt": "2026-06-16T18:13:16.729Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Panini National Treasures Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-16T18:10:24.657Z"
+      "autoExecutedAt": "2026-06-16T18:10:24.657Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248283991",
+      "visualStartedAt": "2026-06-10T02:06:01Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_Immaculate_Collection_Baseball",
@@ -1248,7 +1274,7 @@
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Queued for CV/ChatBot visual test dispatch (11 of 20).",
+      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1256,7 +1282,7 @@
       "expectedRowCount": 1238,
       "expectedParallelCount": 78,
       "createdAt": "2026-06-09T17:54:02.462Z",
-      "updatedAt": "2026-06-16T18:12:32.480Z",
+      "updatedAt": "2026-06-16T18:13:16.745Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Panini Immaculate Collection Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:10:24.657Z"
@@ -2058,35 +2084,40 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.447Z",
       "updatedAt": "2026-06-09T17:54:02.447Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Chrome_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Chrome Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Chrome_Baseball",
-      "riskLevel": "high",
-      "status": "pending_visual_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Bucket-level checklist JSON repair ran for baseball 2016.",
-      "validationResult": "Published checklist JSON validated with 459 rows and 0 parallels after bucket repair. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 459,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.446Z",
-      "updatedAt": "2026-06-16T18:10:24.657Z",
-      "pendingValidationAttempts": 0,
-      "repairProof": "Agent repaired stale public JSON for 2016 Topps Chrome Baseball by publishing baseball 2016 and validating public JSON.",
-      "autoExecutedAt": "2026-06-16T18:10:24.657Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781633596729_e6lld6",
+      "ts": "2026-06-16T18:13:16.729Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Panini National Treasures Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781633596729_sh7lre",
+      "ts": "2026-06-16T18:13:16.729Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Panini National Treasures Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781633595023_egoc87",
+      "ts": "2026-06-16T18:13:15.023Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Gallery Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781633591861_j1z9f3",
       "ts": "2026-06-16T18:13:11.861Z",
@@ -2856,36 +2887,6 @@
       "status": "passed",
       "product": "2017 Donruss Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781630871028_23oqjw",
-      "ts": "2026-06-16T17:27:51.028Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Donruss Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781630867115_w84b6f",
-      "ts": "2026-06-16T17:27:47.115Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Donruss Optic Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781630867114_fgmygx",
-      "ts": "2026-06-16T17:27:47.114Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Donruss Optic Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3187,7 +3188,7 @@
       "productName": "2017 Topps Gallery Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gallery_Baseball",
-      "updatedAt": "2026-06-16T18:12:52.124Z",
+      "updatedAt": "2026-06-16T18:13:15.021Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27638263041,
@@ -3195,7 +3196,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Gallery Baseball",
       "headSha": "41745bcb1e242453d38a99d4de511b00ba73da06",
       "createdAt": "2026-06-16T18:12:08Z",
-      "checkedAt": "2026-06-16T18:12:52.124Z"
+      "checkedAt": "2026-06-16T18:13:15.021Z"
     },
     "baseball|2017_Topps_Five_Star_Baseball": {
       "status": "completed",
@@ -3497,11 +3498,11 @@
       "checkedAt": "2026-06-09T21:38:04.153Z"
     },
     "baseball|2017_Panini_National_Treasures_Baseball": {
-      "status": "queued",
-      "result": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T20:00:37.757Z",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232247985",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248283991",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Panini_National_Treasures_Baseball",
@@ -3509,15 +3510,15 @@
       "productName": "2017 Panini National Treasures Baseball",
       "sport": "baseball",
       "code": "2017_Panini_National_Treasures_Baseball",
-      "updatedAt": "2026-06-09T20:00:56.127Z",
+      "updatedAt": "2026-06-16T18:13:16.727Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 27232247985,
-      "runNumber": 101,
+      "runId": 27248283991,
+      "runNumber": 220,
       "displayTitle": "Visual Product Test - 2017 Panini National Treasures Baseball",
-      "headSha": "6d4df191a465148f5c0a800989ffff6b3c8717db",
-      "createdAt": "2026-06-09T20:00:38Z",
-      "checkedAt": "2026-06-09T20:00:56.127Z"
+      "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
+      "createdAt": "2026-06-10T02:06:01Z",
+      "checkedAt": "2026-06-16T18:13:16.727Z"
     },
     "baseball|2017_Topps_Chrome_Update_Series_Baseball": {
       "status": "completed",
@@ -4106,7 +4107,7 @@
       "productName": "2017 Topps Gallery Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gallery_Baseball",
-      "updatedAt": "2026-06-16T18:12:52.124Z",
+      "updatedAt": "2026-06-16T18:13:15.021Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27638263041,
@@ -4114,7 +4115,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Gallery Baseball",
       "headSha": "41745bcb1e242453d38a99d4de511b00ba73da06",
       "createdAt": "2026-06-16T18:12:08Z",
-      "checkedAt": "2026-06-16T18:12:52.124Z"
+      "checkedAt": "2026-06-16T18:13:15.021Z"
     },
     "baseball|2017 topps gallery baseball": {
       "status": "in_progress",
@@ -4129,7 +4130,7 @@
       "productName": "2017 Topps Gallery Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gallery_Baseball",
-      "updatedAt": "2026-06-16T18:12:52.124Z",
+      "updatedAt": "2026-06-16T18:13:15.021Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27638263041,
@@ -4137,7 +4138,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Gallery Baseball",
       "headSha": "41745bcb1e242453d38a99d4de511b00ba73da06",
       "createdAt": "2026-06-16T18:12:08Z",
-      "checkedAt": "2026-06-16T18:12:52.124Z"
+      "checkedAt": "2026-06-16T18:13:15.021Z"
     },
     "baseball|2017_topps_five_star_baseball": {
       "status": "completed",
@@ -4552,6 +4553,52 @@
       "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
       "createdAt": "2026-06-10T02:05:44Z",
       "checkedAt": "2026-06-16T18:13:11.858Z"
+    },
+    "baseball|2017_panini_national_treasures_baseball": {
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
+      "startedAt": "2026-06-09T20:00:37.757Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248283991",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Panini_National_Treasures_Baseball",
+      "key": "baseball|2017_panini_national_treasures_baseball",
+      "productName": "2017 Panini National Treasures Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_National_Treasures_Baseball",
+      "updatedAt": "2026-06-16T18:13:16.727Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27248283991,
+      "runNumber": 220,
+      "displayTitle": "Visual Product Test - 2017 Panini National Treasures Baseball",
+      "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
+      "createdAt": "2026-06-10T02:06:01Z",
+      "checkedAt": "2026-06-16T18:13:16.727Z"
+    },
+    "baseball|2017 panini national treasures baseball": {
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
+      "startedAt": "2026-06-09T20:00:37.757Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248283991",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Panini_National_Treasures_Baseball",
+      "key": "baseball|2017 panini national treasures baseball",
+      "productName": "2017 Panini National Treasures Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_National_Treasures_Baseball",
+      "updatedAt": "2026-06-16T18:13:16.727Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27248283991,
+      "runNumber": 220,
+      "displayTitle": "Visual Product Test - 2017 Panini National Treasures Baseball",
+      "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
+      "createdAt": "2026-06-10T02:06:01Z",
+      "checkedAt": "2026-06-16T18:13:16.727Z"
     }
   },
   "known_issues": {},
@@ -5213,9 +5260,9 @@
       "product": "2017 Panini National Treasures Baseball",
       "sport": "baseball",
       "code": "2017_Panini_National_Treasures_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27103562421",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248283991",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-16T18:13:16.729Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103488679": {
@@ -5712,9 +5759,18 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-16T18:13:11.861Z",
       "resolved": true
+    },
+    "baseball|https github com chasingmajors cm-chat-prototype actions runs 27248283991": {
+      "product": "2017 Panini National Treasures Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_National_Treasures_Baseball",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248283991",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-16T18:13:16.729Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:13:14.788Z",
+  "saved_at": "2026-06-16T18:13:19.218Z",
   "saved_by": "cm_command_center_operator"
 }

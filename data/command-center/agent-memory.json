@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T17:24:17.012Z",
+  "exported_at": "2026-06-16T17:26:00.029Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2061,6 +2061,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781630758427_rr4191",
+      "ts": "2026-06-16T17:25:58.427Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781630758411_iptwng",
+      "ts": "2026-06-16T17:25:58.412Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781630753407",
       "ts": "2026-06-16T17:24:39.604Z",
       "type": "agent_sweep",
@@ -2838,26 +2858,6 @@
       "detail": "CV/ChatBot behavior check started.",
       "status": "queued",
       "product": "2016 Topps Series 1 Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057314183_uyfzg8",
-      "ts": "2026-06-10T02:08:34.183Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Tier One Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057312933_lxlvik",
-      "ts": "2026-06-10T02:08:32.933Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Donruss Optic Baseball",
       "source": "github_actions"
     }
   ],
@@ -5092,6 +5092,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T17:25:53.601Z",
+  "saved_at": "2026-06-16T17:26:01.478Z",
   "saved_by": "cm_command_center_operator"
 }

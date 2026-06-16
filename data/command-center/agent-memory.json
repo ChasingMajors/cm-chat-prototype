@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:13:01.286Z",
+  "exported_at": "2026-06-16T18:13:05.086Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,30 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 topps archives snapshots baseball|2017_topps_archives_snapshots_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Topps Archives Snapshots Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Archives_Snapshots_Baseball",
+      "riskLevel": "low",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248235963",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-16T18:13:03.470Z",
+      "updatedAt": "2026-06-16T18:13:03.471Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248235963",
+      "visualStartedAt": "2026-06-10T02:04:48Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps chrome update series baseball|2017_topps_chrome_update_series_baseball",
       "type": "visual_test",
@@ -1016,22 +1040,24 @@
       "sport": "baseball",
       "code": "2017_Topps_Archives_Snapshots_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
-      "runUrl": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248235963",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 83,
       "expectedParallelCount": 5,
       "createdAt": "2026-06-09T17:54:02.464Z",
-      "updatedAt": "2026-06-16T18:12:59.683Z",
+      "updatedAt": "2026-06-16T18:13:03.471Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Archives Snapshots Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-16T18:10:24.657Z"
+      "autoExecutedAt": "2026-06-16T18:10:24.657Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248235963",
+      "visualStartedAt": "2026-06-10T02:04:48Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Topps_Archives_Baseball",
@@ -1045,7 +1071,7 @@
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Queued for CV/ChatBot visual test dispatch (8 of 20).",
+      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1053,7 +1079,7 @@
       "expectedRowCount": 545,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T17:54:02.464Z",
-      "updatedAt": "2026-06-16T18:12:32.480Z",
+      "updatedAt": "2026-06-16T18:13:03.486Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Topps Archives Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:10:24.657Z"
@@ -2052,32 +2078,30 @@
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Archives Signature Series All-Star Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:10:24.657Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Archives_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Archives Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Archives_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.445Z",
-      "updatedAt": "2026-06-09T17:54:02.445Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781633583472_pxoqza",
+      "ts": "2026-06-16T18:13:03.472Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Topps Archives Snapshots Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781633583471_nhjl1e",
+      "ts": "2026-06-16T18:13:03.472Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Topps Archives Snapshots Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781633579673_q6x3sh",
       "ts": "2026-06-16T18:12:59.673Z",
@@ -2857,26 +2881,6 @@
       "status": "validated",
       "product": "2017 Panini Chronicles Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781630858528_5cvtyc",
-      "ts": "2026-06-16T17:27:38.528Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Panini Contenders Draft Picks Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781630858528_jc5w37",
-      "ts": "2026-06-16T17:27:38.528Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Panini Contenders Draft Picks Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3649,11 +3653,11 @@
       "checkedAt": "2026-06-07T20:43:14.068Z"
     },
     "baseball|2017_Topps_Archives_Snapshots_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T21:52:07.005Z",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27238210962",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248235963",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Topps_Archives_Snapshots_Baseball",
@@ -3661,15 +3665,15 @@
       "productName": "2017 Topps Archives Snapshots Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Archives_Snapshots_Baseball",
-      "updatedAt": "2026-06-09T21:52:51.439Z",
+      "updatedAt": "2026-06-16T18:13:03.469Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 27238210962,
-      "runNumber": 137,
+      "runId": 27248235963,
+      "runNumber": 214,
       "displayTitle": "Visual Product Test - 2017 Topps Archives Snapshots Baseball",
-      "headSha": "6f9262a3939fc4e580662b9ada13f1288ba158f4",
-      "createdAt": "2026-06-09T21:52:07Z",
-      "checkedAt": "2026-06-09T21:52:51.439Z"
+      "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
+      "createdAt": "2026-06-10T02:04:48Z",
+      "checkedAt": "2026-06-16T18:13:03.469Z"
     },
     "baseball|2017_Topps_Archives_Baseball": {
       "status": "in_progress",
@@ -4405,6 +4409,52 @@
       "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
       "createdAt": "2026-06-10T02:04:29Z",
       "checkedAt": "2026-06-16T18:12:59.670Z"
+    },
+    "baseball|2017_topps_archives_snapshots_baseball": {
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
+      "startedAt": "2026-06-09T21:52:07.005Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248235963",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Topps_Archives_Snapshots_Baseball",
+      "key": "baseball|2017_topps_archives_snapshots_baseball",
+      "productName": "2017 Topps Archives Snapshots Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Archives_Snapshots_Baseball",
+      "updatedAt": "2026-06-16T18:13:03.469Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27248235963,
+      "runNumber": 214,
+      "displayTitle": "Visual Product Test - 2017 Topps Archives Snapshots Baseball",
+      "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
+      "createdAt": "2026-06-10T02:04:48Z",
+      "checkedAt": "2026-06-16T18:13:03.469Z"
+    },
+    "baseball|2017 topps archives snapshots baseball": {
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
+      "startedAt": "2026-06-09T21:52:07.005Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248235963",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Topps_Archives_Snapshots_Baseball",
+      "key": "baseball|2017 topps archives snapshots baseball",
+      "productName": "2017 Topps Archives Snapshots Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Archives_Snapshots_Baseball",
+      "updatedAt": "2026-06-16T18:13:03.469Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27248235963,
+      "runNumber": 214,
+      "displayTitle": "Visual Product Test - 2017 Topps Archives Snapshots Baseball",
+      "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
+      "createdAt": "2026-06-10T02:04:48Z",
+      "checkedAt": "2026-06-16T18:13:03.469Z"
     }
   },
   "known_issues": {},
@@ -4940,9 +4990,9 @@
       "product": "2017 Topps Archives Snapshots Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Archives_Snapshots_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104297373",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248235963",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-16T18:13:03.471Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104233128": {
@@ -5538,9 +5588,18 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-16T18:12:59.672Z",
       "resolved": true
+    },
+    "baseball|https github com chasingmajors cm-chat-prototype actions runs 27248235963": {
+      "product": "2017 Topps Archives Snapshots Baseball",
+      "sport": "baseball",
+      "code": "2017_Topps_Archives_Snapshots_Baseball",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248235963",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-16T18:13:03.471Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:13:02.292Z",
+  "saved_at": "2026-06-16T18:13:06.190Z",
   "saved_by": "cm_command_center_operator"
 }

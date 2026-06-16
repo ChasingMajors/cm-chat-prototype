@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:47:42.905Z",
+  "exported_at": "2026-06-16T18:49:36.852Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2031,6 +2031,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781635775250_3clip8",
+      "ts": "2026-06-16T18:49:35.250Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781635775233_wmfwxy",
+      "ts": "2026-06-16T18:49:35.233Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781635769468",
       "ts": "2026-06-16T18:47:47.498Z",
       "type": "agent_sweep",
@@ -2808,26 +2828,6 @@
       "detail": "CV/ChatBot behavior check started.",
       "status": "queued",
       "product": "2016 Topps Tier One Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781635420946_osvzz3",
-      "ts": "2026-06-16T18:43:40.946Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Bowman Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781635419077_rcguvk",
-      "ts": "2026-06-16T18:43:39.077Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman Platinum Baseball",
       "source": "github_actions"
     }
   ],
@@ -5062,6 +5062,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:49:29.778Z",
+  "saved_at": "2026-06-16T18:49:38.008Z",
   "saved_by": "cm_command_center_operator"
 }

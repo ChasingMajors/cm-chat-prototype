@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T16:52:17.306Z",
+  "exported_at": "2026-06-16T16:54:47.314Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1933,6 +1933,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781628885712_394oc7",
+      "ts": "2026-06-16T16:54:45.712Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep failed",
+      "detail": "Timed out after 150s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781628735702_r53y10",
       "ts": "2026-06-16T16:52:15.702Z",
       "type": "agent_cycle",
@@ -2720,16 +2730,6 @@
       "detail": "CV/ChatBot behavior check started.",
       "status": "queued",
       "product": "2016 Topps Tier One Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057301259_qlp3zr",
-      "ts": "2026-06-10T02:08:21.259Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2017 Bowman Baseball",
       "source": "github_actions"
     }
   ],
@@ -4933,6 +4933,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T16:52:19.660Z",
+  "saved_at": "2026-06-16T16:54:48.676Z",
   "saved_by": "cm_command_center_operator"
 }

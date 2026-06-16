@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T17:27:52.640Z",
+  "exported_at": "2026-06-16T17:27:56.828Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,30 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 bowman's best baseball|2017_bowman_s_best_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Bowman's Best Baseball",
+      "sport": "baseball",
+      "code": "2017_Bowman_s_Best_Baseball",
+      "riskLevel": "low",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27241710366",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-16T17:27:55.217Z",
+      "updatedAt": "2026-06-16T17:27:55.218Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27241710366",
+      "visualStartedAt": "2026-06-09T23:09:16Z"
+    },
     {
       "id": "visual_test|github_actions|2017 donruss baseball|2017_donruss_baseball",
       "type": "visual_test",
@@ -1678,22 +1702,24 @@
       "sport": "baseball",
       "code": "2017_Bowman_s_Best_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
-      "runUrl": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27241710366",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 403,
       "expectedParallelCount": 29,
       "createdAt": "2026-06-09T17:54:02.459Z",
-      "updatedAt": "2026-06-16T17:27:51.038Z",
+      "updatedAt": "2026-06-16T17:27:55.218Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman's Best Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-16T17:24:39.604Z"
+      "autoExecutedAt": "2026-06-16T17:24:39.604Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27241710366",
+      "visualStartedAt": "2026-06-09T23:09:16Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_Platinum_Baseball",
@@ -1707,7 +1733,7 @@
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Queued for CV/ChatBot visual test dispatch (20 of 20).",
+      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1715,7 +1741,7 @@
       "expectedRowCount": 435,
       "expectedParallelCount": 38,
       "createdAt": "2026-06-09T17:54:02.458Z",
-      "updatedAt": "2026-06-16T17:26:18.424Z",
+      "updatedAt": "2026-06-16T17:27:55.227Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Platinum Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T17:24:39.604Z"
@@ -2082,32 +2108,30 @@
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Series 2 Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T17:24:39.604Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Series_1_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Series 1 Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Series_1_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.449Z",
-      "updatedAt": "2026-06-09T17:54:02.449Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781630875219_2trhqw",
+      "ts": "2026-06-16T17:27:55.219Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Bowman's Best Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781630875219_oo4htj",
+      "ts": "2026-06-16T17:27:55.219Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Bowman's Best Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781630871029_mjldu3",
       "ts": "2026-06-16T17:27:51.029Z",
@@ -2886,26 +2910,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
       "product": "2016 Topps Heritage High Number Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057374653_kkh8fj",
-      "ts": "2026-06-10T02:09:34.653Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057373802_ocique",
-      "ts": "2026-06-10T02:09:33.802Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Panini Prime Cuts Baseball",
       "source": "github_actions"
     }
   ],
@@ -4001,11 +4005,11 @@
       "checkedAt": "2026-06-16T17:27:17.089Z"
     },
     "baseball|2017_Bowman_s_Best_Baseball": {
-      "status": "queued",
-      "result": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T20:00:57.241Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27241710366",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Bowman_s_Best_Baseball",
@@ -4013,9 +4017,15 @@
       "productName": "2017 Bowman's Best Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_s_Best_Baseball",
-      "updatedAt": "2026-06-09T20:00:58.728Z",
+      "updatedAt": "2026-06-16T17:27:55.216Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 27241710366,
+      "runNumber": 171,
+      "displayTitle": "Visual Product Test - 2017 Bowman's Best Baseball",
+      "headSha": "63763267a7e8791dbaf16fee71c065cc2d916ad9",
+      "createdAt": "2026-06-09T23:09:16Z",
+      "checkedAt": "2026-06-16T17:27:55.216Z"
     },
     "baseball|2017_Bowman_Platinum_Baseball": {
       "status": "queued",
@@ -4987,6 +4997,52 @@
       "headSha": "63763267a7e8791dbaf16fee71c065cc2d916ad9",
       "createdAt": "2026-06-09T23:07:14Z",
       "checkedAt": "2026-06-16T17:27:51.026Z"
+    },
+    "baseball|2017_bowman_s_best_baseball": {
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
+      "startedAt": "2026-06-09T20:00:57.241Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27241710366",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Bowman_s_Best_Baseball",
+      "key": "baseball|2017_bowman_s_best_baseball",
+      "productName": "2017 Bowman's Best Baseball",
+      "sport": "baseball",
+      "code": "2017_Bowman_s_Best_Baseball",
+      "updatedAt": "2026-06-16T17:27:55.216Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27241710366,
+      "runNumber": 171,
+      "displayTitle": "Visual Product Test - 2017 Bowman's Best Baseball",
+      "headSha": "63763267a7e8791dbaf16fee71c065cc2d916ad9",
+      "createdAt": "2026-06-09T23:09:16Z",
+      "checkedAt": "2026-06-16T17:27:55.216Z"
+    },
+    "baseball|2017 bowman's best baseball": {
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
+      "startedAt": "2026-06-09T20:00:57.241Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27241710366",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Bowman_s_Best_Baseball",
+      "key": "baseball|2017 bowman's best baseball",
+      "productName": "2017 Bowman's Best Baseball",
+      "sport": "baseball",
+      "code": "2017_Bowman_s_Best_Baseball",
+      "updatedAt": "2026-06-16T17:27:55.216Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27241710366,
+      "runNumber": 171,
+      "displayTitle": "Visual Product Test - 2017 Bowman's Best Baseball",
+      "headSha": "63763267a7e8791dbaf16fee71c065cc2d916ad9",
+      "createdAt": "2026-06-09T23:09:16Z",
+      "checkedAt": "2026-06-16T17:27:55.216Z"
     }
   },
   "known_issues": {},
@@ -5342,9 +5398,9 @@
       "product": "2017 Bowman's Best Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_s_Best_Baseball",
-      "sourceUrl": "",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27241710366",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-16T17:27:55.218Z",
       "resolved": true
     },
     "baseball|2016 topps tribute baseball": {
@@ -6237,9 +6293,18 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-16T17:27:51.028Z",
       "resolved": true
+    },
+    "baseball|https github com chasingmajors cm-chat-prototype actions runs 27241710366": {
+      "product": "2017 Bowman's Best Baseball",
+      "sport": "baseball",
+      "code": "2017_Bowman_s_Best_Baseball",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27241710366",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-16T17:27:55.218Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T17:27:53.920Z",
+  "saved_at": "2026-06-16T17:27:58.465Z",
   "saved_by": "cm_command_center_operator"
 }

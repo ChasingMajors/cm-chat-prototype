@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:37:08.006Z",
+  "exported_at": "2026-06-16T18:37:14.006Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -305,7 +305,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:36:00.138Z",
-      "updatedAt": "2026-06-16T18:36:50.281Z",
+      "updatedAt": "2026-06-16T18:37:12.391Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:01:05.393Z"
     },
@@ -1800,7 +1800,7 @@
       "expectedRowCount": 640,
       "expectedParallelCount": 27,
       "createdAt": "2026-06-09T17:54:02.457Z",
-      "updatedAt": "2026-06-16T18:36:50.282Z",
+      "updatedAt": "2026-06-16T18:37:12.397Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Draft Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:32:24.026Z",
@@ -2083,6 +2083,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781635032397_m3820c",
+      "ts": "2026-06-16T18:37:12.397Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Draft Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781635025472_7qdvqr",
       "ts": "2026-06-16T18:37:05.472Z",
@@ -2869,16 +2879,6 @@
       "type": "agent_cycle",
       "title": "Running Agent Cycle",
       "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1781633419312_dwimtj",
-      "ts": "2026-06-16T18:10:19.312Z",
-      "type": "agent_cycle",
-      "title": "Self-healing pending validations",
-      "detail": "47 pending public validation items found. Sentinel is handing the queue to the backend worker so stale JSON can be republished when needed.",
       "status": "started",
       "product": "",
       "source": "command_center"
@@ -4057,7 +4057,7 @@
       "productName": "2017 Bowman Draft Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
-      "updatedAt": "2026-06-16T18:36:50.278Z",
+      "updatedAt": "2026-06-16T18:37:12.383Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4065,7 +4065,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:36:50.278Z"
+      "checkedAt": "2026-06-16T18:37:12.383Z"
     },
     "baseball|2017_topps_gold_label_baseball": {
       "status": "completed",
@@ -4816,7 +4816,7 @@
       "productName": "2017 Bowman Draft Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
-      "updatedAt": "2026-06-16T18:36:50.278Z",
+      "updatedAt": "2026-06-16T18:37:12.383Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4824,7 +4824,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:36:50.278Z"
+      "checkedAt": "2026-06-16T18:37:12.383Z"
     },
     "baseball|2017 bowman draft baseball": {
       "status": "queued",
@@ -4839,7 +4839,7 @@
       "productName": "2017 Bowman Draft Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
-      "updatedAt": "2026-06-16T18:36:50.278Z",
+      "updatedAt": "2026-06-16T18:37:12.383Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4847,7 +4847,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:36:50.278Z"
+      "checkedAt": "2026-06-16T18:37:12.383Z"
     },
     "baseball|2017_Bowman_Chrome_Mini_Baseball": {
       "status": "in_progress",
@@ -6392,6 +6392,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:37:09.115Z",
+  "saved_at": "2026-06-16T18:37:15.328Z",
   "saved_by": "cm_command_center_operator"
 }

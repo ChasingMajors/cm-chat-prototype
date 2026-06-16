@@ -2,8 +2,8 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T16:46:36.243Z",
-  "autonomy_mode": "full_auto",
+  "exported_at": "2026-06-16T16:48:49.300Z",
+  "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
@@ -1973,14 +1973,44 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1781628394638_6mk995",
-      "ts": "2026-06-16T16:46:34.638Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep failed",
-      "detail": "Timed out after 150s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
+      "id": "log_1781628527696_cpd696",
+      "ts": "2026-06-16T16:48:47.696Z",
+      "type": "autonomy",
+      "title": "Autonomy mode changed",
+      "detail": "Mode set to Guarded auto.",
+      "status": "guarded_auto",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1781628397127_1e8fjp",
+      "ts": "2026-06-16T16:46:37.127Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 of 24 wave ran. 0 safe actions executed. 78 remain: 78 pending public JSON recheck. Stopped because: Backend sweep did not return data. Wave 1: No backend auto action result.",
+      "status": "needs_review",
       "product": "",
       "source": "operator_backend"
+    },
+    {
+      "id": "log_1781628397123_0xs2po",
+      "ts": "2026-06-16T16:46:37.123Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781628397100_e2ams1",
+      "ts": "2026-06-16T16:46:37.100Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
     },
     {
       "id": "log_1781628244624_cvnxwx",
@@ -2741,36 +2771,6 @@
       "status": "queued",
       "product": "2025-26 Bowman Sapphire Basketball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781269776772_1yi3wt",
-      "ts": "2026-06-12T13:09:36.772Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Bowman Sapphire Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781269763799_2hjfji",
-      "ts": "2026-06-12T13:09:23.799Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 of 24 wave ran. 0 safe actions executed. 12 remain: 9 need admin decision, 1 running, 1 failed, 1 known issue. Stopped because: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes. Wave 1: action -> This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781269763797_q2subl",
-      "ts": "2026-06-12T13:09:23.797Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -5413,6 +5413,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T16:46:37.905Z",
+  "saved_at": "2026-06-16T16:48:50.899Z",
   "saved_by": "cm_command_center_operator"
 }

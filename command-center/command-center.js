@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc135-durable-proof-memory-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc136-reconcile-resolved-queue-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -399,6 +399,18 @@
     return !!(state.sourceIgnores && ((key && state.sourceIgnores[key]) || (productKey && state.sourceIgnores[productKey])));
   }
 
+  function getSourceIgnoreRecord(input) {
+    const key = buildSourceIgnoreKey(input);
+    const productKey = buildSourceProductIgnoreKey(input);
+    if (!state.sourceIgnores) return null;
+    return (key && state.sourceIgnores[key]) || (productKey && state.sourceIgnores[productKey]) || null;
+  }
+
+  function isResolvedSourceIgnored(input) {
+    const record = getSourceIgnoreRecord(input);
+    return !!(record && record.resolved);
+  }
+
   function getVisualStatusLabel(record) {
     if (!record) return "Not run";
     if (record.knownIssue) return "Known issue";
@@ -539,7 +551,8 @@
   }
 
   function getActiveAgentActions() {
-    return (state.agentActions || []).filter(action => !isResolvedAgentAction(action));
+    reconcileResolvedAgentActions();
+    return (state.agentActions || []).filter(action => !isResolvedAgentAction(action) && !isResolvedSourceIgnored(action));
   }
 
   function getResolvedAgentActions() {
@@ -910,6 +923,10 @@
 
   function upsertAgentAction(input) {
     const now = new Date().toISOString();
+    if (isResolvedSourceIgnored(input)) {
+      const resolved = findResolvedProductAction(input);
+      return resolved || null;
+    }
     const id = input.id || buildAgentActionId(input);
     const existing = state.agentActions.find(item => item.id === id) ||
       (input.type === "source_import" ? findProductAction(input, "checklist_publish") : null);
@@ -1263,6 +1280,35 @@
       if (isResolvedAgentAction(action) && rememberResolvedSourceAction(action)) remembered += 1;
     });
     return remembered;
+  }
+
+  function reconcileResolvedAgentActions() {
+    if (state.reconcilingResolvedActions) return 0;
+    state.reconcilingResolvedActions = true;
+    let changed = 0;
+    try {
+      (state.agentActions || []).forEach(action => {
+        if (!action || isResolvedAgentAction(action) || !isResolvedSourceIgnored(action)) return;
+        Object.assign(action, {
+          status: "ignored",
+          adminDecision: action.adminDecision || "resolved_memory",
+          executionResult: action.executionResult || "Resolved memory suppressed this stale queue row.",
+          validationResult: action.validationResult || "Already resolved. Future scans should not requeue this product.",
+          recommendedAction: "No action needed. Resolved proof is already recorded.",
+          updatedAt: new Date().toISOString()
+        });
+        changed += 1;
+      });
+      if (changed) {
+        state.agentRunQueue = (state.agentRunQueue || []).filter(id => {
+          const action = state.agentActions.find(item => item.id === id);
+          return action && !isResolvedAgentAction(action) && !isResolvedSourceIgnored(action);
+        });
+      }
+    } finally {
+      state.reconcilingResolvedActions = false;
+    }
+    return changed;
   }
 
   function autoResolveCoveredSourceCheck(data) {
@@ -5435,6 +5481,7 @@
   }
 
   function buildAgentMemoryPayload() {
+    reconcileResolvedAgentActions();
     rememberResolvedAgentActions();
     return {
       ok: true,
@@ -5551,6 +5598,7 @@
       });
       rememberResolvedSourceAction(resolved);
     });
+    reconcileResolvedAgentActions();
     state.agentActions = state.agentActions.slice(0, 80);
     state.agentRunQueue = (state.agentRunQueue || []).filter(id => {
       const action = state.agentActions.find(item => item.id === id);

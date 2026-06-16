@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T17:10:34.347Z",
+  "exported_at": "2026-06-16T17:10:47.876Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T17:10:14.038Z",
-      "updatedAt": "2026-06-16T17:10:24.233Z",
+      "updatedAt": "2026-06-16T17:10:46.274Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27634932367",
       "visualStartedAt": "2026-06-16T17:10:13Z"
     },
@@ -197,11 +197,11 @@
       "sport": "basketball",
       "code": "2025_26_panini_origins_euroleague_basketball",
       "riskLevel": "medium",
-      "status": "failed",
-      "recommendedAction": "Open Preview Import and the source page. If the parser cannot read rows, create a fix task for source parsing or import mapping.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "validationResult": "Import did not write to Google Sheets.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27634932367",
       "sourceUrl": "",
       "bucket": "",
@@ -209,7 +209,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T17:10:00.798Z",
-      "updatedAt": "2026-06-16T17:10:32.743Z",
+      "updatedAt": "2026-06-16T17:10:46.274Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27634932367",
       "visualStartedAt": "2026-06-16T17:10:13Z"
     },
@@ -2118,6 +2118,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781629846274_clcyln",
+      "ts": "2026-06-16T17:10:46.274Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Panini Origins EuroLeague Basketball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781629832744_8rlbs4",
       "ts": "2026-06-16T17:10:32.744Z",
       "type": "source_import",
@@ -2905,16 +2915,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "in_progress",
       "product": "2016 Topps Chrome Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057380777_h4syn5",
-      "ts": "2026-06-10T02:09:40.777Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Tier One Baseball",
       "source": "github_actions"
     }
   ],
@@ -4091,8 +4091,8 @@
       "knownIssueNote": ""
     },
     "basketball|2025_26_panini_origins_euroleague_basketball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-16T17:10:11.551Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27634932367",
@@ -4103,15 +4103,15 @@
       "productName": "2025-26 Panini Origins EuroLeague Basketball",
       "sport": "basketball",
       "code": "2025_26_panini_origins_euroleague_basketball",
-      "updatedAt": "2026-06-16T17:10:24.232Z",
+      "updatedAt": "2026-06-16T17:10:46.273Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27634932367,
       "runNumber": 252,
-      "displayTitle": "Visual Product Test",
+      "displayTitle": "Visual Product Test - 2025-26 Panini Origins EuroLeague Basketball",
       "headSha": "752e9fd6d5474d874677cfc2adbc390f32d0a540",
       "createdAt": "2026-06-16T17:10:13Z",
-      "checkedAt": "2026-06-16T17:10:24.232Z"
+      "checkedAt": "2026-06-16T17:10:46.272Z"
     }
   },
   "known_issues": {},
@@ -5203,6 +5203,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T17:10:35.423Z",
+  "saved_at": "2026-06-16T17:10:49.129Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc134-no-fake-visual-running-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc135-durable-proof-memory-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -947,6 +947,12 @@
     }
 
     if (existing) {
+      if (isResolvedAgentAction(existing) && !isResolvedAgentAction(input)) {
+        rememberResolvedSourceAction(existing);
+        writeSourceIgnores();
+        return existing;
+      }
+
       Object.assign(existing, base, {
         createdAt: existing.createdAt || now,
         updatedAt: now
@@ -1249,6 +1255,14 @@
       };
     });
     return true;
+  }
+
+  function rememberResolvedAgentActions() {
+    let remembered = 0;
+    (state.agentActions || []).forEach(action => {
+      if (isResolvedAgentAction(action) && rememberResolvedSourceAction(action)) remembered += 1;
+    });
+    return remembered;
   }
 
   function autoResolveCoveredSourceCheck(data) {
@@ -5121,11 +5135,12 @@
         : "Public PRV validation did not pass yet.";
 
     if (actionId) {
-      updateAgentAction(actionId, {
+      const updated = updateAgentAction(actionId, {
         status: ok ? "validated" : "needs_admin",
         validationResult: detail,
         recommendedAction: ok ? "PRV public JSON is live. Open PRV for final human check." : "Wait for propagation, then recheck again."
       });
+      if (ok && updated && rememberResolvedSourceAction(updated)) writeSourceIgnores();
       renderAgentActions();
       renderActionLanes();
     }
@@ -5420,6 +5435,7 @@
   }
 
   function buildAgentMemoryPayload() {
+    rememberResolvedAgentActions();
     return {
       ok: true,
       app: "chasing_majors_command_center",
@@ -5496,6 +5512,11 @@
       throw new Error("This file is not a Command Center agent memory export.");
     }
 
+    const localResolvedActions = (state.agentActions || []).filter(isResolvedAgentAction);
+    const localVisualTests = state.visualTests && typeof state.visualTests === "object" ? state.visualTests : {};
+    const localKnownIssues = state.knownIssues && typeof state.knownIssues === "object" ? state.knownIssues : {};
+    const localSourceIgnores = state.sourceIgnores && typeof state.sourceIgnores === "object" ? state.sourceIgnores : {};
+
     state.autonomyMode = payload.autonomy_mode || "approval_required";
     state.approvals = payload.approvals && typeof payload.approvals === "object" ? payload.approvals : {};
     state.tasks = Array.isArray(payload.tasks) ? payload.tasks : [];
@@ -5503,9 +5524,38 @@
     state.agentRunQueue = Array.isArray(payload.agent_run_queue) ? payload.agent_run_queue : [];
     state.activityLog = Array.isArray(payload.activity_log) ? payload.activity_log : [];
     state.lastAgentReport = payload.last_agent_report && typeof payload.last_agent_report === "object" ? payload.last_agent_report : null;
-    state.visualTests = payload.visual_tests && typeof payload.visual_tests === "object" ? payload.visual_tests : {};
-    state.knownIssues = payload.known_issues && typeof payload.known_issues === "object" ? payload.known_issues : {};
-    state.sourceIgnores = payload.source_ignores && typeof payload.source_ignores === "object" ? payload.source_ignores : {};
+    state.visualTests = Object.assign(
+      {},
+      payload.visual_tests && typeof payload.visual_tests === "object" ? payload.visual_tests : {},
+      localVisualTests
+    );
+    state.knownIssues = Object.assign(
+      {},
+      payload.known_issues && typeof payload.known_issues === "object" ? payload.known_issues : {},
+      localKnownIssues
+    );
+    state.sourceIgnores = Object.assign(
+      {},
+      payload.source_ignores && typeof payload.source_ignores === "object" ? payload.source_ignores : {},
+      localSourceIgnores
+    );
+
+    localResolvedActions.forEach(resolved => {
+      if (!resolved) return;
+      const existingResolved = (state.agentActions || []).some(action => isResolvedAgentAction(action) && sameProductAction(action, resolved));
+      if (!existingResolved) state.agentActions.unshift(resolved);
+      state.agentActions = (state.agentActions || []).filter(action => {
+        if (!action || action.id === resolved.id) return true;
+        if (isResolvedAgentAction(action)) return true;
+        return !sameProductAction(action, resolved);
+      });
+      rememberResolvedSourceAction(resolved);
+    });
+    state.agentActions = state.agentActions.slice(0, 80);
+    state.agentRunQueue = (state.agentRunQueue || []).filter(id => {
+      const action = state.agentActions.find(item => item.id === id);
+      return action && !isResolvedAgentAction(action);
+    });
 
     writeAllAgentMemory();
     if (payload.operator_endpoint) writeOperatorEndpoint(payload.operator_endpoint);

@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc136-reconcile-resolved-queue-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc137-save-reconciled-memory-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -5598,7 +5598,7 @@
       });
       rememberResolvedSourceAction(resolved);
     });
-    reconcileResolvedAgentActions();
+    const reconciledCount = reconcileResolvedAgentActions();
     state.agentActions = state.agentActions.slice(0, 80);
     state.agentRunQueue = (state.agentRunQueue || []).filter(id => {
       const action = state.agentActions.find(item => item.id === id);
@@ -5620,6 +5620,7 @@
 
     render();
     updateMemoryStatus("Agent memory imported.", "restored");
+    return { reconciledCount };
   }
 
   function importAgentMemoryFile(file) {
@@ -5738,7 +5739,7 @@
       }
 
       state.backendMemorySuspendAutoSave = true;
-      importAgentMemoryPayload(data.memory);
+      const importResult = importAgentMemoryPayload(data.memory) || {};
       state.backendMemorySuspendAutoSave = false;
       logActivity({
         type: "memory",
@@ -5750,6 +5751,9 @@
       });
       renderActivityLog();
       updateMemoryStatus("Backend memory loaded.", data.sha ? `sha ${String(data.sha).slice(0, 7)}` : "loaded");
+      if (Number(importResult.reconciledCount || 0) > 0) {
+        await saveBackendAgentMemoryNow({ silent: true });
+      }
     } catch (err) {
       state.backendMemorySuspendAutoSave = false;
       updateMemoryStatus(err && err.message ? err.message : "Backend memory load failed.", "error");

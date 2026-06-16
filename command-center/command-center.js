@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc138-active-work-counts-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc139-startup-backend-sync-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -5761,15 +5761,15 @@
   }
 
   async function autoLoadBackendAgentMemoryIfEmpty() {
-    if (state.backendMemoryAutoLoaded || hasLocalAgentMemory()) return;
+    if (state.backendMemoryAutoLoaded) return;
     if (!readOperatorEndpoint() || !readOperatorKey()) return;
 
     state.backendMemoryAutoLoaded = true;
     try {
       await loadBackendAgentMemory();
-      updateMemoryStatus("Backend memory auto-loaded.", "startup sync");
+      updateMemoryStatus("Backend memory synced.", "startup sync");
     } catch (err) {
-      updateMemoryStatus(err && err.message ? err.message : "Backend memory auto-load failed.", "error");
+      updateMemoryStatus(err && err.message ? err.message : "Backend memory sync failed.", "error");
     }
   }
 

@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc126-admin-decision-boundary-v1-2026-06-09";
+  const COMMAND_CENTER_VERSION = "cc127-agent-cycle-backend-fallback-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -530,7 +530,8 @@
     return normalizeRunQueue().includes(id);
   }
 
-  function addActionToRunQueue(actionId) {
+  function addActionToRunQueue(actionId, options) {
+    const opts = options || {};
     const id = String(actionId || "").trim();
     const action = state.agentActions.find(item => item.id === id);
     if (!action || isResolvedAgentAction(action)) return null;
@@ -539,18 +540,20 @@
       state.agentRunQueue.unshift(id);
       writeAgentRunQueue();
     }
-    logActivity({
-      type: "agent_run_queue",
-      status: "queued",
-      product: action.product || "",
-      source: "admin",
-      title: "Added to Agent Run Queue",
-      detail: `${action.product || action.type || "Action"} will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.`
-    });
-    renderAgentActions();
-    renderActionLanes();
-    renderActivityLog();
-    updateMemoryStatus("Action added to Agent Run Queue.", "queued");
+    if (!opts.silent) {
+      logActivity({
+        type: "agent_run_queue",
+        status: "queued",
+        product: action.product || "",
+        source: "admin",
+        title: "Added to Agent Run Queue",
+        detail: `${action.product || action.type || "Action"} will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.`
+      });
+      renderAgentActions();
+      renderActionLanes();
+      renderActivityLog();
+      updateMemoryStatus("Action added to Agent Run Queue.", "queued");
+    }
     return action;
   }
 
@@ -621,6 +624,157 @@
       .map(id => state.agentActions.find(action => action.id === id))
       .filter(action => action && !isResolvedAgentAction(action))
       .slice(0, max);
+  }
+
+  function classifyAdminDecisionAction(action) {
+    const type = String(action && action.type || "").toLowerCase();
+    const text = [
+      action && action.executionResult,
+      action && action.validationResult,
+      action && action.recommendedAction,
+      action && action.source,
+      action && action.bucket,
+      action && action.targetBucket
+    ].join(" ").toLowerCase();
+
+    if (type === "prv_source_review" || type === "prv_publish" || text.includes("prv") || text.includes("print run")) return "prv";
+    if (text.includes("metadata") || text.includes("keyword") || text.includes("missing product code") || text.includes("missing source") || text.includes("source issue") || text.includes("duplicate")) return "metadata";
+    if (text.includes("visual") || text.includes("chatbot") || text.includes("cv/chatbot")) return "visual";
+    if (type === "source_import" || type === "checklist_publish") return "checklist";
+    if (type === "backend_data_issue") return "metadata";
+    return "other";
+  }
+
+  function getAdminDecisionGroups(actions) {
+    const list = Array.isArray(actions) ? actions : getActiveAgentActions();
+    const groups = {
+      checklist: [],
+      prv: [],
+      metadata: [],
+      visual: [],
+      known: [],
+      other: []
+    };
+
+    list.forEach(action => {
+      const status = String(action && action.status || "").toLowerCase();
+      if (status === "known_issue" || status === "failed" || status === "blocked") {
+        groups.known.push(action);
+        return;
+      }
+      if (status !== "needs_admin" && status !== "approval_required") return;
+      const group = classifyAdminDecisionAction(action);
+      (groups[group] || groups.other).push(action);
+    });
+
+    return groups;
+  }
+
+  function getGroupedAdminDecisionCount(groups) {
+    return Object.keys(groups || {}).reduce((sum, key) => sum + ((groups[key] || []).length), 0);
+  }
+
+  function approveAdminDecisionGroup(groupKey) {
+    const groups = getAdminDecisionGroups();
+    const selected = (groups[groupKey] || []).filter(action => {
+      const status = String(action && action.status || "").toLowerCase();
+      return status === "needs_admin" || status === "approval_required";
+    });
+    if (!selected.length) return 0;
+
+    let approved = 0;
+    selected.forEach(action => {
+      const next = updateAgentAction(action.id, {
+        status: "approved",
+        adminDecision: groupKey === "checklist" ? "checklist_group_approved" : `${groupKey}_group_approved`,
+        executionResult: action.executionResult || "Admin group approval recorded.",
+        validationResult: action.validationResult || "Approved for the next product-scoped Sentinel step."
+      });
+      if (next) {
+        approved += 1;
+        if (groupKey === "checklist") addActionToRunQueue(action.id, { silent: true });
+      }
+    });
+
+    logActivity({
+      type: "admin_decision",
+      status: "approved",
+      source: "admin_group",
+      title: "Admin decision group approved",
+      detail: `${approved} ${groupKey} decision${approved === 1 ? "" : "s"} approved.${groupKey === "checklist" ? " Checklist items were added to the Agent Run Queue." : ""}`
+    });
+    renderAgentActions();
+    renderActionLanes();
+    renderActivityLog();
+    updateMemoryStatus("Admin decision group approved.", "admin");
+    return approved;
+  }
+
+  function holdAdminDecisionGroup(groupKey) {
+    const groups = getAdminDecisionGroups();
+    const selected = (groups[groupKey] || []).filter(action => {
+      const status = String(action && action.status || "").toLowerCase();
+      return status === "needs_admin" || status === "approval_required" || status === "failed" || status === "blocked" || status === "known_issue";
+    });
+    if (!selected.length) return 0;
+
+    let held = 0;
+    selected.forEach(action => {
+      const next = updateAgentAction(action.id, {
+        status: "known_issue",
+        adminDecision: `${groupKey}_group_hold`,
+        executionResult: action.executionResult || "Admin held this item from auto execution.",
+        validationResult: action.validationResult || "Held for manual review. Agent Cycle will not auto-run this item."
+      });
+      removeActionFromRunQueue(action.id, { silent: true, source: "admin_group" });
+      if (next) held += 1;
+    });
+
+    logActivity({
+      type: "admin_decision",
+      status: "known_issue",
+      source: "admin_group",
+      title: "Admin decision group held",
+      detail: `${held} ${groupKey} item${held === 1 ? "" : "s"} held from auto execution.`
+    });
+    renderAgentActions();
+    renderActionLanes();
+    renderActivityLog();
+    updateMemoryStatus("Admin decision group held.", "known issue");
+    return held;
+  }
+
+  function ignoreKnownIssueGroup() {
+    const groups = getAdminDecisionGroups();
+    const selected = groups.known || [];
+    if (!selected.length) return 0;
+
+    let ignored = 0;
+    selected.forEach(action => {
+      rememberResolvedSourceAction(action);
+      removeActionFromRunQueue(action.id, { silent: true, source: "admin_group" });
+      const next = updateAgentAction(action.id, {
+        status: "ignored",
+        adminDecision: "known_issue_group_ignored",
+        executionResult: action.executionResult || "Admin ignored this known issue from the active queue.",
+        validationResult: action.validationResult || "No Agent Cycle execution will be attempted."
+      });
+      if (next) ignored += 1;
+    });
+    writeSourceIgnores();
+
+    logActivity({
+      type: "admin_decision",
+      status: "ignored",
+      source: "admin_group",
+      title: "Known issues ignored",
+      detail: `${ignored} known issue${ignored === 1 ? "" : "s"} removed from the active queue.`
+    });
+    renderAgentActions();
+    renderActionLanes();
+    renderActivityLog();
+    updateMemoryStatus("Known issues ignored.", "admin rule");
+    return ignored;
   }
 
   function renderAgentRunQueueSummary() {
@@ -2731,7 +2885,7 @@
       renderActivityLog();
       renderSentinelNotice("Backend Agent Sweep failed", detail, "critical");
       renderSourceCheckMessage("Backend Agent Sweep failed", detail, "critical", { noFocus: true });
-      return null;
+      return { ok: false, error: detail, fatal: true };
     }
   }
 
@@ -6237,6 +6391,88 @@
     renderSourceCheckMessage("Step not ready", "That progress step is not available for this card yet.", "warning");
   }
 
+  function renderAdminDecisionGroupPanel(actions) {
+    const groups = getAdminDecisionGroups(actions);
+    if (!getGroupedAdminDecisionCount(groups)) return "";
+
+    const groupRows = [
+      {
+        key: "checklist",
+        title: "Checklist Decisions",
+        detail: "Approve product-scoped imports/publishes only after source and sport look right.",
+        primary: "Approve Checklist",
+        secondary: "Hold Checklist"
+      },
+      {
+        key: "prv",
+        title: "PRV Decisions",
+        detail: "Review source link, product code, and print-run rows before any sheet write.",
+        primary: "Approve PRV",
+        secondary: "Hold PRV"
+      },
+      {
+        key: "metadata",
+        title: "Metadata / Source Issues",
+        detail: "Missing codes, source ambiguity, duplicate rows, and source-of-truth cleanup stay review-first.",
+        primary: "",
+        secondary: "Hold Issues"
+      },
+      {
+        key: "visual",
+        title: "Visual Decisions",
+        detail: "Use proof from CV/ChatBot runs before validating app behavior cards.",
+        primary: "",
+        secondary: "Hold Visual"
+      },
+      {
+        key: "known",
+        title: "Known Issues",
+        detail: "Held, failed, and blocked cards are excluded from auto execution.",
+        primary: "Ignore Known",
+        secondary: "Keep Held"
+      },
+      {
+        key: "other",
+        title: "Other Decisions",
+        detail: "Review uncommon queue cards individually before moving them forward.",
+        primary: "",
+        secondary: "Hold Other"
+      }
+    ].filter(row => (groups[row.key] || []).length);
+
+    return `
+      <section class="admin-decision-console" aria-label="Admin decision groups">
+        <div class="admin-decision-head">
+          <div>
+            <strong>Admin Decision Console</strong>
+            <span>Grouped approvals and holds. Run Agent Cycle stops here unless you explicitly approve or queue work.</span>
+          </div>
+          <em>${formatNumber(getGroupedAdminDecisionCount(groups))} review</em>
+        </div>
+        <div class="admin-decision-grid">
+          ${groupRows.map(row => {
+            const count = (groups[row.key] || []).length;
+            const sample = (groups[row.key] || []).slice(0, 3).map(action => action.product || action.code || action.type).filter(Boolean).join(", ");
+            return `
+              <article class="admin-decision-group">
+                <div>
+                  <strong>${escapeHtml(row.title)}</strong>
+                  <span>${escapeHtml(row.detail)}</span>
+                  ${sample ? `<p>${escapeHtml(sample)}${count > 3 ? " +" + formatNumber(count - 3) : ""}</p>` : ""}
+                </div>
+                <div class="admin-decision-actions">
+                  <em>${formatNumber(count)}</em>
+                  ${row.primary ? `<button class="action-btn approve" type="button" data-admin-group-primary="${escapeHtml(row.key)}">${escapeHtml(row.primary)}</button>` : ""}
+                  <button class="action-btn" type="button" data-admin-group-hold="${escapeHtml(row.key)}">${escapeHtml(row.secondary)}</button>
+                </div>
+              </article>
+            `;
+          }).join("")}
+        </div>
+      </section>
+    `;
+  }
+
   function renderAgentActions() {
     collapseDuplicateAgentActions();
     const activeActions = getActiveAgentActions();
@@ -6388,7 +6624,22 @@
       `
       : "";
 
-    els.agentActionList.innerHTML = renderAgentRunQueueSummary() + activeHtml + resolvedHtml;
+    els.agentActionList.innerHTML = renderAgentRunQueueSummary() + renderAdminDecisionGroupPanel(activeActions) + activeHtml + resolvedHtml;
+
+    els.agentActionList.querySelectorAll("[data-admin-group-primary]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const group = btn.dataset.adminGroupPrimary || "";
+        if (group === "known") ignoreKnownIssueGroup();
+        else approveAdminDecisionGroup(group);
+      });
+    });
+
+    els.agentActionList.querySelectorAll("[data-admin-group-hold]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const group = btn.dataset.adminGroupHold || "";
+        holdAdminDecisionGroup(group);
+      });
+    });
 
     els.agentActionList.querySelectorAll("[data-action-progress-step]").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -6871,13 +7122,11 @@
       const validation = String(action.validationResult || "").toLowerCase();
       const execution = String(action.executionResult || "").toLowerCase();
       if (type !== "prv_source_review" && type !== "prv_publish") return false;
-      if (status === "running" || status === "failed" || status === "known_issue" || status === "blocked") return false;
+      if (status === "running" || status === "failed" || status === "known_issue" || status === "blocked" || status === "needs_admin" || status === "approval_required") return false;
       if (!action.code) return false;
       if (validation.includes("public rows") || validation.includes("public prv rows") || validation.includes("validated")) return false;
       return execution.includes("sheet write") ||
-        execution.includes("json publish") ||
-        status === "needs_admin" ||
-        status === "approval_required";
+        execution.includes("json publish");
     });
     if (safePrvRecheck) {
       return {
@@ -6894,13 +7143,11 @@
       const validation = String(action.validationResult || "").toLowerCase();
       const execution = String(action.executionResult || "").toLowerCase();
       if (type !== "source_import" && type !== "checklist_publish") return false;
-      if (status === "running" || status === "failed" || status === "known_issue" || status === "blocked") return false;
+      if (status === "running" || status === "failed" || status === "known_issue" || status === "blocked" || status === "needs_admin" || status === "approval_required") return false;
       if (!action.product) return false;
       if (validation.includes("public json covered") || validation.includes("public rows")) return false;
       return execution.includes("sheet write") ||
-        execution.includes("json publish") ||
-        status === "needs_admin" ||
-        status === "approval_required";
+        execution.includes("json publish");
     });
     if (safeChecklistRecheck) {
       return {
@@ -6949,7 +7196,7 @@
 
     const failed = active.find(action => {
       const status = String(action.status || "").toLowerCase();
-      return status === "failed" || status === "blocked" || status === "known_issue";
+      return status === "failed" || status === "blocked";
     });
     if (failed) {
       return {
@@ -6970,6 +7217,16 @@
         action: approval,
         title: "Admin decision required",
         detail: `${approval.product || approval.type} needs approval before the agent can continue.`
+      };
+    }
+
+    const knownIssue = active.find(action => String(action.status || "").toLowerCase() === "known_issue");
+    if (knownIssue) {
+      return {
+        kind: "needs_admin",
+        action: knownIssue,
+        title: "Known issues held",
+        detail: `${knownIssue.product || knownIssue.type} is held as a known issue. Choose Keep Held, Ignore Known, or create a product-specific fix task.`
       };
     }
 
@@ -7450,12 +7707,23 @@
       return runBackendAgentSweep();
     }
 
+    const initialSafeCount = countActiveSafeAutoCandidates();
+    if (initialSafeCount <= 0) {
+      const groups = getAdminDecisionGroups();
+      const detail = getGroupedAdminDecisionCount(groups)
+        ? "Only admin decisions or known issues remain. Sentinel stopped at the approval boundary and did not run a backend sweep."
+        : "No local safe queue candidates remain. Sentinel did not run a backend sweep.";
+      renderAgentCycleMessage("Admin boundary reached", detail, "warning");
+      return { ok: false, waves: 0, totalAuto: 0, activeCount: getActiveAgentActions().length, stopReason: detail };
+    }
+
     await saveBackendAgentMemoryNow({ silent: true });
 
     const maxWaves = 24;
     let waves = 0;
     let totalAuto = 0;
     let stopReason = "";
+    let fatalError = "";
     const waveSummaries = [];
 
     renderAgentCycleMessage(
@@ -7466,7 +7734,7 @@
 
     for (let wave = 1; wave <= maxWaves; wave += 1) {
       const safeBefore = countActiveSafeAutoCandidates();
-      if (wave > 1 && safeBefore <= 0) {
+      if (safeBefore <= 0) {
         stopReason = "No local safe queue candidates remain.";
         break;
       }
@@ -7488,6 +7756,7 @@
 
       const fatalSweepError = getBackendSweepFatalError(data);
       if (fatalSweepError) {
+        fatalError = fatalSweepError;
         stopReason = fatalSweepError;
         break;
       }
@@ -7509,6 +7778,32 @@
     }
 
     await loadBackendAgentMemory();
+    if (fatalError) {
+      const queueBreakdown = getAgentQueueBreakdown();
+      const detail = `${waves} of ${maxWaves} wave${waves === 1 ? "" : "s"} ran. ${totalAuto} safe action${totalAuto === 1 ? "" : "s"} executed. ${queueBreakdown.summary} Blocked because: ${fatalError}`;
+      logActivity({
+        type: "agent_cycle",
+        status: "failed",
+        source: "operator_backend",
+        title: "Agent Cycle blocked",
+        detail: `${detail} ${waveSummaries.slice(0, 4).join(" ")}`
+      });
+      renderActivityLog();
+      renderSentinelNotice("Agent Cycle blocked", detail, "critical");
+      renderSourceCheckMessage("Agent Cycle blocked", detail, "critical", { noFocus: true });
+      renderAgentActions();
+      renderActionLanes();
+      renderRunSummary();
+      return {
+        ok: false,
+        waves,
+        totalAuto,
+        activeCount: queueBreakdown.counts.total,
+        stopReason: fatalError,
+        summaries: waveSummaries
+      };
+    }
+
     const firstVisualRefresh = await refreshRunningVisualValidationBatch({ silent: true, limit: 30 });
     const visualBatch = getPendingVisualValidationBatch(20);
     let visualSummary = "";
@@ -7557,18 +7852,24 @@
     const pending = getPendingPublicValidationBatch(opts.limit || 50);
     if (!pending.length) return { ok: true, ran: 0, detail: "No pending public validations found." };
 
-    if (readOperatorEndpoint() && readOperatorKey()) {
+    if (readOperatorEndpoint() && readOperatorKey() && !opts.skipBackend) {
       renderAgentCycleMessage(
         "Self-healing pending validations",
         `${pending.length} pending public validation item${pending.length === 1 ? "" : "s"} found. Sentinel is handing the queue to the backend worker so stale JSON can be republished when needed.`,
         "info"
       );
-      return runBackendAgentDrainCycle();
+      const backendResult = await runBackendAgentDrainCycle();
+      if (backendResult && backendResult.ok) return backendResult;
+      renderAgentCycleMessage(
+        "Backend unavailable, rechecking public JSON",
+        "The backend worker did not return usable data. Sentinel will continue with read-only public JSON rechecks and leave publish/write decisions in review.",
+        "warning"
+      );
     }
 
     renderAgentCycleMessage(
       "Rechecking pending validations",
-      `${pending.length} pending public validation item${pending.length === 1 ? "" : "s"} found. Backend key is missing, so Sentinel will only recheck public JSON and will not publish.`,
+      `${pending.length} pending public validation item${pending.length === 1 ? "" : "s"} found. Sentinel will only recheck public JSON in the browser and will not publish or write source data.`,
       "warning"
     );
 

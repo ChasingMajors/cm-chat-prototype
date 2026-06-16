@@ -1372,6 +1372,88 @@ h2 {
   letter-spacing: -0.01em;
 }
 
+.admin-decision-console {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(255,174,66,0.28);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255,248,229,0.92), rgba(255,255,255,0.62));
+  box-shadow: 0 12px 34px rgba(35,77,125,0.07);
+}
+
+.admin-decision-head,
+.admin-decision-group,
+.admin-decision-actions {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.admin-decision-head,
+.admin-decision-group {
+  justify-content: space-between;
+}
+
+.admin-decision-head strong,
+.admin-decision-group strong {
+  display: block;
+  color: #071833;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.admin-decision-head span,
+.admin-decision-group span,
+.admin-decision-group p {
+  display: block;
+  color: #56647a;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.admin-decision-head em,
+.admin-decision-actions em {
+  flex: 0 0 auto;
+  min-width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,174,66,0.32);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.78);
+  color: #7c2d12;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.admin-decision-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.admin-decision-group {
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid rgba(124,139,161,0.18);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.68);
+}
+
+.admin-decision-group p {
+  margin-top: 5px;
+  font-weight: 800;
+}
+
+.admin-decision-actions {
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .resolved-summary,
 .resolved-proof {
   border-color: rgba(51,209,122,0.22);
@@ -1643,6 +1725,19 @@ h2 {
 }
 
 @media (max-width: 760px) {
+  .admin-decision-head,
+  .admin-decision-group {
+    display: grid;
+  }
+
+  .admin-decision-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-decision-actions {
+    justify-content: flex-start;
+  }
+
   .action-progress {
     grid-template-columns: 1fr;
   }

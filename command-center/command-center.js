@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc137-save-reconciled-memory-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc138-active-work-counts-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -7554,8 +7554,7 @@
       .concat(Array.isArray(context.failed) ? context.failed : []);
     const actions = []
       .concat(selected)
-      .concat(getActiveAgentActions())
-      .concat(getResolvedAgentActions().slice(0, 40));
+      .concat(getActiveAgentActions());
 
     actions.forEach(action => {
       const row = buildAgentCycleMonitorRow(action);

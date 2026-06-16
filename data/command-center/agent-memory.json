@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:57:01.336Z",
+  "exported_at": "2026-06-16T18:57:05.574Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:55:06.143Z",
-      "updatedAt": "2026-06-16T18:56:25.451Z",
+      "updatedAt": "2026-06-16T18:57:02.386Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640707905",
       "visualStartedAt": "2026-06-16T18:55:05Z"
     },
@@ -329,7 +329,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:54:43.135Z",
-      "updatedAt": "2026-06-16T18:56:40.003Z",
+      "updatedAt": "2026-06-16T18:57:03.969Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:01:03.287Z"
     },
@@ -353,7 +353,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:54:39.390Z",
-      "updatedAt": "2026-06-16T18:56:39.437Z",
+      "updatedAt": "2026-06-16T18:57:02.676Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:01:01.247Z"
     },
@@ -1746,7 +1746,7 @@
       "expectedRowCount": 248,
       "expectedParallelCount": 17,
       "createdAt": "2026-06-09T17:54:02.458Z",
-      "updatedAt": "2026-06-16T18:56:39.437Z",
+      "updatedAt": "2026-06-16T18:57:02.677Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Mega Box Chrome Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:51:37.335Z",
@@ -1773,7 +1773,7 @@
       "expectedRowCount": 195,
       "expectedParallelCount": 24,
       "createdAt": "2026-06-09T17:54:02.457Z",
-      "updatedAt": "2026-06-16T18:56:40.003Z",
+      "updatedAt": "2026-06-16T18:57:03.969Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman High Tek Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:51:37.335Z",
@@ -2051,7 +2051,7 @@
       "expectedRowCount": 558,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.450Z",
-      "updatedAt": "2026-06-16T18:56:25.452Z",
+      "updatedAt": "2026-06-16T18:57:02.387Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Stadium Club Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:51:37.335Z",
@@ -2083,6 +2083,66 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781636223970_1yefwq",
+      "ts": "2026-06-16T18:57:03.970Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman High Tek Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781636222677_1o3ybk",
+      "ts": "2026-06-16T18:57:02.677Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781636222403_zgtlbo",
+      "ts": "2026-06-16T18:57:02.403Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 of 24 wave ran. 3 safe actions executed. Refreshed 3 existing visual tests before dispatch. Queued 5 CV/ChatBot visual tests and refreshed 22. 23 remain: 9 need admin decision, 1 running, 12 queued/in flight, 1 known issue. Stopped because: No local safe queue candidates remain. Wave 1: baseball 2017 -> pending_visual_validation (21 product(s) validated, 0 pending, 0 failed.); baseball 2016 -> pending_visual_validation (15 product(s) validated, 0 pending, 0 failed.); 2017 Topps Archives Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.) Review needed: 2017 Topps Archives Baseball -> queued. Sentinel will keep clearing other safe work.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781636222398_nmzzxg",
+      "ts": "2026-06-16T18:57:02.398Z",
+      "type": "visual_test",
+      "title": "Visual validation follow-up refreshed",
+      "detail": "22 visual tests refreshed. 5 passed. 0 need repair. 17 still queued/running.",
+      "status": "checked",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1781636222388_tlkvcs",
+      "ts": "2026-06-16T18:57:02.388Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781636222387_5ocg4c",
+      "ts": "2026-06-16T18:57:02.387Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781636219733_fsc7yt",
       "ts": "2026-06-16T18:56:59.733Z",
@@ -2821,66 +2881,6 @@
       "detail": "No GitHub run visible yet.",
       "status": "queued",
       "product": "2017 Donruss Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781636108714_o07hta",
-      "ts": "2026-06-16T18:55:08.714Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman Draft Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781636106190_6fq1ap",
-      "ts": "2026-06-16T18:55:06.190Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "queued",
-      "product": "2016 Topps Tier One Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781636106154_dqn0j6",
-      "ts": "2026-06-16T18:55:06.154Z",
-      "type": "visual_test",
-      "title": "Visual validation batch queued",
-      "detail": "5 CV/ChatBot visual tests queued. 2017 Panini Stars and Stripes USA Baseball; 2017 Panini National Treasures Baseball; 2017 Panini Immaculate Collection Baseball; 2017 Panini Flawless Baseball",
-      "status": "queued",
-      "product": "",
-      "source": "agent_cycle"
-    },
-    {
-      "id": "log_1781636106145_3wcd16",
-      "ts": "2026-06-16T18:55:06.145Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2016 Topps Stadium Club Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781636105266_68u5sm",
-      "ts": "2026-06-16T18:55:05.266Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman High Tek Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781636104037_8q4p1g",
-      "ts": "2026-06-16T18:55:04.037Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "queued",
-      "product": "2017 Bowman Baseball",
       "source": "github_actions"
     }
   ],
@@ -3712,7 +3712,7 @@
       "productName": "2017 Bowman Mega Box Chrome Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
-      "updatedAt": "2026-06-16T18:56:39.435Z",
+      "updatedAt": "2026-06-16T18:57:02.674Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3720,7 +3720,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:56:39.435Z"
+      "checkedAt": "2026-06-16T18:57:02.674Z"
     },
     "baseball|2017_Topps_Allen_Ginter_X_Baseball": {
       "status": "completed",
@@ -4034,7 +4034,7 @@
       "productName": "2017 Bowman High Tek Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_High_Tek_Baseball",
-      "updatedAt": "2026-06-16T18:56:40.001Z",
+      "updatedAt": "2026-06-16T18:57:03.967Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4042,7 +4042,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:56:40.000Z"
+      "checkedAt": "2026-06-16T18:57:03.967Z"
     },
     "baseball|2017_Bowman_Draft_Baseball": {
       "status": "queued",
@@ -4724,7 +4724,7 @@
       "productName": "2017 Bowman Mega Box Chrome Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
-      "updatedAt": "2026-06-16T18:56:39.435Z",
+      "updatedAt": "2026-06-16T18:57:02.674Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4732,7 +4732,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:56:39.435Z"
+      "checkedAt": "2026-06-16T18:57:02.674Z"
     },
     "baseball|2017 bowman mega box chrome baseball": {
       "status": "queued",
@@ -4747,7 +4747,7 @@
       "productName": "2017 Bowman Mega Box Chrome Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
-      "updatedAt": "2026-06-16T18:56:39.435Z",
+      "updatedAt": "2026-06-16T18:57:02.674Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4755,7 +4755,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:56:39.435Z"
+      "checkedAt": "2026-06-16T18:57:02.674Z"
     },
     "baseball|2017_bowman_high_tek_baseball": {
       "status": "queued",
@@ -4770,7 +4770,7 @@
       "productName": "2017 Bowman High Tek Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_High_Tek_Baseball",
-      "updatedAt": "2026-06-16T18:56:40.001Z",
+      "updatedAt": "2026-06-16T18:57:03.967Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4778,7 +4778,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:56:40.000Z"
+      "checkedAt": "2026-06-16T18:57:03.967Z"
     },
     "baseball|2017 bowman high tek baseball": {
       "status": "queued",
@@ -4793,7 +4793,7 @@
       "productName": "2017 Bowman High Tek Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_High_Tek_Baseball",
-      "updatedAt": "2026-06-16T18:56:40.001Z",
+      "updatedAt": "2026-06-16T18:57:03.967Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4801,7 +4801,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:56:40.000Z"
+      "checkedAt": "2026-06-16T18:57:03.967Z"
     },
     "baseball|2017_bowman_draft_baseball": {
       "status": "queued",
@@ -5138,7 +5138,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-16T18:56:25.448Z",
+      "updatedAt": "2026-06-16T18:57:02.384Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640707905,
@@ -5146,7 +5146,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "be0ac4f83852f76cd1b314bcccd4ee8a5a305f2e",
       "createdAt": "2026-06-16T18:55:05Z",
-      "checkedAt": "2026-06-16T18:56:25.448Z"
+      "checkedAt": "2026-06-16T18:57:02.384Z"
     },
     "baseball|2016_topps_stadium_club_baseball": {
       "status": "completed",
@@ -5161,7 +5161,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-16T18:56:25.448Z",
+      "updatedAt": "2026-06-16T18:57:02.384Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640707905,
@@ -5169,7 +5169,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "be0ac4f83852f76cd1b314bcccd4ee8a5a305f2e",
       "createdAt": "2026-06-16T18:55:05Z",
-      "checkedAt": "2026-06-16T18:56:25.448Z"
+      "checkedAt": "2026-06-16T18:57:02.384Z"
     },
     "baseball|2016 topps stadium club baseball": {
       "status": "completed",
@@ -5184,7 +5184,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-16T18:56:25.448Z",
+      "updatedAt": "2026-06-16T18:57:02.384Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640707905,
@@ -5192,7 +5192,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "be0ac4f83852f76cd1b314bcccd4ee8a5a305f2e",
       "createdAt": "2026-06-16T18:55:05Z",
-      "checkedAt": "2026-06-16T18:56:25.448Z"
+      "checkedAt": "2026-06-16T18:57:02.384Z"
     }
   },
   "known_issues": {},
@@ -5415,7 +5415,7 @@
       "code": "2016_Topps_Update_Series_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.574Z",
       "resolved": true
     },
     "baseball|2016_topps_update_series_baseball": {
@@ -5424,7 +5424,7 @@
       "code": "2016_Topps_Update_Series_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.574Z",
       "resolved": true
     },
     "baseball|2017 bowman baseball": {
@@ -5442,7 +5442,7 @@
       "code": "2017_Bowman_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640696959",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.574Z",
       "resolved": true
     },
     "baseball|2017 bowman chrome baseball": {
@@ -5460,7 +5460,7 @@
       "code": "2017_Bowman_Chrome_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640694545",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 bowman chrome mini baseball": {
@@ -5478,7 +5478,7 @@
       "code": "2017_Bowman_Chrome_Mini_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640692623",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 bowman draft baseball": {
@@ -5559,7 +5559,7 @@
       "code": "2016_Topps_Tribute_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.574Z",
       "resolved": true
     },
     "baseball|2016_topps_tribute_baseball": {
@@ -5568,7 +5568,7 @@
       "code": "2016_Topps_Tribute_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.574Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104808590": {
@@ -5586,7 +5586,7 @@
       "code": "2017_Panini_Diamond_Kings_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248311052",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104752735": {
@@ -5604,7 +5604,7 @@
       "code": "2017_Panini_Elite_Extra_Edition_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248306254",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104699851": {
@@ -5622,7 +5622,7 @@
       "code": "2017_Panini_Flawless_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248298041",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104619346": {
@@ -5640,7 +5640,7 @@
       "code": "2017_Panini_Stars_and_Stripes_USA_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248273774",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104534150": {
@@ -5658,7 +5658,7 @@
       "code": "2017_Topps_Allen_Ginter_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104533402": {
@@ -5676,7 +5676,7 @@
       "code": "2017_Topps_Allen_Ginter_X_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104442514": {
@@ -5712,7 +5712,7 @@
       "code": "2017_Topps_Archives_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640607726",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104297373": {
@@ -5766,7 +5766,7 @@
       "code": "2017_Donruss_Optic_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248336246",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104148131": {
@@ -5784,7 +5784,7 @@
       "code": "2017_Panini_Chronicles_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248330601",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104101547": {
@@ -5802,7 +5802,7 @@
       "code": "2017_Panini_Contenders_Draft_Picks_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248316434",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104011765": {
@@ -5820,7 +5820,7 @@
       "code": "2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103625780": {
@@ -5838,7 +5838,7 @@
       "code": "2017_Topps_Chrome_Update_Series_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103562421": {
@@ -5856,7 +5856,7 @@
       "code": "2017_Panini_National_Treasures_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248283991",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103488679": {
@@ -5874,7 +5874,7 @@
       "code": "2017_Topps_Clearly_Authentic_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103414055": {
@@ -5892,7 +5892,7 @@
       "code": "2017_Topps_Definitive_Collection_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103295947": {
@@ -5910,7 +5910,7 @@
       "code": "2017_Topps_Diamond_Icons_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103227296": {
@@ -5928,7 +5928,7 @@
       "code": "2017_Topps_Dynasty_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103226038": {
@@ -5946,7 +5946,7 @@
       "code": "2017_Topps_Finest_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103224044": {
@@ -5964,7 +5964,7 @@
       "code": "2017_Topps_Heritage_High_Number_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103156514": {
@@ -5982,7 +5982,7 @@
       "code": "2017_Topps_Heritage_Minor_League_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103155471": {
@@ -6000,7 +6000,7 @@
       "code": "2017_Topps_High_Tek_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103154655": {
@@ -6018,7 +6018,7 @@
       "code": "2017_Topps_Holiday_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103113962": {
@@ -6036,7 +6036,7 @@
       "code": "2017_Topps_Holiday_Bowman_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27103113084": {
@@ -6054,7 +6054,7 @@
       "code": "2017_Topps_Inception_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104053810": {
@@ -6072,7 +6072,7 @@
       "code": "2017_Topps_Luminaries_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247017863",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27102983741": {
@@ -6090,7 +6090,7 @@
       "code": "2017_Topps_Five_Star_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27102930523": {
@@ -6108,7 +6108,7 @@
       "code": "2017_Topps_Gallery_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27102887057": {
@@ -6126,7 +6126,7 @@
       "code": "2017_Topps_Gold_Label_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27635331280",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27102825509": {
@@ -6144,7 +6144,7 @@
       "code": "2017_Topps_Gypsy_Queen_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27102792208": {
@@ -6162,7 +6162,7 @@
       "code": "2017_Topps_Heritage_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 panini immaculate collection baseball": {
@@ -6180,7 +6180,7 @@
       "code": "2017_Panini_Immaculate_Collection_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248290310",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps holiday baseball": {
@@ -6189,7 +6189,7 @@
       "code": "2017_Topps_Holiday_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps heritage minor league baseball": {
@@ -6198,7 +6198,7 @@
       "code": "2017_Topps_Heritage_Minor_League_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps heritage high number baseball": {
@@ -6207,7 +6207,7 @@
       "code": "2017_Topps_Heritage_High_Number_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps heritage baseball": {
@@ -6216,7 +6216,7 @@
       "code": "2017_Topps_Heritage_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps gypsy queen baseball": {
@@ -6225,7 +6225,7 @@
       "code": "2017_Topps_Gypsy_Queen_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps gold label baseball": {
@@ -6243,7 +6243,7 @@
       "code": "2017_Topps_Diamond_Icons_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps dynasty baseball": {
@@ -6252,7 +6252,7 @@
       "code": "2017_Topps_Dynasty_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps finest baseball": {
@@ -6261,7 +6261,7 @@
       "code": "2017_Topps_Finest_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27247017863": {
@@ -6270,7 +6270,7 @@
       "code": "2017_Topps_Luminaries_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27247017863",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27227215045": {
@@ -6279,7 +6279,7 @@
       "code": "2017_Topps_Museum_Collection_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27227215045",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017_topps_museum_collection_baseball": {
@@ -6288,7 +6288,7 @@
       "code": "2017_Topps_Museum_Collection_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27227215045",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps inception baseball": {
@@ -6297,7 +6297,7 @@
       "code": "2017_Topps_Inception_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 bowman holiday baseball": {
@@ -6306,7 +6306,7 @@
       "code": "2017_Topps_Holiday_Bowman_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps high tek baseball": {
@@ -6315,7 +6315,7 @@
       "code": "2017_Topps_High_Tek_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps gallery baseball": {
@@ -6324,7 +6324,7 @@
       "code": "2017_Topps_Gallery_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps five star baseball": {
@@ -6333,7 +6333,7 @@
       "code": "2017_Topps_Five_Star_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps definitive collection baseball": {
@@ -6342,7 +6342,7 @@
       "code": "2017_Topps_Definitive_Collection_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps clearly authentic baseball": {
@@ -6351,7 +6351,7 @@
       "code": "2017_Topps_Clearly_Authentic_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps chrome update series baseball": {
@@ -6360,7 +6360,7 @@
       "code": "2017_Topps_Chrome_Update_Series_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps chrome sapphire baseball": {
@@ -6369,7 +6369,7 @@
       "code": "2017_Topps_Chrome_Baseball_Complete_Set_Sapphire_Edition",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27635331280": {
@@ -6378,7 +6378,7 @@
       "code": "2017_Topps_Gold_Label_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27635331280",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps allen and ginter x baseball": {
@@ -6387,7 +6387,7 @@
       "code": "2017_Topps_Allen_Ginter_X_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|2017 topps allen and ginter baseball": {
@@ -6396,7 +6396,7 @@
       "code": "2017_Topps_Allen_Ginter_Baseball",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27248273774": {
@@ -6405,7 +6405,7 @@
       "code": "2017_Panini_Stars_and_Stripes_USA_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248273774",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27248283991": {
@@ -6414,7 +6414,7 @@
       "code": "2017_Panini_National_Treasures_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248283991",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27248290310": {
@@ -6423,7 +6423,7 @@
       "code": "2017_Panini_Immaculate_Collection_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248290310",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27248298041": {
@@ -6432,7 +6432,7 @@
       "code": "2017_Panini_Flawless_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248298041",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27248306254": {
@@ -6441,7 +6441,7 @@
       "code": "2017_Panini_Elite_Extra_Edition_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248306254",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27248311052": {
@@ -6450,7 +6450,7 @@
       "code": "2017_Panini_Diamond_Kings_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248311052",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27248316434": {
@@ -6459,7 +6459,7 @@
       "code": "2017_Panini_Contenders_Draft_Picks_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248316434",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27248330601": {
@@ -6468,7 +6468,7 @@
       "code": "2017_Panini_Chronicles_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248330601",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27248336246": {
@@ -6477,7 +6477,7 @@
       "code": "2017_Donruss_Optic_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248336246",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27640607726": {
@@ -6486,7 +6486,7 @@
       "code": "2017_Topps_Archives_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640607726",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27640694545": {
@@ -6495,7 +6495,7 @@
       "code": "2017_Bowman_Chrome_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640694545",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27640707905": {
@@ -6504,7 +6504,7 @@
       "code": "2016_Topps_Stadium_Club_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640707905",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.574Z",
       "resolved": true
     },
     "baseball|2016_topps_stadium_club_baseball": {
@@ -6513,7 +6513,7 @@
       "code": "2016_Topps_Stadium_Club_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640707905",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.574Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27640692623": {
@@ -6522,7 +6522,7 @@
       "code": "2017_Bowman_Chrome_Mini_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640692623",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.573Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27640698829": {
@@ -6531,7 +6531,7 @@
       "code": "2016_Topps_Tier_One_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640698829",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.574Z",
       "resolved": true
     },
     "baseball|2016_topps_tier_one_baseball": {
@@ -6540,7 +6540,7 @@
       "code": "2016_Topps_Tier_One_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640698829",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.574Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27640696959": {
@@ -6549,11 +6549,11 @@
       "code": "2017_Bowman_Baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640696959",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-16T18:57:01.336Z",
+      "ignoredAt": "2026-06-16T18:57:05.574Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:57:02.276Z",
+  "saved_at": "2026-06-16T18:57:06.708Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T17:10:02.406Z",
+  "exported_at": "2026-06-16T17:10:08.171Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -173,10 +173,10 @@
       "sport": "basketball",
       "code": "2025_26_panini_origins_euroleague_basketball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed; publish needs review.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "CV/ChatBot validation needs review.",
       "runUrl": "",
       "sourceUrl": "",
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T17:10:00.798Z",
-      "updatedAt": "2026-06-16T17:10:00.798Z"
+      "updatedAt": "2026-06-16T17:10:06.569Z"
     },
     {
       "id": "visual_test|github_actions|2017 bowman platinum baseball|2017_bowman_platinum_baseball",
@@ -2092,6 +2092,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781629806568_zmpizc",
+      "ts": "2026-06-16T17:10:06.568Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Panini Origins EuroLeague Basketball",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781629800804_f4z287",
       "ts": "2026-06-16T17:10:00.804Z",
       "type": "checklist_publish",
@@ -2879,16 +2889,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2016 Topps Series 2 Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057378732_8sclp0",
-      "ts": "2026-06-10T02:09:38.732Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Archives Signature Series All-Star Baseball",
       "source": "github_actions"
     }
   ],
@@ -5154,6 +5154,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T17:10:03.510Z",
+  "saved_at": "2026-06-16T17:10:09.455Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc141-preview-before-write-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc142-dedupe-live-product-status-v1-2026-06-16";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -550,6 +550,51 @@
 
   function isPendingVisualValidationAction(action) {
     return String(action && action.status || "").toLowerCase() === "pending_visual_validation";
+  }
+
+  function isVisualAgentAction(action) {
+    const type = String(action && action.type || "").toLowerCase();
+    const validation = String(action && action.validationResult || "").toLowerCase();
+    return type === "visual_test" || isPendingVisualValidationAction(action) || validation.includes("visual") || validation.includes("cv/chatbot") || validation.includes("cv and chatbot");
+  }
+
+  function reconcileStaleRunningAgentActions(options) {
+    const opts = options || {};
+    let changed = 0;
+    (state.agentActions || []).forEach(action => {
+      if (!action) return;
+      const status = String(action.status || "").toLowerCase();
+      if (status !== "running" && status !== "in_progress") return;
+      if (isVisualAgentAction(action) && hasConcreteVisualRun(action)) return;
+
+      const updatedAt = Date.parse(action.updatedAt || action.createdAt || "") || 0;
+      const ageMs = updatedAt ? Date.now() - updatedAt : Number.POSITIVE_INFINITY;
+      if (!opts.force && ageMs < 2 * 60 * 1000) return;
+
+      const type = String(action.type || "").toLowerCase();
+      const nextStatus = type === "source_import" || type === "checklist_publish" || type === "backend_data_issue"
+        ? "pending_public_validation"
+        : "needs_admin";
+      Object.assign(action, {
+        status: nextStatus,
+        executionResult: action.executionResult || "Stale running state cleared after page reload.",
+        validationResult: action.validationResult || "No active backend job is visible. Sentinel will recheck coverage before doing more work.",
+        recommendedAction: action.recommendedAction || "Run Agent Cycle to recheck current public proof.",
+        updatedAt: new Date().toISOString()
+      });
+      changed += 1;
+    });
+    if (changed) {
+      writeAgentActions();
+      logActivity({
+        type: "agent_action",
+        status: "reconciled",
+        source: "command_center",
+        title: "Stale running work cleared",
+        detail: `${changed} stale running card${changed === 1 ? "" : "s"} moved back to verifiable queue state.`
+      });
+    }
+    return changed;
   }
 
   function getActiveAgentActions() {
@@ -5739,6 +5784,7 @@
       rememberResolvedSourceAction(resolved);
     });
     const reconciledCount = reconcileResolvedAgentActions();
+    reconcileStaleRunningAgentActions({ force: true });
     state.agentActions = state.agentActions.slice(0, 80);
     state.agentRunQueue = (state.agentRunQueue || []).filter(id => {
       const action = state.agentActions.find(item => item.id === id);
@@ -7714,13 +7760,19 @@
 
   function getAgentCycleMonitorRows(context) {
     const rowMap = new Map();
+    const active = getActiveAgentActions();
+    const activeKeys = new Set(active.map(action => buildAgentCycleMonitorKey(action, isVisualAgentAction(action), false)).filter(Boolean));
     const selected = []
       .concat(Array.isArray(context.selected) ? context.selected : [])
       .concat(Array.isArray(context.queued) ? context.queued : [])
-      .concat(Array.isArray(context.failed) ? context.failed : []);
+      .concat(Array.isArray(context.failed) ? context.failed : [])
+      .filter(action => {
+        const key = buildAgentCycleMonitorKey(action, isVisualAgentAction(action), false);
+        return key && activeKeys.has(key);
+      });
     const actions = []
       .concat(selected)
-      .concat(getActiveAgentActions());
+      .concat(active);
 
     actions.forEach(action => {
       const row = buildAgentCycleMonitorRow(action);
@@ -7739,7 +7791,7 @@
 
   function chooseAgentCycleMonitorRow(existing, incoming) {
     if (!existing) return incoming;
-    const priority = { complete: 5, running: 4, attention: 3, queued: 2, pending: 1, idle: 0 };
+    const priority = { running: 6, complete: 5, attention: 3, queued: 2, pending: 1, idle: 0 };
     if ((priority[incoming.state] || 0) > (priority[existing.state] || 0)) return incoming;
     if ((priority[incoming.state] || 0) < (priority[existing.state] || 0)) return existing;
     const incomingUpdated = Date.parse(incoming.updatedAt || "") || 0;
@@ -7804,11 +7856,13 @@
   }
 
   function buildAgentCycleMonitorKey(action, isVisual, isAdmin) {
-    const group = isVisual ? "visual" : isAdmin ? "admin" : "public";
     const sport = normalize(action && action.sport || "");
     const code = normalize(action && action.code || "");
     const product = normalize(action && (action.product || action.title) || "");
-    return [group, sport, code || product || normalize(action && action.type || "")].filter(Boolean).join("|");
+    const productKey = [sport, code || product].filter(Boolean).join("|");
+    if (productKey) return productKey;
+    const group = isVisual ? "visual" : isAdmin ? "admin" : "public";
+    return [group, normalize(action && action.type || ""), normalize(action && action.id || "")].filter(Boolean).join("|");
   }
 
   function countAgentCycleMonitor(rows) {
@@ -9537,6 +9591,7 @@
   els.autonomyModeSelect.value = state.autonomyMode;
   els.autonomyState.textContent = getAutonomyLabel(state.autonomyMode);
   els.typeFilter.addEventListener("change", renderOpportunities);
+  reconcileStaleRunningAgentActions({ force: true });
   render();
   autoLoadBackendAgentMemoryIfEmpty();
   reconcilePendingPublicValidationActions();

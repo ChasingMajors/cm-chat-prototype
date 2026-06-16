@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:25:48.744Z",
+  "exported_at": "2026-06-16T18:28:18.786Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1933,6 +1933,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781634497167_sd7gsi",
+      "ts": "2026-06-16T18:28:17.167Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep failed",
+      "detail": "Timed out after 150s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781634347137_axhiac",
       "ts": "2026-06-16T18:25:47.137Z",
       "type": "agent_cycle",
@@ -2719,16 +2729,6 @@
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "passed",
-      "product": "2017 Topps Definitive Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781630804478_mz8jz9",
-      "ts": "2026-06-16T17:26:44.478Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
       "product": "2017 Topps Definitive Collection Baseball",
       "source": "github_actions"
     }
@@ -4933,6 +4933,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:25:49.755Z",
+  "saved_at": "2026-06-16T18:28:21.577Z",
   "saved_by": "cm_command_center_operator"
 }

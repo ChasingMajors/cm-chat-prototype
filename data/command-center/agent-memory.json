@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:37:44.006Z",
+  "exported_at": "2026-06-16T18:37:48.006Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -173,11 +173,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639635608",
       "sourceUrl": "",
       "bucket": "",
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:36:22.396Z",
-      "updatedAt": "2026-06-16T18:37:22.170Z",
+      "updatedAt": "2026-06-16T18:37:45.482Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639635608",
       "visualStartedAt": "2026-06-16T18:36:22Z"
     },
@@ -305,7 +305,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:36:00.138Z",
-      "updatedAt": "2026-06-16T18:37:41.468Z",
+      "updatedAt": "2026-06-16T18:37:46.372Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:01:05.393Z"
     },
@@ -1800,7 +1800,7 @@
       "expectedRowCount": 640,
       "expectedParallelCount": 27,
       "createdAt": "2026-06-09T17:54:02.457Z",
-      "updatedAt": "2026-06-16T18:37:41.468Z",
+      "updatedAt": "2026-06-16T18:37:46.374Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Draft Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:32:24.026Z",
@@ -2039,11 +2039,11 @@
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2016.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639635608",
       "sourceUrl": "",
       "bucket": "2016",
@@ -2051,7 +2051,7 @@
       "expectedRowCount": 558,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.450Z",
-      "updatedAt": "2026-06-16T18:37:22.170Z",
+      "updatedAt": "2026-06-16T18:37:45.483Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Stadium Club Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:32:24.026Z",
@@ -2083,6 +2083,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781635066374_377o5p",
+      "ts": "2026-06-16T18:37:46.374Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Draft Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781635065485_9exkze",
+      "ts": "2026-06-16T18:37:45.485Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781635065484_w5v3y5",
+      "ts": "2026-06-16T18:37:45.484Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2016 Topps Stadium Club Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781635061469_s9cng0",
       "ts": "2026-06-16T18:37:41.469Z",
@@ -2851,36 +2881,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Panini National Treasures Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781634892607_d4yao6",
-      "ts": "2026-06-16T18:34:52.607Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Panini Stars and Stripes USA Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781634892607_l2iijj",
-      "ts": "2026-06-16T18:34:52.607Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Panini Stars and Stripes USA Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781634888542_2cle67",
-      "ts": "2026-06-16T18:34:48.542Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Topps Archives Baseball",
       "source": "github_actions"
     }
   ],
@@ -4057,7 +4057,7 @@
       "productName": "2017 Bowman Draft Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
-      "updatedAt": "2026-06-16T18:37:41.466Z",
+      "updatedAt": "2026-06-16T18:37:46.370Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4065,7 +4065,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:37:41.466Z"
+      "checkedAt": "2026-06-16T18:37:46.369Z"
     },
     "baseball|2017_topps_gold_label_baseball": {
       "status": "completed",
@@ -4816,7 +4816,7 @@
       "productName": "2017 Bowman Draft Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
-      "updatedAt": "2026-06-16T18:37:41.466Z",
+      "updatedAt": "2026-06-16T18:37:46.370Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4824,7 +4824,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:37:41.466Z"
+      "checkedAt": "2026-06-16T18:37:46.369Z"
     },
     "baseball|2017 bowman draft baseball": {
       "status": "queued",
@@ -4839,7 +4839,7 @@
       "productName": "2017 Bowman Draft Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Draft_Baseball",
-      "updatedAt": "2026-06-16T18:37:41.466Z",
+      "updatedAt": "2026-06-16T18:37:46.370Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4847,7 +4847,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:37:41.466Z"
+      "checkedAt": "2026-06-16T18:37:46.369Z"
     },
     "baseball|2017_Bowman_Chrome_Mini_Baseball": {
       "status": "completed",
@@ -5126,9 +5126,9 @@
       "checkedAt": "2026-06-16T18:37:27.027Z"
     },
     "baseball|2016_Topps_Stadium_Club_Baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-16T18:36:20.772Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639635608",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -5138,7 +5138,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-16T18:37:22.168Z",
+      "updatedAt": "2026-06-16T18:37:45.480Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639635608,
@@ -5146,12 +5146,12 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:22Z",
-      "checkedAt": "2026-06-16T18:37:22.168Z"
+      "checkedAt": "2026-06-16T18:37:45.479Z"
     },
     "baseball|2016_topps_stadium_club_baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-16T18:36:20.772Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639635608",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -5161,7 +5161,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-16T18:37:22.168Z",
+      "updatedAt": "2026-06-16T18:37:45.480Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639635608,
@@ -5169,12 +5169,12 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:22Z",
-      "checkedAt": "2026-06-16T18:37:22.168Z"
+      "checkedAt": "2026-06-16T18:37:45.479Z"
     },
     "baseball|2016 topps stadium club baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-16T18:36:20.772Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639635608",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -5184,7 +5184,7 @@
       "productName": "2016 Topps Stadium Club Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Stadium_Club_Baseball",
-      "updatedAt": "2026-06-16T18:37:22.168Z",
+      "updatedAt": "2026-06-16T18:37:45.480Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639635608,
@@ -5192,7 +5192,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Stadium Club Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:22Z",
-      "checkedAt": "2026-06-16T18:37:22.168Z"
+      "checkedAt": "2026-06-16T18:37:45.479Z"
     }
   },
   "known_issues": {},
@@ -6416,9 +6416,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-16T18:37:36.858Z",
       "resolved": true
+    },
+    "baseball|https github com chasingmajors cm-chat-prototype actions runs 27639635608": {
+      "product": "2016 Topps Stadium Club Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Stadium_Club_Baseball",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639635608",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-16T18:37:45.484Z",
+      "resolved": true
+    },
+    "baseball|2016_topps_stadium_club_baseball": {
+      "product": "2016 Topps Stadium Club Baseball",
+      "sport": "baseball",
+      "code": "2016_Topps_Stadium_Club_Baseball",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639635608",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-16T18:37:45.484Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:37:45.801Z",
+  "saved_at": "2026-06-16T18:37:49.249Z",
   "saved_by": "cm_command_center_operator"
 }

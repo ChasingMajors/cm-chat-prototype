@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:38:17.005Z",
+  "exported_at": "2026-06-16T18:38:28.005Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -353,7 +353,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:35:50.370Z",
-      "updatedAt": "2026-06-16T18:38:03.692Z",
+      "updatedAt": "2026-06-16T18:38:26.280Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:01:01.247Z"
     },
@@ -1746,7 +1746,7 @@
       "expectedRowCount": 248,
       "expectedParallelCount": 17,
       "createdAt": "2026-06-09T17:54:02.458Z",
-      "updatedAt": "2026-06-16T18:38:03.692Z",
+      "updatedAt": "2026-06-16T18:38:26.280Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Mega Box Chrome Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:32:24.026Z",
@@ -2083,6 +2083,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781635106281_o041sl",
+      "ts": "2026-06-16T18:38:26.281Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781635095294_dsjl8c",
       "ts": "2026-06-16T18:38:15.294Z",
@@ -2871,16 +2881,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Bowman's Best Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781634936457_3v8c18",
-      "ts": "2026-06-16T18:35:36.457Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Donruss Baseball",
       "source": "github_actions"
     }
   ],
@@ -3712,7 +3712,7 @@
       "productName": "2017 Bowman Mega Box Chrome Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
-      "updatedAt": "2026-06-16T18:38:03.691Z",
+      "updatedAt": "2026-06-16T18:38:26.277Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3720,7 +3720,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:38:03.691Z"
+      "checkedAt": "2026-06-16T18:38:26.276Z"
     },
     "baseball|2017_Topps_Allen_Ginter_X_Baseball": {
       "status": "completed",
@@ -4724,7 +4724,7 @@
       "productName": "2017 Bowman Mega Box Chrome Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
-      "updatedAt": "2026-06-16T18:38:03.691Z",
+      "updatedAt": "2026-06-16T18:38:26.277Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4732,7 +4732,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:38:03.691Z"
+      "checkedAt": "2026-06-16T18:38:26.276Z"
     },
     "baseball|2017 bowman mega box chrome baseball": {
       "status": "queued",
@@ -4747,7 +4747,7 @@
       "productName": "2017 Bowman Mega Box Chrome Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
-      "updatedAt": "2026-06-16T18:38:03.691Z",
+      "updatedAt": "2026-06-16T18:38:26.277Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4755,7 +4755,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:38:03.691Z"
+      "checkedAt": "2026-06-16T18:38:26.276Z"
     },
     "baseball|2017_bowman_high_tek_baseball": {
       "status": "completed",
@@ -6455,6 +6455,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:38:18.326Z",
+  "saved_at": "2026-06-16T18:38:29.197Z",
   "saved_by": "cm_command_center_operator"
 }

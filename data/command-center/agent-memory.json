@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T12:51:18.944Z",
+  "exported_at": "2026-06-16T12:51:31.865Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -213,11 +213,11 @@
       "sport": "baseball",
       "code": "2021_panini_stars_stripes_usa_baseball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27618723276",
       "sourceUrl": "",
       "bucket": "",
@@ -225,7 +225,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T12:49:44.977Z",
-      "updatedAt": "2026-06-16T12:51:04.445Z",
+      "updatedAt": "2026-06-16T12:51:30.262Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27618723276",
       "visualStartedAt": "2026-06-16T12:49:40Z"
     },
@@ -237,11 +237,11 @@
       "sport": "baseball",
       "code": "2021_panini_stars_stripes_usa_baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet data ahead of public JSON.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27618723276",
       "sourceUrl": "",
       "bucket": "2021",
@@ -249,7 +249,7 @@
       "expectedRowCount": 1199,
       "expectedParallelCount": 46,
       "createdAt": "2026-06-16T12:38:54.883Z",
-      "updatedAt": "2026-06-16T12:51:04.446Z",
+      "updatedAt": "2026-06-16T12:51:30.262Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27618723276",
       "visualStartedAt": "2026-06-16T12:49:40Z"
     },
@@ -1973,6 +1973,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781614290263_8igstf",
+      "ts": "2026-06-16T12:51:30.263Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2021 Panini Stars & Stripes USA Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781614290262_auyp1x",
+      "ts": "2026-06-16T12:51:30.262Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2021 Panini Stars & Stripes USA Baseball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781614277342_tvc54e",
       "ts": "2026-06-16T12:51:17.342Z",
       "type": "autonomy",
@@ -2750,26 +2770,6 @@
       "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
       "status": "started",
       "product": "2025-26 Bowman Sapphire Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781062742207_kilcik",
-      "ts": "2026-06-10T03:39:02.207Z",
-      "type": "source_import",
-      "title": "Import blocked before sheet write",
-      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781062731724_5ixtkt",
-      "ts": "2026-06-10T03:38:51.724Z",
-      "type": "source_import",
-      "title": "Import blocked before sheet write",
-      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "status": "failed",
-      "product": "",
       "source": "operator_backend"
     }
   ],
@@ -4319,9 +4319,9 @@
       "checkedAt": "2026-06-13T14:13:31.505Z"
     },
     "baseball|2021_panini_stars_stripes_usa_baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-16T12:49:38.298Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27618723276",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -4331,7 +4331,7 @@
       "productName": "2021 Panini Stars & Stripes USA Baseball",
       "sport": "baseball",
       "code": "2021_panini_stars_stripes_usa_baseball",
-      "updatedAt": "2026-06-16T12:51:04.443Z",
+      "updatedAt": "2026-06-16T12:51:30.260Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27618723276,
@@ -4339,7 +4339,7 @@
       "displayTitle": "Visual Product Test - 2021 Panini Stars & Stripes USA Baseball",
       "headSha": "a95bf1ddccf4fa38718f8d4a8847e17fada43435",
       "createdAt": "2026-06-16T12:49:40Z",
-      "checkedAt": "2026-06-16T12:51:04.443Z"
+      "checkedAt": "2026-06-16T12:51:30.260Z"
     }
   },
   "known_issues": {},
@@ -5413,6 +5413,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T12:51:20.139Z",
+  "saved_at": "2026-06-16T12:51:33.296Z",
   "saved_by": "cm_command_center_operator"
 }

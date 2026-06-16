@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T17:10:08.171Z",
+  "exported_at": "2026-06-16T17:10:15.642Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -166,6 +166,30 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2025-26 panini origins euroleague basketball|2025_26_panini_origins_euroleague_basketball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2025-26 Panini Origins EuroLeague Basketball",
+      "sport": "basketball",
+      "code": "2025_26_panini_origins_euroleague_basketball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-16T17:10:14.038Z",
+      "updatedAt": "2026-06-16T17:10:14.039Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "visualStartedAt": "2026-06-16T17:10:11.551Z"
+    },
+    {
       "id": "checklist_publish|operator_backend|2025-26 panini origins euroleague basketball|2025_26_panini_origins_euroleague_basketball",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -173,19 +197,21 @@
       "sport": "basketball",
       "code": "2025_26_panini_origins_euroleague_basketball",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot validation needs review.",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T17:10:00.798Z",
-      "updatedAt": "2026-06-16T17:10:06.569Z"
+      "updatedAt": "2026-06-16T17:10:14.039Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "visualStartedAt": "2026-06-16T17:10:11.551Z"
     },
     {
       "id": "visual_test|github_actions|2017 bowman platinum baseball|2017_bowman_platinum_baseball",
@@ -2092,6 +2118,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781629814039_txz9gl",
+      "ts": "2026-06-16T17:10:14.039Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2025-26 Panini Origins EuroLeague Basketball",
+      "source": "github_actions"
+    },
+    {
       "id": "log_1781629806568_zmpizc",
       "ts": "2026-06-16T17:10:06.568Z",
       "type": "checklist_publish",
@@ -2878,16 +2914,6 @@
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "passed",
-      "product": "2016 Topps Series 2 Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057380051_tl03c7",
-      "ts": "2026-06-10T02:09:40.051Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
       "product": "2016 Topps Series 2 Baseball",
       "source": "github_actions"
     }
@@ -4063,6 +4089,23 @@
       "updatedAt": "2026-06-09T20:01:06.984Z",
       "knownIssue": false,
       "knownIssueNote": ""
+    },
+    "basketball|2025_26_panini_origins_euroleague_basketball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-16T17:10:11.551Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "basketball|2025_26_panini_origins_euroleague_basketball",
+      "key": "basketball|2025_26_panini_origins_euroleague_basketball",
+      "productName": "2025-26 Panini Origins EuroLeague Basketball",
+      "sport": "basketball",
+      "code": "2025_26_panini_origins_euroleague_basketball",
+      "updatedAt": "2026-06-16T17:10:14.037Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -5154,6 +5197,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T17:10:09.455Z",
+  "saved_at": "2026-06-16T17:10:16.610Z",
   "saved_by": "cm_command_center_operator"
 }

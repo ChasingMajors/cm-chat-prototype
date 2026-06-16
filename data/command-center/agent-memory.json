@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T17:09:30.234Z",
+  "exported_at": "2026-06-16T17:09:40.395Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2088,6 +2088,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781629778792_lc5tn4",
+      "ts": "2026-06-16T17:09:38.792Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "719 rows and 99 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Panini Origins EuroLeague Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781629777785_2lkbgm",
+      "ts": "2026-06-16T17:09:37.785Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Panini Origins EuroLeague Basketball",
+      "source": "admin"
+    },
+    {
       "id": "log_1781629768632_doq980",
       "ts": "2026-06-16T17:09:28.632Z",
       "type": "agent_action",
@@ -2865,26 +2885,6 @@
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
       "status": "passed",
       "product": "2017 Bowman Chrome Mini Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057376475_j95fh8",
-      "ts": "2026-06-10T02:09:36.475Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Bowman Chrome Mini Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057376060_iew29o",
-      "ts": "2026-06-10T02:09:36.060Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2016 Topps Series 1 Baseball",
       "source": "github_actions"
     }
   ],
@@ -5150,6 +5150,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T17:09:31.762Z",
+  "saved_at": "2026-06-16T17:09:41.714Z",
   "saved_by": "cm_command_center_operator"
 }

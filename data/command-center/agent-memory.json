@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:44:07.908Z",
+  "exported_at": "2026-06-16T18:44:13.864Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -281,7 +281,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:43:36.353Z",
-      "updatedAt": "2026-06-16T18:43:46.550Z",
+      "updatedAt": "2026-06-16T18:44:12.261Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640046282",
       "visualStartedAt": "2026-06-16T18:43:35Z"
     },
@@ -353,7 +353,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:43:24.696Z",
-      "updatedAt": "2026-06-16T18:43:46.798Z",
+      "updatedAt": "2026-06-16T18:44:11.941Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:01:01.247Z"
     },
@@ -1746,7 +1746,7 @@
       "expectedRowCount": 248,
       "expectedParallelCount": 17,
       "createdAt": "2026-06-09T17:54:02.458Z",
-      "updatedAt": "2026-06-16T18:43:46.798Z",
+      "updatedAt": "2026-06-16T18:44:11.942Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Mega Box Chrome Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:39:56.145Z",
@@ -1827,7 +1827,7 @@
       "expectedRowCount": 277,
       "expectedParallelCount": 10,
       "createdAt": "2026-06-09T17:54:02.456Z",
-      "updatedAt": "2026-06-16T18:43:46.550Z",
+      "updatedAt": "2026-06-16T18:44:12.262Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Chrome Mini Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:39:56.145Z",
@@ -2083,6 +2083,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781635452262_v140zl",
+      "ts": "2026-06-16T18:44:12.262Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Bowman Chrome Mini Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781635451942_tdmnsr",
+      "ts": "2026-06-16T18:44:11.942Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Mega Box Chrome Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781635448704_kn8ku4",
+      "ts": "2026-06-16T18:44:08.704Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Bowman Chrome Mini Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781635446306_ok3vwp",
       "ts": "2026-06-16T18:44:06.306Z",
@@ -2852,36 +2882,6 @@
       "status": "passed",
       "product": "2016 Topps Tier One Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781635093706_9rd34f",
-      "ts": "2026-06-16T18:38:13.706Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2016 Topps Tier One Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781635088937_bv5wpm",
-      "ts": "2026-06-16T18:38:08.937Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman Draft Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781635087902_flugnq",
-      "ts": "2026-06-16T18:38:07.902Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 of 24 wave ran. 3 safe actions executed. Refreshed 3 existing visual tests before dispatch. Queued 5 CV/ChatBot visual tests and refreshed 16. 17 remain: 9 need admin decision, 1 running, 6 queued/in flight, 1 known issue. Stopped because: No local safe queue candidates remain. Wave 1: baseball 2017 -> pending_visual_validation (21 product(s) validated, 0 pending, 0 failed.); baseball 2016 -> pending_visual_validation (15 product(s) validated, 0 pending, 0 failed.); 2017 Topps Archives Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.) Review needed: 2017 Topps Archives Baseball -> queued. Sentinel will keep clearing other safe work.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -3712,7 +3712,7 @@
       "productName": "2017 Bowman Mega Box Chrome Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
-      "updatedAt": "2026-06-16T18:43:46.796Z",
+      "updatedAt": "2026-06-16T18:44:11.940Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -3720,7 +3720,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:43:46.796Z"
+      "checkedAt": "2026-06-16T18:44:11.939Z"
     },
     "baseball|2017_Topps_Allen_Ginter_X_Baseball": {
       "status": "completed",
@@ -4724,7 +4724,7 @@
       "productName": "2017 Bowman Mega Box Chrome Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
-      "updatedAt": "2026-06-16T18:43:46.796Z",
+      "updatedAt": "2026-06-16T18:44:11.940Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4732,7 +4732,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:43:46.796Z"
+      "checkedAt": "2026-06-16T18:44:11.939Z"
     },
     "baseball|2017 bowman mega box chrome baseball": {
       "status": "queued",
@@ -4747,7 +4747,7 @@
       "productName": "2017 Bowman Mega Box Chrome Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Mega_Box_Chrome_Baseball",
-      "updatedAt": "2026-06-16T18:43:46.796Z",
+      "updatedAt": "2026-06-16T18:44:11.940Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4755,7 +4755,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:43:46.796Z"
+      "checkedAt": "2026-06-16T18:44:11.939Z"
     },
     "baseball|2017_bowman_high_tek_baseball": {
       "status": "completed",
@@ -4850,8 +4850,8 @@
       "checkedAt": "2026-06-16T18:43:58.606Z"
     },
     "baseball|2017_Bowman_Chrome_Mini_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-16T18:43:34.632Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640046282",
@@ -4862,7 +4862,7 @@
       "productName": "2017 Bowman Chrome Mini Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
-      "updatedAt": "2026-06-16T18:43:46.548Z",
+      "updatedAt": "2026-06-16T18:44:12.260Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640046282,
@@ -4870,11 +4870,11 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Chrome Mini Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:35Z",
-      "checkedAt": "2026-06-16T18:43:46.548Z"
+      "checkedAt": "2026-06-16T18:44:12.260Z"
     },
     "baseball|2017_bowman_chrome_mini_baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-16T18:43:34.632Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640046282",
@@ -4885,7 +4885,7 @@
       "productName": "2017 Bowman Chrome Mini Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
-      "updatedAt": "2026-06-16T18:43:46.548Z",
+      "updatedAt": "2026-06-16T18:44:12.260Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640046282,
@@ -4893,11 +4893,11 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Chrome Mini Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:35Z",
-      "checkedAt": "2026-06-16T18:43:46.548Z"
+      "checkedAt": "2026-06-16T18:44:12.260Z"
     },
     "baseball|2017 bowman chrome mini baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-16T18:43:34.632Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640046282",
@@ -4908,7 +4908,7 @@
       "productName": "2017 Bowman Chrome Mini Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
-      "updatedAt": "2026-06-16T18:43:46.548Z",
+      "updatedAt": "2026-06-16T18:44:12.260Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640046282,
@@ -4916,7 +4916,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Chrome Mini Baseball",
       "headSha": "81094f3f1a179ec1a920fb0b2c267037cf1bf1cd",
       "createdAt": "2026-06-16T18:43:35Z",
-      "checkedAt": "2026-06-16T18:43:46.548Z"
+      "checkedAt": "2026-06-16T18:44:12.260Z"
     },
     "baseball|2017_Bowman_Chrome_Baseball": {
       "status": "in_progress",
@@ -6392,6 +6392,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:44:09.037Z",
+  "saved_at": "2026-06-16T18:44:15.079Z",
   "saved_by": "cm_command_center_operator"
 }

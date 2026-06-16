@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:36:42.006Z",
+  "exported_at": "2026-06-16T18:36:47.007Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -233,7 +233,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:36:08.448Z",
-      "updatedAt": "2026-06-16T18:36:19.631Z",
+      "updatedAt": "2026-06-16T18:36:45.097Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639622912",
       "visualStartedAt": "2026-06-16T18:36:07Z"
     },
@@ -1881,7 +1881,7 @@
       "expectedRowCount": 879,
       "expectedParallelCount": 55,
       "createdAt": "2026-06-09T17:54:02.455Z",
-      "updatedAt": "2026-06-16T18:36:19.632Z",
+      "updatedAt": "2026-06-16T18:36:45.098Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:32:24.026Z",
@@ -2083,6 +2083,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781635005099_ouj9rd",
+      "ts": "2026-06-16T18:36:45.099Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Bowman Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781635000326_woc6vg",
       "ts": "2026-06-16T18:36:40.326Z",
@@ -2866,16 +2876,6 @@
     {
       "id": "log_1781631525579_a6ifav",
       "ts": "2026-06-16T17:38:45.579Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman Platinum Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781631500211_ewby86",
-      "ts": "2026-06-16T17:38:20.211Z",
       "type": "visual_test",
       "title": "Visual test status updated",
       "detail": "No GitHub run visible yet.",
@@ -4988,8 +4988,8 @@
       "checkedAt": "2026-06-16T18:36:40.076Z"
     },
     "baseball|2017_Bowman_Baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-16T18:36:06.745Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639622912",
@@ -5000,7 +5000,7 @@
       "productName": "2017 Bowman Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Baseball",
-      "updatedAt": "2026-06-16T18:36:19.630Z",
+      "updatedAt": "2026-06-16T18:36:45.090Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639622912,
@@ -5008,11 +5008,11 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:07Z",
-      "checkedAt": "2026-06-16T18:36:19.630Z"
+      "checkedAt": "2026-06-16T18:36:45.090Z"
     },
     "baseball|2017_bowman_baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-16T18:36:06.745Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639622912",
@@ -5023,7 +5023,7 @@
       "productName": "2017 Bowman Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Baseball",
-      "updatedAt": "2026-06-16T18:36:19.630Z",
+      "updatedAt": "2026-06-16T18:36:45.090Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639622912,
@@ -5031,11 +5031,11 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:07Z",
-      "checkedAt": "2026-06-16T18:36:19.630Z"
+      "checkedAt": "2026-06-16T18:36:45.090Z"
     },
     "baseball|2017 bowman baseball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-06-16T18:36:06.745Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639622912",
@@ -5046,7 +5046,7 @@
       "productName": "2017 Bowman Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Baseball",
-      "updatedAt": "2026-06-16T18:36:19.630Z",
+      "updatedAt": "2026-06-16T18:36:45.090Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639622912,
@@ -5054,7 +5054,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:07Z",
-      "checkedAt": "2026-06-16T18:36:19.630Z"
+      "checkedAt": "2026-06-16T18:36:45.090Z"
     },
     "baseball|2016_Topps_Tier_One_Baseball": {
       "status": "in_progress",
@@ -6392,6 +6392,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:36:43.391Z",
+  "saved_at": "2026-06-16T18:36:48.143Z",
   "saved_by": "cm_command_center_operator"
 }

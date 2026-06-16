@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T17:40:58.341Z",
+  "exported_at": "2026-06-16T17:42:51.453Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2061,6 +2061,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781631769851_kcrbj8",
+      "ts": "2026-06-16T17:42:49.851Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781631769840_5ci3t4",
+      "ts": "2026-06-16T17:42:49.840Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781631763549",
       "ts": "2026-06-16T17:41:02.795Z",
       "type": "agent_sweep",
@@ -2838,26 +2858,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Topps Chrome Update Series Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781630804479_t8x89k",
-      "ts": "2026-06-16T17:26:44.479Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Definitive Collection Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781630804478_mz8jz9",
-      "ts": "2026-06-16T17:26:44.478Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Definitive Collection Baseball",
       "source": "github_actions"
     }
   ],
@@ -5092,6 +5092,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T17:42:43.610Z",
+  "saved_at": "2026-06-16T17:42:52.577Z",
   "saved_by": "cm_command_center_operator"
 }

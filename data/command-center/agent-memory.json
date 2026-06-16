@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T17:18:00.389Z",
+  "exported_at": "2026-06-16T17:18:12.493Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T17:17:05.266Z",
-      "updatedAt": "2026-06-16T17:17:38.698Z",
+      "updatedAt": "2026-06-16T17:18:01.524Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27635331280",
       "visualStartedAt": "2026-06-16T17:17:04Z"
     },
@@ -543,7 +543,7 @@
       "expectedRowCount": 394,
       "expectedParallelCount": 6,
       "createdAt": "2026-06-09T17:54:02.467Z",
-      "updatedAt": "2026-06-16T17:17:38.698Z",
+      "updatedAt": "2026-06-16T17:18:01.524Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27635331280",
       "visualStartedAt": "2026-06-16T17:17:04Z"
     },
@@ -1935,9 +1935,30 @@
     }
   ],
   "agent_run_queue": [
+    "backend_audit|stale_public_json|baseball|2017_Topps_Five_Star_Baseball",
     "backend_audit|stale_public_json|baseball|2017_Topps_Gallery_Baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1781630290892_8612t9",
+      "ts": "2026-06-16T17:18:10.892Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2017 Topps Five Star Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2017 Topps Five Star Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1781630281524_ub2n0q",
+      "ts": "2026-06-16T17:18:01.524Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Gold Label Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781630278788_rkqehj",
       "ts": "2026-06-16T17:17:58.788Z",
@@ -2717,26 +2738,6 @@
       "status": "in_progress",
       "product": "2017 Bowman Chrome Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781057309368_e9enot",
-      "ts": "2026-06-10T02:08:29.368Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Bowman Chrome Mini Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057308008_oqteiz",
-      "ts": "2026-06-10T02:08:28.008Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2016 Topps Stadium Club Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": null,
@@ -2984,7 +2985,7 @@
       "productName": "2017 Topps Gold Label Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Gold_Label_Baseball",
-      "updatedAt": "2026-06-16T17:17:38.696Z",
+      "updatedAt": "2026-06-16T17:18:01.522Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27635331280,
@@ -2992,7 +2993,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Gold Label Baseball",
       "headSha": "752e9fd6d5474d874677cfc2adbc390f32d0a540",
       "createdAt": "2026-06-16T17:17:04Z",
-      "checkedAt": "2026-06-16T17:17:38.696Z"
+      "checkedAt": "2026-06-16T17:18:01.522Z"
     },
     "baseball|2017_Topps_Gallery_Baseball": {
       "status": "queued",
@@ -4939,6 +4940,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T17:18:01.345Z",
+  "saved_at": "2026-06-16T17:18:13.738Z",
   "saved_by": "cm_command_center_operator"
 }

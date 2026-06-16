@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:13:09.416Z",
+  "exported_at": "2026-06-16T18:13:13.479Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,30 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 panini stars and stripes usa baseball|2017_panini_stars_and_stripes_usa_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Panini Stars and Stripes USA Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Stars_and_Stripes_USA_Baseball",
+      "riskLevel": "low",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248273774",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-16T18:13:11.859Z",
+      "updatedAt": "2026-06-16T18:13:11.860Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248273774",
+      "visualStartedAt": "2026-06-10T02:05:44Z"
+    },
     {
       "id": "visual_test|github_actions|2017 topps archives baseball|2017_topps_archives_baseball",
       "type": "visual_test",
@@ -1168,22 +1192,24 @@
       "sport": "baseball",
       "code": "2017_Panini_Stars_and_Stripes_USA_Baseball",
       "riskLevel": "high",
-      "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
-      "runUrl": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248273774",
       "sourceUrl": "",
       "bucket": "2017",
       "targetBucket": "2017",
       "expectedRowCount": 989,
       "expectedParallelCount": 20,
       "createdAt": "2026-06-09T17:54:02.462Z",
-      "updatedAt": "2026-06-16T18:13:07.815Z",
+      "updatedAt": "2026-06-16T18:13:11.860Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Panini Stars and Stripes USA Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-16T18:10:24.657Z"
+      "autoExecutedAt": "2026-06-16T18:10:24.657Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248273774",
+      "visualStartedAt": "2026-06-10T02:05:44Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Panini_National_Treasures_Baseball",
@@ -1197,7 +1223,7 @@
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Queued for CV/ChatBot visual test dispatch (10 of 20).",
+      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1205,7 +1231,7 @@
       "expectedRowCount": 2089,
       "expectedParallelCount": 155,
       "createdAt": "2026-06-09T17:54:02.462Z",
-      "updatedAt": "2026-06-16T18:12:32.480Z",
+      "updatedAt": "2026-06-16T18:13:11.878Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Panini National Treasures Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:10:24.657Z"
@@ -2057,32 +2083,30 @@
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Chrome Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:10:24.657Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Archives_Signature_Series_All_Star_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Archives Signature Series All-Star Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Archives_Signature_Series_All_Star_Baseball",
-      "riskLevel": "low",
-      "status": "needs_admin",
-      "recommendedAction": "Confirm the source has no parallels. If it does, import or add them before publish.",
-      "adminDecision": "",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.446Z",
-      "updatedAt": "2026-06-09T17:54:02.446Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781633591861_j1z9f3",
+      "ts": "2026-06-16T18:13:11.861Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2017 Panini Stars and Stripes USA Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781633591861_d22q5k",
+      "ts": "2026-06-16T18:13:11.861Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2017 Panini Stars and Stripes USA Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781633587802_81gzw0",
       "ts": "2026-06-16T18:13:07.802Z",
@@ -2861,26 +2885,6 @@
       "detail": "2 matching queue items now have visual proof.",
       "status": "validated",
       "product": "2017 Donruss Optic Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781630864880_ivxrpb",
-      "ts": "2026-06-16T17:27:44.880Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2017 Topps Gallery Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781630864880_xkc2b7",
-      "ts": "2026-06-16T17:27:44.880Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2017 Topps Gallery Baseball",
       "source": "github_actions"
     }
   ],
@@ -3769,11 +3773,11 @@
       "checkedAt": "2026-06-10T01:48:28.256Z"
     },
     "baseball|2017_Panini_Stars_and_Stripes_USA_Baseball": {
-      "status": "queued",
-      "result": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-06-09T20:00:35.615Z",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27232245991",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248273774",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "baseball|2017_Panini_Stars_and_Stripes_USA_Baseball",
@@ -3781,15 +3785,15 @@
       "productName": "2017 Panini Stars and Stripes USA Baseball",
       "sport": "baseball",
       "code": "2017_Panini_Stars_and_Stripes_USA_Baseball",
-      "updatedAt": "2026-06-09T20:00:54.572Z",
+      "updatedAt": "2026-06-16T18:13:11.858Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 27232245991,
-      "runNumber": 100,
+      "runId": 27248273774,
+      "runNumber": 219,
       "displayTitle": "Visual Product Test - 2017 Panini Stars and Stripes USA Baseball",
-      "headSha": "6d4df191a465148f5c0a800989ffff6b3c8717db",
-      "createdAt": "2026-06-09T20:00:36Z",
-      "checkedAt": "2026-06-09T20:00:54.572Z"
+      "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
+      "createdAt": "2026-06-10T02:05:44Z",
+      "checkedAt": "2026-06-16T18:13:11.858Z"
     },
     "baseball|2017_Panini_Flawless_Baseball": {
       "status": "queued",
@@ -4502,6 +4506,52 @@
       "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
       "createdAt": "2026-06-10T02:05:00Z",
       "checkedAt": "2026-06-16T18:13:07.800Z"
+    },
+    "baseball|2017_panini_stars_and_stripes_usa_baseball": {
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
+      "startedAt": "2026-06-09T20:00:35.615Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248273774",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Panini_Stars_and_Stripes_USA_Baseball",
+      "key": "baseball|2017_panini_stars_and_stripes_usa_baseball",
+      "productName": "2017 Panini Stars and Stripes USA Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Stars_and_Stripes_USA_Baseball",
+      "updatedAt": "2026-06-16T18:13:11.858Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27248273774,
+      "runNumber": 219,
+      "displayTitle": "Visual Product Test - 2017 Panini Stars and Stripes USA Baseball",
+      "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
+      "createdAt": "2026-06-10T02:05:44Z",
+      "checkedAt": "2026-06-16T18:13:11.858Z"
+    },
+    "baseball|2017 panini stars and stripes usa baseball": {
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
+      "startedAt": "2026-06-09T20:00:35.615Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248273774",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Panini_Stars_and_Stripes_USA_Baseball",
+      "key": "baseball|2017 panini stars and stripes usa baseball",
+      "productName": "2017 Panini Stars and Stripes USA Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Stars_and_Stripes_USA_Baseball",
+      "updatedAt": "2026-06-16T18:13:11.858Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 27248273774,
+      "runNumber": 219,
+      "displayTitle": "Visual Product Test - 2017 Panini Stars and Stripes USA Baseball",
+      "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
+      "createdAt": "2026-06-10T02:05:44Z",
+      "checkedAt": "2026-06-16T18:13:11.858Z"
     }
   },
   "known_issues": {},
@@ -4947,9 +4997,9 @@
       "product": "2017 Panini Stars and Stripes USA Baseball",
       "sport": "baseball",
       "code": "2017_Panini_Stars_and_Stripes_USA_Baseball",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27104619346",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248273774",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T21:59:27.473Z",
+      "ignoredAt": "2026-06-16T18:13:11.861Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 27104534150": {
@@ -5653,9 +5703,18 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-16T18:13:07.802Z",
       "resolved": true
+    },
+    "baseball|https github com chasingmajors cm-chat-prototype actions runs 27248273774": {
+      "product": "2017 Panini Stars and Stripes USA Baseball",
+      "sport": "baseball",
+      "code": "2017_Panini_Stars_and_Stripes_USA_Baseball",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27248273774",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-16T18:13:11.861Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:13:10.718Z",
+  "saved_at": "2026-06-16T18:13:14.788Z",
   "saved_by": "cm_command_center_operator"
 }

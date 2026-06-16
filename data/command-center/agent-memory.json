@@ -2,8 +2,8 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T12:51:06.048Z",
-  "autonomy_mode": "guarded_auto",
+  "exported_at": "2026-06-16T12:51:18.944Z",
+  "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
@@ -1973,6 +1973,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781614277342_tvc54e",
+      "ts": "2026-06-16T12:51:17.342Z",
+      "type": "autonomy",
+      "title": "Autonomy mode changed",
+      "detail": "Mode set to Full auto.",
+      "status": "full_auto",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781614264446_f6igkn",
       "ts": "2026-06-16T12:51:04.446Z",
       "type": "visual_test",
@@ -2760,16 +2770,6 @@
       "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
       "status": "failed",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781062718617_1sjwt2",
-      "ts": "2026-06-10T03:38:38.617Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written and published",
-      "detail": "447 checklist rows and 32 parallels validated in the source sheet.",
-      "status": "validated",
-      "product": "2025-26 Bowman Sapphire Basketball",
       "source": "operator_backend"
     }
   ],
@@ -5413,6 +5413,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T12:51:07.371Z",
+  "saved_at": "2026-06-16T12:51:20.139Z",
   "saved_by": "cm_command_center_operator"
 }

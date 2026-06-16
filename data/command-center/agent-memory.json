@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:37:03.006Z",
+  "exported_at": "2026-06-16T18:37:08.006Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -209,7 +209,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:36:19.516Z",
-      "updatedAt": "2026-06-16T18:36:40.325Z",
+      "updatedAt": "2026-06-16T18:37:04.450Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639632420",
       "visualStartedAt": "2026-06-16T18:36:18Z"
     },
@@ -281,7 +281,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:36:02.986Z",
-      "updatedAt": "2026-06-16T18:37:00.505Z",
+      "updatedAt": "2026-06-16T18:37:05.471Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27639617204",
       "visualStartedAt": "2026-06-16T18:36:02Z"
     },
@@ -1827,7 +1827,7 @@
       "expectedRowCount": 277,
       "expectedParallelCount": 10,
       "createdAt": "2026-06-09T17:54:02.456Z",
-      "updatedAt": "2026-06-16T18:37:00.506Z",
+      "updatedAt": "2026-06-16T18:37:05.472Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Chrome Mini Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:32:24.026Z",
@@ -2002,7 +2002,7 @@
       "expectedRowCount": 880,
       "expectedParallelCount": 18,
       "createdAt": "2026-06-09T17:54:02.450Z",
-      "updatedAt": "2026-06-16T18:36:40.326Z",
+      "updatedAt": "2026-06-16T18:37:04.451Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2016 Topps Tier One Baseball by publishing baseball 2016 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:32:24.026Z",
@@ -2083,6 +2083,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781635025472_7qdvqr",
+      "ts": "2026-06-16T18:37:05.472Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Bowman Chrome Mini Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781635024451_m3lk0p",
+      "ts": "2026-06-16T18:37:04.451Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Topps Tier One Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781635020506_k3985o",
       "ts": "2026-06-16T18:37:00.506Z",
@@ -2856,26 +2876,6 @@
     {
       "id": "log_1781633419312_dwimtj",
       "ts": "2026-06-16T18:10:19.312Z",
-      "type": "agent_cycle",
-      "title": "Self-healing pending validations",
-      "detail": "47 pending public validation items found. Sentinel is handing the queue to the backend worker so stale JSON can be republished when needed.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1781631662007_ndz9sr",
-      "ts": "2026-06-16T17:41:02.007Z",
-      "type": "agent_cycle",
-      "title": "Running Agent Cycle",
-      "detail": "Sentinel will run safe backend work in waves until the safe queue is quiet, blocked, or the time guardrail is reached.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1781631658336_nm011p",
-      "ts": "2026-06-16T17:40:58.336Z",
       "type": "agent_cycle",
       "title": "Self-healing pending validations",
       "detail": "47 pending public validation items found. Sentinel is handing the queue to the backend worker so stale JSON can be republished when needed.",
@@ -4862,7 +4862,7 @@
       "productName": "2017 Bowman Chrome Mini Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
-      "updatedAt": "2026-06-16T18:37:00.502Z",
+      "updatedAt": "2026-06-16T18:37:05.468Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639617204,
@@ -4870,7 +4870,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Chrome Mini Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:02Z",
-      "checkedAt": "2026-06-16T18:37:00.502Z"
+      "checkedAt": "2026-06-16T18:37:05.468Z"
     },
     "baseball|2017_bowman_chrome_mini_baseball": {
       "status": "in_progress",
@@ -4885,7 +4885,7 @@
       "productName": "2017 Bowman Chrome Mini Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
-      "updatedAt": "2026-06-16T18:37:00.502Z",
+      "updatedAt": "2026-06-16T18:37:05.468Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639617204,
@@ -4893,7 +4893,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Chrome Mini Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:02Z",
-      "checkedAt": "2026-06-16T18:37:00.502Z"
+      "checkedAt": "2026-06-16T18:37:05.468Z"
     },
     "baseball|2017 bowman chrome mini baseball": {
       "status": "in_progress",
@@ -4908,7 +4908,7 @@
       "productName": "2017 Bowman Chrome Mini Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Chrome_Mini_Baseball",
-      "updatedAt": "2026-06-16T18:37:00.502Z",
+      "updatedAt": "2026-06-16T18:37:05.468Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639617204,
@@ -4916,7 +4916,7 @@
       "displayTitle": "Visual Product Test - 2017 Bowman Chrome Mini Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:02Z",
-      "checkedAt": "2026-06-16T18:37:00.502Z"
+      "checkedAt": "2026-06-16T18:37:05.468Z"
     },
     "baseball|2017_Bowman_Chrome_Baseball": {
       "status": "in_progress",
@@ -5069,7 +5069,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-16T18:36:40.322Z",
+      "updatedAt": "2026-06-16T18:37:04.445Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639632420,
@@ -5077,7 +5077,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:18Z",
-      "checkedAt": "2026-06-16T18:36:40.322Z"
+      "checkedAt": "2026-06-16T18:37:04.444Z"
     },
     "baseball|2016_topps_tier_one_baseball": {
       "status": "in_progress",
@@ -5092,7 +5092,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-16T18:36:40.322Z",
+      "updatedAt": "2026-06-16T18:37:04.445Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639632420,
@@ -5100,7 +5100,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:18Z",
-      "checkedAt": "2026-06-16T18:36:40.322Z"
+      "checkedAt": "2026-06-16T18:37:04.444Z"
     },
     "baseball|2016 topps tier one baseball": {
       "status": "in_progress",
@@ -5115,7 +5115,7 @@
       "productName": "2016 Topps Tier One Baseball",
       "sport": "baseball",
       "code": "2016_Topps_Tier_One_Baseball",
-      "updatedAt": "2026-06-16T18:36:40.322Z",
+      "updatedAt": "2026-06-16T18:37:04.445Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27639632420,
@@ -5123,7 +5123,7 @@
       "displayTitle": "Visual Product Test - 2016 Topps Tier One Baseball",
       "headSha": "f6faed3f3340687ee6e4d0979e3214120e60766b",
       "createdAt": "2026-06-16T18:36:18Z",
-      "checkedAt": "2026-06-16T18:36:40.322Z"
+      "checkedAt": "2026-06-16T18:37:04.444Z"
     },
     "baseball|2016_Topps_Stadium_Club_Baseball": {
       "status": "in_progress",
@@ -6392,6 +6392,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:37:04.003Z",
+  "saved_at": "2026-06-16T18:37:09.115Z",
   "saved_by": "cm_command_center_operator"
 }

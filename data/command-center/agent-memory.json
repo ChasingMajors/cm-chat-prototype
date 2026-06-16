@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:14:09.514Z",
+  "exported_at": "2026-06-16T18:14:36.059Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -185,7 +185,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:13:59.788Z",
-      "updatedAt": "2026-06-16T18:14:07.909Z",
+      "updatedAt": "2026-06-16T18:14:34.450Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-06-09T20:00:59.189Z"
     },
@@ -1765,7 +1765,7 @@
       "expectedRowCount": 435,
       "expectedParallelCount": 38,
       "createdAt": "2026-06-09T17:54:02.458Z",
-      "updatedAt": "2026-06-16T18:14:07.910Z",
+      "updatedAt": "2026-06-16T18:14:34.450Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman Platinum Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:10:24.657Z",
@@ -2113,6 +2113,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781633674450_dpvpf0",
+      "ts": "2026-06-16T18:14:34.450Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Platinum Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781633652337_xe46zl",
+      "ts": "2026-06-16T18:14:12.337Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 of 24 wave ran. 3 safe actions executed. Refreshed 3 existing visual tests before dispatch. 20 remain: 8 pending CV/ChatBot visual proof, 9 need admin decision, 2 queued/in flight, 1 known issue. Stopped because: No local safe queue candidates remain. Wave 1: baseball 2017 -> pending_visual_validation (31 product(s) validated, 0 pending, 0 failed.); baseball 2016 -> pending_visual_validation (15 product(s) validated, 0 pending, 0 failed.); 2017 Topps Gallery Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.) Review needed: 2017 Topps Gallery Baseball -> queued. Sentinel will keep clearing other safe work.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781633652331_1j19gu",
+      "ts": "2026-06-16T18:14:12.331Z",
+      "type": "visual_test",
+      "title": "Visual validation follow-up refreshed",
+      "detail": "2 visual tests refreshed. 0 passed. 0 need repair. 2 still queued/running.",
+      "status": "checked",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1781633652317_91aqbb",
+      "ts": "2026-06-16T18:14:12.317Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Bowman Platinum Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781633647910_3mpcqg",
       "ts": "2026-06-16T18:14:07.910Z",
@@ -2866,46 +2906,6 @@
     {
       "id": "log_1781631340676_1r09oc",
       "ts": "2026-06-16T17:35:40.676Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman Platinum Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781631330370_uyavae",
-      "ts": "2026-06-16T17:35:30.370Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman Platinum Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781631308092_6f4xj7",
-      "ts": "2026-06-16T17:35:08.092Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman Platinum Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781631284664_jaeugr",
-      "ts": "2026-06-16T17:34:44.664Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman Platinum Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781631261814_z2glkk",
-      "ts": "2026-06-16T17:34:21.814Z",
       "type": "visual_test",
       "title": "Visual test status updated",
       "detail": "No GitHub run visible yet.",
@@ -4041,7 +4041,7 @@
       "productName": "2017 Bowman Platinum Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Platinum_Baseball",
-      "updatedAt": "2026-06-16T18:14:07.908Z",
+      "updatedAt": "2026-06-16T18:14:34.448Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -4049,7 +4049,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:14:07.907Z"
+      "checkedAt": "2026-06-16T18:14:34.447Z"
     },
     "baseball|2017_Bowman_High_Tek_Baseball": {
       "status": "queued",
@@ -5064,7 +5064,7 @@
       "productName": "2017 Bowman Platinum Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Platinum_Baseball",
-      "updatedAt": "2026-06-16T18:14:07.908Z",
+      "updatedAt": "2026-06-16T18:14:34.448Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -5072,7 +5072,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:14:07.907Z"
+      "checkedAt": "2026-06-16T18:14:34.447Z"
     },
     "baseball|2017 bowman platinum baseball": {
       "status": "queued",
@@ -5087,7 +5087,7 @@
       "productName": "2017 Bowman Platinum Baseball",
       "sport": "baseball",
       "code": "2017_Bowman_Platinum_Baseball",
-      "updatedAt": "2026-06-16T18:14:07.908Z",
+      "updatedAt": "2026-06-16T18:14:34.448Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": "",
@@ -5095,7 +5095,7 @@
       "displayTitle": "",
       "headSha": "",
       "createdAt": "",
-      "checkedAt": "2026-06-16T18:14:07.907Z"
+      "checkedAt": "2026-06-16T18:14:34.447Z"
     }
   },
   "known_issues": {},
@@ -6358,6 +6358,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:14:10.805Z",
+  "saved_at": "2026-06-16T18:14:37.307Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2543,6 +2543,195 @@ h2 {
   to { background-position: -200% 0; }
 }
 
+/* Clarity pass: high-contrast operator surfaces. */
+body {
+  background: #f3f5f8;
+  color: #111827;
+  font-size: 14px;
+}
+
+.sentinel-sidebar,
+.topbar,
+.status-card,
+.panel,
+.sidebar-health,
+.hero-pill,
+.hero-clock,
+.autonomy-select,
+.sentinel-notice,
+.brief-item,
+.opportunity-card,
+.next-action-card,
+.operator-task-card,
+.agent-action-card,
+.activity-log-row,
+.lane-action-card,
+.metric-row,
+.signal-row,
+.target-row,
+.source-result-card,
+.source-watch-summary,
+.source-watch-item,
+.import-preview-card,
+.visual-test-card {
+  background: #ffffff;
+  border-color: #d7dde6;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.topbar,
+.panel {
+  border-radius: 18px;
+}
+
+.command-output-panel,
+.command-output-panel.command-output-active,
+.product-verifier-card,
+.command-brief-panel,
+.public-tool-card,
+.public-tool-card.pass,
+.public-tool-card.warn,
+.public-tool-card.review,
+.public-tool-card.muted {
+  background: #ffffff;
+  border-color: #d7dde6;
+  box-shadow: none;
+}
+
+.command-output-panel.command-output-active {
+  border-color: #d49a22;
+  box-shadow: 0 0 0 3px rgba(212,154,34,0.18);
+  animation: none;
+}
+
+.sentinel-nav a,
+.sidebar-command,
+.sidebar-command strong,
+.brief-item strong,
+.cycle-monitor-row strong,
+.cycle-current-task strong,
+.cycle-empty-state strong,
+h2,
+h3 {
+  color: #111827;
+}
+
+.sentinel-nav a.active {
+  color: #111827;
+  background: #eef2f7;
+  border: 1px solid #cbd5e1;
+  box-shadow: none;
+}
+
+.sentinel-nav a:hover,
+.sidebar-command:hover,
+.sidebar-command.primary-workflow:hover {
+  color: #111827;
+  background: #f3f6fa;
+  box-shadow: none;
+}
+
+.panel p,
+.lede,
+.brief-item span,
+.next-action-card p,
+.operator-task-card p,
+.agent-action-card p,
+.opportunity-card p,
+.metric-row span,
+.signal-row span,
+.target-row span,
+.sidebar-command span,
+.cycle-monitor-row em,
+.cycle-current-task span,
+.cycle-empty-state span,
+.agent-cycle-monitor .opp-top p {
+  color: #4b5563;
+}
+
+.agent-cycle-monitor {
+  background: #ffffff;
+  border-color: #d7dde6;
+  box-shadow: none;
+}
+
+.agent-cycle-monitor .opp-top h3 {
+  color: #111827;
+  font-size: 14px;
+}
+
+.agent-cycle-monitor .opp-top p {
+  font-size: 13px;
+}
+
+.cycle-stat-grid span,
+.cycle-current-task,
+.cycle-empty-state,
+.cycle-monitor-row {
+  background: #ffffff;
+  border-color: #d7dde6;
+}
+
+.cycle-stat-grid strong {
+  color: #111827;
+  font-size: 16px;
+}
+
+.cycle-stat-grid em,
+.cycle-monitor-section h4,
+.cycle-monitor-row b {
+  color: #4b5563;
+  font-size: 12px;
+}
+
+.cycle-current-task {
+  border-color: #d49a22;
+  background: #fffaf0;
+}
+
+.cycle-monitor-row {
+  min-height: 40px;
+  padding: 8px 10px;
+  grid-template-columns: 12px minmax(0, 1fr) auto;
+}
+
+.cycle-monitor-row strong {
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.cycle-monitor-row em {
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.cycle-status-dot {
+  width: 10px;
+  height: 10px;
+}
+
+.filter-select,
+.source-check-form input,
+.source-watch-actions input {
+  color: #111827;
+  background: #ffffff;
+  border-color: #cbd5e1;
+  font-size: 14px;
+}
+
+.badge {
+  color: #111827;
+  background: #ffffff;
+  border-color: #cbd5e1;
+  font-size: 12px;
+}
+
+.badge.critical { color: #991b1b; background: #fff5f5; border-color: #fecaca; }
+.badge.warning { color: #7c4a03; background: #fff8e8; border-color: #f8d694; }
+.badge.opportunity { color: #14532d; background: #f0fdf4; border-color: #bbf7d0; }
+.badge.info { color: #1e3a8a; background: #eff6ff; border-color: #bfdbfe; }
+
 @media (max-width: 980px) {
   .sentinel-app {
     grid-template-columns: 1fr;

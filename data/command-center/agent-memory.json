@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T18:50:31.804Z",
+  "exported_at": "2026-06-16T18:50:37.219Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -165,6 +165,30 @@
     }
   ],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2017 donruss baseball|2017_donruss_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2017 Donruss Baseball",
+      "sport": "baseball",
+      "code": "2017_Donruss_Baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-16T18:50:34.193Z",
+      "updatedAt": "2026-06-16T18:50:34.193Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-06-09T20:00:55.235Z"
+    },
     {
       "id": "visual_test|github_actions|2017 donruss optic baseball|2017_donruss_optic_baseball",
       "type": "visual_test",
@@ -401,7 +425,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-16T18:49:48.814Z",
-      "updatedAt": "2026-06-16T18:50:12.057Z",
+      "updatedAt": "2026-06-16T18:50:35.616Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27640386070",
       "visualStartedAt": "2026-06-16T18:49:29Z"
     },
@@ -1081,7 +1105,7 @@
       "expectedRowCount": 545,
       "expectedParallelCount": 25,
       "createdAt": "2026-06-09T17:54:02.464Z",
-      "updatedAt": "2026-06-16T18:50:12.057Z",
+      "updatedAt": "2026-06-16T18:50:35.617Z",
       "pendingValidationAttempts": 0,
       "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
       "autoExecutedAt": "2026-06-16T18:47:47.498Z",
@@ -1390,10 +1414,10 @@
       "code": "2017_Donruss_Baseball",
       "riskLevel": "high",
       "status": "queued",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1401,10 +1425,12 @@
       "expectedRowCount": 748,
       "expectedParallelCount": 100,
       "createdAt": "2026-06-09T17:54:02.459Z",
-      "updatedAt": "2026-06-16T18:50:30.202Z",
+      "updatedAt": "2026-06-16T18:50:34.194Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Donruss Baseball by publishing baseball 2017 and validating public JSON.",
-      "autoExecutedAt": "2026-06-16T18:47:47.498Z"
+      "autoExecutedAt": "2026-06-16T18:47:47.498Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-06-09T20:00:55.235Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2017_Bowman_s_Best_Baseball",
@@ -1418,7 +1444,7 @@
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Bucket-level checklist JSON repair ran for baseball 2017.",
-      "validationResult": "Queued for CV/ChatBot visual test dispatch (11 of 20).",
+      "validationResult": "CV/ChatBot visual test already queued. Sentinel is refreshing the existing GitHub Actions run instead of dispatching a duplicate.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2017",
@@ -1426,7 +1452,7 @@
       "expectedRowCount": 403,
       "expectedParallelCount": 29,
       "createdAt": "2026-06-09T17:54:02.459Z",
-      "updatedAt": "2026-06-16T18:49:48.836Z",
+      "updatedAt": "2026-06-16T18:50:34.212Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent repaired stale public JSON for 2017 Bowman's Best Baseball by publishing baseball 2017 and validating public JSON.",
       "autoExecutedAt": "2026-06-16T18:47:47.498Z"
@@ -2028,35 +2054,30 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.447Z",
       "updatedAt": "2026-06-09T17:54:02.447Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Chrome_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Chrome Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Chrome_Baseball",
-      "riskLevel": "high",
-      "status": "pending_visual_validation",
-      "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
-      "adminDecision": "",
-      "executionResult": "Bucket-level checklist JSON repair ran for baseball 2016.",
-      "validationResult": "Published checklist JSON validated with 459 rows and 0 parallels after bucket repair. CV/ChatBot visual validation is pending.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 459,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.446Z",
-      "updatedAt": "2026-06-16T18:47:47.498Z",
-      "pendingValidationAttempts": 0,
-      "repairProof": "Agent repaired stale public JSON for 2016 Topps Chrome Baseball by publishing baseball 2016 and validating public JSON.",
-      "autoExecutedAt": "2026-06-16T18:47:47.498Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1781635835617_9ojsui",
+      "ts": "2026-06-16T18:50:35.617Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2017 Topps Archives Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1781635834194_3sh8yb",
+      "ts": "2026-06-16T18:50:34.194Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "No GitHub run visible yet.",
+      "status": "queued",
+      "product": "2017 Donruss Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1781635830183_0oejbs",
       "ts": "2026-06-16T18:50:30.183Z",
@@ -2836,26 +2857,6 @@
       "status": "queued",
       "product": "2017 Bowman Platinum Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781635468413_4lfbp2",
-      "ts": "2026-06-16T18:44:28.413Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "No GitHub run visible yet.",
-      "status": "queued",
-      "product": "2017 Bowman Platinum Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781635467971_dwumuk",
-      "ts": "2026-06-16T18:44:27.971Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2017 Bowman Chrome Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -3617,15 +3618,15 @@
       "productName": "2017 Donruss Baseball",
       "sport": "baseball",
       "code": "2017_Donruss_Baseball",
-      "updatedAt": "2026-06-09T20:00:56.567Z",
+      "updatedAt": "2026-06-16T18:50:34.192Z",
       "knownIssue": false,
       "knownIssueNote": "",
-      "runId": 27104233128,
-      "runNumber": 51,
-      "displayTitle": "Visual Product Test - 2017 Donruss Baseball",
-      "headSha": "5256a84f5a356dd38af427baf27ff56280a2f041",
-      "createdAt": "2026-06-07T20:42:02Z",
-      "checkedAt": "2026-06-07T20:43:14.068Z"
+      "runId": "",
+      "runNumber": "",
+      "displayTitle": "",
+      "headSha": "",
+      "createdAt": "",
+      "checkedAt": "2026-06-16T18:50:34.192Z"
     },
     "baseball|2017_Topps_Archives_Snapshots_Baseball": {
       "status": "in_progress",
@@ -3663,7 +3664,7 @@
       "productName": "2017 Topps Archives Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Archives_Baseball",
-      "updatedAt": "2026-06-16T18:50:12.056Z",
+      "updatedAt": "2026-06-16T18:50:35.614Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640386070,
@@ -3671,7 +3672,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Archives Baseball",
       "headSha": "02db4789284375cd4e9e579dfa70607b1231ff85",
       "createdAt": "2026-06-16T18:49:29Z",
-      "checkedAt": "2026-06-16T18:50:12.056Z"
+      "checkedAt": "2026-06-16T18:50:35.614Z"
     },
     "baseball|2017_Bowman_Mega_Box_Chrome_Baseball": {
       "status": "queued",
@@ -4076,7 +4077,7 @@
       "productName": "2017 Topps Archives Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Archives_Baseball",
-      "updatedAt": "2026-06-16T18:50:12.056Z",
+      "updatedAt": "2026-06-16T18:50:35.614Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640386070,
@@ -4084,7 +4085,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Archives Baseball",
       "headSha": "02db4789284375cd4e9e579dfa70607b1231ff85",
       "createdAt": "2026-06-16T18:49:29Z",
-      "checkedAt": "2026-06-16T18:50:12.056Z"
+      "checkedAt": "2026-06-16T18:50:35.614Z"
     },
     "baseball|2017 topps archives baseball": {
       "status": "in_progress",
@@ -4099,7 +4100,7 @@
       "productName": "2017 Topps Archives Baseball",
       "sport": "baseball",
       "code": "2017_Topps_Archives_Baseball",
-      "updatedAt": "2026-06-16T18:50:12.056Z",
+      "updatedAt": "2026-06-16T18:50:35.614Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27640386070,
@@ -4107,7 +4108,7 @@
       "displayTitle": "Visual Product Test - 2017 Topps Archives Baseball",
       "headSha": "02db4789284375cd4e9e579dfa70607b1231ff85",
       "createdAt": "2026-06-16T18:49:29Z",
-      "checkedAt": "2026-06-16T18:50:12.056Z"
+      "checkedAt": "2026-06-16T18:50:35.614Z"
     },
     "baseball|2017_panini_stars_and_stripes_usa_baseball": {
       "status": "completed",
@@ -4522,6 +4523,52 @@
       "headSha": "0d114922e6dd21efcc3154f0414fa9fbe778eba6",
       "createdAt": "2026-06-10T02:07:32Z",
       "checkedAt": "2026-06-16T18:50:30.180Z"
+    },
+    "baseball|2017_donruss_baseball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-09T20:00:55.235Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Donruss_Baseball",
+      "key": "baseball|2017_donruss_baseball",
+      "productName": "2017 Donruss Baseball",
+      "sport": "baseball",
+      "code": "2017_Donruss_Baseball",
+      "updatedAt": "2026-06-16T18:50:34.192Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": "",
+      "runNumber": "",
+      "displayTitle": "",
+      "headSha": "",
+      "createdAt": "",
+      "checkedAt": "2026-06-16T18:50:34.192Z"
+    },
+    "baseball|2017 donruss baseball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-09T20:00:55.235Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2017_Donruss_Baseball",
+      "key": "baseball|2017 donruss baseball",
+      "productName": "2017 Donruss Baseball",
+      "sport": "baseball",
+      "code": "2017_Donruss_Baseball",
+      "updatedAt": "2026-06-16T18:50:34.192Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": "",
+      "runNumber": "",
+      "displayTitle": "",
+      "headSha": "",
+      "createdAt": "",
+      "checkedAt": "2026-06-16T18:50:34.192Z"
     }
   },
   "known_issues": {},
@@ -5685,6 +5732,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T18:50:32.736Z",
+  "saved_at": "2026-06-16T18:50:38.527Z",
   "saved_by": "cm_command_center_operator"
 }

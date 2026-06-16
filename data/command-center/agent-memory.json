@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T16:48:59.968Z",
+  "exported_at": "2026-06-16T16:51:29.975Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -1973,6 +1973,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781628688370_nvham3",
+      "ts": "2026-06-16T16:51:28.370Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep failed",
+      "detail": "Timed out after 150s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781628538365_mdm7cf",
       "ts": "2026-06-16T16:48:58.365Z",
       "type": "agent_cycle",
@@ -2761,16 +2771,6 @@
       "status": "requested",
       "product": "2025-26 Bowman Sapphire Basketball",
       "source": "agent_action_queue"
-    },
-    {
-      "id": "log_1781269803690_favo5h",
-      "ts": "2026-06-12T13:10:03.690Z",
-      "type": "source_import",
-      "title": "Import blocked before sheet write",
-      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -5413,6 +5413,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T16:49:01.531Z",
+  "saved_at": "2026-06-16T16:51:31.533Z",
   "saved_by": "cm_command_center_operator"
 }

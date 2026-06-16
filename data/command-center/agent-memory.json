@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T12:38:56.486Z",
+  "exported_at": "2026-06-16T12:49:38.272Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -213,11 +213,11 @@
       "sport": "baseball",
       "code": "2021_panini_stars_stripes_usa_baseball",
       "riskLevel": "high",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Publish the product/year JSON and let Sentinel recheck public validation.",
       "adminDecision": "",
       "executionResult": "Deep backend audit found source Sheet data ahead of public JSON.",
-      "validationResult": "Sheets show 1199 rows / 46 parallels. Public JSON index shows 1 rows / 0 parallels.",
+      "validationResult": "CV/ChatBot visual test requested...",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "2021",
@@ -225,7 +225,7 @@
       "expectedRowCount": 1199,
       "expectedParallelCount": 46,
       "createdAt": "2026-06-16T12:38:54.883Z",
-      "updatedAt": "2026-06-16T12:38:54.883Z"
+      "updatedAt": "2026-06-16T12:49:36.662Z"
     },
     {
       "id": "backend_audit|stale_public_json|baseball|2019_Panini_Leather_Lumber_Baseball",
@@ -1969,6 +1969,16 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781614176670_3snbsm",
+      "ts": "2026-06-16T12:49:36.670Z",
+      "type": "visual_test",
+      "title": "Visual test requested",
+      "detail": "Queue card requested CV/ChatBot validation.",
+      "status": "requested",
+      "product": "2021 Panini Stars & Stripes USA Baseball",
+      "source": "agent_action_queue"
+    },
+    {
       "id": "log_1781613534884_bnppnv",
       "ts": "2026-06-16T12:38:54.884Z",
       "type": "deep_backend_audit",
@@ -2757,16 +2767,6 @@
       "status": "started",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1781062670281_iwu9bc",
-      "ts": "2026-06-10T03:37:50.281Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "447 rows and 32 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Bowman Sapphire Basketball",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -5386,6 +5386,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T12:38:57.985Z",
+  "saved_at": "2026-06-16T12:49:39.908Z",
   "saved_by": "cm_command_center_operator"
 }

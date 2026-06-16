@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-16T01:35:50.382Z",
+  "exported_at": "2026-06-16T01:36:08.794Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -2168,6 +2168,36 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781573767188_gpv01h",
+      "ts": "2026-06-16T01:36:07.188Z",
+      "type": "agent_cycle",
+      "title": "Agent Cycle drain complete",
+      "detail": "1 of 24 wave ran. 0 safe actions executed. 12 remain: 8 need admin decision, 1 running, 2 failed, 1 known issue. Stopped because: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes. Wave 1: action -> This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781573767186_471ci2",
+      "ts": "2026-06-16T01:36:07.186Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781573767175_zbpzg7",
+      "ts": "2026-06-16T01:36:07.175Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
       "id": "log_1781573759714_alert",
       "ts": "2026-06-16T01:35:55.753Z",
       "type": "admin_alert",
@@ -2935,36 +2965,6 @@
       "detail": "1 matching queue item now have visual proof.",
       "status": "validated",
       "product": "2016 Topps Archives Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057418679_1ckx0d",
-      "ts": "2026-06-10T02:10:18.679Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2016 Panini Prime Cuts Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057418678_ff9fxt",
-      "ts": "2026-06-10T02:10:18.678Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "1 matching queue item now have visual proof.",
-      "status": "validated",
-      "product": "2016 Panini Prime Cuts Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781057417279_g0ud79",
-      "ts": "2026-06-10T02:10:17.279Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2016 Topps Tier One Baseball",
       "source": "github_actions"
     }
   ],
@@ -5585,6 +5585,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T01:35:59.809Z",
+  "saved_at": "2026-06-16T01:36:10.110Z",
   "saved_by": "cm_command_center_operator"
 }

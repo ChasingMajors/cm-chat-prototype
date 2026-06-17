@@ -224,6 +224,24 @@
   ],
   "agent_actions": [
     {
+      "id": "source_watch|baseball|2026 bowman sapphire baseball",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026 Bowman Sapphire Baseball",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-bowman-sapphire-baseball-card-checklist/",
+      "createdAt": "2026-06-17T15:57:03.308Z",
+      "updatedAt": "2026-06-17T15:57:03.308Z"
+    },
+    {
       "id": "checklist_publish|operator_backend|2026 topps argentina team set soccer|2026_topps_argentina_team_set_soccer",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -1970,6 +1988,36 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781712000790_alert",
+      "ts": "2026-06-17T15:57:03.308Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781711999887",
+      "ts": "2026-06-17T15:57:03.308Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 5 checked. PRV sync: passed. 6 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781711999883",
+      "ts": "2026-06-17T15:57:03.308Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781645559492_k6tke6",
       "ts": "2026-06-16T21:32:39.492Z",
       "type": "checklist_publish",
@@ -2738,67 +2786,28 @@
       "status": "validated",
       "product": "2016 Panini National Treasures Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781637361220_pqw0d8",
-      "ts": "2026-06-16T19:16:01.220Z",
-      "type": "agent_cycle",
-      "title": "Agent Cycle drain complete",
-      "detail": "1 of 24 wave ran. 2 safe actions executed. Queued 12 CV/ChatBot visual tests and refreshed 18. 9 remain: 5 need admin decision, 3 queued/in flight, 1 known issue. Stopped because: No local safe queue candidates remain. Wave 1: baseball 2016 -> pending_visual_validation (13 product(s) validated, 0 pending, 0 failed.); 2016 Topps Tier One Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.) Review needed: 2016 Topps Tier One Baseball -> queued. Sentinel will keep clearing other safe work.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781637357544_phg361",
-      "ts": "2026-06-16T19:15:57.544Z",
-      "type": "visual_test",
-      "title": "Visual validation follow-up refreshed",
-      "detail": "18 visual tests refreshed. 8 passed. 0 need repair. 10 still queued/running.",
-      "status": "checked",
-      "product": "",
-      "source": "agent_cycle"
-    },
-    {
-      "id": "log_1781637353052_e7o4bc",
-      "ts": "2026-06-16T19:15:53.052Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2016 Topps Dynasty Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-06-16T19:12:48.326Z",
+    "generated_at": "2026-06-17T15:57:03.308Z",
     "checked": {
       "checklist_count": 20,
-      "prv_count": 6,
-      "skipped_ignored": 4
+      "prv_count": 5,
+      "skipped_ignored": 6
     },
-    "completed_count": 1,
-    "needs_admin_count": 6,
+    "completed_count": 0,
+    "needs_admin_count": 1,
     "blocked_count": 0,
-    "completed": [
-      "baseball 2016 -> pending_visual_validation: 13 product(s) validated, 0 pending, 0 failed."
-    ],
+    "completed": [],
     "needs_admin": [
-      "2016 Topps Tier One Baseball -> queued: Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
-      "Checklist review: 2026 Topps Argentina Team Set Soccer | soccer | missing",
-      "Checklist review: 2025-26 Panini Pitch Kings La Liga Soccer | soccer | missing",
-      "Checklist review: 2025-26 Topps Lineage Bayern München Soccer | soccer | missing",
-      "Checklist review: 2026 Leaf Metal Hockey | hockey | missing",
-      "PRV review: 2025-26 Topps Motif Basketball | basketball | known_issue"
+      "Checklist review: 2026 Bowman Sapphire Baseball | baseball | missing"
     ],
     "blocked": [],
-    "proof": [
-      "baseball 2016 -> pending_visual_validation: 13 product(s) validated, 0 pending, 0 failed."
-    ],
+    "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 1 completed/progress item(s), 6 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 5 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -6494,6 +6503,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-16T21:32:42.835Z",
+  "saved_at": "2026-06-17T16:00:00.877Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -224,6 +224,42 @@
   ],
   "agent_actions": [
     {
+      "id": "prv_watch|football|2025 topps cosmic chrome football",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2025 Topps Cosmic Chrome Football",
+      "sport": "football",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-cosmic-chrome-nfl",
+      "createdAt": "2026-06-18T15:57:04.481Z",
+      "updatedAt": "2026-06-18T15:57:04.481Z"
+    },
+    {
+      "id": "source_watch|baseball|2026 leaf vivid baseball",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026 Leaf Vivid Baseball",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-vivid-baseball-card-checklist/",
+      "createdAt": "2026-06-18T15:57:04.481Z",
+      "updatedAt": "2026-06-18T15:57:04.481Z"
+    },
+    {
       "id": "source_watch|baseball|2026 bowman sapphire baseball",
       "type": "source_import",
       "source": "scheduled_deep_sheets",
@@ -239,7 +275,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-bowman-sapphire-baseball-card-checklist/",
       "createdAt": "2026-06-17T15:57:03.308Z",
-      "updatedAt": "2026-06-17T15:57:03.308Z"
+      "updatedAt": "2026-06-18T15:57:04.481Z"
     },
     {
       "id": "checklist_publish|operator_backend|2026 topps argentina team set soccer|2026_topps_argentina_team_set_soccer",
@@ -1988,6 +2024,36 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781798461529_alert",
+      "ts": "2026-06-18T15:57:04.481Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781798460824",
+      "ts": "2026-06-18T15:57:04.481Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 2 actionable from 20 checked. PRV: 1 actionable from 5 checked. PRV sync: passed. 5 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781798460811",
+      "ts": "2026-06-18T15:57:04.481Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781712000790_alert",
       "ts": "2026-06-17T15:57:03.308Z",
       "type": "admin_alert",
@@ -2756,58 +2822,30 @@
       "status": "passed",
       "product": "2016 Panini Prime Cuts Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1781637365219_wnnw0t",
-      "ts": "2026-06-16T19:16:05.219Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "1 matching queue item now have visual proof.",
-      "status": "validated",
-      "product": "2016 Panini Prime Cuts Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781637363377_7b188s",
-      "ts": "2026-06-16T19:16:03.377Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2016 Panini National Treasures Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1781637363377_5prxg3",
-      "ts": "2026-06-16T19:16:03.377Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "1 matching queue item now have visual proof.",
-      "status": "validated",
-      "product": "2016 Panini National Treasures Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-06-17T15:57:03.308Z",
+    "generated_at": "2026-06-18T15:57:04.481Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 5,
-      "skipped_ignored": 6
+      "skipped_ignored": 5
     },
     "completed_count": 0,
-    "needs_admin_count": 1,
+    "needs_admin_count": 3,
     "blocked_count": 0,
     "completed": [],
     "needs_admin": [
-      "Checklist review: 2026 Bowman Sapphire Baseball | baseball | missing"
+      "Checklist review: 2026 Leaf Vivid Baseball | baseball | missing",
+      "Checklist review: 2026 Bowman Sapphire Baseball | baseball | missing",
+      "PRV review: 2025 Topps Cosmic Chrome Football | football | missing"
     ],
     "blocked": [],
     "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 5 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 5 PRV source item(s). 0 completed/progress item(s), 3 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -6503,6 +6541,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-17T16:00:00.877Z",
+  "saved_at": "2026-06-18T16:01:01.711Z",
   "saved_by": "cm_command_center_operator"
 }

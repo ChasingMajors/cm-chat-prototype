@@ -2036,6 +2036,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781884861881",
+      "ts": "2026-06-19T15:57:04.350Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 5 checked. PRV sync: passed. 7 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781884861878",
+      "ts": "2026-06-19T15:57:04.350Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781844186128_1sc7ai",
       "ts": "2026-06-19T04:43:06.128Z",
       "type": "prv_publish",
@@ -2814,50 +2834,26 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1781841463548_r5eaoe",
-      "ts": "2026-06-19T03:57:43.548Z",
-      "type": "source_import",
-      "title": "Import blocked before sheet write",
-      "detail": "Unknown backend response. No sheet write was made. Preview or parser review is required before import.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781841421474_tki7u0",
-      "ts": "2026-06-19T03:57:01.474Z",
-      "type": "prv_source_review",
-      "title": "PRV preview completed",
-      "detail": "0 print-run rows parsed.",
-      "status": "needs_review",
-      "product": "2025 Topps Cosmic Chrome Football",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
     "ok": true,
-    "status": "needs_admin",
-    "generated_at": "2026-06-18T15:57:04.481Z",
+    "status": "clear",
+    "generated_at": "2026-06-19T15:57:04.350Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 5,
-      "skipped_ignored": 5
+      "skipped_ignored": 7
     },
     "completed_count": 0,
-    "needs_admin_count": 3,
+    "needs_admin_count": 0,
     "blocked_count": 0,
     "completed": [],
-    "needs_admin": [
-      "Checklist review: 2026 Leaf Vivid Baseball | baseball | missing",
-      "Checklist review: 2026 Bowman Sapphire Baseball | baseball | missing",
-      "PRV review: 2025 Topps Cosmic Chrome Football | football | missing"
-    ],
+    "needs_admin": [],
     "blocked": [],
     "proof": [],
-    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 5 PRV source item(s). 0 completed/progress item(s), 3 needs-admin item(s), 0 blocked/issue item(s)."
+    "next_step": "No immediate action. Sentinel can run again on schedule.",
+    "summary": "Checked 20 checklist source item(s) and 5 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -6671,6 +6667,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-19T04:43:08.968Z",
+  "saved_at": "2026-06-19T16:01:01.908Z",
   "saved_by": "cm_command_center_operator"
 }

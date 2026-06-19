@@ -1,5 +1,6 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc144-publish-result-routing-v1-2026-06-18";
+  const COMMAND_CENTER_VERSION = "cc145-operator-backend-version-warning-v1-2026-06-18";
+  const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-18-operator-cc145-prv-parser-broad-patterns";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -3324,9 +3325,10 @@
         + "&sourceUrl=" + encodeURIComponent(sourceUrl)
         + "&sport=" + encodeURIComponent(sport || "");
       const data = await fetchJson(url, { timeoutMs: 90000 });
-      renderPrvPreview(data);
+      const parsedRows = Number(data && data.row_count || 0);
+      const operatorHealth = parsedRows > 0 ? null : await fetchOperatorHealth(endpoint);
+      renderPrvPreview(data, { operatorHealth });
       if (actionId) {
-        const parsedRows = Number(data && data.row_count || 0);
         const previewReady = !!(data && data.status === "preview_ready" && parsedRows > 0);
         updateAgentAction(actionId, {
           status: previewReady ? "needs_admin" : "known_issue",
@@ -3335,7 +3337,9 @@
             : "Source found, but the PRV parser returned 0 print-run rows.",
           validationResult: previewReady
             ? "Preview rows are ready for admin review before PRV sheet write."
-            : "Parser review needed before this can write PRV sheet data.",
+            : operatorHealth && isOperatorPrvParserOutdated(operatorHealth)
+              ? `Operator Backend is outdated (${operatorHealth.version || "unknown"}). Deploy ${REQUIRED_OPERATOR_PRV_VERSION}, then rerun PRV preview.`
+              : "Parser review needed before this can write PRV sheet data.",
           recommendedAction: previewReady
             ? "Review sample rows, then write PRV temp data if the numbers look right."
             : "Open the source and review whether this post has a new layout or no extractable print-run table."
@@ -3364,6 +3368,23 @@
       });
       renderActivityLog();
     }
+  }
+
+  async function fetchOperatorHealth(endpoint) {
+    if (!endpoint) return null;
+    try {
+      const url = endpoint
+        + (endpoint.indexOf("?") > -1 ? "&" : "?")
+        + "action=health";
+      return await fetchJson(url, { timeoutMs: 20000, cache: "no-store" });
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function isOperatorPrvParserOutdated(health) {
+    const version = String(health && health.version || "");
+    return version !== REQUIRED_OPERATOR_PRV_VERSION;
   }
 
   async function executePrvSourceImport(sourceUrl, sport, actionId) {
@@ -5088,7 +5109,7 @@
     focusSourceCheckResult();
   }
 
-  function renderPrvPreview(data) {
+  function renderPrvPreview(data, options) {
     if (!data || !data.ok) {
       renderSourceCheckMessage("PRV preview failed", data && data.error ? data.error : "Unknown backend response.", "critical");
       return;
@@ -5099,11 +5120,14 @@
       return;
     }
 
+    const opts = options || {};
+    const operatorHealth = opts.operatorHealth || null;
     const product = data.product || {};
     const rows = Array.isArray(data.sample_rows) ? data.sample_rows : [];
     const warnings = Array.isArray(data.warnings) ? data.warnings : [];
     const parsedRows = Number(data.row_count || 0);
     const hasRows = parsedRows > 0;
+    const backendOutdated = !hasRows && operatorHealth && isOperatorPrvParserOutdated(operatorHealth);
     const statusLabel = hasRows ? data.status || "preview_ready" : "parser_review";
 
     els.sourceCheckResult.innerHTML = `
@@ -5124,8 +5148,10 @@
         </div>
         ${!hasRows ? `
           <div class="parser-review-message">
-            <strong>Source found. No usable PRV rows parsed.</strong>
-            <span>This usually means the post uses a layout the parser does not understand yet, or the article mentions the product without a structured print-run breakdown. Do not write PRV temp data until the parser is updated or the rows are entered manually.</span>
+            <strong>${escapeHtml(backendOutdated ? "Operator Backend parser is outdated." : "Source found. No usable PRV rows parsed.")}</strong>
+            <span>${escapeHtml(backendOutdated
+              ? `Live backend is ${operatorHealth.version || "unknown"}; required parser is ${REQUIRED_OPERATOR_PRV_VERSION}. Deploy the current Apps Script backend, then rerun PRV Preview.`
+              : "This usually means the post uses a layout the parser does not understand yet, or the article mentions the product without a structured print-run breakdown. Do not write PRV temp data until the parser is updated or the rows are entered manually.")}</span>
           </div>
         ` : ""}
         ${warnings.length ? `

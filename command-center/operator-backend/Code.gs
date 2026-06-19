@@ -1278,7 +1278,37 @@ function parseSlabSquatchPrintRunRows_(bodyHtml, sourceUrl) {
     });
   });
 
-  return inferMissingPrvSubsetSizes_(rows);
+  extractSlabSquatchPrintRunTextLines_(target).forEach(function(item) {
+    const parsed = parseSlabSquatchPrintRunLine_(item.text, item.heading, item.setType, sourceUrl);
+    if (parsed) rows.push(parsed);
+  });
+
+  return inferMissingPrvSubsetSizes_(dedupePrvRows_(rows));
+}
+
+function extractSlabSquatchPrintRunTextLines_(html) {
+  const lines = htmlToLines_(html);
+  const out = [];
+  let heading = "";
+
+  lines.forEach(function(line) {
+    const text = safeString_(line).replace(/\s+/g, " ").trim();
+    if (!text) return;
+
+    if (isLikelyPrvSectionHeading_(text)) {
+      heading = text.replace(/:$/, "").trim();
+      return;
+    }
+
+    if (!hasPrvPrintRunSignal_(text)) return;
+    out.push({
+      text: text,
+      heading: heading,
+      setType: normalizePrvSetType_(heading || text)
+    });
+  });
+
+  return out;
 }
 
 function extractListTextItems_(html) {
@@ -1300,7 +1330,7 @@ function parseSlabSquatchPrintRunLine_(line, heading, setType, sourceUrl) {
   const text = safeString_(line).replace(/\s+/g, " ").trim();
   if (!text) return null;
 
-  const runMatch = text.match(/~\s*([\d,]+)\s*ea/i);
+  const runMatch = findPrvPrintRunMatch_(text);
   if (!runMatch) return null;
 
   const cardListMatch = text.match(/\((\d+)\s*card\s*CL\)/i) ||
@@ -1308,7 +1338,13 @@ function parseSlabSquatchPrintRunLine_(line, heading, setType, sourceUrl) {
   let setLine = text
     .replace(/\s*-\s*~\s*[\d,]+\s*ea.*$/i, "")
     .replace(/^~\s*[\d,]+\s*ea.*$/i, "")
+    .replace(/\b(?:print\s*run|pr|production|numbered\s*to|limited\s*to|limited|copies|copy|made)\b\s*[:\-]?\s*~?\s*[\d,]+(?:\s*(?:ea|each|copies|copy|cards?))?/ig, "")
+    .replace(/\s*[-–—]\s*~?\s*[\d,]+\s*(?:ea|each|copies|copy|cards?)\b.*$/i, "")
+    .replace(/\s*[-–—]\s*(?:print\s*run|pr)\s*[:\-]?\s*~?\s*[\d,]+.*$/i, "")
+    .replace(/\s*#?\s*\/\s*[\d,]+\b/g, "")
     .replace(/\(\d+\s*card\s*CL\)/i, "")
+    .replace(/\s{2,}/g, " ")
+    .replace(/\s*[-–—:]\s*$/g, "")
     .trim();
 
   if (!setLine) setLine = safeString_(heading).replace(/\(\d+\s*card\s*CL\)/i, "").replace(/:$/, "").trim();
@@ -1316,12 +1352,64 @@ function parseSlabSquatchPrintRunLine_(line, heading, setType, sourceUrl) {
   return {
     setType: setType,
     setLine: setLine,
-    printRun: Number(runMatch[1].replace(/,/g, "")),
+    printRun: Number(runMatch.value.replace(/,/g, "")),
     serial: "",
     subSetSize: cardListMatch ? Number(cardListMatch[1]) : "",
     notes: "Source: SlabSquatch. Review before PRV write. " + sourceUrl,
     cmURL: sourceUrl
   };
+}
+
+function findPrvPrintRunMatch_(text) {
+  const raw = safeString_(text);
+  const patterns = [
+    /~\s*([\d,]+)\s*(?:ea|each)\b/i,
+    /\b(?:print\s*run|pr|production|produced|limited\s*to|numbered\s*to)\b\s*[:\-]?\s*~?\s*([\d,]+)\b/i,
+    /\b~?\s*([\d,]+)\s*(?:copies|copy|made)\b/i,
+    /#?\s*\/\s*([\d,]{2,6})\b/i
+  ];
+
+  for (let i = 0; i < patterns.length; i++) {
+    const match = raw.match(patterns[i]);
+    if (match && match[1]) {
+      const value = match[1].replace(/,/g, "");
+      const number = Number(value);
+      if (number > 0) return { value: match[1], index: match.index || 0 };
+    }
+  }
+
+  return null;
+}
+
+function hasPrvPrintRunSignal_(text) {
+  const raw = safeString_(text);
+  return /~\s*[\d,]+\s*(?:ea|each)\b/i.test(raw) ||
+    /\b(?:print\s*run|pr|production|produced|limited\s*to|numbered\s*to)\b\s*[:\-]?\s*~?\s*[\d,]+\b/i.test(raw) ||
+    /\b~?\s*[\d,]+\s*(?:copies|copy|made)\b/i.test(raw) ||
+    /#?\s*\/\s*[\d,]{2,6}\b/i.test(raw);
+}
+
+function isLikelyPrvSectionHeading_(text) {
+  const raw = safeString_(text).trim();
+  if (!raw || raw.length > 90) return false;
+  if (hasPrvPrintRunSignal_(raw)) return false;
+  return /\b(base|parallel|parallels|auto|autos|autographs?|insert|inserts|short\s*print|ssp|case\s*hit)\b/i.test(raw) ||
+    /\(\d+\s*card\s*CL\)/i.test(raw);
+}
+
+function dedupePrvRows_(rows) {
+  const seen = {};
+  return (rows || []).filter(function(row) {
+    const key = [
+      normalize_(row && row.setType || ""),
+      normalize_(row && row.setLine || ""),
+      Number(row && row.printRun || 0),
+      Number(row && row.subSetSize || 0)
+    ].join("|");
+    if (seen[key]) return false;
+    seen[key] = true;
+    return true;
+  });
 }
 
 function inferMissingPrvSubsetSizes_(rows) {

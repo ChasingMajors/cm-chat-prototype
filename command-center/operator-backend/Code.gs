@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-18-operator-cc146-substack-preloads-prv-parser";
+const CM_OPERATOR_VERSION = "2026-06-18-operator-cc147-prv-public-validation-diagnostics";
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
 const CM_SENTINEL_ALERT_EMAIL_PROPERTY = "CM_SENTINEL_ALERT_EMAIL";
 const CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY = "CM_SENTINEL_ALERT_WEBHOOK_URL";
@@ -1754,11 +1754,15 @@ function validatePrvVaultProduct_(input) {
     const productMap = manifest.product_map || manifest.productMap || {};
     const shard = productMap[code];
     if (!shard) {
+      const sourceSheet = safeValidateWrittenPrvProduct_(code);
       return {
         ok: false,
         code: code,
         row_count: 0,
-        error: "Product code not found in public PRV product manifest yet."
+        source_sheet: sourceSheet,
+        error: sourceSheet && sourceSheet.product_rows > 0
+          ? "Product exists in the PRV source Sheet, but is not in public PRV JSON yet. Static Data Exporter may be publishing stale data or the wrong Vault spreadsheet."
+          : "Product code not found in public PRV product manifest yet. Run PRV source write before publishing, or confirm the write targeted the same Vault spreadsheet Static Data Exporter publishes."
       };
     }
 
@@ -1776,6 +1780,7 @@ function validatePrvVaultProduct_(input) {
       code: code,
       shard: shard,
       row_count: rows.length,
+      source_sheet: rows.length > 0 ? null : safeValidateWrittenPrvProduct_(code),
       display_name: product && product.meta ? product.meta.displayName || product.meta.display_name || "" : "",
       updated_at: new Date().toISOString()
     };
@@ -1786,6 +1791,20 @@ function validatePrvVaultProduct_(input) {
       row_count: 0,
       error: err && err.message ? err.message : String(err),
       updated_at: new Date().toISOString()
+    };
+  }
+}
+
+function safeValidateWrittenPrvProduct_(code) {
+  try {
+    const ss = SpreadsheetApp.openById(getVaultSpreadsheetId_());
+    return validateWrittenPrvProduct_(ss, code);
+  } catch (err) {
+    return {
+      ok: false,
+      index_rows: 0,
+      product_rows: 0,
+      error: err && err.message ? err.message : String(err)
     };
   }
 }
@@ -2678,6 +2697,7 @@ function publishPrvVaultStaticData_(input) {
   requireOperatorKey_(input && input.key);
 
   const code = safeString_(input && input.code).trim();
+  const sourceSheet = code ? safeValidateWrittenPrvProduct_(code) : null;
   const exporterUrl = PropertiesService.getScriptProperties().getProperty(CM_STATIC_EXPORTER_URL_PROPERTY);
   if (!exporterUrl) {
     return {
@@ -2720,6 +2740,7 @@ function publishPrvVaultStaticData_(input) {
     status: data && data.status ? data.status : data && data.ok ? "published" : "publish_needs_review",
     mode: "approved_prv_publish",
     code: code,
+    source_sheet: sourceSheet,
     publish: data,
     updated_at: new Date().toISOString()
   };

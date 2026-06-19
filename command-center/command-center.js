@@ -1,6 +1,6 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc146-substack-preloads-prv-parser-v1-2026-06-18";
-  const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-18-operator-cc146-substack-preloads-prv-parser";
+  const COMMAND_CENTER_VERSION = "cc147-prv-public-validation-diagnostics-v1-2026-06-18";
+  const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-18-operator-cc147-prv-public-validation-diagnostics";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -5267,6 +5267,7 @@
     options = options || {};
     const publish = data && data.publish ? data.publish : {};
     const validation = publish && publish.validation ? publish.validation : {};
+    const sourceSheet = data && data.source_sheet ? data.source_sheet : validation && validation.source_sheet ? validation.source_sheet : null;
     const publishOk = !!(data && data.ok);
     const ok = !!(publishOk && validation && validation.ok);
     const code = data && data.code ? data.code : publish.code || "";
@@ -5285,6 +5286,10 @@
           : data && data.error
             ? data.error
             : "Publish returned without public validation.";
+    const sourceSheetDetail = sourceSheet
+      ? ` Source Sheet has ${formatNumber(sourceSheet.index_rows || 0)} Index row and ${formatNumber(sourceSheet.product_rows || 0)} Products rows for this code.`
+      : "";
+    const fullValidationDetail = ok ? validationDetail : validationDetail + sourceSheetDetail;
 
     if (actionId) {
       const existingAction = state.agentActions.find(item => item.id === actionId) || {};
@@ -5292,9 +5297,13 @@
       updateAgentAction(actionId, {
         type: updateType,
         status: ok ? "validated" : "needs_admin",
-        executionResult: publishOk ? "PRV JSON publish request completed." : "PRV JSON publish needs review.",
-        validationResult: validationDetail,
-        recommendedAction: ok ? "Open PRV and confirm the product loads." : "Run PRV public recheck after GitHub Pages propagation."
+        executionResult: ok ? "PRV JSON publish request completed and public rows validated." : publishOk ? "PRV JSON publish ran, but public validation failed." : "PRV JSON publish needs review.",
+        validationResult: fullValidationDetail,
+        recommendedAction: ok
+          ? "Open PRV and confirm the product loads."
+          : sourceSheet && Number(sourceSheet.product_rows || 0) > 0
+            ? "Check Static Data Exporter logs/config. The source Sheet has rows, but public JSON does not."
+            : "Run PRV source write first, then publish PRV JSON again."
       });
       renderAgentActions();
       renderActionLanes();
@@ -5307,8 +5316,8 @@
       source: "operator_backend",
       title: isFullSync
         ? publishOk ? "Manual PRV JSON sync completed" : "Manual PRV JSON sync needs review"
-        : ok ? "PRV JSON published and validated" : publishOk ? "PRV JSON published, validation pending" : "PRV JSON publish needs review",
-      detail: validationDetail
+        : ok ? "PRV JSON published and validated" : publishOk ? "PRV JSON publish ran, validation failed" : "PRV JSON publish needs review",
+      detail: fullValidationDetail
     });
     renderActivityLog();
 
@@ -5346,10 +5355,11 @@
           <span class="pill">Files: ${formatNumber(publish && publish.publish ? publish.publish.files_published || 0 : 0)}</span>
           ${isFullSync ? `<span class="pill">Public products: ${formatNumber(validation && validation.product_count || 0)}</span>` : ""}
           <span class="pill">Public rows: ${formatNumber(validation && validation.row_count || 0)}</span>
+          ${sourceSheet ? `<span class="pill">Source Sheet: ${formatNumber(sourceSheet.index_rows || 0)} index / ${formatNumber(sourceSheet.product_rows || 0)} rows</span>` : ""}
           <span class="pill">Validation: ${validation && validation.ok ? "Passed" : "Review"}</span>
         </div>
         ${data && data.error ? `<div class="task-guardrail">${escapeHtml(data.error)}</div>` : ""}
-        <p>${escapeHtml(validationDetail)}</p>
+        <p>${escapeHtml(fullValidationDetail)}</p>
         ${isFullSync ? `
           <div class="task-guardrail">${validation && validation.ok
             ? "Full sync is complete. Product-level public validation can still be run from a PRV action card when needed."
@@ -5420,17 +5430,26 @@
     const ok = !!(data && data.ok);
     const code = data && data.code ? data.code : "";
     const productName = actionId ? (state.agentActions.find(item => item.id === actionId) || {}).product : "";
+    const sourceSheet = data && data.source_sheet ? data.source_sheet : null;
     const detail = ok
       ? `${formatNumber(data.row_count || 0)} public PRV rows found.`
       : data && data.error
         ? data.error
         : "Public PRV validation did not pass yet.";
+    const sourceSheetDetail = sourceSheet
+      ? ` Source Sheet has ${formatNumber(sourceSheet.index_rows || 0)} Index row and ${formatNumber(sourceSheet.product_rows || 0)} Products rows for this code.`
+      : "";
+    const fullDetail = ok ? detail : detail + sourceSheetDetail;
 
     if (actionId) {
       const updated = updateAgentAction(actionId, {
         status: ok ? "validated" : "needs_admin",
-        validationResult: detail,
-        recommendedAction: ok ? "PRV public JSON is live. Open PRV for final human check." : "Wait for propagation, then recheck again."
+        validationResult: fullDetail,
+        recommendedAction: ok
+          ? "PRV public JSON is live. Open PRV for final human check."
+          : sourceSheet && Number(sourceSheet.product_rows || 0) > 0
+            ? "Check Static Data Exporter logs/config. The source Sheet has rows, but public JSON does not."
+            : "Run PRV source write first, then publish PRV JSON again."
       });
       if (ok && updated && rememberResolvedSourceAction(updated)) writeSourceIgnores();
       renderAgentActions();
@@ -5443,7 +5462,7 @@
       product: productName || code,
       source: "operator_backend",
       title: ok ? "PRV public validation passed" : "PRV public validation pending",
-      detail: detail
+      detail: fullDetail
     });
     renderActivityLog();
 
@@ -5460,8 +5479,9 @@
           <span class="pill">Code: ${escapeHtml(code)}</span>
           <span class="pill">Shard: ${escapeHtml(data && data.shard ? data.shard : "")}</span>
           <span class="pill">Public rows: ${formatNumber(data && data.row_count || 0)}</span>
+          ${sourceSheet ? `<span class="pill">Source Sheet: ${formatNumber(sourceSheet.index_rows || 0)} index / ${formatNumber(sourceSheet.product_rows || 0)} rows</span>` : ""}
         </div>
-        <p>${escapeHtml(detail)}</p>
+        <p>${escapeHtml(fullDetail)}</p>
       </div>
     `;
     focusSourceCheckResult();

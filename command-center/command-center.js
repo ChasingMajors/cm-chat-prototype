@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc143-import-preview-write-proof-v1-2026-06-18";
+  const COMMAND_CENTER_VERSION = "cc144-publish-result-routing-v1-2026-06-18";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -3781,6 +3781,8 @@
         key: key
       }, { timeoutMs: 240000 });
       const merged = Object.assign({}, writeData, {
+        ok: !!(publishData && publishData.ok),
+        publishOnly: true,
         publish: publishData && publishData.publish ? publishData.publish : publishData,
         status: publishData && publishData.ok ? "written_published_validated" : "written_publish_needs_review",
         next_step: publishData && publishData.ok
@@ -5441,6 +5443,37 @@
 
   function renderExecuteResult(data, actionId) {
     if (!data || !data.ok) {
+      if (data && (data.publishOnly || data.publish || String(data.status || "").includes("publish"))) {
+        const product = data.product || {};
+        const publish = data.publish || {};
+        const detail = publish.error || publish.reason || data.error || data.next_step || "JSON publish did not return a validated response. No sheet write was attempted from this publish action.";
+        if (actionId) {
+          updateAgentAction(actionId, {
+            type: "checklist_publish",
+            status: "needs_admin",
+            product: product.display_name || product.name || "",
+            sport: product.sport || "",
+            code: product.code || "",
+            executionResult: "JSON publish needs review.",
+            validationResult: detail,
+            recommendedAction: "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct."
+          });
+          logActivity({
+            type: "checklist_publish",
+            status: "failed",
+            product: product.display_name || product.name || "",
+            source: "operator_backend",
+            title: "JSON publish needs review",
+            detail
+          });
+          renderAgentActions();
+          renderActionLanes();
+          renderActivityLog();
+        }
+        renderSourceCheckMessage("JSON publish needs review", detail, "critical");
+        return;
+      }
+
       const preview = data && data.preview ? data.preview : {};
       const rowCount = Number(preview.row_count || 0);
       const parallelCount = Number(preview.parallel_count || 0);

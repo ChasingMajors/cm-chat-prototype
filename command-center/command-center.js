@@ -1,6 +1,6 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc145-operator-backend-version-warning-v1-2026-06-18";
-  const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-18-operator-cc145-prv-parser-broad-patterns";
+  const COMMAND_CENTER_VERSION = "cc146-substack-preloads-prv-parser-v1-2026-06-18";
+  const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-18-operator-cc146-substack-preloads-prv-parser";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];

@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-18-operator-cc145-prv-parser-broad-patterns";
+const CM_OPERATOR_VERSION = "2026-06-18-operator-cc146-substack-preloads-prv-parser";
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
 const CM_SENTINEL_ALERT_EMAIL_PROPERTY = "CM_SENTINEL_ALERT_EMAIL";
 const CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY = "CM_SENTINEL_ALERT_WEBHOOK_URL";
@@ -1179,6 +1179,16 @@ function buildPrvKeywordString_(product) {
 
 function extractSubstackBodyHtml_(html) {
   const raw = safeString_(html);
+  const preloadMatch = raw.match(/window\._preloads\s*=\s*JSON\.parse\("([\s\S]*?)"\)\s*<\/script>/i);
+
+  if (preloadMatch && preloadMatch[1]) {
+    try {
+      const preloads = JSON.parse(JSON.parse("\"" + preloadMatch[1] + "\""));
+      const post = preloads && (preloads.post || preloads.postData && preloads.postData.post);
+      if (post && typeof post.body_html === "string" && post.body_html) return post.body_html;
+    } catch (err) {}
+  }
+
   const patterns = [
     /\\"body_html\\":\\"([\s\S]*?)\\",\\"truncated_body_text\\"/,
     /"body_html":"([\s\S]*?)","truncated_body_text"/
@@ -1191,7 +1201,7 @@ function extractSubstackBodyHtml_(html) {
   }
 
   if (!match) {
-    const marker = raw.search(/Part\\?u003c?\/?strong\\?u003e?:?\s*The\s*Print\s*Runs|Part\s*5:\s*The\s*Print\s*Runs/i);
+    const marker = raw.search(/Part\\?u003c?\/?strong\\?u003e?:?\s*(?:The\s*)?Print\s*Runs|Part\s*\d+:\s*(?:The\s*)?Print\s*Runs/i);
     if (marker < 0) return "";
 
     const tail = raw.slice(marker, marker + 30000);
@@ -1248,7 +1258,7 @@ function parseSlabSquatchPrintRunRows_(bodyHtml, sourceUrl) {
   const rows = [];
   const sectionBlocks = [];
   const html = decodeEntities_(safeString_(bodyHtml));
-  const marker = html.search(/Part\s*5:\s*The\s*Print\s*Runs/i);
+  const marker = html.search(/Part\s*\d+:\s*(?:The\s*)?Print\s*Runs/i);
   const target = marker > -1 ? html.slice(marker) : html;
   const directParagraphRe = /<p>\s*(?:<strong>)?([^<]*?):\s*~\s*([\d,]+)\s*ea(?:<\/strong>)?\s*<\/p>/gi;
   const re = /<p>\s*(?:<strong>)?([\s\S]*?):\s*(?:<\/strong>)?\s*<\/p>\s*<ul>([\s\S]*?)<\/ul>/gi;
@@ -1347,6 +1357,7 @@ function parseSlabSquatchPrintRunLine_(line, heading, setType, sourceUrl) {
     .replace(/\s*[-–—:]\s*$/g, "")
     .trim();
 
+  if (/^~\s*[\d,]+$/.test(setLine)) setLine = "";
   if (!setLine) setLine = safeString_(heading).replace(/\(\d+\s*card\s*CL\)/i, "").replace(/:$/, "").trim();
 
   return {
@@ -1363,6 +1374,7 @@ function parseSlabSquatchPrintRunLine_(line, heading, setType, sourceUrl) {
 function findPrvPrintRunMatch_(text) {
   const raw = safeString_(text);
   const patterns = [
+    /~\s*([\d,]+)\b/i,
     /~\s*([\d,]+)\s*(?:ea|each)\b/i,
     /\b(?:print\s*run|pr|production|produced|limited\s*to|numbered\s*to)\b\s*[:\-]?\s*~?\s*([\d,]+)\b/i,
     /\b~?\s*([\d,]+)\s*(?:copies|copy|made)\b/i,
@@ -1384,6 +1396,7 @@ function findPrvPrintRunMatch_(text) {
 function hasPrvPrintRunSignal_(text) {
   const raw = safeString_(text);
   return /~\s*[\d,]+\s*(?:ea|each)\b/i.test(raw) ||
+    /^~\s*[\d,]+\b/i.test(raw) ||
     /\b(?:print\s*run|pr|production|produced|limited\s*to|numbered\s*to)\b\s*[:\-]?\s*~?\s*[\d,]+\b/i.test(raw) ||
     /\b~?\s*[\d,]+\s*(?:copies|copy|made)\b/i.test(raw) ||
     /#?\s*\/\s*[\d,]{2,6}\b/i.test(raw);

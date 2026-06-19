@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc142-dedupe-live-product-status-v1-2026-06-16";
+  const COMMAND_CENTER_VERSION = "cc143-import-preview-write-proof-v1-2026-06-18";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -64,7 +64,8 @@
     backendMemorySuspendAutoSave: false,
     backendMemoryAutoLoaded: false,
     publicChecklistManifestCache: {},
-    publicChecklistShardCache: {}
+    publicChecklistShardCache: {},
+    importPreviewProof: {}
   };
 
   const els = {
@@ -3251,7 +3252,28 @@
         + "&sourceUrl=" + encodeURIComponent(sourceUrl)
         + "&sport=" + encodeURIComponent(sport || "");
       const data = await fetchJson(url, { timeoutMs: 90000 });
-      renderImportPreview(data);
+      const proof = rememberImportPreviewProof(sourceUrl, data);
+      if (actionId) {
+        const previewReady = !!(proof && proof.ready);
+        updateAgentAction(actionId, {
+          status: previewReady ? "needs_admin" : "known_issue",
+          sourceUrl: sourceUrl || action && action.sourceUrl || "",
+          runUrl: sourceUrl || action && action.runUrl || "",
+          code: proof && proof.code ? proof.code : action && action.code || "",
+          executionResult: previewReady
+            ? `Import preview parsed ${formatNumber(proof.rowCount)} rows and ${formatNumber(proof.parallelCount)} parallels.`
+            : "Source found, but the checklist parser did not produce writable rows.",
+          validationResult: previewReady
+            ? "Preview rows are ready for admin review before sheet write."
+            : "Parser review needed before this can write checklist sheet data.",
+          recommendedAction: previewReady
+            ? "Review sample rows, then approve the product-scoped sheet write if the source is correct."
+            : "Open the source and review whether this checklist has a new layout or unsupported source format."
+        });
+        renderAgentActions();
+        renderActionLanes();
+      }
+      renderImportPreview(data, actionId);
       logActivity({
         type: "source_import",
         status: data && data.status ? data.status : data && data.ok ? "preview_ready" : "failed",
@@ -3641,6 +3663,12 @@
     const endpoint = readOperatorEndpoint();
     const key = readOperatorKey();
     const action = actionId ? state.agentActions.find(item => item.id === actionId) : null;
+    const previewProof = getImportPreviewProof(sourceUrl || action && (action.sourceUrl || action.runUrl) || "");
+
+    if (!sourceUrl) {
+      renderSourceCheckMessage("Source URL missing", "No sheet write was attempted. Run Preview Import first so Sentinel has a source URL and parsed rows.", "warning");
+      return;
+    }
 
     if (!endpoint) {
       renderSourceCheckMessage("Operator Backend needed", "Save the Apps Script Operator Backend URL before writing to Sheets.", "warning");
@@ -3655,6 +3683,11 @@
     if (action && !hasChecklistPreviewProof(action)) {
       renderSourceCheckMessage("Preview required before sheet write", "Sentinel will preview this source first. No sheet write was attempted.", "warning");
       await previewSourceImport(sourceUrl, sport || action.sport || "", action.id);
+      return;
+    }
+
+    if (!action && !(previewProof && previewProof.ready)) {
+      renderSourceCheckMessage("Preview required before sheet write", "No sheet write was attempted. Build an import preview first, then use the Write button from that preview.", "warning");
       return;
     }
 
@@ -4992,7 +5025,7 @@
     if (!isTerminalVisualRecord(data)) scheduleVisualStatusPoll(plan, 1);
   }
 
-  function renderImportPreview(data) {
+  function renderImportPreview(data, actionId) {
     if (!data || !data.ok) {
       renderSourceCheckMessage("Preview failed", data && data.error ? data.error : "Unknown backend response.", "critical");
       return;
@@ -5040,14 +5073,14 @@
         </div>
         <div class="task-guardrail">Review the sample rows before writing. This action updates matching rows for this product code and appends new rows. It does not delete unrelated sheet data.</div>
         <div class="opp-actions">
-          <button class="action-btn approve" type="button" data-execute-import="${escapeHtml(data.source_url || "")}" data-execute-sport="${escapeHtml(product.sport || "")}">Write to Google Sheet</button>
+          <button class="action-btn approve" type="button" data-execute-import="${escapeHtml(data.source_url || "")}" data-execute-sport="${escapeHtml(product.sport || "")}" data-execute-action-id="${escapeHtml(actionId || "")}">Write to Google Sheet</button>
         </div>
       </div>
     `;
 
     els.sourceCheckResult.querySelectorAll("[data-execute-import]").forEach(btn => {
       btn.addEventListener("click", () => {
-        executeSourceImport(btn.dataset.executeImport, btn.dataset.executeSport || "");
+        executeSourceImport(btn.dataset.executeImport, btn.dataset.executeSport || "", btn.dataset.executeActionId || "");
       });
     });
     focusSourceCheckResult();
@@ -6936,6 +6969,7 @@
       const canExecuteSourceImport = action.type === "source_import" &&
         (status === "approved" || status === "ready") &&
         !!(action.sourceUrl || action.runUrl) &&
+        hasChecklistPreviewProof(action) &&
         !!(action.sport || action.code || action.product);
       return `
         <article class="agent-action-card">
@@ -7364,7 +7398,38 @@
     const text = String(action && (action.executionResult || "") || "").toLowerCase()
       + " "
       + String(action && (action.validationResult || "") || "").toLowerCase();
-    return text.includes("preview parsed") || text.includes("import preview") || text.includes("preview rows") || text.includes("sample rows");
+    if (text.includes("preview parsed") || text.includes("import preview") || text.includes("preview rows") || text.includes("sample rows")) return true;
+    const proof = getImportPreviewProof(action && (action.sourceUrl || action.runUrl || ""));
+    return !!(proof && proof.ready);
+  }
+
+  function getImportPreviewKey(sourceUrl) {
+    return normalize(sourceUrl || "");
+  }
+
+  function rememberImportPreviewProof(sourceUrl, data) {
+    const key = getImportPreviewKey(sourceUrl || data && data.source_url || "");
+    if (!key) return null;
+    const rowCount = Number(data && data.row_count || 0);
+    const parallelCount = Number(data && data.parallel_count || 0);
+    const ready = !!(data && data.ok && data.status === "preview_ready" && rowCount > 0);
+    const proof = {
+      ready,
+      sourceUrl: sourceUrl || data.source_url || "",
+      sport: data && data.product ? data.product.sport || "" : "",
+      code: data && data.product ? data.product.code || "" : "",
+      product: data && data.product ? data.product.display_name || "" : "",
+      rowCount,
+      parallelCount,
+      checkedAt: new Date().toISOString()
+    };
+    state.importPreviewProof[key] = proof;
+    return proof;
+  }
+
+  function getImportPreviewProof(sourceUrl) {
+    const key = getImportPreviewKey(sourceUrl);
+    return key && state.importPreviewProof ? state.importPreviewProof[key] : null;
   }
 
   function hasChecklistSheetWriteProof(action) {

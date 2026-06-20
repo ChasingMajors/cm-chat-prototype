@@ -226,16 +226,16 @@
     {
       "id": "prv_sync_incident_full_vault",
       "type": "prv_sync_incident",
-      "source": "operator_backend",
+      "source": "scheduled_prv_sync",
       "product": "Print Run Vault JSON Sync",
       "sport": "",
       "code": "prv_full_sync",
       "riskLevel": "high",
-      "status": "validated",
-      "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
+      "status": "failed",
+      "recommendedAction": "Run Agent Cycle to let Sentinel retry PRV JSON sync once. If it fails again, inspect Static Data Exporter logs and GitHub publish permissions.",
       "adminDecision": "",
-      "executionResult": "PRV full JSON sync completed through Static Data Exporter.",
-      "validationResult": "81 public PRV products and 3,300 product rows validated across 1 shard.",
+      "executionResult": "Scheduled PRV full JSON sync failed.",
+      "validationResult": "Static Data Exporter PRV publish call failed with 500",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "",
@@ -243,7 +243,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-19T23:45:35.125Z",
-      "updatedAt": "2026-06-19T23:45:35.125Z"
+      "updatedAt": "2026-06-20T15:57:03.762Z"
     },
     {
       "id": "source_watch|soccer|2026 panini prizm fifa world cup soccer",
@@ -256,12 +256,18 @@
       "status": "pending_public_validation",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "No spreadsheet configured for soccer 2026",
+      "executionResult": "Pending checklist publish validation rechecked for 2026_panini_prizm_fifa_world_cup_soccer.",
+      "validationResult": "Published checklist JSON is still pending or stale after 1 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. Missing target bucket/year. Checked soccer current code 2026_panini_prizm_fifa_world_cup_soccer. Recheck: Product code not found in GitHub main checklist manifest.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
       "createdAt": "2026-06-19T23:00:43.688Z",
-      "updatedAt": "2026-06-19T23:45:53.075Z"
+      "updatedAt": "2026-06-20T15:57:03.762Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 1,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "Agent attempted publish validation for 2026 Panini Prizm FIFA World Cup Soccer. Public JSON is not final yet; retry is scheduled.",
+      "autoExecutedAt": "2026-06-20T15:57:03.762Z"
     },
     {
       "id": "visual_test|github_actions|2026 topps argentina team set soccer|2026_topps_argentina_team_set_soccer",
@@ -2049,6 +2055,46 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1781971367939_alert",
+      "ts": "2026-06-20T15:57:03.762Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel needs admin now",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781971367458",
+      "ts": "2026-06-20T15:57:03.762Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 5 checked. PRV sync: failed. 7 admin-ignored source item(s) skipped. Auto actions: 1 run. 2026 Panini Prizm FIFA World Cup Soccer -> pending_public_validation (Published checklist JSON is still pending or stale after 1 check(s). Expected any rows / any parallels; found 0 rows / 0)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781971367457",
+      "ts": "2026-06-20T15:57:03.762Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending public validation",
+      "detail": "2026 Panini Prizm FIFA World Cup Soccer: Pending checklist publish validation rechecked for 2026_panini_prizm_fifa_world_cup_soccer. Published checklist JSON is still pending or stale after 1 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. Missing target bucket/year. Checked soccer current code 2026_panini_prizm_fifa_world_cup_soccer. Recheck: Product code not found in GitHub main checklist manifest.",
+      "status": "pending_public_validation",
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1781971322862",
+      "ts": "2026-06-20T15:57:03.762Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync failed",
+      "detail": "Static Data Exporter PRV publish call failed with 500",
+      "status": "failed",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1781913245473_hyl32m",
       "ts": "2026-06-19T23:54:05.473Z",
       "type": "prv_sync_incident",
@@ -2807,69 +2853,30 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1781842248340_zz1mu2",
-      "ts": "2026-06-19T04:10:48.340Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781842248333_1xy7vw",
-      "ts": "2026-06-19T04:10:48.333Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1781842201885_ozsuyr",
-      "ts": "2026-06-19T04:10:01.885Z",
-      "type": "prv_source_review",
-      "title": "PRV preview completed",
-      "detail": "0 print-run rows parsed.",
-      "status": "needs_review",
-      "product": "2025 Topps Cosmic Chrome Football",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781842200481_ip9gfp",
-      "ts": "2026-06-19T04:10:00.481Z",
-      "type": "prv_source_review",
-      "title": "PRV preview started",
-      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
-      "status": "started",
-      "product": "2025 Topps Cosmic Chrome Football",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
-    "ok": true,
-    "status": "needs_admin",
-    "generated_at": "2026-06-19T23:00:43.688Z",
+    "ok": false,
+    "status": "issue",
+    "generated_at": "2026-06-20T15:57:03.762Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 5,
       "skipped_ignored": 7
     },
     "completed_count": 0,
-    "needs_admin_count": 2,
-    "blocked_count": 0,
+    "needs_admin_count": 1,
+    "blocked_count": 1,
     "completed": [],
     "needs_admin": [
-      "Checklist review: 2026 Panini Prizm FIFA World Cup Soccer | soccer | missing",
-      "Checklist review: 2026 Topps Argentina Team Set Soccer | soccer | missing"
+      "2026 Panini Prizm FIFA World Cup Soccer -> pending_public_validation: Published checklist JSON is still pending or stale after 1 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. Missing target bucket/year. Checked soccer current code 2026_panini_prizm_fifa_world_cup_soccer. Recheck: Product code not found in GitHub main checklist manifest."
     ],
-    "blocked": [],
+    "blocked": [
+      "PRV JSON sync failed: Static Data Exporter PRV publish call failed with 500"
+    ],
     "proof": [],
-    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 5 PRV source item(s). 0 completed/progress item(s), 2 needs-admin item(s), 0 blocked/issue item(s)."
+    "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
+    "summary": "Checked 20 checklist source item(s) and 5 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 1 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -6701,6 +6708,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-19T23:54:08.675Z",
+  "saved_at": "2026-06-20T16:02:48.008Z",
   "saved_by": "cm_command_center_operator"
 }

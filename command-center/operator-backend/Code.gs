@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-18-operator-cc147-prv-public-validation-diagnostics";
+const CM_OPERATOR_VERSION = "2026-06-19-operator-cc148-soccer-season-bucket-publish";
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
 const CM_SENTINEL_ALERT_EMAIL_PROPERTY = "CM_SENTINEL_ALERT_EMAIL";
 const CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY = "CM_SENTINEL_ALERT_WEBHOOK_URL";
@@ -97,6 +97,7 @@ const CM_CHECKLIST_SOURCE_MAP = {
   },
   soccer: {
     current: "1G90AI7ZhIsTyHDmqdiZ26_ZgWRm4RRaDzdED3CzEG3g",
+    "2026": "1G90AI7ZhIsTyHDmqdiZ26_ZgWRm4RRaDzdED3CzEG3g",
     "2025-26": "1G90AI7ZhIsTyHDmqdiZ26_ZgWRm4RRaDzdED3CzEG3g",
     "2024-25": "14JWdRdT9xsjVbWGUQszbiBgtMNJCxtrMV1yINm_edcE",
     "2023-24": "1k_7N09xelDEcVUGhIFRSFBKa9NHK3xFCW2urvHYxEZw"
@@ -2432,7 +2433,7 @@ function requireOperatorKey_(providedKey) {
 
 function getChecklistSpreadsheetId_(sport, bucket) {
   const s = normalize_(sport);
-  const key = safeString_(bucket || "").trim();
+  const key = getChecklistCanonicalBucket_(s, bucket);
   const map = CM_CHECKLIST_SOURCE_MAP[s] || {};
 
   if (key && map[key]) return map[key];
@@ -2585,7 +2586,7 @@ function objectValueForHeader_(obj, header) {
 
 function getPublishRecommendation_(sport, bucket) {
   const s = normalize_(sport);
-  const b = safeString_(bucket || "").trim();
+  const b = getChecklistCanonicalBucket_(s, bucket);
   if (s === "soccer" && b === "2025-26") return "publishCurrentSoccerChecklistToGitHub";
   if (s === "basketball" && b === "2025-26") return "publishCurrentBasketballChecklistToGitHub";
   if (s === "football" && b === "2026") return "publishCurrentFootballChecklistToGitHub";
@@ -2641,8 +2642,15 @@ function publishChecklistAfterImport_(product, key) {
 
 function getPublishBucketForChecklist_(sport, bucket) {
   const s = normalize_(sport);
-  const b = safeString_(bucket || "").trim();
+  const b = getChecklistCanonicalBucket_(s, bucket);
   if (s === "hockey" && b === "2025-26") return "2025";
+  return b;
+}
+
+function getChecklistCanonicalBucket_(sport, bucket) {
+  const s = normalize_(sport);
+  const b = safeString_(bucket || "").trim();
+  if (s === "soccer" && b === "2026") return "2025-26";
   return b;
 }
 
@@ -5359,6 +5367,7 @@ function buildProductPreview_(title, sport, sourceUrl) {
   const cleanTitle = cleanProductTitle_(title);
   const yearMatch = cleanTitle.match(/\b(19|20)\d{2}(?:-\d{2})?\b/);
   const year = yearMatch ? yearMatch[0] : "";
+  const targetBucket = getChecklistCanonicalBucket_(sport, year || "current");
   const manufacturer = inferManufacturer_(cleanTitle);
   const product = cleanTitle
     .replace(year, "")
@@ -5377,7 +5386,7 @@ function buildProductPreview_(title, sport, sourceUrl) {
     product: product,
     keywords: buildKeywordString_(cleanTitle, sport, manufacturer, product),
     source_url: sourceUrl,
-    target_bucket: year || "current"
+    target_bucket: targetBucket
   };
 }
 

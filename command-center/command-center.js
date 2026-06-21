@@ -1,6 +1,6 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc148-soccer-season-bucket-publish-v1-2026-06-19";
-  const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-19-operator-cc148-soccer-season-bucket-publish";
+  const COMMAND_CENTER_VERSION = "cc149-stale-visual-failure-recheck-v1-2026-06-21";
+  const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-21-operator-cc149-stale-visual-failure-recheck";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -558,6 +558,19 @@
     const type = String(action && action.type || "").toLowerCase();
     const validation = String(action && action.validationResult || "").toLowerCase();
     return type === "visual_test" || isPendingVisualValidationAction(action) || validation.includes("visual") || validation.includes("cv/chatbot") || validation.includes("cv and chatbot");
+  }
+
+  function isFailedVisualValidationAction(action) {
+    const status = String(action && action.status || "").toLowerCase();
+    if (status !== "failed") return false;
+    return isVisualAgentAction(action);
+  }
+
+  function isStaleVisualFailure(action) {
+    if (!isFailedVisualValidationAction(action)) return false;
+    const failedAt = Date.parse(action.updatedAt || action.visualStartedAt || action.createdAt || "") || 0;
+    if (!failedAt) return true;
+    return Date.now() - failedAt > 60 * 60 * 1000;
   }
 
   function reconcileStaleRunningAgentActions(options) {
@@ -4090,6 +4103,51 @@
     renderActivityLog();
     updateMemoryStatus("Public JSON proof reconciled.", `${resolved} covered`);
     return resolved;
+  }
+
+  async function reconcileStaleVisualFailureActions(options) {
+    const opts = options || {};
+    const failedVisuals = (state.agentActions || []).filter(isStaleVisualFailure);
+    if (!failedVisuals.length) return 0;
+
+    let reopened = 0;
+    for (const action of failedVisuals) {
+      try {
+        const coverage = await getPublicChecklistCoverageForAction(action);
+        if (!coverage || Number(coverage.rowCount || 0) <= 0) continue;
+
+        Object.assign(action, {
+          status: "pending_visual_validation",
+          previousVisualFailureRunUrl: action.visualRunUrl || action.runUrl || "",
+          previousVisualFailureAt: action.updatedAt || action.visualStartedAt || "",
+          visualStartedAt: "",
+          visualRunUrl: "",
+          runUrl: "",
+          executionResult: "Stale visual failure cleared after current public JSON coverage was found.",
+          validationResult: `Public JSON now has ${formatNumber(coverage.rowCount)} rows and ${formatNumber(coverage.parallelCount)} parallels in ${coverage.shard}. Fresh CV/ChatBot visual proof is pending.`,
+          recommendedAction: "Rerun CV/ChatBot visual validation against the current public data.",
+          updatedAt: new Date().toISOString()
+        });
+        reopened += 1;
+      } catch (err) {}
+    }
+
+    if (!reopened) return 0;
+
+    writeAgentActions();
+    logActivity({
+      type: "visual_test",
+      status: "queued",
+      source: "public_json",
+      title: "Stale visual failures reopened",
+      detail: `${reopened} failed visual test${reopened === 1 ? "" : "s"} moved back to pending visual proof because public JSON is now live.`,
+      noAutoSave: !!opts.noAutoSave
+    });
+    renderAgentActions();
+    renderActionLanes();
+    renderActivityLog();
+    updateMemoryStatus("Stale visual failures reopened.", `${reopened} pending visual`);
+    return reopened;
   }
 
   function getProductVerifierTarget() {
@@ -8900,6 +8958,8 @@
       return runAdminRunQueue();
     }
 
+    await reconcileStaleVisualFailureActions({ noAutoSave: true });
+
     const pendingBatch = getPendingPublicValidationBatch(50);
     if (pendingBatch.length > 1) {
       return runPendingPublicValidationBatch({ limit: 50 });
@@ -9739,5 +9799,6 @@
   render();
   autoLoadBackendAgentMemoryIfEmpty();
   reconcilePendingPublicValidationActions();
+  reconcileStaleVisualFailureActions();
   setTimeout(runAudit, 250);
 })();

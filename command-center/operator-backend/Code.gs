@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-19-operator-cc148-soccer-season-bucket-publish";
+const CM_OPERATOR_VERSION = "2026-06-21-operator-cc149-stale-visual-failure-recheck";
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
 const CM_SENTINEL_ALERT_EMAIL_PROPERTY = "CM_SENTINEL_ALERT_EMAIL";
 const CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY = "CM_SENTINEL_ALERT_WEBHOOK_URL";
@@ -4111,6 +4111,7 @@ function maybeRunScheduledAutoAction_(memory, key, now, adminApprovedRun) {
 
   const actions = Array.isArray(memory.agent_actions) ? memory.agent_actions : [];
   normalizeQueuedSourceImportActions_(actions, now);
+  normalizeStaleVisualFailureActions_(actions, now);
 
   const bucketRepair = runScheduledChecklistBucketRepairIfAvailable_(memory, key, now);
   if (bucketRepair && bucketRepair.ran) return bucketRepair;
@@ -4445,7 +4446,7 @@ function findNextQueuedScheduledAutoAction_(actions, memory) {
     const status = safeString_(action.status).trim().toLowerCase();
     const validation = safeString_(action.validationResult).toLowerCase();
     if ((status === "running" || status === "queued" || status === "in_progress") && validation.indexOf("visual") === -1) continue;
-    if (action.type !== "source_import" && action.type !== "checklist_publish" && action.type !== "prv_source_review" && action.type !== "backend_data_issue") continue;
+    if (action.type !== "source_import" && action.type !== "checklist_publish" && action.type !== "visual_test" && action.type !== "prv_source_review" && action.type !== "backend_data_issue") continue;
     return action;
   }
   return null;
@@ -4502,7 +4503,7 @@ function findNextScheduledAutoAction_(actions, memory) {
     const validation = safeString_(action.validationResult).toLowerCase();
     if (status !== "queued" && status !== "running" && status !== "in_progress") continue;
     if (validation.indexOf("visual") === -1) continue;
-    if (action.type !== "source_import" && action.type !== "checklist_publish" && action.type !== "prv_source_review") continue;
+    if (action.type !== "source_import" && action.type !== "checklist_publish" && action.type !== "visual_test" && action.type !== "prv_source_review") continue;
     return action;
   }
 
@@ -4612,6 +4613,52 @@ function buildScheduledActionDedupeKey_(action) {
   const product = normalize_(action && action.product);
   const code = normalize_(action && action.code);
   return source || code || product;
+}
+
+function normalizeStaleVisualFailureActions_(actions, now) {
+  if (!Array.isArray(actions)) return;
+
+  actions.forEach(function(action) {
+    if (!isStaleVisualFailureAction_(action, now)) return;
+
+    const sport = normalize_(action && action.sport);
+    const code = safeString_(action && action.code).trim();
+    if (!sport || !code) return;
+
+    const coverage = fetchPublishedChecklistProductCounts_(sport, code);
+    if (!coverage || !coverage.found || Number(coverage.row_count || 0) <= 0) return;
+
+    action.previousVisualFailureRunUrl = action.visualRunUrl || action.runUrl || "";
+    action.previousVisualFailureAt = action.updatedAt || action.visualStartedAt || "";
+    action.status = "pending_visual_validation";
+    action.visualStartedAt = "";
+    action.visualRunUrl = "";
+    action.runUrl = "";
+    action.executionResult = "Stale visual failure cleared after current public JSON coverage was found.";
+    action.validationResult = "Public JSON now has " + Number(coverage.row_count || 0) + " rows and " + Number(coverage.parallel_count || 0) + " parallels in " + (coverage.shard || "published checklist JSON") + ". Fresh CV/ChatBot visual proof is pending.";
+    action.recommendedAction = "Rerun CV/ChatBot visual validation against the current public data.";
+    action.updatedAt = now;
+  });
+}
+
+function isStaleVisualFailureAction_(action, now) {
+  const status = safeString_(action && action.status).trim().toLowerCase();
+  if (status !== "failed") return false;
+
+  const type = safeString_(action && action.type).trim().toLowerCase();
+  const validation = safeString_(action && action.validationResult).toLowerCase();
+  const execution = safeString_(action && action.executionResult).toLowerCase();
+  const isVisual = type === "visual_test" ||
+    validation.indexOf("visual") > -1 ||
+    validation.indexOf("cv/chatbot") > -1 ||
+    execution.indexOf("visual") > -1 ||
+    execution.indexOf("cv/chatbot") > -1;
+  if (!isVisual) return false;
+
+  const failedAt = Date.parse(action.updatedAt || action.visualStartedAt || action.createdAt || "");
+  if (!failedAt) return true;
+  const nowMs = Date.parse(now || new Date().toISOString()) || Date.now();
+  return nowMs - failedAt > 60 * 60 * 1000;
 }
 
 function choosePreferredScheduledAction_(a, b) {

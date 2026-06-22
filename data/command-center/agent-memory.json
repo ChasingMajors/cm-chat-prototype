@@ -304,6 +304,42 @@
   ],
   "agent_actions": [
     {
+      "id": "prv_watch|soccer|2026 topps pristine premier league and 2026 merlin premier league",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2026 Topps Pristine Premier League & 2026 Merlin Premier League",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
+      "createdAt": "2026-06-22T15:57:04.623Z",
+      "updatedAt": "2026-06-22T15:57:04.623Z"
+    },
+    {
+      "id": "source_watch|football|2026 leaf spectacular football",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026 Leaf Spectacular Football",
+      "sport": "football",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Football source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-spectacular-football-card-checklist/",
+      "createdAt": "2026-06-22T15:57:04.623Z",
+      "updatedAt": "2026-06-22T15:57:04.623Z"
+    },
+    {
       "id": "visual_test|github_actions|2026 panini prizm fifa world cup soccer|2026_panini_prizm_fifa_world_cup_soccer",
       "type": "visual_test",
       "source": "github_actions",
@@ -335,21 +371,23 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_parkhurst_hockey",
       "riskLevel": "medium",
-      "status": "failed",
-      "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
+      "status": "pending_visual_validation",
+      "recommendedAction": "Rerun CV/ChatBot visual validation against the current public data.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27918648441",
+      "executionResult": "Stale visual failure cleared after current public JSON coverage was found.",
+      "validationResult": "Public JSON now has 975 rows and 22 parallels in hockey-product-2025-26-upper-deck-parkhurst-hockey.json. Fresh CV/ChatBot visual proof is pending.",
+      "runUrl": "",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-21T16:29:45.356Z",
-      "updatedAt": "2026-06-21T21:55:09.202Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27918648441",
-      "visualStartedAt": "2026-06-21T21:53:53Z"
+      "updatedAt": "2026-06-22T15:57:04.623Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "",
+      "previousVisualFailureRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27918648441",
+      "previousVisualFailureAt": "2026-06-21T21:55:09.202Z"
     },
     {
       "id": "source_watch|hockey|2025-26 upper deck parkhurst hockey",
@@ -359,17 +397,23 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_parkhurst_hockey",
       "riskLevel": "medium",
-      "status": "failed",
-      "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
+      "status": "queued",
+      "recommendedAction": "Rerun CV/ChatBot visual validation against the current public data.",
       "adminDecision": "",
-      "executionResult": "JSON publish needs review.",
-      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27918648441",
+      "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
+      "validationResult": "Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-parkhurst-hockey-card-checklist/",
       "createdAt": "2026-06-21T15:57:03.608Z",
-      "updatedAt": "2026-06-21T21:55:09.205Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27918648441",
-      "visualStartedAt": "2026-06-21T21:53:53Z"
+      "updatedAt": "2026-06-22T15:57:04.623Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "visualStartedAt": "2026-06-22T16:01:22.987Z",
+      "previousVisualFailureRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27918648441",
+      "previousVisualFailureAt": "2026-06-21T21:55:09.205Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
+      "autoExecutedAt": "2026-06-22T15:57:04.623Z"
     },
     {
       "id": "source_watch|hockey|2025-26 upper deck chl hockey",
@@ -409,7 +453,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-19T23:45:35.125Z",
-      "updatedAt": "2026-06-21T15:57:03.608Z"
+      "updatedAt": "2026-06-22T15:57:04.623Z"
     },
     {
       "id": "source_watch|soccer|2026 panini prizm fifa world cup soccer",
@@ -2069,59 +2113,50 @@
       "expectedParallelCount": 0,
       "createdAt": "2026-06-09T17:54:02.449Z",
       "updatedAt": "2026-06-16T19:15:35.042Z"
-    },
-    {
-      "id": "backend_audit|stale_public_json|baseball|2016_Topps_Series_1_Baseball",
-      "type": "source_import",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Series 1 Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Series_1_Baseball",
-      "riskLevel": "high",
-      "status": "validated",
-      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
-      "adminDecision": "",
-      "executionResult": "Bucket-level checklist JSON repair ran for baseball 2016.",
-      "validationResult": "CV and ChatBot passed via visual test.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27641795032",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 1378,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.449Z",
-      "updatedAt": "2026-06-16T19:15:38.872Z",
-      "pendingValidationAttempts": 0,
-      "repairProof": "Agent repaired stale public JSON for 2016 Topps Series 1 Baseball by publishing baseball 2016 and validating public JSON.",
-      "autoExecutedAt": "2026-06-16T19:12:48.326Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/27641795032",
-      "visualStartedAt": "2026-06-16T19:13:53Z"
-    },
-    {
-      "id": "backend_audit|missing_or_unparsed_parallels|baseball|2016_Topps_Heritage_High_Number_Baseball",
-      "type": "backend_data_issue",
-      "source": "deep_backend_audit",
-      "product": "2016 Topps Heritage High Number Baseball",
-      "sport": "baseball",
-      "code": "2016_Topps_Heritage_High_Number_Baseball",
-      "riskLevel": "low",
-      "status": "ignored",
-      "recommendedAction": "No action needed. Resolved proof is already recorded.",
-      "adminDecision": "resolved_memory",
-      "executionResult": "Large checklist has no parallels",
-      "validationResult": "This can be valid, but it is worth review for modern products.",
-      "runUrl": "",
-      "sourceUrl": "",
-      "bucket": "2016",
-      "targetBucket": "2016",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-09T17:54:02.449Z",
-      "updatedAt": "2026-06-16T19:15:27.497Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782144086132_alert",
+      "ts": "2026-06-22T15:57:04.623Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782144084854",
+      "ts": "2026-06-22T15:57:04.623Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 1 actionable from 6 checked. PRV sync: passed. 8 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Upper Deck Parkhurst Hockey -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782144084802",
+      "ts": "2026-06-22T15:57:04.623Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2025-26 Upper Deck Parkhurst Hockey: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "status": "queued",
+      "product": "2025-26 Upper Deck Parkhurst Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782144081475",
+      "ts": "2026-06-22T15:57:04.623Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782079262027_2f0xgd",
       "ts": "2026-06-21T22:01:02.027Z",
@@ -2881,70 +2916,30 @@
       "status": "started",
       "product": "2026 Panini Prizm FIFA World Cup Soccer",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1781910078992_szf1ex",
-      "ts": "2026-06-19T23:01:18.992Z",
-      "type": "checklist_publish",
-      "title": "JSON publish needs review",
-      "detail": "No spreadsheet configured for soccer 2026",
-      "status": "failed",
-      "product": "2026 Panini Prizm FIFA World Cup Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781910076587_3qc5py",
-      "ts": "2026-06-19T23:01:16.587Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2026 Panini Prizm FIFA World Cup Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781910076583_fq8p7k",
-      "ts": "2026-06-19T23:01:16.583Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "1,787 checklist rows and 474 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2026 Panini Prizm FIFA World Cup Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1781910064731_fi9eea",
-      "ts": "2026-06-19T23:01:04.731Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "2026 Panini Prizm FIFA World Cup Soccer",
-      "source": "admin"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-06-21T15:57:03.608Z",
+    "generated_at": "2026-06-22T15:57:04.623Z",
     "checked": {
       "checklist_count": 20,
-      "prv_count": 5,
-      "skipped_ignored": 7
+      "prv_count": 6,
+      "skipped_ignored": 8
     },
     "completed_count": 0,
     "needs_admin_count": 3,
     "blocked_count": 0,
     "completed": [],
     "needs_admin": [
-      "2026 Panini Prizm FIFA World Cup Soccer -> pending_public_validation: Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. Missing target bucket/year. Checked soccer current code 2026_panini_prizm_fifa_world_cup_soccer. Recheck: Product code not found in GitHub main checklist manifest.",
-      "Checklist review: 2025-26 Upper Deck CHL Hockey | hockey | missing",
-      "Checklist review: 2025-26 Upper Deck Parkhurst Hockey | hockey | missing"
+      "2025-26 Upper Deck Parkhurst Hockey -> queued: Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "Checklist review: 2026 Leaf Spectacular Football | football | missing",
+      "PRV review: 2026 Topps Pristine Premier League & 2026 Merlin Premier League | soccer | missing"
     ],
     "blocked": [],
     "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 5 PRV source item(s). 0 completed/progress item(s), 3 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 3 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -6895,6 +6890,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-21T22:01:05.818Z",
+  "saved_at": "2026-06-22T16:01:26.384Z",
   "saved_by": "cm_command_center_operator"
 }

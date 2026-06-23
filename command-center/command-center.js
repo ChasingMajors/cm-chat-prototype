@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc154-prv-source-review-action-link-v1-2026-06-23";
+  const COMMAND_CENTER_VERSION = "cc155-prv-alternate-source-hold-v1-2026-06-23";
   const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-23-operator-cc152-post-only-write-hardening";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
@@ -8801,7 +8801,8 @@
       return { kind: "needs_admin", label: "Checklist publish needs product details", safe: false };
     }
     if (type === "prv_source_review") {
-      if (status === "known_issue" || status === "blocked" || status === "failed") return { kind: "create_fix_task", label: "Create repair task", safe: true };
+      if (status === "known_issue") return { kind: "needs_admin", label: "PRV source needs alternate source or manual data", safe: false };
+      if (status === "blocked" || status === "failed") return { kind: "create_fix_task", label: "Create repair task", safe: true };
       if (hasAdminApproval(action) && (execution.includes("products rows") || execution.includes("prv index") || execution.includes("sheet write")) && action.code) {
         return { kind: "publish_prv_json", label: "Publish approved PRV JSON", safe: true };
       }
@@ -9170,6 +9171,17 @@
     }
 
     if (status === "known_issue") {
+      if (type === "prv_source_review") {
+        return {
+          summary: "PRV source is intentionally held; use an alternate source, enter PRV data manually, or ignore it.",
+          steps: [
+            "Open the source link and confirm whether the post is locked or lacks extractable print-run rows.",
+            "If another public source exists, create a new PRV source review for that URL.",
+            "If the numbers are trustworthy but not parseable, enter the PRV rows manually and run Sync PRV JSON.",
+            "If the product is not worth tracking, leave it held or ignore it."
+          ]
+        };
+      }
       return {
         summary: "Known issue is intentionally held; convert it to a fix task when ready.",
         steps: [

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T17:46:10.674Z",
+  "exported_at": "2026-06-23T17:46:15.334Z",
   "autonomy_mode": "full_auto",
   "approvals": {},
   "tasks": [
@@ -172,6 +172,36 @@
     "prv_watch|basketball|2025_26_topps_chrome_cactus_jack_basketball_basketball"
   ],
   "activity_log": [
+    {
+      "id": "log_1782236773731_2ubqh7",
+      "ts": "2026-06-23T17:46:13.731Z",
+      "type": "prv_source_review",
+      "title": "PRV preview started",
+      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
+      "status": "started",
+      "product": "2025/26 Bowman’s Best University Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782236773728_iy5gik",
+      "ts": "2026-06-23T17:46:13.728Z",
+      "type": "agent_run_queue",
+      "title": "Preview PRV source",
+      "detail": "2025/26 Bowman’s Best University Basketball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2025/26 Bowman’s Best University Basketball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1782236773723_0zht6b",
+      "ts": "2026-06-23T17:46:13.723Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "2 flagged jobs will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1782236769071_c8i6j3",
       "ts": "2026-06-23T17:46:09.071Z",
@@ -941,26 +971,6 @@
       "status": "completed",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1782181583301_co9gfg",
-      "ts": "2026-06-23T02:26:23.301Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep started",
-      "detail": "Running health audit, Checklist source watch, and PRV source watch.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1782181583298_7ms1ef",
-      "ts": "2026-06-23T02:26:23.298Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the browser daily sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "last_agent_report": {
@@ -1156,7 +1166,7 @@
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T17:46:10.674Z",
+      "ignoredAt": "2026-06-23T17:46:15.334Z",
       "resolved": true
     },
     "soccer|2026_panini_prizm_fifa_world_cup_soccer": {
@@ -1165,7 +1175,7 @@
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T17:46:10.674Z",
+      "ignoredAt": "2026-06-23T17:46:15.334Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 28043195280": {
@@ -1183,11 +1193,11 @@
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28045031550",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T17:46:10.674Z",
+      "ignoredAt": "2026-06-23T17:46:15.334Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T17:46:11.508Z",
+  "saved_at": "2026-06-23T17:46:16.193Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T17:34:11.231Z",
+  "exported_at": "2026-06-23T17:35:13.939Z",
   "autonomy_mode": "full_auto",
   "approvals": {},
   "tasks": [
@@ -116,21 +116,31 @@
       "sport": "soccer",
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "validated",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "Unknown action",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28043195280",
+      "executionResult": "Sheet write completed and JSON published.",
+      "validationResult": "CV and ChatBot passed.",
+      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2026_panini_prizm_fifa_world_cup_soccer&sport=soccer&type=product",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
       "createdAt": "2026-06-23T17:04:47.890Z",
-      "updatedAt": "2026-06-23T17:34:09.628Z",
+      "updatedAt": "2026-06-23T17:35:12.335Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28043195280",
       "visualStartedAt": "2026-06-23T17:08:08Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782236112337_zi1c7w",
+      "ts": "2026-06-23T17:35:12.337Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written and published",
+      "detail": "0 checklist rows and 0 parallels validated in the source sheet.",
+      "status": "validated",
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782236049627_vyv8cw",
       "ts": "2026-06-23T17:34:09.627Z",
@@ -868,9 +878,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-23T17:14:10.766Z",
       "resolved": true
+    },
+    "soccer|https www checklistcenter com 2026-panini-prizm-fifa-world-cup-soccer-card-checklist": {
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "sport": "soccer",
+      "code": "2026_panini_prizm_fifa_world_cup_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-23T17:35:13.939Z",
+      "resolved": true
+    },
+    "soccer|2026_panini_prizm_fifa_world_cup_soccer": {
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "sport": "soccer",
+      "code": "2026_panini_prizm_fifa_world_cup_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-23T17:35:13.939Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T17:34:12.206Z",
+  "saved_at": "2026-06-23T17:35:15.034Z",
   "saved_by": "cm_command_center_operator"
 }

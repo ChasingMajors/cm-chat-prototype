@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T17:14:01.915Z",
+  "exported_at": "2026-06-23T17:14:12.372Z",
   "autonomy_mode": "full_auto",
   "approvals": {},
   "tasks": [
@@ -109,24 +109,6 @@
       "updatedAt": "2026-06-23T17:04:47.890Z"
     },
     {
-      "id": "prv_watch|basketball|2025-26 topps motif basketball",
-      "type": "prv_source_review",
-      "source": "scheduled_prv_quick_json",
-      "product": "2025-26 Topps Motif Basketball",
-      "sport": "basketball",
-      "code": "",
-      "riskLevel": "low",
-      "status": "known_issue",
-      "recommendedAction": "Source post appears paid/locked. Public HTML does not expose writable print-run rows. Keep as known issue unless admin has another source.",
-      "adminDecision": "",
-      "executionResult": "PRV source was scanned and held before auto execution.",
-      "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
-      "runUrl": "",
-      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-motif-nba",
-      "createdAt": "2026-06-23T17:04:47.890Z",
-      "updatedAt": "2026-06-23T17:04:47.890Z"
-    },
-    {
       "id": "source_watch|soccer|2026 panini prizm fifa world cup soccer",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -149,6 +131,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782234850768_j8ydik",
+      "ts": "2026-06-23T17:14:10.768Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2025-26 Topps Motif Basketball was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2025-26 Topps Motif Basketball",
+      "source": "admin"
+    },
     {
       "id": "log_1782234840312_0qffbc",
       "ts": "2026-06-23T17:14:00.312Z",
@@ -788,9 +780,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-23T17:14:00.311Z",
       "resolved": true
+    },
+    "basketball|https slabsquatch substack com p 202526-topps-motif-nba": {
+      "product": "2025-26 Topps Motif Basketball",
+      "sport": "basketball",
+      "code": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-motif-nba",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-23T17:14:10.766Z",
+      "resolved": true
+    },
+    "basketball|2025-26 topps motif basketball": {
+      "product": "2025-26 Topps Motif Basketball",
+      "sport": "basketball",
+      "code": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-motif-nba",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-23T17:14:10.766Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T17:14:02.867Z",
+  "saved_at": "2026-06-23T17:14:13.496Z",
   "saved_by": "cm_command_center_operator"
 }

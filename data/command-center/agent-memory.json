@@ -2,10 +2,51 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T17:10:17.432Z",
+  "exported_at": "2026-06-23T17:10:23.782Z",
   "autonomy_mode": "full_auto",
   "approvals": {},
-  "tasks": [],
+  "tasks": [
+    {
+      "id": "task_1782234622178_vep3qe",
+      "sourceId": "source_watch|soccer|2026 panini prizm fifa world cup soccer",
+      "title": "Fix: 2026 Panini Prizm FIFA World Cup Soccer",
+      "kind": "fix",
+      "severity": "critical",
+      "status": "queued",
+      "createdAt": "2026-06-23T17:10:22.178Z",
+      "updatedAt": "2026-06-23T17:10:22.178Z",
+      "why": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
+      "objective": "Treat this as a product-specific app behavior failure and use the visual report as proof.",
+      "steps": [
+        "Open the visual report linked on the card.",
+        "Compare the failing query with the product code and public JSON coverage.",
+        "Fix the broken route, search alias, or ChatBot intent in sandbox.",
+        "Rerun Test CV/ChatBot from this product card.",
+        "Keep the item in Review/Hold until the rerun passes."
+      ],
+      "guardrail": "Fix in sandbox first. Do not mark validated until JSON coverage or CV/ChatBot visual proof passes."
+    },
+    {
+      "id": "task_1782234622176_4tjtow",
+      "sourceId": "visual_test|github_actions|2026 panini prizm fifa world cup soccer|2026_panini_prizm_fifa_world_cup_soccer",
+      "title": "Fix: 2026 Panini Prizm FIFA World Cup Soccer",
+      "kind": "fix",
+      "severity": "critical",
+      "status": "queued",
+      "createdAt": "2026-06-23T17:10:22.176Z",
+      "updatedAt": "2026-06-23T17:10:22.176Z",
+      "why": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
+      "objective": "Open the visual report, identify the failing query or page, patch sandbox behavior, then rerun CV/ChatBot validation.",
+      "steps": [
+        "Open the GitHub Actions visual report and note the failing test label.",
+        "Identify whether the failure is ChatBot query routing, Checklist Vault product loading, or expected-test wording.",
+        "Patch the sandbox file only, then run syntax checks.",
+        "Push the fix and rerun the same product visual test.",
+        "Mark validated only after the visual test passes."
+      ],
+      "guardrail": "Fix in sandbox first. Do not mark validated until JSON coverage or CV/ChatBot visual proof passes."
+    }
+  ],
   "agent_actions": [
     {
       "id": "visual_test|github_actions|2026 panini prizm fifa world cup soccer|2026_panini_prizm_fifa_world_cup_soccer",
@@ -14,12 +55,12 @@
       "product": "2026 Panini Prizm FIFA World Cup Soccer",
       "sport": "soccer",
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
-      "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "riskLevel": "medium",
+      "status": "fix_queued",
+      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28043195280",
       "sourceUrl": "",
       "bucket": "",
@@ -27,7 +68,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-23T17:08:09.055Z",
-      "updatedAt": "2026-06-23T17:09:04.887Z",
+      "updatedAt": "2026-06-23T17:10:22.177Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28043195280",
       "visualStartedAt": "2026-06-23T17:08:08Z"
     },
@@ -147,21 +188,41 @@
       "sport": "soccer",
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "riskLevel": "medium",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "fix_queued",
+      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "",
       "executionResult": "JSON publish needs review.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28043195280",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
       "createdAt": "2026-06-23T17:04:47.890Z",
-      "updatedAt": "2026-06-23T17:09:04.888Z",
+      "updatedAt": "2026-06-23T17:10:22.178Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28043195280",
       "visualStartedAt": "2026-06-23T17:08:08Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782234622180_daws0k",
+      "ts": "2026-06-23T17:10:22.180Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "Visual test failed. Open the report and review screenshots/errors before marking validated.",
+      "status": "failed",
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1782234622179_fnp6mb",
+      "ts": "2026-06-23T17:10:22.179Z",
+      "type": "operator_task",
+      "title": "Repair task created from visual failure",
+      "detail": "Sentinel created a fix task so the failed CV/ChatBot behavior has a clear repair path.",
+      "status": "queued",
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "source": "github_actions"
+    },
     {
       "id": "log_1782234544889_k4y7po",
       "ts": "2026-06-23T17:09:04.889Z",
@@ -594,9 +655,9 @@
   },
   "visual_tests": {
     "soccer|2026_panini_prizm_fifa_world_cup_soccer": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "failed",
+      "conclusion": "failure",
       "startedAt": "2026-06-23T17:08:07.517Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28043195280",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -606,7 +667,7 @@
       "productName": "2026 Panini Prizm FIFA World Cup Soccer",
       "sport": "soccer",
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
-      "updatedAt": "2026-06-23T17:09:04.882Z",
+      "updatedAt": "2026-06-23T17:10:22.173Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 28043195280,
@@ -614,12 +675,12 @@
       "displayTitle": "Visual Product Test - 2026 Panini Prizm FIFA World Cup Soccer",
       "headSha": "8f2d7bca3b5a79fb3be876721d71d7c3ee7b46ee",
       "createdAt": "2026-06-23T17:08:08Z",
-      "checkedAt": "2026-06-23T17:09:04.882Z"
+      "checkedAt": "2026-06-23T17:10:22.173Z"
     },
     "soccer|2026 panini prizm fifa world cup soccer": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "failed",
+      "conclusion": "failure",
       "startedAt": "2026-06-23T17:08:07.517Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28043195280",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -629,7 +690,7 @@
       "productName": "2026 Panini Prizm FIFA World Cup Soccer",
       "sport": "soccer",
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
-      "updatedAt": "2026-06-23T17:09:04.882Z",
+      "updatedAt": "2026-06-23T17:10:22.173Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 28043195280,
@@ -637,7 +698,7 @@
       "displayTitle": "Visual Product Test - 2026 Panini Prizm FIFA World Cup Soccer",
       "headSha": "8f2d7bca3b5a79fb3be876721d71d7c3ee7b46ee",
       "createdAt": "2026-06-23T17:08:08Z",
-      "checkedAt": "2026-06-23T17:09:04.882Z"
+      "checkedAt": "2026-06-23T17:10:22.173Z"
     }
   },
   "known_issues": {},
@@ -680,6 +741,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T17:10:18.430Z",
+  "saved_at": "2026-06-23T17:10:25.179Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T17:13:49.131Z",
+  "exported_at": "2026-06-23T17:13:57.783Z",
   "autonomy_mode": "full_auto",
   "approvals": {},
   "tasks": [
@@ -145,24 +145,6 @@
       "updatedAt": "2026-06-23T17:04:47.890Z"
     },
     {
-      "id": "source_watch|soccer|2025-26 topps lineage bayern m nchen soccer",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2025-26 Topps Lineage Bayern München Soccer",
-      "sport": "soccer",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-lineage-bayern-munchen-soccer-card-checklist/",
-      "createdAt": "2026-06-23T17:04:47.890Z",
-      "updatedAt": "2026-06-23T17:04:47.890Z"
-    },
-    {
       "id": "source_watch|soccer|2026 panini prizm fifa world cup soccer",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -185,6 +167,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782234836179_ok6usp",
+      "ts": "2026-06-23T17:13:56.179Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2025-26 Topps Lineage Bayern München Soccer was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2025-26 Topps Lineage Bayern München Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1782234829270_uy5ofm",
+      "ts": "2026-06-23T17:13:49.270Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "0 rows and 79 parallels parsed.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Lineage Bayern München Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782234827528_ypmxob",
       "ts": "2026-06-23T17:13:47.528Z",
@@ -758,9 +760,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-23T17:13:21.539Z",
       "resolved": true
+    },
+    "soccer|https www checklistcenter com 2025-26-topps-lineage-bayern-munchen-soccer-card-checklist": {
+      "product": "2025-26 Topps Lineage Bayern München Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_lineage_bayern_m_nchen_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-lineage-bayern-munchen-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-23T17:13:56.177Z",
+      "resolved": true
+    },
+    "soccer|2025_26_topps_lineage_bayern_m_nchen_soccer": {
+      "product": "2025-26 Topps Lineage Bayern München Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_lineage_bayern_m_nchen_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-lineage-bayern-munchen-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-23T17:13:56.178Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T17:13:50.202Z",
+  "saved_at": "2026-06-23T17:13:58.769Z",
   "saved_by": "cm_command_center_operator"
 }

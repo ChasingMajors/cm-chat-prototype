@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-22-operator-cc151-publish-pending-routing";
+const CM_OPERATOR_VERSION = "2026-06-23-operator-cc152-post-only-write-hardening";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -126,15 +126,7 @@ function doGet(e) {
   const action = safeString_(p.action).trim();
 
   try {
-    if (action === "health") return json_({
-      ok: true,
-      service: "cm_command_center_operator",
-      version: CM_OPERATOR_VERSION,
-      mode: "review_only",
-      supported_sports: CM_ALLOWED_SPORTS,
-      sport_inference: getSportInferenceSelfTest_(),
-      updated_at: new Date().toISOString()
-    });
+    if (action === "health") return json_(buildHealthPayload_());
 
     if (action === "sourceWatch") return json_(runSourceWatch_(p.mode || ""));
 
@@ -177,6 +169,14 @@ function doGet(e) {
         title: p.title || p.product || "",
         sport: p.sport || ""
       }));
+    }
+
+    if (requiresPostOnlyAction_(action)) {
+      return json_({
+        ok: false,
+        error: "This admin action requires POST. Keys are not accepted in query strings.",
+        action: action
+      });
     }
 
     if (action === "executeSourceImport") {
@@ -289,11 +289,34 @@ function doGet(e) {
   }
 }
 
+function requiresPostOnlyAction_(action) {
+  const a = safeString_(action).trim();
+  return [
+    "executePrvSourceImport",
+    "executeSourceImport",
+    "publishImportedChecklist",
+    "publishPrvVaultStaticData",
+    "dispatchVisualProductTest",
+    "getVisualProductTestStatus",
+    "dispatchSentinelSelfTest",
+    "getSentinelSelfTestStatus",
+    "loadAgentMemory",
+    "saveAgentMemory",
+    "runScheduledSourceWatch",
+    "runScheduledPrvSync",
+    "runScheduledAgentSweep",
+    "installDailyAgentSweepTrigger",
+    "testSentinelAlert"
+  ].indexOf(a) > -1;
+}
+
 function doPost(e) {
   const body = parseBody_(e);
   const action = safeString_(body.action).trim();
 
   try {
+    if (action === "health") return json_(buildHealthPayload_());
+
     if (action === "sourceWatch") return json_(runSourceWatch_(body.mode || ""));
 
     if (action === "runDeepBackendAudit") return json_(runDeepBackendAudit_(body));
@@ -391,6 +414,18 @@ function doPost(e) {
       error: err && err.message ? err.message : String(err)
     });
   }
+}
+
+function buildHealthPayload_() {
+  return {
+    ok: true,
+    service: "cm_command_center_operator",
+    version: CM_OPERATOR_VERSION,
+    mode: "review_only",
+    supported_sports: CM_ALLOWED_SPORTS,
+    sport_inference: getSportInferenceSelfTest_(),
+    updated_at: new Date().toISOString()
+  };
 }
 
 function previewSourceImport_(input) {
@@ -2608,38 +2643,13 @@ function publishChecklistAfterImport_(product, key) {
     };
   }
 
-  const url = exporterUrl
-    + (exporterUrl.indexOf("?") > -1 ? "&" : "?")
-    + "action=publishChecklistAfterImport"
-    + "&sport=" + encodeURIComponent(product.sport || "")
-    + "&bucket=" + encodeURIComponent(getPublishBucketForChecklist_(product.sport, product.target_bucket || product.year || ""))
-    + "&code=" + encodeURIComponent(product.code || "")
-    + "&key=" + encodeURIComponent(key || "");
-
-  const res = UrlFetchApp.fetch(url, {
-    method: "get",
-    muteHttpExceptions: true
-  });
-
-  const status = res.getResponseCode();
-  const text = res.getContentText();
-  let data = {};
-  try {
-    data = text ? JSON.parse(text) : {};
-  } catch (err) {
-    data = { raw: text };
-  }
-
-  if (status < 200 || status >= 300) {
-    return {
-      ok: false,
-      status_code: status,
-      error: "Static Data Exporter publish call failed with " + status,
-      response: data
-    };
-  }
-
-  return data;
+  return postStaticExporterJson_(exporterUrl, {
+    action: "publishChecklistAfterImport",
+    sport: product.sport || "",
+    bucket: getPublishBucketForChecklist_(product.sport, product.target_bucket || product.year || ""),
+    code: product.code || "",
+    key: key || ""
+  }, "Static Data Exporter publish call failed");
 }
 
 function getPublishBucketForChecklist_(sport, bucket) {
@@ -2722,14 +2732,28 @@ function publishPrvVaultStaticData_(input) {
     };
   }
 
-  const url = exporterUrl
-    + (exporterUrl.indexOf("?") > -1 ? "&" : "?")
-    + "action=publishVaultStaticDataToGitHub"
-    + "&code=" + encodeURIComponent(code)
-    + "&key=" + encodeURIComponent(input && input.key || "");
+  const data = postStaticExporterJson_(exporterUrl, {
+    action: "publishVaultStaticDataToGitHub",
+    code: code,
+    key: input && input.key || ""
+  }, "Static Data Exporter PRV publish call failed");
 
-  const res = UrlFetchApp.fetch(url, {
-    method: "get",
+  return {
+    ok: !!(data && data.ok),
+    status: data && data.status ? data.status : data && data.ok ? "published" : "publish_needs_review",
+    mode: "approved_prv_publish",
+    code: code,
+    source_sheet: sourceSheet,
+    publish: data,
+    updated_at: new Date().toISOString()
+  };
+}
+
+function postStaticExporterJson_(exporterUrl, payload, failurePrefix) {
+  const res = UrlFetchApp.fetch(exporterUrl, {
+    method: "post",
+    contentType: "text/plain;charset=utf-8",
+    payload: JSON.stringify(payload || {}),
     muteHttpExceptions: true
   });
   const status = res.getResponseCode();
@@ -2745,20 +2769,12 @@ function publishPrvVaultStaticData_(input) {
     return {
       ok: false,
       status_code: status,
-      error: "Static Data Exporter PRV publish call failed with " + status,
+      error: failurePrefix + " with " + status,
       response: data
     };
   }
 
-  return {
-    ok: !!(data && data.ok),
-    status: data && data.status ? data.status : data && data.ok ? "published" : "publish_needs_review",
-    mode: "approved_prv_publish",
-    code: code,
-    source_sheet: sourceSheet,
-    publish: data,
-    updated_at: new Date().toISOString()
-  };
+  return data;
 }
 
 function dispatchVisualProductTest_(input) {

@@ -1,6 +1,6 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc151-publish-pending-routing-v1-2026-06-22";
-  const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-22-operator-cc151-publish-pending-routing";
+  const COMMAND_CENTER_VERSION = "cc152-post-only-write-hardening-v1-2026-06-23";
+  const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-23-operator-cc152-post-only-write-hardening";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -2913,12 +2913,11 @@
     });
 
     try {
-      const url = endpoint
-        + (endpoint.indexOf("?") > -1 ? "&" : "?")
-        + "action=installDailyAgentSweepTrigger"
-        + "&hour=9"
-        + "&key=" + encodeURIComponent(key);
-      const data = await fetchJson(url, { timeoutMs: 60000 });
+      const data = await postOperatorJson(endpoint, {
+        action: "installDailyAgentSweepTrigger",
+        hour: 9,
+        key
+      }, { timeoutMs: 60000 });
       if (!data || !data.ok) throw new Error(data && data.error ? data.error : "Trigger install failed.");
       renderSentinelNotice("Daily Agent trigger ready", data.message || "runScheduledAgentSweepTrigger is scheduled daily.", "success");
       logActivity({
@@ -2960,11 +2959,10 @@
     });
 
     try {
-      const url = endpoint
-        + (endpoint.indexOf("?") > -1 ? "&" : "?")
-        + "action=testSentinelAlert"
-        + "&key=" + encodeURIComponent(key);
-      const data = await fetchJson(url, { timeoutMs: 60000 });
+      const data = await postOperatorJson(endpoint, {
+        action: "testSentinelAlert",
+        key
+      }, { timeoutMs: 60000 });
       if (!data || !data.ok) throw new Error(data && data.error ? data.error : "Test alert failed.");
 
       renderSentinelNotice(
@@ -4512,15 +4510,13 @@
     }
 
     try {
-      const url = endpoint
-        + (endpoint.indexOf("?") > -1 ? "&" : "?")
-        + "action=dispatchVisualProductTest"
-        + "&productName=" + encodeURIComponent(plan.productName || "")
-        + "&sport=" + encodeURIComponent(plan.sport || "")
-        + "&code=" + encodeURIComponent(plan.code || "")
-        + "&key=" + encodeURIComponent(key);
-
-      const data = await fetchJson(url, { timeoutMs: 60000 });
+      const data = await postOperatorJson(endpoint, {
+        action: "dispatchVisualProductTest",
+        productName: plan.productName || "",
+        sport: plan.sport || "",
+        code: plan.code || "",
+        key
+      }, { timeoutMs: 60000 });
       renderVisualDispatchResult(data, plan, { silentPanel: !!opts.silentPanel });
       return data;
     } catch (err) {
@@ -4551,16 +4547,14 @@
     }
 
     try {
-      const url = endpoint
-        + (endpoint.indexOf("?") > -1 ? "&" : "?")
-        + "action=getVisualProductTestStatus"
-        + "&productName=" + encodeURIComponent(plan.productName || "")
-        + "&sport=" + encodeURIComponent(plan.sport || "")
-        + "&code=" + encodeURIComponent(plan.code || "")
-        + "&startedAt=" + encodeURIComponent(existing.startedAt || plan.startedAt || "")
-        + "&key=" + encodeURIComponent(key);
-
-      const data = await fetchJson(url, { timeoutMs: 60000 });
+      const data = await postOperatorJson(endpoint, {
+        action: "getVisualProductTestStatus",
+        productName: plan.productName || "",
+        sport: plan.sport || "",
+        code: plan.code || "",
+        startedAt: existing.startedAt || plan.startedAt || "",
+        key
+      }, { timeoutMs: 60000 });
       renderVisualStatusResult(data, plan, { silent: !!opts.silent });
       if (!isTerminalVisualRecord(data)) {
         scheduleVisualStatusPoll(plan, (opts.pollAttempt || 1) + 1);
@@ -4606,13 +4600,11 @@
     renderActivityLog();
 
     try {
-      const url = endpoint
-        + (endpoint.indexOf("?") > -1 ? "&" : "?")
-        + "action=dispatchSentinelSelfTest"
-        + "&commandCenterUrl=" + encodeURIComponent(getCommandCenterTestUrl())
-        + "&key=" + encodeURIComponent(key);
-
-      const data = await fetchJson(url, { timeoutMs: 60000 });
+      const data = await postOperatorJson(endpoint, {
+        action: "dispatchSentinelSelfTest",
+        commandCenterUrl: getCommandCenterTestUrl(),
+        key
+      }, { timeoutMs: 60000 });
       if (opts.recoveryActionId && data && data.ok) {
         const recovery = state.agentActions.find(action => action.id === opts.recoveryActionId);
         if (recovery) {
@@ -4742,12 +4734,11 @@
     if (!endpoint || !key || !state.sentinelSelfTest) return;
 
     try {
-      const url = endpoint
-        + (endpoint.indexOf("?") > -1 ? "&" : "?")
-        + "action=getSentinelSelfTestStatus"
-        + "&startedAt=" + encodeURIComponent(state.sentinelSelfTest.startedAt || "")
-        + "&key=" + encodeURIComponent(key);
-      const data = await fetchJson(url, { timeoutMs: 60000 });
+      const data = await postOperatorJson(endpoint, {
+        action: "getSentinelSelfTestStatus",
+        startedAt: state.sentinelSelfTest.startedAt || "",
+        key
+      }, { timeoutMs: 60000 });
       renderSentinelSelfTestStatusResult(data);
       if (!isTerminalSentinelSelfTest(data)) {
         scheduleSentinelSelfTestPoll((opts.pollAttempt || 1) + 1);
@@ -6115,11 +6106,10 @@
 
     try {
       updateMemoryStatus("Loading backend memory...", "working");
-      const url = endpoint
-        + (endpoint.indexOf("?") > -1 ? "&" : "?")
-        + "action=loadAgentMemory"
-        + "&key=" + encodeURIComponent(key);
-      const data = await fetchJson(url, { timeoutMs: 60000 });
+      const data = await postOperatorJson(endpoint, {
+        action: "loadAgentMemory",
+        key
+      }, { timeoutMs: 60000 });
       if (!data || !data.ok) throw new Error(data && data.error ? data.error : "Backend load failed.");
       if (!data.has_memory || !data.memory) {
         updateMemoryStatus("No backend memory has been saved yet.", "empty");

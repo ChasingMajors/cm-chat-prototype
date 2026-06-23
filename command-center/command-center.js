@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc153-search-index-publish-validation-v1-2026-06-23";
+  const COMMAND_CENTER_VERSION = "cc154-prv-source-review-action-link-v1-2026-06-23";
   const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-23-operator-cc152-post-only-write-hardening";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
@@ -3338,7 +3338,7 @@
       const data = await fetchJson(url, { timeoutMs: 90000 });
       const parsedRows = Number(data && data.row_count || 0);
       const operatorHealth = parsedRows > 0 ? null : await fetchOperatorHealth(endpoint);
-      renderPrvPreview(data, { operatorHealth });
+      renderPrvPreview(data, { operatorHealth, actionId });
       if (actionId) {
         const previewReady = !!(data && data.status === "preview_ready" && parsedRows > 0);
         updateAgentAction(actionId, {
@@ -5216,7 +5216,7 @@
             <p>${escapeHtml(hasRows ? data.next_step || "Review these rows before PRV sheet write is enabled." : "Open the source and decide whether this needs a parser update, manual PRV entry, or should be ignored for now.")}</p>
             <div class="task-guardrail">${hasRows ? "This writes only one PRV product code. It does not delete other PRV products or publish JSON." : "Write is disabled because there are no parsed rows."}</div>
             ${hasRows && data.status === "preview_ready" ? `
-              <button class="action-btn approve" type="button" data-execute-prv-import="${escapeHtml(data.source_url || "")}" data-execute-prv-sport="${escapeHtml(product.sport || "")}">Write PRV Temp Data</button>
+              <button class="action-btn approve" type="button" data-execute-prv-import="${escapeHtml(data.source_url || "")}" data-execute-prv-sport="${escapeHtml(product.sport || "")}" data-execute-prv-action-id="${escapeHtml(opts.actionId || "")}">Write PRV Temp Data</button>
             ` : ""}
           </div>
         </div>
@@ -5224,7 +5224,7 @@
     `;
     els.sourceCheckResult.querySelectorAll("[data-execute-prv-import]").forEach(btn => {
       btn.addEventListener("click", () => {
-        executePrvSourceImport(btn.dataset.executePrvImport, btn.dataset.executePrvSport || "");
+        executePrvSourceImport(btn.dataset.executePrvImport, btn.dataset.executePrvSport || "", btn.dataset.executePrvActionId || "");
       });
     });
     focusSourceCheckResult();

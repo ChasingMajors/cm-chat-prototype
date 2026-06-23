@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T17:48:47.468Z",
+  "exported_at": "2026-06-23T17:49:00.541Z",
   "autonomy_mode": "full_auto",
   "approvals": {},
   "tasks": [
@@ -118,15 +118,15 @@
       "sport": "basketball",
       "code": "2025_26_topps_chrome_cactus_jack_basketball_basketball",
       "riskLevel": "low",
-      "status": "fix_queued",
-      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
+      "status": "known_issue",
+      "recommendedAction": "Open the source and review whether this post has a new layout or no extractable print-run table.",
       "adminDecision": "",
       "executionResult": "Source found, but the PRV parser returned 0 print-run rows.",
       "validationResult": "Parser review needed before this can write PRV sheet data.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-cactus-jack-nba",
       "createdAt": "2026-06-23T17:04:47.890Z",
-      "updatedAt": "2026-06-23T17:48:08.318Z"
+      "updatedAt": "2026-06-23T17:48:58.935Z"
     },
     {
       "id": "prv_watch|basketball|2025_26_bowman_s_best_university_basketball",
@@ -172,6 +172,46 @@
     "prv_watch|basketball|2025_26_topps_chrome_cactus_jack_basketball_basketball"
   ],
   "activity_log": [
+    {
+      "id": "log_1782236938939_tlr6k4",
+      "ts": "2026-06-23T17:48:58.939Z",
+      "type": "prv_source_review",
+      "title": "PRV preview completed",
+      "detail": "0 print-run rows parsed.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Chrome Cactus Jack Basketball Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782236936534_k5agjl",
+      "ts": "2026-06-23T17:48:56.534Z",
+      "type": "prv_source_review",
+      "title": "PRV preview started",
+      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
+      "status": "started",
+      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782236930681_evanjl",
+      "ts": "2026-06-23T17:48:50.681Z",
+      "type": "agent_run_queue",
+      "title": "Admin Run Queue complete",
+      "detail": "2 attempted. 0 skipped for approval/details. 0 failed. 2 still queued. 2025/26 Bowman’s Best University Basketball: Recheck PRV public JSON 2025/26 Topps Chrome Cactus Jack Basketball Basketball: Recheck PRV public JSON",
+      "status": "needs_review",
+      "product": "",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1782236930676_3yfknc",
+      "ts": "2026-06-23T17:48:50.676Z",
+      "type": "prv_publish",
+      "title": "PRV public validation pending",
+      "detail": "Public PRV validation did not pass yet. Source Sheet has 1 Index row and 0 Products rows for this code.",
+      "status": "needs_review",
+      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782236925866_1x7py2",
       "ts": "2026-06-23T17:48:45.866Z",
@@ -931,46 +971,6 @@
       "status": "removed",
       "product": "2026 Leaf Electrum Baseball",
       "source": "admin"
-    },
-    {
-      "id": "log_1782234297525_l24ihm",
-      "ts": "2026-06-23T17:04:57.525Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782234297506_mrrfu4",
-      "ts": "2026-06-23T17:04:57.506Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782234293206_alert",
-      "ts": "2026-06-23T17:04:47.890Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782234292307",
-      "ts": "2026-06-23T17:04:47.890Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 6 actionable from 20 checked. PRV: 3 actionable from 6 checked. PRV sync: skipped for fast sweep. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -1166,7 +1166,7 @@
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T17:48:47.468Z",
+      "ignoredAt": "2026-06-23T17:49:00.541Z",
       "resolved": true
     },
     "soccer|2026_panini_prizm_fifa_world_cup_soccer": {
@@ -1175,7 +1175,7 @@
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T17:48:47.468Z",
+      "ignoredAt": "2026-06-23T17:49:00.541Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 28043195280": {
@@ -1193,11 +1193,11 @@
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28045031550",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T17:48:47.468Z",
+      "ignoredAt": "2026-06-23T17:49:00.541Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T17:48:55.335Z",
+  "saved_at": "2026-06-23T17:49:01.445Z",
   "saved_by": "cm_command_center_operator"
 }

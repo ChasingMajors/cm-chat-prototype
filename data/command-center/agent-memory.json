@@ -2,10 +2,48 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T17:42:53.792Z",
+  "exported_at": "2026-06-23T17:43:14.448Z",
   "autonomy_mode": "full_auto",
   "approvals": {},
   "tasks": [
+    {
+      "id": "task_1782236592843_drbvk6",
+      "sourceId": "prv_watch|basketball|2025_26_topps_chrome_cactus_jack_basketball_basketball",
+      "title": "Fix: 2025/26 Topps Chrome Cactus Jack Basketball Basketball",
+      "kind": "fix",
+      "severity": "warning",
+      "status": "queued",
+      "createdAt": "2026-06-23T17:43:12.843Z",
+      "updatedAt": "2026-06-23T17:43:12.843Z",
+      "why": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
+      "objective": "Known issue is intentionally held; convert it to a fix task when ready.",
+      "steps": [
+        "Confirm the issue still reproduces.",
+        "Decide whether this is data, search, UI, or test expectation work.",
+        "Patch in sandbox and document the affected product/query.",
+        "Run the product visual test before clearing the known issue."
+      ],
+      "guardrail": "Fix in sandbox first. Do not mark validated until JSON coverage or CV/ChatBot visual proof passes."
+    },
+    {
+      "id": "task_1782236592836_dzhkx9",
+      "sourceId": "prv_watch|basketball|2025_26_bowman_s_best_university_basketball",
+      "title": "Fix: 2025/26 Bowman’s Best University Basketball",
+      "kind": "fix",
+      "severity": "warning",
+      "status": "queued",
+      "createdAt": "2026-06-23T17:43:12.836Z",
+      "updatedAt": "2026-06-23T17:43:12.836Z",
+      "why": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
+      "objective": "Known issue is intentionally held; convert it to a fix task when ready.",
+      "steps": [
+        "Confirm the issue still reproduces.",
+        "Decide whether this is data, search, UI, or test expectation work.",
+        "Patch in sandbox and document the affected product/query.",
+        "Run the product visual test before clearing the known issue."
+      ],
+      "guardrail": "Fix in sandbox first. Do not mark validated until JSON coverage or CV/ChatBot visual proof passes."
+    },
     {
       "id": "task_1782234622178_vep3qe",
       "sourceId": "source_watch|soccer|2026 panini prizm fifa world cup soccer",
@@ -80,15 +118,15 @@
       "sport": "basketball",
       "code": "2025_26_topps_chrome_cactus_jack_basketball_basketball",
       "riskLevel": "low",
-      "status": "known_issue",
-      "recommendedAction": "Source post appears paid/locked. Public HTML does not expose writable print-run rows. Keep as known issue unless admin has another source.",
+      "status": "fix_queued",
+      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "",
       "executionResult": "PRV source was scanned and held before auto execution.",
       "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-cactus-jack-nba",
       "createdAt": "2026-06-23T17:04:47.890Z",
-      "updatedAt": "2026-06-23T17:04:47.890Z"
+      "updatedAt": "2026-06-23T17:43:12.843Z"
     },
     {
       "id": "prv_watch|basketball|2025_26_bowman_s_best_university_basketball",
@@ -98,15 +136,15 @@
       "sport": "basketball",
       "code": "2025_26_bowman_s_best_university_basketball",
       "riskLevel": "low",
-      "status": "known_issue",
-      "recommendedAction": "Source post appears paid/locked. Public HTML does not expose writable print-run rows. Keep as known issue unless admin has another source.",
+      "status": "fix_queued",
+      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "",
       "executionResult": "PRV source was scanned and held before auto execution.",
       "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
       "createdAt": "2026-06-23T17:04:47.890Z",
-      "updatedAt": "2026-06-23T17:04:47.890Z"
+      "updatedAt": "2026-06-23T17:43:12.836Z"
     },
     {
       "id": "source_watch|soccer|2026 panini prizm fifa world cup soccer",
@@ -134,6 +172,46 @@
     "prv_watch|basketball|2025_26_topps_chrome_cactus_jack_basketball_basketball"
   ],
   "activity_log": [
+    {
+      "id": "log_1782236592844_nk633w",
+      "ts": "2026-06-23T17:43:12.844Z",
+      "type": "agent_run_queue",
+      "title": "Admin Run Queue complete",
+      "detail": "2 attempted. 0 skipped for approval/details. 0 failed. 2 still queued. 2025/26 Bowman’s Best University Basketball: Created Fix: 2025/26 Bowman’s Best University Basketball. 2025/26 Topps Chrome Cactus Jack Basketball Basketball: Created Fix: 2025/26 Topps Chrome Cactus Jack Basketball Basketball.",
+      "status": "needs_review",
+      "product": "",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1782236592839_fxpmka",
+      "ts": "2026-06-23T17:43:12.839Z",
+      "type": "agent_run_queue",
+      "title": "Create repair task",
+      "detail": "2025/26 Topps Chrome Cactus Jack Basketball Basketball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1782236592832_la62nh",
+      "ts": "2026-06-23T17:43:12.832Z",
+      "type": "agent_run_queue",
+      "title": "Create repair task",
+      "detail": "2025/26 Bowman’s Best University Basketball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2025/26 Bowman’s Best University Basketball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1782236592827_2mc7py",
+      "ts": "2026-06-23T17:43:12.827Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "2 flagged jobs will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1782236572187_boa462",
       "ts": "2026-06-23T17:42:52.187Z",
@@ -1008,7 +1086,7 @@
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T17:42:53.792Z",
+      "ignoredAt": "2026-06-23T17:43:14.448Z",
       "resolved": true
     },
     "soccer|2026_panini_prizm_fifa_world_cup_soccer": {
@@ -1017,7 +1095,7 @@
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T17:42:53.792Z",
+      "ignoredAt": "2026-06-23T17:43:14.448Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 28043195280": {
@@ -1035,11 +1113,11 @@
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28045031550",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T17:42:53.792Z",
+      "ignoredAt": "2026-06-23T17:43:14.448Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T17:42:54.833Z",
+  "saved_at": "2026-06-23T17:43:15.492Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -200,7 +200,7 @@ If Sentinel memory is set to `full_auto`, the sweep may advance guardrail-safe p
 - Checklist Center product source -> product-scoped Sheet write -> checklist JSON publish -> public JSON validation
 - SlabSquatch PRV source -> product-scoped PRV Sheet write -> PRV JSON publish -> public PRV JSON validation
 
-Manual Command Center sweeps request up to 2 safe auto actions. The scheduled trigger requests 1 safe auto action to reduce timeout risk. The backend caps any request at 3.
+Manual Command Center sweeps request up to 3 safe auto actions. The scheduled trigger requests 1 safe auto action to reduce timeout risk. The backend caps any request at 3.
 
 Full auto still refuses unsupported sports, blocked categories, missing product names, missing source URLs, and source URLs outside the approved domains. Guardrail-blocked cards are moved to known issue so the agent does not keep retrying the same unsafe action. Review-only, approval-required, and guarded-auto modes do not execute writes from the scheduled sweep.
 

@@ -27,7 +27,9 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-21-operator-cc149-stale-visual-failure-recheck";
+const CM_OPERATOR_VERSION = "2026-06-22-operator-cc150-full-auto-action-caps";
+const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
+const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
 const CM_SENTINEL_ALERT_EMAIL_PROPERTY = "CM_SENTINEL_ALERT_EMAIL";
 const CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY = "CM_SENTINEL_ALERT_WEBHOOK_URL";
@@ -4018,7 +4020,7 @@ function runScheduledAgentSweepTrigger() {
     return runScheduledAgentSweep_({
       key: key,
       mode: "deep_sheets",
-      maxAutoActions: 10
+      maxAutoActions: CM_SCHEDULED_AUTO_ACTION_LIMIT
     });
   } catch (err) {
     const result = {
@@ -4035,12 +4037,12 @@ function runScheduledAgentSweepTrigger() {
 function getScheduledAutoActionLimit_(input) {
   const raw = Number(input && (input.maxAutoActions || input.max_auto_actions || input.autoLimit || input.auto_limit || 1));
   if (!raw || raw < 1) return 1;
-  return Math.min(10, Math.floor(raw));
+  return Math.min(CM_MANUAL_AUTO_ACTION_LIMIT, Math.floor(raw));
 }
 
 function maybeRunScheduledAutoActions_(memory, key, now, maxActions, adminApprovedRun) {
   const mode = safeString_(memory && memory.autonomy_mode).trim() || "approval_required";
-  const limit = Math.max(1, Math.min(10, Number(maxActions || 1)));
+  const limit = Math.max(1, Math.min(CM_MANUAL_AUTO_ACTION_LIMIT, Number(maxActions || 1)));
   const queuedIds = normalizeAgentRunQueue_(memory);
 
   if (mode !== "full_auto" && mode !== "guarded_auto" && !adminApprovedRun) {

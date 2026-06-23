@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T03:01:27.273Z",
+  "exported_at": "2026-06-23T03:01:31.344Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -302,24 +302,6 @@
       "updatedAt": "2026-06-23T03:01:14.419Z"
     },
     {
-      "id": "source_watch|hockey|2026 leaf metal hockey",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2026 Leaf Metal Hockey",
-      "sport": "hockey",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
-      "createdAt": "2026-06-23T03:01:14.419Z",
-      "updatedAt": "2026-06-23T03:01:14.419Z"
-    },
-    {
       "id": "source_watch|soccer|2026 topps argentina team set soccer",
       "type": "source_import",
       "source": "scheduled_quick_json",
@@ -412,6 +394,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782183689742_8dy29l",
+      "ts": "2026-06-23T03:01:29.742Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2026 Leaf Metal Hockey was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2026 Leaf Metal Hockey",
+      "source": "admin"
+    },
     {
       "id": "log_1782183685670_w04901",
       "ts": "2026-06-23T03:01:25.670Z",
@@ -1201,16 +1193,6 @@
       "status": "loaded",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1782059237345_zz3y16",
-      "ts": "2026-06-21T16:27:17.345Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
     }
   ],
   "last_agent_report": {
@@ -4090,9 +4072,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-23T03:01:05.999Z",
       "resolved": true
+    },
+    "hockey|https www checklistcenter com 2026-leaf-metal-hockey-card-checklist": {
+      "product": "2026 Leaf Metal Hockey",
+      "sport": "hockey",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-23T03:01:29.741Z",
+      "resolved": true
+    },
+    "hockey|2026 leaf metal hockey": {
+      "product": "2026 Leaf Metal Hockey",
+      "sport": "hockey",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-23T03:01:29.741Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T03:01:28.613Z",
+  "saved_at": "2026-06-23T03:01:33.586Z",
   "saved_by": "cm_command_center_operator"
 }

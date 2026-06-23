@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T17:10:23.782Z",
+  "exported_at": "2026-06-23T17:13:23.149Z",
   "autonomy_mode": "full_auto",
   "approvals": {},
   "tasks": [
@@ -163,24 +163,6 @@
       "updatedAt": "2026-06-23T17:04:47.890Z"
     },
     {
-      "id": "source_watch|baseball|2026 leaf vivid baseball",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2026 Leaf Vivid Baseball",
-      "sport": "baseball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-vivid-baseball-card-checklist/",
-      "createdAt": "2026-06-23T17:04:47.890Z",
-      "updatedAt": "2026-06-23T17:04:47.890Z"
-    },
-    {
       "id": "source_watch|soccer|2026 panini prizm fifa world cup soccer",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -203,6 +185,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782234801545_q4fqxs",
+      "ts": "2026-06-23T17:13:21.545Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2026 Leaf Vivid Baseball was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2026 Leaf Vivid Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1782234622180_daws0k",
       "ts": "2026-06-23T17:10:22.180Z",
@@ -738,9 +730,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-23T17:05:37.780Z",
       "resolved": true
+    },
+    "baseball|https www checklistcenter com 2026-leaf-vivid-baseball-card-checklist": {
+      "product": "2026 Leaf Vivid Baseball",
+      "sport": "baseball",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-vivid-baseball-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-23T17:13:21.539Z",
+      "resolved": true
+    },
+    "baseball|2026 leaf vivid baseball": {
+      "product": "2026 Leaf Vivid Baseball",
+      "sport": "baseball",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-vivid-baseball-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-23T17:13:21.539Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T17:10:25.179Z",
+  "saved_at": "2026-06-23T17:13:24.446Z",
   "saved_by": "cm_command_center_operator"
 }

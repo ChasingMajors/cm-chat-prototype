@@ -291,15 +291,21 @@
       "sport": "soccer",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "needs_admin",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "PRV sheet write and JSON publish completed for 2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer.",
+      "validationResult": "PRV write completed, but public JSON validation needs review. Publish returned ok.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
       "createdAt": "2026-06-23T03:01:14.419Z",
-      "updatedAt": "2026-06-23T03:01:14.419Z"
+      "updatedAt": "2026-06-23T15:57:03.566Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "PRV sheet write and JSON publish completed for 2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer.",
+      "autoExecutedAt": "2026-06-23T15:57:03.566Z"
     },
     {
       "id": "source_watch|soccer|2026 topps argentina team set soccer",
@@ -322,7 +328,7 @@
     {
       "id": "source_watch|baseball|2026 leaf vivid baseball",
       "type": "source_import",
-      "source": "scheduled_quick_json",
+      "source": "scheduled_deep_sheets",
       "product": "2026 Leaf Vivid Baseball",
       "sport": "baseball",
       "code": "",
@@ -335,7 +341,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-vivid-baseball-card-checklist/",
       "createdAt": "2026-06-23T03:01:14.419Z",
-      "updatedAt": "2026-06-23T03:01:14.419Z"
+      "updatedAt": "2026-06-23T15:57:03.566Z"
     },
     {
       "id": "source_watch|soccer|2026 panini prizm fifa world cup soccer",
@@ -358,7 +364,7 @@
     {
       "id": "source_watch|football|2026 leaf spectacular football",
       "type": "source_import",
-      "source": "scheduled_quick_json",
+      "source": "scheduled_deep_sheets",
       "product": "2026 Leaf Spectacular Football",
       "sport": "football",
       "code": "",
@@ -371,12 +377,12 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-spectacular-football-card-checklist/",
       "createdAt": "2026-06-23T03:01:14.419Z",
-      "updatedAt": "2026-06-23T03:01:14.419Z"
+      "updatedAt": "2026-06-23T15:57:03.566Z"
     },
     {
       "id": "source_watch|baseball|2026 leaf electrum baseball",
       "type": "source_import",
-      "source": "scheduled_quick_json",
+      "source": "scheduled_deep_sheets",
       "product": "2026 Leaf Electrum Baseball",
       "sport": "baseball",
       "code": "",
@@ -389,11 +395,51 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-electrum-baseball-card-checklist/",
       "createdAt": "2026-06-23T03:01:14.419Z",
-      "updatedAt": "2026-06-23T03:01:14.419Z"
+      "updatedAt": "2026-06-23T15:57:03.566Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782230415410_alert",
+      "ts": "2026-06-23T15:57:03.566Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782230414889",
+      "ts": "2026-06-23T15:57:03.566Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 3 actionable from 20 checked. PRV: 1 actionable from 6 checked. PRV sync: passed. 5 admin-ignored source item(s) skipped. Auto actions: 1 run. 2026 Topps Pristine Premier League & 2026 Merlin Premier League -> needs_admin (PRV write completed, but public JSON validation needs review. Publish returned ok.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782230414888",
+      "ts": "2026-06-23T15:57:03.566Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2026 Topps Pristine Premier League & 2026 Merlin Premier League: PRV sheet write and JSON publish completed for 2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer. PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "status": "needs_admin",
+      "product": "2026 Topps Pristine Premier League & 2026 Merlin Premier League",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782230376434",
+      "ts": "2026-06-23T15:57:03.566Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782183737155_aj0d8j",
       "ts": "2026-06-23T03:02:17.155Z",
@@ -1153,74 +1199,32 @@
       "status": "started",
       "product": "2025-26 Upper Deck CHL Hockey",
       "source": "admin"
-    },
-    {
-      "id": "log_1782059285279_osv3bb",
-      "ts": "2026-06-21T16:28:05.279Z",
-      "type": "checklist_publish",
-      "title": "JSON publish needs review",
-      "detail": "Sheet write succeeded, but publish/live validation needs review.",
-      "status": "failed",
-      "product": "2025-26 Upper Deck Parkhurst Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782059265381_7cn9kg",
-      "ts": "2026-06-21T16:27:45.381Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Upper Deck Parkhurst Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782059265375_ejs9wa",
-      "ts": "2026-06-21T16:27:45.375Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "975 checklist rows and 22 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 Upper Deck Parkhurst Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782059264513_mfex34",
-      "ts": "2026-06-21T16:27:44.513Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "819 rows and 32 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Upper Deck CHL Hockey",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-06-23T03:01:14.419Z",
+    "generated_at": "2026-06-23T15:57:03.566Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 6,
-      "skipped_ignored": 4
+      "skipped_ignored": 5
     },
     "completed_count": 0,
-    "needs_admin_count": 7,
+    "needs_admin_count": 5,
     "blocked_count": 0,
     "completed": [],
     "needs_admin": [
+      "2026 Topps Pristine Premier League & 2026 Merlin Premier League -> needs_admin: PRV write completed, but public JSON validation needs review. Publish returned ok.",
       "Checklist review: 2026 Leaf Electrum Baseball | baseball | missing",
       "Checklist review: 2026 Leaf Spectacular Football | football | missing",
-      "Checklist review: 2026 Panini Prizm FIFA World Cup Soccer | soccer | missing",
       "Checklist review: 2026 Leaf Vivid Baseball | baseball | missing",
-      "Checklist review: 2026 Topps Argentina Team Set Soccer | soccer | missing",
-      "Checklist review: 2026 Leaf Metal Hockey | hockey | missing",
       "PRV review: 2026 Topps Pristine Premier League & 2026 Merlin Premier League | soccer | missing"
     ],
     "blocked": [],
     "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 7 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 5 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4093,6 +4097,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T03:02:20.308Z",
+  "saved_at": "2026-06-23T16:00:15.493Z",
   "saved_by": "cm_command_center_operator"
 }

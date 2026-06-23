@@ -2421,6 +2421,24 @@ function findDirectBaseProductMatch(query) {
   return baseMatches[0];
 }
 
+function findExactProductCodeMatch(query) {
+  const raw = String(query || "").trim();
+  if (!raw) return null;
+
+  const queryNorm = normalize(raw);
+  const combined = [
+    ...getChecklistIndex(),
+    ...getPrintRunIndex()
+  ]
+    .map(mapProduct)
+    .filter(product => product.name && product.code);
+
+  return combined.find(product =>
+    String(product.code || "").trim() === raw ||
+    normalize(product.code || "") === queryNorm
+  ) || null;
+}
+
 function findBestProduct(list, query, targetIntent) {
   const cleaned = stripIntentWords(query || "");
   const cleanedNorm = normalize(cleaned);
@@ -5450,6 +5468,17 @@ async function buildSearchResponse(query) {
       };
       return buildChecklistSectionResponse(productSectionIntent);
     }
+  }
+
+  const exactProductCodeMatch = findExactProductCodeMatch(query);
+  if (exactProductCodeMatch) {
+    prefetchChecklistData(exactProductCodeMatch);
+    prefetchPrintRunData(exactProductCodeMatch);
+    return buildProductProfileResponse({
+      ...exactProductCodeMatch,
+      score: 999,
+      matchType: "exact_code"
+    }, query);
   }
 
   const playerReq = detectPlayerSearchRequest(query);

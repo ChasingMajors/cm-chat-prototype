@@ -21,6 +21,7 @@ const shortQuery = buildShortProductQuery(PRODUCT_NAME);
 const ambiguousQuery = stripYear(PRODUCT_NAME);
 const chatbotQueries = unique([
   { label: "Exact product", query: PRODUCT_NAME, kind: "exact", blocking: true },
+  { label: "Product code", query: CODE, kind: "exact", blocking: false },
   { label: "Short product", query: shortQuery, kind: "exact", blocking: false },
   { label: "Checklist intent", query: `Show me ${PRODUCT_NAME} checklist`, kind: "checklist", blocking: true },
   { label: "Details intent", query: `${PRODUCT_NAME} details`, kind: "exact", blocking: true },

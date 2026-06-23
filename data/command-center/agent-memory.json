@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T17:48:00.096Z",
+  "exported_at": "2026-06-23T17:48:09.921Z",
   "autonomy_mode": "full_auto",
   "approvals": {},
   "tasks": [
@@ -14,7 +14,7 @@
       "severity": "warning",
       "status": "queued",
       "createdAt": "2026-06-23T17:43:12.843Z",
-      "updatedAt": "2026-06-23T17:43:12.843Z",
+      "updatedAt": "2026-06-23T17:48:08.317Z",
       "why": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
       "objective": "Known issue is intentionally held; convert it to a fix task when ready.",
       "steps": [
@@ -33,7 +33,7 @@
       "severity": "warning",
       "status": "queued",
       "createdAt": "2026-06-23T17:43:12.836Z",
-      "updatedAt": "2026-06-23T17:43:12.836Z",
+      "updatedAt": "2026-06-23T17:48:08.311Z",
       "why": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
       "objective": "Known issue is intentionally held; convert it to a fix task when ready.",
       "steps": [
@@ -118,15 +118,15 @@
       "sport": "basketball",
       "code": "2025_26_topps_chrome_cactus_jack_basketball_basketball",
       "riskLevel": "low",
-      "status": "known_issue",
-      "recommendedAction": "Open the source and review whether this post has a new layout or no extractable print-run table.",
+      "status": "fix_queued",
+      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "",
       "executionResult": "Source found, but the PRV parser returned 0 print-run rows.",
       "validationResult": "Parser review needed before this can write PRV sheet data.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-cactus-jack-nba",
       "createdAt": "2026-06-23T17:04:47.890Z",
-      "updatedAt": "2026-06-23T17:46:18.200Z"
+      "updatedAt": "2026-06-23T17:48:08.318Z"
     },
     {
       "id": "prv_watch|basketball|2025_26_bowman_s_best_university_basketball",
@@ -136,15 +136,15 @@
       "sport": "basketball",
       "code": "2025_26_bowman_s_best_university_basketball",
       "riskLevel": "low",
-      "status": "known_issue",
-      "recommendedAction": "Open the source and review whether this post has a new layout or no extractable print-run table.",
+      "status": "fix_queued",
+      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "",
       "executionResult": "Source found, but the PRV parser returned 0 print-run rows.",
       "validationResult": "Parser review needed before this can write PRV sheet data.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
       "createdAt": "2026-06-23T17:04:47.890Z",
-      "updatedAt": "2026-06-23T17:46:15.874Z"
+      "updatedAt": "2026-06-23T17:48:08.311Z"
     },
     {
       "id": "source_watch|soccer|2026 panini prizm fifa world cup soccer",
@@ -172,6 +172,46 @@
     "prv_watch|basketball|2025_26_topps_chrome_cactus_jack_basketball_basketball"
   ],
   "activity_log": [
+    {
+      "id": "log_1782236888319_5yh7x5",
+      "ts": "2026-06-23T17:48:08.319Z",
+      "type": "agent_run_queue",
+      "title": "Admin Run Queue complete",
+      "detail": "2 attempted. 0 skipped for approval/details. 0 failed. 2 still queued. 2025/26 Bowman’s Best University Basketball: Created Fix: 2025/26 Bowman’s Best University Basketball. 2025/26 Topps Chrome Cactus Jack Basketball Basketball: Created Fix: 2025/26 Topps Chrome Cactus Jack Basketball Basketball.",
+      "status": "needs_review",
+      "product": "",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1782236888314_2ls4tp",
+      "ts": "2026-06-23T17:48:08.314Z",
+      "type": "agent_run_queue",
+      "title": "Create repair task",
+      "detail": "2025/26 Topps Chrome Cactus Jack Basketball Basketball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1782236888307_v0q140",
+      "ts": "2026-06-23T17:48:08.307Z",
+      "type": "agent_run_queue",
+      "title": "Create repair task",
+      "detail": "2025/26 Bowman’s Best University Basketball is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2025/26 Bowman’s Best University Basketball",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1782236888301_v4se7r",
+      "ts": "2026-06-23T17:48:08.301Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "2 flagged jobs will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1782236878493_0fxn14",
       "ts": "2026-06-23T17:47:58.493Z",
@@ -931,46 +971,6 @@
       "status": "started",
       "product": "",
       "source": "command_center"
-    },
-    {
-      "id": "log_1782233066237_dg919p",
-      "ts": "2026-06-23T16:44:26.237Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep complete",
-      "detail": "Checklist: Operator Backend URL missing. PRV: Operator Backend URL missing. No active queue items need review.",
-      "status": "completed",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1782233065820_6iopqy",
-      "ts": "2026-06-23T16:44:25.820Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep started",
-      "detail": "Running health audit, Checklist source watch, and PRV source watch.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1782233065813_oe2whn",
-      "ts": "2026-06-23T16:44:25.813Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the browser daily sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1782218462386_7evn1e",
-      "ts": "2026-06-23T12:41:02.386Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep complete",
-      "detail": "Checklist: Operator Backend URL missing. PRV: Operator Backend URL missing. No active queue items need review.",
-      "status": "completed",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "last_agent_report": {
@@ -1166,7 +1166,7 @@
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T17:48:00.096Z",
+      "ignoredAt": "2026-06-23T17:48:09.921Z",
       "resolved": true
     },
     "soccer|2026_panini_prizm_fifa_world_cup_soccer": {
@@ -1175,7 +1175,7 @@
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T17:48:00.096Z",
+      "ignoredAt": "2026-06-23T17:48:09.921Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 28043195280": {
@@ -1193,11 +1193,11 @@
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28045031550",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T17:48:00.096Z",
+      "ignoredAt": "2026-06-23T17:48:09.921Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T17:48:01.094Z",
+  "saved_at": "2026-06-23T17:48:10.958Z",
   "saved_by": "cm_command_center_operator"
 }

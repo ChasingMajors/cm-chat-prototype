@@ -1,6 +1,6 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc150-full-auto-action-caps-v1-2026-06-22";
-  const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-22-operator-cc150-full-auto-action-caps";
+  const COMMAND_CENTER_VERSION = "cc151-publish-pending-routing-v1-2026-06-22";
+  const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-22-operator-cc151-publish-pending-routing";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -5550,31 +5550,47 @@
       if (data && (data.publishOnly || data.publish || String(data.status || "").includes("publish"))) {
         const product = data.product || {};
         const publish = data.publish || {};
+        const validation = publish.validation || data.validation || {};
+        const githubValidation = validation.github || {};
+        const publicValidation = validation.public || {};
+        const checklistVault = validation.checklist_vault || {};
+        const chatbot = validation.chatbot || {};
+        const githubPublished = !!(publish.ok || githubValidation.ok || data.public_pending || publish.status === "published_pages_pending" || data.status === "published_pages_pending");
+        const publicPassed = !!(checklistVault.ok && chatbot.ok);
+        const publicRows = Number(publicValidation.row_count || 0);
         const detail = publish.error || publish.reason || data.error || data.next_step || "JSON publish did not return a validated response. No sheet write was attempted from this publish action.";
         if (actionId) {
           updateAgentAction(actionId, {
             type: "checklist_publish",
-            status: "needs_admin",
+            status: githubPublished && !publicPassed ? "pending_public_validation" : "needs_admin",
             product: product.display_name || product.name || "",
             sport: product.sport || "",
             code: product.code || "",
-            executionResult: "JSON publish needs review.",
-            validationResult: detail,
-            recommendedAction: "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct."
+            executionResult: githubPublished ? "JSON published to GitHub; public validation is pending." : "JSON publish needs review.",
+            validationResult: githubPublished
+              ? `GitHub publish succeeded, but public CV/ChatBot JSON is not visible yet${publicRows ? ` (${formatNumber(publicRows)} public rows found)` : ""}. Agent Cycle will recheck public JSON.`
+              : detail,
+            recommendedAction: githubPublished
+              ? "Run Agent Cycle to recheck public JSON after GitHub Pages propagation."
+              : "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct."
           });
           logActivity({
             type: "checklist_publish",
-            status: "failed",
+            status: githubPublished && !publicPassed ? "pending_public_validation" : "failed",
             product: product.display_name || product.name || "",
             source: "operator_backend",
-            title: "JSON publish needs review",
-            detail
+            title: githubPublished && !publicPassed ? "JSON published, public validation pending" : "JSON publish needs review",
+            detail: githubPublished && !publicPassed ? "GitHub publish succeeded. Waiting for public JSON propagation and CV/ChatBot validation." : detail
           });
           renderAgentActions();
           renderActionLanes();
           renderActivityLog();
         }
-        renderSourceCheckMessage("JSON publish needs review", detail, "critical");
+        renderSourceCheckMessage(
+          githubPublished && !publicPassed ? "JSON published, public validation pending" : "JSON publish needs review",
+          githubPublished && !publicPassed ? "GitHub publish succeeded. Sentinel will recheck public JSON instead of asking for admin review immediately." : detail,
+          githubPublished && !publicPassed ? "warning" : "critical"
+        );
         return;
       }
 
@@ -5616,18 +5632,34 @@
     const publicValidation = publishValidation.public || {};
     const checklistVault = publishValidation.checklist_vault || {};
     const chatbot = publishValidation.chatbot || {};
+    const githubPublished = !!(publish.ok || githubValidation.ok || publish.status === "published_pages_pending" || data.status === "published_pages_pending");
     const publicPassed = !!(checklistVault.ok && chatbot.ok);
+    const actionStatus = validation.ok && githubPublished && publicPassed
+      ? "validated"
+      : validation.ok && githubPublished
+        ? "pending_public_validation"
+        : "needs_admin";
+    const publishExecution = githubPublished
+      ? publicPassed
+        ? "Sheet write completed and JSON published."
+        : "Sheet write completed and JSON published to GitHub; public validation is pending."
+      : "Sheet write completed; publish needs review.";
+    const publishValidationText = publicPassed
+      ? "CV and ChatBot passed."
+      : githubPublished
+        ? "GitHub JSON published. Waiting for public CV/ChatBot validation; Agent Cycle will recheck."
+        : "CV/ChatBot validation needs review.";
     let primaryAction = null;
     if (actionId) {
       primaryAction = updateAgentAction(actionId, {
         type: "checklist_publish",
         source: "operator_backend",
-        status: (validation.ok && publish.ok && publicPassed) ? "validated" : "needs_admin",
+        status: actionStatus,
         product: product.display_name || "",
         sport: product.sport || "",
         code: product.code || "",
-        executionResult: publish.ok ? "Sheet write completed and JSON published." : "Sheet write completed; publish needs review.",
-        validationResult: publicPassed ? "CV and ChatBot passed." : "CV/ChatBot validation needs review.",
+        executionResult: publishExecution,
+        validationResult: publishValidationText,
         runUrl: publish.checklist_url || publish.chatbot_url || ""
       });
     }
@@ -5638,21 +5670,21 @@
         product: product.display_name || "",
         sport: product.sport || "",
         code: product.code || "",
-        riskLevel: publicPassed ? "low" : "medium",
-        status: (validation.ok && publish.ok && publicPassed) ? "validated" : "needs_admin",
+        riskLevel: publicPassed ? "low" : githubPublished ? "low" : "medium",
+        status: actionStatus,
         recommendedAction: "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
-        executionResult: publish.ok ? "JSON published." : "Sheet write completed; publish needs review.",
-        validationResult: publicPassed ? "CV and ChatBot passed." : "CV/ChatBot validation needs review.",
+        executionResult: githubPublished ? "JSON published." : "Sheet write completed; publish needs review.",
+        validationResult: publishValidationText,
         runUrl: publish.checklist_url || publish.chatbot_url || ""
       });
     }
     pruneDuplicateProductActions(primaryAction);
     logActivity({
       type: "checklist_publish",
-      status: (validation.ok && publish.ok && publicPassed) ? "validated" : "needs_review",
+      status: actionStatus === "validated" ? "validated" : actionStatus === "pending_public_validation" ? "pending_public_validation" : "needs_review",
       product: product.display_name || "",
       source: "operator_backend",
-      title: publish.ok ? "Checklist data written and published" : "Checklist data written",
+      title: githubPublished ? "Checklist data written and published" : "Checklist data written",
       detail: `${formatNumber(validation.checklist_rows || 0)} checklist rows and ${formatNumber(validation.parallel_rows || 0)} parallels validated in the source sheet.`
     });
     renderAgentActions();
@@ -5663,10 +5695,10 @@
       <div class="source-result-card covered">
         <div class="opp-top">
           <div>
-            <h3>${publish.ok ? "Sheet Updated, JSON Published" : "Google Sheet Updated"}</h3>
+            <h3>${githubPublished ? "Sheet Updated, JSON Published" : "Google Sheet Updated"}</h3>
             <p>${escapeHtml(product.display_name || "")}</p>
           </div>
-          <span class="badge ${(validation.ok && publish.ok && publicPassed) ? "opportunity" : "warning"}">${(validation.ok && publish.ok && publicPassed) ? "validated" : "review"}</span>
+          <span class="badge ${actionStatus === "validated" ? "opportunity" : "warning"}">${actionStatus === "validated" ? "validated" : actionStatus === "pending_public_validation" ? "pending public JSON" : "review"}</span>
         </div>
         <div class="opp-meta">
           <span class="pill">Target: ${escapeHtml(data.target_bucket || "")}</span>
@@ -5675,7 +5707,7 @@
           <span class="pill">Parallels: ${formatNumber(validation.parallel_rows || 0)}</span>
         </div>
         <div class="opp-meta">
-          <span class="pill">GitHub publish: ${publish.ok ? "Complete" : "Needs review"}</span>
+          <span class="pill">GitHub publish: ${githubPublished ? "Complete" : "Needs review"}</span>
           <span class="pill">GitHub rows: ${formatNumber(githubValidation.row_count || 0)}</span>
           <span class="pill">GitHub parallels: ${formatNumber(githubValidation.parallel_count || 0)}</span>
           <span class="pill">Public rows: ${formatNumber(publicValidation.row_count || 0)}</span>
@@ -5684,7 +5716,7 @@
           <span class="pill">ChatBot: ${chatbot.ok ? "Passed" : "Review"}</span>
         </div>
         ${publish.error ? `<div class="task-guardrail">${escapeHtml(publish.error)}</div>` : ""}
-        ${(publish.ok && !publicPassed) ? `<div class="task-guardrail">GitHub JSON is published. GitHub Pages may still be deploying, so public CV and ChatBot validation can lag behind the repo by a few minutes.</div>` : ""}
+        ${(githubPublished && !publicPassed) ? `<div class="task-guardrail">GitHub JSON is published. GitHub Pages may still be deploying, so Sentinel queued this for automatic public JSON recheck instead of admin review.</div>` : ""}
         <p>${escapeHtml(data.next_step || "Validate Checklist Vault and ChatBot search.")}</p>
         <div class="opp-actions">
           ${publish.checklist_url ? `<a class="action-btn approve" href="${escapeHtml(publish.checklist_url)}" target="_blank" rel="noopener noreferrer">Open Checklist Vault Test</a>` : ""}

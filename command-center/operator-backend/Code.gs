@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-22-operator-cc150-full-auto-action-caps";
+const CM_OPERATOR_VERSION = "2026-06-22-operator-cc151-publish-pending-routing";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -2676,9 +2676,14 @@ function publishImportedChecklist_(input) {
   const publish = publishChecklistAfterImport_(product, input && input.key);
   return {
     ok: !!(publish && publish.ok),
-    status: publish && publish.ok ? "published" : "publish_needs_review",
+    status: publish && publish.status
+      ? publish.status
+      : publish && publish.ok
+        ? "published"
+        : "publish_needs_review",
     product: product,
     publish: publish,
+    public_pending: !!(publish && publish.ok && publish.status === "published_pages_pending"),
     updated_at: new Date().toISOString()
   };
 }

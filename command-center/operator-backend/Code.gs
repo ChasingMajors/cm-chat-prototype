@@ -2774,6 +2774,13 @@ function postStaticExporterJson_(exporterUrl, payload, failurePrefix) {
     };
   }
 
+  if (data && data.ok === false && data.error === "Unknown action") {
+    return Object.assign({}, data, {
+      error: "Static Data Exporter does not recognize action '" + safeString_(payload && payload.action) + "'. Confirm CM_STATIC_EXPORTER_URL points to the Static Data Exporter web app and deploy the current exporter code.",
+      static_exporter_action: safeString_(payload && payload.action)
+    });
+  }
+
   return data;
 }
 

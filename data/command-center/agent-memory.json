@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T03:01:48.894Z",
+  "exported_at": "2026-06-23T03:01:58.490Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -303,8 +303,8 @@
     },
     {
       "id": "source_watch|soccer|2026 topps argentina team set soccer",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
+      "type": "checklist_publish",
+      "source": "operator_backend",
       "product": "2026 Topps Argentina Team Set Soccer",
       "sport": "soccer",
       "code": "2026_topps_argentina_team_set_soccer",
@@ -312,12 +312,12 @@
       "status": "running",
       "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write started through Operator Backend.",
-      "validationResult": "Preview rows are ready for admin review before sheet write.",
-      "runUrl": "https://www.checklistcenter.com/2026-topps-argentina-team-set-soccer-card-checklist/",
+      "executionResult": "Sheet write completed. JSON publish started.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-argentina-team-set-soccer-card-checklist/",
       "createdAt": "2026-06-23T03:01:14.419Z",
-      "updatedAt": "2026-06-23T03:01:38.147Z"
+      "updatedAt": "2026-06-23T03:01:56.887Z"
     },
     {
       "id": "source_watch|baseball|2026 leaf vivid baseball",
@@ -394,6 +394,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782183716887_gdgqzu",
+      "ts": "2026-06-23T03:01:56.887Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2026 Topps Argentina Team Set Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782183716879_ei2g92",
+      "ts": "2026-06-23T03:01:56.879Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "126 checklist rows and 107 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2026 Topps Argentina Team Set Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782183707291_5pfay0",
       "ts": "2026-06-23T03:01:47.291Z",
@@ -1170,26 +1190,6 @@
       "type": "source_import",
       "title": "Sheet write started",
       "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "2025-26 Upper Deck Parkhurst Hockey",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782059251455_s647h3",
-      "ts": "2026-06-21T16:27:31.455Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "975 rows and 22 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Upper Deck Parkhurst Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782059248633_649xpf",
-      "ts": "2026-06-21T16:27:28.633Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
       "status": "started",
       "product": "2025-26 Upper Deck Parkhurst Hockey",
       "source": "admin"
@@ -4093,6 +4093,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T03:01:49.965Z",
+  "saved_at": "2026-06-23T03:01:59.955Z",
   "saved_by": "cm_command_center_operator"
 }

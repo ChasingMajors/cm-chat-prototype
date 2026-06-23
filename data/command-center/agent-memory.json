@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T17:06:46.739Z",
+  "exported_at": "2026-06-23T17:07:10.368Z",
   "autonomy_mode": "full_auto",
   "approvals": {},
   "tasks": [],
@@ -123,19 +123,29 @@
       "sport": "soccer",
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "JSON publish needs review.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "Sheet write succeeded, but publish/live validation needs review.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
       "createdAt": "2026-06-23T17:04:47.890Z",
-      "updatedAt": "2026-06-23T17:06:45.134Z"
+      "updatedAt": "2026-06-23T17:07:08.766Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782234428765_vrdxbv",
+      "ts": "2026-06-23T17:07:08.765Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782234405137_ozra5c",
       "ts": "2026-06-23T17:06:45.137Z",
@@ -517,6 +527,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T17:06:47.891Z",
+  "saved_at": "2026-06-23T17:07:11.227Z",
   "saved_by": "cm_command_center_operator"
 }

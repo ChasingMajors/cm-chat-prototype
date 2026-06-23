@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc152-post-only-write-hardening-v1-2026-06-23";
+  const COMMAND_CENTER_VERSION = "cc153-search-index-publish-validation-v1-2026-06-23";
   const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-23-operator-cc152-post-only-write-hardening";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
@@ -5549,7 +5549,14 @@
         const githubPublished = !!(publish.ok || githubValidation.ok || data.public_pending || publish.status === "published_pages_pending" || data.status === "published_pages_pending");
         const publicPassed = !!(checklistVault.ok && chatbot.ok);
         const publicRows = Number(publicValidation.row_count || 0);
-        const detail = publish.error || publish.reason || data.error || data.next_step || "JSON publish did not return a validated response. No sheet write was attempted from this publish action.";
+        const publicSearchRows = Number(publicValidation.search_row_count || 0);
+        const githubSearchRows = Number(githubValidation.search_row_count || 0);
+        const validationDetail = !githubSearchRows && githubValidation.index_has_product && githubValidation.product_has_rows
+          ? "GitHub product JSON exists, but the CV/ChatBot search index has 0 rows for this product. Republish with the current Static Data Exporter so search-index shards are refreshed."
+          : githubPublished && !publicSearchRows
+            ? "GitHub JSON was published, but the public CV/ChatBot search index does not show this product yet. Agent Cycle should recheck after GitHub Pages propagation."
+            : "";
+        const detail = validationDetail || publish.error || publish.reason || data.error || data.next_step || "JSON publish did not return a validated response. No sheet write was attempted from this publish action.";
         if (actionId) {
           updateAgentAction(actionId, {
             type: "checklist_publish",
@@ -5638,7 +5645,9 @@
     const publishValidationText = publicPassed
       ? "CV and ChatBot passed."
       : githubPublished
-        ? "GitHub JSON published. Waiting for public CV/ChatBot validation; Agent Cycle will recheck."
+        ? Number(publicValidation.search_row_count || 0)
+          ? "GitHub JSON published. Waiting for public CV/ChatBot validation; Agent Cycle will recheck."
+          : "GitHub JSON published, but public CV/ChatBot search rows are not visible yet; Agent Cycle will recheck."
         : "CV/ChatBot validation needs review.";
     let primaryAction = null;
     if (actionId) {

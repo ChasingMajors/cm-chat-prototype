@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T03:02:10.585Z",
+  "exported_at": "2026-06-23T03:02:18.761Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -309,15 +309,15 @@
       "sport": "soccer",
       "code": "2026_topps_argentina_team_set_soccer",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
+      "status": "needs_admin",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "executionResult": "JSON publish needs review.",
+      "validationResult": "Sheet write succeeded, but publish/live validation needs review.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-argentina-team-set-soccer-card-checklist/",
       "createdAt": "2026-06-23T03:01:14.419Z",
-      "updatedAt": "2026-06-23T03:01:56.887Z"
+      "updatedAt": "2026-06-23T03:02:17.155Z"
     },
     {
       "id": "source_watch|baseball|2026 leaf vivid baseball",
@@ -394,6 +394,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782183737155_aj0d8j",
+      "ts": "2026-06-23T03:02:17.155Z",
+      "type": "checklist_publish",
+      "title": "JSON publish needs review",
+      "detail": "Sheet write succeeded, but publish/live validation needs review.",
+      "status": "failed",
+      "product": "2026 Topps Argentina Team Set Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782183728983_4lqngz",
       "ts": "2026-06-23T03:02:08.983Z",
@@ -1183,16 +1193,6 @@
       "status": "preview_ready",
       "product": "2025-26 Upper Deck CHL Hockey",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1782059263385_w6ql3v",
-      "ts": "2026-06-21T16:27:43.385Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2025-26 Upper Deck CHL Hockey",
-      "source": "admin"
     }
   ],
   "last_agent_report": {
@@ -4093,6 +4093,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T03:02:11.533Z",
+  "saved_at": "2026-06-23T03:02:20.308Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T03:01:22.032Z",
+  "exported_at": "2026-06-23T03:01:27.273Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -282,38 +282,195 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [],
+  "agent_actions": [
+    {
+      "id": "prv_watch|soccer|2026 topps pristine premier league and 2026 merlin premier league",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2026 Topps Pristine Premier League & 2026 Merlin Premier League",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
+      "createdAt": "2026-06-23T03:01:14.419Z",
+      "updatedAt": "2026-06-23T03:01:14.419Z"
+    },
+    {
+      "id": "source_watch|hockey|2026 leaf metal hockey",
+      "type": "source_import",
+      "source": "scheduled_quick_json",
+      "product": "2026 Leaf Metal Hockey",
+      "sport": "hockey",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
+      "createdAt": "2026-06-23T03:01:14.419Z",
+      "updatedAt": "2026-06-23T03:01:14.419Z"
+    },
+    {
+      "id": "source_watch|soccer|2026 topps argentina team set soccer",
+      "type": "source_import",
+      "source": "scheduled_quick_json",
+      "product": "2026 Topps Argentina Team Set Soccer",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-topps-argentina-team-set-soccer-card-checklist/",
+      "createdAt": "2026-06-23T03:01:14.419Z",
+      "updatedAt": "2026-06-23T03:01:14.419Z"
+    },
+    {
+      "id": "source_watch|baseball|2026 leaf vivid baseball",
+      "type": "source_import",
+      "source": "scheduled_quick_json",
+      "product": "2026 Leaf Vivid Baseball",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-vivid-baseball-card-checklist/",
+      "createdAt": "2026-06-23T03:01:14.419Z",
+      "updatedAt": "2026-06-23T03:01:14.419Z"
+    },
+    {
+      "id": "source_watch|soccer|2026 panini prizm fifa world cup soccer",
+      "type": "source_import",
+      "source": "scheduled_quick_json",
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
+      "createdAt": "2026-06-23T03:01:14.419Z",
+      "updatedAt": "2026-06-23T03:01:14.419Z"
+    },
+    {
+      "id": "source_watch|football|2026 leaf spectacular football",
+      "type": "source_import",
+      "source": "scheduled_quick_json",
+      "product": "2026 Leaf Spectacular Football",
+      "sport": "football",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Football source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-spectacular-football-card-checklist/",
+      "createdAt": "2026-06-23T03:01:14.419Z",
+      "updatedAt": "2026-06-23T03:01:14.419Z"
+    },
+    {
+      "id": "source_watch|baseball|2026 leaf electrum baseball",
+      "type": "source_import",
+      "source": "scheduled_quick_json",
+      "product": "2026 Leaf Electrum Baseball",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-electrum-baseball-card-checklist/",
+      "createdAt": "2026-06-23T03:01:14.419Z",
+      "updatedAt": "2026-06-23T03:01:14.419Z"
+    }
+  ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1782183680430_zx7wx6",
-      "ts": "2026-06-23T03:01:20.430Z",
+      "id": "log_1782183685670_w04901",
+      "ts": "2026-06-23T03:01:25.670Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2016 Panini Flawless Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1782183682175_650fjq",
+      "ts": "2026-06-23T03:01:22.175Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782183682162_ujlbju",
+      "ts": "2026-06-23T03:01:22.162Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1782183678186_alert",
+      "ts": "2026-06-23T03:01:14.419Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782183677829",
+      "ts": "2026-06-23T03:01:14.419Z",
       "type": "agent_sweep",
-      "title": "Backend Agent Sweep complete",
-      "detail": "Checklist: 6 actions. PRV: 1 action. PRV sync: skipped. Auto: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 6 actionable from 20 checked. PRV: 1 actionable from 6 checked. PRV sync: skipped for fast sweep. 4 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1782183673407_x26ygc",
-      "ts": "2026-06-23T03:01:13.407Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1782183673403_yu7d3s",
-      "ts": "2026-06-23T03:01:13.403Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
+      "id": "log_1782183677826",
+      "ts": "2026-06-23T03:01:14.419Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1782183669102_3lbfdr",
@@ -1054,36 +1211,6 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1782059226514_4tuysp",
-      "ts": "2026-06-21T16:27:06.514Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782059226501_iic068",
-      "ts": "2026-06-21T16:27:06.501Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782057608366_alert",
-      "ts": "2026-06-21T15:57:03.608Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -2253,7 +2380,7 @@
       "productName": "2016 Panini Flawless Baseball",
       "sport": "baseball",
       "code": "2016_Panini_Flawless_Baseball",
-      "updatedAt": "2026-06-23T03:01:03.002Z",
+      "updatedAt": "2026-06-23T03:01:25.669Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27999120613,
@@ -2261,7 +2388,7 @@
       "displayTitle": "Visual Product Test - 2016 Panini Flawless Baseball",
       "headSha": "daa13754e5833b9f705f05c1290b67125d6676b5",
       "createdAt": "2026-06-23T03:00:38Z",
-      "checkedAt": "2026-06-23T03:01:03.002Z"
+      "checkedAt": "2026-06-23T03:01:25.669Z"
     },
     "baseball|2016_panini_flawless_baseball": {
       "status": "in_progress",
@@ -2276,7 +2403,7 @@
       "productName": "2016 Panini Flawless Baseball",
       "sport": "baseball",
       "code": "2016_Panini_Flawless_Baseball",
-      "updatedAt": "2026-06-23T03:01:03.002Z",
+      "updatedAt": "2026-06-23T03:01:25.669Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27999120613,
@@ -2284,7 +2411,7 @@
       "displayTitle": "Visual Product Test - 2016 Panini Flawless Baseball",
       "headSha": "daa13754e5833b9f705f05c1290b67125d6676b5",
       "createdAt": "2026-06-23T03:00:38Z",
-      "checkedAt": "2026-06-23T03:01:03.002Z"
+      "checkedAt": "2026-06-23T03:01:25.669Z"
     },
     "baseball|2016 panini flawless baseball": {
       "status": "in_progress",
@@ -2299,7 +2426,7 @@
       "productName": "2016 Panini Flawless Baseball",
       "sport": "baseball",
       "code": "2016_Panini_Flawless_Baseball",
-      "updatedAt": "2026-06-23T03:01:03.002Z",
+      "updatedAt": "2026-06-23T03:01:25.669Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 27999120613,
@@ -2307,7 +2434,7 @@
       "displayTitle": "Visual Product Test - 2016 Panini Flawless Baseball",
       "headSha": "daa13754e5833b9f705f05c1290b67125d6676b5",
       "createdAt": "2026-06-23T03:00:38Z",
-      "checkedAt": "2026-06-23T03:01:03.002Z"
+      "checkedAt": "2026-06-23T03:01:25.669Z"
     }
   },
   "known_issues": {},
@@ -3966,6 +4093,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T03:01:22.994Z",
+  "saved_at": "2026-06-23T03:01:28.613Z",
   "saved_by": "cm_command_center_operator"
 }

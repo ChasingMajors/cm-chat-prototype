@@ -2,11 +2,35 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-23T17:08:08.153Z",
+  "exported_at": "2026-06-23T17:08:10.659Z",
   "autonomy_mode": "full_auto",
   "approvals": {},
   "tasks": [],
   "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2026 panini prizm fifa world cup soccer|2026_panini_prizm_fifa_world_cup_soccer",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "sport": "soccer",
+      "code": "2026_panini_prizm_fifa_world_cup_soccer",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-23T17:08:09.055Z",
+      "updatedAt": "2026-06-23T17:08:09.057Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-06-23T17:08:07.517Z"
+    },
     {
       "id": "prv_watch|basketball|2025_26_topps_chrome_cactus_jack_basketball_basketball",
       "type": "prv_source_review",
@@ -123,19 +147,31 @@
       "sport": "soccer",
       "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "JSON publish needs review.",
-      "validationResult": "CV/ChatBot visual test requested...",
-      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2026_panini_prizm_fifa_world_cup_soccer&sport=soccer&type=product",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
       "createdAt": "2026-06-23T17:04:47.890Z",
-      "updatedAt": "2026-06-23T17:08:06.550Z"
+      "updatedAt": "2026-06-23T17:08:09.057Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-06-23T17:08:07.517Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782234489058_4gzd0a",
+      "ts": "2026-06-23T17:08:09.058Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "source": "github_actions"
+    },
     {
       "id": "log_1782234486551_bjvlco",
       "ts": "2026-06-23T17:08:06.551Z",
@@ -526,7 +562,42 @@
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
     "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 9 needs-admin item(s), 0 blocked/issue item(s)."
   },
-  "visual_tests": {},
+  "visual_tests": {
+    "soccer|2026_panini_prizm_fifa_world_cup_soccer": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-23T17:08:07.517Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "soccer|2026_panini_prizm_fifa_world_cup_soccer",
+      "key": "soccer|2026_panini_prizm_fifa_world_cup_soccer",
+      "productName": "2026 Panini Prizm FIFA World Cup Soccer",
+      "sport": "soccer",
+      "code": "2026_panini_prizm_fifa_world_cup_soccer",
+      "updatedAt": "2026-06-23T17:08:09.054Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
+    },
+    "soccer|2026 panini prizm fifa world cup soccer": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-06-23T17:08:07.517Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "soccer|2026_panini_prizm_fifa_world_cup_soccer",
+      "key": "soccer|2026 panini prizm fifa world cup soccer",
+      "productName": "2026 Panini Prizm FIFA World Cup Soccer",
+      "sport": "soccer",
+      "code": "2026_panini_prizm_fifa_world_cup_soccer",
+      "updatedAt": "2026-06-23T17:08:09.054Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
+    }
+  },
   "known_issues": {},
   "source_ignores": {
     "baseball|https www checklistcenter com 2026-leaf-electrum-baseball-card-checklist": {
@@ -567,6 +638,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-23T17:08:09.050Z",
+  "saved_at": "2026-06-23T17:08:11.958Z",
   "saved_by": "cm_command_center_operator"
 }

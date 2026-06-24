@@ -9466,7 +9466,17 @@
   }
 
   function getOperatingBriefProductName(item) {
-    return String(item && (item.product || item.productName || item.title || item.code) || "").trim();
+    const type = String(item && item.type || "").toLowerCase();
+    const source = String(item && item.source || "").toLowerCase();
+    const explicitProduct = String(item && (item.product || item.productName) || "").trim();
+    const explicitCode = String(item && item.code || "").trim();
+    if (explicitProduct || explicitCode) return explicitProduct || explicitCode;
+
+    if (type === "source_watch" || source === "source_watch" || source === "deep_source_watch" || source === "quick_source_watch") {
+      return "";
+    }
+
+    return String(item && item.title || "").trim();
   }
 
   function isPrvOutcomeItem(item) {

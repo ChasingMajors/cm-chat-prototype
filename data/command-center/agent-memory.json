@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T16:04:51.690Z",
+  "exported_at": "2026-06-24T16:05:00.432Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -324,58 +324,7 @@
   ],
   "agent_actions": [],
   "agent_run_queue": [],
-  "activity_log": [
-    {
-      "id": "log_1782317090088_bat2wp",
-      "ts": "2026-06-24T16:04:50.088Z",
-      "type": "agent_action",
-      "title": "Resolved agent actions cleared",
-      "detail": "Validated, done, and ignored actions were removed from the active queue. 1 source/product keys were remembered so scans do not requeue them.",
-      "status": "cleaned",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782317039343_yukbd0",
-      "ts": "2026-06-24T16:03:59.343Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782317039337_7di6mi",
-      "ts": "2026-06-24T16:03:59.337Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782317035180",
-      "ts": "2026-06-24T16:03:50.851Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: skipped for fast sweep. 11 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782317035178",
-      "ts": "2026-06-24T16:03:50.851Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    }
-  ],
+  "activity_log": [],
   "last_agent_report": {
     "ok": true,
     "status": "clear",
@@ -3447,6 +3396,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T16:04:52.939Z",
+  "saved_at": "2026-06-24T16:05:01.744Z",
   "saved_by": "cm_command_center_operator"
 }

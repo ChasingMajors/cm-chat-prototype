@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T14:21:39.947Z",
+  "exported_at": "2026-06-24T14:21:50.859Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -304,6 +304,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782310909256_j0a5a8",
+      "ts": "2026-06-24T14:21:49.256Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782310909248_jr0hwh",
+      "ts": "2026-06-24T14:21:49.248Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
     {
       "id": "log_1782310898342_quj5s1",
       "ts": "2026-06-24T14:21:38.342Z",
@@ -1077,26 +1097,6 @@
     {
       "id": "log_1782078239944_ywo8tm",
       "ts": "2026-06-21T21:43:59.944Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782078239933_umcccn",
-      "ts": "2026-06-21T21:43:59.933Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782063852095_v20z1v",
-      "ts": "2026-06-21T17:44:12.095Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -4089,7 +4089,7 @@
       "code": "2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T14:21:39.947Z",
+      "ignoredAt": "2026-06-24T14:21:50.859Z",
       "resolved": true
     },
     "soccer|2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer": {
@@ -4098,11 +4098,11 @@
       "code": "2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T14:21:39.947Z",
+      "ignoredAt": "2026-06-24T14:21:50.859Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T14:21:41.429Z",
+  "saved_at": "2026-06-24T14:21:52.567Z",
   "saved_by": "cm_command_center_operator"
 }

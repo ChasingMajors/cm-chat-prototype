@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T14:12:46.610Z",
+  "exported_at": "2026-06-24T01:19:11.065Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -305,24 +305,24 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1782310365007_5oxgo5",
-      "ts": "2026-06-24T14:12:45.007Z",
+      "id": "log_1782310370290",
+      "ts": "2026-06-24T14:12:47.330Z",
       "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
-      "status": "started",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: skipped for fast sweep. 11 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "status": "validated",
       "product": "",
-      "source": "command_center"
+      "source": "operator_backend"
     },
     {
-      "id": "log_1782310364998_wamz4e",
-      "ts": "2026-06-24T14:12:44.998Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
+      "id": "log_1782310370288",
+      "ts": "2026-06-24T14:12:47.330Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1782263949130_4vdds4",
@@ -1107,30 +1107,22 @@
   ],
   "last_agent_report": {
     "ok": true,
-    "status": "needs_admin",
-    "generated_at": "2026-06-23T03:01:14.419Z",
+    "status": "clear",
+    "generated_at": "2026-06-24T14:12:47.330Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 6,
-      "skipped_ignored": 4
+      "skipped_ignored": 11
     },
     "completed_count": 0,
-    "needs_admin_count": 7,
+    "needs_admin_count": 0,
     "blocked_count": 0,
     "completed": [],
-    "needs_admin": [
-      "Checklist review: 2026 Leaf Electrum Baseball | baseball | missing",
-      "Checklist review: 2026 Leaf Spectacular Football | football | missing",
-      "Checklist review: 2026 Panini Prizm FIFA World Cup Soccer | soccer | missing",
-      "Checklist review: 2026 Leaf Vivid Baseball | baseball | missing",
-      "Checklist review: 2026 Topps Argentina Team Set Soccer | soccer | missing",
-      "Checklist review: 2026 Leaf Metal Hockey | hockey | missing",
-      "PRV review: 2026 Topps Pristine Premier League & 2026 Merlin Premier League | soccer | missing"
-    ],
+    "needs_admin": [],
     "blocked": [],
     "proof": [],
-    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 7 needs-admin item(s), 0 blocked/issue item(s)."
+    "next_step": "No immediate action. Sentinel can run again on schedule.",
+    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4097,7 +4089,7 @@
       "code": "2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T14:12:46.610Z",
+      "ignoredAt": "2026-06-24T01:19:11.065Z",
       "resolved": true
     },
     "soccer|2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer": {
@@ -4106,11 +4098,11 @@
       "code": "2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T14:12:46.610Z",
+      "ignoredAt": "2026-06-24T01:19:11.065Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T14:12:47.864Z",
+  "saved_at": "2026-06-24T14:12:50.353Z",
   "saved_by": "cm_command_center_operator"
 }

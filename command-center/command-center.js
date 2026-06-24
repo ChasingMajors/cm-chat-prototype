@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc158-operating-brief-product-outcomes-v1-2026-06-24";
+  const COMMAND_CENTER_VERSION = "cc159-publish-before-visual-guard-v1-2026-06-24";
   const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-23-operator-cc152-post-only-write-hardening";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
@@ -7150,7 +7150,7 @@
     const activeHtml = activeActions.slice(0, 12).map(action => {
       const badgeClass = getAgentActionBadgeClass(action);
       const status = String(action.status || "").toLowerCase();
-      const canTestProduct = action.product && (action.type === "source_import" || action.type === "checklist_publish" || action.type === "visual_test");
+      const canTestProduct = action.product && (action.type === "source_import" || action.type === "checklist_publish" || action.type === "visual_test") && !shouldPublishChecklistBeforeVisual(action);
       const fixPlan = buildAgentActionFixPlan(action);
       const retestNeeded = status === "fix_applied";
       const canCreateFixTask = !!fixPlan.steps.length && (status === "failed" || status === "blocked" || status === "known_issue");
@@ -7627,6 +7627,49 @@
     return text.includes("sheet write") || text.includes("google sheet") || text.includes("checklist data written") || text.includes("source sheet");
   }
 
+  function isChecklistPublishAction(action) {
+    const type = String(action && action.type || "").toLowerCase();
+    return type === "source_import" || type === "checklist_publish" || type === "backend_data_issue";
+  }
+
+  function hasChecklistPublishNeedsReview(action) {
+    if (!isChecklistPublishAction(action)) return false;
+    const text = [
+      action && action.executionResult,
+      action && action.validationResult,
+      action && action.recommendedAction
+    ].join(" ").toLowerCase();
+    if (!text) return false;
+    return text.includes("json publish needs review") ||
+      text.includes("publish needs review") ||
+      text.includes("publish/live validation needs review") ||
+      text.includes("publish request failed") ||
+      text.includes("json publish request failed") ||
+      text.includes("unknown action") ||
+      text.includes("no spreadsheet configured");
+  }
+
+  function hasChecklistJsonPublishProof(action) {
+    const text = [
+      action && action.executionResult,
+      action && action.validationResult,
+      action && action.recommendedAction
+    ].join(" ").toLowerCase();
+    return text.includes("json published") ||
+      text.includes("published to github") ||
+      text.includes("github publish succeeded") ||
+      text.includes("public json covered") ||
+      text.includes("cv and chatbot passed");
+  }
+
+  function shouldPublishChecklistBeforeVisual(action) {
+    if (!isChecklistPublishAction(action)) return false;
+    if (!action || !(action.product || action.code)) return false;
+    if (hasChecklistPublishNeedsReview(action)) return true;
+    if (hasChecklistSheetWriteProof(action) && !hasChecklistJsonPublishProof(action)) return true;
+    return false;
+  }
+
   function isHoldAction(action) {
     const status = String(action && action.status || "").toLowerCase();
     return status === "needs_admin" || status === "approval_required" || status === "failed" || status === "blocked" || status === "known_issue" || status === "fix_queued" || status === "fix_applied";
@@ -7797,10 +7840,27 @@
       };
     }
 
+    const approvedChecklistPublish = active.find(action => {
+      const status = String(action.status || "").toLowerCase();
+      if (!isChecklistPublishAction(action)) return false;
+      if (!hasAdminApproval(action)) return false;
+      if (status === "running" || status === "failed" || status === "known_issue" || status === "blocked") return false;
+      return shouldPublishChecklistBeforeVisual(action);
+    });
+    if (approvedChecklistPublish) {
+      return {
+        kind: "publish_checklist",
+        action: approvedChecklistPublish,
+        title: "Publish checklist JSON",
+        detail: `${approvedChecklistPublish.product || approvedChecklistPublish.code} needs JSON published before CV/ChatBot visual validation can run.`
+      };
+    }
+
     const visualReady = active.find(action => {
       const status = String(action.status || "").toLowerCase();
       if (!action.product) return false;
       if (status === "running" || status === "fix_queued") return false;
+      if (shouldPublishChecklistBeforeVisual(action)) return false;
       if (isPendingVisualValidationAction(action)) return true;
       const posture = getActionExecutionPosture(action);
       return posture.label === "Validate";
@@ -8183,6 +8243,7 @@
         }
         const type = String(action.type || "").toLowerCase();
         if (type !== "source_import" && type !== "checklist_publish" && type !== "visual_test") return false;
+        if (shouldPublishChecklistBeforeVisual(action)) return false;
         return !!action.product;
       })
       .slice(0, max);
@@ -8196,6 +8257,7 @@
         const status = String(action.status || "").toLowerCase();
         if (type !== "visual_test" && type !== "source_import" && type !== "checklist_publish") return false;
         if (status !== "queued" && status !== "running" && status !== "in_progress") return false;
+        if (shouldPublishChecklistBeforeVisual(action)) return false;
         const validation = String(action.validationResult || "").toLowerCase();
         return validation.includes("visual") || type === "visual_test";
       })
@@ -8785,6 +8847,12 @@
       }
       return { kind: "skip_running", label: "Already running", safe: false };
     }
+    if (shouldPublishChecklistBeforeVisual(action)) {
+      if (action.code && (action.sport || inferChecklistBucket(action.product || "", action.sport || ""))) {
+        return { kind: "publish_checklist", label: "Publish checklist JSON before visual validation", safe: true };
+      }
+      return { kind: "needs_admin", label: "Checklist publish needs product code, sport, or bucket before visual validation", safe: false };
+    }
     if (status === "queued") {
       const validation = String(action.validationResult || "").toLowerCase();
       if (validation.includes("visual") || type === "visual_test") {
@@ -9062,6 +9130,11 @@
       const sourceUrl = step.action.sourceUrl || step.action.runUrl || "";
       renderAgentCycleMessage(step.title, step.detail, "info");
       return executeSourceImport(sourceUrl, step.action.sport || "", step.action.id);
+    }
+
+    if (step.kind === "publish_checklist") {
+      renderAgentCycleMessage(step.title, step.detail, "info");
+      return publishChecklistAction(step.action.id);
     }
 
     if (step.kind === "publish_prv_json") {

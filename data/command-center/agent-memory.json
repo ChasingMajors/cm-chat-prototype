@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T01:18:17.733Z",
+  "exported_at": "2026-06-24T01:18:24.178Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -302,42 +302,6 @@
       "updatedAt": "2026-06-24T01:18:03.197Z"
     },
     {
-      "id": "source_watch|baseball|2026 leaf vivid baseball",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2026 Leaf Vivid Baseball",
-      "sport": "baseball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-vivid-baseball-card-checklist/",
-      "createdAt": "2026-06-23T03:01:14.419Z",
-      "updatedAt": "2026-06-23T03:01:14.419Z"
-    },
-    {
-      "id": "source_watch|soccer|2026 panini prizm fifa world cup soccer",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2026 Panini Prizm FIFA World Cup Soccer",
-      "sport": "soccer",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
-      "createdAt": "2026-06-23T03:01:14.419Z",
-      "updatedAt": "2026-06-23T03:01:14.419Z"
-    },
-    {
       "id": "source_watch|football|2026 leaf spectacular football",
       "type": "source_import",
       "source": "scheduled_quick_json",
@@ -376,6 +340,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782263902575_cn9c63",
+      "ts": "2026-06-24T01:18:22.575Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2026 Panini Prizm FIFA World Cup Soccer was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1782263898660_t6dlr6",
+      "ts": "2026-06-24T01:18:18.660Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2026 Leaf Vivid Baseball was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2026 Leaf Vivid Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1782263896130_y20o5y",
       "ts": "2026-06-24T01:18:16.130Z",
@@ -1155,26 +1139,6 @@
       "status": "requested",
       "product": "2025-26 Upper Deck Parkhurst Hockey",
       "source": "agent_action_queue"
-    },
-    {
-      "id": "log_1782059354382_1n8tha",
-      "ts": "2026-06-21T16:29:14.382Z",
-      "type": "checklist_publish",
-      "title": "JSON publish needs review",
-      "detail": "Sheet write succeeded, but publish/live validation needs review.",
-      "status": "failed",
-      "product": "2025-26 Upper Deck CHL Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782059331749_m7hf45",
-      "ts": "2026-06-21T16:28:51.749Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Upper Deck CHL Hockey",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -4090,9 +4054,45 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-24T01:18:16.124Z",
       "resolved": true
+    },
+    "baseball|https www checklistcenter com 2026-leaf-vivid-baseball-card-checklist": {
+      "product": "2026 Leaf Vivid Baseball",
+      "sport": "baseball",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-vivid-baseball-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-24T01:18:18.656Z",
+      "resolved": true
+    },
+    "baseball|2026 leaf vivid baseball": {
+      "product": "2026 Leaf Vivid Baseball",
+      "sport": "baseball",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-vivid-baseball-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-24T01:18:18.656Z",
+      "resolved": true
+    },
+    "soccer|https www checklistcenter com 2026-panini-prizm-fifa-world-cup-soccer-card-checklist": {
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "sport": "soccer",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-24T01:18:22.573Z",
+      "resolved": true
+    },
+    "soccer|2026 panini prizm fifa world cup soccer": {
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "sport": "soccer",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-24T01:18:22.573Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T01:18:18.865Z",
+  "saved_at": "2026-06-24T01:18:25.328Z",
   "saved_by": "cm_command_center_operator"
 }

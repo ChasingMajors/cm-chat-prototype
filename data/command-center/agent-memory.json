@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T01:17:55.030Z",
+  "exported_at": "2026-06-24T01:18:04.806Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -289,17 +289,17 @@
       "source": "scheduled_prv_quick_json",
       "product": "2026 Topps Pristine Premier League & 2026 Merlin Premier League",
       "sport": "soccer",
-      "code": "",
+      "code": "2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Review sample rows, then write PRV temp data if the numbers look right.",
+      "status": "needs_admin",
+      "recommendedAction": "Review PRV sheet rows, then publish PRV JSON when ready.",
       "adminDecision": "",
-      "executionResult": "PRV sheet write started through Operator Backend.",
-      "validationResult": "Preview rows are ready for admin review before PRV sheet write.",
+      "executionResult": "PRV Index and Products rows written.",
+      "validationResult": "36 PRV rows found in Products.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
       "createdAt": "2026-06-23T03:01:14.419Z",
-      "updatedAt": "2026-06-24T01:17:53.425Z"
+      "updatedAt": "2026-06-24T01:18:03.197Z"
     },
     {
       "id": "source_watch|soccer|2026 topps argentina team set soccer",
@@ -394,6 +394,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782263883204_2hy1il",
+      "ts": "2026-06-24T01:18:03.204Z",
+      "type": "prv_source_review",
+      "title": "PRV temp data written",
+      "detail": "1 Index row and 36 Products rows validated.",
+      "status": "needs_review",
+      "product": "2026 Topps Pristine Premier League & 2026 Merlin Premier League",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782263873421_x47i2l",
       "ts": "2026-06-24T01:17:53.421Z",
@@ -1183,16 +1193,6 @@
       "status": "needs_review",
       "product": "2025-26 Upper Deck CHL Hockey",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1782059321922_091g3x",
-      "ts": "2026-06-21T16:28:41.922Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "2025-26 Upper Deck CHL Hockey",
-      "source": "admin"
     }
   ],
   "last_agent_report": {
@@ -4093,6 +4093,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T01:17:56.244Z",
+  "saved_at": "2026-06-24T01:18:06.379Z",
   "saved_by": "cm_command_center_operator"
 }

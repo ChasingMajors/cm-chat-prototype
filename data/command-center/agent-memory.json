@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T16:02:26.938Z",
+  "exported_at": "2026-06-24T16:02:46.895Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -355,11 +355,11 @@
       "sport": "soccer",
       "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
       "riskLevel": "medium",
-      "status": "failed",
+      "status": "running",
       "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
       "adminDecision": "checklist_group_approved",
       "executionResult": "Unsupported full-auto action type: checklist_publish",
-      "validationResult": "Unsupported full-auto action type: checklist_publish",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-finest-uefa-club-competitions-soccer-card-checklist/",
       "bucket": "",
@@ -367,7 +367,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-24T15:36:45.150Z",
-      "updatedAt": "2026-06-24T15:57:03.480Z",
+      "updatedAt": "2026-06-24T16:02:45.293Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "visualStartedAt": "2026-06-24T15:45:59Z",
       "pendingValidationAttempts": 0,
@@ -379,6 +379,56 @@
     "source_import|wordpress_api|2025-26 topps finest uefa club competitions soccer"
   ],
   "activity_log": [
+    {
+      "id": "log_1782316965293_dyzndd",
+      "ts": "2026-06-24T16:02:45.293Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782316965290_m9xgnc",
+      "ts": "2026-06-24T16:02:45.290Z",
+      "type": "agent_run_queue",
+      "title": "Recheck checklist public JSON",
+      "detail": "2025-26 Topps Finest UEFA Club Competitions Soccer is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1782316965286_jxldo2",
+      "ts": "2026-06-24T16:02:45.286Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "1 flagged job will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1782316964375_ljhps2",
+      "ts": "2026-06-24T16:02:44.375Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782316964366_u9909k",
+      "ts": "2026-06-24T16:02:44.366Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
     {
       "id": "log_1782316945335_ioguxe",
       "ts": "2026-06-24T16:02:25.335Z",
@@ -1128,46 +1178,6 @@
       "status": "completed",
       "product": "",
       "source": "quick_json"
-    },
-    {
-      "id": "log_1782315405151_q4ik2y",
-      "ts": "2026-06-24T15:36:45.151Z",
-      "type": "source_watch",
-      "title": "Source Watch actions queued",
-      "detail": "1 findings are now visible in the Agent Action Queue for admin review. 6 admin-ignored source item(s) were skipped.",
-      "status": "queued",
-      "product": "",
-      "source": "quick_json"
-    },
-    {
-      "id": "log_1782315401837_1lp531",
-      "ts": "2026-06-24T15:36:41.837Z",
-      "type": "source_watch",
-      "title": "Quick JSON Source Watch started",
-      "detail": "Checking recent Checklistcenter items against public JSON. No writes will run.",
-      "status": "started",
-      "product": "",
-      "source": "quick_json"
-    },
-    {
-      "id": "log_1782315401807_tq5dhz",
-      "ts": "2026-06-24T15:36:41.807Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep started",
-      "detail": "Running health audit, Checklist source watch, and PRV source watch.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1782315401806_jwkqa8",
-      "ts": "2026-06-24T15:36:41.806Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the browser daily sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
     }
   ],
   "last_agent_report": {
@@ -4216,6 +4226,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T16:02:28.298Z",
+  "saved_at": "2026-06-24T16:02:48.338Z",
   "saved_by": "cm_command_center_operator"
 }

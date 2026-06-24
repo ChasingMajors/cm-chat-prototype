@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T16:02:46.895Z",
+  "exported_at": "2026-06-24T16:03:11.679Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -331,10 +331,10 @@
       "sport": "soccer",
       "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
       "riskLevel": "medium",
-      "status": "failed",
-      "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
-      "adminDecision": "",
-      "executionResult": "",
+      "status": "ignored",
+      "recommendedAction": "No action needed. Resolved proof is already recorded.",
+      "adminDecision": "resolved_memory",
+      "executionResult": "Resolved memory suppressed this stale queue row.",
       "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "sourceUrl": "",
@@ -343,7 +343,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-24T15:39:08.487Z",
-      "updatedAt": "2026-06-24T15:47:18.240Z",
+      "updatedAt": "2026-06-24T16:02:47.071Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "visualStartedAt": "2026-06-24T15:45:59Z"
     },
@@ -355,11 +355,11 @@
       "sport": "soccer",
       "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
+      "status": "validated",
+      "recommendedAction": "No action needed unless the source has newer rows/parallels than Chasing Majors.",
       "adminDecision": "checklist_group_approved",
-      "executionResult": "Unsupported full-auto action type: checklist_publish",
-      "validationResult": "Coverage recheck started...",
+      "executionResult": "Source Check confirmed this product is already covered.",
+      "validationResult": "Already covered in Chasing Majors as 2025_26_topps_finest_uefa_club_competitions_soccer. No import needed.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-finest-uefa-club-competitions-soccer-card-checklist/",
       "bucket": "",
@@ -367,7 +367,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-24T15:36:45.150Z",
-      "updatedAt": "2026-06-24T16:02:45.293Z",
+      "updatedAt": "2026-06-24T16:02:47.069Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "visualStartedAt": "2026-06-24T15:45:59Z",
       "pendingValidationAttempts": 0,
@@ -375,10 +375,58 @@
       "autoExecutedAt": "2026-06-24T15:57:03.480Z"
     }
   ],
-  "agent_run_queue": [
-    "source_import|wordpress_api|2025-26 topps finest uefa club competitions soccer"
-  ],
+  "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782316990076_gzby37",
+      "ts": "2026-06-24T16:03:10.076Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1782316990072_fhl9ia",
+      "ts": "2026-06-24T16:03:10.072Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1782316967077_9q4qqe",
+      "ts": "2026-06-24T16:02:47.077Z",
+      "type": "agent_run_queue",
+      "title": "Admin Run Queue complete",
+      "detail": "1 attempted. 0 skipped for approval/details. 0 failed. 0 still queued. 2025-26 Topps Finest UEFA Club Competitions Soccer: Recheck checklist public JSON",
+      "status": "validated",
+      "product": "",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1782316967071_31crus",
+      "ts": "2026-06-24T16:02:47.071Z",
+      "type": "agent_action",
+      "title": "Covered product auto-resolved",
+      "detail": "1 matching queue card cleared because Source Check confirmed coverage.",
+      "status": "validated",
+      "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782316967067_k18al1",
+      "ts": "2026-06-24T16:02:47.067Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "1,028 public rows and 138 parallels found.",
+      "status": "covered",
+      "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782316965293_dyzndd",
       "ts": "2026-06-24T16:02:45.293Z",
@@ -1128,56 +1176,6 @@
       "status": "queued",
       "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
       "source": "admin"
-    },
-    {
-      "id": "log_1782315408431_tu8hw7",
-      "ts": "2026-06-24T15:36:48.431Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep complete",
-      "detail": "Checklist: 20 checked, 1 queued. PRV clear: 6 source items checked, nothing new queued. 1 active queue item need review.",
-      "status": "needs_review",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1782315408426_7p9ypn",
-      "ts": "2026-06-24T15:36:48.426Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch complete",
-      "detail": "6 SlabSquatch items checked. 0 need review. 0 PRV review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "slabsquatch"
-    },
-    {
-      "id": "log_1782315408426_ojynfq",
-      "ts": "2026-06-24T15:36:48.426Z",
-      "type": "source_watch",
-      "title": "Source Watch skipped clean items",
-      "detail": "4 admin-ignored source item(s) were omitted from the queue.",
-      "status": "ignored",
-      "product": "",
-      "source": "prv_source_watch"
-    },
-    {
-      "id": "log_1782315405163_1g6q3d",
-      "ts": "2026-06-24T15:36:45.163Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch started",
-      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
-      "status": "started",
-      "product": "",
-      "source": "slabsquatch"
-    },
-    {
-      "id": "log_1782315405151_q9879z",
-      "ts": "2026-06-24T15:36:45.151Z",
-      "type": "source_watch",
-      "title": "Quick JSON Source Watch complete",
-      "detail": "20 source items checked. 5 need review. 1 review cards queued. No Sheet or JSON writes were run by this audit.",
-      "status": "completed",
-      "product": "",
-      "source": "quick_json"
     }
   ],
   "last_agent_report": {
@@ -4223,9 +4221,36 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-24T15:36:25.332Z",
       "resolved": true
+    },
+    "soccer|https www checklistcenter com 2025-26-topps-finest-uefa-club-competitions-soccer-card-checklist": {
+      "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-finest-uefa-club-competitions-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-24T16:03:11.679Z",
+      "resolved": true
+    },
+    "soccer|2025_26_topps_finest_uefa_club_competitions_soccer": {
+      "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-finest-uefa-club-competitions-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-24T16:03:11.679Z",
+      "resolved": true
+    },
+    "soccer|https github com chasingmajors cm-chat-prototype actions runs 28110974358": {
+      "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-24T16:03:11.678Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T16:02:48.338Z",
+  "saved_at": "2026-06-24T16:03:12.647Z",
   "saved_by": "cm_command_center_operator"
 }

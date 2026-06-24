@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T15:45:36.334Z",
+  "exported_at": "2026-06-24T15:45:47.414Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -355,9 +355,9 @@
       "sport": "soccer",
       "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "approved",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
-      "adminDecision": "run_queue_approved",
+      "adminDecision": "checklist_group_approved",
       "executionResult": "JSON publish needs review.",
       "validationResult": "Sheet write succeeded, but publish/live validation needs review.",
       "runUrl": "",
@@ -367,7 +367,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-24T15:36:45.150Z",
-      "updatedAt": "2026-06-24T15:45:00.507Z",
+      "updatedAt": "2026-06-24T15:45:45.812Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110536826",
       "visualStartedAt": "2026-06-24T15:39:07Z"
     }
@@ -376,6 +376,16 @@
     "source_import|wordpress_api|2025-26 topps finest uefa club competitions soccer"
   ],
   "activity_log": [
+    {
+      "id": "log_1782315945813_3g4wcc",
+      "ts": "2026-06-24T15:45:45.813Z",
+      "type": "admin_decision",
+      "title": "Admin decision group approved",
+      "detail": "1 checklist decision approved. Checklist items were added to the Agent Run Queue.",
+      "status": "approved",
+      "product": "",
+      "source": "admin_group"
+    },
     {
       "id": "log_1782315934730_1vnaax",
       "ts": "2026-06-24T15:45:34.730Z",
@@ -3773,6 +3783,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T15:45:37.468Z",
+  "saved_at": "2026-06-24T15:45:49.377Z",
   "saved_by": "cm_command_center_operator"
 }

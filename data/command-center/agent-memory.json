@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T15:45:47.414Z",
+  "exported_at": "2026-06-24T15:45:59.114Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -355,11 +355,11 @@
       "sport": "soccer",
       "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
       "riskLevel": "medium",
-      "status": "approved",
+      "status": "running",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "checklist_group_approved",
       "executionResult": "JSON publish needs review.",
-      "validationResult": "Sheet write succeeded, but publish/live validation needs review.",
+      "validationResult": "CV/ChatBot visual test requested by Admin Run Queue...",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-finest-uefa-club-competitions-soccer-card-checklist/",
       "bucket": "",
@@ -367,7 +367,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-24T15:36:45.150Z",
-      "updatedAt": "2026-06-24T15:45:45.812Z",
+      "updatedAt": "2026-06-24T15:45:57.513Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110536826",
       "visualStartedAt": "2026-06-24T15:39:07Z"
     }
@@ -376,6 +376,26 @@
     "source_import|wordpress_api|2025-26 topps finest uefa club competitions soccer"
   ],
   "activity_log": [
+    {
+      "id": "log_1782315957511_4ivze4",
+      "ts": "2026-06-24T15:45:57.511Z",
+      "type": "agent_run_queue",
+      "title": "Run CV/ChatBot visual test",
+      "detail": "2025-26 Topps Finest UEFA Club Competitions Soccer is being attempted from the Admin Run Queue.",
+      "status": "started",
+      "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
+      "source": "admin_run_queue"
+    },
+    {
+      "id": "log_1782315957507_te6tms",
+      "ts": "2026-06-24T15:45:57.507Z",
+      "type": "agent_cycle",
+      "title": "Running Admin Run Queue",
+      "detail": "1 flagged job will be attempted before Sentinel chooses other work.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1782315945813_3g4wcc",
       "ts": "2026-06-24T15:45:45.813Z",
@@ -3783,6 +3803,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T15:45:49.377Z",
+  "saved_at": "2026-06-24T15:46:00.593Z",
   "saved_by": "cm_command_center_operator"
 }

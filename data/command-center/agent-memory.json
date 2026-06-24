@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T15:46:58.009Z",
+  "exported_at": "2026-06-24T15:47:19.844Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -330,12 +330,12 @@
       "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
       "sport": "soccer",
       "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
-      "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "riskLevel": "medium",
+      "status": "failed",
+      "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "sourceUrl": "",
       "bucket": "",
@@ -343,7 +343,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-24T15:39:08.487Z",
-      "updatedAt": "2026-06-24T15:46:55.475Z",
+      "updatedAt": "2026-06-24T15:47:18.240Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "visualStartedAt": "2026-06-24T15:45:59Z"
     },
@@ -355,11 +355,11 @@
       "sport": "soccer",
       "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
       "riskLevel": "medium",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "failed",
+      "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
       "adminDecision": "checklist_group_approved",
       "executionResult": "JSON publish needs review.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-finest-uefa-club-competitions-soccer-card-checklist/",
       "bucket": "",
@@ -367,7 +367,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-24T15:36:45.150Z",
-      "updatedAt": "2026-06-24T15:46:55.476Z",
+      "updatedAt": "2026-06-24T15:47:18.241Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "visualStartedAt": "2026-06-24T15:45:59Z"
     }
@@ -376,6 +376,26 @@
     "source_import|wordpress_api|2025-26 topps finest uefa club competitions soccer"
   ],
   "activity_log": [
+    {
+      "id": "log_1782316038242_hrutpc",
+      "ts": "2026-06-24T15:47:18.242Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "Visual test failed. Open the report and review screenshots/errors before marking validated.",
+      "status": "failed",
+      "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1782316038241_tre1un",
+      "ts": "2026-06-24T15:47:18.241Z",
+      "type": "operator_task",
+      "title": "Repair task created from visual failure",
+      "detail": "Sentinel created a fix task so the failed CV/ChatBot behavior has a clear repair path.",
+      "status": "queued",
+      "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
+      "source": "github_actions"
+    },
     {
       "id": "log_1782316015476_4fr4sc",
       "ts": "2026-06-24T15:46:55.476Z",
@@ -2025,9 +2045,9 @@
       "checkedAt": "2026-06-23T03:02:08.982Z"
     },
     "soccer|2025_26_topps_finest_uefa_club_competitions_soccer": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "failed",
+      "conclusion": "failure",
       "startedAt": "2026-06-24T15:45:58.398Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2037,7 +2057,7 @@
       "productName": "2025-26 Topps Finest UEFA Club Competitions Soccer",
       "sport": "soccer",
       "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
-      "updatedAt": "2026-06-24T15:46:55.473Z",
+      "updatedAt": "2026-06-24T15:47:18.237Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 28110974358,
@@ -2045,12 +2065,12 @@
       "displayTitle": "Visual Product Test - 2025-26 Topps Finest UEFA Club Competitions Soccer",
       "headSha": "74416e3640f737947145db8969151c2e5b475054",
       "createdAt": "2026-06-24T15:45:59Z",
-      "checkedAt": "2026-06-24T15:46:55.473Z"
+      "checkedAt": "2026-06-24T15:47:18.237Z"
     },
     "soccer|2025-26 topps finest uefa club competitions soccer": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "failed",
+      "conclusion": "failure",
       "startedAt": "2026-06-24T15:45:58.398Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2060,7 +2080,7 @@
       "productName": "2025-26 Topps Finest UEFA Club Competitions Soccer",
       "sport": "soccer",
       "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
-      "updatedAt": "2026-06-24T15:46:55.473Z",
+      "updatedAt": "2026-06-24T15:47:18.237Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 28110974358,
@@ -2068,7 +2088,7 @@
       "displayTitle": "Visual Product Test - 2025-26 Topps Finest UEFA Club Competitions Soccer",
       "headSha": "74416e3640f737947145db8969151c2e5b475054",
       "createdAt": "2026-06-24T15:45:59Z",
-      "checkedAt": "2026-06-24T15:46:55.473Z"
+      "checkedAt": "2026-06-24T15:47:18.237Z"
     }
   },
   "known_issues": {},
@@ -3853,6 +3873,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T15:46:59.769Z",
+  "saved_at": "2026-06-24T15:47:23.251Z",
   "saved_by": "cm_command_center_operator"
 }

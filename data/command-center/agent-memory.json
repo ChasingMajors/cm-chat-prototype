@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T01:19:11.065Z",
+  "exported_at": "2026-06-24T14:12:46.610Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -304,6 +304,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782310365007_5oxgo5",
+      "ts": "2026-06-24T14:12:45.007Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1782310364998_wamz4e",
+      "ts": "2026-06-24T14:12:44.998Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1782263949130_4vdds4",
       "ts": "2026-06-24T01:19:09.130Z",
@@ -1081,26 +1101,6 @@
       "title": "Repair task created from visual failure",
       "detail": "Sentinel created a fix task so the failed CV/ChatBot behavior has a clear repair path.",
       "status": "queued",
-      "product": "2025-26 Upper Deck Parkhurst Hockey",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1782059461209_fpqems",
-      "ts": "2026-06-21T16:31:01.209Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2025-26 Upper Deck Parkhurst Hockey",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1782059439225_3otjfu",
-      "ts": "2026-06-21T16:30:39.225Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
       "product": "2025-26 Upper Deck Parkhurst Hockey",
       "source": "github_actions"
     }
@@ -4097,7 +4097,7 @@
       "code": "2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T01:19:11.065Z",
+      "ignoredAt": "2026-06-24T14:12:46.610Z",
       "resolved": true
     },
     "soccer|2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer": {
@@ -4106,11 +4106,11 @@
       "code": "2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T01:19:11.065Z",
+      "ignoredAt": "2026-06-24T14:12:46.610Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T01:19:12.179Z",
+  "saved_at": "2026-06-24T14:12:47.864Z",
   "saved_by": "cm_command_center_operator"
 }

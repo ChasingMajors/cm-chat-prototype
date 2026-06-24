@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T01:18:31.483Z",
+  "exported_at": "2026-06-24T01:19:11.065Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -291,19 +291,29 @@
       "sport": "soccer",
       "code": "2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Review PRV sheet rows, then publish PRV JSON when ready.",
+      "status": "validated",
+      "recommendedAction": "Open PRV and confirm the product loads.",
       "adminDecision": "",
-      "executionResult": "PRV sheet write completed. PRV JSON publish started.",
-      "validationResult": "36 PRV rows found in Products.",
+      "executionResult": "PRV JSON publish request completed and public rows validated.",
+      "validationResult": "36 public PRV rows validated.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
       "createdAt": "2026-06-23T03:01:14.419Z",
-      "updatedAt": "2026-06-24T01:18:29.880Z"
+      "updatedAt": "2026-06-24T01:19:09.126Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782263949130_4vdds4",
+      "ts": "2026-06-24T01:19:09.130Z",
+      "type": "prv_publish",
+      "title": "PRV JSON published and validated",
+      "detail": "36 public PRV rows validated.",
+      "status": "validated",
+      "product": "2026 Topps Pristine Premier League & 2026 Merlin Premier League",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782263909879_z9t58h",
       "ts": "2026-06-24T01:18:29.879Z",
@@ -1087,16 +1097,6 @@
     {
       "id": "log_1782059439225_3otjfu",
       "ts": "2026-06-21T16:30:39.225Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2025-26 Upper Deck Parkhurst Hockey",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1782059417169_yoijrq",
-      "ts": "2026-06-21T16:30:17.169Z",
       "type": "visual_test",
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
@@ -4090,9 +4090,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-24T01:18:26.258Z",
       "resolved": true
+    },
+    "soccer|https slabsquatch substack com p 2026-topps-pristine-premier-league": {
+      "product": "2026 Topps Pristine Premier League & 2026 Merlin Premier League",
+      "sport": "soccer",
+      "code": "2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-24T01:19:11.065Z",
+      "resolved": true
+    },
+    "soccer|2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer": {
+      "product": "2026 Topps Pristine Premier League & 2026 Merlin Premier League",
+      "sport": "soccer",
+      "code": "2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-24T01:19:11.065Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T01:18:32.786Z",
+  "saved_at": "2026-06-24T01:19:12.179Z",
   "saved_by": "cm_command_center_operator"
 }

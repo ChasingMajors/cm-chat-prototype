@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=cc156" />
+  <link rel="stylesheet" href="./styles.css?v=cc157" />
 </head>
 <body>
   <div class="sentinel-app">
@@ -24,23 +24,18 @@
         <div class="sidebar-command-group" aria-label="Command Center actions">
           <button id="agentCycleBtn" class="sidebar-command primary-workflow" type="button">
             <strong>Run Agent Cycle</strong>
-            <span>Safe queued work</span>
           </button>
           <button id="sourceWatchDeepBtn" class="sidebar-command" type="button">
             <strong>Deep Sheets Audit</strong>
-            <span>Read-only source check</span>
           </button>
           <button id="syncPrvJsonBtn" class="sidebar-command primary-workflow" type="button">
             <strong>Sync PRV JSON</strong>
-            <span>Publish manual edits</span>
           </button>
           <button id="publicToolAuditBtn" class="sidebar-command" type="button">
             <strong>Public Tool Audit</strong>
-            <span>Leadership readiness</span>
           </button>
           <a class="sidebar-command" href="#productVerifier">
             <strong>Product Verifier</strong>
-            <span>Check one product</span>
           </a>
         </div>
         <a href="#prvImportBuilder">PRV Import Builder</a>
@@ -60,66 +55,69 @@
     <main class="shell" id="commandCenter">
       <header class="topbar sentinel-hero">
         <div class="build-stack">
-          <div class="build-version">HTML cc156-compact-status-header-v1-2026-06-24</div>
-          <div class="build-version build-version-secondary">JSON Index: <span id="buildVersion">HTML cc156</span></div>
+          <div class="build-version">HTML cc157-premium-command-layout-v1-2026-06-24</div>
+          <div class="build-version build-version-secondary">JSON Index: <span id="buildVersion">HTML cc157</span></div>
         </div>
         <div class="hero-side">
-        <div class="hero-pill">
-          <span class="health-dot"></span>
-          <strong id="autonomyState">Review only</strong>
-        </div>
-        <select id="autonomyModeSelect" class="filter-select autonomy-select" aria-label="Autonomy mode">
-          <option value="review_only">Review only</option>
-          <option value="approval_required">Approval required</option>
-          <option value="guarded_auto">Guarded auto</option>
-          <option value="full_auto">Full auto</option>
-        </select>
-        <div class="hero-clock">
+          <div class="hero-pill">
+            <span class="health-dot"></span>
+            <span>Status</span>
+            <strong id="autonomyState">Review only</strong>
+          </div>
+          <select id="autonomyModeSelect" class="filter-select autonomy-select" aria-label="Autonomy mode">
+            <option value="review_only">Review only</option>
+            <option value="approval_required">Approval required</option>
+            <option value="guarded_auto">Guarded auto</option>
+            <option value="full_auto">Full auto</option>
+          </select>
+          <div class="hero-clock">
             <strong id="lastAudit">-</strong>
             <span>Last audit</span>
           </div>
         </div>
       </header>
 
-      <section class="panel source-check-panel command-output-panel" id="liveStatus">
-        <div class="panel-head">
-          <div>
-            <h2>Live Status</h2>
-            <p>Agent Cycle progress, visual-test updates, queued work, and completed proof show here.</p>
+      <section class="dashboard-primary-grid" aria-label="Live status and product verifier">
+        <section class="panel source-check-panel command-output-panel" id="liveStatus">
+          <div class="panel-head">
+            <div>
+              <h2>Live Status</h2>
+              <p>Agent Cycle progress, visual-test updates, queued work, and completed proof show here.</p>
+            </div>
           </div>
-        </div>
-        <div id="sourceCheckResult" class="source-check-result">
-          <div class="brief-item">
-            <strong>Ready</strong>
-            <span>Run Agent Cycle to see found, queued, running, completed, and blocked work.</span>
+          <div id="sourceCheckResult" class="source-check-result">
+            <div class="brief-item">
+              <strong>Ready</strong>
+              <span>Run Agent Cycle to see found, queued, running, completed, and blocked work.</span>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="panel product-verifier-card" id="productVerifier">
-        <div class="panel-head">
-          <div>
-            <h2>Product Verifier</h2>
-            <p>Check one supported sports-card product title.</p>
+        <section class="panel product-verifier-card" id="productVerifier">
+          <div class="panel-head">
+            <div>
+              <h2>Product Verifier</h2>
+              <p>Check one supported sports-card product title.</p>
+            </div>
           </div>
-        </div>
-        <div class="source-check-form">
-          <input id="sourceTitleInput" type="text" value="2025-26 Panini Select EuroLeague Basketball" aria-label="Source product title" />
-          <select id="sourceSportInput" class="filter-select" aria-label="Source sport">
-            <option value="baseball">Baseball</option>
-            <option value="basketball" selected>Basketball</option>
-            <option value="football">Football</option>
-            <option value="hockey">Hockey</option>
-            <option value="soccer">Soccer</option>
-          </select>
-          <button id="sourceCheckBtn" class="primary-btn" type="button">Check Product</button>
-        </div>
-        <div id="sourceVerifierResult" class="source-verifier-result">
-          <div class="brief-item compact">
-            <strong>Ready</strong>
-            <span>Enter a product title and run a quick coverage check.</span>
+          <div class="source-check-form">
+            <input id="sourceTitleInput" type="text" value="2025-26 Panini Select EuroLeague Basketball" aria-label="Source product title" />
+            <select id="sourceSportInput" class="filter-select" aria-label="Source sport">
+              <option value="baseball">Baseball</option>
+              <option value="basketball" selected>Basketball</option>
+              <option value="football">Football</option>
+              <option value="hockey">Hockey</option>
+              <option value="soccer">Soccer</option>
+            </select>
+            <button id="sourceCheckBtn" class="primary-btn" type="button">Check Product</button>
           </div>
-        </div>
+          <div id="sourceVerifierResult" class="source-verifier-result">
+            <div class="brief-item compact">
+              <strong>Ready</strong>
+              <span>Enter a product title and run a quick coverage check.</span>
+            </div>
+          </div>
+        </section>
       </section>
 
       <section class="command-row" aria-label="Sentinel operating brief">
@@ -166,12 +164,12 @@
         <div class="side-stack">
           <div class="panel review-hold-panel" id="alerts">
             <div class="panel-head">
-          <div>
-            <h2>Needs Attention</h2>
-            <p>Held issues, failed checks, and admin decisions.</p>
-          </div>
-          <strong id="criticalCount" class="alert-count">-</strong>
-        </div>
+              <div>
+                <h2>Needs Attention</h2>
+                <p>Held issues, failed checks, and admin decisions.</p>
+              </div>
+              <strong id="criticalCount" class="alert-count">-</strong>
+            </div>
             <div id="reviewHoldList" class="review-hold-list">
               <div class="brief-item">
                 <strong>No holds yet</strong>
@@ -384,6 +382,6 @@
     </main>
   </div>
 
-  <script defer src="./command-center.js?v=cc156"></script>
+  <script defer src="./command-center.js?v=cc157"></script>
 </body>
 </html>

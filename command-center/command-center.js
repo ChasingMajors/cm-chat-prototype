@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc156-compact-status-header-v1-2026-06-24";
+  const COMMAND_CENTER_VERSION = "cc157-premium-command-layout-v1-2026-06-24";
   const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-23-operator-cc152-post-only-write-hardening";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
@@ -900,6 +900,28 @@
             <span class="pill">${escapeHtml(action.product || action.code || action.type || "Action")} · ${escapeHtml(getAgentActionDisplayStatus(action))}</span>
           `).join("")}
         </div>
+      </div>
+    `;
+  }
+
+  function renderAgentActionStatsStrip(activeActions, resolvedActions) {
+    const actions = Array.isArray(activeActions) ? activeActions : [];
+    const resolved = Array.isArray(resolvedActions) ? resolvedActions : [];
+    const queued = getQueuedAgentActions(100).length;
+    const inProgress = actions.filter(action => String(action.status || "").toLowerCase() === "running").length;
+    const waiting = actions.filter(action => {
+      const status = String(action.status || "").toLowerCase();
+      return status === "needs_admin" || status === "approval_required" || status === "known_issue" || status === "blocked" || status === "failed";
+    }).length;
+    const total = actions.length + resolved.length;
+
+    return `
+      <div class="agent-action-stats" aria-label="Agent action queue summary">
+        <span><strong>${formatNumber(total)}</strong><em>Total</em></span>
+        <span><strong>${formatNumber(queued)}</strong><em>Queued</em></span>
+        <span><strong>${formatNumber(inProgress)}</strong><em>In progress</em></span>
+        <span><strong>${formatNumber(waiting)}</strong><em>Waiting</em></span>
+        <span><strong>${formatNumber(resolved.length)}</strong><em>Resolved</em></span>
       </div>
     `;
   }
@@ -7251,7 +7273,7 @@
       `
       : "";
 
-    els.agentActionList.innerHTML = renderAgentRunQueueSummary() + renderAdminDecisionGroupPanel(activeActions) + activeHtml + resolvedHtml;
+    els.agentActionList.innerHTML = renderAgentActionStatsStrip(activeActions, resolvedActions) + renderAgentRunQueueSummary() + renderAdminDecisionGroupPanel(activeActions) + activeHtml + resolvedHtml;
 
     els.agentActionList.querySelectorAll("[data-admin-group-primary]").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -9468,69 +9490,46 @@
     const mode = getAutonomyLabel(state.autonomyMode);
     const readiness = renderAutonomyReadiness();
     const heldDetail = summarizeHeldActions(actions);
-    const adminDecisionDetail = summarizeAdminDecisionActions(actions);
     const nextRecommendation = getNextAgentRecommendation(actions);
     const report = state.lastAgentReport && typeof state.lastAgentReport === "object" ? state.lastAgentReport : null;
 
-    const cards = [];
+    const sweepDetail = latestSweep
+      ? latestSweep.detail || latestSweep.status || "Sweep completed."
+      : "No backend sweep has been logged yet.";
+    const sweepBadge = latestSweep
+      ? latestSweep.status === "validated" || latestSweep.status === "completed" ? "validated" : "needs review"
+      : "not run";
+    const changedDetail = report && report.summary
+      ? report.summary
+      : latestSuccess
+        ? `${latestSuccess.title}: ${latestSuccess.detail || latestSuccess.status}`
+        : "No memory, state, data, or queue change recorded yet.";
+    const validationDetail = pendingVisualValidation.length
+      ? `${formatNumber(pendingVisualValidation.length)} product${pendingVisualValidation.length === 1 ? "" : "s"} have public JSON proof and need CV/ChatBot visual validation.`
+      : `${formatNumber(validated.length)} validated action${validated.length === 1 ? "" : "s"} with proof. ${formatNumber(pendingValidation.length)} pending JSON recheck${pendingValidation.length === 1 ? "" : "s"}.`;
 
-    if (report) {
-      cards.push({
-        title: "Daily Agent Report",
-        detail: report.summary || "Sentinel generated an operating report.",
-        badge: report.status || "report"
-      });
-      cards.push({
-        title: "Admin Next Step",
-        detail: report.next_step || nextRecommendation,
-        badge: report.needs_admin_count || report.blocked_count ? "review" : "clear"
-      });
-      if (Array.isArray(report.proof) && report.proof.length) {
-        cards.push({
-          title: "Agent Proof",
-          detail: report.proof[0],
-          badge: `${formatNumber(report.completed_count || report.proof.length)} proof`
-        });
-      }
-    }
-
-    if (pendingVisualValidation.length) {
-      cards.push({
-        title: "Public JSON Repaired",
-        detail: `${formatNumber(pendingVisualValidation.length)} product${pendingVisualValidation.length === 1 ? "" : "s"} have public JSON proof and now need CV/ChatBot visual validation.`,
-        badge: "visual proof"
-      });
-    }
-
-    cards.push({
-      title: "Queue Breakdown",
-      detail: queueBreakdown.summary,
-      badge: queueBreakdown.counts.total ? "open" : "clear"
-    });
-
-    if (queueBreakdown.counts.needsAdmin) {
-      cards.push({
-        title: "Admin Decisions",
-        detail: adminDecisionDetail,
-        badge: `${formatNumber(queueBreakdown.counts.needsAdmin)} review`
-      });
-    }
-
-    cards.push(
+    const cards = [
+      {
+        title: "Queue Breakdown",
+        detail: queueBreakdown.counts.total
+          ? queueBreakdown.summary
+          : "Queue is clear. No active agent work is waiting.",
+        badge: queueBreakdown.counts.total ? pending.length ? "active" : "waiting" : "clear"
+      },
       {
         title: "Last Sweep",
-        detail: latestSweep ? latestSweep.detail || latestSweep.status || "Sweep completed." : "No backend sweep has been logged yet.",
-        badge: latestSweep ? latestSweep.status || "logged" : "not run"
+        detail: sweepDetail,
+        badge: sweepBadge
       },
       {
         title: "Checked",
         detail: `Mode: ${mode}. ${readiness.detail}`,
-        badge: readiness.label
+        badge: blocked.length ? "hold" : readiness.label || "clear"
       },
       {
         title: "Changed",
-        detail: latestSuccess ? `${latestSuccess.title}: ${latestSuccess.detail || latestSuccess.status}` : "No new write, validation, save, or queue change recorded yet.",
-        badge: latestSuccess ? latestSuccess.status || "recorded" : "none"
+        detail: changedDetail,
+        badge: latestSuccess || report ? "updated" : "none"
       },
       {
         title: "Held",
@@ -9539,7 +9538,7 @@
       },
       {
         title: "Validation",
-        detail: `${formatNumber(validated.length)} validated actions with proof. ${formatNumber(pendingValidation.length)} pending published JSON recheck${pendingValidation.length === 1 ? "" : "s"}.`,
+        detail: validationDetail,
         badge: pendingValidation.length ? "pending" : "proof"
       },
       {
@@ -9558,13 +9557,13 @@
       },
       {
         title: "Recommended Next",
-        detail: nextRecommendation,
-        badge: pending.length || blocked.length ? "admin" : "agent"
+        detail: report && report.next_step ? report.next_step : nextRecommendation,
+        badge: queueBreakdown.counts.needsAdmin ? "review" : critical.length ? "audit" : "agent"
       }
-    );
+    ];
 
     els.runSummaryList.innerHTML = cards.map(card => `
-      <div class="run-summary-card">
+      <div class="run-summary-card ${card.title === "Recommended Next" ? "recommended" : ""}">
         <div>
           <strong>${escapeHtml(card.title)}</strong>
           <span>${escapeHtml(card.detail)}</span>

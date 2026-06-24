@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T15:43:42.408Z",
+  "exported_at": "2026-06-24T15:43:52.734Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -349,8 +349,8 @@
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps finest uefa club competitions soccer",
-      "type": "source_import",
-      "source": "wordpress_api",
+      "type": "checklist_publish",
+      "source": "operator_backend",
       "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
       "sport": "soccer",
       "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
@@ -358,16 +358,16 @@
       "status": "running",
       "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "run_queue_approved",
-      "executionResult": "Sheet write started through Operator Backend.",
-      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110536826",
+      "executionResult": "Sheet write completed. JSON publish started.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-finest-uefa-club-competitions-soccer-card-checklist/",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-24T15:36:45.150Z",
-      "updatedAt": "2026-06-24T15:43:40.807Z",
+      "updatedAt": "2026-06-24T15:43:51.133Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110536826",
       "visualStartedAt": "2026-06-24T15:39:07Z"
     }
@@ -376,6 +376,26 @@
     "source_import|wordpress_api|2025-26 topps finest uefa club competitions soccer"
   ],
   "activity_log": [
+    {
+      "id": "log_1782315831132_3wf250",
+      "ts": "2026-06-24T15:43:51.132Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782315831126_z3xfmw",
+      "ts": "2026-06-24T15:43:51.126Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "1,028 checklist rows and 138 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782315820793_f6a92m",
       "ts": "2026-06-24T15:43:40.794Z",
@@ -3703,6 +3723,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T15:43:45.440Z",
+  "saved_at": "2026-06-24T15:43:53.803Z",
   "saved_by": "cm_command_center_operator"
 }

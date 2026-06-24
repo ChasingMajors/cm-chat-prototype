@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T01:18:27.862Z",
+  "exported_at": "2026-06-24T01:18:31.483Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -291,19 +291,29 @@
       "sport": "soccer",
       "code": "2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Review PRV sheet rows, then publish PRV JSON when ready.",
       "adminDecision": "",
-      "executionResult": "PRV Index and Products rows written.",
+      "executionResult": "PRV sheet write completed. PRV JSON publish started.",
       "validationResult": "36 PRV rows found in Products.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
       "createdAt": "2026-06-23T03:01:14.419Z",
-      "updatedAt": "2026-06-24T01:18:03.197Z"
+      "updatedAt": "2026-06-24T01:18:29.880Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782263909879_z9t58h",
+      "ts": "2026-06-24T01:18:29.879Z",
+      "type": "prv_publish",
+      "title": "PRV JSON publish started",
+      "detail": "Publishing Print Run Vault static JSON after approved sheet write.",
+      "status": "started",
+      "product": "2026 Topps Pristine Premier League & 2026 Merlin Premier League",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782263906260_reikuw",
       "ts": "2026-06-24T01:18:26.260Z",
@@ -1087,16 +1097,6 @@
     {
       "id": "log_1782059417169_yoijrq",
       "ts": "2026-06-21T16:30:17.169Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2025-26 Upper Deck Parkhurst Hockey",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1782059395131_c0tpiu",
-      "ts": "2026-06-21T16:29:55.131Z",
       "type": "visual_test",
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
@@ -4093,6 +4093,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T01:18:29.089Z",
+  "saved_at": "2026-06-24T01:18:32.786Z",
   "saved_by": "cm_command_center_operator"
 }

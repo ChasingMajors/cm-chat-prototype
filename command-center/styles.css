@@ -193,13 +193,21 @@ body {
   display: flex;
   justify-content: space-between;
   gap: 18px;
-  align-items: flex-start;
-  padding: 24px 30px;
+  align-items: center;
+  padding: 14px 18px;
   border: 1px solid var(--line);
-  border-radius: 28px;
+  border-radius: 16px;
   background: rgba(255,255,255,0.72);
   backdrop-filter: blur(22px);
   box-shadow: var(--shadow);
+}
+
+.build-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  min-width: 0;
 }
 
 .kicker {
@@ -247,7 +255,7 @@ h1 {
 .hero-side {
   display: flex;
   gap: 10px;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .hero-pill,
@@ -400,7 +408,7 @@ a {
 
 .build-version {
   display: inline-flex;
-  margin-top: 8px;
+  margin-top: 0;
   padding: 5px 8px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -410,7 +418,7 @@ a {
 }
 
 .build-version-secondary {
-  margin-left: 6px;
+  margin-left: 0;
   color: #2e5a92;
   background: rgba(255,255,255,0.54);
 }

@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc157-premium-command-layout-v1-2026-06-24";
+  const COMMAND_CENTER_VERSION = "cc158-operating-brief-product-outcomes-v1-2026-06-24";
   const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-23-operator-cc152-post-only-write-hardening";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
@@ -9465,24 +9465,153 @@
     return "Run Agent Cycle again later, or run Deep Sheets Audit when you need source-of-truth verification.";
   }
 
+  function getOperatingBriefProductName(item) {
+    return String(item && (item.product || item.productName || item.title || item.code) || "").trim();
+  }
+
+  function isPrvOutcomeItem(item) {
+    const text = [
+      item && item.type,
+      item && item.source,
+      item && item.title,
+      item && item.detail,
+      item && item.executionResult,
+      item && item.validationResult,
+      item && item.recommendedAction
+    ].join(" ").toLowerCase();
+    return text.includes("prv") || text.includes("print run") || text.includes("print-run");
+  }
+
+  function getOperatingBriefOutcomeStatus(item) {
+    const status = String(item && item.status || "").toLowerCase();
+    if (status === "validated" || status === "done" || status === "completed") return "complete";
+    if (status === "pending_public_validation" || status === "pending_visual_validation" || status === "needs_review" || status === "needs_admin" || status === "approval_required" || status === "fix_queued" || status === "fix_applied" || status === "fix_attempted") return "attention";
+    if (status === "failed" || status === "blocked" || status === "known_issue") return "failed";
+    if (status === "running" || status === "in_progress" || status === "queued" || status === "approved") return "working";
+    if (status === "ignored") return "held";
+    return "info";
+  }
+
+  function buildOperatingBriefOutcome(item) {
+    const product = getOperatingBriefProductName(item);
+    if (!product) return null;
+
+    const status = getOperatingBriefOutcomeStatus(item);
+    const isPrv = isPrvOutcomeItem(item);
+    const actionType = String(item && item.type || "").toLowerCase();
+    const text = [
+      item && item.executionResult,
+      item && item.validationResult,
+      item && item.detail,
+      item && item.recommendedAction
+    ].join(" ").toLowerCase();
+    const jsonPublished = text.includes("json published") || text.includes("published to github") || text.includes("github publish succeeded");
+
+    let group = "changed";
+    let badge = "Complete";
+    let sentence = "";
+
+    if (isPrv) {
+      if (status === "complete") {
+        sentence = `Agent Added ${product} print run data. PRV validations are complete.`;
+      } else if (status === "attention" && jsonPublished) {
+        group = "attention";
+        badge = "Needs attention";
+        sentence = `Agent Added ${product} print run data. JSON published but PRV validation needs attention.`;
+      } else if (status === "attention") {
+        group = "attention";
+        badge = "Needs attention";
+        sentence = `Agent Identified ${product} print run data. PRV review is needed before Sentinel can finish.`;
+      } else if (status === "failed" || status === "held") {
+        group = "failed";
+        badge = status === "held" ? "Held" : "Failed";
+        sentence = `Agent Identified ${product} print run data. Attempts to update backend failed.`;
+      } else if (status === "working") {
+        group = "attention";
+        badge = "Working";
+        sentence = `Agent is working on ${product} print run data. Validation is not complete yet.`;
+      }
+    } else {
+      if (status === "complete") {
+        sentence = `Agent Added ${product}. All CV / ChatBot validations are complete.`;
+      } else if (status === "attention" && jsonPublished) {
+        group = "attention";
+        badge = "Needs attention";
+        sentence = `Agent Added ${product}. JSON published but CV / ChatBot validations need attention.`;
+      } else if (status === "attention") {
+        group = "attention";
+        badge = "Needs attention";
+        sentence = actionType === "source_import"
+          ? `Agent Identified ${product} and it is missing in backend. Approval or repair is needed before Sentinel can finish.`
+          : `Agent Added ${product}. CV / ChatBot validations need attention.`;
+      } else if (status === "failed" || status === "held") {
+        group = "failed";
+        badge = status === "held" ? "Held" : "Failed";
+        sentence = `Agent Identified ${product} and it is missing in backend. Attempts to update backend failed.`;
+      } else if (status === "working") {
+        group = "attention";
+        badge = "Working";
+        sentence = `Agent is working on ${product}. Validation is not complete yet.`;
+      }
+    }
+
+    if (!sentence) return null;
+    return {
+      key: `${isPrv ? "prv" : "checklist"}|${normalize(product)}`,
+      group,
+      badge,
+      product,
+      sentence,
+      ts: item && (item.updatedAt || item.ts || item.createdAt) || "",
+      status
+    };
+  }
+
+  function collectOperatingBriefOutcomes(actions, resolvedActions) {
+    const items = []
+      .concat(Array.isArray(actions) ? actions : [])
+      .concat(Array.isArray(resolvedActions) ? resolvedActions : [])
+      .concat(Array.isArray(state.activityLog) ? state.activityLog : []);
+    const seen = new Map();
+
+    items.forEach(item => {
+      const outcome = buildOperatingBriefOutcome(item);
+      if (!outcome) return;
+      const existing = seen.get(outcome.key);
+      const existingTime = Date.parse(existing && existing.ts || "") || 0;
+      const nextTime = Date.parse(outcome.ts || "") || 0;
+      if (!existing || nextTime >= existingTime) seen.set(outcome.key, outcome);
+    });
+
+    return Array.from(seen.values()).sort((a, b) => (Date.parse(b.ts || "") || 0) - (Date.parse(a.ts || "") || 0));
+  }
+
+  function renderOperatingBriefOutcomeRows(outcomes, emptyText) {
+    const rows = (outcomes || []).slice(0, 6);
+    if (!rows.length) {
+      return `<div class="operating-brief-empty">${escapeHtml(emptyText)}</div>`;
+    }
+    return rows.map(outcome => `
+      <div class="operating-brief-outcome ${escapeHtml(outcome.group)}">
+        <span class="outcome-dot" aria-hidden="true"></span>
+        <p>${escapeHtml(outcome.sentence)}</p>
+        <em>${escapeHtml(outcome.badge)}</em>
+      </div>
+    `).join("");
+  }
+
   function renderRunSummary() {
     if (!els.runSummaryList) return;
 
     const actions = getActiveAgentActions();
     const resolved = getResolvedAgentActions();
-    const pending = actions.filter(action => {
-      const status = String(action.status || "").toLowerCase();
-      return status === "queued" || status === "approval_required" || status === "approved" || status === "needs_admin" || status === "running";
-    });
     const blocked = actions.filter(action => {
       const status = String(action.status || "").toLowerCase();
       return status === "failed" || status === "blocked" || status === "known_issue";
     });
     const critical = (state.opportunities || []).filter(item => item.severity === "critical");
     const latestSweep = getLatestAgentSweepActivity();
-    const latestFailure = getLatestActivityByStatus(["failed", "needs_review", "blocked", "known_issue"]);
     const latestSuccess = getLatestActivityByStatus(["validated", "completed", "imported", "exported", "queued", "saved"]);
-    const validated = resolved.filter(action => String(action.status || "").toLowerCase() === "validated");
     const pendingValidation = actions.filter(action => String(action.status || "").toLowerCase() === "pending_public_validation");
     const pendingVisualValidation = actions.filter(action => String(action.status || "").toLowerCase() === "pending_visual_validation");
     const runQueue = getQueuedAgentActions(20);
@@ -9492,83 +9621,68 @@
     const heldDetail = summarizeHeldActions(actions);
     const nextRecommendation = getNextAgentRecommendation(actions);
     const report = state.lastAgentReport && typeof state.lastAgentReport === "object" ? state.lastAgentReport : null;
+    const outcomes = collectOperatingBriefOutcomes(actions, resolved);
+    const changedOutcomes = outcomes.filter(outcome => outcome.group === "changed");
+    const attentionOutcomes = outcomes.filter(outcome => outcome.group === "attention");
+    const failedOutcomes = outcomes.filter(outcome => outcome.group === "failed");
 
     const sweepDetail = latestSweep
       ? latestSweep.detail || latestSweep.status || "Sweep completed."
       : "No backend sweep has been logged yet.";
-    const sweepBadge = latestSweep
-      ? latestSweep.status === "validated" || latestSweep.status === "completed" ? "validated" : "needs review"
-      : "not run";
-    const changedDetail = report && report.summary
-      ? report.summary
-      : latestSuccess
-        ? `${latestSuccess.title}: ${latestSuccess.detail || latestSuccess.status}`
-        : "No memory, state, data, or queue change recorded yet.";
-    const validationDetail = pendingVisualValidation.length
-      ? `${formatNumber(pendingVisualValidation.length)} product${pendingVisualValidation.length === 1 ? "" : "s"} have public JSON proof and need CV/ChatBot visual validation.`
-      : `${formatNumber(validated.length)} validated action${validated.length === 1 ? "" : "s"} with proof. ${formatNumber(pendingValidation.length)} pending JSON recheck${pendingValidation.length === 1 ? "" : "s"}.`;
+    const checkedDetail = queueBreakdown.counts.total
+      ? queueBreakdown.summary
+      : `Mode: ${mode}. ${readiness.detail}`;
+    const nextDetail = report && report.next_step ? report.next_step : nextRecommendation;
 
-    const cards = [
-      {
-        title: "Queue Breakdown",
-        detail: queueBreakdown.counts.total
-          ? queueBreakdown.summary
-          : "Queue is clear. No active agent work is waiting.",
-        badge: queueBreakdown.counts.total ? pending.length ? "active" : "waiting" : "clear"
-      },
-      {
-        title: "Last Sweep",
-        detail: sweepDetail,
-        badge: sweepBadge
-      },
+    const sections = [
       {
         title: "Checked",
-        detail: `Mode: ${mode}. ${readiness.detail}`,
-        badge: blocked.length ? "hold" : readiness.label || "clear"
+        badge: latestSweep ? "checked" : "not run",
+        emptyText: sweepDetail,
+        body: `
+          <div class="operating-brief-kpi">
+            <span><strong>${formatNumber(queueBreakdown.counts.total)}</strong><em>Open</em></span>
+            <span><strong>${formatNumber(changedOutcomes.length)}</strong><em>Changed</em></span>
+            <span><strong>${formatNumber(attentionOutcomes.length)}</strong><em>Attention</em></span>
+            <span><strong>${formatNumber(failedOutcomes.length)}</strong><em>Held / Failed</em></span>
+          </div>
+          <div class="operating-brief-empty">${escapeHtml(checkedDetail)}</div>
+        `
       },
       {
         title: "Changed",
-        detail: changedDetail,
-        badge: latestSuccess || report ? "updated" : "none"
+        badge: changedOutcomes.length ? `${formatNumber(changedOutcomes.length)} complete` : "none",
+        body: renderOperatingBriefOutcomeRows(changedOutcomes, latestSuccess ? `${latestSuccess.title}: ${latestSuccess.detail || latestSuccess.status}` : "No completed product updates recorded yet.")
       },
       {
-        title: "Held",
-        detail: heldDetail,
-        badge: blocked.length ? "held" : "clear"
+        title: "Needs Attention",
+        badge: attentionOutcomes.length ? `${formatNumber(attentionOutcomes.length)} review` : "clear",
+        body: renderOperatingBriefOutcomeRows(attentionOutcomes, pendingVisualValidation.length || pendingValidation.length ? "Validation work is pending, but no product-level outcome is recorded yet." : "No product updates need attention.")
       },
       {
-        title: "Validation",
-        detail: validationDetail,
-        badge: pendingValidation.length ? "pending" : "proof"
-      },
-      {
-        title: "Agent Queue",
-        detail: runQueue.length
-          ? `${formatNumber(runQueue.length)} admin-queued job${runQueue.length === 1 ? "" : "s"} ready for Run Agent Cycle.`
-          : "No admin-queued jobs waiting.",
-        badge: runQueue.length ? "queued" : "clear"
-      },
-      {
-        title: "Attention",
-        detail: critical.length
-          ? `${formatNumber(critical.length)} critical audit item${critical.length === 1 ? "" : "s"} active.`
-          : latestFailure ? `${latestFailure.title}: ${latestFailure.detail || latestFailure.status}` : "No critical audit items or failed agent actions logged.",
-        badge: critical.length ? "critical" : latestFailure ? latestFailure.status || "review" : "clear"
+        title: "Held / Failed",
+        badge: failedOutcomes.length || blocked.length ? `${formatNumber(failedOutcomes.length || blocked.length)} held` : "clear",
+        body: renderOperatingBriefOutcomeRows(failedOutcomes, heldDetail)
       },
       {
         title: "Recommended Next",
-        detail: report && report.next_step ? report.next_step : nextRecommendation,
-        badge: queueBreakdown.counts.needsAdmin ? "review" : critical.length ? "audit" : "agent"
+        badge: queueBreakdown.counts.needsAdmin ? "review" : critical.length ? "audit" : "agent",
+        body: `
+          <div class="operating-brief-empty">${escapeHtml(nextDetail)}</div>
+          ${runQueue.length ? `<div class="operating-brief-empty">${formatNumber(runQueue.length)} admin-queued job${runQueue.length === 1 ? "" : "s"} ready for Run Agent Cycle.</div>` : ""}
+        `
       }
     ];
 
-    els.runSummaryList.innerHTML = cards.map(card => `
-      <div class="run-summary-card ${card.title === "Recommended Next" ? "recommended" : ""}">
-        <div>
-          <strong>${escapeHtml(card.title)}</strong>
-          <span>${escapeHtml(card.detail)}</span>
+    els.runSummaryList.innerHTML = sections.map(section => `
+      <div class="run-summary-card operating-brief-card ${section.title === "Recommended Next" ? "recommended" : ""}">
+        <div class="operating-brief-card-head">
+          <strong>${escapeHtml(section.title)}</strong>
+          <em>${escapeHtml(section.badge)}</em>
         </div>
-        <em>${escapeHtml(card.badge)}</em>
+        <div class="operating-brief-list">
+          ${section.body || `<div class="operating-brief-empty">${escapeHtml(section.emptyText || "No product outcomes recorded yet.")}</div>`}
+        </div>
       </div>
     `).join("");
   }

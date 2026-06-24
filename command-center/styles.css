@@ -2853,7 +2853,7 @@ h3 {
   }
 }
 
-/* cc157 premium command layout: clearer dashboard hierarchy and operator contrast. */
+/* cc158 command layout: clearer dashboard hierarchy and product-level operating brief. */
 body {
   background: #f3f5f8;
   color: #111827;
@@ -3149,6 +3149,105 @@ body {
   font-size: 11px;
 }
 
+.operating-brief-card {
+  align-content: start;
+  gap: 14px;
+}
+
+.operating-brief-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.operating-brief-list {
+  display: grid;
+  gap: 9px;
+}
+
+.operating-brief-outcome {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+}
+
+.operating-brief-outcome p {
+  margin: 0;
+  color: #111827;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.operating-brief-outcome em {
+  justify-self: end;
+  max-width: none;
+  white-space: nowrap;
+}
+
+.outcome-dot {
+  width: 9px;
+  height: 9px;
+  margin-top: 5px;
+  border-radius: 999px;
+  background: #22c55e;
+}
+
+.operating-brief-outcome.attention .outcome-dot {
+  background: #f59e0b;
+}
+
+.operating-brief-outcome.failed .outcome-dot {
+  background: #ef4444;
+}
+
+.operating-brief-empty {
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.operating-brief-kpi {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.operating-brief-kpi span {
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid #d7dde6;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.operating-brief-kpi strong,
+.operating-brief-kpi em {
+  display: block;
+}
+
+.operating-brief-kpi strong {
+  color: #111827;
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+.operating-brief-kpi em {
+  margin-top: 3px;
+  color: #6b7280;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
 .sentinel-notice {
   margin-top: 14px;
   padding: 14px 16px;
@@ -3274,7 +3373,8 @@ body {
 
   .dashboard-primary-grid,
   .command-brief-panel .run-summary-list,
-  .agent-action-stats {
+  .agent-action-stats,
+  .operating-brief-kpi {
     grid-template-columns: 1fr;
   }
 

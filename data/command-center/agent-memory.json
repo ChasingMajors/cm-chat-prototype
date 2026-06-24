@@ -358,8 +358,8 @@
       "status": "failed",
       "recommendedAction": "Review failed visual report, identify whether Checklist Vault or ChatBot broke, then prepare a product/query-specific fix.",
       "adminDecision": "checklist_group_approved",
-      "executionResult": "JSON publish needs review.",
-      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
+      "executionResult": "Unsupported full-auto action type: checklist_publish",
+      "validationResult": "Unsupported full-auto action type: checklist_publish",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-finest-uefa-club-competitions-soccer-card-checklist/",
       "bucket": "",
@@ -367,15 +367,58 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-24T15:36:45.150Z",
-      "updatedAt": "2026-06-24T15:47:18.241Z",
+      "updatedAt": "2026-06-24T15:57:03.480Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
-      "visualStartedAt": "2026-06-24T15:45:59Z"
+      "visualStartedAt": "2026-06-24T15:45:59Z",
+      "pendingValidationAttempts": 0,
+      "repairProof": "Agent attempted repair for 2025-26 Topps Finest UEFA Club Competitions Soccer but it failed. A fix task was created when possible.",
+      "autoExecutedAt": "2026-06-24T15:57:03.480Z"
     }
   ],
   "agent_run_queue": [
     "source_import|wordpress_api|2025-26 topps finest uefa club competitions soccer"
   ],
   "activity_log": [
+    {
+      "id": "log_1782316823742_alert",
+      "ts": "2026-06-24T15:57:03.480Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782316823071",
+      "ts": "2026-06-24T15:57:03.480Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 10 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Topps Finest UEFA Club Competitions Soccer -> failed (Unsupported full-auto action type: checklist_publish) Queue remaining: 1.",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782316823070",
+      "ts": "2026-06-24T15:57:03.480Z",
+      "type": "auto_action",
+      "title": "Full-auto action failed",
+      "detail": "2025-26 Topps Finest UEFA Club Competitions Soccer: Unsupported full-auto action type: checklist_publish Unsupported full-auto action type: checklist_publish",
+      "status": "failed",
+      "product": "2025-26 Topps Finest UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782316823067",
+      "ts": "2026-06-24T15:57:03.480Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782316809871_awkv9r",
       "ts": "2026-06-24T16:00:09.871Z",
@@ -1027,7 +1070,27 @@
       "source": "command_center"
     }
   ],
-  "last_agent_report": null,
+  "last_agent_report": {
+    "ok": false,
+    "status": "issue",
+    "generated_at": "2026-06-24T15:57:03.480Z",
+    "checked": {
+      "checklist_count": 20,
+      "prv_count": 6,
+      "skipped_ignored": 10
+    },
+    "completed_count": 0,
+    "needs_admin_count": 0,
+    "blocked_count": 1,
+    "completed": [],
+    "needs_admin": [],
+    "blocked": [
+      "2025-26 Topps Finest UEFA Club Competitions Soccer -> failed: Unsupported full-auto action type: checklist_publish"
+    ],
+    "proof": [],
+    "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
+    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 1 blocked/issue item(s)."
+  },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -4053,6 +4116,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T16:00:12.893Z",
+  "saved_at": "2026-06-24T16:00:23.805Z",
   "saved_by": "cm_command_center_operator"
 }

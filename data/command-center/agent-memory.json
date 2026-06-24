@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T16:03:51.461Z",
+  "exported_at": "2026-06-24T16:03:41.616Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -351,34 +351,34 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1782317029858_0x6i7e",
-      "ts": "2026-06-24T16:03:49.858Z",
+      "id": "log_1782317035180",
+      "ts": "2026-06-24T16:03:50.851Z",
       "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
-      "status": "started",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: skipped for fast sweep. 11 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "status": "validated",
       "product": "",
-      "source": "command_center"
+      "source": "operator_backend"
     },
     {
-      "id": "log_1782317029856_is9vmu",
-      "ts": "2026-06-24T16:03:49.856Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
+      "id": "log_1782317035178",
+      "ts": "2026-06-24T16:03:50.851Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "clear",
-    "generated_at": "2026-06-24T16:03:11.515Z",
+    "generated_at": "2026-06-24T16:03:50.851Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 6,
-      "skipped_ignored": 10
+      "skipped_ignored": 11
     },
     "completed_count": 0,
     "needs_admin_count": 0,
@@ -3428,7 +3428,7 @@
       "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T16:03:51.461Z",
+      "ignoredAt": "2026-06-24T16:03:41.616Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 28110974358": {
@@ -3437,11 +3437,11 @@
       "code": "2025_26_topps_finest_uefa_club_competitions_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28110974358",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T16:03:51.461Z",
+      "ignoredAt": "2026-06-24T16:03:41.616Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T16:03:52.581Z",
+  "saved_at": "2026-06-24T16:03:55.319Z",
   "saved_by": "cm_command_center_operator"
 }

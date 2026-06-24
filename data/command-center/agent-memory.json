@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T01:18:04.806Z",
+  "exported_at": "2026-06-24T01:18:17.733Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -302,24 +302,6 @@
       "updatedAt": "2026-06-24T01:18:03.197Z"
     },
     {
-      "id": "source_watch|soccer|2026 topps argentina team set soccer",
-      "type": "checklist_publish",
-      "source": "operator_backend",
-      "product": "2026 Topps Argentina Team Set Soccer",
-      "sport": "soccer",
-      "code": "2026_topps_argentina_team_set_soccer",
-      "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
-      "adminDecision": "",
-      "executionResult": "JSON publish needs review.",
-      "validationResult": "Sheet write succeeded, but publish/live validation needs review.",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-topps-argentina-team-set-soccer-card-checklist/",
-      "createdAt": "2026-06-23T03:01:14.419Z",
-      "updatedAt": "2026-06-23T03:02:17.155Z"
-    },
-    {
       "id": "source_watch|baseball|2026 leaf vivid baseball",
       "type": "source_import",
       "source": "scheduled_quick_json",
@@ -394,6 +376,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782263896130_y20o5y",
+      "ts": "2026-06-24T01:18:16.130Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2026 Topps Argentina Team Set Soccer was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2026 Topps Argentina Team Set Soccer",
+      "source": "admin"
+    },
     {
       "id": "log_1782263883204_2hy1il",
       "ts": "2026-06-24T01:18:03.204Z",
@@ -1181,16 +1173,6 @@
       "title": "JSON publish started",
       "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
       "status": "started",
-      "product": "2025-26 Upper Deck CHL Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782059331743_6oje82",
-      "ts": "2026-06-21T16:28:51.743Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "819 checklist rows and 32 parallels validated in the source sheet.",
-      "status": "needs_review",
       "product": "2025-26 Upper Deck CHL Hockey",
       "source": "operator_backend"
     }
@@ -4090,9 +4072,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-23T03:01:29.741Z",
       "resolved": true
+    },
+    "soccer|https www checklistcenter com 2026-topps-argentina-team-set-soccer-card-checklist": {
+      "product": "2026 Topps Argentina Team Set Soccer",
+      "sport": "soccer",
+      "code": "2026_topps_argentina_team_set_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2026-topps-argentina-team-set-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-24T01:18:16.124Z",
+      "resolved": true
+    },
+    "soccer|2026_topps_argentina_team_set_soccer": {
+      "product": "2026 Topps Argentina Team Set Soccer",
+      "sport": "soccer",
+      "code": "2026_topps_argentina_team_set_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2026-topps-argentina-team-set-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-24T01:18:16.124Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T01:18:06.379Z",
+  "saved_at": "2026-06-24T01:18:18.865Z",
   "saved_by": "cm_command_center_operator"
 }

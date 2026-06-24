@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T14:12:54.329Z",
+  "exported_at": "2026-06-24T14:21:39.947Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -304,6 +304,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782310898342_quj5s1",
+      "ts": "2026-06-24T14:21:38.342Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782310898330_io8min",
+      "ts": "2026-06-24T14:21:38.330Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
     {
       "id": "log_1782310372725_sdh182",
       "ts": "2026-06-24T14:12:52.725Z",
@@ -1083,26 +1103,6 @@
       "status": "loaded",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1782063852081_giungv",
-      "ts": "2026-06-21T17:44:12.081Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782059483654_3im7j7",
-      "ts": "2026-06-21T16:31:23.654Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "Visual test failed. Open the report and review screenshots/errors before marking validated.",
-      "status": "failed",
-      "product": "2025-26 Upper Deck Parkhurst Hockey",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
@@ -4089,7 +4089,7 @@
       "code": "2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T14:12:54.329Z",
+      "ignoredAt": "2026-06-24T14:21:39.947Z",
       "resolved": true
     },
     "soccer|2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer": {
@@ -4098,11 +4098,11 @@
       "code": "2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-premier-league",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T14:12:54.329Z",
+      "ignoredAt": "2026-06-24T14:21:39.947Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-24T14:12:56.063Z",
+  "saved_at": "2026-06-24T14:21:41.429Z",
   "saved_by": "cm_command_center_operator"
 }

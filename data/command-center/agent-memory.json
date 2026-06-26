@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-26T00:08:36.650Z",
+  "exported_at": "2026-06-26T00:43:59.126Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -322,9 +322,184 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [],
+  "agent_actions": [
+    {
+      "id": "source_import|wordpress_api|2025-26 topps chrome sapphire uefa club competitions soccer",
+      "type": "source_import",
+      "source": "wordpress_api",
+      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-26T00:43:05.870Z",
+      "updatedAt": "2026-06-26T00:43:05.870Z"
+    },
+    {
+      "id": "source_import|wordpress_api|2025-26 topps nbl basketball",
+      "type": "source_import",
+      "source": "wordpress_api",
+      "product": "2025-26 Topps NBL Basketball",
+      "sport": "basketball",
+      "code": "2025_26_topps_nbl_basketball",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
+      "adminDecision": "",
+      "executionResult": "Import preview parsed 323 rows and 36 parallels.",
+      "validationResult": "Preview rows are ready for admin review before sheet write.",
+      "runUrl": "https://www.checklistcenter.com/2025-26-topps-nbl-basketball-card-checklist/",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-nbl-basketball-card-checklist/",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-26T00:43:05.869Z",
+      "updatedAt": "2026-06-26T00:43:29.332Z"
+    }
+  ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782434637523_0dsusj",
+      "ts": "2026-06-26T00:43:57.523Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1782434637519_vy1xd5",
+      "ts": "2026-06-26T00:43:57.519Z",
+      "type": "agent_cycle",
+      "title": "Build checklist preview",
+      "detail": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer can be safely previewed. No Google Sheet write will happen without approval.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1782434609335_cppryt",
+      "ts": "2026-06-26T00:43:29.335Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "323 rows and 36 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Topps NBL Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782434607956_pz7cd9",
+      "ts": "2026-06-26T00:43:27.956Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Topps NBL Basketball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1782434588272_c6clqo",
+      "ts": "2026-06-26T00:43:08.272Z",
+      "type": "agent_cycle",
+      "title": "Daily Sentinel sweep complete",
+      "detail": "Checklist: 20 checked, 2 queued. PRV clear: 6 source items checked, nothing new queued. 2 active queue items need review.",
+      "status": "needs_review",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1782434588263_mnnl28",
+      "ts": "2026-06-26T00:43:08.263Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch complete",
+      "detail": "6 SlabSquatch items checked. 0 need review. 0 PRV review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1782434588262_puld6p",
+      "ts": "2026-06-26T00:43:08.262Z",
+      "type": "source_watch",
+      "title": "Source Watch skipped clean items",
+      "detail": "4 admin-ignored source item(s) were omitted from the queue.",
+      "status": "ignored",
+      "product": "",
+      "source": "prv_source_watch"
+    },
+    {
+      "id": "log_1782434585887_gbmhrv",
+      "ts": "2026-06-26T00:43:05.887Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch started",
+      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
+      "status": "started",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1782434585872_7zmg4g",
+      "ts": "2026-06-26T00:43:05.872Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch complete",
+      "detail": "20 source items checked. 5 need review. 2 review cards queued. No Sheet or JSON writes were run by this audit.",
+      "status": "completed",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1782434585871_n7rthu",
+      "ts": "2026-06-26T00:43:05.871Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "2 findings are now visible in the Agent Action Queue for admin review. 6 admin-ignored source item(s) were skipped.",
+      "status": "queued",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1782434583003_t0k1j6",
+      "ts": "2026-06-26T00:43:03.003Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch started",
+      "detail": "Checking recent Checklistcenter items against public JSON. No writes will run.",
+      "status": "started",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1782434582979_ppb848",
+      "ts": "2026-06-26T00:43:02.979Z",
+      "type": "agent_cycle",
+      "title": "Daily Sentinel sweep started",
+      "detail": "Running health audit, Checklist source watch, and PRV source watch.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1782434582975_zswbsw",
+      "ts": "2026-06-26T00:43:02.975Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the browser daily sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1782432515046_fgd67n",
       "ts": "2026-06-26T00:08:35.046Z",
@@ -466,25 +641,7 @@
       "source": "admin"
     }
   ],
-  "last_agent_report": {
-    "ok": true,
-    "status": "clear",
-    "generated_at": "2026-06-25T15:57:03.745Z",
-    "checked": {
-      "checklist_count": 20,
-      "prv_count": 6,
-      "skipped_ignored": 10
-    },
-    "completed_count": 0,
-    "needs_admin_count": 0,
-    "blocked_count": 0,
-    "completed": [],
-    "needs_admin": [],
-    "blocked": [],
-    "proof": [],
-    "next_step": "No immediate action. Sentinel can run again on schedule.",
-    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
-  },
+  "last_agent_report": null,
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -3619,6 +3776,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-26T00:08:38.236Z",
+  "saved_at": "2026-06-26T00:44:00.484Z",
   "saved_by": "cm_command_center_operator"
 }

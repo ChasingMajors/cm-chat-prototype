@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-26T00:46:39.775Z",
+  "exported_at": "2026-06-26T00:46:59.698Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -347,29 +347,59 @@
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps nbl basketball",
-      "type": "source_import",
-      "source": "wordpress_api",
+      "type": "checklist_publish",
+      "source": "operator_backend",
       "product": "2025-26 Topps NBL Basketball",
       "sport": "basketball",
       "code": "2025_26_topps_nbl_basketball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "Import preview parsed 323 rows and 36 parallels.",
-      "validationResult": "Preview rows are ready for admin review before sheet write.",
-      "runUrl": "https://www.checklistcenter.com/2025-26-topps-nbl-basketball-card-checklist/",
+      "executionResult": "Sheet write completed. JSON publish started.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-nbl-basketball-card-checklist/",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-26T00:43:05.869Z",
-      "updatedAt": "2026-06-26T00:46:38.171Z"
+      "updatedAt": "2026-06-26T00:46:58.097Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782434818096_ahvhff",
+      "ts": "2026-06-26T00:46:58.096Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Topps NBL Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782434818088_ibd7ej",
+      "ts": "2026-06-26T00:46:58.088Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "323 checklist rows and 36 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Topps NBL Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782434800706_gepghz",
+      "ts": "2026-06-26T00:46:40.706Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "2025-26 Topps NBL Basketball",
+      "source": "admin"
+    },
     {
       "id": "log_1782434798172_7g9zvk",
       "ts": "2026-06-26T00:46:38.172Z",
@@ -3866,6 +3896,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-26T00:46:41.412Z",
+  "saved_at": "2026-06-26T00:47:01.074Z",
   "saved_by": "cm_command_center_operator"
 }

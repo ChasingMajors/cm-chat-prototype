@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-26T00:46:59.698Z",
+  "exported_at": "2026-06-26T00:49:52.839Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -353,11 +353,11 @@
       "sport": "basketball",
       "code": "2025_26_topps_nbl_basketball",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
+      "status": "needs_admin",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "executionResult": "JSON publish needs review.",
+      "validationResult": "Sheet write succeeded, but publish/live validation needs review.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-nbl-basketball-card-checklist/",
       "bucket": "",
@@ -365,11 +365,21 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-26T00:43:05.869Z",
-      "updatedAt": "2026-06-26T00:46:58.097Z"
+      "updatedAt": "2026-06-26T00:49:51.234Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782434991235_pxmkro",
+      "ts": "2026-06-26T00:49:51.235Z",
+      "type": "checklist_publish",
+      "title": "JSON publish needs review",
+      "detail": "Sheet write succeeded, but publish/live validation needs review.",
+      "status": "failed",
+      "product": "2025-26 Topps NBL Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782434818096_ahvhff",
       "ts": "2026-06-26T00:46:58.096Z",
@@ -3896,6 +3906,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-26T00:47:01.074Z",
+  "saved_at": "2026-06-26T00:49:54.223Z",
   "saved_by": "cm_command_center_operator"
 }

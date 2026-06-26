@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc159-publish-before-visual-guard-v1-2026-06-24";
+  const COMMAND_CENTER_VERSION = "cc160-public-json-propagation-ladder-v1-2026-06-25";
   const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-23-operator-cc152-post-only-write-hardening";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
@@ -17,6 +17,7 @@
   const SOURCE_IGNORE_KEY = "cm_command_center_source_ignores_v1";
   const OPERATOR_ENDPOINT_KEY = "cm_command_center_operator_endpoint_v1";
   const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
+  const PUBLIC_JSON_RECHECK_DELAYS_MS = [90 * 1000, 4 * 60 * 1000, 10 * 60 * 1000];
   const AUTOMATION_GUARDRAILS = [
     {
       title: "Product-scoped writes only",
@@ -552,6 +553,64 @@
 
   function isPendingVisualValidationAction(action) {
     return String(action && action.status || "").toLowerCase() === "pending_visual_validation";
+  }
+
+  function getPublicValidationAttemptCount(action) {
+    return Math.max(0, Number(action && action.publicValidationAttemptCount || 0));
+  }
+
+  function getNextPublicValidationDelayMs(action) {
+    const attempts = getPublicValidationAttemptCount(action);
+    return PUBLIC_JSON_RECHECK_DELAYS_MS[Math.min(attempts, PUBLIC_JSON_RECHECK_DELAYS_MS.length - 1)] || PUBLIC_JSON_RECHECK_DELAYS_MS[PUBLIC_JSON_RECHECK_DELAYS_MS.length - 1];
+  }
+
+  function markPublicValidationPendingPatch(action, detail) {
+    const now = Date.now();
+    const attempts = getPublicValidationAttemptCount(action);
+    const delayMs = getNextPublicValidationDelayMs(action);
+    const startedAt = action && action.publicValidationStartedAt || new Date(now).toISOString();
+    const nextAt = new Date(now + delayMs).toISOString();
+    return {
+      status: "pending_public_validation",
+      publicValidationStartedAt: startedAt,
+      publicValidationAttemptCount: attempts,
+      nextPublicValidationAt: nextAt,
+      validationResult: detail || `JSON publish accepted. Waiting for public JSON propagation; next recheck after ${Math.round(delayMs / 1000)} seconds.`,
+      recommendedAction: "No admin decision yet. Sentinel will recheck public JSON after GitHub Pages propagation."
+    };
+  }
+
+  function getPublicValidationDueState(action) {
+    if (!isPendingPublicValidationAction(action)) return { due: true, waiting: false, remainingMs: 0 };
+    const nextAt = Date.parse(action && action.nextPublicValidationAt || "") || 0;
+    if (!nextAt) return { due: true, waiting: false, remainingMs: 0 };
+    const remainingMs = nextAt - Date.now();
+    return {
+      due: remainingMs <= 0,
+      waiting: remainingMs > 0,
+      remainingMs: Math.max(0, remainingMs)
+    };
+  }
+
+  function formatDurationMs(ms) {
+    const totalSeconds = Math.max(0, Math.ceil(Number(ms || 0) / 1000));
+    if (totalSeconds < 60) return `${totalSeconds} sec`;
+    const minutes = Math.ceil(totalSeconds / 60);
+    return `${minutes} min`;
+  }
+
+  function shouldHoldPublicValidationForReview(action) {
+    return getPublicValidationAttemptCount(action) >= PUBLIC_JSON_RECHECK_DELAYS_MS.length;
+  }
+
+  function incrementPublicValidationAttempt(action) {
+    const attempts = getPublicValidationAttemptCount(action) + 1;
+    const delayMs = PUBLIC_JSON_RECHECK_DELAYS_MS[Math.min(attempts, PUBLIC_JSON_RECHECK_DELAYS_MS.length - 1)] || PUBLIC_JSON_RECHECK_DELAYS_MS[PUBLIC_JSON_RECHECK_DELAYS_MS.length - 1];
+    return {
+      publicValidationAttemptCount: attempts,
+      lastPublicValidationAt: new Date().toISOString(),
+      nextPublicValidationAt: new Date(Date.now() + delayMs).toISOString()
+    };
   }
 
   function isVisualAgentAction(action) {
@@ -3834,12 +3893,14 @@
         code: product.code || "",
         key: key
       }, { timeoutMs: 240000 });
+      const publishAccepted = !!(publishData && (publishData.ok || publishData.public_pending || publishData.status === "published_pages_pending" || publishData.publish && (publishData.publish.ok || publishData.publish.status === "published_pages_pending")));
       const merged = Object.assign({}, writeData, {
         ok: !!(publishData && publishData.ok),
         publishOnly: true,
         publish: publishData && publishData.publish ? publishData.publish : publishData,
-        status: publishData && publishData.ok ? "written_published_validated" : "written_publish_needs_review",
-        next_step: publishData && publishData.ok
+        status: publishAccepted ? "published_pages_pending" : "written_publish_needs_review",
+        public_pending: publishAccepted,
+        next_step: publishAccepted
           ? "Published. Recheck coverage after GitHub Pages has propagated."
           : "Sheet write succeeded, but publish/live validation needs review."
       });
@@ -3915,6 +3976,20 @@
     const action = state.agentActions.find(item => item.id === actionId);
     if (!action) return;
 
+    const dueState = getPublicValidationDueState(action);
+    if (dueState.waiting) {
+      const detail = `Waiting for public JSON propagation. Next recheck in about ${formatDurationMs(dueState.remainingMs)}.`;
+      updateAgentAction(actionId, {
+        status: "pending_public_validation",
+        validationResult: detail,
+        recommendedAction: "No admin action yet. Sentinel will recheck after the propagation delay."
+      });
+      renderAgentActions();
+      renderActionLanes();
+      renderSourceCheckMessage("Waiting for public JSON propagation", detail, "info", { noFocus: true });
+      return;
+    }
+
     if (!endpoint) {
       updateAgentAction(actionId, {
         status: "needs_admin",
@@ -3972,20 +4047,30 @@
       const fullyCovered = covered && meetsExpectedRows && meetsExpectedParallels;
 
       const wasPendingPublicValidation = isPendingPublicValidationAction(action);
+      const attemptPatch = wasPendingPublicValidation ? incrementPublicValidationAttempt(action) : {};
+      const holdForReview = wasPendingPublicValidation && shouldHoldPublicValidationForReview(Object.assign({}, action, attemptPatch));
+      const pendingPatch = wasPendingPublicValidation && !fullyCovered && !holdForReview
+        ? markPublicValidationPendingPatch(Object.assign({}, action, attemptPatch), covered && !fullyCovered
+          ? `Public JSON exists but appears stale: expected ${formatNumber(expectedRowCount || 0)} rows / ${formatNumber(expectedParallelCount || 0)} parallels; found ${formatNumber(rowCount)} rows / ${formatNumber(parallelCount)} parallels. Sentinel will recheck after propagation.`
+          : `Public JSON is not visible yet: ${(data && (data.recommended_action || data.reason || data.status)) || "waiting for propagation"}. Sentinel will recheck after propagation.`)
+        : {};
       updateAgentAction(actionId, {
-        status: fullyCovered && wasPendingPublicValidation ? "pending_visual_validation" : "needs_admin",
+        status: fullyCovered && wasPendingPublicValidation ? "pending_visual_validation" : wasPendingPublicValidation && !holdForReview ? "pending_public_validation" : "needs_admin",
         code: action.code || (data && data.matched_code) || "",
         validationResult: fullyCovered
           ? `Public JSON covered: ${formatNumber(rowCount)} rows, ${formatNumber(parallelCount)} parallels. Visual CV/ChatBot proof still pending.`
-          : covered && !fullyCovered
+          : pendingPatch.validationResult || (covered && !fullyCovered
             ? `Public JSON exists but appears stale: expected ${formatNumber(expectedRowCount || 0)} rows / ${formatNumber(expectedParallelCount || 0)} parallels; found ${formatNumber(rowCount)} rows / ${formatNumber(parallelCount)} parallels.`
-          : `Coverage recheck needs review: ${(data && (data.recommended_action || data.reason || data.status)) || "unknown result"}.`
+            : `Coverage recheck needs review: ${(data && (data.recommended_action || data.reason || data.status)) || "unknown result"}.`)
         ,
         recommendedAction: fullyCovered && wasPendingPublicValidation
           ? "Public JSON is live. Run CV/ChatBot visual validation next."
-          : covered && !fullyCovered
+          : pendingPatch.recommendedAction || (covered && !fullyCovered
             ? "Run Agent Cycle with backend credentials so Sentinel can publish/recheck the stale product JSON."
-          : action.recommendedAction || ""
+            : action.recommendedAction || ""),
+        publicValidationAttemptCount: pendingPatch.publicValidationAttemptCount || attemptPatch.publicValidationAttemptCount,
+        lastPublicValidationAt: attemptPatch.lastPublicValidationAt,
+        nextPublicValidationAt: pendingPatch.nextPublicValidationAt || attemptPatch.nextPublicValidationAt
       });
 
       logActivity({
@@ -4006,6 +4091,33 @@
       renderActionLanes();
       renderActivityLog();
     } catch (err) {
+      if (isPendingPublicValidationAction(action)) {
+        const attemptPatch = incrementPublicValidationAttempt(action);
+        const holdForReview = shouldHoldPublicValidationForReview(Object.assign({}, action, attemptPatch));
+        if (!holdForReview) {
+          const pendingPatch = markPublicValidationPendingPatch(
+            Object.assign({}, action, attemptPatch),
+            `Public JSON recheck could not complete yet: ${err && err.message ? err.message : String(err)}. Sentinel will retry after propagation delay.`
+          );
+          updateAgentAction(actionId, Object.assign({}, pendingPatch, {
+            publicValidationAttemptCount: pendingPatch.publicValidationAttemptCount,
+            lastPublicValidationAt: attemptPatch.lastPublicValidationAt
+          }));
+          logActivity({
+            type: "validation",
+            status: "pending_public_validation",
+            product: action.product || "",
+            source: "operator_backend",
+            title: "Coverage recheck delayed",
+            detail: pendingPatch.validationResult
+          });
+          renderAgentActions();
+          renderActionLanes();
+          renderActivityLog();
+          renderSourceCheckMessage("Public JSON still propagating", pendingPatch.validationResult, "warning", { noFocus: true });
+          return;
+        }
+      }
       updateAgentAction(actionId, {
         status: "failed",
         validationResult: err && err.message ? err.message : String(err)
@@ -5580,6 +5692,9 @@
             : "";
         const detail = validationDetail || publish.error || publish.reason || data.error || data.next_step || "JSON publish did not return a validated response. No sheet write was attempted from this publish action.";
         if (actionId) {
+          const pendingPatch = githubPublished && !publicPassed
+            ? markPublicValidationPendingPatch(state.agentActions.find(item => item.id === actionId) || {}, `GitHub publish succeeded, but public CV/ChatBot JSON is not visible yet${publicRows ? ` (${formatNumber(publicRows)} public rows found)` : ""}. Sentinel will recheck after propagation.`)
+            : {};
           updateAgentAction(actionId, {
             type: "checklist_publish",
             status: githubPublished && !publicPassed ? "pending_public_validation" : "needs_admin",
@@ -5587,12 +5702,13 @@
             sport: product.sport || "",
             code: product.code || "",
             executionResult: githubPublished ? "JSON published to GitHub; public validation is pending." : "JSON publish needs review.",
-            validationResult: githubPublished
-              ? `GitHub publish succeeded, but public CV/ChatBot JSON is not visible yet${publicRows ? ` (${formatNumber(publicRows)} public rows found)` : ""}. Agent Cycle will recheck public JSON.`
-              : detail,
+            validationResult: githubPublished ? pendingPatch.validationResult : detail,
             recommendedAction: githubPublished
-              ? "Run Agent Cycle to recheck public JSON after GitHub Pages propagation."
-              : "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct."
+              ? pendingPatch.recommendedAction
+              : "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
+            publicValidationStartedAt: pendingPatch.publicValidationStartedAt,
+            publicValidationAttemptCount: pendingPatch.publicValidationAttemptCount,
+            nextPublicValidationAt: pendingPatch.nextPublicValidationAt
           });
           logActivity({
             type: "checklist_publish",
@@ -5671,8 +5787,21 @@
           ? "GitHub JSON published. Waiting for public CV/ChatBot validation; Agent Cycle will recheck."
           : "GitHub JSON published, but public CV/ChatBot search rows are not visible yet; Agent Cycle will recheck."
         : "CV/ChatBot validation needs review.";
+    const pendingPatch = githubPublished && !publicPassed
+      ? markPublicValidationPendingPatch(
+        state.agentActions.find(item => item.id === actionId) || {},
+        Number(publicValidation.search_row_count || 0)
+          ? "GitHub JSON published. Waiting for public CV/ChatBot validation; Sentinel will recheck after propagation."
+          : "GitHub JSON published, but public CV/ChatBot search rows are not visible yet. Sentinel will recheck after propagation."
+      )
+      : {};
     let primaryAction = null;
     if (actionId) {
+      const nextRecommendedAction = pendingPatch.recommendedAction || (publicPassed
+        ? "No action needed. CV and ChatBot validation passed."
+        : githubPublished
+          ? "No admin decision yet. Sentinel will recheck public JSON after GitHub Pages propagation."
+          : "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.");
       primaryAction = updateAgentAction(actionId, {
         type: "checklist_publish",
         source: "operator_backend",
@@ -5681,7 +5810,11 @@
         sport: product.sport || "",
         code: product.code || "",
         executionResult: publishExecution,
-        validationResult: publishValidationText,
+        validationResult: pendingPatch.validationResult || publishValidationText,
+        recommendedAction: nextRecommendedAction,
+        publicValidationStartedAt: pendingPatch.publicValidationStartedAt,
+        publicValidationAttemptCount: pendingPatch.publicValidationAttemptCount,
+        nextPublicValidationAt: pendingPatch.nextPublicValidationAt,
         runUrl: publish.checklist_url || publish.chatbot_url || ""
       });
     }
@@ -5694,11 +5827,19 @@
         code: product.code || "",
         riskLevel: publicPassed ? "low" : githubPublished ? "low" : "medium",
         status: actionStatus,
-        recommendedAction: "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
+        recommendedAction: pendingPatch.recommendedAction || "Product-scoped Sheet write, JSON publish, and CV/ChatBot validation.",
         executionResult: githubPublished ? "JSON published." : "Sheet write completed; publish needs review.",
-        validationResult: publishValidationText,
+        validationResult: pendingPatch.validationResult || publishValidationText,
         runUrl: publish.checklist_url || publish.chatbot_url || ""
       });
+      if (primaryAction && githubPublished && !publicPassed) {
+        Object.assign(primaryAction, {
+          publicValidationStartedAt: pendingPatch.publicValidationStartedAt,
+          publicValidationAttemptCount: pendingPatch.publicValidationAttemptCount,
+          nextPublicValidationAt: pendingPatch.nextPublicValidationAt
+        });
+        writeAgentActions();
+      }
     }
     pruneDuplicateProductActions(primaryAction);
     logActivity({
@@ -7798,6 +7939,7 @@
     const pendingChecklistValidation = active.find(action => {
       const type = String(action.type || "").toLowerCase();
       if (!isPendingPublicValidationAction(action)) return false;
+      if (!getPublicValidationDueState(action).due) return false;
       if (type !== "source_import" && type !== "checklist_publish") return false;
       return !!action.product;
     });
@@ -7813,6 +7955,7 @@
     const pendingPrvValidation = active.find(action => {
       const type = String(action.type || "").toLowerCase();
       if (!isPendingPublicValidationAction(action)) return false;
+      if (!getPublicValidationDueState(action).due) return false;
       if (type !== "prv_source_review" && type !== "prv_publish") return false;
       return !!action.code;
     });
@@ -8552,7 +8695,7 @@
       if (type !== "source_import" && type !== "checklist_publish" && type !== "backend_data_issue" && type !== "prv_source_review" && type !== "prv_publish") return false;
       if (validation.includes("visual test") || validation.includes("cv/chatbot")) return false;
       if (status === "pending_visual_validation") return false;
-      if (status === "pending_public_validation") return !!(action.code || action.product);
+      if (status === "pending_public_validation") return !!(action.code || action.product) && getPublicValidationDueState(action).due;
       return false;
     }).length;
   }
@@ -8777,8 +8920,19 @@
 
   async function runPendingPublicValidationBatch(options) {
     const opts = options || {};
-    const pending = getPendingPublicValidationBatch(opts.limit || 50);
-    if (!pending.length) return { ok: true, ran: 0, detail: "No pending public validations found." };
+    const pendingAll = getPendingPublicValidationBatch(opts.limit || 50);
+    if (!pendingAll.length) return { ok: true, ran: 0, detail: "No pending public validations found." };
+
+    const pending = pendingAll.filter(action => getPublicValidationDueState(action).due);
+    if (!pending.length) {
+      const waits = pendingAll.map(action => getPublicValidationDueState(action).remainingMs).filter(ms => ms > 0);
+      const nextWait = waits.length ? Math.min.apply(null, waits) : 0;
+      const detail = `${pendingAll.length} public JSON validation item${pendingAll.length === 1 ? "" : "s"} are waiting for propagation. Next recheck in about ${formatDurationMs(nextWait)}.`;
+      renderAgentCycleMessage("Waiting for public JSON propagation", detail, "info");
+      renderSentinelNotice("Waiting for public JSON propagation", detail, "info");
+      renderSourceCheckMessage("Waiting for public JSON propagation", detail, "info", { noFocus: true });
+      return { ok: true, ran: 0, waiting: pendingAll.length, detail };
+    }
 
     if (readOperatorEndpoint() && readOperatorKey() && !opts.skipBackend) {
       renderAgentCycleMessage(
@@ -8863,6 +9017,10 @@
       return { kind: "visual_test", label: "Run CV/ChatBot visual test", safe: true };
     }
     if (status === "pending_public_validation") {
+      const dueState = getPublicValidationDueState(action);
+      if (dueState.waiting) {
+        return { kind: "wait_public_json", label: `Waiting for public JSON propagation (${formatDurationMs(dueState.remainingMs)})`, safe: false };
+      }
       if (type === "prv_source_review" || type === "prv_publish") return { kind: "prv_public_recheck", label: "Recheck PRV public JSON", safe: true };
       return { kind: "checklist_coverage_recheck", label: "Recheck checklist public JSON", safe: true };
     }
@@ -9521,7 +9679,11 @@
     if (recheckReady) return `Sentinel can safely recheck public JSON for ${recheckReady.product || recheckReady.code || "the next audit item"}.`;
 
     const pendingValidation = (actions || []).find(action => String(action.status || "").toLowerCase() === "pending_public_validation");
-    if (pendingValidation) return `Let Sentinel recheck published JSON for ${pendingValidation.product || pendingValidation.code || "the pending product"}.`;
+    if (pendingValidation) {
+      const dueState = getPublicValidationDueState(pendingValidation);
+      if (dueState.waiting) return `Public JSON is waiting for propagation for ${pendingValidation.product || pendingValidation.code || "the pending product"}. Next recheck in about ${formatDurationMs(dueState.remainingMs)}.`;
+      return `Sentinel can recheck published JSON for ${pendingValidation.product || pendingValidation.code || "the pending product"}.`;
+    }
 
     const pendingVisualCount = (actions || []).filter(action => String(action.status || "").toLowerCase() === "pending_visual_validation").length;
     if (pendingVisualCount) return `Public JSON is repaired for ${formatNumber(pendingVisualCount)} product${pendingVisualCount === 1 ? "" : "s"}. Run Agent Cycle to queue CV/ChatBot visual tests and close proof.`;
@@ -9597,6 +9759,10 @@
     if (isPrv) {
       if (status === "complete") {
         sentence = `Agent Added ${product} print run data. PRV validations are complete.`;
+      } else if (String(item && item.status || "").toLowerCase() === "pending_public_validation") {
+        group = "attention";
+        badge = "Waiting";
+        sentence = `Agent Added ${product} print run data. JSON published; Sentinel is waiting for public PRV propagation before validation.`;
       } else if (status === "attention" && jsonPublished) {
         group = "attention";
         badge = "Needs attention";
@@ -9617,6 +9783,10 @@
     } else {
       if (status === "complete") {
         sentence = `Agent Added ${product}. All CV / ChatBot validations are complete.`;
+      } else if (String(item && item.status || "").toLowerCase() === "pending_public_validation") {
+        group = "attention";
+        badge = "Waiting";
+        sentence = `Agent Added ${product}. JSON published; Sentinel is waiting for public JSON propagation before CV / ChatBot validation.`;
       } else if (status === "attention" && jsonPublished) {
         group = "attention";
         badge = "Needs attention";

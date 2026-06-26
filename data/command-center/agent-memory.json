@@ -326,6 +326,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1782435458254",
+      "ts": "2026-06-26T00:57:33.481Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: skipped for fast sweep. 12 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782435458252",
+      "ts": "2026-06-26T00:57:33.481Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1782435452719_0vm0pc",
       "ts": "2026-06-26T00:57:32.719Z",
       "type": "agent_sweep",
@@ -356,7 +376,25 @@
       "source": "admin"
     }
   ],
-  "last_agent_report": null,
+  "last_agent_report": {
+    "ok": true,
+    "status": "clear",
+    "generated_at": "2026-06-26T00:57:33.481Z",
+    "checked": {
+      "checklist_count": 20,
+      "prv_count": 6,
+      "skipped_ignored": 12
+    },
+    "completed_count": 0,
+    "needs_admin_count": 0,
+    "blocked_count": 0,
+    "completed": [],
+    "needs_admin": [],
+    "blocked": [],
+    "proof": [],
+    "next_step": "No immediate action. Sentinel can run again on schedule.",
+    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
+  },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -3527,6 +3565,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-26T00:57:35.520Z",
+  "saved_at": "2026-06-26T00:57:38.281Z",
   "saved_by": "cm_command_center_operator"
 }

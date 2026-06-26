@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-26T00:43:59.126Z",
+  "exported_at": "2026-06-26T00:44:24.847Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -329,21 +329,21 @@
       "source": "wordpress_api",
       "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
       "sport": "soccer",
-      "code": "",
+      "code": "2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer",
       "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "status": "running",
+      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
+      "executionResult": "Sheet write started through Operator Backend.",
+      "validationResult": "Preview rows are ready for admin review before sheet write.",
+      "runUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-26T00:43:05.870Z",
-      "updatedAt": "2026-06-26T00:43:05.870Z"
+      "updatedAt": "2026-06-26T00:44:23.246Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps nbl basketball",
@@ -370,6 +370,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782434663240_a0f9bg",
+      "ts": "2026-06-26T00:44:23.240Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1782434639794_mq73le",
+      "ts": "2026-06-26T00:43:59.794Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "366 rows and 31 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782434637523_0dsusj",
       "ts": "2026-06-26T00:43:57.523Z",
@@ -3776,6 +3796,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-26T00:44:00.484Z",
+  "saved_at": "2026-06-26T00:44:26.409Z",
   "saved_by": "cm_command_center_operator"
 }

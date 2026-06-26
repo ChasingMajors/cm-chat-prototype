@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-26T00:45:45.333Z",
+  "exported_at": "2026-06-26T00:46:28.275Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -331,10 +331,10 @@
       "sport": "soccer",
       "code": "2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
+      "executionResult": "JSON publish needs review.",
       "validationResult": "Sheet write succeeded, but publish/live validation needs review.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
@@ -343,7 +343,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-26T00:43:05.870Z",
-      "updatedAt": "2026-06-26T00:45:43.730Z"
+      "updatedAt": "2026-06-26T00:46:26.670Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps nbl basketball",
@@ -370,6 +370,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782434786672_r3rg32",
+      "ts": "2026-06-26T00:46:26.672Z",
+      "type": "checklist_publish",
+      "title": "JSON publish needs review",
+      "detail": "Sheet write succeeded, but publish/live validation needs review.",
+      "status": "failed",
+      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782434743729_y1xam7",
       "ts": "2026-06-26T00:45:43.729Z",
@@ -3836,6 +3846,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-26T00:45:46.761Z",
+  "saved_at": "2026-06-26T00:46:29.529Z",
   "saved_by": "cm_command_center_operator"
 }

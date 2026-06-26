@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-26T00:54:10.113Z",
+  "exported_at": "2026-06-26T00:55:09.769Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -370,6 +370,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782435308165_o7qgdi",
+      "ts": "2026-06-26T00:55:08.165Z",
+      "type": "agent_cycle",
+      "title": "Admin decision required",
+      "detail": "2025-26 Topps NBL Basketball needs approval before the agent can continue. Use Scan New Checklists if you want a fresh source scan without advancing this queue item.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1782435248500_kp6ub2",
       "ts": "2026-06-26T00:54:08.500Z",
@@ -3930,7 +3940,7 @@
       "code": "2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-26T00:54:10.113Z",
+      "ignoredAt": "2026-06-26T00:55:09.769Z",
       "resolved": true
     },
     "soccer|2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer": {
@@ -3939,11 +3949,11 @@
       "code": "2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-26T00:54:10.113Z",
+      "ignoredAt": "2026-06-26T00:55:09.769Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-26T00:54:11.855Z",
+  "saved_at": "2026-06-26T00:55:11.076Z",
   "saved_by": "cm_command_center_operator"
 }

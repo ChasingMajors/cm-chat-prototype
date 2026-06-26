@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-26T00:46:28.275Z",
+  "exported_at": "2026-06-26T00:46:39.775Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -365,11 +365,31 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-26T00:43:05.869Z",
-      "updatedAt": "2026-06-26T00:43:29.332Z"
+      "updatedAt": "2026-06-26T00:46:38.171Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782434798172_7g9zvk",
+      "ts": "2026-06-26T00:46:38.172Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "323 rows and 36 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Topps NBL Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782434796720_1igw5k",
+      "ts": "2026-06-26T00:46:36.721Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Topps NBL Basketball",
+      "source": "admin"
+    },
     {
       "id": "log_1782434786672_r3rg32",
       "ts": "2026-06-26T00:46:26.672Z",
@@ -3846,6 +3866,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-26T00:46:29.529Z",
+  "saved_at": "2026-06-26T00:46:41.412Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-24T20:05:01.538Z",
+  "exported_at": "2026-06-26T00:05:37.001Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -325,6 +325,26 @@
   "agent_actions": [],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782432335397_l0unj5",
+      "ts": "2026-06-26T00:05:35.397Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782432335387_ykpxnl",
+      "ts": "2026-06-26T00:05:35.387Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
     {
       "id": "log_1782403197390",
       "ts": "2026-06-25T15:57:03.745Z",
@@ -1666,6 +1686,52 @@
       "headSha": "74416e3640f737947145db8969151c2e5b475054",
       "createdAt": "2026-06-24T15:45:59Z",
       "checkedAt": "2026-06-24T15:47:18.237Z"
+    },
+    "soccer|2026_panini_prizm_fifa_world_cup_soccer": {
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
+      "startedAt": "2026-06-23T17:38:41.868Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28045031550",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "soccer|2026_panini_prizm_fifa_world_cup_soccer",
+      "key": "soccer|2026_panini_prizm_fifa_world_cup_soccer",
+      "productName": "2026 Panini Prizm FIFA World Cup Soccer",
+      "sport": "soccer",
+      "code": "2026_panini_prizm_fifa_world_cup_soccer",
+      "updatedAt": "2026-06-23T17:40:47.839Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 28045031550,
+      "runNumber": 344,
+      "displayTitle": "Visual Product Test - 2026 Panini Prizm FIFA World Cup Soccer",
+      "headSha": "bc6a850e37e5412426bcf18d88b4e901dcdff4a0",
+      "createdAt": "2026-06-23T17:38:42Z",
+      "checkedAt": "2026-06-23T17:40:47.838Z"
+    },
+    "soccer|2026 panini prizm fifa world cup soccer": {
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
+      "startedAt": "2026-06-23T17:38:41.868Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28045031550",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "soccer|2026_panini_prizm_fifa_world_cup_soccer",
+      "key": "soccer|2026 panini prizm fifa world cup soccer",
+      "productName": "2026 Panini Prizm FIFA World Cup Soccer",
+      "sport": "soccer",
+      "code": "2026_panini_prizm_fifa_world_cup_soccer",
+      "updatedAt": "2026-06-23T17:40:47.839Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 28045031550,
+      "runNumber": 344,
+      "displayTitle": "Visual Product Test - 2026 Panini Prizm FIFA World Cup Soccer",
+      "headSha": "bc6a850e37e5412426bcf18d88b4e901dcdff4a0",
+      "createdAt": "2026-06-23T17:38:42Z",
+      "checkedAt": "2026-06-23T17:40:47.838Z"
     }
   },
   "known_issues": {},
@@ -1777,10 +1843,10 @@
     "basketball|https slabsquatch substack com p 202526-topps-chrome-cactus-jack-nba": {
       "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
       "sport": "basketball",
-      "code": "",
+      "code": "2025_26_topps_chrome_cactus_jack_basketball_basketball",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-cactus-jack-nba",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-05-29T13:56:04.459Z",
+      "ignoredAt": "2026-06-25T17:15:39.470Z",
       "resolved": true
     },
     "basketball|2025 26 topps chrome cactus jack basketball basketball": {
@@ -1852,7 +1918,7 @@
       "code": "2025_26_bowman_s_best_university_basketball",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T20:09:50.566Z",
+      "ignoredAt": "2026-06-25T17:15:44.245Z",
       "resolved": true
     },
     "basketball|2025_26_bowman_s_best_university_basketball": {
@@ -1861,7 +1927,7 @@
       "code": "2025_26_bowman_s_best_university_basketball",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-bowmans-best-university-basketball",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-07T20:09:50.566Z",
+      "ignoredAt": "2026-06-25T17:15:44.245Z",
       "resolved": true
     },
     "basketball|https slabsquatch substack com p 202526-topps-hoops-basketball-analysis": {
@@ -2743,7 +2809,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-motif-nba",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T02:57:42.123Z",
+      "ignoredAt": "2026-06-23T17:14:10.766Z",
       "resolved": true
     },
     "basketball|2025-26 topps motif basketball": {
@@ -2752,7 +2818,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-motif-nba",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T02:57:42.123Z",
+      "ignoredAt": "2026-06-23T17:14:10.766Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-lineage-bayern-munchen-soccer-card-checklist": {
@@ -2761,7 +2827,7 @@
       "code": "2025_26_topps_lineage_bayern_m_nchen_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-lineage-bayern-munchen-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T02:58:01.845Z",
+      "ignoredAt": "2026-06-23T17:13:56.177Z",
       "resolved": true
     },
     "soccer|2025_26_topps_lineage_bayern_m_nchen_soccer": {
@@ -2770,7 +2836,7 @@
       "code": "2025_26_topps_lineage_bayern_m_nchen_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-lineage-bayern-munchen-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T02:58:01.845Z",
+      "ignoredAt": "2026-06-23T17:13:56.178Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions workflows visual-product-test yml": {
@@ -3328,7 +3394,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T03:01:29.741Z",
+      "ignoredAt": "2026-06-23T17:14:00.311Z",
       "resolved": true
     },
     "hockey|2026 leaf metal hockey": {
@@ -3337,7 +3403,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-23T03:01:29.741Z",
+      "ignoredAt": "2026-06-23T17:14:00.311Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-topps-argentina-team-set-soccer-card-checklist": {
@@ -3364,7 +3430,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-vivid-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T01:18:18.656Z",
+      "ignoredAt": "2026-06-23T17:13:21.539Z",
       "resolved": true
     },
     "baseball|2026 leaf vivid baseball": {
@@ -3373,16 +3439,16 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-vivid-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T01:18:18.656Z",
+      "ignoredAt": "2026-06-23T17:13:21.539Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-panini-prizm-fifa-world-cup-soccer-card-checklist": {
       "product": "2026 Panini Prizm FIFA World Cup Soccer",
       "sport": "soccer",
-      "code": "",
+      "code": "2026_panini_prizm_fifa_world_cup_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T01:18:22.573Z",
+      "ignoredAt": "2026-06-25T17:16:02.869Z",
       "resolved": true
     },
     "soccer|2026 panini prizm fifa world cup soccer": {
@@ -3400,7 +3466,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-spectacular-football-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T01:18:24.391Z",
+      "ignoredAt": "2026-06-23T17:05:37.780Z",
       "resolved": true
     },
     "football|2026 leaf spectacular football": {
@@ -3409,7 +3475,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-spectacular-football-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T01:18:24.391Z",
+      "ignoredAt": "2026-06-23T17:05:37.780Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-leaf-electrum-baseball-card-checklist": {
@@ -3418,7 +3484,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-electrum-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T01:18:26.258Z",
+      "ignoredAt": "2026-06-23T17:05:33.179Z",
       "resolved": true
     },
     "baseball|2026 leaf electrum baseball": {
@@ -3427,7 +3493,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-electrum-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-24T01:18:26.258Z",
+      "ignoredAt": "2026-06-23T17:05:33.179Z",
       "resolved": true
     },
     "soccer|https slabsquatch substack com p 2026-topps-pristine-premier-league": {
@@ -3474,9 +3540,45 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-06-24T16:04:50.086Z",
       "resolved": true
+    },
+    "soccer|2026_panini_prizm_fifa_world_cup_soccer": {
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "sport": "soccer",
+      "code": "2026_panini_prizm_fifa_world_cup_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-fifa-world-cup-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-25T17:16:02.869Z",
+      "resolved": true
+    },
+    "soccer|https github com chasingmajors cm-chat-prototype actions runs 28043195280": {
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "sport": "soccer",
+      "code": "2026_panini_prizm_fifa_world_cup_soccer",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28043195280",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-23T17:38:44.873Z",
+      "resolved": true
+    },
+    "soccer|https github com chasingmajors cm-chat-prototype actions runs 28045031550": {
+      "product": "2026 Panini Prizm FIFA World Cup Soccer",
+      "sport": "soccer",
+      "code": "2026_panini_prizm_fifa_world_cup_soccer",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28045031550",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-25T17:16:02.869Z",
+      "resolved": true
+    },
+    "basketball|2025_26_topps_chrome_cactus_jack_basketball_basketball": {
+      "product": "2025/26 Topps Chrome Cactus Jack Basketball Basketball",
+      "sport": "basketball",
+      "code": "2025_26_topps_chrome_cactus_jack_basketball_basketball",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-cactus-jack-nba",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-25T17:15:39.471Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-25T15:59:57.464Z",
+  "saved_at": "2026-06-26T00:05:38.834Z",
   "saved_by": "cm_command_center_operator"
 }

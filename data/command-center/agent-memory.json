@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-26T00:55:09.769Z",
+  "exported_at": "2026-06-26T00:55:17.755Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -353,10 +353,10 @@
       "sport": "basketball",
       "code": "2025_26_topps_nbl_basketball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "JSON publish needs review.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "Sheet write succeeded, but publish/live validation needs review.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-nbl-basketball-card-checklist/",
@@ -365,11 +365,21 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-26T00:43:05.869Z",
-      "updatedAt": "2026-06-26T00:49:51.234Z"
+      "updatedAt": "2026-06-26T00:55:16.153Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782435316152_vfxocs",
+      "ts": "2026-06-26T00:55:16.152Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Topps NBL Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782435308165_o7qgdi",
       "ts": "2026-06-26T00:55:08.165Z",
@@ -3940,7 +3950,7 @@
       "code": "2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-26T00:55:09.769Z",
+      "ignoredAt": "2026-06-26T00:55:17.755Z",
       "resolved": true
     },
     "soccer|2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer": {
@@ -3949,11 +3959,11 @@
       "code": "2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-26T00:55:09.769Z",
+      "ignoredAt": "2026-06-26T00:55:17.755Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-26T00:55:11.076Z",
+  "saved_at": "2026-06-26T00:55:19.297Z",
   "saved_by": "cm_command_center_operator"
 }

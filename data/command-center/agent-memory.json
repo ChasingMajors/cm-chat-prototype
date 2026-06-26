@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-26T00:55:17.755Z",
+  "exported_at": "2026-06-26T00:57:21.269Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -353,23 +353,33 @@
       "sport": "basketball",
       "code": "2025_26_topps_nbl_basketball",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "validated",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "Sheet write succeeded, but publish/live validation needs review.",
-      "runUrl": "",
+      "executionResult": "Sheet write completed and JSON published.",
+      "validationResult": "CV and ChatBot passed.",
+      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_topps_nbl_basketball&sport=basketball&type=product",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-nbl-basketball-card-checklist/",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-26T00:43:05.869Z",
-      "updatedAt": "2026-06-26T00:55:16.153Z"
+      "updatedAt": "2026-06-26T00:57:19.664Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782435439667_06z6re",
+      "ts": "2026-06-26T00:57:19.667Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written and published",
+      "detail": "0 checklist rows and 0 parallels validated in the source sheet.",
+      "status": "validated",
+      "product": "2025-26 Topps NBL Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782435316152_vfxocs",
       "ts": "2026-06-26T00:55:16.152Z",
@@ -3950,7 +3960,7 @@
       "code": "2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-26T00:55:17.755Z",
+      "ignoredAt": "2026-06-26T00:57:21.269Z",
       "resolved": true
     },
     "soccer|2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer": {
@@ -3959,11 +3969,29 @@
       "code": "2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-26T00:55:17.755Z",
+      "ignoredAt": "2026-06-26T00:57:21.269Z",
+      "resolved": true
+    },
+    "basketball|https www checklistcenter com 2025-26-topps-nbl-basketball-card-checklist": {
+      "product": "2025-26 Topps NBL Basketball",
+      "sport": "basketball",
+      "code": "2025_26_topps_nbl_basketball",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-nbl-basketball-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-26T00:57:21.269Z",
+      "resolved": true
+    },
+    "basketball|2025_26_topps_nbl_basketball": {
+      "product": "2025-26 Topps NBL Basketball",
+      "sport": "basketball",
+      "code": "2025_26_topps_nbl_basketball",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-nbl-basketball-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-06-26T00:57:21.269Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-26T00:55:19.297Z",
+  "saved_at": "2026-06-26T00:57:23.036Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-26T00:44:24.847Z",
+  "exported_at": "2026-06-26T00:44:37.959Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -325,8 +325,8 @@
   "agent_actions": [
     {
       "id": "source_import|wordpress_api|2025-26 topps chrome sapphire uefa club competitions soccer",
-      "type": "source_import",
-      "source": "wordpress_api",
+      "type": "checklist_publish",
+      "source": "operator_backend",
       "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
       "sport": "soccer",
       "code": "2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer",
@@ -334,16 +334,16 @@
       "status": "running",
       "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write started through Operator Backend.",
-      "validationResult": "Preview rows are ready for admin review before sheet write.",
-      "runUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
+      "executionResult": "Sheet write completed. JSON publish started.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-26T00:43:05.870Z",
-      "updatedAt": "2026-06-26T00:44:23.246Z"
+      "updatedAt": "2026-06-26T00:44:36.358Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps nbl basketball",
@@ -370,6 +370,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782434676357_ospluh",
+      "ts": "2026-06-26T00:44:36.357Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782434676350_l9n1pd",
+      "ts": "2026-06-26T00:44:36.350Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "366 checklist rows and 31 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782434663240_a0f9bg",
       "ts": "2026-06-26T00:44:23.240Z",
@@ -3796,6 +3816,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-26T00:44:26.409Z",
+  "saved_at": "2026-06-26T00:44:39.295Z",
   "saved_by": "cm_command_center_operator"
 }

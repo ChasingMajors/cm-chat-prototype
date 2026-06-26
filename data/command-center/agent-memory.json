@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-26T00:57:21.269Z",
+  "exported_at": "2026-06-26T00:57:29.400Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -322,501 +322,16 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [
-    {
-      "id": "source_import|wordpress_api|2025-26 topps chrome sapphire uefa club competitions soccer",
-      "type": "checklist_publish",
-      "source": "operator_backend",
-      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
-      "sport": "soccer",
-      "code": "2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer",
-      "riskLevel": "medium",
-      "status": "validated",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
-      "adminDecision": "",
-      "executionResult": "Sheet write completed and JSON published.",
-      "validationResult": "CV and ChatBot passed.",
-      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer&sport=soccer&type=product",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
-      "bucket": "",
-      "targetBucket": "",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-26T00:43:05.870Z",
-      "updatedAt": "2026-06-26T00:54:08.499Z"
-    },
-    {
-      "id": "source_import|wordpress_api|2025-26 topps nbl basketball",
-      "type": "checklist_publish",
-      "source": "operator_backend",
-      "product": "2025-26 Topps NBL Basketball",
-      "sport": "basketball",
-      "code": "2025_26_topps_nbl_basketball",
-      "riskLevel": "medium",
-      "status": "validated",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
-      "adminDecision": "",
-      "executionResult": "Sheet write completed and JSON published.",
-      "validationResult": "CV and ChatBot passed.",
-      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_topps_nbl_basketball&sport=basketball&type=product",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-nbl-basketball-card-checklist/",
-      "bucket": "",
-      "targetBucket": "",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-26T00:43:05.869Z",
-      "updatedAt": "2026-06-26T00:57:19.664Z"
-    }
-  ],
+  "agent_actions": [],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1782435439667_06z6re",
-      "ts": "2026-06-26T00:57:19.667Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written and published",
-      "detail": "0 checklist rows and 0 parallels validated in the source sheet.",
-      "status": "validated",
-      "product": "2025-26 Topps NBL Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782435316152_vfxocs",
-      "ts": "2026-06-26T00:55:16.152Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Topps NBL Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782435308165_o7qgdi",
-      "ts": "2026-06-26T00:55:08.165Z",
-      "type": "agent_cycle",
-      "title": "Admin decision required",
-      "detail": "2025-26 Topps NBL Basketball needs approval before the agent can continue. Use Scan New Checklists if you want a fresh source scan without advancing this queue item.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1782435248500_kp6ub2",
-      "ts": "2026-06-26T00:54:08.500Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written and published",
-      "detail": "0 checklist rows and 0 parallels validated in the source sheet.",
-      "status": "validated",
-      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782435203751_j21dvl",
-      "ts": "2026-06-26T00:53:23.751Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782434991235_pxmkro",
-      "ts": "2026-06-26T00:49:51.235Z",
-      "type": "checklist_publish",
-      "title": "JSON publish needs review",
-      "detail": "Sheet write succeeded, but publish/live validation needs review.",
-      "status": "failed",
-      "product": "2025-26 Topps NBL Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782434818096_ahvhff",
-      "ts": "2026-06-26T00:46:58.096Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Topps NBL Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782434818088_ibd7ej",
-      "ts": "2026-06-26T00:46:58.088Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "323 checklist rows and 36 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 Topps NBL Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782434800706_gepghz",
-      "ts": "2026-06-26T00:46:40.706Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "2025-26 Topps NBL Basketball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782434798172_7g9zvk",
-      "ts": "2026-06-26T00:46:38.172Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "323 rows and 36 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Topps NBL Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782434796720_1igw5k",
-      "ts": "2026-06-26T00:46:36.721Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2025-26 Topps NBL Basketball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782434786672_r3rg32",
-      "ts": "2026-06-26T00:46:26.672Z",
-      "type": "checklist_publish",
-      "title": "JSON publish needs review",
-      "detail": "Sheet write succeeded, but publish/live validation needs review.",
-      "status": "failed",
-      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782434743729_y1xam7",
-      "ts": "2026-06-26T00:45:43.729Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782434728790_v86ne0",
-      "ts": "2026-06-26T00:45:28.790Z",
-      "type": "checklist_publish",
-      "title": "JSON publish needs review",
-      "detail": "Sheet write succeeded, but publish/live validation needs review.",
-      "status": "failed",
-      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782434676357_ospluh",
-      "ts": "2026-06-26T00:44:36.357Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782434676350_l9n1pd",
-      "ts": "2026-06-26T00:44:36.350Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "366 checklist rows and 31 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782434663240_a0f9bg",
-      "ts": "2026-06-26T00:44:23.240Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782434639794_mq73le",
-      "ts": "2026-06-26T00:43:59.794Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "366 rows and 31 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782434637523_0dsusj",
-      "ts": "2026-06-26T00:43:57.523Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782434637519_vy1xd5",
-      "ts": "2026-06-26T00:43:57.519Z",
-      "type": "agent_cycle",
-      "title": "Build checklist preview",
-      "detail": "2025-26 Topps Chrome Sapphire UEFA Club Competitions Soccer can be safely previewed. No Google Sheet write will happen without approval.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1782434609335_cppryt",
-      "ts": "2026-06-26T00:43:29.335Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "323 rows and 36 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Topps NBL Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782434607956_pz7cd9",
-      "ts": "2026-06-26T00:43:27.956Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2025-26 Topps NBL Basketball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782434588272_c6clqo",
-      "ts": "2026-06-26T00:43:08.272Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep complete",
-      "detail": "Checklist: 20 checked, 2 queued. PRV clear: 6 source items checked, nothing new queued. 2 active queue items need review.",
-      "status": "needs_review",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1782434588263_mnnl28",
-      "ts": "2026-06-26T00:43:08.263Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch complete",
-      "detail": "6 SlabSquatch items checked. 0 need review. 0 PRV review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "slabsquatch"
-    },
-    {
-      "id": "log_1782434588262_puld6p",
-      "ts": "2026-06-26T00:43:08.262Z",
-      "type": "source_watch",
-      "title": "Source Watch skipped clean items",
-      "detail": "4 admin-ignored source item(s) were omitted from the queue.",
-      "status": "ignored",
-      "product": "",
-      "source": "prv_source_watch"
-    },
-    {
-      "id": "log_1782434585887_gbmhrv",
-      "ts": "2026-06-26T00:43:05.887Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch started",
-      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
-      "status": "started",
-      "product": "",
-      "source": "slabsquatch"
-    },
-    {
-      "id": "log_1782434585872_7zmg4g",
-      "ts": "2026-06-26T00:43:05.872Z",
-      "type": "source_watch",
-      "title": "Quick JSON Source Watch complete",
-      "detail": "20 source items checked. 5 need review. 2 review cards queued. No Sheet or JSON writes were run by this audit.",
-      "status": "completed",
-      "product": "",
-      "source": "quick_json"
-    },
-    {
-      "id": "log_1782434585871_n7rthu",
-      "ts": "2026-06-26T00:43:05.871Z",
-      "type": "source_watch",
-      "title": "Source Watch actions queued",
-      "detail": "2 findings are now visible in the Agent Action Queue for admin review. 6 admin-ignored source item(s) were skipped.",
-      "status": "queued",
-      "product": "",
-      "source": "quick_json"
-    },
-    {
-      "id": "log_1782434583003_t0k1j6",
-      "ts": "2026-06-26T00:43:03.003Z",
-      "type": "source_watch",
-      "title": "Quick JSON Source Watch started",
-      "detail": "Checking recent Checklistcenter items against public JSON. No writes will run.",
-      "status": "started",
-      "product": "",
-      "source": "quick_json"
-    },
-    {
-      "id": "log_1782434582979_ppb848",
-      "ts": "2026-06-26T00:43:02.979Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep started",
-      "detail": "Running health audit, Checklist source watch, and PRV source watch.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1782434582975_zswbsw",
-      "ts": "2026-06-26T00:43:02.975Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the browser daily sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1782432515046_fgd67n",
-      "ts": "2026-06-26T00:08:35.046Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782432515036_a29fec",
-      "ts": "2026-06-26T00:08:35.036Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782432508814_xjzoul",
-      "ts": "2026-06-26T00:08:28.814Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782432508804_2o6ma5",
-      "ts": "2026-06-26T00:08:28.804Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782432335397_l0unj5",
-      "ts": "2026-06-26T00:05:35.397Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782432335387_ykpxnl",
-      "ts": "2026-06-26T00:05:35.387Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782403197390",
-      "ts": "2026-06-25T15:57:03.745Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 10 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782403197388",
-      "ts": "2026-06-25T15:57:03.745Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782331499936_apjzs6",
-      "ts": "2026-06-24T20:04:59.936Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782331499920_yfgsoa",
-      "ts": "2026-06-24T20:04:59.920Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782331494447",
-      "ts": "2026-06-24T20:04:50.806Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: skipped for fast sweep. 10 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782331494446",
-      "ts": "2026-06-24T20:04:50.806Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782331481751_ygvn35",
-      "ts": "2026-06-24T20:04:41.751Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782331481745_sumduj",
-      "ts": "2026-06-24T20:04:41.745Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
+      "id": "log_1782435447796_8tmely",
+      "ts": "2026-06-26T00:57:27.796Z",
+      "type": "agent_action",
+      "title": "Resolved agent actions cleared",
+      "detail": "Validated, done, and ignored actions were removed from the active queue. 2 source/product keys were remembered so scans do not requeue them.",
+      "status": "cleaned",
       "product": "",
       "source": "admin"
     }
@@ -3960,7 +3475,7 @@
       "code": "2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-26T00:57:21.269Z",
+      "ignoredAt": "2026-06-26T00:57:27.794Z",
       "resolved": true
     },
     "soccer|2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer": {
@@ -3969,7 +3484,7 @@
       "code": "2025_26_topps_chrome_sapphire_uefa_club_competitions_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uefa-club-competitions-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-26T00:57:21.269Z",
+      "ignoredAt": "2026-06-26T00:57:27.794Z",
       "resolved": true
     },
     "basketball|https www checklistcenter com 2025-26-topps-nbl-basketball-card-checklist": {
@@ -3978,7 +3493,7 @@
       "code": "2025_26_topps_nbl_basketball",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-nbl-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-26T00:57:21.269Z",
+      "ignoredAt": "2026-06-26T00:57:27.794Z",
       "resolved": true
     },
     "basketball|2025_26_topps_nbl_basketball": {
@@ -3987,11 +3502,11 @@
       "code": "2025_26_topps_nbl_basketball",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-nbl-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-26T00:57:21.269Z",
+      "ignoredAt": "2026-06-26T00:57:27.794Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-26T00:57:23.036Z",
+  "saved_at": "2026-06-26T00:57:30.894Z",
   "saved_by": "cm_command_center_operator"
 }

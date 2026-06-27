@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-27T17:19:58.392Z",
+  "exported_at": "2026-06-27T17:20:46.290Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -373,147 +373,8 @@
     }
   ],
   "agent_run_queue": [],
-  "activity_log": [
-    {
-      "id": "log_1782580844170",
-      "ts": "2026-06-27T17:20:41.526Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: skipped for fast sweep. 13 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782580844164",
-      "ts": "2026-06-27T17:20:41.526Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782580796788_ourux1",
-      "ts": "2026-06-27T17:19:56.788Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2026 Donruss Elite Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1782580796787_si45ak",
-      "ts": "2026-06-27T17:19:56.787Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2026 Donruss Elite Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1782580774747_0mhrnz",
-      "ts": "2026-06-27T17:19:34.748Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2026 Donruss Elite Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1782580752733_plojcj",
-      "ts": "2026-06-27T17:19:12.733Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2026 Donruss Elite Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1782580731490_5w9ndd",
-      "ts": "2026-06-27T17:18:51.490Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2026 Donruss Elite Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1782580721726_qyc20f",
-      "ts": "2026-06-27T17:18:41.726Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2026 Donruss Elite Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1782580708141_ffuebh",
-      "ts": "2026-06-27T17:18:28.141Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782580708131_4hj0g0",
-      "ts": "2026-06-27T17:18:28.131Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782580690466_p1uger",
-      "ts": "2026-06-27T17:18:10.466Z",
-      "type": "checklist_publish",
-      "title": "JSON publish failed",
-      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "2026 Donruss Elite Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782578071703_oz43e2",
-      "ts": "2026-06-27T16:34:31.703Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2026 Donruss Elite Baseball",
-      "source": "operator_backend"
-    }
-  ],
-  "last_agent_report": {
-    "ok": true,
-    "status": "clear",
-    "generated_at": "2026-06-27T17:20:41.526Z",
-    "checked": {
-      "checklist_count": 20,
-      "prv_count": 6,
-      "skipped_ignored": 13
-    },
-    "completed_count": 0,
-    "needs_admin_count": 0,
-    "blocked_count": 0,
-    "completed": [],
-    "needs_admin": [],
-    "blocked": [],
-    "proof": [],
-    "next_step": "No immediate action. Sentinel can run again on schedule.",
-    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
-  },
+  "activity_log": [],
+  "last_agent_report": null,
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -3734,7 +3595,7 @@
       "code": "2026_donruss_elite_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28296265894",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-27T17:19:58.392Z",
+      "ignoredAt": "2026-06-27T17:20:46.290Z",
       "resolved": true
     },
     "baseball|2026_donruss_elite_baseball": {
@@ -3743,7 +3604,7 @@
       "code": "2026_donruss_elite_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-donruss-elite-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-27T17:19:58.392Z",
+      "ignoredAt": "2026-06-27T17:20:46.290Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-donruss-elite-baseball-card-checklist": {
@@ -3752,11 +3613,11 @@
       "code": "2026_donruss_elite_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-donruss-elite-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-27T17:19:58.392Z",
+      "ignoredAt": "2026-06-27T17:20:46.290Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-27T17:20:44.269Z",
+  "saved_at": "2026-06-27T17:20:47.956Z",
   "saved_by": "cm_command_center_operator"
 }

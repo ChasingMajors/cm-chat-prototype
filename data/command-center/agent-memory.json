@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-27T16:34:27.586Z",
+  "exported_at": "2026-06-27T16:34:33.307Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -331,10 +331,10 @@
       "sport": "baseball",
       "code": "2026_donruss_elite_baseball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed; JSON publish request failed.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-donruss-elite-baseball-card-checklist/",
@@ -343,11 +343,22 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-27T14:43:13.026Z",
-      "updatedAt": "2026-06-27T15:34:38.169Z"
+      "updatedAt": "2026-06-27T16:34:31.704Z"
     }
   ],
   "agent_run_queue": [],
-  "activity_log": [],
+  "activity_log": [
+    {
+      "id": "log_1782578071703_oz43e2",
+      "ts": "2026-06-27T16:34:31.703Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2026 Donruss Elite Baseball",
+      "source": "operator_backend"
+    }
+  ],
   "last_agent_report": null,
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -3519,6 +3530,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-27T16:34:28.562Z",
+  "saved_at": "2026-06-27T16:34:35.130Z",
   "saved_by": "cm_command_center_operator"
 }

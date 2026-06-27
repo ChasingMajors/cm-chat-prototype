@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-27T17:19:58.392Z",
+  "exported_at": "2026-06-27T17:20:41.933Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -374,6 +374,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782580840328_66oxj3",
+      "ts": "2026-06-27T17:20:40.328Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1782580840319_uia5tw",
+      "ts": "2026-06-27T17:20:40.319Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1782580796788_ourux1",
       "ts": "2026-06-27T17:19:56.788Z",
@@ -3696,7 +3716,7 @@
       "code": "2026_donruss_elite_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28296265894",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-27T17:19:58.392Z",
+      "ignoredAt": "2026-06-27T17:20:41.933Z",
       "resolved": true
     },
     "baseball|2026_donruss_elite_baseball": {
@@ -3705,7 +3725,7 @@
       "code": "2026_donruss_elite_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-donruss-elite-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-27T17:19:58.392Z",
+      "ignoredAt": "2026-06-27T17:20:41.933Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-donruss-elite-baseball-card-checklist": {
@@ -3714,11 +3734,11 @@
       "code": "2026_donruss_elite_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-donruss-elite-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-27T17:19:58.392Z",
+      "ignoredAt": "2026-06-27T17:20:41.933Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-27T17:19:59.595Z",
+  "saved_at": "2026-06-27T17:20:43.144Z",
   "saved_by": "cm_command_center_operator"
 }

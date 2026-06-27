@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-27T17:20:46.290Z",
+  "exported_at": "2026-06-27T17:20:52.894Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -322,59 +322,28 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [
-    {
-      "id": "visual_test|github_actions|2026 donruss elite baseball|2026_donruss_elite_baseball",
-      "type": "visual_test",
-      "source": "github_actions",
-      "product": "2026 Donruss Elite Baseball",
-      "sport": "baseball",
-      "code": "2026_donruss_elite_baseball",
-      "riskLevel": "low",
-      "status": "validated",
-      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "CV and ChatBot passed via visual test.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28296265894",
-      "sourceUrl": "",
-      "bucket": "",
-      "targetBucket": "",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-27T17:18:41.724Z",
-      "updatedAt": "2026-06-27T17:19:56.784Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28296265894",
-      "visualStartedAt": "2026-06-27T17:18:40Z"
-    },
-    {
-      "id": "source_import|wordpress_api|2026 donruss elite baseball",
-      "type": "checklist_publish",
-      "source": "operator_backend",
-      "product": "2026 Donruss Elite Baseball",
-      "sport": "baseball",
-      "code": "2026_donruss_elite_baseball",
-      "riskLevel": "medium",
-      "status": "validated",
-      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
-      "adminDecision": "",
-      "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV and ChatBot passed via visual test.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28296265894",
-      "sourceUrl": "https://www.checklistcenter.com/2026-donruss-elite-baseball-card-checklist/",
-      "bucket": "",
-      "targetBucket": "",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-06-27T14:43:13.026Z",
-      "updatedAt": "2026-06-27T17:19:56.786Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28296265894",
-      "visualStartedAt": "2026-06-27T17:18:40Z"
-    }
-  ],
+  "agent_actions": [],
   "agent_run_queue": [],
   "activity_log": [],
-  "last_agent_report": null,
+  "last_agent_report": {
+    "ok": true,
+    "status": "clear",
+    "generated_at": "2026-06-27T17:20:41.526Z",
+    "checked": {
+      "checklist_count": 20,
+      "prv_count": 6,
+      "skipped_ignored": 13
+    },
+    "completed_count": 0,
+    "needs_admin_count": 0,
+    "blocked_count": 0,
+    "completed": [],
+    "needs_admin": [],
+    "blocked": [],
+    "proof": [],
+    "next_step": "No immediate action. Sentinel can run again on schedule.",
+    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
+  },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -3595,7 +3564,7 @@
       "code": "2026_donruss_elite_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28296265894",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-27T17:20:46.290Z",
+      "ignoredAt": "2026-06-27T17:20:50.058Z",
       "resolved": true
     },
     "baseball|2026_donruss_elite_baseball": {
@@ -3604,7 +3573,7 @@
       "code": "2026_donruss_elite_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-donruss-elite-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-27T17:20:46.290Z",
+      "ignoredAt": "2026-06-27T17:20:50.058Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-donruss-elite-baseball-card-checklist": {
@@ -3613,11 +3582,11 @@
       "code": "2026_donruss_elite_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-donruss-elite-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-27T17:20:46.290Z",
+      "ignoredAt": "2026-06-27T17:20:50.058Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-27T17:20:47.956Z",
+  "saved_at": "2026-06-27T17:20:54.453Z",
   "saved_by": "cm_command_center_operator"
 }

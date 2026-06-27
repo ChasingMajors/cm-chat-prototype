@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-27T14:44:11.280Z",
+  "exported_at": "2026-06-27T14:44:19.610Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -331,10 +331,10 @@
       "sport": "baseball",
       "code": "2026_donruss_elite_baseball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "Import preview parsed 840 rows and 129 parallels.",
+      "executionResult": "Sheet write started through Operator Backend.",
       "validationResult": "Preview rows are ready for admin review before sheet write.",
       "runUrl": "https://www.checklistcenter.com/2026-donruss-elite-baseball-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2026-donruss-elite-baseball-card-checklist/",
@@ -343,11 +343,21 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-27T14:43:13.026Z",
-      "updatedAt": "2026-06-27T14:43:36.310Z"
+      "updatedAt": "2026-06-27T14:44:18.008Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782571458003_rqx4d7",
+      "ts": "2026-06-27T14:44:18.003Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "2026 Donruss Elite Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1782571449674_gu60jz",
       "ts": "2026-06-27T14:44:09.674Z",
@@ -3730,6 +3740,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-27T14:44:13.043Z",
+  "saved_at": "2026-06-27T14:44:20.691Z",
   "saved_by": "cm_command_center_operator"
 }

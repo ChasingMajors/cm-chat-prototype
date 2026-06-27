@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-27T15:34:39.825Z",
+  "exported_at": "2026-06-27T16:34:07.696Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -331,11 +331,11 @@
       "sport": "baseball",
       "code": "2026_donruss_elite_baseball",
       "riskLevel": "medium",
-      "status": "failed",
+      "status": "needs_admin",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
-      "executionResult": "Unsupported full-auto action type: checklist_publish",
-      "validationResult": "Unsupported full-auto action type: checklist_publish",
+      "executionResult": "Sheet write completed; JSON publish request failed.",
+      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-donruss-elite-baseball-card-checklist/",
       "bucket": "",
@@ -343,54 +343,19 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-27T14:43:13.026Z",
-      "updatedAt": "2026-06-27T15:57:03.796Z",
-      "pendingValidationAttempts": 0,
-      "visualStartedAt": "",
-      "visualRunUrl": "",
-      "repairProof": "Agent attempted repair for 2026 Donruss Elite Baseball but it failed. A fix task was created when possible.",
-      "autoExecutedAt": "2026-06-27T15:57:03.796Z"
+      "updatedAt": "2026-06-27T15:34:38.169Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1782576010207_alert",
-      "ts": "2026-06-27T15:57:03.796Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782576009521",
-      "ts": "2026-06-27T15:57:03.796Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 12 admin-ignored source item(s) skipped. Auto actions: 1 run. 2026 Donruss Elite Baseball -> failed (Unsupported full-auto action type: checklist_publish)",
-      "status": "validated",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782576009520",
-      "ts": "2026-06-27T15:57:03.796Z",
-      "type": "auto_action",
-      "title": "Full-auto action failed",
-      "detail": "2026 Donruss Elite Baseball: Unsupported full-auto action type: checklist_publish Unsupported full-auto action type: checklist_publish",
+      "id": "log_1782574904331_jmdxtc",
+      "ts": "2026-06-27T15:41:44.331Z",
+      "type": "memory",
+      "title": "Backend memory auto-save failed",
+      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
       "status": "failed",
-      "product": "2026 Donruss Elite Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782576009515",
-      "ts": "2026-06-27T15:57:03.796Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
+      "product": "",
       "source": "operator_backend"
     },
     {
@@ -684,27 +649,7 @@
       "source": "admin"
     }
   ],
-  "last_agent_report": {
-    "ok": false,
-    "status": "issue",
-    "generated_at": "2026-06-27T15:57:03.796Z",
-    "checked": {
-      "checklist_count": 20,
-      "prv_count": 6,
-      "skipped_ignored": 12
-    },
-    "completed_count": 0,
-    "needs_admin_count": 0,
-    "blocked_count": 1,
-    "completed": [],
-    "needs_admin": [],
-    "blocked": [
-      "2026 Donruss Elite Baseball -> failed: Unsupported full-auto action type: checklist_publish"
-    ],
-    "proof": [],
-    "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
-    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 1 blocked/issue item(s)."
-  },
+  "last_agent_report": null,
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -3875,6 +3820,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-27T16:00:10.289Z",
+  "saved_at": "2026-06-27T16:34:10.198Z",
   "saved_by": "cm_command_center_operator"
 }

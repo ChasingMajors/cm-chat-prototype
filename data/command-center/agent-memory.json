@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-27T14:44:32.877Z",
+  "exported_at": "2026-06-27T14:46:21.029Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -343,11 +343,21 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-27T14:43:13.026Z",
-      "updatedAt": "2026-06-27T14:44:31.276Z"
+      "updatedAt": "2026-06-27T14:46:19.425Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1782571579424_v1g07h",
+      "ts": "2026-06-27T14:46:19.424Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2026 Donruss Elite Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782571471275_5luel4",
       "ts": "2026-06-27T14:44:31.275Z",
@@ -3760,6 +3770,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-27T14:44:34.379Z",
+  "saved_at": "2026-06-27T14:46:22.235Z",
   "saved_by": "cm_command_center_operator"
 }

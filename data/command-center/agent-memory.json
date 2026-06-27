@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-26T00:57:42.237Z",
+  "exported_at": "2026-06-27T14:44:11.280Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -322,37 +322,210 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [],
+  "agent_actions": [
+    {
+      "id": "source_import|wordpress_api|2026 donruss elite baseball",
+      "type": "source_import",
+      "source": "wordpress_api",
+      "product": "2026 Donruss Elite Baseball",
+      "sport": "baseball",
+      "code": "2026_donruss_elite_baseball",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
+      "adminDecision": "",
+      "executionResult": "Import preview parsed 840 rows and 129 parallels.",
+      "validationResult": "Preview rows are ready for admin review before sheet write.",
+      "runUrl": "https://www.checklistcenter.com/2026-donruss-elite-baseball-card-checklist/",
+      "sourceUrl": "https://www.checklistcenter.com/2026-donruss-elite-baseball-card-checklist/",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-06-27T14:43:13.026Z",
+      "updatedAt": "2026-06-27T14:43:36.310Z"
+    }
+  ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1782489739276",
-      "ts": "2026-06-26T15:57:04.528Z",
+      "id": "log_1782571449674_gu60jz",
+      "ts": "2026-06-27T14:44:09.674Z",
+      "type": "agent_cycle",
+      "title": "Admin decision required",
+      "detail": "2026 Donruss Elite Baseball needs approval before the agent can continue. Use Scan New Checklists if you want a fresh source scan without advancing this queue item.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1782571416317_q54q31",
+      "ts": "2026-06-27T14:43:36.317Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "840 rows and 129 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2026 Donruss Elite Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782571414414_4nis8t",
+      "ts": "2026-06-27T14:43:34.414Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2026 Donruss Elite Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1782571395787_62o46k",
+      "ts": "2026-06-27T14:43:15.787Z",
+      "type": "agent_cycle",
+      "title": "Daily Sentinel sweep complete",
+      "detail": "Checklist: 20 checked, 1 queued. PRV clear: 6 source items checked, nothing new queued. 1 active queue item need review.",
+      "status": "needs_review",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1782571395778_q6ki60",
+      "ts": "2026-06-27T14:43:15.778Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch complete",
+      "detail": "6 SlabSquatch items checked. 0 need review. 0 PRV review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1782571395776_8s65pz",
+      "ts": "2026-06-27T14:43:15.776Z",
+      "type": "source_watch",
+      "title": "Source Watch skipped clean items",
+      "detail": "4 admin-ignored source item(s) were omitted from the queue.",
+      "status": "ignored",
+      "product": "",
+      "source": "prv_source_watch"
+    },
+    {
+      "id": "log_1782571393041_nhxrpf",
+      "ts": "2026-06-27T14:43:13.042Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch started",
+      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
+      "status": "started",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1782571393028_bw3wql",
+      "ts": "2026-06-27T14:43:13.028Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch complete",
+      "detail": "20 source items checked. 4 need review. 1 review cards queued. No Sheet or JSON writes were run by this audit.",
+      "status": "completed",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1782571393027_v1y0rk",
+      "ts": "2026-06-27T14:43:13.028Z",
+      "type": "source_watch",
+      "title": "Source Watch actions queued",
+      "detail": "1 findings are now visible in the Agent Action Queue for admin review. 8 admin-ignored source item(s) were skipped.",
+      "status": "queued",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1782571390084_wy0j07",
+      "ts": "2026-06-27T14:43:10.084Z",
+      "type": "source_watch",
+      "title": "Quick JSON Source Watch started",
+      "detail": "Checking recent Checklistcenter items against public JSON. No writes will run.",
+      "status": "started",
+      "product": "",
+      "source": "quick_json"
+    },
+    {
+      "id": "log_1782571390057_st96fm",
+      "ts": "2026-06-27T14:43:10.057Z",
+      "type": "agent_cycle",
+      "title": "Daily Sentinel sweep started",
+      "detail": "Running health audit, Checklist source watch, and PRV source watch.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1782571390053_dzwcgn",
+      "ts": "2026-06-27T14:43:10.053Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the browser daily sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1782571385558_qli7vu",
+      "ts": "2026-06-27T14:43:05.558Z",
+      "type": "public_tool_audit",
+      "title": "Public Tool Audit complete",
+      "detail": "Public data layer score: 100%. Checklist, PRV, release, and signal feeds are reachable.",
+      "status": "validated",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1782571385369_bg54g3",
+      "ts": "2026-06-27T14:43:05.369Z",
+      "type": "public_tool_audit",
+      "title": "Public Tool Audit started",
+      "detail": "Checking public JSON feeds for Checklist Vault, PRV, releases, and early signals.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1782435462735_1jdfqn",
+      "ts": "2026-06-26T00:57:42.735Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782435462725_948dya",
+      "ts": "2026-06-26T00:57:42.725Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1782435458254",
+      "ts": "2026-06-26T00:57:33.481Z",
       "type": "agent_sweep",
       "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 12 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: skipped for fast sweep. 12 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
       "status": "validated",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1782489739274",
-      "ts": "2026-06-26T15:57:04.528Z",
+      "id": "log_1782435458252",
+      "ts": "2026-06-26T00:57:33.481Z",
       "type": "prv_sync",
       "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
       "status": "validated",
       "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782435460634_8dj28z",
-      "ts": "2026-06-26T00:57:40.634Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep complete",
-      "detail": "Checklist: 0 actions. PRV: 0 actions. PRV sync: skipped. Auto: No safe auto-executable action found.",
-      "status": "validated",
-      "product": "",
       "source": "operator_backend"
     },
     {
@@ -386,25 +559,7 @@
       "source": "admin"
     }
   ],
-  "last_agent_report": {
-    "ok": true,
-    "status": "clear",
-    "generated_at": "2026-06-26T15:57:04.528Z",
-    "checked": {
-      "checklist_count": 20,
-      "prv_count": 6,
-      "skipped_ignored": 12
-    },
-    "completed_count": 0,
-    "needs_admin_count": 0,
-    "blocked_count": 0,
-    "completed": [],
-    "needs_admin": [],
-    "blocked": [],
-    "proof": [],
-    "next_step": "No immediate action. Sentinel can run again on schedule.",
-    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
-  },
+  "last_agent_report": null,
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -3575,6 +3730,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-26T16:02:19.711Z",
+  "saved_at": "2026-06-27T14:44:13.043Z",
   "saved_by": "cm_command_center_operator"
 }

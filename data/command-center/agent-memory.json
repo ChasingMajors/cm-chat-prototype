@@ -2,12 +2,52 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-29T23:56:15.806Z",
+  "exported_at": "2026-06-29T23:56:37.933Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
   "tasks": [
+    {
+      "id": "task_1782777396328_4e0dyk",
+      "sourceId": "source_watch|baseball|2026 topps finest baseball",
+      "title": "Fix: 2026 Topps Finest Baseball",
+      "kind": "fix",
+      "severity": "critical",
+      "status": "queued",
+      "createdAt": "2026-06-29T23:56:36.328Z",
+      "updatedAt": "2026-06-29T23:56:36.328Z",
+      "why": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
+      "objective": "Treat this as a product-specific app behavior failure and use the visual report as proof.",
+      "steps": [
+        "Open the visual report linked on the card.",
+        "Compare the failing query with the product code and public JSON coverage.",
+        "Fix the broken route, search alias, or ChatBot intent in sandbox.",
+        "Rerun Test CV/ChatBot from this product card.",
+        "Keep the item in Review/Hold until the rerun passes."
+      ],
+      "guardrail": "Fix in sandbox first. Do not mark validated until JSON coverage or CV/ChatBot visual proof passes."
+    },
+    {
+      "id": "task_1782777396327_yky0x3",
+      "sourceId": "visual_test|github_actions|2026 topps finest baseball",
+      "title": "Fix: 2026 Topps Finest Baseball",
+      "kind": "fix",
+      "severity": "critical",
+      "status": "queued",
+      "createdAt": "2026-06-29T23:56:36.327Z",
+      "updatedAt": "2026-06-29T23:56:36.327Z",
+      "why": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
+      "objective": "Open the visual report, identify the failing query or page, patch sandbox behavior, then rerun CV/ChatBot validation.",
+      "steps": [
+        "Open the GitHub Actions visual report and note the failing test label.",
+        "Identify whether the failure is ChatBot query routing, Checklist Vault product loading, or expected-test wording.",
+        "Patch the sandbox file only, then run syntax checks.",
+        "Push the fix and rerun the same product visual test.",
+        "Mark validated only after the visual test passes."
+      ],
+      "guardrail": "Fix in sandbox first. Do not mark validated until JSON coverage or CV/ChatBot visual proof passes."
+    },
     {
       "id": "task_1782315660320_ab8j0v",
       "sourceId": "source_import|wordpress_api|2025-26 topps finest uefa club competitions soccer",
@@ -330,12 +370,12 @@
       "product": "2026 Topps Finest Baseball",
       "sport": "baseball",
       "code": "",
-      "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "riskLevel": "medium",
+      "status": "fix_queued",
+      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
       "sourceUrl": "",
       "bucket": "",
@@ -343,7 +383,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-29T23:55:20.936Z",
-      "updatedAt": "2026-06-29T23:56:14.201Z",
+      "updatedAt": "2026-06-29T23:56:36.327Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
       "visualStartedAt": "2026-06-29T23:55:20Z"
     },
@@ -355,15 +395,15 @@
       "sport": "baseball",
       "code": "2026_topps_finest_baseball",
       "riskLevel": "medium",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "fix_queued",
+      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
       "adminDecision": "run_queue_approved",
       "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-finest-baseball-card-checklist/",
       "createdAt": "2026-06-29T23:54:52.857Z",
-      "updatedAt": "2026-06-29T23:56:14.201Z",
+      "updatedAt": "2026-06-29T23:56:36.328Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
       "visualStartedAt": "2026-06-29T23:55:20Z"
     },
@@ -390,6 +430,26 @@
     "source_watch|baseball|2026 topps finest baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1782777396329_9fuj4n",
+      "ts": "2026-06-29T23:56:36.329Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "Visual test failed. Open the report and review screenshots/errors before marking validated.",
+      "status": "failed",
+      "product": "2026 Topps Finest Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1782777396329_emom9a",
+      "ts": "2026-06-29T23:56:36.329Z",
+      "type": "operator_task",
+      "title": "Repair task created from visual failure",
+      "detail": "Sentinel created a fix task so the failed CV/ChatBot behavior has a clear repair path.",
+      "status": "queued",
+      "product": "2026 Topps Finest Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1782777374202_33py96",
       "ts": "2026-06-29T23:56:14.202Z",
@@ -1978,9 +2038,9 @@
       "checkedAt": "2026-06-27T17:19:56.781Z"
     },
     "baseball|2026 topps finest baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "failed",
+      "conclusion": "failure",
       "startedAt": "2026-06-29T23:55:19.675Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -1990,7 +2050,7 @@
       "productName": "2026 Topps Finest Baseball",
       "sport": "baseball",
       "code": "",
-      "updatedAt": "2026-06-29T23:56:14.198Z",
+      "updatedAt": "2026-06-29T23:56:36.322Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 28410554127,
@@ -1998,12 +2058,12 @@
       "displayTitle": "Visual Product Test - 2026 Topps Finest Baseball",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-06-29T23:55:20Z",
-      "checkedAt": "2026-06-29T23:56:14.198Z"
+      "checkedAt": "2026-06-29T23:56:36.322Z"
     },
     "baseball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "failed",
+      "conclusion": "failure",
       "startedAt": "2026-06-29T23:55:19.675Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2013,7 +2073,7 @@
       "productName": "2026 Topps Finest Baseball",
       "sport": "baseball",
       "code": "",
-      "updatedAt": "2026-06-29T23:56:14.198Z",
+      "updatedAt": "2026-06-29T23:56:36.322Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 28410554127,
@@ -2021,7 +2081,7 @@
       "displayTitle": "Visual Product Test - 2026 Topps Finest Baseball",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-06-29T23:55:20Z",
-      "checkedAt": "2026-06-29T23:56:14.198Z"
+      "checkedAt": "2026-06-29T23:56:36.322Z"
     }
   },
   "known_issues": {},
@@ -3108,7 +3168,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-motif-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-29T23:56:15.806Z",
+      "ignoredAt": "2026-06-29T23:56:37.933Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-lineage-bayern-munchen-soccer-card-checklist": {
@@ -3936,11 +3996,11 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-motif-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-29T23:56:15.806Z",
+      "ignoredAt": "2026-06-29T23:56:37.933Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-29T23:56:17.281Z",
+  "saved_at": "2026-06-29T23:56:39.244Z",
   "saved_by": "cm_command_center_operator"
 }

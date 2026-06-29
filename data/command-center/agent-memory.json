@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-29T23:55:00.217Z",
+  "exported_at": "2026-06-29T23:55:12.077Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -360,8 +360,20 @@
       "updatedAt": "2026-06-29T23:55:00.198Z"
     }
   ],
-  "agent_run_queue": [],
+  "agent_run_queue": [
+    "source_watch|baseball|2026 topps finest baseball"
+  ],
   "activity_log": [
+    {
+      "id": "log_1782777310474_xa32lm",
+      "ts": "2026-06-29T23:55:10.474Z",
+      "type": "agent_run_queue",
+      "title": "Added to Agent Run Queue",
+      "detail": "2026 Topps Finest Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
+      "status": "queued",
+      "product": "2026 Topps Finest Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1782777300215_8piwng",
       "ts": "2026-06-29T23:55:00.215Z",
@@ -2894,7 +2906,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-motif-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-29T23:55:00.217Z",
+      "ignoredAt": "2026-06-29T23:55:12.077Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-lineage-bayern-munchen-soccer-card-checklist": {
@@ -3722,11 +3734,11 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-motif-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-29T23:55:00.217Z",
+      "ignoredAt": "2026-06-29T23:55:12.077Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-29T23:55:01.600Z",
+  "saved_at": "2026-06-29T23:55:13.230Z",
   "saved_by": "cm_command_center_operator"
 }

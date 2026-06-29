@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-27T17:20:52.894Z",
+  "exported_at": "2026-06-29T23:54:53.012Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -326,65 +326,27 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1782748942951",
-      "ts": "2026-06-29T15:57:05.739Z",
+      "id": "log_1782777291407_hu6kxj",
+      "ts": "2026-06-29T23:54:51.407Z",
       "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 13 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
       "product": "",
-      "source": "operator_backend"
+      "source": "command_center"
     },
     {
-      "id": "log_1782748942948",
-      "ts": "2026-06-29T15:57:05.739Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782662453971",
-      "ts": "2026-06-28T15:57:05.696Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 13 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
+      "id": "log_1782777291404_u7v5ha",
+      "ts": "2026-06-29T23:54:51.404Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782662453966",
-      "ts": "2026-06-28T15:57:05.696Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
+      "source": "command_center"
     }
   ],
-  "last_agent_report": {
-    "ok": true,
-    "status": "clear",
-    "generated_at": "2026-06-29T15:57:05.739Z",
-    "checked": {
-      "checklist_count": 20,
-      "prv_count": 6,
-      "skipped_ignored": 13
-    },
-    "completed_count": 0,
-    "needs_admin_count": 0,
-    "blocked_count": 0,
-    "completed": [],
-    "needs_admin": [],
-    "blocked": [],
-    "proof": [],
-    "next_step": "No immediate action. Sentinel can run again on schedule.",
-    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
-  },
+  "last_agent_report": null,
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -3628,6 +3590,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-29T16:02:23.233Z",
+  "saved_at": "2026-06-29T23:54:54.508Z",
   "saved_by": "cm_command_center_operator"
 }

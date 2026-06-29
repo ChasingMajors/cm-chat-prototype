@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-29T23:55:32.369Z",
+  "exported_at": "2026-06-29T23:55:50.859Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -353,17 +353,17 @@
       "source": "scheduled_quick_json",
       "product": "2026 Topps Finest Baseball",
       "sport": "baseball",
-      "code": "",
+      "code": "2026_topps_finest_baseball",
       "riskLevel": "medium",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "needs_admin",
+      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "run_queue_approved",
-      "executionResult": "Admin Run Queue approval recorded.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
+      "executionResult": "Import preview parsed 1,042 rows and 158 parallels.",
+      "validationResult": "Preview rows are ready for admin review before sheet write.",
+      "runUrl": "https://www.checklistcenter.com/2026-topps-finest-baseball-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-finest-baseball-card-checklist/",
       "createdAt": "2026-06-29T23:54:52.857Z",
-      "updatedAt": "2026-06-29T23:55:30.765Z",
+      "updatedAt": "2026-06-29T23:55:49.254Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
       "visualStartedAt": "2026-06-29T23:55:20Z"
     },
@@ -390,6 +390,26 @@
     "source_watch|baseball|2026 topps finest baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1782777349256_dn1z5p",
+      "ts": "2026-06-29T23:55:49.256Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "1,042 rows and 158 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2026 Topps Finest Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782777348034_9y0yzv",
+      "ts": "2026-06-29T23:55:48.034Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2026 Topps Finest Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1782777330765_j1tx0r",
       "ts": "2026-06-29T23:55:30.765Z",
@@ -3038,7 +3058,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-motif-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-29T23:55:32.369Z",
+      "ignoredAt": "2026-06-29T23:55:50.859Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-lineage-bayern-munchen-soccer-card-checklist": {
@@ -3866,11 +3886,11 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-motif-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-06-29T23:55:32.369Z",
+      "ignoredAt": "2026-06-29T23:55:50.858Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-29T23:55:33.875Z",
+  "saved_at": "2026-06-29T23:55:52.199Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-06-29T23:54:53.012Z",
+  "exported_at": "2026-06-27T17:20:52.894Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -322,31 +322,139 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [],
+  "agent_actions": [
+    {
+      "id": "source_watch|baseball|2026 topps finest baseball",
+      "type": "source_import",
+      "source": "scheduled_quick_json",
+      "product": "2026 Topps Finest Baseball",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-topps-finest-baseball-card-checklist/",
+      "createdAt": "2026-06-29T23:54:52.857Z",
+      "updatedAt": "2026-06-29T23:54:52.857Z"
+    },
+    {
+      "id": "source_watch|basketball|2025-26 topps motif basketball",
+      "type": "source_import",
+      "source": "scheduled_quick_json",
+      "product": "2025-26 Topps Motif Basketball",
+      "sport": "basketball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Basketball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-motif-basketball-card-checklist/",
+      "createdAt": "2026-06-29T23:54:52.857Z",
+      "updatedAt": "2026-06-29T23:54:52.857Z"
+    }
+  ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1782777291407_hu6kxj",
-      "ts": "2026-06-29T23:54:51.407Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
-      "status": "started",
+      "id": "log_1782777295543_alert",
+      "ts": "2026-06-29T23:54:52.857Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
       "product": "",
-      "source": "command_center"
+      "source": "operator_backend"
     },
     {
-      "id": "log_1782777291404_u7v5ha",
-      "ts": "2026-06-29T23:54:51.404Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
-      "status": "started",
+      "id": "log_1782777295190",
+      "ts": "2026-06-29T23:54:52.857Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 2 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: skipped for fast sweep. 12 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "status": "needs_review",
       "product": "",
-      "source": "command_center"
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782777295188",
+      "ts": "2026-06-29T23:54:52.857Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782748942951",
+      "ts": "2026-06-29T15:57:05.739Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 13 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782748942948",
+      "ts": "2026-06-29T15:57:05.739Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782662453971",
+      "ts": "2026-06-28T15:57:05.696Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 13 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782662453966",
+      "ts": "2026-06-28T15:57:05.696Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     }
   ],
-  "last_agent_report": null,
+  "last_agent_report": {
+    "ok": true,
+    "status": "needs_admin",
+    "generated_at": "2026-06-29T23:54:52.857Z",
+    "checked": {
+      "checklist_count": 20,
+      "prv_count": 6,
+      "skipped_ignored": 12
+    },
+    "completed_count": 0,
+    "needs_admin_count": 2,
+    "blocked_count": 0,
+    "completed": [],
+    "needs_admin": [
+      "Checklist review: 2025-26 Topps Motif Basketball | basketball | missing",
+      "Checklist review: 2026 Topps Finest Baseball | baseball | missing"
+    ],
+    "blocked": [],
+    "proof": [],
+    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
+    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 2 needs-admin item(s), 0 blocked/issue item(s)."
+  },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -3590,6 +3698,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-29T23:54:54.508Z",
+  "saved_at": "2026-06-29T23:54:55.609Z",
   "saved_by": "cm_command_center_operator"
 }

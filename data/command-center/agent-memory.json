@@ -395,17 +395,21 @@
       "sport": "baseball",
       "code": "2026_topps_finest_baseball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "failed",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "run_queue_approved",
-      "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "executionResult": "Unsupported full-auto action type: checklist_publish",
+      "validationResult": "Unsupported full-auto action type: checklist_publish",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-finest-baseball-card-checklist/",
       "createdAt": "2026-06-29T23:54:52.857Z",
-      "updatedAt": "2026-06-30T01:26:05.900Z",
+      "updatedAt": "2026-06-30T15:57:03.735Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
-      "visualStartedAt": "2026-06-29T23:55:20Z"
+      "visualStartedAt": "2026-06-29T23:55:20Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "repairProof": "Agent attempted repair for 2026 Topps Finest Baseball but it failed. A fix task was created when possible.",
+      "autoExecutedAt": "2026-06-30T15:57:03.735Z"
     },
     {
       "id": "source_watch|basketball|2025-26 topps motif basketball",
@@ -430,6 +434,56 @@
     "source_watch|baseball|2026 topps finest baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1782835322145_alert",
+      "ts": "2026-06-30T15:57:03.735Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782835321631",
+      "ts": "2026-06-30T15:57:03.735Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 13 admin-ignored source item(s) skipped. Auto actions: 1 run. 2026 Topps Finest Baseball -> failed (Unsupported full-auto action type: checklist_publish) Queue remaining: 1.",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782835321628",
+      "ts": "2026-06-30T15:57:03.735Z",
+      "type": "auto_action",
+      "title": "Full-auto action failed",
+      "detail": "2026 Topps Finest Baseball: Unsupported full-auto action type: checklist_publish Unsupported full-auto action type: checklist_publish",
+      "status": "failed",
+      "product": "2026 Topps Finest Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782835321627",
+      "ts": "2026-06-30T15:57:03.735Z",
+      "type": "agent_run_queue",
+      "title": "Run Queue approval applied",
+      "detail": "2026 Topps Finest Baseball was approved because admin flagged it for the run queue.",
+      "status": "approved",
+      "product": "2026 Topps Finest Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782835321619",
+      "ts": "2026-06-30T15:57:03.735Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782782765914_h7kf0s",
       "ts": "2026-06-30T01:26:05.914Z",
@@ -712,26 +766,25 @@
     }
   ],
   "last_agent_report": {
-    "ok": true,
-    "status": "needs_admin",
-    "generated_at": "2026-06-29T23:54:52.857Z",
+    "ok": false,
+    "status": "issue",
+    "generated_at": "2026-06-30T15:57:03.735Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 6,
-      "skipped_ignored": 12
+      "skipped_ignored": 13
     },
     "completed_count": 0,
-    "needs_admin_count": 2,
-    "blocked_count": 0,
+    "needs_admin_count": 0,
+    "blocked_count": 1,
     "completed": [],
-    "needs_admin": [
-      "Checklist review: 2025-26 Topps Motif Basketball | basketball | missing",
-      "Checklist review: 2026 Topps Finest Baseball | baseball | missing"
+    "needs_admin": [],
+    "blocked": [
+      "2026 Topps Finest Baseball -> failed: Unsupported full-auto action type: checklist_publish"
     ],
-    "blocked": [],
     "proof": [],
-    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 2 needs-admin item(s), 0 blocked/issue item(s)."
+    "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
+    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 1 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4031,6 +4084,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-30T01:26:10.301Z",
+  "saved_at": "2026-06-30T16:02:02.215Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -403,13 +403,13 @@
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-finest-baseball-card-checklist/",
       "createdAt": "2026-06-29T23:54:52.857Z",
-      "updatedAt": "2026-06-30T15:57:03.735Z",
+      "updatedAt": "2026-07-01T15:57:03.857Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
       "visualStartedAt": "2026-06-29T23:55:20Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent attempted repair for 2026 Topps Finest Baseball but it failed. A fix task was created when possible.",
-      "autoExecutedAt": "2026-06-30T15:57:03.735Z"
+      "autoExecutedAt": "2026-07-01T15:57:03.857Z"
     },
     {
       "id": "source_watch|basketball|2025-26 topps motif basketball",
@@ -434,6 +434,46 @@
     "source_watch|baseball|2026 topps finest baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1782921615407_alert",
+      "ts": "2026-07-01T15:57:03.857Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782921614183",
+      "ts": "2026-07-01T15:57:03.857Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 13 admin-ignored source item(s) skipped. Auto actions: 1 run. 2026 Topps Finest Baseball -> failed (Unsupported full-auto action type: checklist_publish) Queue remaining: 1.",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782921614182",
+      "ts": "2026-07-01T15:57:03.857Z",
+      "type": "auto_action",
+      "title": "Full-auto action failed",
+      "detail": "2026 Topps Finest Baseball: Unsupported full-auto action type: checklist_publish Unsupported full-auto action type: checklist_publish",
+      "status": "failed",
+      "product": "2026 Topps Finest Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1782921614179",
+      "ts": "2026-07-01T15:57:03.857Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1782835322145_alert",
       "ts": "2026-06-30T15:57:03.735Z",
@@ -768,7 +808,7 @@
   "last_agent_report": {
     "ok": false,
     "status": "issue",
-    "generated_at": "2026-06-30T15:57:03.735Z",
+    "generated_at": "2026-07-01T15:57:03.857Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 6,
@@ -4084,6 +4124,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-06-30T16:02:02.215Z",
+  "saved_at": "2026-07-01T16:00:15.515Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-01T23:47:06.697Z",
+  "exported_at": "2026-07-02T15:45:31.082Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -395,15 +395,15 @@
       "sport": "baseball",
       "code": "2026_topps_finest_baseball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "run_queue_approved",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "validationResult": "CV/ChatBot visual test requested from progress rail...",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-finest-baseball-card-checklist/",
       "createdAt": "2026-06-29T23:54:52.857Z",
-      "updatedAt": "2026-07-01T23:47:05.060Z",
+      "updatedAt": "2026-07-02T15:45:29.474Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
       "visualStartedAt": "2026-06-29T23:55:20Z",
       "targetBucket": "",
@@ -3391,7 +3391,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-motif-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-01T23:47:06.697Z",
+      "ignoredAt": "2026-07-02T15:45:31.082Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-lineage-bayern-munchen-soccer-card-checklist": {
@@ -4219,11 +4219,11 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-motif-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-01T23:47:06.697Z",
+      "ignoredAt": "2026-07-02T15:45:31.082Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-01T23:47:08.176Z",
+  "saved_at": "2026-07-02T15:45:33.859Z",
   "saved_by": "cm_command_center_operator"
 }

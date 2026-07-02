@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-02T15:45:31.082Z",
+  "exported_at": "2026-07-02T15:45:35.745Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -364,6 +364,30 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2026 topps finest baseball|2026_topps_finest_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2026 Topps Finest Baseball",
+      "sport": "baseball",
+      "code": "2026_topps_finest_baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-07-02T15:45:34.140Z",
+      "updatedAt": "2026-07-02T15:45:34.142Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-07-02T15:45:32.290Z"
+    },
+    {
       "id": "visual_test|github_actions|2026 topps finest baseball",
       "type": "visual_test",
       "source": "github_actions",
@@ -371,11 +395,11 @@
       "sport": "baseball",
       "code": "",
       "riskLevel": "medium",
-      "status": "fix_queued",
-      "recommendedAction": "Fix task is queued in Operator Tasks. Complete it, then rerun validation.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test failed. Review the GitHub Actions report.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
       "sourceUrl": "",
       "bucket": "",
@@ -383,9 +407,9 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-06-29T23:55:20.936Z",
-      "updatedAt": "2026-06-29T23:56:36.327Z",
+      "updatedAt": "2026-07-02T15:45:34.142Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
-      "visualStartedAt": "2026-06-29T23:55:20Z"
+      "visualStartedAt": "2026-07-02T15:45:32.290Z"
     },
     {
       "id": "source_watch|baseball|2026 topps finest baseball",
@@ -395,17 +419,17 @@
       "sport": "baseball",
       "code": "2026_topps_finest_baseball",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "run_queue_approved",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV/ChatBot visual test requested from progress rail...",
+      "validationResult": "CV/ChatBot visual test queued or running.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-finest-baseball-card-checklist/",
       "createdAt": "2026-06-29T23:54:52.857Z",
-      "updatedAt": "2026-07-02T15:45:29.474Z",
+      "updatedAt": "2026-07-02T15:45:34.143Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
-      "visualStartedAt": "2026-06-29T23:55:20Z",
+      "visualStartedAt": "2026-07-02T15:45:32.290Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent attempted repair for 2026 Topps Finest Baseball but it failed. A fix task was created when possible.",
@@ -434,6 +458,16 @@
     "source_watch|baseball|2026 topps finest baseball"
   ],
   "activity_log": [
+    {
+      "id": "log_1783007134143_4omx58",
+      "ts": "2026-07-02T15:45:34.143Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2026 Topps Finest Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1782949625094_877um5",
       "ts": "2026-07-01T23:47:05.094Z",
@@ -2261,27 +2295,21 @@
       "checkedAt": "2026-06-27T17:19:56.781Z"
     },
     "baseball|2026 topps finest baseball": {
-      "status": "completed",
-      "result": "failed",
-      "conclusion": "failure",
-      "startedAt": "2026-06-29T23:55:19.675Z",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28410554127",
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-07-02T15:45:32.290Z",
+      "runUrl": "",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
-      "trackingKey": "baseball|2026 topps finest baseball",
+      "trackingKey": "baseball|2026_topps_finest_baseball",
       "key": "baseball|2026 topps finest baseball",
       "productName": "2026 Topps Finest Baseball",
       "sport": "baseball",
-      "code": "",
-      "updatedAt": "2026-06-29T23:56:36.322Z",
+      "code": "2026_topps_finest_baseball",
+      "updatedAt": "2026-07-02T15:45:34.138Z",
       "knownIssue": false,
-      "knownIssueNote": "",
-      "runId": 28410554127,
-      "runNumber": 348,
-      "displayTitle": "Visual Product Test - 2026 Topps Finest Baseball",
-      "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
-      "createdAt": "2026-06-29T23:55:20Z",
-      "checkedAt": "2026-06-29T23:56:36.322Z"
+      "knownIssueNote": ""
     },
     "baseball": {
       "status": "completed",
@@ -2305,6 +2333,23 @@
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-06-29T23:55:20Z",
       "checkedAt": "2026-06-29T23:56:36.322Z"
+    },
+    "baseball|2026_topps_finest_baseball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-07-02T15:45:32.290Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2026_topps_finest_baseball",
+      "key": "baseball|2026_topps_finest_baseball",
+      "productName": "2026 Topps Finest Baseball",
+      "sport": "baseball",
+      "code": "2026_topps_finest_baseball",
+      "updatedAt": "2026-07-02T15:45:34.138Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -3391,7 +3436,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-motif-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-02T15:45:31.082Z",
+      "ignoredAt": "2026-07-02T15:45:35.745Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-lineage-bayern-munchen-soccer-card-checklist": {
@@ -4219,11 +4264,11 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-motif-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-02T15:45:31.082Z",
+      "ignoredAt": "2026-07-02T15:45:35.745Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-02T15:45:33.859Z",
+  "saved_at": "2026-07-02T15:45:38.067Z",
   "saved_by": "cm_command_center_operator"
 }

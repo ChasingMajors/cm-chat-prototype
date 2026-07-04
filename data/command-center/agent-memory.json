@@ -364,6 +364,48 @@
   ],
   "agent_actions": [
     {
+      "id": "source_watch|soccer|2026 leaf glory of the game soccer",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026 Leaf Glory of the Game Soccer",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "failed",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "Checklist sheet write failed.",
+      "validationResult": "Source import preview is not ready for write.",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-glory-of-the-game-soccer-card-checklist/",
+      "createdAt": "2026-07-04T15:57:03.381Z",
+      "updatedAt": "2026-07-04T15:57:03.381Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "Agent attempted repair for 2026 Leaf Glory of the Game Soccer but it failed. Source import preview is not ready for write.",
+      "autoExecutedAt": "2026-07-04T15:57:03.381Z"
+    },
+    {
+      "id": "source_watch|hockey|2026 upper deck team canada hockey",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026 Upper Deck Team Canada Hockey",
+      "sport": "hockey",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-team-canada-hockey-card-checklist/",
+      "createdAt": "2026-07-04T15:57:03.381Z",
+      "updatedAt": "2026-07-04T15:57:03.381Z"
+    },
+    {
       "id": "source_watch|soccer|2025-26 panini prestige efl soccer",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -384,6 +426,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783180795297_alert",
+      "ts": "2026-07-04T15:57:03.381Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783180794761",
+      "ts": "2026-07-04T15:57:03.381Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 2 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 14 admin-ignored source item(s) skipped. Auto actions: 1 run. 2026 Leaf Glory of the Game Soccer -> failed (Source import preview is not ready for write.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783180794760",
+      "ts": "2026-07-04T15:57:03.381Z",
+      "type": "auto_action",
+      "title": "Full-auto action failed",
+      "detail": "2026 Leaf Glory of the Game Soccer: Checklist sheet write failed. Source import preview is not ready for write.",
+      "status": "failed",
+      "product": "2026 Leaf Glory of the Game Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783180794328",
+      "ts": "2026-07-04T15:57:03.381Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1783177279493_i926fd",
       "ts": "2026-07-04T15:01:19.493Z",
@@ -1116,25 +1198,28 @@
     }
   ],
   "last_agent_report": {
-    "ok": true,
-    "status": "needs_admin",
-    "generated_at": "2026-07-03T15:20:52.401Z",
+    "ok": false,
+    "status": "issue",
+    "generated_at": "2026-07-04T15:57:03.381Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 6,
       "skipped_ignored": 14
     },
     "completed_count": 0,
-    "needs_admin_count": 1,
-    "blocked_count": 0,
+    "needs_admin_count": 2,
+    "blocked_count": 1,
     "completed": [],
     "needs_admin": [
-      "Checklist review: 2025-26 Panini Prestige EFL Soccer | soccer | missing"
+      "Checklist review: 2026 Upper Deck Team Canada Hockey | hockey | missing",
+      "Checklist review: 2026 Leaf Glory of the Game Soccer | soccer | missing"
     ],
-    "blocked": [],
+    "blocked": [
+      "2026 Leaf Glory of the Game Soccer -> failed: Source import preview is not ready for write."
+    ],
     "proof": [],
-    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
+    "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
+    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 2 needs-admin item(s), 1 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4511,6 +4596,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-04T15:01:22.401Z",
+  "saved_at": "2026-07-04T15:59:55.356Z",
   "saved_by": "cm_command_center_operator"
 }

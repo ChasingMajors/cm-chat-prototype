@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-04T15:00:31.877Z",
+  "exported_at": "2026-07-04T15:01:21.097Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,19 +371,29 @@
       "sport": "soccer",
       "code": "2025_26_panini_prestige_efl_soccer",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
+      "status": "validated",
+      "recommendedAction": "No action needed. CV and ChatBot validation passed.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot validation needs review.",
-      "runUrl": "",
+      "executionResult": "Sheet write completed and JSON published.",
+      "validationResult": "CV and ChatBot passed.",
+      "runUrl": "https://app.chasingmajors.com/checklists/?refresh=1&code=2025_26_panini_prestige_efl_soccer&sport=soccer&type=product",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "createdAt": "2026-07-03T15:20:52.401Z",
-      "updatedAt": "2026-07-04T15:00:22.955Z"
+      "updatedAt": "2026-07-04T15:01:19.490Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783177279493_i926fd",
+      "ts": "2026-07-04T15:01:19.493Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written and published",
+      "detail": "635 checklist rows and 32 parallels validated in the source sheet.",
+      "status": "validated",
+      "product": "2025-26 Panini Prestige EFL Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1783177230274_b063bn",
       "ts": "2026-07-04T15:00:30.274Z",
@@ -4480,9 +4490,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-07-02T15:52:08.345Z",
       "resolved": true
+    },
+    "soccer|https www checklistcenter com 2025-26-panini-prestige-efl-soccer-card-checklist": {
+      "product": "2025-26 Panini Prestige EFL Soccer",
+      "sport": "soccer",
+      "code": "2025_26_panini_prestige_efl_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-04T15:01:21.097Z",
+      "resolved": true
+    },
+    "soccer|2025_26_panini_prestige_efl_soccer": {
+      "product": "2025-26 Panini Prestige EFL Soccer",
+      "sport": "soccer",
+      "code": "2025_26_panini_prestige_efl_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-04T15:01:21.097Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-04T15:00:33.549Z",
+  "saved_at": "2026-07-04T15:01:22.401Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-03T15:21:01.883Z",
+  "exported_at": "2026-07-04T14:59:58.415Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -366,59 +366,33 @@
     {
       "id": "source_watch|soccer|2025-26 panini prestige efl soccer",
       "type": "source_import",
-      "source": "scheduled_deep_sheets",
+      "source": "scheduled_quick_json",
       "product": "2025-26 Panini Prestige EFL Soccer",
       "sport": "soccer",
-      "code": "2025_26_panini_prestige_efl_soccer",
+      "code": "",
       "riskLevel": "medium",
-      "status": "pending_visual_validation",
+      "status": "approval_required",
       "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
-      "executionResult": "Checklist sheet write completed; published JSON validation is pending for 2025_26_panini_prestige_efl_soccer.",
-      "validationResult": "Published checklist JSON validated with 635 rows. CV/ChatBot visual validation is pending.",
+      "executionResult": "",
+      "validationResult": "",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "createdAt": "2026-07-03T15:20:52.401Z",
-      "updatedAt": "2026-07-03T15:57:03.397Z",
-      "targetBucket": "2025-26",
-      "pendingValidationAttempts": 0,
-      "visualStartedAt": "",
-      "visualRunUrl": "",
-      "repairProof": "Agent fixed/published 2025-26 Panini Prestige EFL Soccer and verified public JSON. Visual CV/ChatBot proof is next.",
-      "autoExecutedAt": "2026-07-03T15:57:03.397Z"
+      "updatedAt": "2026-07-03T15:20:52.401Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1783094528070",
-      "ts": "2026-07-03T15:57:03.397Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 14 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Panini Prestige EFL Soccer -> pending_visual_validation (Published checklist JSON validated with 635 rows. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783094528069",
-      "ts": "2026-07-03T15:57:03.397Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2025-26 Panini Prestige EFL Soccer: Checklist sheet write completed; published JSON validation is pending for 2025_26_panini_prestige_efl_soccer. Published checklist JSON validated with 635 rows. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
+      "id": "log_1783177196806_bqviyd",
+      "ts": "2026-07-04T14:59:56.806Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
       "product": "2025-26 Panini Prestige EFL Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783094392787",
-      "ts": "2026-07-03T15:57:03.397Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
+      "source": "admin"
     },
     {
       "id": "log_1783092060280_hb4k1p",
@@ -1084,27 +1058,23 @@
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-07-03T15:57:03.397Z",
+    "generated_at": "2026-07-03T15:20:52.401Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 6,
       "skipped_ignored": 14
     },
-    "completed_count": 1,
+    "completed_count": 0,
     "needs_admin_count": 1,
     "blocked_count": 0,
-    "completed": [
-      "2025-26 Panini Prestige EFL Soccer -> pending_visual_validation: Published checklist JSON validated with 635 rows. CV/ChatBot visual validation is pending."
-    ],
+    "completed": [],
     "needs_admin": [
       "Checklist review: 2025-26 Panini Prestige EFL Soccer | soccer | missing"
     ],
     "blocked": [],
-    "proof": [
-      "2025-26 Panini Prestige EFL Soccer -> pending_visual_validation: Published checklist JSON validated with 635 rows. CV/ChatBot visual validation is pending."
-    ],
+    "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 1 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4463,6 +4433,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-03T16:02:08.294Z",
+  "saved_at": "2026-07-04T15:00:00.080Z",
   "saved_by": "cm_command_center_operator"
 }

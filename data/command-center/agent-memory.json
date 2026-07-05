@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-05T22:21:45.456Z",
+  "exported_at": "2026-07-05T22:21:53.859Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -411,17 +411,17 @@
       "source": "scheduled_deep_sheets",
       "product": "2026 Upper Deck Team Canada Hockey",
       "sport": "hockey",
-      "code": "",
+      "code": "2026_upper_deck_team_canada_hockey",
       "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "status": "needs_admin",
+      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
+      "executionResult": "Import preview parsed 842 rows and 38 parallels.",
+      "validationResult": "Preview rows are ready for admin review before sheet write.",
+      "runUrl": "https://www.checklistcenter.com/2026-upper-deck-team-canada-hockey-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-team-canada-hockey-card-checklist/",
       "createdAt": "2026-07-04T15:57:03.381Z",
-      "updatedAt": "2026-07-05T15:57:03.452Z"
+      "updatedAt": "2026-07-05T22:21:52.254Z"
     },
     {
       "id": "source_watch|soccer|2025-26 panini prestige efl soccer",
@@ -444,6 +444,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783290112256_72tj4t",
+      "ts": "2026-07-05T22:21:52.256Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "842 rows and 38 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2026 Upper Deck Team Canada Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783290110790_ouadh2",
+      "ts": "2026-07-05T22:21:50.790Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2026 Upper Deck Team Canada Hockey",
+      "source": "admin"
+    },
     {
       "id": "log_1783290103850_afg28n",
       "ts": "2026-07-05T22:21:43.851Z",
@@ -1222,26 +1242,6 @@
       "detail": "Alert sent via email.",
       "status": "sent",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782777295190",
-      "ts": "2026-06-29T23:54:52.857Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 2 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: skipped for fast sweep. 12 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782777295188",
-      "ts": "2026-06-29T23:54:52.857Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     }
   ],
@@ -4631,7 +4631,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-05T22:21:45.456Z",
+      "ignoredAt": "2026-07-05T22:21:53.859Z",
       "resolved": true
     },
     "soccer|2025_26_panini_prestige_efl_soccer": {
@@ -4640,7 +4640,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-05T22:21:45.456Z",
+      "ignoredAt": "2026-07-05T22:21:53.859Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-leaf-glory-of-the-game-soccer-card-checklist": {
@@ -4663,6 +4663,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-05T22:21:48.153Z",
+  "saved_at": "2026-07-05T22:21:56.889Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-05T22:21:53.859Z",
+  "exported_at": "2026-07-05T22:22:08.395Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -407,21 +407,21 @@
     },
     {
       "id": "source_watch|hockey|2026 upper deck team canada hockey",
-      "type": "source_import",
-      "source": "scheduled_deep_sheets",
+      "type": "checklist_publish",
+      "source": "operator_backend",
       "product": "2026 Upper Deck Team Canada Hockey",
       "sport": "hockey",
       "code": "2026_upper_deck_team_canada_hockey",
       "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
+      "status": "running",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Import preview parsed 842 rows and 38 parallels.",
-      "validationResult": "Preview rows are ready for admin review before sheet write.",
-      "runUrl": "https://www.checklistcenter.com/2026-upper-deck-team-canada-hockey-card-checklist/",
+      "executionResult": "Sheet write completed. JSON publish started.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-team-canada-hockey-card-checklist/",
       "createdAt": "2026-07-04T15:57:03.381Z",
-      "updatedAt": "2026-07-05T22:21:52.254Z"
+      "updatedAt": "2026-07-05T22:22:06.794Z"
     },
     {
       "id": "source_watch|soccer|2025-26 panini prestige efl soccer",
@@ -444,6 +444,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783290126793_dw50df",
+      "ts": "2026-07-05T22:22:06.793Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2026 Upper Deck Team Canada Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783290126783_mht075",
+      "ts": "2026-07-05T22:22:06.783Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "842 checklist rows and 38 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2026 Upper Deck Team Canada Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783290116907_fgh2mn",
+      "ts": "2026-07-05T22:21:56.907Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "2026 Upper Deck Team Canada Hockey",
+      "source": "admin"
+    },
     {
       "id": "log_1783290112256_72tj4t",
       "ts": "2026-07-05T22:21:52.256Z",
@@ -1213,36 +1243,6 @@
       "status": "queued",
       "product": "2026 Topps Finest Baseball",
       "source": "admin"
-    },
-    {
-      "id": "log_1782777300215_8piwng",
-      "ts": "2026-06-29T23:55:00.215Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782777300199_98rzva",
-      "ts": "2026-06-29T23:55:00.199Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782777295543_alert",
-      "ts": "2026-06-29T23:54:52.857Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -4631,7 +4631,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-05T22:21:53.859Z",
+      "ignoredAt": "2026-07-05T22:22:08.395Z",
       "resolved": true
     },
     "soccer|2025_26_panini_prestige_efl_soccer": {
@@ -4640,7 +4640,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-05T22:21:53.859Z",
+      "ignoredAt": "2026-07-05T22:22:08.395Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-leaf-glory-of-the-game-soccer-card-checklist": {
@@ -4663,6 +4663,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-05T22:21:56.889Z",
+  "saved_at": "2026-07-05T22:22:10.739Z",
   "saved_by": "cm_command_center_operator"
 }

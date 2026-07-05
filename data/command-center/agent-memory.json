@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-05T22:21:31.879Z",
+  "exported_at": "2026-07-05T22:21:45.456Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -406,30 +406,6 @@
       "updatedAt": "2026-07-05T15:57:03.452Z"
     },
     {
-      "id": "source_watch|soccer|2026 leaf glory of the game soccer",
-      "type": "source_import",
-      "source": "scheduled_deep_sheets",
-      "product": "2026 Leaf Glory of the Game Soccer",
-      "sport": "soccer",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-glory-of-the-game-soccer-card-checklist/",
-      "createdAt": "2026-07-04T15:57:03.381Z",
-      "updatedAt": "2026-07-05T15:57:03.452Z",
-      "targetBucket": "",
-      "pendingValidationAttempts": 0,
-      "visualStartedAt": "",
-      "visualRunUrl": "",
-      "repairProof": "Agent attempted repair for 2026 Leaf Glory of the Game Soccer but it failed. Source import preview is not ready for write.",
-      "autoExecutedAt": "2026-07-04T15:57:03.381Z"
-    },
-    {
       "id": "source_watch|hockey|2026 upper deck team canada hockey",
       "type": "source_import",
       "source": "scheduled_deep_sheets",
@@ -468,6 +444,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783290103850_afg28n",
+      "ts": "2026-07-05T22:21:43.851Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2026 Leaf Glory of the Game Soccer was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2026 Leaf Glory of the Game Soccer",
+      "source": "admin"
+    },
     {
       "id": "log_1783290090277_1tgjkn",
       "ts": "2026-07-05T22:21:30.277Z",
@@ -1256,16 +1242,6 @@
       "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
       "status": "validated",
       "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782748942951",
-      "ts": "2026-06-29T15:57:05.739Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 13 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
-      "product": "",
       "source": "operator_backend"
     }
   ],
@@ -4655,7 +4631,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-05T22:21:31.879Z",
+      "ignoredAt": "2026-07-05T22:21:45.456Z",
       "resolved": true
     },
     "soccer|2025_26_panini_prestige_efl_soccer": {
@@ -4664,11 +4640,29 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-05T22:21:31.879Z",
+      "ignoredAt": "2026-07-05T22:21:45.456Z",
+      "resolved": true
+    },
+    "soccer|https www checklistcenter com 2026-leaf-glory-of-the-game-soccer-card-checklist": {
+      "product": "2026 Leaf Glory of the Game Soccer",
+      "sport": "soccer",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-glory-of-the-game-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-05T22:21:43.849Z",
+      "resolved": true
+    },
+    "soccer|2026 leaf glory of the game soccer": {
+      "product": "2026 Leaf Glory of the Game Soccer",
+      "sport": "soccer",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-glory-of-the-game-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-05T22:21:43.849Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-05T22:21:33.569Z",
+  "saved_at": "2026-07-05T22:21:48.153Z",
   "saved_by": "cm_command_center_operator"
 }

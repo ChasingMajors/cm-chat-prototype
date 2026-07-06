@@ -371,21 +371,21 @@
       "sport": "football",
       "code": "",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "pending_visual_validation",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "",
       "executionResult": "PRV sheet write and JSON publish completed for 2025_topps_signature_class_football.",
-      "validationResult": "PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "validationResult": "Public PRV JSON validated with 50 rows. Public PRV behavior validation is pending.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-signature-class-nfl-analysis",
       "createdAt": "2026-07-05T15:57:03.452Z",
-      "updatedAt": "2026-07-05T15:57:03.452Z",
+      "updatedAt": "2026-07-06T15:57:03.846Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
-      "repairProof": "PRV sheet write and JSON publish completed for 2025_topps_signature_class_football.",
-      "autoExecutedAt": "2026-07-05T15:57:03.452Z"
+      "repairProof": "Agent fixed/published 2025 Topps Signature Class Football and verified public JSON. Visual CV/ChatBot proof is next.",
+      "autoExecutedAt": "2026-07-06T15:57:03.846Z"
     },
     {
       "id": "source_watch|baseball|2026 leaf metal draft baseball",
@@ -403,7 +403,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-draft-baseball-card-checklist/",
       "createdAt": "2026-07-05T15:57:03.452Z",
-      "updatedAt": "2026-07-05T15:57:03.452Z"
+      "updatedAt": "2026-07-06T15:57:03.846Z"
     },
     {
       "id": "source_watch|hockey|2026 upper deck team canada hockey",
@@ -444,6 +444,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783353647949_alert",
+      "ts": "2026-07-06T15:57:03.846Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783353647388",
+      "ts": "2026-07-06T15:57:03.846Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 13 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025 Topps Signature Class Football -> pending_visual_validation (Public PRV JSON validated with 50 rows. Public PRV behavior validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783353647387",
+      "ts": "2026-07-06T15:57:03.846Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2025 Topps Signature Class Football: PRV sheet write and JSON publish completed for 2025_topps_signature_class_football. Public PRV JSON validated with 50 rows. Public PRV behavior validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2025 Topps Signature Class Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783353609646",
+      "ts": "2026-07-06T15:57:03.846Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1783290126793_dw50df",
       "ts": "2026-07-05T22:22:06.793Z",
@@ -1203,72 +1243,32 @@
       "status": "queued",
       "product": "2026 Topps Finest Baseball",
       "source": "github_actions"
-    },
-    {
-      "id": "log_1782777318569_strolc",
-      "ts": "2026-06-29T23:55:18.569Z",
-      "type": "agent_run_queue",
-      "title": "Run CV/ChatBot visual test",
-      "detail": "2026 Topps Finest Baseball is being attempted from the Admin Run Queue.",
-      "status": "started",
-      "product": "2026 Topps Finest Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1782777318568_2wrtqr",
-      "ts": "2026-06-29T23:55:18.568Z",
-      "type": "agent_run_queue",
-      "title": "Run Queue approval applied",
-      "detail": "2026 Topps Finest Baseball was approved because admin flagged it for the run queue.",
-      "status": "approved",
-      "product": "2026 Topps Finest Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1782777318563_vj8rwt",
-      "ts": "2026-06-29T23:55:18.563Z",
-      "type": "agent_cycle",
-      "title": "Running Admin Run Queue",
-      "detail": "1 flagged job will be attempted before Sentinel chooses other work.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1782777310474_xa32lm",
-      "ts": "2026-06-29T23:55:10.474Z",
-      "type": "agent_run_queue",
-      "title": "Added to Agent Run Queue",
-      "detail": "2026 Topps Finest Baseball will be attempted by Run Agent Cycle. Queueing is admin intent for the next product-scoped step.",
-      "status": "queued",
-      "product": "2026 Topps Finest Baseball",
-      "source": "admin"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-07-05T15:57:03.452Z",
+    "generated_at": "2026-07-06T15:57:03.846Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 6,
-      "skipped_ignored": 12
+      "skipped_ignored": 13
     },
-    "completed_count": 0,
-    "needs_admin_count": 5,
+    "completed_count": 1,
+    "needs_admin_count": 1,
     "blocked_count": 0,
-    "completed": [],
+    "completed": [
+      "2025 Topps Signature Class Football -> pending_visual_validation: Public PRV JSON validated with 50 rows. Public PRV behavior validation is pending."
+    ],
     "needs_admin": [
-      "2025 Topps Signature Class Football -> needs_admin: PRV write completed, but public JSON validation needs review. Publish returned ok.",
-      "Checklist review: 2026 Leaf Metal Draft Baseball | baseball | missing",
-      "Checklist review: 2026 Upper Deck Team Canada Hockey | hockey | missing",
-      "Checklist review: 2026 Leaf Glory of the Game Soccer | soccer | missing",
-      "PRV review: 2025 Topps Signature Class Football | football | missing"
+      "Checklist review: 2026 Leaf Metal Draft Baseball | baseball | missing"
     ],
     "blocked": [],
-    "proof": [],
+    "proof": [
+      "2025 Topps Signature Class Football -> pending_visual_validation: Public PRV JSON validated with 50 rows. Public PRV behavior validation is pending."
+    ],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 5 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 1 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4663,6 +4663,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-05T22:22:10.739Z",
+  "saved_at": "2026-07-06T16:00:48.017Z",
   "saved_by": "cm_command_center_operator"
 }

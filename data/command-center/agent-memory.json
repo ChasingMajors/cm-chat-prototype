@@ -364,6 +364,42 @@
   ],
   "agent_actions": [
     {
+      "id": "prv_watch|football|2025 topps finest football",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2025 Topps Finest Football",
+      "sport": "football",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-finest-nfl-analysis-and",
+      "createdAt": "2026-07-07T15:57:03.566Z",
+      "updatedAt": "2026-07-07T15:57:03.566Z"
+    },
+    {
+      "id": "source_watch|football|2025 topps chrome black football",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2025 Topps Chrome Black Football",
+      "sport": "football",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Football source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2025-topps-chrome-black-football-card-checklist/",
+      "createdAt": "2026-07-07T15:57:03.566Z",
+      "updatedAt": "2026-07-07T15:57:03.566Z"
+    },
+    {
       "id": "prv_watch|football|2025 topps signature class football",
       "type": "prv_source_review",
       "source": "scheduled_prv_quick_json",
@@ -371,21 +407,21 @@
       "sport": "football",
       "code": "",
       "riskLevel": "medium",
-      "status": "pending_visual_validation",
+      "status": "queued",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "",
-      "executionResult": "PRV sheet write and JSON publish completed for 2025_topps_signature_class_football.",
-      "validationResult": "Public PRV JSON validated with 50 rows. Public PRV behavior validation is pending.",
-      "runUrl": "",
+      "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
+      "validationResult": "Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-signature-class-nfl-analysis",
       "createdAt": "2026-07-05T15:57:03.452Z",
-      "updatedAt": "2026-07-06T15:57:03.846Z",
+      "updatedAt": "2026-07-07T15:57:03.566Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
-      "visualStartedAt": "",
-      "visualRunUrl": "",
-      "repairProof": "Agent fixed/published 2025 Topps Signature Class Football and verified public JSON. Visual CV/ChatBot proof is next.",
-      "autoExecutedAt": "2026-07-06T15:57:03.846Z"
+      "visualStartedAt": "2026-07-07T16:00:26.054Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
+      "autoExecutedAt": "2026-07-07T15:57:03.566Z"
     },
     {
       "id": "source_watch|baseball|2026 leaf metal draft baseball",
@@ -403,7 +439,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-draft-baseball-card-checklist/",
       "createdAt": "2026-07-05T15:57:03.452Z",
-      "updatedAt": "2026-07-06T15:57:03.846Z"
+      "updatedAt": "2026-07-07T15:57:03.566Z"
     },
     {
       "id": "source_watch|hockey|2026 upper deck team canada hockey",
@@ -444,6 +480,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783440027950_alert",
+      "ts": "2026-07-07T15:57:03.566Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783440027600",
+      "ts": "2026-07-07T15:57:03.566Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 2 actionable from 20 checked. PRV: 1 actionable from 6 checked. PRV sync: passed. 12 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025 Topps Signature Class Football -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783440027599",
+      "ts": "2026-07-07T15:57:03.566Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2025 Topps Signature Class Football: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "status": "queued",
+      "product": "2025 Topps Signature Class Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783440026039",
+      "ts": "2026-07-07T15:57:03.566Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1783353647949_alert",
       "ts": "2026-07-06T15:57:03.846Z",
@@ -1203,72 +1279,31 @@
       "status": "preview_ready",
       "product": "2026 Topps Finest Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1782777348034_9y0yzv",
-      "ts": "2026-06-29T23:55:48.034Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2026 Topps Finest Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1782777330765_j1tx0r",
-      "ts": "2026-06-29T23:55:30.765Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2026 Topps Finest Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1782777320946_jj7v9o",
-      "ts": "2026-06-29T23:55:20.946Z",
-      "type": "agent_run_queue",
-      "title": "Admin Run Queue complete",
-      "detail": "1 attempted. 0 skipped for approval/details. 0 failed. 1 still queued. 2026 Topps Finest Baseball: Run CV/ChatBot visual test",
-      "status": "needs_review",
-      "product": "",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1782777320939_mku32d",
-      "ts": "2026-06-29T23:55:20.939Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2026 Topps Finest Baseball",
-      "source": "github_actions"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-07-06T15:57:03.846Z",
+    "generated_at": "2026-07-07T15:57:03.566Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 6,
-      "skipped_ignored": 13
+      "skipped_ignored": 12
     },
-    "completed_count": 1,
-    "needs_admin_count": 1,
+    "completed_count": 0,
+    "needs_admin_count": 4,
     "blocked_count": 0,
-    "completed": [
-      "2025 Topps Signature Class Football -> pending_visual_validation: Public PRV JSON validated with 50 rows. Public PRV behavior validation is pending."
-    ],
+    "completed": [],
     "needs_admin": [
-      "Checklist review: 2026 Leaf Metal Draft Baseball | baseball | missing"
+      "2025 Topps Signature Class Football -> queued: Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "Checklist review: 2025 Topps Chrome Black Football | football | missing",
+      "Checklist review: 2026 Leaf Metal Draft Baseball | baseball | missing",
+      "PRV review: 2025 Topps Finest Football | football | missing"
     ],
     "blocked": [],
-    "proof": [
-      "2025 Topps Signature Class Football -> pending_visual_validation: Public PRV JSON validated with 50 rows. Public PRV behavior validation is pending."
-    ],
+    "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 1 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 4 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4663,6 +4698,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-06T16:00:48.017Z",
+  "saved_at": "2026-07-07T16:00:27.970Z",
   "saved_by": "cm_command_center_operator"
 }

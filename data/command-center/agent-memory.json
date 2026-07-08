@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-08T02:50:02.475Z",
+  "exported_at": "2026-07-08T23:39:02.790Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -362,9 +362,48 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [],
+  "agent_actions": [
+    {
+      "id": "prv_watch|baseball|2026 topps finest baseball",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2026 Topps Finest Baseball",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "ignored",
+      "recommendedAction": "No action needed. Resolved proof is already recorded.",
+      "adminDecision": "resolved_memory",
+      "executionResult": "Resolved memory suppressed this stale queue row.",
+      "validationResult": "Already resolved. Future scans should not requeue this product.",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
+      "createdAt": "2026-07-08T02:49:56.198Z",
+      "updatedAt": "2026-07-08T02:50:02.495Z"
+    }
+  ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783553941187_sls68k",
+      "ts": "2026-07-08T23:39:01.187Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783553941175_tzyjf3",
+      "ts": "2026-07-08T23:39:01.175Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
     {
       "id": "log_1783479000872_i4x64o",
       "ts": "2026-07-08T02:50:00.872Z",
@@ -3850,9 +3889,9 @@
       "product": "2026 Topps Finest Baseball",
       "sport": "baseball",
       "code": "",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28602951456",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-02T15:52:08.345Z",
+      "ignoredAt": "2026-07-08T23:39:02.790Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-finest-baseball-card-checklist": {
@@ -4007,9 +4046,18 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-07-08T02:49:51.021Z",
       "resolved": true
+    },
+    "baseball|https slabsquatch substack com p 2026-topps-finest-mlb-analysis-and": {
+      "product": "2026 Topps Finest Baseball",
+      "sport": "baseball",
+      "code": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-08T23:39:02.790Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-08T02:50:03.792Z",
+  "saved_at": "2026-07-08T23:39:04.718Z",
   "saved_by": "cm_command_center_operator"
 }

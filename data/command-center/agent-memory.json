@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-08T23:39:40.846Z",
+  "exported_at": "2026-07-08T23:40:10.849Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -385,24 +385,54 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1783553979244_gdz8pc",
-      "ts": "2026-07-08T23:39:39.244Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
-      "status": "started",
+      "id": "log_1783554009246_dnitg4",
+      "ts": "2026-07-08T23:40:09.246Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch complete",
+      "detail": "6 SlabSquatch items checked. 0 need review. 0 PRV review cards queued.",
+      "status": "completed",
       "product": "",
-      "source": "command_center"
+      "source": "slabsquatch"
     },
     {
-      "id": "log_1783553979225_gbx7ht",
-      "ts": "2026-07-08T23:39:39.226Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "id": "log_1783554009245_4szkj6",
+      "ts": "2026-07-08T23:40:09.245Z",
+      "type": "source_watch",
+      "title": "Source Watch skipped clean items",
+      "detail": "5 admin-ignored source item(s) were omitted from the queue.",
+      "status": "ignored",
+      "product": "",
+      "source": "prv_source_watch"
+    },
+    {
+      "id": "log_1783554007695_9egq8t",
+      "ts": "2026-07-08T23:40:07.695Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch started",
+      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
       "status": "started",
       "product": "",
-      "source": "command_center"
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1783553985381_wpe7dj",
+      "ts": "2026-07-08T23:39:45.381Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783553985372_fsgke5",
+      "ts": "2026-07-08T23:39:45.372Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
     },
     {
       "id": "log_1783553958559_mbq4wi",
@@ -3949,7 +3979,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T23:39:40.846Z",
+      "ignoredAt": "2026-07-08T23:40:10.849Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-finest-baseball-card-checklist": {
@@ -4111,11 +4141,11 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T23:39:40.845Z",
+      "ignoredAt": "2026-07-08T23:40:10.849Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-08T23:39:42.126Z",
+  "saved_at": "2026-07-08T23:40:12.411Z",
   "saved_by": "cm_command_center_operator"
 }

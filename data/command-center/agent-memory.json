@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-08T02:43:51.288Z",
+  "exported_at": "2026-07-08T02:43:59.384Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,15 +371,15 @@
       "sport": "football",
       "code": "2025_topps_finest_football",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Review PRV sheet rows, then publish PRV JSON when ready.",
       "adminDecision": "",
-      "executionResult": "PRV Index and Products rows written.",
+      "executionResult": "PRV sheet write completed. PRV JSON publish started.",
       "validationResult": "45 PRV rows found in Products.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-finest-nfl-analysis-and",
       "createdAt": "2026-07-07T15:57:03.566Z",
-      "updatedAt": "2026-07-08T01:32:56.371Z"
+      "updatedAt": "2026-07-08T02:43:57.782Z"
     },
     {
       "id": "source_watch|football|2025 topps chrome black football",
@@ -462,6 +462,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783478637780_35brvq",
+      "ts": "2026-07-08T02:43:57.780Z",
+      "type": "prv_publish",
+      "title": "PRV JSON publish started",
+      "detail": "Publishing Print Run Vault static JSON after approved sheet write.",
+      "status": "started",
+      "product": "2025 Topps Finest Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1783478629687_ad9w4j",
       "ts": "2026-07-08T02:43:49.687Z",
@@ -1248,16 +1258,6 @@
       "type": "visual_test",
       "title": "Visual test status updated",
       "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "queued",
-      "product": "2026 Topps Finest Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1783007134143_4omx58",
-      "ts": "2026-07-02T15:45:34.143Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
       "status": "queued",
       "product": "2026 Topps Finest Baseball",
       "source": "github_actions"
@@ -4648,7 +4648,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T02:43:51.288Z",
+      "ignoredAt": "2026-07-08T02:43:59.384Z",
       "resolved": true
     },
     "soccer|2025_26_panini_prestige_efl_soccer": {
@@ -4657,7 +4657,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T02:43:51.288Z",
+      "ignoredAt": "2026-07-08T02:43:59.384Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-leaf-glory-of-the-game-soccer-card-checklist": {
@@ -4702,7 +4702,7 @@
       "code": "2025_topps_signature_class_football",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-signature-class-nfl-analysis",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T02:43:51.288Z",
+      "ignoredAt": "2026-07-08T02:43:59.384Z",
       "resolved": true
     },
     "football|2025_topps_signature_class_football": {
@@ -4711,11 +4711,11 @@
       "code": "2025_topps_signature_class_football",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-signature-class-nfl-analysis",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T02:43:51.288Z",
+      "ignoredAt": "2026-07-08T02:43:59.384Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-08T02:43:53.341Z",
+  "saved_at": "2026-07-08T02:44:01.100Z",
   "saved_by": "cm_command_center_operator"
 }

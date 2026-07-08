@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-08T02:46:13.542Z",
+  "exported_at": "2026-07-08T02:46:34.745Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,11 +371,11 @@
       "sport": "football",
       "code": "2025_topps_chrome_black_football",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28913700871",
       "sourceUrl": "",
       "bucket": "",
@@ -383,7 +383,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-07-08T02:44:57.219Z",
-      "updatedAt": "2026-07-08T02:46:11.937Z",
+      "updatedAt": "2026-07-08T02:46:33.132Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28913700871",
       "visualStartedAt": "2026-07-08T02:44:56Z"
     },
@@ -413,15 +413,15 @@
       "sport": "football",
       "code": "2025_topps_chrome_black_football",
       "riskLevel": "medium",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28913700871",
       "sourceUrl": "https://www.checklistcenter.com/2025-topps-chrome-black-football-card-checklist/",
       "createdAt": "2026-07-07T15:57:03.566Z",
-      "updatedAt": "2026-07-08T02:46:11.937Z",
+      "updatedAt": "2026-07-08T02:46:33.134Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28913700871",
       "visualStartedAt": "2026-07-08T02:44:56Z"
     },
@@ -488,6 +488,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783478793140_86kz5o",
+      "ts": "2026-07-08T02:46:33.140Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2025 Topps Chrome Black Football",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1783478793138_n1pq3i",
+      "ts": "2026-07-08T02:46:33.138Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2025 Topps Chrome Black Football",
+      "source": "github_actions"
+    },
     {
       "id": "log_1783478771938_c5bsgp",
       "ts": "2026-07-08T02:46:11.938Z",
@@ -1267,26 +1287,6 @@
       "status": "imported",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1783007278653",
-      "ts": "2026-07-02T15:47:55.390Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: skipped for fast sweep. 14 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783007278651",
-      "ts": "2026-07-02T15:47:55.390Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -2717,9 +2717,9 @@
       "checkedAt": "2026-07-02T15:47:38.073Z"
     },
     "football|2025_topps_chrome_black_football": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-07-08T02:44:55.664Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28913700871",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2729,7 +2729,7 @@
       "productName": "2025 Topps Chrome Black Football",
       "sport": "football",
       "code": "2025_topps_chrome_black_football",
-      "updatedAt": "2026-07-08T02:46:11.934Z",
+      "updatedAt": "2026-07-08T02:46:33.130Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 28913700871,
@@ -2737,12 +2737,12 @@
       "displayTitle": "Visual Product Test - 2025 Topps Chrome Black Football",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-08T02:44:56Z",
-      "checkedAt": "2026-07-08T02:46:11.934Z"
+      "checkedAt": "2026-07-08T02:46:33.130Z"
     },
     "football|2025 topps chrome black football": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-07-08T02:44:55.664Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28913700871",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2752,7 +2752,7 @@
       "productName": "2025 Topps Chrome Black Football",
       "sport": "football",
       "code": "2025_topps_chrome_black_football",
-      "updatedAt": "2026-07-08T02:46:11.934Z",
+      "updatedAt": "2026-07-08T02:46:33.130Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 28913700871,
@@ -2760,7 +2760,7 @@
       "displayTitle": "Visual Product Test - 2025 Topps Chrome Black Football",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-08T02:44:56Z",
-      "checkedAt": "2026-07-08T02:46:11.934Z"
+      "checkedAt": "2026-07-08T02:46:33.130Z"
     }
   },
   "known_issues": {},
@@ -4720,7 +4720,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T02:46:13.542Z",
+      "ignoredAt": "2026-07-08T02:46:34.745Z",
       "resolved": true
     },
     "soccer|2025_26_panini_prestige_efl_soccer": {
@@ -4729,7 +4729,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T02:46:13.542Z",
+      "ignoredAt": "2026-07-08T02:46:34.745Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-leaf-glory-of-the-game-soccer-card-checklist": {
@@ -4774,7 +4774,7 @@
       "code": "2025_topps_signature_class_football",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-signature-class-nfl-analysis",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T02:46:13.542Z",
+      "ignoredAt": "2026-07-08T02:46:34.745Z",
       "resolved": true
     },
     "football|2025_topps_signature_class_football": {
@@ -4783,7 +4783,7 @@
       "code": "2025_topps_signature_class_football",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-signature-class-nfl-analysis",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T02:46:13.542Z",
+      "ignoredAt": "2026-07-08T02:46:34.745Z",
       "resolved": true
     },
     "football|https slabsquatch substack com p 2025-topps-finest-nfl-analysis-and": {
@@ -4792,7 +4792,7 @@
       "code": "2025_topps_finest_football",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-finest-nfl-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T02:46:13.542Z",
+      "ignoredAt": "2026-07-08T02:46:34.745Z",
       "resolved": true
     },
     "football|2025_topps_finest_football": {
@@ -4801,11 +4801,38 @@
       "code": "2025_topps_finest_football",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-finest-nfl-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T02:46:13.542Z",
+      "ignoredAt": "2026-07-08T02:46:34.745Z",
+      "resolved": true
+    },
+    "football|https github com chasingmajors cm-chat-prototype actions runs 28913700871": {
+      "product": "2025 Topps Chrome Black Football",
+      "sport": "football",
+      "code": "2025_topps_chrome_black_football",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/28913700871",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-08T02:46:34.745Z",
+      "resolved": true
+    },
+    "football|2025_topps_chrome_black_football": {
+      "product": "2025 Topps Chrome Black Football",
+      "sport": "football",
+      "code": "2025_topps_chrome_black_football",
+      "sourceUrl": "https://www.checklistcenter.com/2025-topps-chrome-black-football-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-08T02:46:34.745Z",
+      "resolved": true
+    },
+    "football|https www checklistcenter com 2025-topps-chrome-black-football-card-checklist": {
+      "product": "2025 Topps Chrome Black Football",
+      "sport": "football",
+      "code": "2025_topps_chrome_black_football",
+      "sourceUrl": "https://www.checklistcenter.com/2025-topps-chrome-black-football-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-08T02:46:34.745Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-08T02:46:15.211Z",
+  "saved_at": "2026-07-08T02:46:36.218Z",
   "saved_by": "cm_command_center_operator"
 }

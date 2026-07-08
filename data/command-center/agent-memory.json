@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-08T01:22:27.238Z",
+  "exported_at": "2026-07-08T01:22:39.295Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -424,24 +424,6 @@
       "autoExecutedAt": "2026-07-07T15:57:03.566Z"
     },
     {
-      "id": "source_watch|baseball|2026 leaf metal draft baseball",
-      "type": "source_import",
-      "source": "scheduled_deep_sheets",
-      "product": "2026 Leaf Metal Draft Baseball",
-      "sport": "baseball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-draft-baseball-card-checklist/",
-      "createdAt": "2026-07-05T15:57:03.452Z",
-      "updatedAt": "2026-07-07T15:57:03.566Z"
-    },
-    {
       "id": "source_watch|hockey|2026 upper deck team canada hockey",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -480,6 +462,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783473757688_w2r0b7",
+      "ts": "2026-07-08T01:22:37.689Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2026 Leaf Metal Draft Baseball was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2026 Leaf Metal Draft Baseball",
+      "source": "admin"
+    },
     {
       "id": "log_1783473745635_jg0xlb",
       "ts": "2026-07-08T01:22:25.635Z",
@@ -1267,16 +1259,6 @@
       "title": "JSON publish started",
       "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
       "status": "started",
-      "product": "2026 Topps Finest Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782777362270_kv42in",
-      "ts": "2026-06-29T23:56:02.270Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "1,042 checklist rows and 158 parallels validated in the source sheet.",
-      "status": "needs_review",
       "product": "2026 Topps Finest Baseball",
       "source": "operator_backend"
     }
@@ -4666,7 +4648,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T01:22:27.238Z",
+      "ignoredAt": "2026-07-08T01:22:39.295Z",
       "resolved": true
     },
     "soccer|2025_26_panini_prestige_efl_soccer": {
@@ -4675,7 +4657,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T01:22:27.238Z",
+      "ignoredAt": "2026-07-08T01:22:39.295Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-leaf-glory-of-the-game-soccer-card-checklist": {
@@ -4695,9 +4677,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-07-05T22:21:43.849Z",
       "resolved": true
+    },
+    "baseball|https www checklistcenter com 2026-leaf-metal-draft-baseball-card-checklist": {
+      "product": "2026 Leaf Metal Draft Baseball",
+      "sport": "baseball",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-draft-baseball-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-08T01:22:37.665Z",
+      "resolved": true
+    },
+    "baseball|2026 leaf metal draft baseball": {
+      "product": "2026 Leaf Metal Draft Baseball",
+      "sport": "baseball",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-metal-draft-baseball-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-08T01:22:37.666Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-08T01:22:30.295Z",
+  "saved_at": "2026-07-08T01:22:42.619Z",
   "saved_by": "cm_command_center_operator"
 }

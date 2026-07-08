@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-08T23:39:20.162Z",
+  "exported_at": "2026-07-08T23:39:40.846Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -385,24 +385,24 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1783553981865",
-      "ts": "2026-07-08T23:39:40.076Z",
+      "id": "log_1783553979244_gdz8pc",
+      "ts": "2026-07-08T23:39:39.244Z",
       "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: skipped for fast sweep. 18 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
       "product": "",
-      "source": "operator_backend"
+      "source": "command_center"
     },
     {
-      "id": "log_1783553981864",
-      "ts": "2026-07-08T23:39:40.076Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
+      "id": "log_1783553979225_gbx7ht",
+      "ts": "2026-07-08T23:39:39.226Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
     },
     {
       "id": "log_1783553958559_mbq4wi",
@@ -498,7 +498,7 @@
   "last_agent_report": {
     "ok": true,
     "status": "clear",
-    "generated_at": "2026-07-08T23:39:40.076Z",
+    "generated_at": "2026-07-08T23:39:10.579Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 6,
@@ -3949,7 +3949,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T23:39:20.162Z",
+      "ignoredAt": "2026-07-08T23:39:40.846Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-finest-baseball-card-checklist": {
@@ -4111,11 +4111,11 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T23:39:20.162Z",
+      "ignoredAt": "2026-07-08T23:39:40.845Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-08T23:39:41.933Z",
+  "saved_at": "2026-07-08T23:39:42.126Z",
   "saved_by": "cm_command_center_operator"
 }

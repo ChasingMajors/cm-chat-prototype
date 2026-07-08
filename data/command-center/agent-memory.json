@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-08T01:29:15.850Z",
+  "exported_at": "2026-07-08T01:29:30.994Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -407,15 +407,15 @@
       "sport": "football",
       "code": "2025_topps_signature_class_football",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Review PRV sheet rows, then publish PRV JSON when ready.",
       "adminDecision": "",
-      "executionResult": "PRV Index and Products rows written.",
+      "executionResult": "PRV sheet write completed. PRV JSON publish started.",
       "validationResult": "50 PRV rows found in Products.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-signature-class-nfl-analysis",
       "createdAt": "2026-07-05T15:57:03.452Z",
-      "updatedAt": "2026-07-08T01:29:14.242Z",
+      "updatedAt": "2026-07-08T01:29:29.393Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "2026-07-07T16:00:26.054Z",
@@ -462,6 +462,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783474169391_l8frwz",
+      "ts": "2026-07-08T01:29:29.391Z",
+      "type": "prv_publish",
+      "title": "PRV JSON publish started",
+      "detail": "Publishing Print Run Vault static JSON after approved sheet write.",
+      "status": "started",
+      "product": "2025 Topps Signature Class Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1783474154249_7txegk",
       "ts": "2026-07-08T01:29:14.249Z",
@@ -1249,16 +1259,6 @@
       "title": "JSON publish failed",
       "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
       "status": "failed",
-      "product": "2026 Topps Finest Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782949109547_j333l8",
-      "ts": "2026-07-01T23:38:29.547Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
       "product": "2026 Topps Finest Baseball",
       "source": "operator_backend"
     }
@@ -4648,7 +4648,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T01:29:15.850Z",
+      "ignoredAt": "2026-07-08T01:29:30.994Z",
       "resolved": true
     },
     "soccer|2025_26_panini_prestige_efl_soccer": {
@@ -4657,7 +4657,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T01:29:15.850Z",
+      "ignoredAt": "2026-07-08T01:29:30.994Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-leaf-glory-of-the-game-soccer-card-checklist": {
@@ -4698,6 +4698,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-08T01:29:18.056Z",
+  "saved_at": "2026-07-08T01:29:32.605Z",
   "saved_by": "cm_command_center_operator"
 }

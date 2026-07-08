@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-08T01:26:47.788Z",
+  "exported_at": "2026-07-08T01:26:56.028Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,15 +371,15 @@
       "sport": "football",
       "code": "",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Review sample rows, then write PRV temp data if the numbers look right.",
       "adminDecision": "",
-      "executionResult": "PRV source preview parsed 45 print-run rows.",
+      "executionResult": "PRV sheet write started through Operator Backend.",
       "validationResult": "Preview rows are ready for admin review before PRV sheet write.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-finest-nfl-analysis-and",
       "createdAt": "2026-07-07T15:57:03.566Z",
-      "updatedAt": "2026-07-08T01:26:46.179Z"
+      "updatedAt": "2026-07-08T01:26:54.427Z"
     },
     {
       "id": "source_watch|football|2025 topps chrome black football",
@@ -462,6 +462,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783474014421_x16xr6",
+      "ts": "2026-07-08T01:26:54.421Z",
+      "type": "prv_source_review",
+      "title": "PRV sheet write started",
+      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
+      "status": "started",
+      "product": "2025 Topps Finest Football",
+      "source": "admin"
+    },
     {
       "id": "log_1783474006184_ctowe6",
       "ts": "2026-07-08T01:26:46.184Z",
@@ -1250,16 +1260,6 @@
       "detail": "2026 Topps Finest Baseball: Unsupported full-auto action type: checklist_publish Unsupported full-auto action type: checklist_publish",
       "status": "failed",
       "product": "2026 Topps Finest Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782921614179",
-      "ts": "2026-07-01T15:57:03.857Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     }
   ],
@@ -4648,7 +4648,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T01:26:47.788Z",
+      "ignoredAt": "2026-07-08T01:26:56.028Z",
       "resolved": true
     },
     "soccer|2025_26_panini_prestige_efl_soccer": {
@@ -4657,7 +4657,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T01:26:47.788Z",
+      "ignoredAt": "2026-07-08T01:26:56.028Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-leaf-glory-of-the-game-soccer-card-checklist": {
@@ -4698,6 +4698,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-08T01:26:49.723Z",
+  "saved_at": "2026-07-08T01:26:58.886Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-08T01:27:57.165Z",
+  "exported_at": "2026-07-08T01:28:59.390Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -407,15 +407,15 @@
       "sport": "football",
       "code": "",
       "riskLevel": "medium",
-      "status": "failed",
+      "status": "running",
       "recommendedAction": "Open PRV preview, confirm rows, then retry the product-scoped write.",
       "adminDecision": "",
-      "executionResult": "Unknown action",
+      "executionResult": "PRV sheet write started through Operator Backend.",
       "validationResult": "PRV sheet write did not complete.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-signature-class-nfl-analysis",
       "createdAt": "2026-07-05T15:57:03.452Z",
-      "updatedAt": "2026-07-08T01:23:15.532Z",
+      "updatedAt": "2026-07-08T01:28:57.789Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "2026-07-07T16:00:26.054Z",
@@ -462,6 +462,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783474137782_ev8b7t",
+      "ts": "2026-07-08T01:28:57.782Z",
+      "type": "prv_source_review",
+      "title": "PRV sheet write started",
+      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
+      "status": "started",
+      "product": "2025 Topps Signature Class Football",
+      "source": "admin"
+    },
     {
       "id": "log_1783474075563_dm48tx",
       "ts": "2026-07-08T01:27:55.563Z",
@@ -1251,16 +1261,6 @@
       "status": "loaded",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1782949097329_6wfboi",
-      "ts": "2026-07-01T23:38:17.329Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
     }
   ],
   "last_agent_report": {
@@ -4648,7 +4648,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T01:27:57.165Z",
+      "ignoredAt": "2026-07-08T01:28:59.390Z",
       "resolved": true
     },
     "soccer|2025_26_panini_prestige_efl_soccer": {
@@ -4657,7 +4657,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T01:27:57.165Z",
+      "ignoredAt": "2026-07-08T01:28:59.390Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-leaf-glory-of-the-game-soccer-card-checklist": {
@@ -4698,6 +4698,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-08T01:27:59.118Z",
+  "saved_at": "2026-07-08T01:29:01.433Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-08T01:23:17.143Z",
+  "exported_at": "2026-07-08T01:23:41.748Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -387,17 +387,17 @@
       "source": "scheduled_deep_sheets",
       "product": "2025 Topps Chrome Black Football",
       "sport": "football",
-      "code": "",
+      "code": "2025_topps_chrome_black_football",
       "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Football source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "status": "needs_admin",
+      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
+      "executionResult": "Import preview parsed 458 rows and 72 parallels.",
+      "validationResult": "Preview rows are ready for admin review before sheet write.",
+      "runUrl": "https://www.checklistcenter.com/2025-topps-chrome-black-football-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2025-topps-chrome-black-football-card-checklist/",
       "createdAt": "2026-07-07T15:57:03.566Z",
-      "updatedAt": "2026-07-07T15:57:03.566Z"
+      "updatedAt": "2026-07-08T01:23:40.142Z"
     },
     {
       "id": "prv_watch|football|2025 topps signature class football",
@@ -462,6 +462,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783473820146_e7u3fm",
+      "ts": "2026-07-08T01:23:40.146Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "458 rows and 72 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025 Topps Chrome Black Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783473818798_3tah65",
+      "ts": "2026-07-08T01:23:38.798Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025 Topps Chrome Black Football",
+      "source": "admin"
+    },
     {
       "id": "log_1783473795540_tzf4uf",
       "ts": "2026-07-08T01:23:15.540Z",
@@ -1235,26 +1255,6 @@
     {
       "id": "log_1782782765914_h7kf0s",
       "ts": "2026-06-30T01:26:05.914Z",
-      "type": "checklist_publish",
-      "title": "JSON publish failed",
-      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "2026 Topps Finest Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782782525875_3nuiyy",
-      "ts": "2026-06-30T01:22:05.875Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2026 Topps Finest Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1782777602341_xippn5",
-      "ts": "2026-06-30T00:00:02.341Z",
       "type": "checklist_publish",
       "title": "JSON publish failed",
       "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
@@ -4648,7 +4648,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T01:23:17.143Z",
+      "ignoredAt": "2026-07-08T01:23:41.748Z",
       "resolved": true
     },
     "soccer|2025_26_panini_prestige_efl_soccer": {
@@ -4657,7 +4657,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T01:23:17.143Z",
+      "ignoredAt": "2026-07-08T01:23:41.748Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-leaf-glory-of-the-game-soccer-card-checklist": {
@@ -4698,6 +4698,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-08T01:23:18.802Z",
+  "saved_at": "2026-07-08T01:23:43.447Z",
   "saved_by": "cm_command_center_operator"
 }

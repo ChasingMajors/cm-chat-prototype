@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-08T01:32:28.241Z",
+  "exported_at": "2026-07-08T01:32:36.310Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -372,14 +372,14 @@
       "code": "2025_topps_finest_football",
       "riskLevel": "medium",
       "status": "needs_admin",
-      "recommendedAction": "Check Static Data Exporter logs/config. The source Sheet has rows, but public JSON does not.",
+      "recommendedAction": "Review sample rows, then write PRV temp data if the numbers look right.",
       "adminDecision": "",
-      "executionResult": "PRV JSON publish ran, but public validation failed.",
-      "validationResult": "Product code not found in public PRV product manifest yet. Source Sheet has 1 Index row and 45 Products rows for this code.",
+      "executionResult": "PRV source preview parsed 45 print-run rows.",
+      "validationResult": "Preview rows are ready for admin review before PRV sheet write.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-finest-nfl-analysis-and",
       "createdAt": "2026-07-07T15:57:03.566Z",
-      "updatedAt": "2026-07-08T01:27:55.554Z"
+      "updatedAt": "2026-07-08T01:32:34.703Z"
     },
     {
       "id": "source_watch|football|2025 topps chrome black football",
@@ -462,6 +462,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783474354708_h81x9k",
+      "ts": "2026-07-08T01:32:34.708Z",
+      "type": "prv_source_review",
+      "title": "PRV preview completed",
+      "detail": "45 print-run rows parsed.",
+      "status": "preview_ready",
+      "product": "2025 Topps Finest Football",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1783474346639_qyge1g",
       "ts": "2026-07-08T01:32:26.639Z",
@@ -1249,16 +1259,6 @@
       "title": "Publish checklist JSON before visual validation",
       "detail": "2026 Topps Finest Baseball is being attempted from the Admin Run Queue.",
       "status": "started",
-      "product": "2026 Topps Finest Baseball",
-      "source": "admin_run_queue"
-    },
-    {
-      "id": "log_1782949384987_p27sha",
-      "ts": "2026-07-01T23:43:04.987Z",
-      "type": "agent_run_queue",
-      "title": "Run Queue approval applied",
-      "detail": "2026 Topps Finest Baseball was approved because admin flagged it for the run queue.",
-      "status": "approved",
       "product": "2026 Topps Finest Baseball",
       "source": "admin_run_queue"
     }
@@ -4648,7 +4648,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T01:32:28.241Z",
+      "ignoredAt": "2026-07-08T01:32:36.310Z",
       "resolved": true
     },
     "soccer|2025_26_panini_prestige_efl_soccer": {
@@ -4657,7 +4657,7 @@
       "code": "2025_26_panini_prestige_efl_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prestige-efl-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T01:32:28.241Z",
+      "ignoredAt": "2026-07-08T01:32:36.310Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-leaf-glory-of-the-game-soccer-card-checklist": {
@@ -4702,7 +4702,7 @@
       "code": "2025_topps_signature_class_football",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-signature-class-nfl-analysis",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T01:32:28.241Z",
+      "ignoredAt": "2026-07-08T01:32:36.310Z",
       "resolved": true
     },
     "football|2025_topps_signature_class_football": {
@@ -4711,11 +4711,11 @@
       "code": "2025_topps_signature_class_football",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-signature-class-nfl-analysis",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T01:32:28.241Z",
+      "ignoredAt": "2026-07-08T01:32:36.310Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-08T01:32:31.033Z",
+  "saved_at": "2026-07-08T01:32:38.147Z",
   "saved_by": "cm_command_center_operator"
 }

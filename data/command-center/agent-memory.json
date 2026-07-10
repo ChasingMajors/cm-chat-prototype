@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-10T01:29:31.871Z",
+  "exported_at": "2026-07-10T01:29:36.480Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,15 +371,15 @@
       "sport": "soccer",
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Review PRV sheet rows, then publish PRV JSON when ready.",
       "adminDecision": "",
-      "executionResult": "PRV Index and Products rows written.",
+      "executionResult": "PRV sheet write completed. PRV JSON publish started.",
       "validationResult": "19 PRV rows found in Products.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "createdAt": "2026-07-09T15:57:03.096Z",
-      "updatedAt": "2026-07-10T01:29:30.260Z",
+      "updatedAt": "2026-07-10T01:29:34.878Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
@@ -426,6 +426,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783646974877_uvkbgw",
+      "ts": "2026-07-10T01:29:34.877Z",
+      "type": "prv_publish",
+      "title": "PRV JSON publish started",
+      "detail": "Publishing Print Run Vault static JSON after approved sheet write.",
+      "status": "started",
+      "product": "2025-26 Topps Chrome UEFA Women’s Champions League Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1783646970268_q9bxi9",
       "ts": "2026-07-10T01:29:30.268Z",
@@ -4193,7 +4203,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T01:29:31.871Z",
+      "ignoredAt": "2026-07-10T01:29:36.480Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-finest-baseball-card-checklist": {
@@ -4355,11 +4365,11 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T01:29:31.871Z",
+      "ignoredAt": "2026-07-10T01:29:36.480Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-10T01:29:33.404Z",
+  "saved_at": "2026-07-10T01:29:38.177Z",
   "saved_by": "cm_command_center_operator"
 }

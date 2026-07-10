@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-10T02:19:36.252Z",
+  "exported_at": "2026-07-10T02:20:07.177Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -395,15 +395,15 @@
       "sport": "soccer",
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
+      "status": "pending_visual_validation",
+      "recommendedAction": "Public JSON is live. Run CV/ChatBot visual validation next.",
       "adminDecision": "",
       "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "Sheet write succeeded, but publish/live validation needs review.",
+      "validationResult": "Public JSON covered: 686 rows, 71 parallels in soccer-product-2025-26-topps-pristine-premier-league-soccer.json. Visual CV/ChatBot proof still pending.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-pristine-premier-league-soccer-card-checklist/",
       "createdAt": "2026-07-09T15:57:03.096Z",
-      "updatedAt": "2026-07-10T02:19:34.645Z"
+      "updatedAt": "2026-07-10T02:20:05.573Z"
     },
     {
       "id": "prv_watch|baseball|2026 topps finest baseball",
@@ -426,6 +426,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783650005573_1sqv3o",
+      "ts": "2026-07-10T02:20:05.573Z",
+      "type": "validation",
+      "title": "Public JSON proof reconciled",
+      "detail": "1 pending public JSON card moved forward because live public JSON already contains the product data.",
+      "status": "covered",
+      "product": "",
+      "source": "public_json"
+    },
+    {
+      "id": "log_1783650005569_57y0pm",
+      "ts": "2026-07-10T02:20:05.569Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783650005556_gelyhf",
+      "ts": "2026-07-10T02:20:05.556Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1783650005554_gjyld4",
+      "ts": "2026-07-10T02:20:05.554Z",
+      "type": "agent_action",
+      "title": "Stale running work cleared",
+      "detail": "1 stale running card moved back to verifiable queue state.",
+      "status": "reconciled",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1783649974638_x7c07t",
       "ts": "2026-07-10T02:19:34.638Z",
@@ -4223,7 +4263,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:19:36.252Z",
+      "ignoredAt": "2026-07-10T02:20:07.177Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-finest-baseball-card-checklist": {
@@ -4385,7 +4425,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:19:36.252Z",
+      "ignoredAt": "2026-07-10T02:20:07.177Z",
       "resolved": true
     },
     "soccer|https slabsquatch substack com p 202526-topps-chrome-uefa-womens-champions": {
@@ -4394,7 +4434,7 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:19:36.252Z",
+      "ignoredAt": "2026-07-10T02:20:07.177Z",
       "resolved": true
     },
     "soccer|2025_26_topps_chrome_uefa_women_s_champions_league_soccer": {
@@ -4403,11 +4443,11 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:19:36.252Z",
+      "ignoredAt": "2026-07-10T02:20:07.177Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-10T02:19:38.405Z",
+  "saved_at": "2026-07-10T02:20:08.656Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-10T02:21:30.146Z",
+  "exported_at": "2026-07-10T02:21:51.995Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,11 +371,11 @@
       "sport": "soccer",
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "sourceUrl": "",
       "bucket": "",
@@ -383,7 +383,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-07-10T02:20:13.542Z",
-      "updatedAt": "2026-07-10T02:21:28.541Z",
+      "updatedAt": "2026-07-10T02:21:50.386Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "visualStartedAt": "2026-07-10T02:20:13Z"
     },
@@ -419,15 +419,15 @@
       "sport": "soccer",
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "riskLevel": "medium",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-pristine-premier-league-soccer-card-checklist/",
       "createdAt": "2026-07-09T15:57:03.096Z",
-      "updatedAt": "2026-07-10T02:21:28.541Z",
+      "updatedAt": "2026-07-10T02:21:50.388Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "visualStartedAt": "2026-07-10T02:20:13Z"
     },
@@ -452,6 +452,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783650110391_ac65sb",
+      "ts": "2026-07-10T02:21:50.391Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1783650110390_5ywkzd",
+      "ts": "2026-07-10T02:21:50.390Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "github_actions"
+    },
     {
       "id": "log_1783650088542_6eit0a",
       "ts": "2026-07-10T02:21:28.542Z",
@@ -2400,9 +2420,9 @@
       "checkedAt": "2026-07-08T02:49:34.139Z"
     },
     "soccer|2025_26_topps_pristine_premier_league_soccer": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-07-10T02:20:12.147Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2412,7 +2432,7 @@
       "productName": "2025-26 Topps Pristine Premier League Soccer",
       "sport": "soccer",
       "code": "2025_26_topps_pristine_premier_league_soccer",
-      "updatedAt": "2026-07-10T02:21:28.537Z",
+      "updatedAt": "2026-07-10T02:21:50.382Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 29064422795,
@@ -2420,12 +2440,12 @@
       "displayTitle": "Visual Product Test - 2025-26 Topps Pristine Premier League Soccer",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-10T02:20:13Z",
-      "checkedAt": "2026-07-10T02:21:28.537Z"
+      "checkedAt": "2026-07-10T02:21:50.382Z"
     },
     "soccer|2025-26 topps pristine premier league soccer": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-07-10T02:20:12.147Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2435,7 +2455,7 @@
       "productName": "2025-26 Topps Pristine Premier League Soccer",
       "sport": "soccer",
       "code": "2025_26_topps_pristine_premier_league_soccer",
-      "updatedAt": "2026-07-10T02:21:28.537Z",
+      "updatedAt": "2026-07-10T02:21:50.382Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 29064422795,
@@ -2443,7 +2463,7 @@
       "displayTitle": "Visual Product Test - 2025-26 Topps Pristine Premier League Soccer",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-10T02:20:13Z",
-      "checkedAt": "2026-07-10T02:21:28.537Z"
+      "checkedAt": "2026-07-10T02:21:50.382Z"
     }
   },
   "known_issues": {},
@@ -4385,7 +4405,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:21:30.146Z",
+      "ignoredAt": "2026-07-10T02:21:51.995Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-finest-baseball-card-checklist": {
@@ -4547,7 +4567,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:21:30.146Z",
+      "ignoredAt": "2026-07-10T02:21:51.995Z",
       "resolved": true
     },
     "soccer|https slabsquatch substack com p 202526-topps-chrome-uefa-womens-champions": {
@@ -4556,7 +4576,7 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:21:30.146Z",
+      "ignoredAt": "2026-07-10T02:21:51.995Z",
       "resolved": true
     },
     "soccer|2025_26_topps_chrome_uefa_women_s_champions_league_soccer": {
@@ -4565,11 +4585,38 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:21:30.146Z",
+      "ignoredAt": "2026-07-10T02:21:51.995Z",
+      "resolved": true
+    },
+    "soccer|https github com chasingmajors cm-chat-prototype actions runs 29064422795": {
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_pristine_premier_league_soccer",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-10T02:21:51.995Z",
+      "resolved": true
+    },
+    "soccer|2025_26_topps_pristine_premier_league_soccer": {
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_pristine_premier_league_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-pristine-premier-league-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-10T02:21:51.995Z",
+      "resolved": true
+    },
+    "soccer|https www checklistcenter com 2025-26-topps-pristine-premier-league-soccer-card-checklist": {
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_pristine_premier_league_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-pristine-premier-league-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-10T02:21:51.995Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-10T02:21:32.003Z",
+  "saved_at": "2026-07-10T02:21:54.447Z",
   "saved_by": "cm_command_center_operator"
 }

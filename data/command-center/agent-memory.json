@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-08T23:40:10.849Z",
+  "exported_at": "2026-07-10T01:26:20.405Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -364,48 +364,6 @@
   ],
   "agent_actions": [
     {
-      "id": "prv_watch|soccer|2025-26 topps chrome uefa women s champions league soccer",
-      "type": "prv_source_review",
-      "source": "scheduled_prv_quick_json",
-      "product": "2025-26 Topps Chrome UEFA Women’s Champions League Soccer",
-      "sport": "soccer",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
-      "adminDecision": "",
-      "executionResult": "PRV sheet write and JSON publish completed for 2025_26_topps_chrome_uefa_women_s_champions_league_soccer.",
-      "validationResult": "PRV write completed, but public JSON validation needs review. Publish returned ok.",
-      "runUrl": "",
-      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
-      "createdAt": "2026-07-09T15:57:03.096Z",
-      "updatedAt": "2026-07-09T15:57:03.096Z",
-      "targetBucket": "",
-      "pendingValidationAttempts": 0,
-      "visualStartedAt": "",
-      "visualRunUrl": "",
-      "repairProof": "PRV sheet write and JSON publish completed for 2025_26_topps_chrome_uefa_women_s_champions_league_soccer.",
-      "autoExecutedAt": "2026-07-09T15:57:03.096Z"
-    },
-    {
-      "id": "source_watch|soccer|2025-26 topps pristine premier league soccer",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2025-26 Topps Pristine Premier League Soccer",
-      "sport": "soccer",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-pristine-premier-league-soccer-card-checklist/",
-      "createdAt": "2026-07-09T15:57:03.096Z",
-      "updatedAt": "2026-07-10T01:26:12.159Z"
-    },
-    {
       "id": "prv_watch|baseball|2026 topps finest baseball",
       "type": "prv_source_review",
       "source": "scheduled_prv_quick_json",
@@ -427,74 +385,34 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1783646774954_alert",
-      "ts": "2026-07-10T01:26:12.159Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783646774469",
-      "ts": "2026-07-10T01:26:12.159Z",
+      "id": "log_1783646778802_9nmr9q",
+      "ts": "2026-07-10T01:26:18.802Z",
       "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 7 checked. PRV sync: skipped for fast sweep. 17 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "title": "Backend Agent Sweep complete",
+      "detail": "Checklist: 1 action. PRV: 0 actions. PRV sync: skipped. Auto: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1783646774468",
-      "ts": "2026-07-10T01:26:12.159Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783612797909_alert",
-      "ts": "2026-07-09T15:57:03.096Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783612797634",
-      "ts": "2026-07-09T15:57:03.096Z",
+      "id": "log_1783646770323_n5u20f",
+      "ts": "2026-07-10T01:26:10.323Z",
       "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 1 actionable from 7 checked. PRV sync: passed. 17 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Topps Chrome UEFA Women’s Champions League Soccer -> needs_admin (PRV write completed, but public JSON validation needs review. Publish returned ok.)",
-      "status": "needs_review",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
       "product": "",
-      "source": "operator_backend"
+      "source": "command_center"
     },
     {
-      "id": "log_1783612797634",
-      "ts": "2026-07-09T15:57:03.096Z",
-      "type": "auto_action",
-      "title": "Full-auto action needs review",
-      "detail": "2025-26 Topps Chrome UEFA Women’s Champions League Soccer: PRV sheet write and JSON publish completed for 2025_26_topps_chrome_uefa_women_s_champions_league_soccer. PRV write completed, but public JSON validation needs review. Publish returned ok.",
-      "status": "needs_admin",
-      "product": "2025-26 Topps Chrome UEFA Women’s Champions League Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783612761592",
-      "ts": "2026-07-09T15:57:03.096Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
+      "id": "log_1783646770296_njjnfq",
+      "ts": "2026-07-10T01:26:10.296Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
     },
     {
       "id": "log_1783554009246_dnitg4",
@@ -4093,7 +4011,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T23:40:10.849Z",
+      "ignoredAt": "2026-07-10T01:26:20.405Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-finest-baseball-card-checklist": {
@@ -4255,11 +4173,11 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-08T23:40:10.849Z",
+      "ignoredAt": "2026-07-10T01:26:20.405Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-10T01:26:15.027Z",
+  "saved_at": "2026-07-10T01:26:21.979Z",
   "saved_by": "cm_command_center_operator"
 }

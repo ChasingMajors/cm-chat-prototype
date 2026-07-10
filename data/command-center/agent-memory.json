@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-10T02:20:12.954Z",
+  "exported_at": "2026-07-10T02:20:25.057Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -364,6 +364,30 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2025-26 topps pristine premier league soccer|2025_26_topps_pristine_premier_league_soccer",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_pristine_premier_league_soccer",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-07-10T02:20:13.542Z",
+      "updatedAt": "2026-07-10T02:20:23.452Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
+      "visualStartedAt": "2026-07-10T02:20:13Z"
+    },
+    {
       "id": "prv_watch|soccer|2025-26 topps chrome uefa women s champions league soccer",
       "type": "prv_source_review",
       "source": "scheduled_prv_quick_json",
@@ -395,15 +419,17 @@
       "sport": "soccer",
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Public JSON is live. Run CV/ChatBot visual validation next.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot visual test requested from progress rail...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-pristine-premier-league-soccer-card-checklist/",
       "createdAt": "2026-07-09T15:57:03.096Z",
-      "updatedAt": "2026-07-10T02:20:11.352Z"
+      "updatedAt": "2026-07-10T02:20:23.452Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
+      "visualStartedAt": "2026-07-10T02:20:13Z"
     },
     {
       "id": "prv_watch|baseball|2026 topps finest baseball",
@@ -426,6 +452,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783650023453_knyw94",
+      "ts": "2026-07-10T02:20:23.453Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1783650013544_cqhk1c",
+      "ts": "2026-07-10T02:20:13.544Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "github_actions"
+    },
     {
       "id": "log_1783650005573_1sqv3o",
       "ts": "2026-07-10T02:20:05.573Z",
@@ -2322,6 +2368,52 @@
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-08T02:46:54Z",
       "checkedAt": "2026-07-08T02:49:34.139Z"
+    },
+    "soccer|2025_26_topps_pristine_premier_league_soccer": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-07-10T02:20:12.147Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "soccer|2025_26_topps_pristine_premier_league_soccer",
+      "key": "soccer|2025_26_topps_pristine_premier_league_soccer",
+      "productName": "2025-26 Topps Pristine Premier League Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_pristine_premier_league_soccer",
+      "updatedAt": "2026-07-10T02:20:23.448Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 29064422795,
+      "runNumber": 353,
+      "displayTitle": "Visual Product Test - 2025-26 Topps Pristine Premier League Soccer",
+      "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
+      "createdAt": "2026-07-10T02:20:13Z",
+      "checkedAt": "2026-07-10T02:20:23.448Z"
+    },
+    "soccer|2025-26 topps pristine premier league soccer": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-07-10T02:20:12.147Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "soccer|2025_26_topps_pristine_premier_league_soccer",
+      "key": "soccer|2025-26 topps pristine premier league soccer",
+      "productName": "2025-26 Topps Pristine Premier League Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_pristine_premier_league_soccer",
+      "updatedAt": "2026-07-10T02:20:23.448Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 29064422795,
+      "runNumber": 353,
+      "displayTitle": "Visual Product Test - 2025-26 Topps Pristine Premier League Soccer",
+      "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
+      "createdAt": "2026-07-10T02:20:13Z",
+      "checkedAt": "2026-07-10T02:20:23.448Z"
     }
   },
   "known_issues": {},
@@ -4263,7 +4355,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:20:12.954Z",
+      "ignoredAt": "2026-07-10T02:20:25.057Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-finest-baseball-card-checklist": {
@@ -4425,7 +4517,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:20:12.954Z",
+      "ignoredAt": "2026-07-10T02:20:25.057Z",
       "resolved": true
     },
     "soccer|https slabsquatch substack com p 202526-topps-chrome-uefa-womens-champions": {
@@ -4434,7 +4526,7 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:20:12.954Z",
+      "ignoredAt": "2026-07-10T02:20:25.057Z",
       "resolved": true
     },
     "soccer|2025_26_topps_chrome_uefa_women_s_champions_league_soccer": {
@@ -4443,11 +4535,11 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:20:12.954Z",
+      "ignoredAt": "2026-07-10T02:20:25.057Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-10T02:20:14.140Z",
+  "saved_at": "2026-07-10T02:20:26.403Z",
   "saved_by": "cm_command_center_operator"
 }

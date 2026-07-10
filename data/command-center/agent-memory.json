@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-10T02:22:09.913Z",
+  "exported_at": "2026-07-10T02:21:51.995Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -453,24 +453,24 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1783650128308_79aw1d",
-      "ts": "2026-07-10T02:22:08.308Z",
+      "id": "log_1783650131629",
+      "ts": "2026-07-10T02:22:09.498Z",
       "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
-      "status": "started",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 7 checked. PRV sync: skipped for fast sweep. 19 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "status": "validated",
       "product": "",
-      "source": "command_center"
+      "source": "operator_backend"
     },
     {
-      "id": "log_1783650128304_cxbd4k",
-      "ts": "2026-07-10T02:22:08.304Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
+      "id": "log_1783650131627",
+      "ts": "2026-07-10T02:22:09.498Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1783650110391_ac65sb",
@@ -925,24 +925,22 @@
   ],
   "last_agent_report": {
     "ok": true,
-    "status": "needs_admin",
-    "generated_at": "2026-07-10T01:26:12.159Z",
+    "status": "clear",
+    "generated_at": "2026-07-10T02:22:09.498Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 7,
-      "skipped_ignored": 17
+      "skipped_ignored": 19
     },
     "completed_count": 0,
-    "needs_admin_count": 1,
+    "needs_admin_count": 0,
     "blocked_count": 0,
     "completed": [],
-    "needs_admin": [
-      "Checklist review: 2025-26 Topps Pristine Premier League Soccer | soccer | missing"
-    ],
+    "needs_admin": [],
     "blocked": [],
     "proof": [],
-    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 7 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
+    "next_step": "No immediate action. Sentinel can run again on schedule.",
+    "summary": "Checked 20 checklist source item(s) and 7 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4425,7 +4423,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:22:09.912Z",
+      "ignoredAt": "2026-07-10T02:21:51.995Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-finest-baseball-card-checklist": {
@@ -4587,7 +4585,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:22:09.912Z",
+      "ignoredAt": "2026-07-10T02:21:51.995Z",
       "resolved": true
     },
     "soccer|https slabsquatch substack com p 202526-topps-chrome-uefa-womens-champions": {
@@ -4596,7 +4594,7 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:22:09.912Z",
+      "ignoredAt": "2026-07-10T02:21:51.995Z",
       "resolved": true
     },
     "soccer|2025_26_topps_chrome_uefa_women_s_champions_league_soccer": {
@@ -4605,7 +4603,7 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:22:09.912Z",
+      "ignoredAt": "2026-07-10T02:21:51.995Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 29064422795": {
@@ -4614,7 +4612,7 @@
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:22:09.912Z",
+      "ignoredAt": "2026-07-10T02:21:51.995Z",
       "resolved": true
     },
     "soccer|2025_26_topps_pristine_premier_league_soccer": {
@@ -4623,7 +4621,7 @@
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-pristine-premier-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:22:09.912Z",
+      "ignoredAt": "2026-07-10T02:21:51.995Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-pristine-premier-league-soccer-card-checklist": {
@@ -4632,11 +4630,11 @@
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-pristine-premier-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T02:22:09.912Z",
+      "ignoredAt": "2026-07-10T02:21:51.995Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-10T02:22:11.523Z",
+  "saved_at": "2026-07-10T02:22:11.668Z",
   "saved_by": "cm_command_center_operator"
 }

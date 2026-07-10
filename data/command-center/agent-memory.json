@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-10T01:29:36.480Z",
+  "exported_at": "2026-07-10T01:30:14.946Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,15 +371,15 @@
       "sport": "soccer",
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Review PRV sheet rows, then publish PRV JSON when ready.",
+      "status": "validated",
+      "recommendedAction": "Open PRV and confirm the product loads.",
       "adminDecision": "",
-      "executionResult": "PRV sheet write completed. PRV JSON publish started.",
-      "validationResult": "19 PRV rows found in Products.",
+      "executionResult": "PRV JSON publish request completed and public rows validated.",
+      "validationResult": "19 public PRV rows validated.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "createdAt": "2026-07-09T15:57:03.096Z",
-      "updatedAt": "2026-07-10T01:29:34.878Z",
+      "updatedAt": "2026-07-10T01:30:13.335Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
@@ -426,6 +426,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783647013343_ybhdlx",
+      "ts": "2026-07-10T01:30:13.343Z",
+      "type": "prv_publish",
+      "title": "PRV JSON published and validated",
+      "detail": "19 public PRV rows validated.",
+      "status": "validated",
+      "product": "2025-26 Topps Chrome UEFA Women’s Champions League Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1783646974877_uvkbgw",
       "ts": "2026-07-10T01:29:34.877Z",
@@ -4203,7 +4213,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T01:29:36.480Z",
+      "ignoredAt": "2026-07-10T01:30:14.946Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-finest-baseball-card-checklist": {
@@ -4365,11 +4375,29 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-10T01:29:36.480Z",
+      "ignoredAt": "2026-07-10T01:30:14.946Z",
+      "resolved": true
+    },
+    "soccer|https slabsquatch substack com p 202526-topps-chrome-uefa-womens-champions": {
+      "product": "2025-26 Topps Chrome UEFA Women’s Champions League Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-10T01:30:14.946Z",
+      "resolved": true
+    },
+    "soccer|2025_26_topps_chrome_uefa_women_s_champions_league_soccer": {
+      "product": "2025-26 Topps Chrome UEFA Women’s Champions League Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-10T01:30:14.946Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-10T01:29:38.177Z",
+  "saved_at": "2026-07-10T01:30:16.579Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-11T14:55:53.721Z",
+  "exported_at": "2026-07-11T15:32:18.567Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -365,6 +365,46 @@
   "agent_actions": [],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783783936964_ol8n3g",
+      "ts": "2026-07-11T15:32:16.964Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1783783936948_zax007",
+      "ts": "2026-07-11T15:32:16.948Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1783781755864_dwhlqw",
+      "ts": "2026-07-11T14:55:55.864Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch complete",
+      "detail": "7 SlabSquatch items checked. 0 need review. 0 PRV review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1783781755862_7r0gmm",
+      "ts": "2026-07-11T14:55:55.862Z",
+      "type": "source_watch",
+      "title": "Source Watch skipped clean items",
+      "detail": "6 admin-ignored source item(s) were omitted from the queue.",
+      "status": "ignored",
+      "product": "",
+      "source": "prv_source_watch"
+    },
     {
       "id": "log_1783781752119_ra8kkt",
       "ts": "2026-07-11T14:55:52.119Z",
@@ -4070,6 +4110,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-11T14:55:55.441Z",
+  "saved_at": "2026-07-11T15:32:20.370Z",
   "saved_by": "cm_command_center_operator"
 }

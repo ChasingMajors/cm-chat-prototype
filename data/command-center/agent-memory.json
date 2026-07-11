@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-11T15:32:41.359Z",
+  "exported_at": "2026-07-11T15:32:49.123Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -369,21 +369,41 @@
       "source": "scheduled_quick_json",
       "product": "2025 Topps Inception Baseball",
       "sport": "baseball",
-      "code": "",
+      "code": "2025_topps_inception_baseball",
       "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "status": "running",
+      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
+      "executionResult": "Sheet write started through Operator Backend.",
+      "validationResult": "Preview rows are ready for admin review before sheet write.",
+      "runUrl": "https://www.checklistcenter.com/2025-topps-inception-baseball-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2025-topps-inception-baseball-card-checklist/",
       "createdAt": "2026-07-11T15:32:18.759Z",
-      "updatedAt": "2026-07-11T15:32:18.759Z"
+      "updatedAt": "2026-07-11T15:32:47.521Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783783967515_hma7qd",
+      "ts": "2026-07-11T15:32:47.515Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "2025 Topps Inception Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1783783961964_gqsd9b",
+      "ts": "2026-07-11T15:32:41.964Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "676 rows and 88 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025 Topps Inception Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1783783959755_w49ks1",
       "ts": "2026-07-11T15:32:39.756Z",
@@ -4169,6 +4189,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-11T15:32:44.100Z",
+  "saved_at": "2026-07-11T15:32:51.070Z",
   "saved_by": "cm_command_center_operator"
 }

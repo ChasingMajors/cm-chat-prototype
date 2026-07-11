@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-11T15:32:26.019Z",
+  "exported_at": "2026-07-11T15:32:41.359Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -362,58 +362,87 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [],
+  "agent_actions": [
+    {
+      "id": "source_watch|baseball|2025 topps inception baseball",
+      "type": "source_import",
+      "source": "scheduled_quick_json",
+      "product": "2025 Topps Inception Baseball",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2025-topps-inception-baseball-card-checklist/",
+      "createdAt": "2026-07-11T15:32:18.759Z",
+      "updatedAt": "2026-07-11T15:32:18.759Z"
+    }
+  ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1783783944414_cd66gw",
-      "ts": "2026-07-11T15:32:24.414Z",
+      "id": "log_1783783959755_w49ks1",
+      "ts": "2026-07-11T15:32:39.756Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025 Topps Inception Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1783783947092_1y3c6i",
+      "ts": "2026-07-11T15:32:27.092Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783783947045_55wj4v",
+      "ts": "2026-07-11T15:32:27.045Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1783783941821_alert",
+      "ts": "2026-07-11T15:32:18.759Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783783941353",
+      "ts": "2026-07-11T15:32:18.759Z",
       "type": "agent_sweep",
-      "title": "Backend Agent Sweep complete",
-      "detail": "Checklist: 1 action. PRV: 0 actions. PRV sync: skipped. Auto: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 7 checked. PRV sync: skipped for fast sweep. 18 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1783783936964_ol8n3g",
-      "ts": "2026-07-11T15:32:16.964Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1783783936948_zax007",
-      "ts": "2026-07-11T15:32:16.948Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1783781755864_dwhlqw",
-      "ts": "2026-07-11T14:55:55.864Z",
-      "type": "prv_source_watch",
-      "title": "PRV Source Watch complete",
-      "detail": "7 SlabSquatch items checked. 0 need review. 0 PRV review cards queued.",
-      "status": "completed",
-      "product": "",
-      "source": "slabsquatch"
-    },
-    {
-      "id": "log_1783781755862_7r0gmm",
-      "ts": "2026-07-11T14:55:55.862Z",
-      "type": "source_watch",
-      "title": "Source Watch skipped clean items",
-      "detail": "6 admin-ignored source item(s) were omitted from the queue.",
-      "status": "ignored",
-      "product": "",
-      "source": "prv_source_watch"
+      "id": "log_1783783941351",
+      "ts": "2026-07-11T15:32:18.759Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1783781752119_ra8kkt",
@@ -4140,6 +4169,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-11T15:32:27.496Z",
+  "saved_at": "2026-07-11T15:32:44.100Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-12T03:49:15.006Z",
+  "exported_at": "2026-07-12T03:49:24.990Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,19 +371,29 @@
       "sport": "baseball",
       "code": "2025_topps_inception_baseball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed; JSON publish request failed.",
+      "executionResult": "Sheet write completed. JSON publish started.",
       "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-topps-inception-baseball-card-checklist/",
       "createdAt": "2026-07-11T15:32:18.759Z",
-      "updatedAt": "2026-07-11T15:37:19.191Z"
+      "updatedAt": "2026-07-12T03:49:23.387Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1783828163386_wbl4mu",
+      "ts": "2026-07-12T03:49:23.386Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025 Topps Inception Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1783828153396_j2fha5",
       "ts": "2026-07-12T03:49:13.396Z",
@@ -4229,6 +4239,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-12T03:49:18.835Z",
+  "saved_at": "2026-07-12T03:49:26.792Z",
   "saved_by": "cm_command_center_operator"
 }

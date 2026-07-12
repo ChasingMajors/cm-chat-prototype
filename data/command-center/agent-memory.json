@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-11T15:37:20.872Z",
+  "exported_at": "2026-07-12T03:49:15.006Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,64 +371,28 @@
       "sport": "baseball",
       "code": "2025_topps_inception_baseball",
       "riskLevel": "medium",
-      "status": "failed",
+      "status": "needs_admin",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
-      "executionResult": "Unsupported full-auto action type: checklist_publish",
-      "validationResult": "Unsupported full-auto action type: checklist_publish",
+      "executionResult": "Sheet write completed; JSON publish request failed.",
+      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-topps-inception-baseball-card-checklist/",
       "createdAt": "2026-07-11T15:32:18.759Z",
-      "updatedAt": "2026-07-11T15:57:03.201Z",
-      "targetBucket": "",
-      "pendingValidationAttempts": 0,
-      "visualStartedAt": "",
-      "visualRunUrl": "",
-      "repairProof": "Agent attempted repair for 2025 Topps Inception Baseball but it failed. A fix task was created when possible.",
-      "autoExecutedAt": "2026-07-11T15:57:03.201Z"
+      "updatedAt": "2026-07-11T15:37:19.191Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1783785574530_alert",
-      "ts": "2026-07-11T15:57:03.201Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
+      "id": "log_1783828153396_j2fha5",
+      "ts": "2026-07-12T03:49:13.396Z",
+      "type": "agent_cycle",
+      "title": "Admin decision required",
+      "detail": "2025 Topps Inception Baseball needs approval before the agent can continue. Use Scan New Checklists if you want a fresh source scan without advancing this queue item.",
+      "status": "started",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783785573865",
-      "ts": "2026-07-11T15:57:03.201Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 7 checked. PRV sync: passed. 18 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025 Topps Inception Baseball -> failed (Unsupported full-auto action type: checklist_publish)",
-      "status": "validated",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783785573865",
-      "ts": "2026-07-11T15:57:03.201Z",
-      "type": "auto_action",
-      "title": "Full-auto action failed",
-      "detail": "2025 Topps Inception Baseball: Unsupported full-auto action type: checklist_publish Unsupported full-auto action type: checklist_publish",
-      "status": "failed",
-      "product": "2025 Topps Inception Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783785573863",
-      "ts": "2026-07-11T15:57:03.201Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
+      "source": "command_center"
     },
     {
       "id": "log_1783784239270_dqj5f7",
@@ -552,25 +516,25 @@
     }
   ],
   "last_agent_report": {
-    "ok": false,
-    "status": "issue",
-    "generated_at": "2026-07-11T15:57:03.201Z",
+    "ok": true,
+    "status": "needs_admin",
+    "generated_at": "2026-07-11T15:32:18.759Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 7,
       "skipped_ignored": 18
     },
     "completed_count": 0,
-    "needs_admin_count": 0,
-    "blocked_count": 1,
+    "needs_admin_count": 1,
+    "blocked_count": 0,
     "completed": [],
-    "needs_admin": [],
-    "blocked": [
-      "2025 Topps Inception Baseball -> failed: Unsupported full-auto action type: checklist_publish"
+    "needs_admin": [
+      "Checklist review: 2025 Topps Inception Baseball | baseball | missing"
     ],
+    "blocked": [],
     "proof": [],
-    "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
-    "summary": "Checked 20 checklist source item(s) and 7 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 1 blocked/issue item(s)."
+    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
+    "summary": "Checked 20 checklist source item(s) and 7 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4265,6 +4229,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-11T15:59:34.608Z",
+  "saved_at": "2026-07-12T03:49:18.835Z",
   "saved_by": "cm_command_center_operator"
 }

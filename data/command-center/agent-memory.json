@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-14T03:59:52.980Z",
+  "exported_at": "2026-07-14T04:00:27.384Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -491,15 +491,15 @@
       "sport": "baseball",
       "code": "2025_topps_inception_baseball",
       "riskLevel": "medium",
-      "status": "pending_visual_validation",
+      "status": "running",
       "recommendedAction": "Public JSON is live. Run CV/ChatBot visual validation next.",
       "adminDecision": "",
       "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "Public JSON covered: 676 rows, 88 parallels in baseball-025.json. Visual CV/ChatBot proof still pending.",
+      "validationResult": "CV/ChatBot visual test requested from progress rail...",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-topps-inception-baseball-card-checklist/",
       "createdAt": "2026-07-11T15:32:18.759Z",
-      "updatedAt": "2026-07-14T03:24:06.140Z"
+      "updatedAt": "2026-07-14T04:00:25.778Z"
     }
   ],
   "agent_run_queue": [],
@@ -4389,7 +4389,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:59:52.979Z",
+      "ignoredAt": "2026-07-14T04:00:27.384Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-finest-baseball-card-checklist": {
@@ -4506,7 +4506,7 @@
       "code": "2025_topps_chrome_black_football",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-chrome-black-nfl-analysis",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:59:52.980Z",
+      "ignoredAt": "2026-07-14T04:00:27.384Z",
       "resolved": true
     },
     "football|https www checklistcenter com 2025-topps-chrome-black-football-card-checklist": {
@@ -4551,7 +4551,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:59:52.979Z",
+      "ignoredAt": "2026-07-14T04:00:27.384Z",
       "resolved": true
     },
     "soccer|https slabsquatch substack com p 202526-topps-chrome-uefa-womens-champions": {
@@ -4560,7 +4560,7 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:59:52.980Z",
+      "ignoredAt": "2026-07-14T04:00:27.384Z",
       "resolved": true
     },
     "soccer|2025_26_topps_chrome_uefa_women_s_champions_league_soccer": {
@@ -4569,7 +4569,7 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:59:52.980Z",
+      "ignoredAt": "2026-07-14T04:00:27.384Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 29064422795": {
@@ -4578,7 +4578,7 @@
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:59:52.980Z",
+      "ignoredAt": "2026-07-14T04:00:27.384Z",
       "resolved": true
     },
     "soccer|2025_26_topps_pristine_premier_league_soccer": {
@@ -4587,7 +4587,7 @@
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:59:52.980Z",
+      "ignoredAt": "2026-07-14T04:00:27.384Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-pristine-premier-league-soccer-card-checklist": {
@@ -4605,11 +4605,11 @@
       "code": "2025_topps_chrome_black_football",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-chrome-black-nfl-analysis",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:59:52.980Z",
+      "ignoredAt": "2026-07-14T04:00:27.384Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-14T03:59:55.113Z",
+  "saved_at": "2026-07-14T04:00:28.811Z",
   "saved_by": "cm_command_center_operator"
 }

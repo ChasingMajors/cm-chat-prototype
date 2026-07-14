@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-14T23:20:30.727Z",
+  "exported_at": "2026-07-14T23:20:42.514Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -365,25 +365,45 @@
   "agent_actions": [
     {
       "id": "source_watch|baseball|2026 topps dynamic duals baseball",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
+      "type": "checklist_publish",
+      "source": "operator_backend",
       "product": "2026 Topps Dynamic Duals Baseball",
       "sport": "baseball",
       "code": "2026_topps_dynamic_duals_baseball",
       "riskLevel": "medium",
       "status": "running",
-      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write started through Operator Backend.",
-      "validationResult": "Preview rows are ready for admin review before sheet write.",
-      "runUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
+      "executionResult": "Sheet write completed. JSON publish started.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "createdAt": "2026-07-14T23:19:46.537Z",
-      "updatedAt": "2026-07-14T23:20:29.126Z"
+      "updatedAt": "2026-07-14T23:20:40.913Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784071240912_8si41s",
+      "ts": "2026-07-14T23:20:40.912Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2026 Topps Dynamic Duals Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784071240904_93e4ax",
+      "ts": "2026-07-14T23:20:40.904Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "142 checklist rows and 30 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2026 Topps Dynamic Duals Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784071229119_4s3rcd",
       "ts": "2026-07-14T23:20:29.119Z",
@@ -4495,6 +4515,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-14T23:20:32.080Z",
+  "saved_at": "2026-07-14T23:20:43.807Z",
   "saved_by": "cm_command_center_operator"
 }

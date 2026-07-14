@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-14T04:14:04.333Z",
+  "exported_at": "2026-07-14T04:14:38.617Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -366,34 +366,54 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1784002442670_v44x2w",
-      "ts": "2026-07-14T04:14:02.670Z",
+      "id": "log_1784002477014_kwengx",
+      "ts": "2026-07-14T04:14:37.014Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch started",
+      "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
+      "status": "started",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1784002444500_03iwnw",
+      "ts": "2026-07-14T04:14:04.500Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784002444474_4xo85w",
+      "ts": "2026-07-14T04:14:04.474Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1784002438749",
+      "ts": "2026-07-14T04:13:55.384Z",
       "type": "agent_sweep",
-      "title": "Backend Agent Sweep complete",
-      "detail": "Checklist: 0 actions. PRV: 0 actions. PRV sync: skipped. Auto: No safe auto-executable action found.",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 8 checked. PRV sync: skipped for fast sweep. 20 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
       "status": "validated",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1784002434141_l81keg",
-      "ts": "2026-07-14T04:13:54.141Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1784002434136_vbsyru",
-      "ts": "2026-07-14T04:13:54.136Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
+      "id": "log_1784002438748",
+      "ts": "2026-07-14T04:13:55.384Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -4354,6 +4374,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-14T04:14:05.749Z",
+  "saved_at": "2026-07-14T04:14:40.073Z",
   "saved_by": "cm_command_center_operator"
 }

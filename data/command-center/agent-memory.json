@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-14T03:52:56.681Z",
+  "exported_at": "2026-07-14T03:53:08.066Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -467,21 +467,21 @@
     },
     {
       "id": "source_watch|hockey|2025-26 upper deck ultimate collection hockey",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
+      "type": "checklist_publish",
+      "source": "operator_backend",
       "product": "2025-26 Upper Deck Ultimate Collection Hockey",
       "sport": "hockey",
       "code": "2025_26_upper_deck_ultimate_collection_hockey",
       "riskLevel": "medium",
       "status": "running",
-      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write started through Operator Backend.",
-      "validationResult": "Preview rows are ready for admin review before sheet write.",
-      "runUrl": "https://www.checklistcenter.com/2025-26-upper-deck-ultimate-collection-hockey-card-checklist/",
+      "executionResult": "Sheet write completed. JSON publish started.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-ultimate-collection-hockey-card-checklist/",
       "createdAt": "2026-07-14T03:23:55.673Z",
-      "updatedAt": "2026-07-14T03:52:55.080Z"
+      "updatedAt": "2026-07-14T03:53:06.460Z"
     },
     {
       "id": "source_watch|baseball|2025 topps inception baseball",
@@ -504,6 +504,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784001186457_aavdui",
+      "ts": "2026-07-14T03:53:06.457Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Upper Deck Ultimate Collection Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784001186437_pwva6w",
+      "ts": "2026-07-14T03:53:06.437Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "1,906 checklist rows and 40 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Upper Deck Ultimate Collection Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784001175073_mjmeth",
       "ts": "2026-07-14T03:52:55.073Z",
@@ -4349,7 +4369,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:52:56.681Z",
+      "ignoredAt": "2026-07-14T03:53:08.066Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-finest-baseball-card-checklist": {
@@ -4466,7 +4486,7 @@
       "code": "2025_topps_chrome_black_football",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-chrome-black-nfl-analysis",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:52:56.681Z",
+      "ignoredAt": "2026-07-14T03:53:08.066Z",
       "resolved": true
     },
     "football|https www checklistcenter com 2025-topps-chrome-black-football-card-checklist": {
@@ -4511,7 +4531,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:52:56.681Z",
+      "ignoredAt": "2026-07-14T03:53:08.066Z",
       "resolved": true
     },
     "soccer|https slabsquatch substack com p 202526-topps-chrome-uefa-womens-champions": {
@@ -4520,7 +4540,7 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:52:56.681Z",
+      "ignoredAt": "2026-07-14T03:53:08.066Z",
       "resolved": true
     },
     "soccer|2025_26_topps_chrome_uefa_women_s_champions_league_soccer": {
@@ -4529,7 +4549,7 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:52:56.681Z",
+      "ignoredAt": "2026-07-14T03:53:08.066Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 29064422795": {
@@ -4538,7 +4558,7 @@
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:52:56.681Z",
+      "ignoredAt": "2026-07-14T03:53:08.066Z",
       "resolved": true
     },
     "soccer|2025_26_topps_pristine_premier_league_soccer": {
@@ -4547,7 +4567,7 @@
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:52:56.681Z",
+      "ignoredAt": "2026-07-14T03:53:08.066Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-pristine-premier-league-soccer-card-checklist": {
@@ -4565,11 +4585,11 @@
       "code": "2025_topps_chrome_black_football",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-chrome-black-nfl-analysis",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T03:52:56.681Z",
+      "ignoredAt": "2026-07-14T03:53:08.066Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-14T03:52:58.059Z",
+  "saved_at": "2026-07-14T03:53:09.564Z",
   "saved_by": "cm_command_center_operator"
 }

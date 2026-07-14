@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-14T04:10:03.264Z",
+  "exported_at": "2026-07-14T04:11:21.888Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,11 +371,11 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_ultimate_collection_hockey",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29305283232",
       "sourceUrl": "",
       "bucket": "",
@@ -383,7 +383,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-07-14T04:09:51.233Z",
-      "updatedAt": "2026-07-14T04:10:01.558Z",
+      "updatedAt": "2026-07-14T04:11:20.223Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29305283232",
       "visualStartedAt": "2026-07-14T04:09:50Z"
     },
@@ -569,15 +569,15 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_ultimate_collection_hockey",
       "riskLevel": "medium",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29305283232",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-ultimate-collection-hockey-card-checklist/",
       "createdAt": "2026-07-14T03:23:55.673Z",
-      "updatedAt": "2026-07-14T04:10:01.559Z",
+      "updatedAt": "2026-07-14T04:11:20.225Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29305283232",
       "visualStartedAt": "2026-07-14T04:09:50Z"
     },
@@ -604,6 +604,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784002280233_hnpafm",
+      "ts": "2026-07-14T04:11:20.233Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2025-26 Upper Deck Ultimate Collection Hockey",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1784002280230_vvlebt",
+      "ts": "2026-07-14T04:11:20.230Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2025-26 Upper Deck Ultimate Collection Hockey",
+      "source": "github_actions"
+    },
     {
       "id": "log_1784002201560_yc5p9l",
       "ts": "2026-07-14T04:10:01.560Z",
@@ -2782,9 +2802,9 @@
       "checkedAt": "2026-07-14T04:08:59.511Z"
     },
     "hockey|2025_26_upper_deck_ultimate_collection_hockey": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-07-14T04:09:49.986Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29305283232",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2794,7 +2814,7 @@
       "productName": "2025-26 Upper Deck Ultimate Collection Hockey",
       "sport": "hockey",
       "code": "2025_26_upper_deck_ultimate_collection_hockey",
-      "updatedAt": "2026-07-14T04:10:01.550Z",
+      "updatedAt": "2026-07-14T04:11:20.213Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 29305283232,
@@ -2802,12 +2822,12 @@
       "displayTitle": "Visual Product Test - 2025-26 Upper Deck Ultimate Collection Hockey",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-14T04:09:50Z",
-      "checkedAt": "2026-07-14T04:10:01.550Z"
+      "checkedAt": "2026-07-14T04:11:20.213Z"
     },
     "hockey|2025-26 upper deck ultimate collection hockey": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-07-14T04:09:49.986Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29305283232",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2817,7 +2837,7 @@
       "productName": "2025-26 Upper Deck Ultimate Collection Hockey",
       "sport": "hockey",
       "code": "2025_26_upper_deck_ultimate_collection_hockey",
-      "updatedAt": "2026-07-14T04:10:01.550Z",
+      "updatedAt": "2026-07-14T04:11:20.213Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 29305283232,
@@ -2825,7 +2845,7 @@
       "displayTitle": "Visual Product Test - 2025-26 Upper Deck Ultimate Collection Hockey",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-14T04:09:50Z",
-      "checkedAt": "2026-07-14T04:10:01.550Z"
+      "checkedAt": "2026-07-14T04:11:20.213Z"
     }
   },
   "known_issues": {},
@@ -4767,7 +4787,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-finest-baseball-card-checklist": {
@@ -4884,7 +4904,7 @@
       "code": "2025_topps_chrome_black_football",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-chrome-black-nfl-analysis",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "football|https www checklistcenter com 2025-topps-chrome-black-football-card-checklist": {
@@ -4929,7 +4949,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "soccer|https slabsquatch substack com p 202526-topps-chrome-uefa-womens-champions": {
@@ -4938,7 +4958,7 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "soccer|2025_26_topps_chrome_uefa_women_s_champions_league_soccer": {
@@ -4947,7 +4967,7 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 29064422795": {
@@ -4956,7 +4976,7 @@
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "soccer|2025_26_topps_pristine_premier_league_soccer": {
@@ -4965,7 +4985,7 @@
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-pristine-premier-league-soccer-card-checklist": {
@@ -4983,7 +5003,7 @@
       "code": "2025_topps_chrome_black_football",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-chrome-black-nfl-analysis",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 29304874419": {
@@ -4992,7 +5012,7 @@
       "code": "2025_topps_inception_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29304874419",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "baseball|2025_topps_inception_baseball": {
@@ -5001,7 +5021,7 @@
       "code": "2025_topps_inception_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2025-topps-inception-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2025-topps-inception-baseball-card-checklist": {
@@ -5010,7 +5030,7 @@
       "code": "2025_topps_inception_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2025-topps-inception-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 29305152031": {
@@ -5019,7 +5039,7 @@
       "code": "2026_panini_immaculate_collection_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29305152031",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "baseball|2026_panini_immaculate_collection_baseball": {
@@ -5028,7 +5048,7 @@
       "code": "2026_panini_immaculate_collection_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-immaculate-collection-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-panini-immaculate-collection-baseball-card-checklist": {
@@ -5037,7 +5057,7 @@
       "code": "2026_panini_immaculate_collection_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-immaculate-collection-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "print run vault json sync": {
@@ -5046,7 +5066,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5055,11 +5075,38 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-14T04:10:03.264Z",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
+      "resolved": true
+    },
+    "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
+      "product": "2025-26 Upper Deck Ultimate Collection Hockey",
+      "sport": "hockey",
+      "code": "2025_26_upper_deck_ultimate_collection_hockey",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29305283232",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
+      "resolved": true
+    },
+    "hockey|2025_26_upper_deck_ultimate_collection_hockey": {
+      "product": "2025-26 Upper Deck Ultimate Collection Hockey",
+      "sport": "hockey",
+      "code": "2025_26_upper_deck_ultimate_collection_hockey",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-ultimate-collection-hockey-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
+      "resolved": true
+    },
+    "hockey|https www checklistcenter com 2025-26-upper-deck-ultimate-collection-hockey-card-checklist": {
+      "product": "2025-26 Upper Deck Ultimate Collection Hockey",
+      "sport": "hockey",
+      "code": "2025_26_upper_deck_ultimate_collection_hockey",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-ultimate-collection-hockey-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-14T04:11:21.888Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-14T04:10:04.541Z",
+  "saved_at": "2026-07-14T04:11:23.337Z",
   "saved_by": "cm_command_center_operator"
 }

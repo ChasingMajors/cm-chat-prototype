@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-12T03:49:24.990Z",
+  "exported_at": "2026-07-14T03:23:55.424Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -364,109 +364,117 @@
   ],
   "agent_actions": [
     {
-      "id": "source_watch|baseball|2025 topps inception baseball",
+      "id": "visual_test|github_actions|2025-26 topps pristine premier league soccer|2025_26_topps_pristine_premier_league_soccer",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_pristine_premier_league_soccer",
+      "riskLevel": "low",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-07-10T02:20:13.542Z",
+      "updatedAt": "2026-07-10T02:21:50.386Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
+      "visualStartedAt": "2026-07-10T02:20:13Z"
+    },
+    {
+      "id": "prv_watch|soccer|2025-26 topps chrome uefa women s champions league soccer",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2025-26 Topps Chrome UEFA Women’s Champions League Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
+      "riskLevel": "medium",
+      "status": "validated",
+      "recommendedAction": "Open PRV and confirm the product loads.",
+      "adminDecision": "",
+      "executionResult": "PRV JSON publish request completed and public rows validated.",
+      "validationResult": "19 public PRV rows validated.",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
+      "createdAt": "2026-07-09T15:57:03.096Z",
+      "updatedAt": "2026-07-10T01:30:13.335Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "PRV sheet write and JSON publish completed for 2025_26_topps_chrome_uefa_women_s_champions_league_soccer.",
+      "autoExecutedAt": "2026-07-09T15:57:03.096Z"
+    },
+    {
+      "id": "source_watch|soccer|2025-26 topps pristine premier league soccer",
       "type": "checklist_publish",
       "source": "operator_backend",
-      "product": "2025 Topps Inception Baseball",
-      "sport": "baseball",
-      "code": "2025_topps_inception_baseball",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_pristine_premier_league_soccer",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-pristine-premier-league-soccer-card-checklist/",
+      "createdAt": "2026-07-09T15:57:03.096Z",
+      "updatedAt": "2026-07-10T02:21:50.388Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
+      "visualStartedAt": "2026-07-10T02:20:13Z"
+    },
+    {
+      "id": "prv_watch|baseball|2026 topps finest baseball",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2026 Topps Finest Baseball",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "ignored",
+      "recommendedAction": "No action needed. Resolved proof is already recorded.",
+      "adminDecision": "resolved_memory",
+      "executionResult": "Resolved memory suppressed this stale queue row.",
+      "validationResult": "Already resolved. Future scans should not requeue this product.",
       "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-topps-inception-baseball-card-checklist/",
-      "createdAt": "2026-07-11T15:32:18.759Z",
-      "updatedAt": "2026-07-12T03:49:23.387Z"
+      "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
+      "createdAt": "2026-07-08T02:49:56.198Z",
+      "updatedAt": "2026-07-08T02:50:02.495Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1783828163386_wbl4mu",
-      "ts": "2026-07-12T03:49:23.386Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025 Topps Inception Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783828153396_j2fha5",
-      "ts": "2026-07-12T03:49:13.396Z",
-      "type": "agent_cycle",
-      "title": "Admin decision required",
-      "detail": "2025 Topps Inception Baseball needs approval before the agent can continue. Use Scan New Checklists if you want a fresh source scan without advancing this queue item.",
+      "id": "log_1783999433814_1mjzh0",
+      "ts": "2026-07-14T03:23:53.814Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
       "status": "started",
       "product": "",
       "source": "command_center"
     },
     {
-      "id": "log_1783784239270_dqj5f7",
-      "ts": "2026-07-11T15:37:19.271Z",
-      "type": "checklist_publish",
-      "title": "JSON publish failed",
-      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "2025 Topps Inception Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783783998936_5sf45u",
-      "ts": "2026-07-11T15:33:18.936Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "id": "log_1783999433770_gl15h9",
+      "ts": "2026-07-14T03:23:53.772Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
       "status": "started",
-      "product": "2025 Topps Inception Baseball",
-      "source": "operator_backend"
+      "product": "",
+      "source": "command_center"
     },
     {
-      "id": "log_1783783998897_bocqlu",
-      "ts": "2026-07-11T15:33:18.898Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "676 checklist rows and 88 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025 Topps Inception Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783783967515_hma7qd",
-      "ts": "2026-07-11T15:32:47.515Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "2025 Topps Inception Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1783783961964_gqsd9b",
-      "ts": "2026-07-11T15:32:41.964Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "676 rows and 88 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025 Topps Inception Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783783959755_w49ks1",
-      "ts": "2026-07-11T15:32:39.756Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2025 Topps Inception Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1783783947092_1y3c6i",
-      "ts": "2026-07-11T15:32:27.092Z",
+      "id": "log_1783781697869_yd7a4f",
+      "ts": "2026-07-11T14:54:57.869Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -475,8 +483,8 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1783783947045_55wj4v",
-      "ts": "2026-07-11T15:32:27.045Z",
+      "id": "log_1783781697857_gr89kb",
+      "ts": "2026-07-11T14:54:57.857Z",
       "type": "memory",
       "title": "Agent memory imported",
       "detail": "Queue, log, approvals, known issues, and visual status were restored.",
@@ -485,28 +493,18 @@
       "source": "admin"
     },
     {
-      "id": "log_1783783941821_alert",
-      "ts": "2026-07-11T15:32:18.759Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1783783941353",
-      "ts": "2026-07-11T15:32:18.759Z",
+      "id": "log_1783781691222",
+      "ts": "2026-07-11T14:54:49.316Z",
       "type": "agent_sweep",
       "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 7 checked. PRV sync: skipped for fast sweep. 18 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
-      "status": "needs_review",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 7 checked. PRV sync: skipped for fast sweep. 19 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "status": "validated",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1783783941351",
-      "ts": "2026-07-11T15:32:18.759Z",
+      "id": "log_1783781691220",
+      "ts": "2026-07-11T14:54:49.316Z",
       "type": "prv_sync",
       "title": "Scheduled PRV sync complete",
       "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
@@ -515,36 +513,524 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1783781752119_ra8kkt",
-      "ts": "2026-07-11T14:55:52.119Z",
+      "id": "log_1783699251594",
+      "ts": "2026-07-10T15:57:03.444Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 7 checked. PRV sync: passed. 19 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783699251592",
+      "ts": "2026-07-10T15:57:03.444Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783650136122_5ya0wq",
+      "ts": "2026-07-10T02:22:16.122Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep complete",
+      "detail": "Checklist: 0 actions. PRV: 0 actions. PRV sync: skipped. Auto: No safe auto-executable action found.",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783650128308_79aw1d",
+      "ts": "2026-07-10T02:22:08.308Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1783650128304_cxbd4k",
+      "ts": "2026-07-10T02:22:08.304Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1783650110391_ac65sb",
+      "ts": "2026-07-10T02:21:50.391Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1783650110390_5ywkzd",
+      "ts": "2026-07-10T02:21:50.390Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1783650088542_6eit0a",
+      "ts": "2026-07-10T02:21:28.542Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1783650066318_sehh50",
+      "ts": "2026-07-10T02:21:06.318Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1783650045048_ythwle",
+      "ts": "2026-07-10T02:20:45.048Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1783650023453_knyw94",
+      "ts": "2026-07-10T02:20:23.453Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1783650013544_cqhk1c",
+      "ts": "2026-07-10T02:20:13.544Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1783650005573_1sqv3o",
+      "ts": "2026-07-10T02:20:05.573Z",
+      "type": "validation",
+      "title": "Public JSON proof reconciled",
+      "detail": "1 pending public JSON card moved forward because live public JSON already contains the product data.",
+      "status": "covered",
+      "product": "",
+      "source": "public_json"
+    },
+    {
+      "id": "log_1783650005569_57y0pm",
+      "ts": "2026-07-10T02:20:05.569Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783650005556_gelyhf",
+      "ts": "2026-07-10T02:20:05.556Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1783650005554_gjyld4",
+      "ts": "2026-07-10T02:20:05.554Z",
+      "type": "agent_action",
+      "title": "Stale running work cleared",
+      "detail": "1 stale running card moved back to verifiable queue state.",
+      "status": "reconciled",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1783649974638_x7c07t",
+      "ts": "2026-07-10T02:19:34.638Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783647013343_ybhdlx",
+      "ts": "2026-07-10T01:30:13.343Z",
+      "type": "prv_publish",
+      "title": "PRV JSON published and validated",
+      "detail": "19 public PRV rows validated.",
+      "status": "validated",
+      "product": "2025-26 Topps Chrome UEFA Women’s Champions League Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783646974877_uvkbgw",
+      "ts": "2026-07-10T01:29:34.877Z",
+      "type": "prv_publish",
+      "title": "PRV JSON publish started",
+      "detail": "Publishing Print Run Vault static JSON after approved sheet write.",
+      "status": "started",
+      "product": "2025-26 Topps Chrome UEFA Women’s Champions League Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783646970268_q9bxi9",
+      "ts": "2026-07-10T01:29:30.268Z",
+      "type": "prv_source_review",
+      "title": "PRV temp data written",
+      "detail": "1 Index row and 19 Products rows validated.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Chrome UEFA Women’s Champions League Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783646960393_n8548s",
+      "ts": "2026-07-10T01:29:20.393Z",
+      "type": "prv_source_review",
+      "title": "PRV sheet write started",
+      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
+      "status": "started",
+      "product": "2025-26 Topps Chrome UEFA Women’s Champions League Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1783646923539_jhw8ct",
+      "ts": "2026-07-10T01:28:43.539Z",
+      "type": "checklist_publish",
+      "title": "JSON publish needs review",
+      "detail": "Sheet write succeeded, but publish/live validation needs review.",
+      "status": "failed",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783646877303_qur0b7",
+      "ts": "2026-07-10T01:27:57.303Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783646877292_fv77zn",
+      "ts": "2026-07-10T01:27:57.292Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "686 checklist rows and 71 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783646862843_egd1r5",
+      "ts": "2026-07-10T01:27:42.843Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1783646859545_avc5wc",
+      "ts": "2026-07-10T01:27:39.545Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "686 rows and 71 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783646858162_ir13mx",
+      "ts": "2026-07-10T01:27:38.162Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Topps Pristine Premier League Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1783646780575_o0rujx",
+      "ts": "2026-07-10T01:26:20.575Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783646780539_bee7bj",
+      "ts": "2026-07-10T01:26:20.539Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1783646774954_alert",
+      "ts": "2026-07-10T01:26:12.159Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783646774469",
+      "ts": "2026-07-10T01:26:12.159Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 7 checked. PRV sync: skipped for fast sweep. 17 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783646774468",
+      "ts": "2026-07-10T01:26:12.159Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783612797909_alert",
+      "ts": "2026-07-09T15:57:03.096Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783612797634",
+      "ts": "2026-07-09T15:57:03.096Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 1 actionable from 7 checked. PRV sync: passed. 17 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Topps Chrome UEFA Women’s Champions League Soccer -> needs_admin (PRV write completed, but public JSON validation needs review. Publish returned ok.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783612797634",
+      "ts": "2026-07-09T15:57:03.096Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2025-26 Topps Chrome UEFA Women’s Champions League Soccer: PRV sheet write and JSON publish completed for 2025_26_topps_chrome_uefa_women_s_champions_league_soccer. PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "status": "needs_admin",
+      "product": "2025-26 Topps Chrome UEFA Women’s Champions League Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783612761592",
+      "ts": "2026-07-09T15:57:03.096Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783554009246_dnitg4",
+      "ts": "2026-07-08T23:40:09.246Z",
+      "type": "prv_source_watch",
+      "title": "PRV Source Watch complete",
+      "detail": "6 SlabSquatch items checked. 0 need review. 0 PRV review cards queued.",
+      "status": "completed",
+      "product": "",
+      "source": "slabsquatch"
+    },
+    {
+      "id": "log_1783554009245_4szkj6",
+      "ts": "2026-07-08T23:40:09.245Z",
+      "type": "source_watch",
+      "title": "Source Watch skipped clean items",
+      "detail": "5 admin-ignored source item(s) were omitted from the queue.",
+      "status": "ignored",
+      "product": "",
+      "source": "prv_source_watch"
+    },
+    {
+      "id": "log_1783554007695_9egq8t",
+      "ts": "2026-07-08T23:40:07.695Z",
       "type": "prv_source_watch",
       "title": "PRV Source Watch started",
       "detail": "Checking SlabSquatch posts against Print Run Vault coverage.",
       "status": "started",
       "product": "",
       "source": "slabsquatch"
+    },
+    {
+      "id": "log_1783553985381_wpe7dj",
+      "ts": "2026-07-08T23:39:45.381Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783553985372_fsgke5",
+      "ts": "2026-07-08T23:39:45.372Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1783553958559_mbq4wi",
+      "ts": "2026-07-08T23:39:18.559Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783553958547_f12kcl",
+      "ts": "2026-07-08T23:39:18.547Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1783553953475",
+      "ts": "2026-07-08T23:39:10.579Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: skipped for fast sweep. 18 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783553953473",
+      "ts": "2026-07-08T23:39:10.579Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783553941187_sls68k",
+      "ts": "2026-07-08T23:39:01.187Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783553941175_tzyjf3",
+      "ts": "2026-07-08T23:39:01.175Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1783479000872_i4x64o",
+      "ts": "2026-07-08T02:50:00.872Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep complete",
+      "detail": "Checklist: 0 actions. PRV: 1 action. PRV sync: skipped. Auto: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1783478995367_54jfqf",
+      "ts": "2026-07-08T02:49:55.367Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1783478995363_vyi7dl",
+      "ts": "2026-07-08T02:49:55.363Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
     }
   ],
   "last_agent_report": {
     "ok": true,
-    "status": "needs_admin",
-    "generated_at": "2026-07-11T15:32:18.759Z",
+    "status": "clear",
+    "generated_at": "2026-07-11T14:54:49.316Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 7,
-      "skipped_ignored": 18
+      "skipped_ignored": 19
     },
     "completed_count": 0,
-    "needs_admin_count": 1,
+    "needs_admin_count": 0,
     "blocked_count": 0,
     "completed": [],
-    "needs_admin": [
-      "Checklist review: 2025 Topps Inception Baseball | baseball | missing"
-    ],
+    "needs_admin": [],
     "blocked": [],
     "proof": [],
-    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 7 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
+    "next_step": "No immediate action. Sentinel can run again on schedule.",
+    "summary": "Checked 20 checklist source item(s) and 7 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4027,7 +4513,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-11T14:55:41.384Z",
+      "ignoredAt": "2026-07-14T03:23:55.424Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-finest-baseball-card-checklist": {
@@ -4189,7 +4675,7 @@
       "code": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-finest-mlb-analysis-and",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-11T14:55:41.384Z",
+      "ignoredAt": "2026-07-14T03:23:55.424Z",
       "resolved": true
     },
     "soccer|https slabsquatch substack com p 202526-topps-chrome-uefa-womens-champions": {
@@ -4198,7 +4684,7 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-11T14:55:41.384Z",
+      "ignoredAt": "2026-07-14T03:23:55.424Z",
       "resolved": true
     },
     "soccer|2025_26_topps_chrome_uefa_women_s_champions_league_soccer": {
@@ -4207,7 +4693,7 @@
       "code": "2025_26_topps_chrome_uefa_women_s_champions_league_soccer",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-uefa-womens-champions",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-11T14:55:41.384Z",
+      "ignoredAt": "2026-07-14T03:23:55.424Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 29064422795": {
@@ -4216,7 +4702,7 @@
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29064422795",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-11T14:55:41.377Z",
+      "ignoredAt": "2026-07-14T03:23:55.424Z",
       "resolved": true
     },
     "soccer|2025_26_topps_pristine_premier_league_soccer": {
@@ -4225,7 +4711,7 @@
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-pristine-premier-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-11T14:55:41.384Z",
+      "ignoredAt": "2026-07-14T03:23:55.424Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-pristine-premier-league-soccer-card-checklist": {
@@ -4234,11 +4720,11 @@
       "code": "2025_26_topps_pristine_premier_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-pristine-premier-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-11T14:55:41.384Z",
+      "ignoredAt": "2026-07-14T03:23:55.424Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-12T03:49:26.792Z",
+  "saved_at": "2026-07-14T03:23:58.360Z",
   "saved_by": "cm_command_center_operator"
 }

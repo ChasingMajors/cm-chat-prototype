@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-15T00:52:07.131Z",
+  "exported_at": "2026-07-15T00:52:14.174Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -364,6 +364,30 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2026 topps dynamic duals baseball|2026_topps_dynamic_duals_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2026 Topps Dynamic Duals Baseball",
+      "sport": "baseball",
+      "code": "2026_topps_dynamic_duals_baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-07-15T00:52:12.569Z",
+      "updatedAt": "2026-07-15T00:52:12.570Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-07-15T00:52:10.777Z"
+    },
+    {
       "id": "source_watch|baseball|2026 topps dynamic duals baseball",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -371,19 +395,31 @@
       "sport": "baseball",
       "code": "2026_topps_dynamic_duals_baseball",
       "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "Load failed",
+      "validationResult": "CV/ChatBot visual test queued or running.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "createdAt": "2026-07-14T23:19:46.537Z",
-      "updatedAt": "2026-07-15T00:52:05.516Z"
+      "updatedAt": "2026-07-15T00:52:12.571Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-07-15T00:52:10.777Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784076732572_kgotpi",
+      "ts": "2026-07-15T00:52:12.572Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2026 Topps Dynamic Duals Baseball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1784076725527_tyy3tm",
       "ts": "2026-07-15T00:52:05.527Z",
@@ -2264,6 +2300,40 @@
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-14T04:09:50Z",
       "checkedAt": "2026-07-14T04:11:20.213Z"
+    },
+    "baseball|2026_topps_dynamic_duals_baseball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-07-15T00:52:10.777Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2026_topps_dynamic_duals_baseball",
+      "key": "baseball|2026_topps_dynamic_duals_baseball",
+      "productName": "2026 Topps Dynamic Duals Baseball",
+      "sport": "baseball",
+      "code": "2026_topps_dynamic_duals_baseball",
+      "updatedAt": "2026-07-15T00:52:12.565Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
+    },
+    "baseball|2026 topps dynamic duals baseball": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-07-15T00:52:10.777Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2026_topps_dynamic_duals_baseball",
+      "key": "baseball|2026 topps dynamic duals baseball",
+      "productName": "2026 Topps Dynamic Duals Baseball",
+      "sport": "baseball",
+      "code": "2026_topps_dynamic_duals_baseball",
+      "updatedAt": "2026-07-15T00:52:12.565Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -4525,6 +4595,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-15T00:52:09.228Z",
+  "saved_at": "2026-07-15T00:52:15.862Z",
   "saved_by": "cm_command_center_operator"
 }

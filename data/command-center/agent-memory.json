@@ -364,6 +364,24 @@
   ],
   "agent_actions": [
     {
+      "id": "prv_watch|basketball|2025 topps inception baseball and 2025-26 topps inception basketball",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball",
+      "sport": "basketball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-inception-mlb-and-202526",
+      "createdAt": "2026-07-15T02:40:04.097Z",
+      "updatedAt": "2026-07-15T02:40:04.097Z"
+    },
+    {
       "id": "visual_test|github_actions|2026 topps dynamic duals baseball|2026_topps_dynamic_duals_baseball",
       "type": "visual_test",
       "source": "github_actions",
@@ -410,6 +428,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784083208079_alert",
+      "ts": "2026-07-15T02:40:04.097Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784083207506",
+      "ts": "2026-07-15T02:40:04.097Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 19 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784083207500",
+      "ts": "2026-07-15T02:40:04.097Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784083199264_sqh8ey",
       "ts": "2026-07-15T02:39:59.264Z",
@@ -644,23 +692,23 @@
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-07-14T23:19:46.537Z",
+    "generated_at": "2026-07-15T02:40:04.097Z",
     "checked": {
       "checklist_count": 20,
-      "prv_count": 8,
-      "skipped_ignored": 18
+      "prv_count": 9,
+      "skipped_ignored": 19
     },
     "completed_count": 0,
     "needs_admin_count": 1,
     "blocked_count": 0,
     "completed": [],
     "needs_admin": [
-      "Checklist review: 2026 Topps Dynamic Duals Baseball | baseball | missing"
+      "PRV review: 2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball | basketball | missing"
     ],
     "blocked": [],
     "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 8 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4674,6 +4722,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-15T02:40:02.822Z",
+  "saved_at": "2026-07-15T02:40:08.161Z",
   "saved_by": "cm_command_center_operator"
 }

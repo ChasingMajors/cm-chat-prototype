@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-16T18:37:49.922Z",
+  "exported_at": "2026-07-16T18:38:25.948Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,15 +371,15 @@
       "sport": "basketball",
       "code": "",
       "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "status": "running",
+      "recommendedAction": "Review sample rows, then write PRV temp data if the numbers look right.",
       "adminDecision": "",
-      "executionResult": "PRV sheet write and JSON publish completed for 2025_topps_inception_baseball_2025_26_topps_inception_basketball.",
-      "validationResult": "PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "executionResult": "PRV sheet write started through Operator Backend.",
+      "validationResult": "Preview rows are ready for admin review before PRV sheet write.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-inception-mlb-and-202526",
       "createdAt": "2026-07-15T15:57:03.850Z",
-      "updatedAt": "2026-07-15T15:57:03.850Z",
+      "updatedAt": "2026-07-16T18:38:24.346Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
@@ -434,6 +434,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784227104333_i2u1te",
+      "ts": "2026-07-16T18:38:24.334Z",
+      "type": "prv_source_review",
+      "title": "PRV sheet write started",
+      "detail": "Admin requested product-scoped PRV write from SlabSquatch preview rows.",
+      "status": "started",
+      "product": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1784227070447_316zlc",
+      "ts": "2026-07-16T18:37:50.447Z",
+      "type": "prv_source_review",
+      "title": "PRV preview completed",
+      "detail": "11 print-run rows parsed.",
+      "status": "preview_ready",
+      "product": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784227068320_1tvorl",
       "ts": "2026-07-16T18:37:48.320Z",
@@ -4786,7 +4806,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29380192849",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T18:37:49.922Z",
+      "ignoredAt": "2026-07-16T18:38:25.948Z",
       "resolved": true
     },
     "baseball|2026_topps_dynamic_duals_baseball": {
@@ -4795,7 +4815,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T18:37:49.922Z",
+      "ignoredAt": "2026-07-16T18:38:25.948Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-dynamic-duals-baseball-card-checklist": {
@@ -4804,11 +4824,11 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T18:37:49.922Z",
+      "ignoredAt": "2026-07-16T18:38:25.948Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-16T18:37:51.610Z",
+  "saved_at": "2026-07-16T18:38:27.244Z",
   "saved_by": "cm_command_center_operator"
 }

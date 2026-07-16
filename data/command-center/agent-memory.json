@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-16T21:45:45.299Z",
+  "exported_at": "2026-07-16T21:45:53.931Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -410,6 +410,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784238352329_e88i52",
+      "ts": "2026-07-16T21:45:52.329Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync started",
+      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
+      "status": "started",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784238343696_o60zn6",
       "ts": "2026-07-16T21:45:43.696Z",
@@ -4952,7 +4962,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29380192849",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T21:45:45.299Z",
+      "ignoredAt": "2026-07-16T21:45:53.931Z",
       "resolved": true
     },
     "baseball|2026_topps_dynamic_duals_baseball": {
@@ -4961,7 +4971,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T21:45:45.299Z",
+      "ignoredAt": "2026-07-16T21:45:53.931Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-dynamic-duals-baseball-card-checklist": {
@@ -4970,7 +4980,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T21:45:45.299Z",
+      "ignoredAt": "2026-07-16T21:45:53.931Z",
       "resolved": true
     },
     "basketball|https slabsquatch substack com p 2025-topps-inception-mlb-and-202526": {
@@ -4993,6 +5003,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-16T21:45:47.019Z",
+  "saved_at": "2026-07-16T21:45:55.556Z",
   "saved_by": "cm_command_center_operator"
 }

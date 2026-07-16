@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-16T18:37:41.578Z",
+  "exported_at": "2026-07-16T18:37:49.922Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -434,6 +434,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784227068320_1tvorl",
+      "ts": "2026-07-16T18:37:48.320Z",
+      "type": "prv_source_review",
+      "title": "PRV preview started",
+      "detail": "Parsing source print-run rows before any PRV sheet write exists.",
+      "status": "started",
+      "product": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784227068314_00te5s",
+      "ts": "2026-07-16T18:37:48.314Z",
+      "type": "agent_cycle",
+      "title": "Build PRV preview",
+      "detail": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball can be safely previewed. No Google Sheet write will happen without approval.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1784227059975_13agev",
       "ts": "2026-07-16T18:37:39.975Z",
@@ -4766,7 +4786,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29380192849",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T18:37:41.578Z",
+      "ignoredAt": "2026-07-16T18:37:49.922Z",
       "resolved": true
     },
     "baseball|2026_topps_dynamic_duals_baseball": {
@@ -4775,7 +4795,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T18:37:41.578Z",
+      "ignoredAt": "2026-07-16T18:37:49.922Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-dynamic-duals-baseball-card-checklist": {
@@ -4784,11 +4804,11 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T18:37:41.578Z",
+      "ignoredAt": "2026-07-16T18:37:49.922Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-16T18:37:43.290Z",
+  "saved_at": "2026-07-16T18:37:51.610Z",
   "saved_by": "cm_command_center_operator"
 }

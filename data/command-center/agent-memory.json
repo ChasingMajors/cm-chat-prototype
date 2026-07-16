@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-16T18:38:36.096Z",
+  "exported_at": "2026-07-16T21:13:12.849Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,15 +371,15 @@
       "sport": "basketball",
       "code": "2025_topps_inception_baseball_2025_26_topps_inception_basketball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Review PRV sheet rows, then publish PRV JSON when ready.",
       "adminDecision": "",
-      "executionResult": "PRV Index and Products rows written.",
+      "executionResult": "PRV sheet write completed. PRV JSON publish started.",
       "validationResult": "11 PRV rows found in Products.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-inception-mlb-and-202526",
       "createdAt": "2026-07-15T15:57:03.850Z",
-      "updatedAt": "2026-07-16T18:38:34.485Z",
+      "updatedAt": "2026-07-16T21:13:11.246Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
@@ -434,6 +434,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784236391239_n6lyo8",
+      "ts": "2026-07-16T21:13:11.239Z",
+      "type": "prv_publish",
+      "title": "PRV JSON publish started",
+      "detail": "Publishing Print Run Vault static JSON after approved sheet write.",
+      "status": "started",
+      "product": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784227114492_ihe59c",
       "ts": "2026-07-16T18:38:34.492Z",
@@ -4816,7 +4826,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29380192849",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T18:38:36.096Z",
+      "ignoredAt": "2026-07-16T21:13:12.849Z",
       "resolved": true
     },
     "baseball|2026_topps_dynamic_duals_baseball": {
@@ -4825,7 +4835,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T18:38:36.096Z",
+      "ignoredAt": "2026-07-16T21:13:12.849Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-dynamic-duals-baseball-card-checklist": {
@@ -4834,11 +4844,11 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T18:38:36.096Z",
+      "ignoredAt": "2026-07-16T21:13:12.849Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-16T18:38:37.801Z",
+  "saved_at": "2026-07-16T21:13:14.386Z",
   "saved_by": "cm_command_center_operator"
 }

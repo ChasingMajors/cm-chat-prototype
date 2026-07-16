@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-16T18:37:34.142Z",
+  "exported_at": "2026-07-16T18:37:41.578Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,15 +371,21 @@
       "sport": "basketball",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "needs_admin",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "PRV sheet write and JSON publish completed for 2025_topps_inception_baseball_2025_26_topps_inception_basketball.",
+      "validationResult": "PRV write completed, but public JSON validation needs review. Publish returned ok.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-inception-mlb-and-202526",
-      "createdAt": "2026-07-15T02:40:04.097Z",
-      "updatedAt": "2026-07-15T02:40:04.097Z"
+      "createdAt": "2026-07-15T15:57:03.850Z",
+      "updatedAt": "2026-07-15T15:57:03.850Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "PRV sheet write and JSON publish completed for 2025_topps_inception_baseball_2025_26_topps_inception_basketball.",
+      "autoExecutedAt": "2026-07-15T15:57:03.850Z"
     },
     {
       "id": "visual_test|github_actions|2026 topps dynamic duals baseball|2026_topps_dynamic_duals_baseball",
@@ -429,18 +435,8 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1784227043718_dfvsc9",
-      "ts": "2026-07-16T18:37:23.718Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784083212616_vtksf9",
-      "ts": "2026-07-15T02:40:12.616Z",
+      "id": "log_1784227059975_13agev",
+      "ts": "2026-07-16T18:37:39.975Z",
       "type": "memory",
       "title": "Backend memory loaded",
       "detail": "Loaded from data/command-center/agent-memory.json.",
@@ -449,8 +445,8 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1784083212564_y031qq",
-      "ts": "2026-07-15T02:40:12.564Z",
+      "id": "log_1784227059962_w1l9tf",
+      "ts": "2026-07-16T18:37:39.962Z",
       "type": "memory",
       "title": "Agent memory imported",
       "detail": "Queue, log, approvals, known issues, and visual status were restored.",
@@ -459,8 +455,8 @@
       "source": "admin"
     },
     {
-      "id": "log_1784083208079_alert",
-      "ts": "2026-07-15T02:40:04.097Z",
+      "id": "log_1784131226734_alert",
+      "ts": "2026-07-15T15:57:03.850Z",
       "type": "admin_alert",
       "title": "CM Sentinel found items for admin review",
       "detail": "Alert sent via email.",
@@ -469,24 +465,64 @@
       "source": "operator_backend"
     },
     {
-      "id": "log_1784083207506",
-      "ts": "2026-07-15T02:40:04.097Z",
+      "id": "log_1784131226049",
+      "ts": "2026-07-15T15:57:03.850Z",
       "type": "agent_sweep",
       "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: skipped for fast sweep. 19 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: passed. 19 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball -> needs_admin (PRV write completed, but public JSON validation needs review. Publish returned ok.)",
       "status": "needs_review",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1784083207500",
-      "ts": "2026-07-15T02:40:04.097Z",
+      "id": "log_1784131226049",
+      "ts": "2026-07-15T15:57:03.850Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball: PRV sheet write and JSON publish completed for 2025_topps_inception_baseball_2025_26_topps_inception_basketball. PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "status": "needs_admin",
+      "product": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784131192306",
+      "ts": "2026-07-15T15:57:03.850Z",
       "type": "prv_sync",
       "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "detail": "Scheduled PRV JSON sync completed.",
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
+    },
+    {
+      "id": "log_1784083210328_olk9dk",
+      "ts": "2026-07-15T02:40:10.328Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep complete",
+      "detail": "Checklist: 0 actions. PRV: 1 action. PRV sync: skipped. Auto: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784083202656_i5pakw",
+      "ts": "2026-07-15T02:40:02.656Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1784083202650_qp7onb",
+      "ts": "2026-07-15T02:40:02.650Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
     },
     {
       "id": "log_1784083199264_sqh8ey",
@@ -722,23 +758,24 @@
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-07-15T02:40:04.097Z",
+    "generated_at": "2026-07-15T15:57:03.850Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 9,
       "skipped_ignored": 19
     },
     "completed_count": 0,
-    "needs_admin_count": 1,
+    "needs_admin_count": 2,
     "blocked_count": 0,
     "completed": [],
     "needs_admin": [
+      "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball -> needs_admin: PRV write completed, but public JSON validation needs review. Publish returned ok.",
       "PRV review: 2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball | basketball | missing"
     ],
     "blocked": [],
     "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 0 completed/progress item(s), 2 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4729,7 +4766,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29380192849",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T18:37:34.141Z",
+      "ignoredAt": "2026-07-16T18:37:41.578Z",
       "resolved": true
     },
     "baseball|2026_topps_dynamic_duals_baseball": {
@@ -4738,7 +4775,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T18:37:34.141Z",
+      "ignoredAt": "2026-07-16T18:37:41.578Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-dynamic-duals-baseball-card-checklist": {
@@ -4747,11 +4784,11 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T18:37:34.141Z",
+      "ignoredAt": "2026-07-16T18:37:41.578Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-16T18:37:36.803Z",
+  "saved_at": "2026-07-16T18:37:43.290Z",
   "saved_by": "cm_command_center_operator"
 }

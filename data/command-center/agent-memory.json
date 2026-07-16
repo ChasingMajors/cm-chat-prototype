@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-16T21:45:10.882Z",
+  "exported_at": "2026-07-16T21:45:24.287Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -434,6 +434,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784238322684_g354mv",
+      "ts": "2026-07-16T21:45:22.684Z",
+      "type": "prv_publish",
+      "title": "PRV public recheck started",
+      "detail": "Checking whether GitHub Pages has the product rows yet.",
+      "status": "started",
+      "product": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784238309280_e7w7xh",
       "ts": "2026-07-16T21:45:09.280Z",
@@ -4916,7 +4926,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29380192849",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T21:45:10.882Z",
+      "ignoredAt": "2026-07-16T21:45:24.287Z",
       "resolved": true
     },
     "baseball|2026_topps_dynamic_duals_baseball": {
@@ -4925,7 +4935,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T21:45:10.882Z",
+      "ignoredAt": "2026-07-16T21:45:24.287Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-dynamic-duals-baseball-card-checklist": {
@@ -4934,11 +4944,11 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-16T21:45:10.882Z",
+      "ignoredAt": "2026-07-16T21:45:24.287Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-16T21:45:12.373Z",
+  "saved_at": "2026-07-16T21:45:25.868Z",
   "saved_by": "cm_command_center_operator"
 }

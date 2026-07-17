@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-17T23:21:16.614Z",
+  "exported_at": "2026-07-17T04:13:07.408Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -364,6 +364,42 @@
   ],
   "agent_actions": [
     {
+      "id": "prv_watch|baseball|2026 topps tier one and 2025 topps dynasty baseball",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2026 Topps Tier One & 2025 Topps Dynasty Baseball",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-tier-one-and-2025-topps",
+      "createdAt": "2026-07-17T23:21:18.387Z",
+      "updatedAt": "2026-07-17T23:21:18.387Z"
+    },
+    {
+      "id": "source_watch|soccer|2025-26 topps chrome sapphire uwcl soccer",
+      "type": "source_import",
+      "source": "scheduled_quick_json",
+      "product": "2025-26 Topps Chrome Sapphire UWCL Soccer",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uwcl-soccer-card-checklist/",
+      "createdAt": "2026-07-17T23:21:18.387Z",
+      "updatedAt": "2026-07-17T23:21:18.387Z"
+    },
+    {
       "id": "visual_test|github_actions|2026 topps dynamic duals baseball|2026_topps_dynamic_duals_baseball",
       "type": "visual_test",
       "source": "github_actions",
@@ -411,24 +447,34 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1784330475010_pf2a65",
-      "ts": "2026-07-17T23:21:15.010Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
+      "id": "log_1784330481376_alert",
+      "ts": "2026-07-17T23:21:18.387Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1784330474997_8jovwy",
-      "ts": "2026-07-17T23:21:14.997Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
+      "id": "log_1784330480872",
+      "ts": "2026-07-17T23:21:18.387Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 1 actionable from 10 checked. PRV sync: skipped for fast sweep. 19 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "status": "needs_review",
       "product": "",
-      "source": "admin"
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784330480871",
+      "ts": "2026-07-17T23:21:18.387Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
       "id": "log_1784304050987",
@@ -1073,22 +1119,25 @@
   ],
   "last_agent_report": {
     "ok": true,
-    "status": "clear",
-    "generated_at": "2026-07-17T15:57:03.293Z",
+    "status": "needs_admin",
+    "generated_at": "2026-07-17T23:21:18.387Z",
     "checked": {
       "checklist_count": 20,
-      "prv_count": 9,
-      "skipped_ignored": 20
+      "prv_count": 10,
+      "skipped_ignored": 19
     },
     "completed_count": 0,
-    "needs_admin_count": 0,
+    "needs_admin_count": 2,
     "blocked_count": 0,
     "completed": [],
-    "needs_admin": [],
+    "needs_admin": [
+      "Checklist review: 2025-26 Topps Chrome Sapphire UWCL Soccer | soccer | missing",
+      "PRV review: 2026 Topps Tier One & 2025 Topps Dynasty Baseball | baseball | missing"
+    ],
     "blocked": [],
     "proof": [],
-    "next_step": "No immediate action. Sentinel can run again on schedule.",
-    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
+    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
+    "summary": "Checked 20 checklist source item(s) and 10 PRV source item(s). 0 completed/progress item(s), 2 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -5079,7 +5128,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29380192849",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-17T23:21:16.614Z",
+      "ignoredAt": "2026-07-17T04:13:07.408Z",
       "resolved": true
     },
     "baseball|2026_topps_dynamic_duals_baseball": {
@@ -5088,7 +5137,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-17T23:21:16.614Z",
+      "ignoredAt": "2026-07-17T04:13:07.408Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-dynamic-duals-baseball-card-checklist": {
@@ -5097,7 +5146,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-17T23:21:16.614Z",
+      "ignoredAt": "2026-07-17T04:13:07.408Z",
       "resolved": true
     },
     "basketball|https slabsquatch substack com p 2025-topps-inception-mlb-and-202526": {
@@ -5120,6 +5169,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-17T23:21:18.465Z",
+  "saved_at": "2026-07-17T23:21:21.456Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-17T23:21:58.352Z",
+  "exported_at": "2026-07-17T23:22:11.338Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -387,17 +387,17 @@
       "source": "scheduled_quick_json",
       "product": "2025-26 Topps Chrome Sapphire UWCL Soccer",
       "sport": "soccer",
-      "code": "",
+      "code": "2025_26_topps_chrome_sapphire_uwcl_soccer",
       "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "status": "needs_admin",
+      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
+      "executionResult": "Import preview parsed 196 rows and 29 parallels.",
+      "validationResult": "Preview rows are ready for admin review before sheet write.",
+      "runUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uwcl-soccer-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-chrome-sapphire-uwcl-soccer-card-checklist/",
       "createdAt": "2026-07-17T23:21:18.387Z",
-      "updatedAt": "2026-07-17T23:21:18.387Z"
+      "updatedAt": "2026-07-17T23:22:09.734Z"
     },
     {
       "id": "visual_test|github_actions|2026 topps dynamic duals baseball|2026_topps_dynamic_duals_baseball",
@@ -446,6 +446,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784330529735_3wqs52",
+      "ts": "2026-07-17T23:22:09.735Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "196 rows and 29 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Topps Chrome Sapphire UWCL Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784330528328_qat7vj",
+      "ts": "2026-07-17T23:22:08.328Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Topps Chrome Sapphire UWCL Soccer",
+      "source": "admin"
+    },
     {
       "id": "log_1784330516750_28lob1",
       "ts": "2026-07-17T23:21:56.750Z",
@@ -5188,7 +5208,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29380192849",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-17T23:21:58.352Z",
+      "ignoredAt": "2026-07-17T23:22:11.338Z",
       "resolved": true
     },
     "baseball|2026_topps_dynamic_duals_baseball": {
@@ -5197,7 +5217,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-17T23:21:58.352Z",
+      "ignoredAt": "2026-07-17T23:22:11.338Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-dynamic-duals-baseball-card-checklist": {
@@ -5206,7 +5226,7 @@
       "code": "2026_topps_dynamic_duals_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-dynamic-duals-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-17T23:21:58.352Z",
+      "ignoredAt": "2026-07-17T23:22:11.338Z",
       "resolved": true
     },
     "basketball|https slabsquatch substack com p 2025-topps-inception-mlb-and-202526": {
@@ -5229,6 +5249,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-17T23:22:00.405Z",
+  "saved_at": "2026-07-17T23:22:13.319Z",
   "saved_by": "cm_command_center_operator"
 }

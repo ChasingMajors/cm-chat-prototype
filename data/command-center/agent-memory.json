@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-18T01:55:48.141Z",
+  "exported_at": "2026-07-18T01:56:11.887Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -365,6 +365,26 @@
   "agent_actions": [],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784339770284_zx84bm",
+      "ts": "2026-07-18T01:56:10.284Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync failed",
+      "detail": "null is not an object (evaluating 'action.status')",
+      "status": "failed",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784339770271_yyn771",
+      "ts": "2026-07-18T01:56:10.271Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync completed",
+      "detail": "89 public PRV products and 3,508 product rows validated across 1 shard.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784339746535_7gb5ka",
       "ts": "2026-07-18T01:55:46.535Z",
@@ -4539,6 +4559,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-18T01:55:50.459Z",
+  "saved_at": "2026-07-18T01:56:14.329Z",
   "saved_by": "cm_command_center_operator"
 }

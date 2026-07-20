@@ -366,6 +366,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1784563188549",
+      "ts": "2026-07-20T15:57:03.272Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 10 checked. PRV sync: passed. 20 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784563188548",
+      "ts": "2026-07-20T15:57:03.272Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1784476833216",
       "ts": "2026-07-19T15:57:03.276Z",
       "type": "agent_sweep",
@@ -459,11 +479,11 @@
   "last_agent_report": {
     "ok": true,
     "status": "clear",
-    "generated_at": "2026-07-19T15:57:03.276Z",
+    "generated_at": "2026-07-20T15:57:03.272Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 10,
-      "skipped_ignored": 21
+      "skipped_ignored": 20
     },
     "completed_count": 0,
     "needs_admin_count": 0,
@@ -4596,6 +4616,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-19T16:00:33.235Z",
+  "saved_at": "2026-07-20T15:59:48.622Z",
   "saved_by": "cm_command_center_operator"
 }

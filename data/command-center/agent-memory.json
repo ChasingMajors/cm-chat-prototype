@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-18T01:56:11.887Z",
+  "exported_at": "2026-07-21T01:40:37.536Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -366,84 +366,34 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1784598032440",
-      "ts": "2026-07-21T01:40:29.899Z",
+      "id": "log_1784598035932_fo1jmo",
+      "ts": "2026-07-21T01:40:35.932Z",
       "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 19 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "title": "Backend Agent Sweep complete",
+      "detail": "Checklist: 0 actions. PRV: 0 actions. PRV sync: skipped. Auto: No safe auto-executable action found.",
       "status": "validated",
       "product": "",
       "source": "operator_backend"
     },
     {
-      "id": "log_1784598032439",
-      "ts": "2026-07-21T01:40:29.899Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784563188549",
-      "ts": "2026-07-20T15:57:03.272Z",
+      "id": "log_1784598028206_4xjcoe",
+      "ts": "2026-07-21T01:40:28.206Z",
       "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 10 checked. PRV sync: passed. 20 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
       "product": "",
-      "source": "operator_backend"
+      "source": "command_center"
     },
     {
-      "id": "log_1784563188548",
-      "ts": "2026-07-20T15:57:03.272Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784476833216",
-      "ts": "2026-07-19T15:57:03.276Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 10 checked. PRV sync: passed. 21 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
+      "id": "log_1784598028185_0yfmmi",
+      "ts": "2026-07-21T01:40:28.187Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784476833214",
-      "ts": "2026-07-19T15:57:03.276Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784390452771",
-      "ts": "2026-07-18T15:57:03.528Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 10 checked. PRV sync: passed. 21 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784390452767",
-      "ts": "2026-07-18T15:57:03.528Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
+      "source": "command_center"
     },
     {
       "id": "log_1784339770284_zx84bm",
@@ -4636,6 +4586,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-21T01:40:32.526Z",
+  "saved_at": "2026-07-21T01:40:38.786Z",
   "saved_by": "cm_command_center_operator"
 }

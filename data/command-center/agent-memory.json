@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-18T01:56:11.887Z",
+  "exported_at": "2026-07-21T01:40:29.811Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -366,64 +366,24 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1784563188549",
-      "ts": "2026-07-20T15:57:03.272Z",
+      "id": "log_1784598028206_4xjcoe",
+      "ts": "2026-07-21T01:40:28.206Z",
       "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 10 checked. PRV sync: passed. 20 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
       "product": "",
-      "source": "operator_backend"
+      "source": "command_center"
     },
     {
-      "id": "log_1784563188548",
-      "ts": "2026-07-20T15:57:03.272Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784476833216",
-      "ts": "2026-07-19T15:57:03.276Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 10 checked. PRV sync: passed. 21 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
+      "id": "log_1784598028185_0yfmmi",
+      "ts": "2026-07-21T01:40:28.187Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784476833214",
-      "ts": "2026-07-19T15:57:03.276Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784390452771",
-      "ts": "2026-07-18T15:57:03.528Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 10 checked. PRV sync: passed. 21 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784390452767",
-      "ts": "2026-07-18T15:57:03.528Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
+      "source": "command_center"
     },
     {
       "id": "log_1784339770284_zx84bm",
@@ -478,22 +438,25 @@
   ],
   "last_agent_report": {
     "ok": true,
-    "status": "clear",
-    "generated_at": "2026-07-20T15:57:03.272Z",
+    "status": "needs_admin",
+    "generated_at": "2026-07-17T23:21:18.387Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 10,
-      "skipped_ignored": 20
+      "skipped_ignored": 19
     },
     "completed_count": 0,
-    "needs_admin_count": 0,
+    "needs_admin_count": 2,
     "blocked_count": 0,
     "completed": [],
-    "needs_admin": [],
+    "needs_admin": [
+      "Checklist review: 2025-26 Topps Chrome Sapphire UWCL Soccer | soccer | missing",
+      "PRV review: 2026 Topps Tier One & 2025 Topps Dynasty Baseball | baseball | missing"
+    ],
     "blocked": [],
     "proof": [],
-    "next_step": "No immediate action. Sentinel can run again on schedule.",
-    "summary": "Checked 20 checklist source item(s) and 10 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
+    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
+    "summary": "Checked 20 checklist source item(s) and 10 PRV source item(s). 0 completed/progress item(s), 2 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4616,6 +4579,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-20T15:59:48.622Z",
+  "saved_at": "2026-07-21T01:40:30.944Z",
   "saved_by": "cm_command_center_operator"
 }

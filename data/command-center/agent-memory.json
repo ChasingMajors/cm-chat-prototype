@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-22T01:31:12.685Z",
+  "exported_at": "2026-07-22T01:42:37.139Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,15 +371,15 @@
       "sport": "soccer",
       "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
+      "status": "needs_admin",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "executionResult": "Sheet write completed; JSON publish request failed.",
+      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-select-road-to-fifa-world-cup-2026-soccer-card-checklist/",
       "createdAt": "2026-07-22T01:30:36.852Z",
-      "updatedAt": "2026-07-22T01:31:11.082Z"
+      "updatedAt": "2026-07-22T01:42:35.533Z"
     },
     {
       "id": "source_watch|basketball|2025-26 topps inception basketball",
@@ -402,6 +402,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784684555538_rybbe4",
+      "ts": "2026-07-22T01:42:35.538Z",
+      "type": "checklist_publish",
+      "title": "JSON publish failed",
+      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
+      "product": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784683871081_phlshc",
       "ts": "2026-07-22T01:31:11.081Z",
@@ -4766,6 +4776,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-22T01:31:13.952Z",
+  "saved_at": "2026-07-22T01:42:38.500Z",
   "saved_by": "cm_command_center_operator"
 }

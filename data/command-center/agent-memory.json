@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-22T05:14:46.171Z",
+  "exported_at": "2026-07-22T05:16:59.342Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,11 +371,11 @@
       "sport": "basketball",
       "code": "2025_26_topps_inception_basketball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
       "sourceUrl": "",
       "bucket": "",
@@ -383,7 +383,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-07-22T05:13:48.087Z",
-      "updatedAt": "2026-07-22T05:14:44.565Z",
+      "updatedAt": "2026-07-22T05:16:57.733Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
       "visualStartedAt": "2026-07-22T05:13:47Z"
     },
@@ -439,21 +439,41 @@
       "sport": "basketball",
       "code": "2025_26_topps_inception_basketball",
       "riskLevel": "medium",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-inception-basketball-card-checklist/",
       "createdAt": "2026-07-22T01:30:36.852Z",
-      "updatedAt": "2026-07-22T05:14:44.566Z",
+      "updatedAt": "2026-07-22T05:16:57.734Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
       "visualStartedAt": "2026-07-22T05:13:47Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784697417737_dhnn9d",
+      "ts": "2026-07-22T05:16:57.738Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2025-26 Topps Inception Basketball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1784697417736_z3ck9q",
+      "ts": "2026-07-22T05:16:57.736Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2025-26 Topps Inception Basketball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1784697284567_e7v11t",
       "ts": "2026-07-22T05:14:44.567Z",
@@ -2733,9 +2753,9 @@
       "knownIssueNote": ""
     },
     "basketball|2025_26_topps_inception_basketball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-07-22T05:13:46.693Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2745,7 +2765,7 @@
       "productName": "2025-26 Topps Inception Basketball",
       "sport": "basketball",
       "code": "2025_26_topps_inception_basketball",
-      "updatedAt": "2026-07-22T05:14:44.559Z",
+      "updatedAt": "2026-07-22T05:16:57.728Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 29893195089,
@@ -2753,12 +2773,12 @@
       "displayTitle": "Visual Product Test - 2025-26 Topps Inception Basketball",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-22T05:13:47Z",
-      "checkedAt": "2026-07-22T05:14:44.559Z"
+      "checkedAt": "2026-07-22T05:16:57.728Z"
     },
     "basketball|2025-26 topps inception basketball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-07-22T05:13:46.693Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2768,7 +2788,7 @@
       "productName": "2025-26 Topps Inception Basketball",
       "sport": "basketball",
       "code": "2025_26_topps_inception_basketball",
-      "updatedAt": "2026-07-22T05:14:44.559Z",
+      "updatedAt": "2026-07-22T05:16:57.728Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 29893195089,
@@ -2776,7 +2796,7 @@
       "displayTitle": "Visual Product Test - 2025-26 Topps Inception Basketball",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-22T05:13:47Z",
-      "checkedAt": "2026-07-22T05:14:44.559Z"
+      "checkedAt": "2026-07-22T05:16:57.728Z"
     }
   },
   "known_issues": {},
@@ -5125,9 +5145,36 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-07-18T01:18:50.730Z",
       "resolved": true
+    },
+    "basketball|https github com chasingmajors cm-chat-prototype actions runs 29893195089": {
+      "product": "2025-26 Topps Inception Basketball",
+      "sport": "basketball",
+      "code": "2025_26_topps_inception_basketball",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-22T05:16:59.342Z",
+      "resolved": true
+    },
+    "basketball|2025_26_topps_inception_basketball": {
+      "product": "2025-26 Topps Inception Basketball",
+      "sport": "basketball",
+      "code": "2025_26_topps_inception_basketball",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-inception-basketball-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-22T05:16:59.342Z",
+      "resolved": true
+    },
+    "basketball|https www checklistcenter com 2025-26-topps-inception-basketball-card-checklist": {
+      "product": "2025-26 Topps Inception Basketball",
+      "sport": "basketball",
+      "code": "2025_26_topps_inception_basketball",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-inception-basketball-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-22T05:16:59.342Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-22T05:14:48.001Z",
+  "saved_at": "2026-07-22T05:17:04.689Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-22T01:52:50.269Z",
+  "exported_at": "2026-07-22T01:52:55.624Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -389,19 +389,39 @@
       "sport": "basketball",
       "code": "2025_26_topps_inception_basketball",
       "riskLevel": "medium",
-      "status": "failed",
-      "recommendedAction": "Review backend connectivity, then rerun preview/import. Create a fix task if this repeats.",
+      "status": "running",
+      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "validationResult": "Import request failed before write confirmation.",
+      "executionResult": "Sheet write started through Operator Backend.",
+      "validationResult": "Preview rows are ready for admin review before sheet write.",
       "runUrl": "https://www.checklistcenter.com/2025-26-topps-inception-basketball-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-inception-basketball-card-checklist/",
       "createdAt": "2026-07-22T01:30:36.852Z",
-      "updatedAt": "2026-07-22T01:52:44.050Z"
+      "updatedAt": "2026-07-22T01:52:54.023Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784685174018_kt05bg",
+      "ts": "2026-07-22T01:52:54.018Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "2025-26 Topps Inception Basketball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1784685172088_2s7y3x",
+      "ts": "2026-07-22T01:52:52.088Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "458 rows and 76 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Topps Inception Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784685168667_9lufsa",
       "ts": "2026-07-22T01:52:48.667Z",
@@ -4826,6 +4846,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-22T01:52:52.997Z",
+  "saved_at": "2026-07-22T01:52:57.882Z",
   "saved_by": "cm_command_center_operator"
 }

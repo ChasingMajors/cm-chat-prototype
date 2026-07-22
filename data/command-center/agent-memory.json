@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-22T01:30:58.782Z",
+  "exported_at": "2026-07-22T01:31:12.685Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -365,21 +365,21 @@
   "agent_actions": [
     {
       "id": "source_watch|soccer|2025-26 panini select road to fifa world cup 2026 soccer",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
+      "type": "checklist_publish",
+      "source": "operator_backend",
       "product": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
       "sport": "soccer",
       "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
       "riskLevel": "medium",
       "status": "running",
-      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write started through Operator Backend.",
-      "validationResult": "Preview rows are ready for admin review before sheet write.",
-      "runUrl": "https://www.checklistcenter.com/2025-26-panini-select-road-to-fifa-world-cup-2026-soccer-card-checklist/",
+      "executionResult": "Sheet write completed. JSON publish started.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-select-road-to-fifa-world-cup-2026-soccer-card-checklist/",
       "createdAt": "2026-07-22T01:30:36.852Z",
-      "updatedAt": "2026-07-22T01:30:57.181Z"
+      "updatedAt": "2026-07-22T01:31:11.082Z"
     },
     {
       "id": "source_watch|basketball|2025-26 topps inception basketball",
@@ -402,6 +402,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784683871081_phlshc",
+      "ts": "2026-07-22T01:31:11.081Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784683871062_jcj7wu",
+      "ts": "2026-07-22T01:31:11.062Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "714 checklist rows and 257 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784683857177_gxazk6",
       "ts": "2026-07-22T01:30:57.177Z",
@@ -4746,6 +4766,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-22T01:31:00.012Z",
+  "saved_at": "2026-07-22T01:31:13.952Z",
   "saved_by": "cm_command_center_operator"
 }

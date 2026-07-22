@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-22T05:13:47.077Z",
+  "exported_at": "2026-07-22T05:14:00.475Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -364,6 +364,30 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2025-26 topps inception basketball|2025_26_topps_inception_basketball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2025-26 Topps Inception Basketball",
+      "sport": "basketball",
+      "code": "2025_26_topps_inception_basketball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-07-22T05:13:48.087Z",
+      "updatedAt": "2026-07-22T05:13:58.870Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
+      "visualStartedAt": "2026-07-22T05:13:47Z"
+    },
+    {
       "id": "visual_test|github_actions|2025-26 panini select road to fifa world cup 2026 soccer|2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
       "type": "visual_test",
       "source": "github_actions",
@@ -415,19 +439,41 @@
       "sport": "basketball",
       "code": "2025_26_topps_inception_basketball",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV/ChatBot visual test requested from progress rail...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-inception-basketball-card-checklist/",
       "createdAt": "2026-07-22T01:30:36.852Z",
-      "updatedAt": "2026-07-22T05:13:45.475Z"
+      "updatedAt": "2026-07-22T05:13:58.870Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
+      "visualStartedAt": "2026-07-22T05:13:47Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784697238871_dmzd2y",
+      "ts": "2026-07-22T05:13:58.871Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Topps Inception Basketball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1784697228089_lj73uq",
+      "ts": "2026-07-22T05:13:48.089Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2025-26 Topps Inception Basketball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1784697223987_6crksd",
       "ts": "2026-07-22T05:13:43.987Z",
@@ -2675,6 +2721,52 @@
       "updatedAt": "2026-07-22T05:11:46.028Z",
       "knownIssue": false,
       "knownIssueNote": ""
+    },
+    "basketball|2025_26_topps_inception_basketball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-07-22T05:13:46.693Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "basketball|2025_26_topps_inception_basketball",
+      "key": "basketball|2025_26_topps_inception_basketball",
+      "productName": "2025-26 Topps Inception Basketball",
+      "sport": "basketball",
+      "code": "2025_26_topps_inception_basketball",
+      "updatedAt": "2026-07-22T05:13:58.867Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 29893195089,
+      "runNumber": 360,
+      "displayTitle": "Visual Product Test - 2025-26 Topps Inception Basketball",
+      "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
+      "createdAt": "2026-07-22T05:13:47Z",
+      "checkedAt": "2026-07-22T05:13:58.866Z"
+    },
+    "basketball|2025-26 topps inception basketball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-07-22T05:13:46.693Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "basketball|2025_26_topps_inception_basketball",
+      "key": "basketball|2025-26 topps inception basketball",
+      "productName": "2025-26 Topps Inception Basketball",
+      "sport": "basketball",
+      "code": "2025_26_topps_inception_basketball",
+      "updatedAt": "2026-07-22T05:13:58.867Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 29893195089,
+      "runNumber": 360,
+      "displayTitle": "Visual Product Test - 2025-26 Topps Inception Basketball",
+      "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
+      "createdAt": "2026-07-22T05:13:47Z",
+      "checkedAt": "2026-07-22T05:13:58.866Z"
     }
   },
   "known_issues": {},
@@ -5026,6 +5118,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-22T05:13:49.344Z",
+  "saved_at": "2026-07-22T05:14:02.740Z",
   "saved_by": "cm_command_center_operator"
 }

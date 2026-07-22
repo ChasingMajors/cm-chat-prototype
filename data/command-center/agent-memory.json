@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-22T04:19:35.652Z",
+  "exported_at": "2026-07-22T05:13:16.490Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -364,6 +364,30 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2025-26 panini select road to fifa world cup 2026 soccer|2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
+      "sport": "soccer",
+      "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-07-22T05:11:46.032Z",
+      "updatedAt": "2026-07-22T05:11:46.035Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-07-22T05:11:41.579Z"
+    },
+    {
       "id": "source_watch|soccer|2025-26 panini select road to fifa world cup 2026 soccer",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -371,15 +395,17 @@
       "sport": "soccer",
       "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
       "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "validationResult": "CV/ChatBot visual test queued or running.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-select-road-to-fifa-world-cup-2026-soccer-card-checklist/",
       "createdAt": "2026-07-22T01:30:36.852Z",
-      "updatedAt": "2026-07-22T01:42:35.533Z"
+      "updatedAt": "2026-07-22T05:11:46.036Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-07-22T05:11:41.579Z"
     },
     {
       "id": "source_watch|basketball|2025-26 topps inception basketball",
@@ -402,6 +428,56 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784697194884_47x84p",
+      "ts": "2026-07-22T05:13:14.884Z",
+      "type": "memory",
+      "title": "Backend memory auto-save failed",
+      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784697128526_9x2rzu",
+      "ts": "2026-07-22T05:12:08.526Z",
+      "type": "memory",
+      "title": "Backend memory auto-save failed",
+      "detail": "Load failed",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784697106037_1a1hq2",
+      "ts": "2026-07-22T05:11:46.037Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1784697088078_x0bqdz",
+      "ts": "2026-07-22T05:11:28.078Z",
+      "type": "memory",
+      "title": "Backend memory auto-save failed",
+      "detail": "Load failed",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784697053714_mbg02x",
+      "ts": "2026-07-22T05:10:53.714Z",
+      "type": "memory",
+      "title": "Backend memory auto-save failed",
+      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784693973914_js1ks5",
       "ts": "2026-07-22T04:19:33.918Z",
@@ -2545,6 +2621,40 @@
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-18T01:07:19Z",
       "checkedAt": "2026-07-18T01:08:57.181Z"
+    },
+    "soccer|2025_26_panini_select_road_to_fifa_world_cup_2026_soccer": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-07-22T05:11:41.579Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "soccer|2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
+      "key": "soccer|2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
+      "productName": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
+      "sport": "soccer",
+      "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
+      "updatedAt": "2026-07-22T05:11:46.028Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
+    },
+    "soccer|2025-26 panini select road to fifa world cup 2026 soccer": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-07-22T05:11:41.579Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "soccer|2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
+      "key": "soccer|2025-26 panini select road to fifa world cup 2026 soccer",
+      "productName": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
+      "sport": "soccer",
+      "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
+      "updatedAt": "2026-07-22T05:11:46.028Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -4896,6 +5006,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-22T04:19:38.263Z",
+  "saved_at": "2026-07-22T05:13:19.450Z",
   "saved_by": "cm_command_center_operator"
 }

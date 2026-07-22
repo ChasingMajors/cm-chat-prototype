@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-22T01:42:48.673Z",
+  "exported_at": "2026-07-22T01:52:45.653Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -389,19 +389,29 @@
       "sport": "basketball",
       "code": "2025_26_topps_inception_basketball",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
+      "status": "failed",
+      "recommendedAction": "Review backend connectivity, then rerun preview/import. Create a fix task if this repeats.",
       "adminDecision": "",
-      "executionResult": "Sheet write started through Operator Backend.",
-      "validationResult": "Preview rows are ready for admin review before sheet write.",
+      "executionResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "validationResult": "Import request failed before write confirmation.",
       "runUrl": "https://www.checklistcenter.com/2025-26-topps-inception-basketball-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-inception-basketball-card-checklist/",
       "createdAt": "2026-07-22T01:30:36.852Z",
-      "updatedAt": "2026-07-22T01:42:47.071Z"
+      "updatedAt": "2026-07-22T01:52:44.050Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784685164051_07iaih",
+      "ts": "2026-07-22T01:52:44.051Z",
+      "type": "source_import",
+      "title": "Import request failed",
+      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784684567063_vplja1",
       "ts": "2026-07-22T01:42:47.063Z",
@@ -4806,6 +4816,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-22T01:42:50.009Z",
+  "saved_at": "2026-07-22T01:52:47.776Z",
   "saved_by": "cm_command_center_operator"
 }

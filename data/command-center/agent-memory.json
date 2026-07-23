@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-23T01:50:42.900Z",
+  "exported_at": "2026-07-23T01:50:48.471Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -366,14 +366,24 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1784771441296_qpyzhm",
-      "ts": "2026-07-23T01:50:41.296Z",
-      "type": "agent_action",
-      "title": "Resolved agent actions cleared",
-      "detail": "Validated, done, and ignored actions were removed from the active queue. 4 source/product keys were remembered so scans do not requeue them.",
-      "status": "cleaned",
+      "id": "log_1784771446868_50sejn",
+      "ts": "2026-07-23T01:50:46.868Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
       "product": "",
-      "source": "admin"
+      "source": "command_center"
+    },
+    {
+      "id": "log_1784771446865_47iyjl",
+      "ts": "2026-07-23T01:50:46.865Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
     }
   ],
   "last_agent_report": {
@@ -4675,6 +4685,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-23T01:50:44.140Z",
+  "saved_at": "2026-07-23T01:50:49.984Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-23T01:49:17.540Z",
+  "exported_at": "2026-07-23T01:49:25.228Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -422,15 +422,15 @@
       "sport": "soccer",
       "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
       "riskLevel": "medium",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
-      "adminDecision": "",
+      "status": "ignored",
+      "recommendedAction": "No action needed. Resolved proof is already recorded.",
+      "adminDecision": "resolved_memory",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV/ChatBot visual test requested from progress rail...",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-select-road-to-fifa-world-cup-2026-soccer-card-checklist/",
       "createdAt": "2026-07-22T01:30:36.852Z",
-      "updatedAt": "2026-07-22T05:11:46.036Z",
+      "updatedAt": "2026-07-23T01:49:23.626Z",
       "visualRunUrl": "",
       "visualStartedAt": "2026-07-22T05:11:41.579Z"
     },
@@ -5206,7 +5206,7 @@
       "code": "2025_26_topps_inception_basketball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-23T01:49:17.540Z",
+      "ignoredAt": "2026-07-23T01:49:25.228Z",
       "resolved": true
     },
     "basketball|2025_26_topps_inception_basketball": {
@@ -5215,7 +5215,7 @@
       "code": "2025_26_topps_inception_basketball",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-inception-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-23T01:49:17.540Z",
+      "ignoredAt": "2026-07-23T01:49:25.228Z",
       "resolved": true
     },
     "basketball|https www checklistcenter com 2025-26-topps-inception-basketball-card-checklist": {
@@ -5224,7 +5224,7 @@
       "code": "2025_26_topps_inception_basketball",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-inception-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-23T01:49:17.540Z",
+      "ignoredAt": "2026-07-23T01:49:25.228Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 29893097414": {
@@ -5233,20 +5233,29 @@
       "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893097414",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-23T01:49:17.540Z",
+      "ignoredAt": "2026-07-23T01:49:25.228Z",
       "resolved": true
     },
     "soccer|2025_26_panini_select_road_to_fifa_world_cup_2026_soccer": {
       "product": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
       "sport": "soccer",
       "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
-      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893097414",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-select-road-to-fifa-world-cup-2026-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-23T01:49:17.540Z",
+      "ignoredAt": "2026-07-23T01:49:25.228Z",
+      "resolved": true
+    },
+    "soccer|https www checklistcenter com 2025-26-panini-select-road-to-fifa-world-cup-2026-soccer-card-checklist": {
+      "product": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
+      "sport": "soccer",
+      "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-select-road-to-fifa-world-cup-2026-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-23T01:49:25.228Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-23T01:49:19.193Z",
+  "saved_at": "2026-07-23T01:49:27.016Z",
   "saved_by": "cm_command_center_operator"
 }

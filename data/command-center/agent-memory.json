@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-23T23:26:40.116Z",
+  "exported_at": "2026-07-23T23:26:44.430Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,11 +371,11 @@
       "sport": "soccer",
       "code": "2025_26_panini_obsidian_soccer",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30051985987",
       "sourceUrl": "",
       "bucket": "",
@@ -383,7 +383,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-07-23T23:03:30.234Z",
-      "updatedAt": "2026-07-23T23:03:40.535Z",
+      "updatedAt": "2026-07-23T23:26:42.823Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30051985987",
       "visualStartedAt": "2026-07-23T23:03:29Z"
     },
@@ -395,15 +395,15 @@
       "sport": "soccer",
       "code": "2025_26_panini_obsidian_soccer",
       "riskLevel": "medium",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Checklist sheet write completed; published JSON validation is pending for 2025_26_panini_obsidian_soccer.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30051985987",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-obsidian-soccer-card-checklist/",
       "createdAt": "2026-07-23T15:57:03.480Z",
-      "updatedAt": "2026-07-23T23:03:40.536Z",
+      "updatedAt": "2026-07-23T23:26:42.824Z",
       "targetBucket": "2025-26",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "2026-07-23T23:03:29Z",
@@ -414,6 +414,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784849202826_ojvs3a",
+      "ts": "2026-07-23T23:26:42.826Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2025-26 Panini Obsidian Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1784849202826_luuqui",
+      "ts": "2026-07-23T23:26:42.826Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2025-26 Panini Obsidian Soccer",
+      "source": "github_actions"
+    },
     {
       "id": "log_1784849198511_93mcdr",
       "ts": "2026-07-23T23:26:38.511Z",
@@ -2414,9 +2434,9 @@
       "checkedAt": "2026-07-22T05:16:57.728Z"
     },
     "soccer|2025_26_panini_obsidian_soccer": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-07-23T23:03:28.374Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30051985987",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2426,7 +2446,7 @@
       "productName": "2025-26 Panini Obsidian Soccer",
       "sport": "soccer",
       "code": "2025_26_panini_obsidian_soccer",
-      "updatedAt": "2026-07-23T23:03:40.533Z",
+      "updatedAt": "2026-07-23T23:26:42.820Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 30051985987,
@@ -2434,12 +2454,12 @@
       "displayTitle": "Visual Product Test - 2025-26 Panini Obsidian Soccer",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-23T23:03:29Z",
-      "checkedAt": "2026-07-23T23:03:40.533Z"
+      "checkedAt": "2026-07-23T23:26:42.819Z"
     },
     "soccer|2025-26 panini obsidian soccer": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-07-23T23:03:28.374Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30051985987",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2449,7 +2469,7 @@
       "productName": "2025-26 Panini Obsidian Soccer",
       "sport": "soccer",
       "code": "2025_26_panini_obsidian_soccer",
-      "updatedAt": "2026-07-23T23:03:40.533Z",
+      "updatedAt": "2026-07-23T23:26:42.820Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 30051985987,
@@ -2457,7 +2477,7 @@
       "displayTitle": "Visual Product Test - 2025-26 Panini Obsidian Soccer",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-23T23:03:29Z",
-      "checkedAt": "2026-07-23T23:03:40.533Z"
+      "checkedAt": "2026-07-23T23:26:42.819Z"
     }
   },
   "known_issues": {},
@@ -4869,9 +4889,36 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-07-23T01:50:41.293Z",
       "resolved": true
+    },
+    "soccer|https github com chasingmajors cm-chat-prototype actions runs 30051985987": {
+      "product": "2025-26 Panini Obsidian Soccer",
+      "sport": "soccer",
+      "code": "2025_26_panini_obsidian_soccer",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30051985987",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-23T23:26:44.430Z",
+      "resolved": true
+    },
+    "soccer|2025_26_panini_obsidian_soccer": {
+      "product": "2025-26 Panini Obsidian Soccer",
+      "sport": "soccer",
+      "code": "2025_26_panini_obsidian_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-obsidian-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-23T23:26:44.430Z",
+      "resolved": true
+    },
+    "soccer|https www checklistcenter com 2025-26-panini-obsidian-soccer-card-checklist": {
+      "product": "2025-26 Panini Obsidian Soccer",
+      "sport": "soccer",
+      "code": "2025_26_panini_obsidian_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-obsidian-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-23T23:26:44.430Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-23T23:26:41.476Z",
+  "saved_at": "2026-07-23T23:26:45.727Z",
   "saved_by": "cm_command_center_operator"
 }

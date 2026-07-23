@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-23T01:49:25.228Z",
+  "exported_at": "2026-07-23T01:49:38.137Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -395,21 +395,21 @@
       "sport": "soccer",
       "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
       "riskLevel": "low",
-      "status": "validated",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
-      "adminDecision": "",
+      "status": "ignored",
+      "recommendedAction": "No action needed. Resolved proof is already recorded.",
+      "adminDecision": "resolved_memory",
       "executionResult": "CV/ChatBot visual test passed.",
-      "validationResult": "GitHub Actions visual test passed for 2025-26 Panini Select Road to FIFA World Cup 2026 Soccer.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893097414",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29972794508",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-07-22T05:11:46.032Z",
-      "updatedAt": "2026-07-22T15:57:05.944Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893097414",
-      "visualStartedAt": "2026-07-22T05:11:41.579Z",
+      "updatedAt": "2026-07-23T01:49:36.534Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29972794508",
+      "visualStartedAt": "2026-07-23T01:49:26Z",
       "pendingValidationAttempts": 0,
       "repairProof": "Agent completed repair for 2025-26 Panini Select Road to FIFA World Cup 2026 Soccer: CV/ChatBot visual test passed. GitHub Actions visual test passed for 2025-26 Panini Select Road to FIFA World Cup 2026 Soccer.",
       "autoExecutedAt": "2026-07-22T15:57:05.944Z"
@@ -426,13 +426,13 @@
       "recommendedAction": "No action needed. Resolved proof is already recorded.",
       "adminDecision": "resolved_memory",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV/ChatBot visual test requested from progress rail...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29972794508",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-select-road-to-fifa-world-cup-2026-soccer-card-checklist/",
       "createdAt": "2026-07-22T01:30:36.852Z",
-      "updatedAt": "2026-07-23T01:49:23.626Z",
-      "visualRunUrl": "",
-      "visualStartedAt": "2026-07-22T05:11:41.579Z"
+      "updatedAt": "2026-07-23T01:49:36.534Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29972794508",
+      "visualStartedAt": "2026-07-23T01:49:26Z"
     },
     {
       "id": "source_watch|basketball|2025-26 topps inception basketball",
@@ -457,6 +457,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784771376532_ub9s16",
+      "ts": "2026-07-23T01:49:36.532Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1784771366569_zzs2ns",
+      "ts": "2026-07-23T01:49:26.569Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
+      "source": "github_actions"
+    },
     {
       "id": "log_1784771355937_wk3f4y",
       "ts": "2026-07-23T01:49:15.937Z",
@@ -2773,11 +2793,11 @@
       "checkedAt": "2026-07-18T01:08:57.181Z"
     },
     "soccer|2025_26_panini_select_road_to_fifa_world_cup_2026_soccer": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
-      "startedAt": "2026-07-22T05:11:41.579Z",
-      "runUrl": "",
+      "startedAt": "2026-07-23T01:49:24.825Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29972794508",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "soccer|2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
@@ -2785,16 +2805,22 @@
       "productName": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
       "sport": "soccer",
       "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
-      "updatedAt": "2026-07-22T05:11:46.028Z",
+      "updatedAt": "2026-07-23T01:49:36.529Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 29972794508,
+      "runNumber": 361,
+      "displayTitle": "Visual Product Test - 2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
+      "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
+      "createdAt": "2026-07-23T01:49:26Z",
+      "checkedAt": "2026-07-23T01:49:36.529Z"
     },
     "soccer|2025-26 panini select road to fifa world cup 2026 soccer": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
-      "startedAt": "2026-07-22T05:11:41.579Z",
-      "runUrl": "",
+      "startedAt": "2026-07-23T01:49:24.825Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29972794508",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "soccer|2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
@@ -2802,9 +2828,15 @@
       "productName": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
       "sport": "soccer",
       "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
-      "updatedAt": "2026-07-22T05:11:46.028Z",
+      "updatedAt": "2026-07-23T01:49:36.529Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 29972794508,
+      "runNumber": 361,
+      "displayTitle": "Visual Product Test - 2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
+      "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
+      "createdAt": "2026-07-23T01:49:26Z",
+      "checkedAt": "2026-07-23T01:49:36.529Z"
     },
     "basketball|2025_26_topps_inception_basketball": {
       "status": "completed",
@@ -5206,7 +5238,7 @@
       "code": "2025_26_topps_inception_basketball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29893195089",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-23T01:49:25.228Z",
+      "ignoredAt": "2026-07-23T01:49:38.137Z",
       "resolved": true
     },
     "basketball|2025_26_topps_inception_basketball": {
@@ -5215,7 +5247,7 @@
       "code": "2025_26_topps_inception_basketball",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-inception-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-23T01:49:25.228Z",
+      "ignoredAt": "2026-07-23T01:49:38.137Z",
       "resolved": true
     },
     "basketball|https www checklistcenter com 2025-26-topps-inception-basketball-card-checklist": {
@@ -5224,7 +5256,7 @@
       "code": "2025_26_topps_inception_basketball",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-inception-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-23T01:49:25.228Z",
+      "ignoredAt": "2026-07-23T01:49:38.137Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 29893097414": {
@@ -5242,7 +5274,7 @@
       "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-select-road-to-fifa-world-cup-2026-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-23T01:49:25.228Z",
+      "ignoredAt": "2026-07-23T01:49:38.137Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-panini-select-road-to-fifa-world-cup-2026-soccer-card-checklist": {
@@ -5251,11 +5283,20 @@
       "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-select-road-to-fifa-world-cup-2026-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-23T01:49:25.228Z",
+      "ignoredAt": "2026-07-23T01:49:38.137Z",
+      "resolved": true
+    },
+    "soccer|https github com chasingmajors cm-chat-prototype actions runs 29972794508": {
+      "product": "2025-26 Panini Select Road to FIFA World Cup 2026 Soccer",
+      "sport": "soccer",
+      "code": "2025_26_panini_select_road_to_fifa_world_cup_2026_soccer",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/29972794508",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-23T01:49:38.137Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-23T01:49:27.016Z",
+  "saved_at": "2026-07-23T01:49:39.386Z",
   "saved_by": "cm_command_center_operator"
 }

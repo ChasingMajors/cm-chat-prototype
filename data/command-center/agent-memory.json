@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-23T23:26:50.034Z",
+  "exported_at": "2026-07-23T23:26:55.574Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -362,165 +362,9 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [
-    {
-      "id": "visual_test|github_actions|2025-26 panini obsidian soccer|2025_26_panini_obsidian_soccer",
-      "type": "visual_test",
-      "source": "github_actions",
-      "product": "2025-26 Panini Obsidian Soccer",
-      "sport": "soccer",
-      "code": "2025_26_panini_obsidian_soccer",
-      "riskLevel": "low",
-      "status": "validated",
-      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "CV and ChatBot passed via visual test.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30051985987",
-      "sourceUrl": "",
-      "bucket": "",
-      "targetBucket": "",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-07-23T23:03:30.234Z",
-      "updatedAt": "2026-07-23T23:26:42.823Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30051985987",
-      "visualStartedAt": "2026-07-23T23:03:29Z"
-    }
-  ],
+  "agent_actions": [],
   "agent_run_queue": [],
-  "activity_log": [
-    {
-      "id": "log_1784849208430_bmqwqs",
-      "ts": "2026-07-23T23:26:48.430Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784849208418_pfpovq",
-      "ts": "2026-07-23T23:26:48.418Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1784849198511_93mcdr",
-      "ts": "2026-07-23T23:26:38.511Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784847820536_ovwro1",
-      "ts": "2026-07-23T23:03:40.536Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2025-26 Panini Obsidian Soccer",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1784847810236_fpp03b",
-      "ts": "2026-07-23T23:03:30.236Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2025-26 Panini Obsidian Soccer",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1784847803094_xk0cx4",
-      "ts": "2026-07-23T23:03:23.094Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784847803079_60z1ec",
-      "ts": "2026-07-23T23:03:23.079Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1784822533817_alert",
-      "ts": "2026-07-23T15:57:03.480Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784822532876",
-      "ts": "2026-07-23T15:57:03.480Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: passed. 21 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Panini Obsidian Soccer -> pending_visual_validation (Published checklist JSON validated with 1048 rows. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784822532876",
-      "ts": "2026-07-23T15:57:03.480Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2025-26 Panini Obsidian Soccer: Checklist sheet write completed; published JSON validation is pending for 2025_26_panini_obsidian_soccer. Published checklist JSON validated with 1048 rows. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2025-26 Panini Obsidian Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784822397128",
-      "ts": "2026-07-23T15:57:03.480Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784771729644_b73ui0",
-      "ts": "2026-07-23T01:55:29.644Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784771729634_syqwfg",
-      "ts": "2026-07-23T01:55:29.634Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    }
-  ],
+  "activity_log": [],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
@@ -4872,7 +4716,7 @@
       "code": "2025_26_panini_obsidian_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30051985987",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-23T23:26:50.034Z",
+      "ignoredAt": "2026-07-23T23:26:51.988Z",
       "resolved": true
     },
     "soccer|2025_26_panini_obsidian_soccer": {
@@ -4881,7 +4725,7 @@
       "code": "2025_26_panini_obsidian_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30051985987",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-23T23:26:50.034Z",
+      "ignoredAt": "2026-07-23T23:26:51.988Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-panini-obsidian-soccer-card-checklist": {
@@ -4895,6 +4739,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-23T23:26:51.406Z",
+  "saved_at": "2026-07-23T23:26:56.778Z",
   "saved_by": "cm_command_center_operator"
 }

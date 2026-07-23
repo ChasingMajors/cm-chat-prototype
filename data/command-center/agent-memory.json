@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-23T23:27:48.650Z",
+  "exported_at": "2026-07-23T23:28:02.084Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -365,25 +365,45 @@
   "agent_actions": [
     {
       "id": "source_watch|baseball|2026 topps chrome baseball",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
+      "type": "checklist_publish",
+      "source": "operator_backend",
       "product": "2026 Topps Chrome Baseball",
       "sport": "baseball",
       "code": "2026_topps_chrome_baseball",
       "riskLevel": "medium",
       "status": "running",
-      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write started through Operator Backend.",
-      "validationResult": "Preview rows are ready for admin review before sheet write.",
-      "runUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
+      "executionResult": "Sheet write completed. JSON publish started.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "createdAt": "2026-07-23T23:26:58.699Z",
-      "updatedAt": "2026-07-23T23:27:47.047Z"
+      "updatedAt": "2026-07-23T23:28:00.480Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784849280478_nyg7m6",
+      "ts": "2026-07-23T23:28:00.478Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2026 Topps Chrome Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784849280461_21jt0b",
+      "ts": "2026-07-23T23:28:00.461Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "1,600 checklist rows and 310 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2026 Topps Chrome Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784849267043_ntwp30",
       "ts": "2026-07-23T23:27:47.043Z",
@@ -4835,6 +4855,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-23T23:27:49.772Z",
+  "saved_at": "2026-07-23T23:28:03.360Z",
   "saved_by": "cm_command_center_operator"
 }

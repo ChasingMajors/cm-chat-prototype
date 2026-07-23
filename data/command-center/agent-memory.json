@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-23T23:27:19.948Z",
+  "exported_at": "2026-07-23T23:27:48.650Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -369,21 +369,41 @@
       "source": "scheduled_quick_json",
       "product": "2026 Topps Chrome Baseball",
       "sport": "baseball",
-      "code": "",
+      "code": "2026_topps_chrome_baseball",
       "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "status": "running",
+      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
+      "executionResult": "Sheet write started through Operator Backend.",
+      "validationResult": "Preview rows are ready for admin review before sheet write.",
+      "runUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "createdAt": "2026-07-23T23:26:58.699Z",
-      "updatedAt": "2026-07-23T23:26:58.699Z"
+      "updatedAt": "2026-07-23T23:27:47.047Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784849267043_ntwp30",
+      "ts": "2026-07-23T23:27:47.043Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "2026 Topps Chrome Baseball",
+      "source": "admin"
+    },
+    {
+      "id": "log_1784849240202_3ed7cu",
+      "ts": "2026-07-23T23:27:20.202Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "1,600 rows and 310 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2026 Topps Chrome Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784849238344_5tpros",
       "ts": "2026-07-23T23:27:18.344Z",
@@ -4815,6 +4835,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-23T23:27:21.545Z",
+  "saved_at": "2026-07-23T23:27:49.772Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-23T23:26:59.233Z",
+  "exported_at": "2026-07-23T23:26:55.574Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -362,54 +362,79 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [],
+  "agent_actions": [
+    {
+      "id": "source_watch|baseball|2026 topps chrome baseball",
+      "type": "source_import",
+      "source": "scheduled_quick_json",
+      "product": "2026 Topps Chrome Baseball",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
+      "createdAt": "2026-07-23T23:26:58.699Z",
+      "updatedAt": "2026-07-23T23:26:58.699Z"
+    }
+  ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1784849217630_p0owtl",
-      "ts": "2026-07-23T23:26:57.630Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
-      "status": "started",
+      "id": "log_1784849223131_alert",
+      "ts": "2026-07-23T23:26:58.699Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
       "product": "",
-      "source": "command_center"
+      "source": "operator_backend"
     },
     {
-      "id": "log_1784849217626_fqijhp",
-      "ts": "2026-07-23T23:26:57.626Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
-      "status": "started",
+      "id": "log_1784849222719",
+      "ts": "2026-07-23T23:26:58.699Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 20 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "status": "needs_review",
       "product": "",
-      "source": "command_center"
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1784849222717",
+      "ts": "2026-07-23T23:26:58.699Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-07-23T15:57:03.480Z",
+    "generated_at": "2026-07-23T23:26:58.699Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 9,
-      "skipped_ignored": 21
+      "skipped_ignored": 20
     },
-    "completed_count": 1,
+    "completed_count": 0,
     "needs_admin_count": 1,
     "blocked_count": 0,
-    "completed": [
-      "2025-26 Panini Obsidian Soccer -> pending_visual_validation: Published checklist JSON validated with 1048 rows. CV/ChatBot visual validation is pending."
-    ],
+    "completed": [],
     "needs_admin": [
-      "Checklist review: 2025-26 Panini Obsidian Soccer | soccer | missing"
+      "Checklist review: 2026 Topps Chrome Baseball | baseball | missing"
     ],
     "blocked": [],
-    "proof": [
-      "2025-26 Panini Obsidian Soccer -> pending_visual_validation: Published checklist JSON validated with 1048 rows. CV/ChatBot visual validation is pending."
-    ],
+    "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 1 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -4760,6 +4785,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-23T23:27:00.370Z",
+  "saved_at": "2026-07-23T23:27:03.191Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-24T15:26:27.623Z",
+  "exported_at": "2026-07-24T15:26:41.953Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -364,6 +364,30 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2026 topps chrome baseball|2026_topps_chrome_baseball",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2026 Topps Chrome Baseball",
+      "sport": "baseball",
+      "code": "2026_topps_chrome_baseball",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30105287809",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-07-24T15:26:28.938Z",
+      "updatedAt": "2026-07-24T15:26:40.246Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30105287809",
+      "visualStartedAt": "2026-07-24T15:26:28Z"
+    },
+    {
       "id": "source_watch|baseball|2026 topps chrome baseball",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -371,19 +395,42 @@
       "sport": "baseball",
       "code": "2026_topps_chrome_baseball",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Public JSON is live. Run CV/ChatBot visual validation next.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV/ChatBot visual test requested from progress rail...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30105287809",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "createdAt": "2026-07-23T23:26:58.699Z",
-      "updatedAt": "2026-07-24T15:26:26.021Z"
+      "updatedAt": "2026-07-24T15:26:40.247Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30105287809",
+      "visualStartedAt": "2026-07-24T15:26:28Z"
     }
   ],
   "agent_run_queue": [],
-  "activity_log": [],
+  "activity_log": [
+    {
+      "id": "log_1784906800247_ocpvg2",
+      "ts": "2026-07-24T15:26:40.247Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2026 Topps Chrome Baseball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1784906788941_1pw87r",
+      "ts": "2026-07-24T15:26:28.941Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2026 Topps Chrome Baseball",
+      "source": "github_actions"
+    }
+  ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
@@ -2313,6 +2360,52 @@
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-23T23:03:29Z",
       "checkedAt": "2026-07-23T23:26:42.819Z"
+    },
+    "baseball|2026_topps_chrome_baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-07-24T15:26:27.225Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30105287809",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2026_topps_chrome_baseball",
+      "key": "baseball|2026_topps_chrome_baseball",
+      "productName": "2026 Topps Chrome Baseball",
+      "sport": "baseball",
+      "code": "2026_topps_chrome_baseball",
+      "updatedAt": "2026-07-24T15:26:40.240Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 30105287809,
+      "runNumber": 364,
+      "displayTitle": "Visual Product Test - 2026 Topps Chrome Baseball",
+      "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
+      "createdAt": "2026-07-24T15:26:28Z",
+      "checkedAt": "2026-07-24T15:26:40.239Z"
+    },
+    "baseball|2026 topps chrome baseball": {
+      "status": "in_progress",
+      "result": "in_progress",
+      "conclusion": "",
+      "startedAt": "2026-07-24T15:26:27.225Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30105287809",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "baseball|2026_topps_chrome_baseball",
+      "key": "baseball|2026 topps chrome baseball",
+      "productName": "2026 Topps Chrome Baseball",
+      "sport": "baseball",
+      "code": "2026_topps_chrome_baseball",
+      "updatedAt": "2026-07-24T15:26:40.240Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 30105287809,
+      "runNumber": 364,
+      "displayTitle": "Visual Product Test - 2026 Topps Chrome Baseball",
+      "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
+      "createdAt": "2026-07-24T15:26:28Z",
+      "checkedAt": "2026-07-24T15:26:40.239Z"
     }
   },
   "known_issues": {},
@@ -4754,6 +4847,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-24T15:26:28.917Z",
+  "saved_at": "2026-07-24T15:26:43.452Z",
   "saved_by": "cm_command_center_operator"
 }

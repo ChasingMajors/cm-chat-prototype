@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-24T15:26:11.539Z",
+  "exported_at": "2026-07-24T15:26:18.075Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,28 +371,58 @@
       "sport": "baseball",
       "code": "2026_topps_chrome_baseball",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
+      "status": "pending_visual_validation",
+      "recommendedAction": "Public JSON is live. Run CV/ChatBot visual validation next.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV/ChatBot visual test requested from progress rail...",
+      "validationResult": "Public JSON covered: 1,600 rows, 310 parallels in baseball-026.json. Visual CV/ChatBot proof still pending.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "createdAt": "2026-07-23T23:26:58.699Z",
-      "updatedAt": "2026-07-24T02:44:00.164Z"
+      "updatedAt": "2026-07-24T15:26:16.470Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1784906769935_rlfwsx",
-      "ts": "2026-07-24T15:26:09.935Z",
+      "id": "log_1784906776471_67hg4q",
+      "ts": "2026-07-24T15:26:16.471Z",
+      "type": "validation",
+      "title": "Public JSON proof reconciled",
+      "detail": "1 pending public JSON card moved forward because live public JSON already contains the product data.",
+      "status": "covered",
+      "product": "",
+      "source": "public_json"
+    },
+    {
+      "id": "log_1784906776467_2t8ad0",
+      "ts": "2026-07-24T15:26:16.467Z",
       "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
       "product": "",
       "source": "operator_backend"
+    },
+    {
+      "id": "log_1784906776454_5ww5jm",
+      "ts": "2026-07-24T15:26:16.454Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1784906776453_ht3rry",
+      "ts": "2026-07-24T15:26:16.453Z",
+      "type": "agent_action",
+      "title": "Stale running work cleared",
+      "detail": "1 stale running card moved back to verifiable queue state.",
+      "status": "reconciled",
+      "product": "",
+      "source": "command_center"
     },
     {
       "id": "log_1784905108074_75b88b",
@@ -4965,6 +4995,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-24T15:26:13.011Z",
+  "saved_at": "2026-07-24T15:26:19.556Z",
   "saved_by": "cm_command_center_operator"
 }

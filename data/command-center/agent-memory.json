@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-24T02:43:54.132Z",
+  "exported_at": "2026-07-24T03:11:11.450Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,19 +371,29 @@
       "sport": "baseball",
       "code": "2026_topps_chrome_baseball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "validationResult": "CV/ChatBot visual test requested from progress rail...",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "createdAt": "2026-07-23T23:26:58.699Z",
-      "updatedAt": "2026-07-24T00:04:07.750Z"
+      "updatedAt": "2026-07-24T02:44:00.164Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1784862669839_8nymd8",
+      "ts": "2026-07-24T03:11:09.839Z",
+      "type": "memory",
+      "title": "Backend memory auto-save failed",
+      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1784861032528_8scbl0",
       "ts": "2026-07-24T02:43:52.528Z",
@@ -4895,6 +4905,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-24T02:44:16.753Z",
+  "saved_at": "2026-07-24T03:11:13.143Z",
   "saved_by": "cm_command_center_operator"
 }

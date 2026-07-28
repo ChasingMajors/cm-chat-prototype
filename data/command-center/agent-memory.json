@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-28T23:11:49.103Z",
+  "exported_at": "2026-07-28T23:12:35.100Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -572,418 +572,7 @@
     }
   ],
   "agent_run_queue": [],
-  "activity_log": [
-    {
-      "id": "log_1785280307500_c3dn8c",
-      "ts": "2026-07-28T23:11:47.500Z",
-      "type": "agent_action",
-      "title": "Agent action updated",
-      "detail": "2026 Panini Luminance England Soccer marked Approved.",
-      "status": "approved",
-      "product": "2026 Panini Luminance England Soccer",
-      "source": "scheduled_deep_sheets"
-    },
-    {
-      "id": "log_1785280297596_swxfw9",
-      "ts": "2026-07-28T23:11:37.596Z",
-      "type": "agent_cycle",
-      "title": "Wait for active work",
-      "detail": "2026 Topps Tribute Baseball is currently running. Let it finish or refresh status before starting another cycle.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785280295899_xs9dqz",
-      "ts": "2026-07-28T23:11:35.899Z",
-      "type": "agent_cycle",
-      "title": "Wait for active work",
-      "detail": "2026 Topps Tribute Baseball is currently running. Let it finish or refresh status before starting another cycle.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785280288347_t9yg4z",
-      "ts": "2026-07-28T23:11:28.347Z",
-      "type": "agent_action",
-      "title": "Agent action updated",
-      "detail": "2025-26 Panini Court Kings Basketball marked Approved.",
-      "status": "approved",
-      "product": "2025-26 Panini Court Kings Basketball",
-      "source": "scheduled_deep_sheets"
-    },
-    {
-      "id": "log_1785280262727_9gpqno",
-      "ts": "2026-07-28T23:11:02.727Z",
-      "type": "agent_cycle",
-      "title": "Wait for active work",
-      "detail": "2026 Topps Tribute Baseball is currently running. Let it finish or refresh status before starting another cycle.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785280245051_p1mbkn",
-      "ts": "2026-07-28T23:10:45.051Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "149 rows and 35 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2026 Panini Luminance England Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785280243580_pcq8ep",
-      "ts": "2026-07-28T23:10:43.580Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2026 Panini Luminance England Soccer",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785280234948_1erw0t",
-      "ts": "2026-07-28T23:10:34.948Z",
-      "type": "agent_action",
-      "title": "Agent action updated",
-      "detail": "2025-26 Topps Inception UEFA Club Competitions Soccer marked Approved.",
-      "status": "approved",
-      "product": "2025-26 Topps Inception UEFA Club Competitions Soccer",
-      "source": "scheduled_deep_sheets"
-    },
-    {
-      "id": "log_1785280227994_uaa6lj",
-      "ts": "2026-07-28T23:10:27.994Z",
-      "type": "agent_action",
-      "title": "Agent action updated",
-      "detail": "2026 Panini Luminance France Soccer marked Approved.",
-      "status": "approved",
-      "product": "2026 Panini Luminance France Soccer",
-      "source": "scheduled_deep_sheets"
-    },
-    {
-      "id": "log_1785280222925_bwlmlc",
-      "ts": "2026-07-28T23:10:22.925Z",
-      "type": "agent_action",
-      "title": "Agent action updated",
-      "detail": "2026 Panini Luminance Germany Soccer marked Approved.",
-      "status": "approved",
-      "product": "2026 Panini Luminance Germany Soccer",
-      "source": "scheduled_deep_sheets"
-    },
-    {
-      "id": "log_1785280213790_9bmvd0",
-      "ts": "2026-07-28T23:10:13.790Z",
-      "type": "agent_action",
-      "title": "Agent action updated",
-      "detail": "2026 Panini Luminance England Soccer marked Approved.",
-      "status": "approved",
-      "product": "2026 Panini Luminance England Soccer",
-      "source": "scheduled_deep_sheets"
-    },
-    {
-      "id": "log_1785280197361_xdy4bj",
-      "ts": "2026-07-28T23:09:57.361Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2026 Topps Tribute Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785280197349_kzr9xf",
-      "ts": "2026-07-28T23:09:57.349Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "723 checklist rows and 125 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2026 Topps Tribute Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785280179779_ioaxho",
-      "ts": "2026-07-28T23:09:39.779Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "2026 Topps Tribute Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785280175849_shnn1w",
-      "ts": "2026-07-28T23:09:35.849Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "723 rows and 125 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2026 Topps Tribute Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785280174215_tajpkb",
-      "ts": "2026-07-28T23:09:34.215Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2026 Topps Tribute Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785280167994_ltokyn",
-      "ts": "2026-07-28T23:09:27.994Z",
-      "type": "visual_test",
-      "title": "Visual proof drain complete",
-      "detail": "2 visual status checks refreshed. 0 new tests queued. 2 passed. 0 need repair. 0 pending and 0 queued/running remain.",
-      "status": "validated",
-      "product": "",
-      "source": "agent_cycle"
-    },
-    {
-      "id": "log_1785280163608_zummvz",
-      "ts": "2026-07-28T23:09:23.608Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2026 Panini Revolution K League Soccer",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785280163606_x4lyd6",
-      "ts": "2026-07-28T23:09:23.606Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2026 Panini Revolution K League Soccer",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785280158370_i35kxg",
-      "ts": "2026-07-28T23:09:18.370Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2026 Topps Chrome Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785280158370_zyg11j",
-      "ts": "2026-07-28T23:09:18.370Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2026 Topps Chrome Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785280156581_50bvny",
-      "ts": "2026-07-28T23:09:16.581Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785280156565_3pbk9w",
-      "ts": "2026-07-28T23:09:16.566Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785254457215_alert",
-      "ts": "2026-07-28T15:57:03.811Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785254456622",
-      "ts": "2026-07-28T15:57:03.811Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 6 actionable from 20 checked. PRV: 0 actionable from 8 checked. PRV sync: passed. 13 admin-ignored source item(s) skipped. Auto actions: 1 run. 2026 Panini Revolution K League Soccer -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785254456622",
-      "ts": "2026-07-28T15:57:03.811Z",
-      "type": "auto_action",
-      "title": "Full-auto action needs review",
-      "detail": "2026 Panini Revolution K League Soccer: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
-      "status": "queued",
-      "product": "2026 Panini Revolution K League Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785254454817",
-      "ts": "2026-07-28T15:57:03.811Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785168141207_alert",
-      "ts": "2026-07-27T15:57:03.604Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785168140658",
-      "ts": "2026-07-27T15:57:03.604Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 6 actionable from 20 checked. PRV: 0 actionable from 8 checked. PRV sync: passed. 13 admin-ignored source item(s) skipped. Auto actions: 1 run. 2026 Panini Revolution K League Soccer -> pending_visual_validation (Published checklist JSON validated with 313 rows. CV/ChatBot visual validation is pending.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785168140657",
-      "ts": "2026-07-27T15:57:03.604Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending visual validation",
-      "detail": "2026 Panini Revolution K League Soccer: Checklist sheet write and JSON publish completed for 2026_panini_revolution_k_league_soccer. Published checklist JSON validated with 313 rows. CV/ChatBot visual validation is pending.",
-      "status": "pending_visual_validation",
-      "product": "2026 Panini Revolution K League Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785167984113",
-      "ts": "2026-07-27T15:57:03.604Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784995235973_alert",
-      "ts": "2026-07-25T15:57:04.192Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784995235571",
-      "ts": "2026-07-25T15:57:04.192Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 3 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: passed. 17 admin-ignored source item(s) skipped. Auto actions: 1 run. 2026 Topps Chrome Baseball -> validated (GitHub Actions visual test passed for 2026 Topps Chrome Baseball.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784995235570",
-      "ts": "2026-07-25T15:57:04.192Z",
-      "type": "auto_action",
-      "title": "Full-auto action completed",
-      "detail": "2026 Topps Chrome Baseball: CV/ChatBot visual test passed. GitHub Actions visual test passed for 2026 Topps Chrome Baseball.",
-      "status": "validated",
-      "product": "2026 Topps Chrome Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784995232819",
-      "ts": "2026-07-25T15:57:04.192Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784908857447_alert",
-      "ts": "2026-07-24T15:57:03.306Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784908856984",
-      "ts": "2026-07-24T15:57:03.306Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: passed. 19 admin-ignored source item(s) skipped. Auto actions: 1 run. 2026 Topps Chrome Baseball -> validated (GitHub Actions visual test passed for 2026 Topps Chrome Baseball.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784908856982",
-      "ts": "2026-07-24T15:57:03.306Z",
-      "type": "auto_action",
-      "title": "Full-auto action completed",
-      "detail": "2026 Topps Chrome Baseball: CV/ChatBot visual test passed. GitHub Actions visual test passed for 2026 Topps Chrome Baseball.",
-      "status": "validated",
-      "product": "2026 Topps Chrome Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784908853729",
-      "ts": "2026-07-24T15:57:03.306Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1784906800247_ocpvg2",
-      "ts": "2026-07-24T15:26:40.247Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2026 Topps Chrome Baseball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1784906788941_1pw87r",
-      "ts": "2026-07-24T15:26:28.941Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2026 Topps Chrome Baseball",
-      "source": "github_actions"
-    }
-  ],
+  "activity_log": [],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
@@ -5448,7 +5037,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30105287809",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-28T23:11:49.103Z",
+      "ignoredAt": "2026-07-28T23:12:35.100Z",
       "resolved": true
     },
     "baseball|2026_topps_chrome_baseball": {
@@ -5457,7 +5046,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-28T23:11:49.103Z",
+      "ignoredAt": "2026-07-28T23:12:35.100Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-chrome-baseball-card-checklist": {
@@ -5466,7 +5055,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-28T23:11:49.103Z",
+      "ignoredAt": "2026-07-28T23:12:35.100Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 30376201555": {
@@ -5475,7 +5064,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30376201555",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-28T23:11:49.103Z",
+      "ignoredAt": "2026-07-28T23:12:35.100Z",
       "resolved": true
     },
     "soccer|2026_panini_revolution_k_league_soccer": {
@@ -5484,7 +5073,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-28T23:11:49.103Z",
+      "ignoredAt": "2026-07-28T23:12:35.100Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-panini-revolution-k-league-soccer-card-checklist": {
@@ -5493,11 +5082,11 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-28T23:11:49.103Z",
+      "ignoredAt": "2026-07-28T23:12:35.100Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-28T23:11:50.634Z",
+  "saved_at": "2026-07-28T23:12:36.880Z",
   "saved_by": "cm_command_center_operator"
 }

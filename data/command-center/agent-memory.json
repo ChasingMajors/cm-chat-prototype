@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-28T23:10:36.553Z",
+  "exported_at": "2026-07-28T23:10:46.654Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -393,17 +393,17 @@
       "source": "scheduled_deep_sheets",
       "product": "2026 Panini Luminance England Soccer",
       "sport": "soccer",
-      "code": "",
+      "code": "2026_panini_luminance_england_soccer",
       "riskLevel": "medium",
-      "status": "approved",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "status": "needs_admin",
+      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "approved",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
+      "executionResult": "Import preview parsed 149 rows and 35 parallels.",
+      "validationResult": "Preview rows are ready for admin review before sheet write.",
+      "runUrl": "https://www.checklistcenter.com/2026-panini-luminance-england-soccer-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-luminance-england-soccer-card-checklist/",
       "createdAt": "2026-07-28T15:57:03.811Z",
-      "updatedAt": "2026-07-28T23:10:13.788Z"
+      "updatedAt": "2026-07-28T23:10:45.047Z"
     },
     {
       "id": "source_watch|soccer|2026 panini revolution k league soccer",
@@ -573,6 +573,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785280245051_p1mbkn",
+      "ts": "2026-07-28T23:10:45.051Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "149 rows and 35 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2026 Panini Luminance England Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1785280243580_pcq8ep",
+      "ts": "2026-07-28T23:10:43.580Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2026 Panini Luminance England Soccer",
+      "source": "admin"
+    },
     {
       "id": "log_1785280234948_1erw0t",
       "ts": "2026-07-28T23:10:34.948Z",
@@ -5378,7 +5398,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30105287809",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-28T23:10:36.553Z",
+      "ignoredAt": "2026-07-28T23:10:46.654Z",
       "resolved": true
     },
     "baseball|2026_topps_chrome_baseball": {
@@ -5387,7 +5407,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-28T23:10:36.553Z",
+      "ignoredAt": "2026-07-28T23:10:46.654Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-chrome-baseball-card-checklist": {
@@ -5396,7 +5416,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-28T23:10:36.553Z",
+      "ignoredAt": "2026-07-28T23:10:46.654Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 30376201555": {
@@ -5405,7 +5425,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30376201555",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-28T23:10:36.553Z",
+      "ignoredAt": "2026-07-28T23:10:46.654Z",
       "resolved": true
     },
     "soccer|2026_panini_revolution_k_league_soccer": {
@@ -5414,7 +5434,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-28T23:10:36.553Z",
+      "ignoredAt": "2026-07-28T23:10:46.654Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-panini-revolution-k-league-soccer-card-checklist": {
@@ -5423,11 +5443,11 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-28T23:10:36.553Z",
+      "ignoredAt": "2026-07-28T23:10:46.654Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-28T23:10:38.524Z",
+  "saved_at": "2026-07-28T23:10:48.125Z",
   "saved_by": "cm_command_center_operator"
 }

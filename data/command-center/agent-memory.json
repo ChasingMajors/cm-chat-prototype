@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-29T02:11:04.161Z",
+  "exported_at": "2026-07-29T02:11:10.438Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -598,238 +598,7 @@
     }
   ],
   "agent_run_queue": [],
-  "activity_log": [
-    {
-      "id": "log_1785291062556_zy1prl",
-      "ts": "2026-07-29T02:11:02.556Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785291062541_pau9f0",
-      "ts": "2026-07-29T02:11:02.541Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785291035028_vw71h9",
-      "ts": "2026-07-29T02:10:35.028Z",
-      "type": "source_import",
-      "title": "Import blocked before sheet write",
-      "detail": "Unknown action No sheet write was made. Preview or parser review is required before import.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785290951635_yr96ul",
-      "ts": "2026-07-29T02:09:11.635Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "2025-26 Topps Inception UEFA Club Competitions Soccer",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785290949601_jm39fy",
-      "ts": "2026-07-29T02:09:09.601Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "463 rows and 109 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Topps Inception UEFA Club Competitions Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785290947496_ejk5xr",
-      "ts": "2026-07-29T02:09:07.496Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2025-26 Topps Inception UEFA Club Competitions Soccer",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785290931379_fyh8gp",
-      "ts": "2026-07-29T02:08:51.379Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785289792673_sgrns0",
-      "ts": "2026-07-29T01:49:52.673Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785289650922_bo3vh5",
-      "ts": "2026-07-29T01:47:30.922Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "queued",
-      "product": "2026 Panini Luminance England Soccer",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785289641193_r07qde",
-      "ts": "2026-07-29T01:47:21.193Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2026 Panini Luminance England Soccer",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785289631519_gjswaj",
-      "ts": "2026-07-29T01:47:11.519Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785289337606_spr71z",
-      "ts": "2026-07-29T01:42:17.606Z",
-      "type": "checklist_publish",
-      "title": "JSON publish failed",
-      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "2026 Panini Luminance Germany Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785288122987_f4m2p0",
-      "ts": "2026-07-29T01:22:02.987Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2026 Panini Luminance Germany Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785288122952_j4puwc",
-      "ts": "2026-07-29T01:22:02.952Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "155 checklist rows and 35 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2026 Panini Luminance Germany Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785288109720_5rg216",
-      "ts": "2026-07-29T01:21:49.720Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "2026 Panini Luminance Germany Soccer",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785288107281_x7wt79",
-      "ts": "2026-07-29T01:21:47.281Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "155 rows and 35 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2026 Panini Luminance Germany Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785288104522_wrmitk",
-      "ts": "2026-07-29T01:21:44.522Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2026 Panini Luminance Germany Soccer",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785287946660_zc2u8e",
-      "ts": "2026-07-29T01:19:06.660Z",
-      "type": "checklist_publish",
-      "title": "JSON publish failed",
-      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "2026 Panini Luminance England Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785284893887_w0zgsg",
-      "ts": "2026-07-29T00:28:13.887Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2026 Panini Luminance England Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785284893884_7vrxsi",
-      "ts": "2026-07-29T00:28:13.884Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "149 checklist rows and 35 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2026 Panini Luminance England Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785284877031_7lj999",
-      "ts": "2026-07-29T00:27:57.031Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "2026 Panini Luminance England Soccer",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785284877022_a4r12n",
-      "ts": "2026-07-29T00:27:57.022Z",
-      "type": "agent_cycle",
-      "title": "Execute approved import",
-      "detail": "2026 Panini Luminance England Soccer is approved and ready for a product-scoped sheet write.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785280437381_3yc19b",
-      "ts": "2026-07-28T23:13:57.381Z",
-      "type": "checklist_publish",
-      "title": "JSON publish failed",
-      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "2026 Topps Tribute Baseball",
-      "source": "operator_backend"
-    }
-  ],
+  "activity_log": [],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
@@ -5340,7 +5109,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30105287809",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:11:04.161Z",
+      "ignoredAt": "2026-07-29T02:11:10.438Z",
       "resolved": true
     },
     "baseball|2026_topps_chrome_baseball": {
@@ -5349,7 +5118,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:11:04.161Z",
+      "ignoredAt": "2026-07-29T02:11:10.438Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-chrome-baseball-card-checklist": {
@@ -5358,7 +5127,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:11:04.161Z",
+      "ignoredAt": "2026-07-29T02:11:10.438Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 30376201555": {
@@ -5367,7 +5136,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30376201555",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:11:04.161Z",
+      "ignoredAt": "2026-07-29T02:11:10.438Z",
       "resolved": true
     },
     "soccer|2026_panini_revolution_k_league_soccer": {
@@ -5376,7 +5145,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:11:04.161Z",
+      "ignoredAt": "2026-07-29T02:11:10.438Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-panini-revolution-k-league-soccer-card-checklist": {
@@ -5385,11 +5154,11 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:11:04.161Z",
+      "ignoredAt": "2026-07-29T02:11:10.438Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-29T02:11:06.105Z",
+  "saved_at": "2026-07-29T02:11:12.100Z",
   "saved_by": "cm_command_center_operator"
 }

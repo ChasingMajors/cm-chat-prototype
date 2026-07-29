@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-29T02:09:09.098Z",
+  "exported_at": "2026-07-29T02:09:13.244Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -515,17 +515,17 @@
       "source": "scheduled_deep_sheets",
       "product": "2025-26 Topps Inception UEFA Club Competitions Soccer",
       "sport": "soccer",
-      "code": "",
+      "code": "2025_26_topps_inception_uefa_club_competitions_soccer",
       "riskLevel": "medium",
-      "status": "approved",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "status": "running",
+      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "approved",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
+      "executionResult": "Sheet write started through Operator Backend.",
+      "validationResult": "Preview rows are ready for admin review before sheet write.",
+      "runUrl": "https://www.checklistcenter.com/2025-26-topps-inception-uefa-club-competitions-soccer-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-inception-uefa-club-competitions-soccer-card-checklist/",
       "createdAt": "2026-07-25T15:57:04.192Z",
-      "updatedAt": "2026-07-28T23:10:34.945Z"
+      "updatedAt": "2026-07-29T02:09:11.642Z"
     },
     {
       "id": "source_watch|basketball|2025-26 panini court kings basketball",
@@ -599,6 +599,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785290951635_yr96ul",
+      "ts": "2026-07-29T02:09:11.635Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "2025-26 Topps Inception UEFA Club Competitions Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1785290949601_jm39fy",
+      "ts": "2026-07-29T02:09:09.601Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "463 rows and 109 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2025-26 Topps Inception UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1785290947496_ejk5xr",
       "ts": "2026-07-29T02:09:07.496Z",
@@ -5290,7 +5310,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30105287809",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:09:09.098Z",
+      "ignoredAt": "2026-07-29T02:09:13.244Z",
       "resolved": true
     },
     "baseball|2026_topps_chrome_baseball": {
@@ -5299,7 +5319,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:09:09.098Z",
+      "ignoredAt": "2026-07-29T02:09:13.244Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-chrome-baseball-card-checklist": {
@@ -5308,7 +5328,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:09:09.098Z",
+      "ignoredAt": "2026-07-29T02:09:13.244Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 30376201555": {
@@ -5317,7 +5337,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30376201555",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:09:09.098Z",
+      "ignoredAt": "2026-07-29T02:09:13.244Z",
       "resolved": true
     },
     "soccer|2026_panini_revolution_k_league_soccer": {
@@ -5326,7 +5346,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:09:09.098Z",
+      "ignoredAt": "2026-07-29T02:09:13.244Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-panini-revolution-k-league-soccer-card-checklist": {
@@ -5335,11 +5355,11 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:09:09.098Z",
+      "ignoredAt": "2026-07-29T02:09:13.244Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-29T02:09:10.712Z",
+  "saved_at": "2026-07-29T02:09:16.059Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-29T02:11:16.631Z",
+  "exported_at": "2026-07-29T02:24:47.217Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -371,11 +371,11 @@
       "sport": "soccer",
       "code": "2026_panini_luminance_england_soccer",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30415061087",
       "sourceUrl": "",
       "bucket": "",
@@ -383,7 +383,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-07-29T01:47:21.190Z",
-      "updatedAt": "2026-07-29T01:47:30.918Z",
+      "updatedAt": "2026-07-29T02:11:18.578Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30415061087",
       "visualStartedAt": "2026-07-29T01:47:20Z"
     },
@@ -419,15 +419,15 @@
       "sport": "soccer",
       "code": "2026_panini_luminance_england_soccer",
       "riskLevel": "medium",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "approved",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30415061087",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-luminance-england-soccer-card-checklist/",
       "createdAt": "2026-07-28T15:57:03.811Z",
-      "updatedAt": "2026-07-29T01:47:30.920Z",
+      "updatedAt": "2026-07-29T02:11:18.579Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30415061087",
       "visualStartedAt": "2026-07-29T01:47:20Z"
     },
@@ -599,6 +599,56 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785291885615_jro9z6",
+      "ts": "2026-07-29T02:24:45.615Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2026 Panini Luminance France Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1785291885609_xkjs0t",
+      "ts": "2026-07-29T02:24:45.609Z",
+      "type": "agent_cycle",
+      "title": "Execute approved import",
+      "detail": "2026 Panini Luminance France Soccer is approved and ready for a product-scoped sheet write.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1785291078593_yg4ksj",
+      "ts": "2026-07-29T02:11:18.593Z",
+      "type": "visual_test",
+      "title": "Visual proof drain complete",
+      "detail": "1 visual status check refreshed. 0 new tests queued. 1 passed. 0 need repair. 0 pending and 0 queued/running remain.",
+      "status": "validated",
+      "product": "",
+      "source": "agent_cycle"
+    },
+    {
+      "id": "log_1785291078581_hgh5ra",
+      "ts": "2026-07-29T02:11:18.581Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2026 Panini Luminance England Soccer",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1785291078580_sgaddf",
+      "ts": "2026-07-29T02:11:18.580Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2026 Panini Luminance England Soccer",
+      "source": "github_actions"
+    },
     {
       "id": "log_1785291075027_83vicy",
       "ts": "2026-07-29T02:11:15.027Z",
@@ -2631,9 +2681,9 @@
       "knownIssueNote": ""
     },
     "soccer|2026_panini_luminance_england_soccer": {
-      "status": "queued",
-      "result": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-07-29T01:47:19.520Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30415061087",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2643,7 +2693,7 @@
       "productName": "2026 Panini Luminance England Soccer",
       "sport": "soccer",
       "code": "2026_panini_luminance_england_soccer",
-      "updatedAt": "2026-07-29T01:47:30.910Z",
+      "updatedAt": "2026-07-29T02:11:18.575Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 30415061087,
@@ -2651,12 +2701,12 @@
       "displayTitle": "Visual Product Test - 2026 Panini Luminance England Soccer",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-29T01:47:20Z",
-      "checkedAt": "2026-07-29T01:47:30.909Z"
+      "checkedAt": "2026-07-29T02:11:18.575Z"
     },
     "soccer|2026 panini luminance england soccer": {
-      "status": "queued",
-      "result": "queued",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-07-29T01:47:19.520Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30415061087",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2666,7 +2716,7 @@
       "productName": "2026 Panini Luminance England Soccer",
       "sport": "soccer",
       "code": "2026_panini_luminance_england_soccer",
-      "updatedAt": "2026-07-29T01:47:30.910Z",
+      "updatedAt": "2026-07-29T02:11:18.575Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 30415061087,
@@ -2674,7 +2724,7 @@
       "displayTitle": "Visual Product Test - 2026 Panini Luminance England Soccer",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-29T01:47:20Z",
-      "checkedAt": "2026-07-29T01:47:30.909Z"
+      "checkedAt": "2026-07-29T02:11:18.575Z"
     }
   },
   "known_issues": {},
@@ -5120,7 +5170,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30105287809",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:11:16.631Z",
+      "ignoredAt": "2026-07-29T02:24:47.217Z",
       "resolved": true
     },
     "baseball|2026_topps_chrome_baseball": {
@@ -5129,7 +5179,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:11:16.631Z",
+      "ignoredAt": "2026-07-29T02:24:47.217Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-chrome-baseball-card-checklist": {
@@ -5138,7 +5188,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:11:16.631Z",
+      "ignoredAt": "2026-07-29T02:24:47.217Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 30376201555": {
@@ -5147,7 +5197,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30376201555",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:11:16.631Z",
+      "ignoredAt": "2026-07-29T02:24:47.217Z",
       "resolved": true
     },
     "soccer|2026_panini_revolution_k_league_soccer": {
@@ -5156,7 +5206,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:11:16.631Z",
+      "ignoredAt": "2026-07-29T02:24:47.217Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-panini-revolution-k-league-soccer-card-checklist": {
@@ -5165,11 +5215,38 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T02:11:16.631Z",
+      "ignoredAt": "2026-07-29T02:24:47.217Z",
+      "resolved": true
+    },
+    "soccer|https github com chasingmajors cm-chat-prototype actions runs 30415061087": {
+      "product": "2026 Panini Luminance England Soccer",
+      "sport": "soccer",
+      "code": "2026_panini_luminance_england_soccer",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30415061087",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-29T02:24:47.217Z",
+      "resolved": true
+    },
+    "soccer|2026_panini_luminance_england_soccer": {
+      "product": "2026 Panini Luminance England Soccer",
+      "sport": "soccer",
+      "code": "2026_panini_luminance_england_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2026-panini-luminance-england-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-29T02:24:47.217Z",
+      "resolved": true
+    },
+    "soccer|https www checklistcenter com 2026-panini-luminance-england-soccer-card-checklist": {
+      "product": "2026 Panini Luminance England Soccer",
+      "sport": "soccer",
+      "code": "2026_panini_luminance_england_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2026-panini-luminance-england-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-29T02:24:47.217Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-29T02:11:18.707Z",
+  "saved_at": "2026-07-29T02:24:48.678Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-29T01:42:16.667Z",
+  "exported_at": "2026-07-29T01:47:13.122Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -437,15 +437,15 @@
       "sport": "soccer",
       "code": "2026_panini_luminance_germany_soccer",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
+      "status": "needs_admin",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "approved",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "executionResult": "Sheet write completed; JSON publish request failed.",
+      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-luminance-germany-soccer-card-checklist/",
       "createdAt": "2026-07-27T15:57:03.604Z",
-      "updatedAt": "2026-07-29T01:22:02.994Z"
+      "updatedAt": "2026-07-29T01:42:17.564Z"
     },
     {
       "id": "source_watch|soccer|2026 panini luminance france soccer",
@@ -573,6 +573,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785289631519_gjswaj",
+      "ts": "2026-07-29T01:47:11.519Z",
+      "type": "memory",
+      "title": "Backend memory auto-save failed",
+      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1785289337606_spr71z",
+      "ts": "2026-07-29T01:42:17.606Z",
+      "type": "checklist_publish",
+      "title": "JSON publish failed",
+      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
+      "product": "2026 Panini Luminance Germany Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1785288122987_f4m2p0",
       "ts": "2026-07-29T01:22:02.987Z",
@@ -5148,7 +5168,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30105287809",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T01:42:16.667Z",
+      "ignoredAt": "2026-07-29T01:47:13.122Z",
       "resolved": true
     },
     "baseball|2026_topps_chrome_baseball": {
@@ -5157,7 +5177,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T01:42:16.667Z",
+      "ignoredAt": "2026-07-29T01:47:13.122Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-chrome-baseball-card-checklist": {
@@ -5166,7 +5186,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T01:42:16.667Z",
+      "ignoredAt": "2026-07-29T01:47:13.122Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 30376201555": {
@@ -5175,7 +5195,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30376201555",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T01:42:16.657Z",
+      "ignoredAt": "2026-07-29T01:47:13.122Z",
       "resolved": true
     },
     "soccer|2026_panini_revolution_k_league_soccer": {
@@ -5184,7 +5204,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T01:42:16.664Z",
+      "ignoredAt": "2026-07-29T01:47:13.122Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-panini-revolution-k-league-soccer-card-checklist": {
@@ -5193,11 +5213,11 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-29T01:42:16.664Z",
+      "ignoredAt": "2026-07-29T01:47:13.122Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-29T01:42:21.616Z",
+  "saved_at": "2026-07-29T01:47:15.737Z",
   "saved_by": "cm_command_center_operator"
 }

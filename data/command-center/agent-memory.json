@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-30T04:18:41.240Z",
+  "exported_at": "2026-07-30T04:19:02.767Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -16,7 +16,7 @@
       "severity": "warning",
       "status": "queued",
       "createdAt": "2026-07-30T04:18:39.633Z",
-      "updatedAt": "2026-07-30T04:18:39.633Z",
+      "updatedAt": "2026-07-30T04:19:01.163Z",
       "why": "A supported source product was not found in the current Chasing Majors static checklist data.",
       "objective": "Prepare an import task for the Soccer checklist source and validate the product after publishing.",
       "steps": [
@@ -601,7 +601,7 @@
       "runUrl": "https://www.checklistcenter.com/2025-26-topps-inception-uefa-club-competitions-soccer-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-inception-uefa-club-competitions-soccer-card-checklist/",
       "createdAt": "2026-07-25T15:57:04.192Z",
-      "updatedAt": "2026-07-30T04:18:39.632Z"
+      "updatedAt": "2026-07-30T04:19:01.162Z"
     },
     {
       "id": "source_watch|basketball|2025-26 panini court kings basketball",
@@ -675,6 +675,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785385141163_gvkwdf",
+      "ts": "2026-07-30T04:19:01.163Z",
+      "type": "validation",
+      "title": "Coverage rechecked",
+      "detail": "Public coverage still needs review.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Inception UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1785385139896_pnm7ax",
+      "ts": "2026-07-30T04:18:59.896Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2025-26 Topps Inception UEFA Club Competitions Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1785385119632_gsbqm5",
       "ts": "2026-07-30T04:18:39.632Z",
@@ -5325,7 +5345,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30105287809",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.767Z",
       "resolved": true
     },
     "baseball|2026_topps_chrome_baseball": {
@@ -5334,7 +5354,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.767Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-chrome-baseball-card-checklist": {
@@ -5343,7 +5363,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.767Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 30376201555": {
@@ -5352,7 +5372,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30376201555",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.767Z",
       "resolved": true
     },
     "soccer|2026_panini_revolution_k_league_soccer": {
@@ -5361,7 +5381,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.767Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-panini-revolution-k-league-soccer-card-checklist": {
@@ -5370,7 +5390,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.767Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 30415061087": {
@@ -5379,7 +5399,7 @@
       "code": "2026_panini_luminance_england_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30415061087",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.767Z",
       "resolved": true
     },
     "soccer|2026_panini_luminance_england_soccer": {
@@ -5388,7 +5408,7 @@
       "code": "2026_panini_luminance_england_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-luminance-england-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.767Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-panini-luminance-england-soccer-card-checklist": {
@@ -5397,7 +5417,7 @@
       "code": "2026_panini_luminance_england_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-luminance-england-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.767Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 30504760129": {
@@ -5406,7 +5426,7 @@
       "code": "2026_panini_luminance_germany_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30504760129",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.767Z",
       "resolved": true
     },
     "soccer|2026_panini_luminance_germany_soccer": {
@@ -5415,7 +5435,7 @@
       "code": "2026_panini_luminance_germany_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-luminance-germany-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.767Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-panini-luminance-germany-soccer-card-checklist": {
@@ -5424,7 +5444,7 @@
       "code": "2026_panini_luminance_germany_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-luminance-germany-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.767Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 30506202505": {
@@ -5433,7 +5453,7 @@
       "code": "2026_topps_tribute_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30506202505",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.766Z",
       "resolved": true
     },
     "baseball|2026_topps_tribute_baseball": {
@@ -5442,7 +5462,7 @@
       "code": "2026_topps_tribute_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-tribute-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.767Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-tribute-baseball-card-checklist": {
@@ -5451,11 +5471,11 @@
       "code": "2026_topps_tribute_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-tribute-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T04:18:41.240Z",
+      "ignoredAt": "2026-07-30T04:19:02.767Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-30T04:18:42.942Z",
+  "saved_at": "2026-07-30T04:19:04.313Z",
   "saved_by": "cm_command_center_operator"
 }

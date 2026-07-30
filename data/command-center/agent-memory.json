@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-30T23:04:04.752Z",
+  "exported_at": "2026-07-30T23:04:26.912Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -391,11 +391,11 @@
       "sport": "basketball",
       "code": "2025_26_panini_court_kings_basketball",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30589231223",
       "sourceUrl": "",
       "bucket": "",
@@ -403,7 +403,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-07-30T23:02:47.321Z",
-      "updatedAt": "2026-07-30T23:04:03.146Z",
+      "updatedAt": "2026-07-30T23:04:25.300Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30589231223",
       "visualStartedAt": "2026-07-30T23:02:46Z"
     },
@@ -635,15 +635,15 @@
       "sport": "basketball",
       "code": "2025_26_panini_court_kings_basketball",
       "riskLevel": "medium",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30589231223",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-court-kings-basketball-card-checklist/",
       "createdAt": "2026-07-24T15:57:03.306Z",
-      "updatedAt": "2026-07-30T23:04:03.147Z",
+      "updatedAt": "2026-07-30T23:04:25.302Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30589231223",
       "visualStartedAt": "2026-07-30T23:02:46Z"
     },
@@ -701,6 +701,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785452665305_u145yi",
+      "ts": "2026-07-30T23:04:25.305Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2025-26 Panini Court Kings Basketball",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1785452665304_qpskwe",
+      "ts": "2026-07-30T23:04:25.304Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2025-26 Panini Court Kings Basketball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1785452643147_xacuo4",
       "ts": "2026-07-30T23:04:03.148Z",
@@ -2935,9 +2955,9 @@
       "checkedAt": "2026-07-30T04:18:28.033Z"
     },
     "basketball|2025_26_panini_court_kings_basketball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-07-30T23:02:45.755Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30589231223",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2947,7 +2967,7 @@
       "productName": "2025-26 Panini Court Kings Basketball",
       "sport": "basketball",
       "code": "2025_26_panini_court_kings_basketball",
-      "updatedAt": "2026-07-30T23:04:03.140Z",
+      "updatedAt": "2026-07-30T23:04:25.291Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 30589231223,
@@ -2955,12 +2975,12 @@
       "displayTitle": "Visual Product Test - 2025-26 Panini Court Kings Basketball",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-30T23:02:46Z",
-      "checkedAt": "2026-07-30T23:04:03.140Z"
+      "checkedAt": "2026-07-30T23:04:25.291Z"
     },
     "basketball|2025-26 panini court kings basketball": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-07-30T23:02:45.755Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30589231223",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -2970,7 +2990,7 @@
       "productName": "2025-26 Panini Court Kings Basketball",
       "sport": "basketball",
       "code": "2025_26_panini_court_kings_basketball",
-      "updatedAt": "2026-07-30T23:04:03.140Z",
+      "updatedAt": "2026-07-30T23:04:25.291Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 30589231223,
@@ -2978,7 +2998,7 @@
       "displayTitle": "Visual Product Test - 2025-26 Panini Court Kings Basketball",
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-30T23:02:46Z",
-      "checkedAt": "2026-07-30T23:04:03.140Z"
+      "checkedAt": "2026-07-30T23:04:25.291Z"
     }
   },
   "known_issues": {},
@@ -5424,7 +5444,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30105287809",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     },
     "baseball|2026_topps_chrome_baseball": {
@@ -5433,7 +5453,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-chrome-baseball-card-checklist": {
@@ -5442,7 +5462,7 @@
       "code": "2026_topps_chrome_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 30376201555": {
@@ -5451,7 +5471,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30376201555",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     },
     "soccer|2026_panini_revolution_k_league_soccer": {
@@ -5460,7 +5480,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-panini-revolution-k-league-soccer-card-checklist": {
@@ -5469,7 +5489,7 @@
       "code": "2026_panini_revolution_k_league_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-revolution-k-league-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 30415061087": {
@@ -5478,7 +5498,7 @@
       "code": "2026_panini_luminance_england_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30415061087",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     },
     "soccer|2026_panini_luminance_england_soccer": {
@@ -5487,7 +5507,7 @@
       "code": "2026_panini_luminance_england_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-luminance-england-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-panini-luminance-england-soccer-card-checklist": {
@@ -5496,7 +5516,7 @@
       "code": "2026_panini_luminance_england_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-luminance-england-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     },
     "soccer|https github com chasingmajors cm-chat-prototype actions runs 30504760129": {
@@ -5505,7 +5525,7 @@
       "code": "2026_panini_luminance_germany_soccer",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30504760129",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     },
     "soccer|2026_panini_luminance_germany_soccer": {
@@ -5514,7 +5534,7 @@
       "code": "2026_panini_luminance_germany_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-luminance-germany-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2026-panini-luminance-germany-soccer-card-checklist": {
@@ -5523,7 +5543,7 @@
       "code": "2026_panini_luminance_germany_soccer",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-luminance-germany-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     },
     "baseball|https github com chasingmajors cm-chat-prototype actions runs 30506202505": {
@@ -5532,7 +5552,7 @@
       "code": "2026_topps_tribute_baseball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30506202505",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     },
     "baseball|2026_topps_tribute_baseball": {
@@ -5541,7 +5561,7 @@
       "code": "2026_topps_tribute_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-tribute-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     },
     "baseball|https www checklistcenter com 2026-topps-tribute-baseball-card-checklist": {
@@ -5550,11 +5570,38 @@
       "code": "2026_topps_tribute_baseball",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-tribute-baseball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-07-30T23:04:04.752Z",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
+      "resolved": true
+    },
+    "basketball|https github com chasingmajors cm-chat-prototype actions runs 30589231223": {
+      "product": "2025-26 Panini Court Kings Basketball",
+      "sport": "basketball",
+      "code": "2025_26_panini_court_kings_basketball",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30589231223",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
+      "resolved": true
+    },
+    "basketball|2025_26_panini_court_kings_basketball": {
+      "product": "2025-26 Panini Court Kings Basketball",
+      "sport": "basketball",
+      "code": "2025_26_panini_court_kings_basketball",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-court-kings-basketball-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
+      "resolved": true
+    },
+    "basketball|https www checklistcenter com 2025-26-panini-court-kings-basketball-card-checklist": {
+      "product": "2025-26 Panini Court Kings Basketball",
+      "sport": "basketball",
+      "code": "2025_26_panini_court_kings_basketball",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-court-kings-basketball-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-30T23:04:26.912Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-30T23:04:06.070Z",
+  "saved_at": "2026-07-30T23:04:28.317Z",
   "saved_by": "cm_command_center_operator"
 }

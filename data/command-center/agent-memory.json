@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-31T02:31:03.771Z",
+  "exported_at": "2026-07-31T02:31:12.241Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -382,99 +382,41 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [
-    {
-      "id": "source_watch|soccer|2025-26 topps winners collection arsenal soccer",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2025-26 Topps Winners Collection Arsenal Soccer",
-      "sport": "soccer",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-arsenal-soccer-card-checklist/",
-      "createdAt": "2026-07-31T02:31:11.434Z",
-      "updatedAt": "2026-07-31T02:31:11.434Z"
-    },
-    {
-      "id": "source_watch|hockey|2026 upper deck nscc promo hockey",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2026 Upper Deck NSCC Promo Hockey",
-      "sport": "hockey",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-nscc-promo-hockey-card-checklist/",
-      "createdAt": "2026-07-31T02:31:11.434Z",
-      "updatedAt": "2026-07-31T02:31:11.434Z"
-    }
-  ],
+  "agent_actions": [],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1785465074249_alert",
-      "ts": "2026-07-31T02:31:11.434Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785465073936",
-      "ts": "2026-07-31T02:31:11.434Z",
+      "id": "log_1785465070632_3y7tur",
+      "ts": "2026-07-31T02:31:10.632Z",
       "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 2 actionable from 20 checked. PRV: 0 actionable from 8 checked. PRV sync: skipped for fast sweep. 18 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
-      "status": "needs_review",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
       "product": "",
-      "source": "operator_backend"
+      "source": "command_center"
     },
     {
-      "id": "log_1785465073934",
-      "ts": "2026-07-31T02:31:11.434Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
+      "id": "log_1785465070628_asgeu4",
+      "ts": "2026-07-31T02:31:10.628Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1785465068031_8ipscj",
+      "ts": "2026-07-31T02:31:08.031Z",
+      "type": "agent_action",
+      "title": "Resolved agent actions cleared",
+      "detail": "Validated, done, and ignored actions were removed from the active queue.",
+      "status": "cleaned",
+      "product": "",
+      "source": "admin"
     }
   ],
-  "last_agent_report": {
-    "ok": true,
-    "status": "needs_admin",
-    "generated_at": "2026-07-31T02:31:11.434Z",
-    "checked": {
-      "checklist_count": 20,
-      "prv_count": 8,
-      "skipped_ignored": 18
-    },
-    "completed_count": 0,
-    "needs_admin_count": 2,
-    "blocked_count": 0,
-    "completed": [],
-    "needs_admin": [
-      "Checklist review: 2026 Upper Deck NSCC Promo Hockey | hockey | missing",
-      "Checklist review: 2025-26 Topps Winners Collection Arsenal Soccer | soccer | missing"
-    ],
-    "blocked": [],
-    "proof": [],
-    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 8 PRV source item(s). 0 completed/progress item(s), 2 needs-admin item(s), 0 blocked/issue item(s)."
-  },
+  "last_agent_report": null,
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -5400,6 +5342,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-31T02:31:14.302Z",
+  "saved_at": "2026-07-31T02:31:15.167Z",
   "saved_by": "cm_command_center_operator"
 }

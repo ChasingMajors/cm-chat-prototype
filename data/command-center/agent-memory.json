@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-31T02:31:20.263Z",
+  "exported_at": "2026-07-31T02:31:35.310Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -400,28 +400,20 @@
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-arsenal-soccer-card-checklist/",
       "createdAt": "2026-07-31T02:31:11.434Z",
       "updatedAt": "2026-07-31T02:31:11.434Z"
-    },
-    {
-      "id": "source_watch|hockey|2026 upper deck nscc promo hockey",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2026 Upper Deck NSCC Promo Hockey",
-      "sport": "hockey",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-nscc-promo-hockey-card-checklist/",
-      "createdAt": "2026-07-31T02:31:11.434Z",
-      "updatedAt": "2026-07-31T02:31:11.434Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785465093706_hqdkb7",
+      "ts": "2026-07-31T02:31:33.706Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2026 Upper Deck NSCC Promo Hockey was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2026 Upper Deck NSCC Promo Hockey",
+      "source": "admin"
+    },
     {
       "id": "log_1785465078660_n4oh1d",
       "ts": "2026-07-31T02:31:18.660Z",
@@ -5417,9 +5409,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-07-31T02:31:00.797Z",
       "resolved": true
+    },
+    "hockey|https www checklistcenter com 2026-upper-deck-nscc-promo-hockey-card-checklist": {
+      "product": "2026 Upper Deck NSCC Promo Hockey",
+      "sport": "hockey",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-nscc-promo-hockey-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-31T02:31:33.704Z",
+      "resolved": true
+    },
+    "hockey|2026 upper deck nscc promo hockey": {
+      "product": "2026 Upper Deck NSCC Promo Hockey",
+      "sport": "hockey",
+      "code": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-nscc-promo-hockey-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-07-31T02:31:33.704Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-31T02:31:22.848Z",
+  "saved_at": "2026-07-31T02:31:36.548Z",
   "saved_by": "cm_command_center_operator"
 }

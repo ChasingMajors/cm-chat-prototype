@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-31T18:40:47.933Z",
+  "exported_at": "2026-07-31T18:41:00.806Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -391,19 +391,29 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_overtime_hockey",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "Import preview parsed 348 rows and 11 parallels.",
+      "executionResult": "Sheet write started through Operator Backend.",
       "validationResult": "Preview rows are ready for admin review before sheet write.",
       "runUrl": "https://www.checklistcenter.com/2025-26-upper-deck-overtime-hockey-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-overtime-hockey-card-checklist/",
       "createdAt": "2026-07-31T18:40:31.214Z",
-      "updatedAt": "2026-07-31T18:40:46.328Z"
+      "updatedAt": "2026-07-31T18:40:59.205Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785523259200_5r6frs",
+      "ts": "2026-07-31T18:40:59.200Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "2025-26 Upper Deck Overtime Hockey",
+      "source": "admin"
+    },
     {
       "id": "log_1785523246329_fpso77",
       "ts": "2026-07-31T18:40:46.329Z",
@@ -5487,6 +5497,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-31T18:40:49.666Z",
+  "saved_at": "2026-07-31T18:41:02.675Z",
   "saved_by": "cm_command_center_operator"
 }

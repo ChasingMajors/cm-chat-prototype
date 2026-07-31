@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-31T02:32:20.853Z",
+  "exported_at": "2026-07-31T17:27:11.398Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -386,23 +386,13 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1785513678684",
-      "ts": "2026-07-31T15:57:03.844Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 8 checked. PRV sync: passed. 20 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
+      "id": "log_1785518829778_epeovb",
+      "ts": "2026-07-31T17:27:09.779Z",
+      "type": "memory",
+      "title": "Backend memory auto-save failed",
+      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785513678682",
-      "ts": "2026-07-31T15:57:03.844Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
       "source": "operator_backend"
     },
     {
@@ -549,7 +539,7 @@
   "last_agent_report": {
     "ok": true,
     "status": "clear",
-    "generated_at": "2026-07-31T15:57:03.844Z",
+    "generated_at": "2026-07-31T02:32:00.349Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 8,
@@ -5526,6 +5516,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-31T16:01:18.758Z",
+  "saved_at": "2026-07-31T17:27:13.517Z",
   "saved_by": "cm_command_center_operator"
 }

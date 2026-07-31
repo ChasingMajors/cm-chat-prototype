@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-31T18:41:08.799Z",
+  "exported_at": "2026-07-31T18:42:13.178Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -391,19 +391,29 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_overtime_hockey",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "executionResult": "JSON publish needs review.",
+      "validationResult": "Sheet write succeeded, but publish/live validation needs review.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-overtime-hockey-card-checklist/",
       "createdAt": "2026-07-31T18:40:31.214Z",
-      "updatedAt": "2026-07-31T18:41:07.196Z"
+      "updatedAt": "2026-07-31T18:42:11.433Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785523331438_msdxeo",
+      "ts": "2026-07-31T18:42:11.438Z",
+      "type": "checklist_publish",
+      "title": "JSON publish needs review",
+      "detail": "Sheet write succeeded, but publish/live validation needs review.",
+      "status": "failed",
+      "product": "2025-26 Upper Deck Overtime Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1785523267195_odp51z",
       "ts": "2026-07-31T18:41:07.195Z",
@@ -5517,6 +5527,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-31T18:41:10.768Z",
+  "saved_at": "2026-07-31T18:42:15.085Z",
   "saved_by": "cm_command_center_operator"
 }

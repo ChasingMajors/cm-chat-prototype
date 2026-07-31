@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-07-31T02:31:35.310Z",
+  "exported_at": "2026-07-31T02:31:43.338Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -389,21 +389,41 @@
       "source": "scheduled_quick_json",
       "product": "2025-26 Topps Winners Collection Arsenal Soccer",
       "sport": "soccer",
-      "code": "",
+      "code": "2025_26_topps_winners_collection_arsenal_soccer",
       "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "status": "known_issue",
+      "recommendedAction": "Open the source and review whether this checklist has a new layout or unsupported source format.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
+      "executionResult": "Source found, but the checklist parser did not produce writable rows.",
+      "validationResult": "Parser review needed before this can write checklist sheet data.",
+      "runUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-arsenal-soccer-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-arsenal-soccer-card-checklist/",
       "createdAt": "2026-07-31T02:31:11.434Z",
-      "updatedAt": "2026-07-31T02:31:11.434Z"
+      "updatedAt": "2026-07-31T02:31:41.733Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785465101734_b125h2",
+      "ts": "2026-07-31T02:31:41.734Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "0 rows and 136 parallels parsed.",
+      "status": "needs_review",
+      "product": "2025-26 Topps Winners Collection Arsenal Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1785465100540_euu967",
+      "ts": "2026-07-31T02:31:40.540Z",
+      "type": "source_import",
+      "title": "Import preview started",
+      "detail": "Parsing source checklist rows and parallels before any sheet write.",
+      "status": "started",
+      "product": "2025-26 Topps Winners Collection Arsenal Soccer",
+      "source": "admin"
+    },
     {
       "id": "log_1785465093706_hqdkb7",
       "ts": "2026-07-31T02:31:33.706Z",
@@ -5430,6 +5450,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-07-31T02:31:36.548Z",
+  "saved_at": "2026-07-31T02:31:45.259Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-01T01:20:29.364Z",
+  "exported_at": "2026-08-01T01:20:36.969Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -384,6 +384,30 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2025-26 upper deck overtime hockey|2025_26_upper_deck_overtime_hockey",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2025-26 Upper Deck Overtime Hockey",
+      "sport": "hockey",
+      "code": "2025_26_upper_deck_overtime_hockey",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "GitHub Actions visual test queued.",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-08-01T01:20:35.364Z",
+      "updatedAt": "2026-08-01T01:20:35.365Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-08-01T01:20:33.775Z"
+    },
+    {
       "id": "source_watch|hockey|2025-26 upper deck overtime hockey",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -391,19 +415,31 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_overtime_hockey",
       "riskLevel": "medium",
-      "status": "needs_admin",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "validationResult": "CV/ChatBot visual test queued or running.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-overtime-hockey-card-checklist/",
       "createdAt": "2026-07-31T18:40:31.214Z",
-      "updatedAt": "2026-07-31T23:47:29.053Z"
+      "updatedAt": "2026-08-01T01:20:35.366Z",
+      "visualRunUrl": "",
+      "visualStartedAt": "2026-08-01T01:20:33.775Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785547235366_sfu1gy",
+      "ts": "2026-08-01T01:20:35.366Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2025-26 Upper Deck Overtime Hockey",
+      "source": "github_actions"
+    },
     {
       "id": "log_1785547227760_bvhu0f",
       "ts": "2026-08-01T01:20:27.761Z",
@@ -2884,6 +2920,40 @@
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-07-31T01:37:57Z",
       "checkedAt": "2026-07-31T01:39:14.337Z"
+    },
+    "hockey|2025_26_upper_deck_overtime_hockey": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-08-01T01:20:33.775Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "hockey|2025_26_upper_deck_overtime_hockey",
+      "key": "hockey|2025_26_upper_deck_overtime_hockey",
+      "productName": "2025-26 Upper Deck Overtime Hockey",
+      "sport": "hockey",
+      "code": "2025_26_upper_deck_overtime_hockey",
+      "updatedAt": "2026-08-01T01:20:35.361Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
+    },
+    "hockey|2025-26 upper deck overtime hockey": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-08-01T01:20:33.775Z",
+      "runUrl": "",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "hockey|2025_26_upper_deck_overtime_hockey",
+      "key": "hockey|2025-26 upper deck overtime hockey",
+      "productName": "2025-26 Upper Deck Overtime Hockey",
+      "sport": "hockey",
+      "code": "2025_26_upper_deck_overtime_hockey",
+      "updatedAt": "2026-08-01T01:20:35.361Z",
+      "knownIssue": false,
+      "knownIssueNote": ""
     }
   },
   "known_issues": {},
@@ -5577,6 +5647,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-01T01:20:32.206Z",
+  "saved_at": "2026-08-01T01:20:39.218Z",
   "saved_by": "cm_command_center_operator"
 }

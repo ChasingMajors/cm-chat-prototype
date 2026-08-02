@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-02T16:34:13.100Z",
+  "exported_at": "2026-08-02T16:34:18.885Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -403,208 +403,7 @@
     }
   ],
   "agent_run_queue": [],
-  "activity_log": [
-    {
-      "id": "log_1785688451495_46je6f",
-      "ts": "2026-08-02T16:34:11.495Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785688451485_x5i8ox",
-      "ts": "2026-08-02T16:34:11.485Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785688430275_jx8i27",
-      "ts": "2026-08-02T16:33:50.275Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785686674902_fobvj7",
-      "ts": "2026-08-02T16:04:34.902Z",
-      "type": "checklist_publish",
-      "title": "JSON publish failed",
-      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785683005259_g394km",
-      "ts": "2026-08-02T15:03:25.259Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785682999886_kftf82",
-      "ts": "2026-08-02T15:03:19.886Z",
-      "type": "checklist_publish",
-      "title": "JSON publish failed",
-      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785681459261_mlzebj",
-      "ts": "2026-08-02T14:37:39.261Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785681448982_18dthe",
-      "ts": "2026-08-02T14:37:28.982Z",
-      "type": "checklist_publish",
-      "title": "JSON publish failed",
-      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785681068140_kkv6p6",
-      "ts": "2026-08-02T14:31:08.140Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785681068132_fa2atd",
-      "ts": "2026-08-02T14:31:08.132Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "1,133 checklist rows and 207 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785681051124_vc56fy",
-      "ts": "2026-08-02T14:30:51.124Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "1,133 rows and 207 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785681046938_bdoj0m",
-      "ts": "2026-08-02T14:30:46.938Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785681042788_8cqppj",
-      "ts": "2026-08-02T14:30:42.788Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "1,133 rows and 207 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785681039601_gnk29v",
-      "ts": "2026-08-02T14:30:39.601Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785681010928_gbcm3c",
-      "ts": "2026-08-02T14:30:10.928Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785681001145_ezjcrk",
-      "ts": "2026-08-02T14:30:01.145Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785681001130_n6ymkj",
-      "ts": "2026-08-02T14:30:01.130Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785680995934",
-      "ts": "2026-08-02T14:29:51.822Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 8 checked. PRV sync: skipped for fast sweep. 18 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785680995932",
-      "ts": "2026-08-02T14:29:51.822Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785678006411_4kuxua",
-      "ts": "2026-08-02T13:40:06.411Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep complete",
-      "detail": "Checklist: 1 action. PRV: 0 actions. PRV sync: skipped. Auto: 2 ran. 2025-26 Upper Deck Overtime Hockey -> validated (GitHub Actions visual test passed for 2025-26 Upper Deck Overtime Hockey.); 2025-26 Upper Deck Overtime Hockey -> validated (GitHub Actions visual test passed for 2025-26 Upper Deck Overtime Hockey.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    }
-  ],
+  "activity_log": [],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
@@ -5660,6 +5459,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-02T16:34:15.312Z",
+  "saved_at": "2026-08-02T16:34:20.177Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-02T16:34:23.455Z",
+  "exported_at": "2026-08-02T16:34:33.444Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -394,18 +394,18 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30756933639",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-02T16:34:21.852Z",
-      "updatedAt": "2026-08-02T16:34:21.853Z",
-      "visualRunUrl": "",
-      "visualStartedAt": "2026-08-02T16:34:20.164Z"
+      "updatedAt": "2026-08-02T16:34:31.719Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30756933639",
+      "visualStartedAt": "2026-08-02T16:34:21Z"
     },
     {
       "id": "source_watch|basketball|2025-26 panini prizm basketball",
@@ -420,16 +420,26 @@
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30756933639",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prizm-basketball-card-checklist/",
       "createdAt": "2026-08-02T14:29:51.822Z",
-      "updatedAt": "2026-08-02T16:34:21.853Z",
-      "visualRunUrl": "",
-      "visualStartedAt": "2026-08-02T16:34:20.164Z"
+      "updatedAt": "2026-08-02T16:34:31.719Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30756933639",
+      "visualStartedAt": "2026-08-02T16:34:21Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785688471720_2md9u2",
+      "ts": "2026-08-02T16:34:31.720Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Panini Prizm Basketball",
+      "source": "github_actions"
+    },
     {
       "id": "log_1785688461853_nqbvnc",
       "ts": "2026-08-02T16:34:21.854Z",
@@ -2778,11 +2788,11 @@
       "checkedAt": "2026-08-02T03:54:42.664Z"
     },
     "basketball|2025_26_panini_prizm_basketball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-08-02T16:34:20.164Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30756933639",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "basketball|2025_26_panini_prizm_basketball",
@@ -2790,16 +2800,22 @@
       "productName": "2025-26 Panini Prizm Basketball",
       "sport": "basketball",
       "code": "2025_26_panini_prizm_basketball",
-      "updatedAt": "2026-08-02T16:34:21.849Z",
+      "updatedAt": "2026-08-02T16:34:31.708Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 30756933639,
+      "runNumber": 373,
+      "displayTitle": "Visual Product Test - 2025-26 Panini Prizm Basketball",
+      "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
+      "createdAt": "2026-08-02T16:34:21Z",
+      "checkedAt": "2026-08-02T16:34:31.701Z"
     },
     "basketball|2025-26 panini prizm basketball": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-08-02T16:34:20.164Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30756933639",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "basketball|2025_26_panini_prizm_basketball",
@@ -2807,9 +2823,15 @@
       "productName": "2025-26 Panini Prizm Basketball",
       "sport": "basketball",
       "code": "2025_26_panini_prizm_basketball",
-      "updatedAt": "2026-08-02T16:34:21.849Z",
+      "updatedAt": "2026-08-02T16:34:31.708Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 30756933639,
+      "runNumber": 373,
+      "displayTitle": "Visual Product Test - 2025-26 Panini Prizm Basketball",
+      "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
+      "createdAt": "2026-08-02T16:34:21Z",
+      "checkedAt": "2026-08-02T16:34:31.701Z"
     }
   },
   "known_issues": {},
@@ -5530,6 +5552,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-02T16:34:25.145Z",
+  "saved_at": "2026-08-02T16:34:35.997Z",
   "saved_by": "cm_command_center_operator"
 }

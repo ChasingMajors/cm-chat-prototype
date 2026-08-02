@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-02T15:03:21.488Z",
+  "exported_at": "2026-08-02T16:04:36.520Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -391,63 +391,37 @@
       "sport": "basketball",
       "code": "2025_26_panini_prizm_basketball",
       "riskLevel": "medium",
-      "status": "failed",
+      "status": "needs_admin",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
-      "executionResult": "Unsupported full-auto action type: checklist_publish",
-      "validationResult": "Unsupported full-auto action type: checklist_publish",
+      "executionResult": "Sheet write completed; JSON publish request failed.",
+      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prizm-basketball-card-checklist/",
       "createdAt": "2026-08-02T14:29:51.822Z",
-      "updatedAt": "2026-08-02T15:57:03.525Z",
-      "targetBucket": "",
-      "pendingValidationAttempts": 0,
-      "visualStartedAt": "",
-      "visualRunUrl": "",
-      "repairProof": "Agent attempted repair for 2025-26 Panini Prizm Basketball but it failed. A fix task was created when possible.",
-      "autoExecutedAt": "2026-08-02T15:57:03.525Z"
+      "updatedAt": "2026-08-02T16:04:34.847Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1785686418429_alert",
-      "ts": "2026-08-02T15:57:03.525Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785686417235",
-      "ts": "2026-08-02T15:57:03.525Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 8 checked. PRV sync: passed. 18 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Panini Prizm Basketball -> failed (Unsupported full-auto action type: checklist_publish)",
-      "status": "validated",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785686417234",
-      "ts": "2026-08-02T15:57:03.525Z",
-      "type": "auto_action",
-      "title": "Full-auto action failed",
-      "detail": "2025-26 Panini Prizm Basketball: Unsupported full-auto action type: checklist_publish Unsupported full-auto action type: checklist_publish",
+      "id": "log_1785686674902_fobvj7",
+      "ts": "2026-08-02T16:04:34.902Z",
+      "type": "checklist_publish",
+      "title": "JSON publish failed",
+      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
       "status": "failed",
       "product": "2025-26 Panini Prizm Basketball",
       "source": "operator_backend"
     },
     {
-      "id": "log_1785686417231",
-      "ts": "2026-08-02T15:57:03.525Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
+      "id": "log_1785683005259_g394km",
+      "ts": "2026-08-02T15:03:25.259Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2025-26 Panini Prizm Basketball",
       "source": "operator_backend"
     },
     {
@@ -602,25 +576,25 @@
     }
   ],
   "last_agent_report": {
-    "ok": false,
-    "status": "issue",
-    "generated_at": "2026-08-02T15:57:03.525Z",
+    "ok": true,
+    "status": "needs_admin",
+    "generated_at": "2026-08-02T14:29:51.822Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 8,
       "skipped_ignored": 18
     },
     "completed_count": 0,
-    "needs_admin_count": 0,
-    "blocked_count": 1,
+    "needs_admin_count": 1,
+    "blocked_count": 0,
     "completed": [],
-    "needs_admin": [],
-    "blocked": [
-      "2025-26 Panini Prizm Basketball -> failed: Unsupported full-auto action type: checklist_publish"
+    "needs_admin": [
+      "Checklist review: 2025-26 Panini Prizm Basketball | basketball | missing"
     ],
+    "blocked": [],
     "proof": [],
-    "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
-    "summary": "Checked 20 checklist source item(s) and 8 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 1 blocked/issue item(s)."
+    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
+    "summary": "Checked 20 checklist source item(s) and 8 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -5656,6 +5630,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-02T16:00:18.565Z",
+  "saved_at": "2026-08-02T16:04:39.011Z",
   "saved_by": "cm_command_center_operator"
 }

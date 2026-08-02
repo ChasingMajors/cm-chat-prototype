@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-02T16:47:25.969Z",
+  "exported_at": "2026-08-02T18:14:17.762Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -382,103 +382,28 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [
-    {
-      "id": "visual_test|github_actions|2025-26 panini prizm basketball|2025_26_panini_prizm_basketball",
-      "type": "visual_test",
-      "source": "github_actions",
-      "product": "2025-26 Panini Prizm Basketball",
-      "sport": "basketball",
-      "code": "2025_26_panini_prizm_basketball",
-      "riskLevel": "low",
-      "status": "validated",
-      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "CV and ChatBot passed via visual test.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30756933639",
-      "sourceUrl": "",
-      "bucket": "",
-      "targetBucket": "",
-      "expectedRowCount": 0,
-      "expectedParallelCount": 0,
-      "createdAt": "2026-08-02T16:34:21.852Z",
-      "updatedAt": "2026-08-02T16:47:24.360Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30756933639",
-      "visualStartedAt": "2026-08-02T16:34:21Z"
-    },
-    {
-      "id": "source_watch|basketball|2025-26 panini prizm basketball",
-      "type": "checklist_publish",
-      "source": "operator_backend",
-      "product": "2025-26 Panini Prizm Basketball",
-      "sport": "basketball",
-      "code": "2025_26_panini_prizm_basketball",
-      "riskLevel": "medium",
-      "status": "validated",
-      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
-      "adminDecision": "",
-      "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV and ChatBot passed via visual test.",
-      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30756933639",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prizm-basketball-card-checklist/",
-      "createdAt": "2026-08-02T14:29:51.822Z",
-      "updatedAt": "2026-08-02T16:47:24.361Z",
-      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30756933639",
-      "visualStartedAt": "2026-08-02T16:34:21Z"
-    }
-  ],
+  "agent_actions": [],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1785689244364_0hidma",
-      "ts": "2026-08-02T16:47:24.364Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "github_actions"
+      "id": "log_1785694456152_eivbfz",
+      "ts": "2026-08-02T18:14:16.152Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync started",
+      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
+      "status": "started",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     },
     {
-      "id": "log_1785689244363_1wrbl6",
-      "ts": "2026-08-02T16:47:24.363Z",
+      "id": "log_1785689248455_jxl9wg",
+      "ts": "2026-08-02T16:47:28.455Z",
       "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785688495183_nok5fv",
-      "ts": "2026-08-02T16:34:55.183Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785688471720_2md9u2",
-      "ts": "2026-08-02T16:34:31.720Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785688461853_nqbvnc",
-      "ts": "2026-08-02T16:34:21.854Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2025-26 Panini Prizm Basketball",
-      "source": "github_actions"
+      "title": "Resolved agent actions cleared",
+      "detail": "Validated, done, and ignored actions were removed from the active queue. 2 source/product keys were remembered so scans do not requeue them.",
+      "status": "cleaned",
+      "product": "",
+      "source": "admin"
     }
   ],
   "last_agent_report": {
@@ -5586,7 +5511,7 @@
       "code": "2025_26_panini_prizm_basketball",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/30756933639",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-02T16:47:25.969Z",
+      "ignoredAt": "2026-08-02T16:47:28.453Z",
       "resolved": true
     },
     "basketball|2025_26_panini_prizm_basketball": {
@@ -5595,7 +5520,7 @@
       "code": "2025_26_panini_prizm_basketball",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prizm-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-02T16:47:25.969Z",
+      "ignoredAt": "2026-08-02T16:47:28.453Z",
       "resolved": true
     },
     "basketball|https www checklistcenter com 2025-26-panini-prizm-basketball-card-checklist": {
@@ -5604,11 +5529,11 @@
       "code": "2025_26_panini_prizm_basketball",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prizm-basketball-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-02T16:47:25.969Z",
+      "ignoredAt": "2026-08-02T16:47:28.453Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-02T16:47:28.267Z",
+  "saved_at": "2026-08-02T18:14:19.470Z",
   "saved_by": "cm_command_center_operator"
 }

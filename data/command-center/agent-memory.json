@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-02T14:31:09.742Z",
+  "exported_at": "2026-08-02T14:37:30.583Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -391,19 +391,29 @@
       "sport": "basketball",
       "code": "2025_26_panini_prizm_basketball",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
+      "status": "needs_admin",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "executionResult": "Sheet write completed; JSON publish request failed.",
+      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-prizm-basketball-card-checklist/",
       "createdAt": "2026-08-02T14:29:51.822Z",
-      "updatedAt": "2026-08-02T14:31:08.141Z"
+      "updatedAt": "2026-08-02T14:37:28.978Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785681448982_18dthe",
+      "ts": "2026-08-02T14:37:28.982Z",
+      "type": "checklist_publish",
+      "title": "JSON publish failed",
+      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
+      "product": "2025-26 Panini Prizm Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1785681068140_kkv6p6",
       "ts": "2026-08-02T14:31:08.140Z",
@@ -5580,6 +5590,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-02T14:31:11.917Z",
+  "saved_at": "2026-08-02T14:37:32.508Z",
   "saved_by": "cm_command_center_operator"
 }

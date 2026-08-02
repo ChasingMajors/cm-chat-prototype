@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-02T13:40:08.015Z",
+  "exported_at": "2026-08-02T14:29:51.785Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -386,42 +386,96 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1785678006411_4kuxua",
-      "ts": "2026-08-02T13:40:06.411Z",
+      "id": "log_1785680990180_hbyb0m",
+      "ts": "2026-08-02T14:29:50.180Z",
       "type": "agent_sweep",
-      "title": "Backend Agent Sweep complete",
-      "detail": "Checklist: 1 action. PRV: 0 actions. PRV sync: skipped. Auto: 2 ran. 2025-26 Upper Deck Overtime Hockey -> validated (GitHub Actions visual test passed for 2025-26 Upper Deck Overtime Hockey.); 2025-26 Upper Deck Overtime Hockey -> validated (GitHub Actions visual test passed for 2025-26 Upper Deck Overtime Hockey.)",
-      "status": "needs_review",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1785680990173_hm8ox6",
+      "ts": "2026-08-02T14:29:50.173Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1785678008116_jhpv7p",
+      "ts": "2026-08-02T13:40:08.116Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
       "product": "",
       "source": "operator_backend"
+    },
+    {
+      "id": "log_1785678008101_0aqd2h",
+      "ts": "2026-08-02T13:40:08.101Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1785677994090_cjj229",
+      "ts": "2026-08-02T13:39:54.090Z",
+      "type": "agent_sweep",
+      "title": "Backend Agent Sweep started",
+      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1785677994079_rltxqx",
+      "ts": "2026-08-02T13:39:54.079Z",
+      "type": "agent_cycle",
+      "title": "Scanning for new work",
+      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1785642894861_lblhr9",
+      "ts": "2026-08-02T03:54:54.861Z",
+      "type": "agent_action",
+      "title": "Resolved agent actions cleared",
+      "detail": "Validated, done, and ignored actions were removed from the active queue. 2 source/product keys were remembered so scans do not requeue them.",
+      "status": "cleaned",
+      "product": "",
+      "source": "admin"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-08-02T13:39:55.781Z",
+    "generated_at": "2026-07-31T18:40:31.214Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 8,
-      "skipped_ignored": 17
+      "skipped_ignored": 18
     },
-    "completed_count": 2,
+    "completed_count": 0,
     "needs_admin_count": 1,
     "blocked_count": 0,
-    "completed": [
-      "2025-26 Upper Deck Overtime Hockey -> validated: GitHub Actions visual test passed for 2025-26 Upper Deck Overtime Hockey.",
-      "2025-26 Upper Deck Overtime Hockey -> validated: GitHub Actions visual test passed for 2025-26 Upper Deck Overtime Hockey."
-    ],
+    "completed": [],
     "needs_admin": [
-      "Checklist review: 2025-26 Panini Prizm Basketball | basketball | missing"
+      "Checklist review: 2025-26 Upper Deck Overtime Hockey | hockey | missing"
     ],
     "blocked": [],
-    "proof": [
-      "2025-26 Upper Deck Overtime Hockey -> validated: GitHub Actions visual test passed for 2025-26 Upper Deck Overtime Hockey.",
-      "2025-26 Upper Deck Overtime Hockey -> validated: GitHub Actions visual test passed for 2025-26 Upper Deck Overtime Hockey."
-    ],
+    "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 8 PRV source item(s). 2 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 8 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -5457,6 +5511,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-02T13:40:09.281Z",
+  "saved_at": "2026-08-02T14:29:53.329Z",
   "saved_by": "cm_command_center_operator"
 }

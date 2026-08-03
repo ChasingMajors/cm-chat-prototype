@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-02T18:14:43.355Z",
+  "exported_at": "2026-08-03T00:17:44.808Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -384,86 +384,27 @@
   ],
   "agent_actions": [],
   "agent_run_queue": [],
-  "activity_log": [
-    {
-      "id": "log_1785716261358",
-      "ts": "2026-08-03T00:17:38.633Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 8 checked. PRV sync: skipped for fast sweep. 19 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
-      "status": "validated",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785716261356",
-      "ts": "2026-08-03T00:17:38.633Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785694481751_4j367c",
-      "ts": "2026-08-02T18:14:41.751Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync failed",
-      "detail": "null is not an object (evaluating 'action.status')",
-      "status": "failed",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785694481737_s4qh4q",
-      "ts": "2026-08-02T18:14:41.737Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync completed",
-      "detail": "89 public PRV products and 3,508 product rows validated across 1 shard.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785694456152_eivbfz",
-      "ts": "2026-08-02T18:14:16.152Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync started",
-      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
-      "status": "started",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785689248455_jxl9wg",
-      "ts": "2026-08-02T16:47:28.455Z",
-      "type": "agent_action",
-      "title": "Resolved agent actions cleared",
-      "detail": "Validated, done, and ignored actions were removed from the active queue. 2 source/product keys were remembered so scans do not requeue them.",
-      "status": "cleaned",
-      "product": "",
-      "source": "admin"
-    }
-  ],
+  "activity_log": [],
   "last_agent_report": {
     "ok": true,
-    "status": "clear",
-    "generated_at": "2026-08-03T00:17:38.633Z",
+    "status": "needs_admin",
+    "generated_at": "2026-08-02T14:29:51.822Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 8,
-      "skipped_ignored": 19
+      "skipped_ignored": 18
     },
     "completed_count": 0,
-    "needs_admin_count": 0,
+    "needs_admin_count": 1,
     "blocked_count": 0,
     "completed": [],
-    "needs_admin": [],
+    "needs_admin": [
+      "Checklist review: 2025-26 Panini Prizm Basketball | basketball | missing"
+    ],
     "blocked": [],
     "proof": [],
-    "next_step": "No immediate action. Sentinel can run again on schedule.",
-    "summary": "Checked 20 checklist source item(s) and 8 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
+    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
+    "summary": "Checked 20 checklist source item(s) and 8 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -5572,6 +5513,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-03T00:17:41.427Z",
+  "saved_at": "2026-08-03T00:17:46.979Z",
   "saved_by": "cm_command_center_operator"
 }

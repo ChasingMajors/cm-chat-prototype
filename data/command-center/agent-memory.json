@@ -382,9 +382,92 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [],
+  "agent_actions": [
+    {
+      "id": "prv_watch|basketball|2025-26 topps chrome update basketball",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2025-26 Topps Chrome Update Basketball",
+      "sport": "basketball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "adminDecision": "",
+      "executionResult": "PRV sheet write and JSON publish completed for 2025_26_topps_chrome_update_basketball.",
+      "validationResult": "PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2025-26-topps-chrome-update-nba-analysis",
+      "createdAt": "2026-08-03T15:57:03.545Z",
+      "updatedAt": "2026-08-03T15:57:03.545Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "PRV sheet write and JSON publish completed for 2025_26_topps_chrome_update_basketball.",
+      "autoExecutedAt": "2026-08-03T15:57:03.545Z"
+    },
+    {
+      "id": "source_watch|soccer|2025-26 topps winners collection paris saint-germain soccer",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2025-26 Topps Winners Collection Paris Saint-Germain Soccer",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
+      "createdAt": "2026-08-03T15:57:03.545Z",
+      "updatedAt": "2026-08-03T15:57:03.545Z"
+    }
+  ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785772856991_alert",
+      "ts": "2026-08-03T15:57:03.545Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1785772856507",
+      "ts": "2026-08-03T15:57:03.545Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 1 actionable from 9 checked. PRV sync: passed. 19 admin-ignored source item(s) skipped. Auto actions: 1 run. 2025-26 Topps Chrome Update Basketball -> needs_admin (PRV write completed, but public JSON validation needs review. Publish returned ok.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1785772856506",
+      "ts": "2026-08-03T15:57:03.545Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2025-26 Topps Chrome Update Basketball: PRV sheet write and JSON publish completed for 2025_26_topps_chrome_update_basketball. PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "status": "needs_admin",
+      "product": "2025-26 Topps Chrome Update Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1785772816374",
+      "ts": "2026-08-03T15:57:03.545Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1785716277717_2ejvky",
       "ts": "2026-08-03T00:17:57.717Z",
@@ -398,22 +481,26 @@
   ],
   "last_agent_report": {
     "ok": true,
-    "status": "clear",
-    "generated_at": "2026-08-03T00:17:38.633Z",
+    "status": "needs_admin",
+    "generated_at": "2026-08-03T15:57:03.545Z",
     "checked": {
       "checklist_count": 20,
-      "prv_count": 8,
+      "prv_count": 9,
       "skipped_ignored": 19
     },
     "completed_count": 0,
-    "needs_admin_count": 0,
+    "needs_admin_count": 3,
     "blocked_count": 0,
     "completed": [],
-    "needs_admin": [],
+    "needs_admin": [
+      "2025-26 Topps Chrome Update Basketball -> needs_admin: PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "Checklist review: 2025-26 Topps Winners Collection Paris Saint-Germain Soccer | soccer | missing",
+      "PRV review: 2025-26 Topps Chrome Update Basketball | basketball | missing"
+    ],
     "blocked": [],
     "proof": [],
-    "next_step": "No immediate action. Sentinel can run again on schedule.",
-    "summary": "Checked 20 checklist source item(s) and 8 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
+    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
+    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 0 completed/progress item(s), 3 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -5522,6 +5609,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-03T00:18:00.972Z",
+  "saved_at": "2026-08-03T16:00:57.031Z",
   "saved_by": "cm_command_center_operator"
 }

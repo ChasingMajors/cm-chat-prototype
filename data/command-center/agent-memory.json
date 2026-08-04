@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-04T00:47:30.831Z",
+  "exported_at": "2026-08-04T00:47:41.870Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -382,28 +382,19 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [
-    {
-      "id": "source_watch|soccer|2025-26 topps winners collection paris saint-germain soccer",
-      "type": "source_import",
-      "source": "scheduled_quick_json",
-      "product": "2025-26 Topps Winners Collection Paris Saint-Germain Soccer",
-      "sport": "soccer",
-      "code": "2025_26_topps_winners_collection_paris_saint_germain_soccer",
-      "riskLevel": "medium",
-      "status": "known_issue",
-      "recommendedAction": "Open the source and review whether this checklist has a new layout or unsupported source format.",
-      "adminDecision": "",
-      "executionResult": "Source found, but the checklist parser did not produce writable rows.",
-      "validationResult": "Parser review needed before this can write checklist sheet data.",
-      "runUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
-      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
-      "createdAt": "2026-08-04T00:47:08.609Z",
-      "updatedAt": "2026-08-04T00:47:29.224Z"
-    }
-  ],
+  "agent_actions": [],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785804460266_2utve9",
+      "ts": "2026-08-04T00:47:40.267Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2025-26 Topps Winners Collection Paris Saint-Germain Soccer was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2025-26 Topps Winners Collection Paris Saint-Germain Soccer",
+      "source": "admin"
+    },
     {
       "id": "log_1785804449229_44nw1q",
       "ts": "2026-08-04T00:47:29.229Z",
@@ -5660,9 +5651,27 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-08-02T16:47:28.453Z",
       "resolved": true
+    },
+    "soccer|https www checklistcenter com 2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist": {
+      "product": "2025-26 Topps Winners Collection Paris Saint-Germain Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_winners_collection_paris_saint_germain_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-08-04T00:47:40.263Z",
+      "resolved": true
+    },
+    "soccer|2025_26_topps_winners_collection_paris_saint_germain_soccer": {
+      "product": "2025-26 Topps Winners Collection Paris Saint-Germain Soccer",
+      "sport": "soccer",
+      "code": "2025_26_topps_winners_collection_paris_saint_germain_soccer",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-08-04T00:47:40.263Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-04T00:47:33.862Z",
+  "saved_at": "2026-08-04T00:47:44.037Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-06-23-operator-cc152-post-only-write-hardening";
+const CM_OPERATOR_VERSION = "2026-08-04-operator-cc161-prv-full-sync-routing";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -200,6 +200,9 @@ function doGet(e) {
     if (action === "publishPrvVaultStaticData") {
       return json_(publishPrvVaultStaticData_({
         code: p.code || "",
+        fullSync: p.fullSync || p.full_sync || "",
+        scope: p.scope || "",
+        validate_public: p.validate_public || "",
         key: p.key || ""
       }));
     }
@@ -2722,6 +2725,7 @@ function publishPrvVaultStaticData_(input) {
   requireOperatorKey_(input && input.key);
 
   const code = safeString_(input && input.code).trim();
+  const fullSync = !code || isTruthy_(input && (input.fullSync || input.full_sync)) || safeString_(input && input.scope).trim().toLowerCase() === "full";
   const sourceSheet = code ? safeValidateWrittenPrvProduct_(code) : null;
   const exporterUrl = PropertiesService.getScriptProperties().getProperty(CM_STATIC_EXPORTER_URL_PROPERTY);
   if (!exporterUrl) {
@@ -2735,14 +2739,19 @@ function publishPrvVaultStaticData_(input) {
   const data = postStaticExporterJson_(exporterUrl, {
     action: "publishVaultStaticDataToGitHub",
     code: code,
+    fullSync: fullSync,
+    full_sync: fullSync ? "1" : "0",
+    scope: fullSync ? "full" : "product",
+    validate_public: "1",
     key: input && input.key || ""
   }, "Static Data Exporter PRV publish call failed");
 
   return {
     ok: !!(data && data.ok),
     status: data && data.status ? data.status : data && data.ok ? "published" : "publish_needs_review",
-    mode: "approved_prv_publish",
+    mode: fullSync ? "full_prv_sync" : "approved_prv_publish",
     code: code,
+    full_sync: fullSync,
     source_sheet: sourceSheet,
     publish: data,
     updated_at: new Date().toISOString()
@@ -2782,6 +2791,11 @@ function postStaticExporterJson_(exporterUrl, payload, failurePrefix) {
   }
 
   return data;
+}
+
+function isTruthy_(value) {
+  const raw = safeString_(value).trim().toLowerCase();
+  return raw === "1" || raw === "true" || raw === "yes" || raw === "y" || raw === "on";
 }
 
 function dispatchVisualProductTest_(input) {

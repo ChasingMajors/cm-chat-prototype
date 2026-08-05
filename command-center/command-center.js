@@ -1,6 +1,6 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc160-public-json-propagation-ladder-v1-2026-06-25";
-  const REQUIRED_OPERATOR_PRV_VERSION = "2026-06-23-operator-cc152-post-only-write-hardening";
+  const COMMAND_CENTER_VERSION = "cc161-prv-full-sync-routing-v1-2026-08-04";
+  const REQUIRED_OPERATOR_PRV_VERSION = "2026-08-04-operator-cc161-prv-full-sync-routing";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -3600,6 +3600,10 @@
       const data = await postOperatorJson(endpoint, {
         action: "publishPrvVaultStaticData",
         code: code,
+        fullSync: isFullSync,
+        full_sync: isFullSync ? "1" : "0",
+        scope: isFullSync ? "full" : "product",
+        validate_public: "1",
         key: key
       }, { timeoutMs: 240000 });
       renderPrvPublishResult(data, actionId, { fullSync: isFullSync });
@@ -5449,9 +5453,18 @@
   function renderPrvPublishResult(data, actionId, options) {
     options = options || {};
     const publish = data && data.publish ? data.publish : {};
-    const validation = publish && publish.validation ? publish.validation : {};
+    const innerPublish = publish && publish.publish ? publish.publish : {};
+    const validation = publish && publish.validation
+      ? publish.validation
+      : data && data.validation
+        ? data.validation
+        : innerPublish && innerPublish.validation
+          ? innerPublish.validation
+          : publish && publish.prv_validation
+            ? publish.prv_validation
+            : {};
     const sourceSheet = data && data.source_sheet ? data.source_sheet : validation && validation.source_sheet ? validation.source_sheet : null;
-    const publishOk = !!(data && data.ok);
+    const publishOk = !!(data && data.ok || publish && publish.ok || innerPublish && innerPublish.ok);
     const ok = !!(publishOk && validation && validation.ok);
     const code = data && data.code ? data.code : publish.code || "";
     const productName = actionId ? (state.agentActions.find(item => item.id === actionId) || {}).product : "";
@@ -5477,13 +5490,20 @@
     if (actionId) {
       const existingAction = state.agentActions.find(item => item.id === actionId) || {};
       const updateType = existingAction.type === "prv_sync_incident" ? "prv_sync_incident" : "prv_source_review";
+      const nextStatus = ok ? "validated" : isFullSync && publishOk ? "pending_public_validation" : "needs_admin";
       updateAgentAction(actionId, {
         type: updateType,
-        status: ok ? "validated" : "needs_admin",
-        executionResult: ok ? "PRV JSON publish request completed and public rows validated." : publishOk ? "PRV JSON publish ran, but public validation failed." : "PRV JSON publish needs review.",
+        status: nextStatus,
+        executionResult: ok
+          ? "PRV JSON publish request completed and public rows validated."
+          : publishOk
+            ? "PRV JSON publish ran. Public validation is pending or incomplete."
+            : "PRV JSON publish needs review.",
         validationResult: fullValidationDetail,
         recommendedAction: ok
           ? "Open PRV and confirm the product loads."
+          : isFullSync && publishOk
+            ? "No admin action yet. Sync published files; rerun Sync PRV JSON after GitHub Pages propagation if validation does not clear."
           : sourceSheet && Number(sourceSheet.product_rows || 0) > 0
             ? "Check Static Data Exporter logs/config. The source Sheet has rows, but public JSON does not."
             : "Run PRV source write first, then publish PRV JSON again."
@@ -5507,10 +5527,14 @@
     if (isFullSync) {
       if (publishOk) {
         upsertPrvSyncIncident(validationDetail, {
-          status: "validated",
-          executionResult: "PRV full JSON sync completed through Static Data Exporter.",
+          status: ok ? "validated" : "pending_public_validation",
+          executionResult: ok
+            ? "PRV full JSON sync completed through Static Data Exporter."
+            : "PRV full JSON sync published through Static Data Exporter; public validation is pending.",
           validationResult: validationDetail,
-          recommendedAction: "No admin action needed unless a specific PRV product fails public validation.",
+          recommendedAction: ok
+            ? "No admin action needed unless a specific PRV product fails public validation."
+            : "No admin action yet. Let GitHub Pages propagate, then run Sync PRV JSON again if validation does not clear.",
           source: "operator_backend"
         });
       } else {
@@ -5535,7 +5559,7 @@
         </div>
         <div class="opp-meta">
           <span class="pill">${isFullSync ? "Scope: All PRV data" : "Code: " + escapeHtml(code)}</span>
-          <span class="pill">Files: ${formatNumber(publish && publish.publish ? publish.publish.files_published || 0 : 0)}</span>
+          <span class="pill">Files: ${formatNumber(innerPublish.files_published || publish.files_published || 0)}</span>
           ${isFullSync ? `<span class="pill">Public products: ${formatNumber(validation && validation.product_count || 0)}</span>` : ""}
           <span class="pill">Public rows: ${formatNumber(validation && validation.row_count || 0)}</span>
           ${sourceSheet ? `<span class="pill">Source Sheet: ${formatNumber(sourceSheet.index_rows || 0)} index / ${formatNumber(sourceSheet.product_rows || 0)} rows</span>` : ""}

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-05T03:28:25.354Z",
+  "exported_at": "2026-08-05T03:28:56.316Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -408,6 +408,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785900534711_rfu623",
+      "ts": "2026-08-05T03:28:54.711Z",
+      "type": "memory",
+      "title": "Backend memory auto-save failed",
+      "detail": "404 https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1785900503750_njqhtu",
       "ts": "2026-08-05T03:28:23.750Z",
@@ -5120,7 +5130,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-05T03:28:25.354Z",
+      "ignoredAt": "2026-08-05T03:28:56.316Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5129,7 +5139,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-05T03:28:25.354Z",
+      "ignoredAt": "2026-08-05T03:28:56.316Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -5683,6 +5693,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-05T03:28:27.382Z",
+  "saved_at": "2026-08-05T03:28:57.747Z",
   "saved_by": "cm_command_center_operator"
 }

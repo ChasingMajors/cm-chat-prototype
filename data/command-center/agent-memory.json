@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-05T00:27:23.894Z",
+  "exported_at": "2026-08-05T00:27:29.174Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -386,64 +386,14 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1785889642290_v5ld2q",
-      "ts": "2026-08-05T00:27:22.290Z",
+      "id": "log_1785889647570_i8lgh2",
+      "ts": "2026-08-05T00:27:27.570Z",
       "type": "agent_action",
-      "title": "Agent action removed",
-      "detail": "2026 Pro Set Metal Football was removed and remembered so future scans do not requeue it.",
-      "status": "removed",
-      "product": "2026 Pro Set Metal Football",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785889623402_xjksta",
-      "ts": "2026-08-05T00:27:03.402Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785889623386_zdd7aq",
-      "ts": "2026-08-05T00:27:03.386Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
+      "title": "Resolved agent actions cleared",
+      "detail": "Validated, done, and ignored actions were removed from the active queue.",
+      "status": "cleaned",
       "product": "",
       "source": "admin"
-    },
-    {
-      "id": "log_1785889618443_alert",
-      "ts": "2026-08-05T00:26:53.361Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785889617500",
-      "ts": "2026-08-05T00:26:53.361Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: skipped for fast sweep. 19 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785889617498",
-      "ts": "2026-08-05T00:26:53.361Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
@@ -5610,6 +5560,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-05T00:27:25.237Z",
+  "saved_at": "2026-08-05T00:27:30.665Z",
   "saved_by": "cm_command_center_operator"
 }

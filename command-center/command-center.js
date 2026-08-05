@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc162-prv-sync-incident-null-guard-v1-2026-08-04";
+  const COMMAND_CENTER_VERSION = "cc163-backend-memory-unknown-action-guard-v1-2026-08-04";
   const REQUIRED_OPERATOR_PRV_VERSION = "2026-08-04-operator-cc161-prv-full-sync-routing";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
@@ -64,6 +64,7 @@
     backendMemorySaveTimer: null,
     backendMemorySaving: false,
     backendMemorySuspendAutoSave: false,
+    backendMemoryAutoSaveDisabled: false,
     backendMemoryAutoLoaded: false,
     publicChecklistManifestCache: {},
     publicChecklistShardCache: {},
@@ -6229,6 +6230,10 @@
 
   function scheduleBackendMemorySave() {
     if (state.backendMemorySuspendAutoSave) return;
+    if (state.backendMemoryAutoSaveDisabled) {
+      updateMemoryStatus("Backend auto-save paused.", "backend update needed");
+      return;
+    }
     const endpoint = readOperatorEndpoint();
     const key = readOperatorKey();
     if (!endpoint || !key) {
@@ -6283,16 +6288,24 @@
       }
       updateMemoryStatus(opts.silent ? "Backend memory auto-saved." : "Backend memory saved.", data.sha ? `sha ${String(data.sha).slice(0, 7)}` : "saved");
     } catch (err) {
-      logActivity({
-        type: "memory",
-        status: "failed",
-        source: "operator_backend",
-        title: opts.silent ? "Backend memory auto-save failed" : "Backend memory save failed",
-        detail: err && err.message ? err.message : "Backend memory save failed.",
-        noAutoSave: true
-      });
-      renderActivityLog();
-      updateMemoryStatus(err && err.message ? err.message : "Backend memory save failed.", "error");
+      const message = err && err.message ? err.message : "Backend memory save failed.";
+      const unknownAction = /unknown action/i.test(message);
+      const detail = unknownAction
+        ? "Live Operator Backend does not recognize saveAgentMemory. Deploy the current Operator Backend, confirm the saved backend URL points to that web app, then use Save Backend Memory."
+        : message;
+      if (unknownAction && opts.silent) state.backendMemoryAutoSaveDisabled = true;
+      if (!opts.silent || !unknownAction) {
+        logActivity({
+          type: "memory",
+          status: "failed",
+          source: "operator_backend",
+          title: opts.silent ? "Backend memory auto-save failed" : "Backend memory save failed",
+          detail: detail,
+          noAutoSave: true
+        });
+        renderActivityLog();
+      }
+      updateMemoryStatus(detail, unknownAction ? "backend update needed" : "error");
     } finally {
       state.backendMemorySaving = false;
     }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-05T03:26:38.971Z",
+  "exported_at": "2026-08-05T03:28:25.354Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -403,11 +403,21 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-05T03:26:37.369Z",
-      "updatedAt": "2026-08-05T03:26:37.370Z"
+      "updatedAt": "2026-08-05T03:28:12.634Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785900503750_njqhtu",
+      "ts": "2026-08-05T03:28:23.750Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync started",
+      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
+      "status": "started",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1785900397369_lbjnv0",
       "ts": "2026-08-05T03:26:37.369Z",
@@ -5110,7 +5120,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-05T03:26:38.971Z",
+      "ignoredAt": "2026-08-05T03:28:25.354Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5119,7 +5129,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-05T03:26:38.971Z",
+      "ignoredAt": "2026-08-05T03:28:25.354Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -5673,6 +5683,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-05T03:26:41.175Z",
+  "saved_at": "2026-08-05T03:28:27.382Z",
   "saved_by": "cm_command_center_operator"
 }

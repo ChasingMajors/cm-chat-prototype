@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc163-backend-memory-unknown-action-guard-v1-2026-08-04";
+  const COMMAND_CENTER_VERSION = "cc164-backend-memory-invalid-url-guard-v1-2026-08-04";
   const REQUIRED_OPERATOR_PRV_VERSION = "2026-08-04-operator-cc161-prv-full-sync-routing";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
@@ -6290,11 +6290,15 @@
     } catch (err) {
       const message = err && err.message ? err.message : "Backend memory save failed.";
       const unknownAction = /unknown action/i.test(message);
-      const detail = unknownAction
-        ? "Live Operator Backend does not recognize saveAgentMemory. Deploy the current Operator Backend, confirm the saved backend URL points to that web app, then use Save Backend Memory."
-        : message;
-      if (unknownAction && opts.silent) state.backendMemoryAutoSaveDisabled = true;
-      if (!opts.silent || !unknownAction) {
+      const invalidBackendUrl = /^404\b/.test(message) && /script\.google\.com\/macros\/s\//i.test(message);
+      const setupIssue = unknownAction || invalidBackendUrl;
+      const detail = invalidBackendUrl
+        ? "Saved Operator Backend URL returned 404. The Apps Script web app deployment is missing, deleted, inaccessible, or the saved URL is not the current /exec URL. Redeploy the Operator Backend web app and save the new URL."
+        : unknownAction
+          ? "Live Operator Backend does not recognize saveAgentMemory. Deploy the current Operator Backend, confirm the saved backend URL points to that web app, then use Save Backend Memory."
+          : message;
+      if (setupIssue && opts.silent) state.backendMemoryAutoSaveDisabled = true;
+      if (!opts.silent || !setupIssue) {
         logActivity({
           type: "memory",
           status: "failed",
@@ -6305,7 +6309,7 @@
         });
         renderActivityLog();
       }
-      updateMemoryStatus(detail, unknownAction ? "backend update needed" : "error");
+      updateMemoryStatus(detail, setupIssue ? "backend setup needed" : "error");
     } finally {
       state.backendMemorySaving = false;
     }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-05T03:25:21.544Z",
+  "exported_at": "2026-08-05T03:25:59.404Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -385,6 +385,26 @@
   "agent_actions": [],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785900357799_z712pr",
+      "ts": "2026-08-05T03:25:57.799Z",
+      "type": "memory",
+      "title": "Backend memory auto-save failed",
+      "detail": "Unknown action",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1785900323839_yxgk35",
+      "ts": "2026-08-05T03:25:23.839Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync started",
+      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
+      "status": "started",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1785900319940_l2pjan",
       "ts": "2026-08-05T03:25:19.940Z",
@@ -5610,6 +5630,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-05T03:25:23.234Z",
+  "saved_at": "2026-08-05T03:26:00.730Z",
   "saved_by": "cm_command_center_operator"
 }

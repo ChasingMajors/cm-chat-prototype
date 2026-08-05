@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc161-prv-full-sync-routing-v1-2026-08-04";
+  const COMMAND_CENTER_VERSION = "cc162-prv-sync-incident-null-guard-v1-2026-08-04";
   const REQUIRED_OPERATOR_PRV_VERSION = "2026-08-04-operator-cc161-prv-full-sync-routing";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
@@ -1066,7 +1066,7 @@
 
   function upsertAgentAction(input) {
     const now = new Date().toISOString();
-    if (isResolvedSourceIgnored(input)) {
+    if (!input.ignoreSourceIgnores && isResolvedSourceIgnored(input)) {
       const resolved = findResolvedProductAction(input);
       return resolved || null;
     }
@@ -1642,22 +1642,28 @@
         : "Run Agent Cycle to let Sentinel retry PRV JSON sync once. If it fails again, check the Static Data Exporter URL, Apps Script execution log, and GitHub publish permissions."),
       executionResult: opts.executionResult || "PRV full JSON sync failed.",
       validationResult: opts.validationResult || detail || "No recovery proof yet.",
-      runUrl: opts.runUrl || ""
+      runUrl: opts.runUrl || "",
+      ignoreSourceIgnores: true
     });
+    const incident = action || {
+      status: opts.status || "failed",
+      product: "Print Run Vault JSON Sync",
+      validationResult: opts.validationResult || detail || "No recovery proof yet."
+    };
 
     logActivity({
       type: "prv_sync_incident",
-      status: action.status || "failed",
-      product: action.product,
+      status: incident.status || "failed",
+      product: incident.product,
       source: opts.source || "operator_backend",
       title: recovered ? "PRV sync incident recovered" : "PRV sync incident created",
-      detail: detail || action.validationResult
+      detail: detail || incident.validationResult
     });
 
     renderAgentActions();
     renderActionLanes();
     renderActivityLog();
-    return action;
+    return action || null;
   }
 
   function getProductName(item) {

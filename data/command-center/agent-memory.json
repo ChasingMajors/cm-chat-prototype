@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-05T03:29:28.996Z",
+  "exported_at": "2026-08-05T23:09:17.298Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -408,6 +408,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785971355695_pxrfxa",
+      "ts": "2026-08-05T23:09:15.695Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1785971355682_rlqc9f",
+      "ts": "2026-08-05T23:09:15.682Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
     {
       "id": "log_1785900567390_tsw4ut",
       "ts": "2026-08-05T03:29:27.390Z",
@@ -5160,7 +5180,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-05T03:29:28.996Z",
+      "ignoredAt": "2026-08-05T23:09:17.298Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5169,7 +5189,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-05T03:29:28.996Z",
+      "ignoredAt": "2026-08-05T23:09:17.298Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -5723,6 +5743,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-05T03:29:34.317Z",
+  "saved_at": "2026-08-05T23:09:19.953Z",
   "saved_by": "cm_command_center_operator"
 }

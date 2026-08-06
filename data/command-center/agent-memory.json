@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-06T03:36:04.529Z",
+  "exported_at": "2026-08-06T03:36:09.296Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {},
   "tasks": [],
@@ -117,278 +117,7 @@
     }
   ],
   "agent_run_queue": [],
-  "activity_log": [
-    {
-      "id": "log_1785987362927_1cmsmj",
-      "ts": "2026-08-06T03:36:02.927Z",
-      "type": "agent_cycle",
-      "title": "Admin decision required",
-      "detail": "2026-27 Upper Deck MVP Hockey needs approval before the agent can continue. Use Scan New Checklists if you want a fresh source scan without advancing this queue item.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785987349573_jnxyjg",
-      "ts": "2026-08-06T03:35:49.573Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "515 rows and 28 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785987331410_w5jnxo",
-      "ts": "2026-08-06T03:35:31.410Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785987331406_xckyn2",
-      "ts": "2026-08-06T03:35:31.406Z",
-      "type": "agent_cycle",
-      "title": "Build checklist preview",
-      "detail": "2026-27 Upper Deck MVP Hockey can be safely previewed. No Google Sheet write will happen without approval.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785987329818_pjb59h",
-      "ts": "2026-08-06T03:35:29.818Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785987329807_neiqnr",
-      "ts": "2026-08-06T03:35:29.807Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785986438303_7txpjg",
-      "ts": "2026-08-06T03:20:38.304Z",
-      "type": "agent_action",
-      "title": "Agent action removed",
-      "detail": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball was removed and remembered so future scans do not requeue it.",
-      "status": "removed",
-      "product": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785986425681_ifm5fn",
-      "ts": "2026-08-06T03:20:25.681Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785986425663_na1cuu",
-      "ts": "2026-08-06T03:20:25.663Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785986406509",
-      "ts": "2026-08-06T03:20:03.604Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 5 actionable from 20 checked. PRV: 2 actionable from 9 checked. PRV sync: skipped for fast sweep. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785986406507",
-      "ts": "2026-08-06T03:20:03.604Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785986400567_4m1xfa",
-      "ts": "2026-08-06T03:20:00.567Z",
-      "type": "autonomy",
-      "title": "Autonomy mode changed",
-      "detail": "Mode set to Guarded auto.",
-      "status": "guarded_auto",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785986361036_kpw7ch",
-      "ts": "2026-08-06T03:19:21.036Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep complete",
-      "detail": "Checklist: 5 actions. PRV: 2 actions. PRV sync: skipped. Auto: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785986354533_lanpez",
-      "ts": "2026-08-06T03:19:14.533Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep started",
-      "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785986354529_ale91x",
-      "ts": "2026-08-06T03:19:14.529Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785986324703_7b49wp",
-      "ts": "2026-08-06T03:18:44.703Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep complete",
-      "detail": "Checklist: Operator Backend URL missing. PRV: Operator Backend URL missing. No active queue items need review.",
-      "status": "completed",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785986324674_2ehztj",
-      "ts": "2026-08-06T03:18:44.674Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep started",
-      "detail": "Running health audit, Checklist source watch, and PRV source watch.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785986324670_k288qj",
-      "ts": "2026-08-06T03:18:44.670Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the browser daily sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785986322461_y6l02j",
-      "ts": "2026-08-06T03:18:42.461Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep complete",
-      "detail": "Checklist: Operator Backend URL missing. PRV: Operator Backend URL missing. No active queue items need review.",
-      "status": "completed",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785986322424_qnct2o",
-      "ts": "2026-08-06T03:18:42.424Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep started",
-      "detail": "Running health audit, Checklist source watch, and PRV source watch.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785986322420_5492rc",
-      "ts": "2026-08-06T03:18:42.420Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the browser daily sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785986264212_gs79yx",
-      "ts": "2026-08-06T03:17:44.212Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep complete",
-      "detail": "Checklist: Operator Backend URL missing. PRV: Operator Backend URL missing. No active queue items need review.",
-      "status": "completed",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785986264190_mrdf5w",
-      "ts": "2026-08-06T03:17:44.190Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep started",
-      "detail": "Running health audit, Checklist source watch, and PRV source watch.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785986264188_wvmas3",
-      "ts": "2026-08-06T03:17:44.188Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the browser daily sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785985903936_jqzrw8",
-      "ts": "2026-08-06T03:11:43.936Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep complete",
-      "detail": "Checklist: Operator Backend URL missing. PRV: Operator Backend URL missing. No active queue items need review.",
-      "status": "completed",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785985903572_e9ru1y",
-      "ts": "2026-08-06T03:11:43.572Z",
-      "type": "agent_cycle",
-      "title": "Daily Sentinel sweep started",
-      "detail": "Running health audit, Checklist source watch, and PRV source watch.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    },
-    {
-      "id": "log_1785985903567_o4vbe7",
-      "ts": "2026-08-06T03:11:43.567Z",
-      "type": "agent_cycle",
-      "title": "Scanning for new work",
-      "detail": "No active queue item needed action, so Sentinel is running the browser daily sweep now.",
-      "status": "started",
-      "product": "",
-      "source": "command_center"
-    }
-  ],
+  "activity_log": [],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
@@ -443,7 +172,7 @@
       "code": "2026_topps_tier_one_2025_topps_dynasty_baseball",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-tier-one-and-2025-topps",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:36:04.529Z",
+      "ignoredAt": "2026-08-06T03:36:09.295Z",
       "resolved": true
     },
     "baseball|2026_topps_tier_one_2025_topps_dynasty_baseball": {
@@ -452,7 +181,7 @@
       "code": "2026_topps_tier_one_2025_topps_dynasty_baseball",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-tier-one-and-2025-topps",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:36:04.529Z",
+      "ignoredAt": "2026-08-06T03:36:09.296Z",
       "resolved": true
     },
     "football|https www checklistcenter com 2026-pro-set-metal-football-card-checklist": {
@@ -461,7 +190,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-pro-set-metal-football-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:36:04.529Z",
+      "ignoredAt": "2026-08-06T03:36:09.296Z",
       "resolved": true
     },
     "football|2026 pro set metal football": {
@@ -470,7 +199,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-pro-set-metal-football-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:36:04.529Z",
+      "ignoredAt": "2026-08-06T03:36:09.296Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-winners-collection-arsenal-soccer-card-checklist": {
@@ -479,7 +208,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-arsenal-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:36:04.529Z",
+      "ignoredAt": "2026-08-06T03:36:09.296Z",
       "resolved": true
     },
     "soccer|2025_26_topps_winners_collection_arsenal_soccer": {
@@ -497,7 +226,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-nscc-promo-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:36:04.529Z",
+      "ignoredAt": "2026-08-06T03:36:09.296Z",
       "resolved": true
     },
     "hockey|2026 upper deck nscc promo hockey": {
@@ -506,7 +235,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-nscc-promo-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:36:04.529Z",
+      "ignoredAt": "2026-08-06T03:36:09.296Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist": {
@@ -515,7 +244,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:36:04.529Z",
+      "ignoredAt": "2026-08-06T03:36:09.296Z",
       "resolved": true
     },
     "soccer|2025-26 topps winners collection paris saint-germain soccer": {
@@ -524,7 +253,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:36:04.529Z",
+      "ignoredAt": "2026-08-06T03:36:09.296Z",
       "resolved": true
     },
     "soccer|2025-26 topps winners collection arsenal soccer": {
@@ -533,11 +262,11 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-arsenal-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:36:04.529Z",
+      "ignoredAt": "2026-08-06T03:36:09.296Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-06T03:36:05.450Z",
+  "saved_at": "2026-08-06T03:36:10.051Z",
   "saved_by": "cm_command_center_operator"
 }

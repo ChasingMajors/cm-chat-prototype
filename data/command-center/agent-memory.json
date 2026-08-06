@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-06T00:01:32.281Z",
+  "exported_at": "2026-08-06T00:02:03.300Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -403,7 +403,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-06T00:00:42.614Z",
-      "updatedAt": "2026-08-06T00:01:19.243Z",
+      "updatedAt": "2026-08-06T00:02:01.600Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "visualStartedAt": "2026-08-06T00:00:42Z"
     },
@@ -415,15 +415,15 @@
       "sport": "hockey",
       "code": "2026_27_upper_deck_mvp_hockey",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
+      "executionResult": "JSON publish needs review.",
       "validationResult": "CV/ChatBot visual test queued or running.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "createdAt": "2026-08-05T23:09:24.857Z",
-      "updatedAt": "2026-08-06T00:01:30.678Z",
+      "updatedAt": "2026-08-06T00:02:01.601Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "visualStartedAt": "2026-08-06T00:00:42Z"
     },
@@ -452,6 +452,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785974521601_upwxzu",
+      "ts": "2026-08-06T00:02:01.601Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1785974500277_v8vn8w",
+      "ts": "2026-08-06T00:01:40.277Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1785974493696_w8vmgp",
+      "ts": "2026-08-06T00:01:33.697Z",
+      "type": "checklist_publish",
+      "title": "JSON publish needs review",
+      "detail": "No spreadsheet configured for hockey 2026-27",
+      "status": "failed",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1785974490677_teapdx",
       "ts": "2026-08-06T00:01:30.677Z",
@@ -3218,7 +3248,7 @@
       "productName": "2026-27 Upper Deck MVP Hockey",
       "sport": "hockey",
       "code": "2026_27_upper_deck_mvp_hockey",
-      "updatedAt": "2026-08-06T00:01:19.237Z",
+      "updatedAt": "2026-08-06T00:02:01.599Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 31058278847,
@@ -3226,7 +3256,7 @@
       "displayTitle": "Visual Product Test - 2026-27 Upper Deck MVP Hockey",
       "headSha": "db130c2b68a4f6155e1871f5e6467e14d332e5ca",
       "createdAt": "2026-08-06T00:00:42Z",
-      "checkedAt": "2026-08-06T00:01:19.237Z"
+      "checkedAt": "2026-08-06T00:02:01.599Z"
     },
     "hockey|2026-27 upper deck mvp hockey": {
       "status": "in_progress",
@@ -3241,7 +3271,7 @@
       "productName": "2026-27 Upper Deck MVP Hockey",
       "sport": "hockey",
       "code": "2026_27_upper_deck_mvp_hockey",
-      "updatedAt": "2026-08-06T00:01:19.237Z",
+      "updatedAt": "2026-08-06T00:02:01.599Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 31058278847,
@@ -3249,7 +3279,7 @@
       "displayTitle": "Visual Product Test - 2026-27 Upper Deck MVP Hockey",
       "headSha": "db130c2b68a4f6155e1871f5e6467e14d332e5ca",
       "createdAt": "2026-08-06T00:00:42Z",
-      "checkedAt": "2026-08-06T00:01:19.237Z"
+      "checkedAt": "2026-08-06T00:02:01.599Z"
     }
   },
   "known_issues": {},
@@ -5470,7 +5500,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:01:32.281Z",
+      "ignoredAt": "2026-08-06T00:02:03.300Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5479,7 +5509,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:01:32.281Z",
+      "ignoredAt": "2026-08-06T00:02:03.300Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -6033,6 +6063,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-06T00:01:36.087Z",
+  "saved_at": "2026-08-06T00:02:05.175Z",
   "saved_by": "cm_command_center_operator"
 }

@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-06T01:10:26.626Z",
+  "exported_at": "2026-08-06T03:11:06.957Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -402,22 +402,79 @@
       "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
     }
   ],
-  "agent_actions": [],
+  "agent_actions": [
+    {
+      "id": "visual_test|github_actions|2026-27 upper deck mvp hockey|2026_27_upper_deck_mvp_hockey",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "sport": "hockey",
+      "code": "2026_27_upper_deck_mvp_hockey",
+      "riskLevel": "low",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-08-06T00:00:42.614Z",
+      "updatedAt": "2026-08-06T00:08:35.228Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
+      "visualStartedAt": "2026-08-06T00:00:42Z"
+    },
+    {
+      "id": "source_watch|hockey|2026-27 upper deck mvp hockey",
+      "type": "checklist_publish",
+      "source": "operator_backend",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "sport": "hockey",
+      "code": "2026_27_upper_deck_mvp_hockey",
+      "riskLevel": "medium",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
+      "adminDecision": "",
+      "executionResult": "JSON publish needs review.",
+      "validationResult": "CV and ChatBot passed via visual test.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
+      "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
+      "createdAt": "2026-08-05T23:09:24.857Z",
+      "updatedAt": "2026-08-06T00:08:35.229Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
+      "visualStartedAt": "2026-08-06T00:00:42Z"
+    },
+    {
+      "id": "prv_sync_incident_full_vault",
+      "type": "prv_sync_incident",
+      "source": "operator_backend",
+      "product": "Print Run Vault JSON Sync",
+      "sport": "",
+      "code": "prv_full_sync",
+      "riskLevel": "high",
+      "status": "validated",
+      "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
+      "adminDecision": "resolved_memory",
+      "executionResult": "Scheduled PRV full JSON sync completed through Static Data Exporter.",
+      "validationResult": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "runUrl": "",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-08-05T03:26:37.369Z",
+      "updatedAt": "2026-08-06T01:10:16.985Z"
+    }
+  ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1785978625021_z6akzw",
-      "ts": "2026-08-06T01:10:25.021Z",
-      "type": "agent_sweep",
-      "title": "Backend Agent Sweep complete",
-      "detail": "Checklist: 0 actions. PRV: 0 actions. PRV sync: skipped. Auto: No safe auto-executable action found.",
-      "status": "validated",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785978615700_6y9f7z",
-      "ts": "2026-08-06T01:10:15.700Z",
+      "id": "log_1785985865353_9mreb5",
+      "ts": "2026-08-06T03:11:05.353Z",
       "type": "agent_sweep",
       "title": "Backend Agent Sweep started",
       "detail": "Running checklist source watch, PRV source watch, bounded safe auto work, and backend memory update.",
@@ -426,8 +483,8 @@
       "source": "command_center"
     },
     {
-      "id": "log_1785978615697_w9lk3q",
-      "ts": "2026-08-06T01:10:15.697Z",
+      "id": "log_1785985865336_zrspj5",
+      "ts": "2026-08-06T03:11:05.336Z",
       "type": "agent_cycle",
       "title": "Scanning for new work",
       "detail": "No active queue item needed action, so Sentinel is running the backend worker sweep now.",
@@ -436,35 +493,47 @@
       "source": "command_center"
     },
     {
-      "id": "log_1785975010114_y7p1pt",
-      "ts": "2026-08-06T00:10:10.114Z",
-      "type": "agent_action",
-      "title": "Resolved agent actions cleared",
-      "detail": "Validated, done, and ignored actions were removed from the active queue. 3 source/product keys were remembered so scans do not requeue them.",
-      "status": "cleaned",
+      "id": "log_1785978627267_5yd2yn",
+      "ts": "2026-08-06T01:10:27.267Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1785978627256_qs19uz",
+      "ts": "2026-08-06T01:10:27.256Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
       "product": "",
       "source": "admin"
+    },
+    {
+      "id": "log_1785978620596",
+      "ts": "2026-08-06T01:10:16.985Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 10 checked. PRV sync: skipped for fast sweep. 19 admin-ignored source item(s) skipped. Auto action: No safe auto-executable action found.",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1785978620594",
+      "ts": "2026-08-06T01:10:16.985Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
     }
   ],
-  "last_agent_report": {
-    "ok": true,
-    "status": "clear",
-    "generated_at": "2026-08-06T01:10:16.985Z",
-    "checked": {
-      "checklist_count": 20,
-      "prv_count": 10,
-      "skipped_ignored": 19
-    },
-    "completed_count": 0,
-    "needs_admin_count": 0,
-    "blocked_count": 0,
-    "completed": [],
-    "needs_admin": [],
-    "blocked": [],
-    "proof": [],
-    "next_step": "No immediate action. Sentinel can run again on schedule.",
-    "summary": "Checked 20 checklist source item(s) and 10 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
-  },
+  "last_agent_report": null,
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -5091,7 +5160,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:10:10.111Z",
+      "ignoredAt": "2026-08-06T03:11:06.957Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5100,7 +5169,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:10:10.111Z",
+      "ignoredAt": "2026-08-06T03:11:06.957Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -5658,7 +5727,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:10:10.111Z",
+      "ignoredAt": "2026-08-06T03:11:06.957Z",
       "resolved": true
     },
     "hockey|2026_27_upper_deck_mvp_hockey": {
@@ -5667,7 +5736,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:10:10.111Z",
+      "ignoredAt": "2026-08-06T03:11:06.957Z",
       "resolved": true
     },
     "hockey|https www checklistcenter com 2026-27-upper-deck-mvp-hockey-card-checklist": {
@@ -5676,11 +5745,11 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:10:10.111Z",
+      "ignoredAt": "2026-08-06T03:11:06.957Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-06T01:10:28.103Z",
+  "saved_at": "2026-08-06T03:11:09.008Z",
   "saved_by": "cm_command_center_operator"
 }

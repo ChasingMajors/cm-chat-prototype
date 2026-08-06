@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-06T00:00:40.202Z",
+  "exported_at": "2026-08-06T00:00:55.218Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -384,6 +384,30 @@
   ],
   "agent_actions": [
     {
+      "id": "visual_test|github_actions|2026-27 upper deck mvp hockey|2026_27_upper_deck_mvp_hockey",
+      "type": "visual_test",
+      "source": "github_actions",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "sport": "hockey",
+      "code": "2026_27_upper_deck_mvp_hockey",
+      "riskLevel": "low",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-08-06T00:00:42.614Z",
+      "updatedAt": "2026-08-06T00:00:53.497Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
+      "visualStartedAt": "2026-08-06T00:00:42Z"
+    },
+    {
       "id": "source_watch|hockey|2026-27 upper deck mvp hockey",
       "type": "checklist_publish",
       "source": "operator_backend",
@@ -391,15 +415,17 @@
       "sport": "hockey",
       "code": "2026_27_upper_deck_mvp_hockey",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
+      "status": "queued",
+      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
       "executionResult": "JSON publish needs review.",
-      "validationResult": "CV/ChatBot visual test requested from progress rail...",
-      "runUrl": "",
+      "validationResult": "CV/ChatBot visual test queued or running.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "createdAt": "2026-08-05T23:09:24.857Z",
-      "updatedAt": "2026-08-06T00:00:38.593Z"
+      "updatedAt": "2026-08-06T00:00:53.498Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
+      "visualStartedAt": "2026-08-06T00:00:42Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -426,6 +452,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785974453499_yhgbff",
+      "ts": "2026-08-06T00:00:53.499Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "queued",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1785974442618_4ylowa",
+      "ts": "2026-08-06T00:00:42.618Z",
+      "type": "visual_test",
+      "title": "Visual test queued",
+      "detail": "CV/ChatBot behavior check started.",
+      "status": "queued",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "source": "github_actions"
+    },
     {
       "id": "log_1785973496084_w60pml",
       "ts": "2026-08-05T23:44:56.084Z",
@@ -3138,6 +3184,52 @@
       "headSha": "8b00bd7b4b59155a7cc4c73f6810a67f7f12aed3",
       "createdAt": "2026-08-02T16:34:21Z",
       "checkedAt": "2026-08-02T16:47:24.351Z"
+    },
+    "hockey|2026_27_upper_deck_mvp_hockey": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-08-06T00:00:40.869Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "hockey|2026_27_upper_deck_mvp_hockey",
+      "key": "hockey|2026_27_upper_deck_mvp_hockey",
+      "productName": "2026-27 Upper Deck MVP Hockey",
+      "sport": "hockey",
+      "code": "2026_27_upper_deck_mvp_hockey",
+      "updatedAt": "2026-08-06T00:00:53.493Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 31058278847,
+      "runNumber": 374,
+      "displayTitle": "Visual Product Test - 2026-27 Upper Deck MVP Hockey",
+      "headSha": "db130c2b68a4f6155e1871f5e6467e14d332e5ca",
+      "createdAt": "2026-08-06T00:00:42Z",
+      "checkedAt": "2026-08-06T00:00:53.493Z"
+    },
+    "hockey|2026-27 upper deck mvp hockey": {
+      "status": "queued",
+      "result": "queued",
+      "conclusion": "",
+      "startedAt": "2026-08-06T00:00:40.869Z",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
+      "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
+      "trackingKey": "hockey|2026_27_upper_deck_mvp_hockey",
+      "key": "hockey|2026-27 upper deck mvp hockey",
+      "productName": "2026-27 Upper Deck MVP Hockey",
+      "sport": "hockey",
+      "code": "2026_27_upper_deck_mvp_hockey",
+      "updatedAt": "2026-08-06T00:00:53.493Z",
+      "knownIssue": false,
+      "knownIssueNote": "",
+      "runId": 31058278847,
+      "runNumber": 374,
+      "displayTitle": "Visual Product Test - 2026-27 Upper Deck MVP Hockey",
+      "headSha": "db130c2b68a4f6155e1871f5e6467e14d332e5ca",
+      "createdAt": "2026-08-06T00:00:42Z",
+      "checkedAt": "2026-08-06T00:00:53.493Z"
     }
   },
   "known_issues": {},
@@ -5358,7 +5450,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:00:40.202Z",
+      "ignoredAt": "2026-08-06T00:00:55.218Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5367,7 +5459,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:00:40.202Z",
+      "ignoredAt": "2026-08-06T00:00:55.218Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -5921,6 +6013,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-06T00:00:41.998Z",
+  "saved_at": "2026-08-06T00:00:56.886Z",
   "saved_by": "cm_command_center_operator"
 }

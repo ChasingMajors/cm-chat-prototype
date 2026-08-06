@@ -1,5 +1,5 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc166-prv-direct-source-watch-v1-2026-08-05";
+  const COMMAND_CENTER_VERSION = "cc167-prv-backend-preflight-v1-2026-08-05";
   const REQUIRED_OPERATOR_PRV_VERSION = "2026-08-05-operator-cc166-prv-direct-source-watch";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
@@ -2864,6 +2864,21 @@
       return { ok: false, kind: "prv", label: "PRV Source Watch", items: 0, actionable: 0, queued: 0, error: "Operator Backend URL missing." };
     }
 
+    const operatorHealth = await fetchOperatorHealth(endpoint);
+    if (!isCommandCenterOperatorHealth(operatorHealth)) {
+      const detail = "The saved backend URL is not the Command Center Operator web app. Save the Operator Backend /exec URL, then rerun PRV Source Watch.";
+      renderSourceCheckMessage("Wrong backend URL", detail, "critical", { noFocus: !!options.noFocus });
+      if (options.noFocus) renderSentinelNotice("Wrong backend URL", detail, "critical");
+      return { ok: false, kind: "prv", label: "PRV Source Watch", items: 0, actionable: 0, queued: 0, error: "Wrong Operator Backend URL." };
+    }
+
+    if (isOperatorPrvParserOutdated(operatorHealth)) {
+      const detail = `Live backend is ${operatorHealth.version || "unknown"}; required source watcher is ${REQUIRED_OPERATOR_PRV_VERSION}. Deploy the current Apps Script backend, then rerun PRV Source Watch.`;
+      renderSourceCheckMessage("Operator Backend is outdated", detail, "critical", { noFocus: !!options.noFocus });
+      if (options.noFocus) renderSentinelNotice("Operator Backend is outdated", detail, "critical");
+      return { ok: false, kind: "prv", label: "PRV Source Watch", items: 0, actionable: 0, queued: 0, error: detail };
+    }
+
     renderSourceCheckMessage(
       "Running PRV Source Watch",
       sourceUrl
@@ -2889,7 +2904,7 @@
         + (sourceUrl ? "&sourceUrl=" + encodeURIComponent(sourceUrl) : "");
       const data = await fetchJson(url, { timeoutMs: 60000 });
       const items = Array.isArray(data.items) ? data.items : [];
-      const actionable = items.filter(item => item.status === "missing" || item.status === "needs_review" || item.status === "possible_update");
+      const actionable = items.filter(item => item.status === "missing" || item.status === "needs_review" || item.status === "possible_update" || item.status === "known_issue");
       const queuedCount = queueSourceWatchActions(items, "prv_source_watch");
       logActivity({
         type: "prv_source_watch",
@@ -3483,6 +3498,10 @@
     } catch (err) {
       return null;
     }
+  }
+
+  function isCommandCenterOperatorHealth(health) {
+    return !!(health && health.ok && health.service === "cm_command_center_operator");
   }
 
   function isOperatorPrvParserOutdated(health) {

@@ -2,29 +2,11 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-06T03:20:27.284Z",
+  "exported_at": "2026-08-06T03:20:39.905Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {},
   "tasks": [],
   "agent_actions": [
-    {
-      "id": "prv_watch|basketball|2025_topps_inception_baseball_2025_26_topps_inception_basketball",
-      "type": "prv_source_review",
-      "source": "scheduled_prv_quick_json",
-      "product": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball",
-      "sport": "basketball",
-      "code": "2025_topps_inception_baseball_2025_26_topps_inception_basketball",
-      "riskLevel": "low",
-      "status": "known_issue",
-      "recommendedAction": "Source post appears paid/locked. Public HTML does not expose writable print-run rows. Keep as known issue unless admin has another source.",
-      "adminDecision": "",
-      "executionResult": "PRV source was scanned and held before auto execution.",
-      "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
-      "runUrl": "",
-      "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-inception-mlb-and-202526",
-      "createdAt": "2026-08-06T03:20:03.604Z",
-      "updatedAt": "2026-08-06T03:20:03.604Z"
-    },
     {
       "id": "prv_watch|baseball|2026_topps_tier_one_2025_topps_dynasty_baseball",
       "type": "prv_source_review",
@@ -136,6 +118,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785986438303_7txpjg",
+      "ts": "2026-08-06T03:20:38.304Z",
+      "type": "agent_action",
+      "title": "Agent action removed",
+      "detail": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball was removed and remembered so future scans do not requeue it.",
+      "status": "removed",
+      "product": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball",
+      "source": "admin"
+    },
     {
       "id": "log_1785986425681_ifm5fn",
       "ts": "2026-08-06T03:20:25.681Z",
@@ -366,8 +358,27 @@
   },
   "visual_tests": {},
   "known_issues": {},
-  "source_ignores": {},
+  "source_ignores": {
+    "basketball|https slabsquatch substack com p 2025-topps-inception-mlb-and-202526": {
+      "product": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball",
+      "sport": "basketball",
+      "code": "2025_topps_inception_baseball_2025_26_topps_inception_basketball",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-inception-mlb-and-202526",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-08-06T03:20:38.302Z",
+      "resolved": true
+    },
+    "basketball|2025_topps_inception_baseball_2025_26_topps_inception_basketball": {
+      "product": "2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball",
+      "sport": "basketball",
+      "code": "2025_topps_inception_baseball_2025_26_topps_inception_basketball",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2025-topps-inception-mlb-and-202526",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-08-06T03:20:38.302Z",
+      "resolved": true
+    }
+  },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-06T03:20:28.164Z",
+  "saved_at": "2026-08-06T03:20:40.688Z",
   "saved_by": "cm_command_center_operator"
 }

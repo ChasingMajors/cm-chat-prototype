@@ -2,12 +2,32 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-06T00:08:36.837Z",
+  "exported_at": "2026-08-06T00:09:28.180Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
   },
   "tasks": [
+    {
+      "id": "task_1785974966566_68k0dc",
+      "sourceId": "source|hockey|2026-27 upper deck mvp hockey",
+      "title": "Import missing source product: 2026-27 Upper Deck MVP Hockey",
+      "kind": "operator",
+      "severity": "warning",
+      "status": "queued",
+      "createdAt": "2026-08-06T00:09:26.566Z",
+      "updatedAt": "2026-08-06T00:09:26.566Z",
+      "why": "A supported source product was not found in the current Chasing Majors static checklist data.",
+      "objective": "Prepare an import task for the Hockey checklist source and validate the product after publishing.",
+      "steps": [
+        "Identify the affected product codes from the audit evidence.",
+        "Confirm the source Google Sheet has matching product codes and row data.",
+        "Run the correct publish function for the affected sport/year/source.",
+        "Rebuild the checklist index if products were added or renamed.",
+        "Retest the exact product query in the sandbox ChatBot and live tool after propagation."
+      ],
+      "guardrail": "Sandbox/review-only. Do not update live Sheets, GitHub, or Apps Script without a separate approval path."
+    },
     {
       "id": "task_1785385119633_x4d6rr",
       "sourceId": "source|soccer|2025-26 topps inception uefa club competitions soccer",
@@ -452,6 +472,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785974966574_3lrp6x",
+      "ts": "2026-08-06T00:09:26.574Z",
+      "type": "source_check",
+      "title": "Source Check completed",
+      "detail": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "status": "missing",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1785974965099_x72993",
+      "ts": "2026-08-06T00:09:25.099Z",
+      "type": "source_check",
+      "title": "Source Check started",
+      "detail": "Checking 2026-27 Upper Deck MVP Hockey against Hockey.",
+      "status": "started",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "source": "admin"
+    },
     {
       "id": "log_1785974915233_nlv41u",
       "ts": "2026-08-06T00:08:35.233Z",
@@ -5520,7 +5560,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:08:36.837Z",
+      "ignoredAt": "2026-08-06T00:09:28.180Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5529,7 +5569,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:08:36.837Z",
+      "ignoredAt": "2026-08-06T00:09:28.180Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -6087,7 +6127,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:08:36.837Z",
+      "ignoredAt": "2026-08-06T00:09:28.180Z",
       "resolved": true
     },
     "hockey|2026_27_upper_deck_mvp_hockey": {
@@ -6096,7 +6136,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:08:36.837Z",
+      "ignoredAt": "2026-08-06T00:09:28.180Z",
       "resolved": true
     },
     "hockey|https www checklistcenter com 2026-27-upper-deck-mvp-hockey-card-checklist": {
@@ -6105,11 +6145,11 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:08:36.837Z",
+      "ignoredAt": "2026-08-06T00:09:28.180Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-06T00:08:39.115Z",
+  "saved_at": "2026-08-06T00:09:29.897Z",
   "saved_by": "cm_command_center_operator"
 }

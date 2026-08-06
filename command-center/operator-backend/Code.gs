@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-08-04-operator-cc161-prv-full-sync-routing";
+const CM_OPERATOR_VERSION = "2026-08-05-operator-cc165-prv-substack-tag-sport";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -1577,7 +1577,8 @@ function fetchRecentSlabSquatchItems_() {
     return posts.map(function(post) {
       const title = decodeEntities_(safeString_(post && post.title)).trim();
       const url = safeString_(post && (post.canonical_url || post.url || post.post_url)).trim();
-      const sport = inferSport_(title + " " + safeString_(post && post.subtitle));
+      const tagText = getSubstackPostTagText_(post);
+      const sport = inferSport_(title + " " + safeString_(post && post.subtitle) + " " + tagText);
 
       return {
         title: normalizePrvSourceTitle_(title),
@@ -1585,7 +1586,7 @@ function fetchRecentSlabSquatchItems_() {
         sport: sport,
         url: url,
         source_url: url,
-        source_text: safeString_(post && post.subtitle),
+        source_text: [safeString_(post && post.subtitle), tagText].filter(Boolean).join(" "),
         discovery_source: "slabsquatch_substack",
         published_at: safeString_(post && post.post_date),
         target_tool: "prv"
@@ -1594,6 +1595,13 @@ function fetchRecentSlabSquatchItems_() {
   } catch (err) {
     return [];
   }
+}
+
+function getSubstackPostTagText_(post) {
+  const tags = Array.isArray(post && post.postTags) ? post.postTags : [];
+  return tags.map(function(tag) {
+    return safeString_(tag && (tag.name || tag.slug)).trim();
+  }).filter(Boolean).join(" ");
 }
 
 function isUsablePrvSourceItem_(item) {
@@ -5943,7 +5951,8 @@ function getSportInferenceSelfTest_() {
     { title: "2025 Topps Chrome Sapphire Premier League Soccer", expected: "soccer" },
     { title: "2025 Panini Prizm Football", expected: "football" },
     { title: "2025-26 Topps UEFA Japan Edition Soccer", expected: "soccer" },
-    { title: "2025-26 Donruss Road To World Cup", expected: "soccer" }
+    { title: "2025-26 Donruss Road To World Cup", expected: "soccer" },
+    { title: "2026 Topps Tribute Baby Analysis Baseball Cards", expected: "baseball" }
   ];
   const results = cases.map(function(testCase) {
     const actual = inferSport_(testCase.title);

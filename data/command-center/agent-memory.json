@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-06T00:02:03.300Z",
+  "exported_at": "2026-08-06T00:08:36.837Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -391,11 +391,11 @@
       "sport": "hockey",
       "code": "2026_27_upper_deck_mvp_hockey",
       "riskLevel": "low",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "sourceUrl": "",
       "bucket": "",
@@ -403,7 +403,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-06T00:00:42.614Z",
-      "updatedAt": "2026-08-06T00:02:01.600Z",
+      "updatedAt": "2026-08-06T00:08:35.228Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "visualStartedAt": "2026-08-06T00:00:42Z"
     },
@@ -415,15 +415,15 @@
       "sport": "hockey",
       "code": "2026_27_upper_deck_mvp_hockey",
       "riskLevel": "medium",
-      "status": "queued",
-      "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
+      "status": "validated",
+      "recommendedAction": "No action needed. Sheet write, JSON coverage, and CV/ChatBot visual validation are complete.",
       "adminDecision": "",
       "executionResult": "JSON publish needs review.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "validationResult": "CV and ChatBot passed via visual test.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "createdAt": "2026-08-05T23:09:24.857Z",
-      "updatedAt": "2026-08-06T00:02:01.601Z",
+      "updatedAt": "2026-08-06T00:08:35.229Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "visualStartedAt": "2026-08-06T00:00:42Z"
     },
@@ -452,6 +452,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785974915233_nlv41u",
+      "ts": "2026-08-06T00:08:35.233Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "passed",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "source": "github_actions"
+    },
+    {
+      "id": "log_1785974915231_w7s041",
+      "ts": "2026-08-06T00:08:35.231Z",
+      "type": "agent_action",
+      "title": "Product action validated",
+      "detail": "2 matching queue items now have visual proof.",
+      "status": "validated",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "source": "github_actions"
+    },
     {
       "id": "log_1785974521601_upwxzu",
       "ts": "2026-08-06T00:02:01.601Z",
@@ -3236,9 +3256,9 @@
       "checkedAt": "2026-08-02T16:47:24.351Z"
     },
     "hockey|2026_27_upper_deck_mvp_hockey": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-08-06T00:00:40.869Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3248,7 +3268,7 @@
       "productName": "2026-27 Upper Deck MVP Hockey",
       "sport": "hockey",
       "code": "2026_27_upper_deck_mvp_hockey",
-      "updatedAt": "2026-08-06T00:02:01.599Z",
+      "updatedAt": "2026-08-06T00:08:35.218Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 31058278847,
@@ -3256,12 +3276,12 @@
       "displayTitle": "Visual Product Test - 2026-27 Upper Deck MVP Hockey",
       "headSha": "db130c2b68a4f6155e1871f5e6467e14d332e5ca",
       "createdAt": "2026-08-06T00:00:42Z",
-      "checkedAt": "2026-08-06T00:02:01.599Z"
+      "checkedAt": "2026-08-06T00:08:35.218Z"
     },
     "hockey|2026-27 upper deck mvp hockey": {
-      "status": "in_progress",
-      "result": "in_progress",
-      "conclusion": "",
+      "status": "completed",
+      "result": "passed",
+      "conclusion": "success",
       "startedAt": "2026-08-06T00:00:40.869Z",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
@@ -3271,7 +3291,7 @@
       "productName": "2026-27 Upper Deck MVP Hockey",
       "sport": "hockey",
       "code": "2026_27_upper_deck_mvp_hockey",
-      "updatedAt": "2026-08-06T00:02:01.599Z",
+      "updatedAt": "2026-08-06T00:08:35.218Z",
       "knownIssue": false,
       "knownIssueNote": "",
       "runId": 31058278847,
@@ -3279,7 +3299,7 @@
       "displayTitle": "Visual Product Test - 2026-27 Upper Deck MVP Hockey",
       "headSha": "db130c2b68a4f6155e1871f5e6467e14d332e5ca",
       "createdAt": "2026-08-06T00:00:42Z",
-      "checkedAt": "2026-08-06T00:02:01.599Z"
+      "checkedAt": "2026-08-06T00:08:35.218Z"
     }
   },
   "known_issues": {},
@@ -5500,7 +5520,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:02:03.300Z",
+      "ignoredAt": "2026-08-06T00:08:36.837Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5509,7 +5529,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:02:03.300Z",
+      "ignoredAt": "2026-08-06T00:08:36.837Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -6060,9 +6080,36 @@
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
       "ignoredAt": "2026-08-05T00:27:22.286Z",
       "resolved": true
+    },
+    "hockey|https github com chasingmajors cm-chat-prototype actions runs 31058278847": {
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "sport": "hockey",
+      "code": "2026_27_upper_deck_mvp_hockey",
+      "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-08-06T00:08:36.837Z",
+      "resolved": true
+    },
+    "hockey|2026_27_upper_deck_mvp_hockey": {
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "sport": "hockey",
+      "code": "2026_27_upper_deck_mvp_hockey",
+      "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-08-06T00:08:36.837Z",
+      "resolved": true
+    },
+    "hockey|https www checklistcenter com 2026-27-upper-deck-mvp-hockey-card-checklist": {
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "sport": "hockey",
+      "code": "2026_27_upper_deck_mvp_hockey",
+      "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-08-06T00:08:36.837Z",
+      "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-06T00:02:05.175Z",
+  "saved_at": "2026-08-06T00:08:39.115Z",
   "saved_by": "cm_command_center_operator"
 }

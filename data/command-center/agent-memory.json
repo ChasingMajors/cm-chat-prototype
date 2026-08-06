@@ -119,6 +119,26 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1786032120254",
+      "ts": "2026-08-06T15:57:04.751Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: passed. 6 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1786032120249",
+      "ts": "2026-08-06T15:57:04.751Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1785988070180_4z1n60",
       "ts": "2026-08-06T03:47:50.180Z",
       "type": "memory",
@@ -191,30 +211,22 @@
   ],
   "last_agent_report": {
     "ok": true,
-    "status": "needs_admin",
-    "generated_at": "2026-08-06T03:20:03.604Z",
+    "status": "clear",
+    "generated_at": "2026-08-06T15:57:04.751Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 9,
-      "skipped_ignored": 0
+      "skipped_ignored": 6
     },
     "completed_count": 0,
-    "needs_admin_count": 7,
+    "needs_admin_count": 0,
     "blocked_count": 0,
     "completed": [],
-    "needs_admin": [
-      "Checklist review: 2026-27 Upper Deck MVP Hockey | hockey | missing",
-      "Checklist review: 2026 Pro Set Metal Football | football | missing",
-      "Checklist review: 2025-26 Topps Winners Collection Paris Saint-Germain Soccer | soccer | missing",
-      "Checklist review: 2026 Upper Deck NSCC Promo Hockey | hockey | missing",
-      "Checklist review: 2025-26 Topps Winners Collection Arsenal Soccer | soccer | missing",
-      "PRV review: 2026 Topps Tier One & 2025 Topps Dynasty Baseball | baseball | known_issue",
-      "PRV review: 2025 Topps Inception Baseball & 2025-26 Topps Inception Basketball | basketball | known_issue"
-    ],
+    "needs_admin": [],
     "blocked": [],
     "proof": [],
-    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 0 completed/progress item(s), 7 needs-admin item(s), 0 blocked/issue item(s)."
+    "next_step": "No immediate action. Sentinel can run again on schedule.",
+    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {},
   "known_issues": {},
@@ -338,6 +350,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-06T03:47:52.597Z",
+  "saved_at": "2026-08-06T16:02:00.765Z",
   "saved_by": "cm_command_center_operator"
 }

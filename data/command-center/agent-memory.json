@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-06T00:09:48.674Z",
+  "exported_at": "2026-08-06T00:10:07.211Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -16,7 +16,7 @@
       "severity": "warning",
       "status": "queued",
       "createdAt": "2026-08-06T00:09:26.566Z",
-      "updatedAt": "2026-08-06T00:09:47.064Z",
+      "updatedAt": "2026-08-06T00:09:26.566Z",
       "why": "A supported source product was not found in the current Chasing Majors static checklist data.",
       "objective": "Prepare an import task for the Hockey checklist source and validate the product after publishing.",
       "steps": [
@@ -471,469 +471,28 @@
     }
   ],
   "agent_run_queue": [],
-  "activity_log": [
-    {
-      "id": "log_1785974987068_avefs8",
-      "ts": "2026-08-06T00:09:47.068Z",
-      "type": "source_check",
-      "title": "Source Check completed",
-      "detail": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "status": "missing",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "operator_backend"
+  "activity_log": [],
+  "last_agent_report": {
+    "ok": true,
+    "status": "needs_admin",
+    "generated_at": "2026-08-05T23:09:24.857Z",
+    "checked": {
+      "checklist_count": 20,
+      "prv_count": 10,
+      "skipped_ignored": 18
     },
-    {
-      "id": "log_1785974985622_w7kgni",
-      "ts": "2026-08-06T00:09:45.622Z",
-      "type": "source_check",
-      "title": "Source Check started",
-      "detail": "Checking 2026-27 Upper Deck MVP Hockey against Hockey.",
-      "status": "started",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785974966574_3lrp6x",
-      "ts": "2026-08-06T00:09:26.574Z",
-      "type": "source_check",
-      "title": "Source Check completed",
-      "detail": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "status": "missing",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785974965099_x72993",
-      "ts": "2026-08-06T00:09:25.099Z",
-      "type": "source_check",
-      "title": "Source Check started",
-      "detail": "Checking 2026-27 Upper Deck MVP Hockey against Hockey.",
-      "status": "started",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785974915233_nlv41u",
-      "ts": "2026-08-06T00:08:35.233Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "passed",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785974915231_w7s041",
-      "ts": "2026-08-06T00:08:35.231Z",
-      "type": "agent_action",
-      "title": "Product action validated",
-      "detail": "2 matching queue items now have visual proof.",
-      "status": "validated",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785974521601_upwxzu",
-      "ts": "2026-08-06T00:02:01.601Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785974500277_v8vn8w",
-      "ts": "2026-08-06T00:01:40.277Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785974493696_w8vmgp",
-      "ts": "2026-08-06T00:01:33.697Z",
-      "type": "checklist_publish",
-      "title": "JSON publish needs review",
-      "detail": "No spreadsheet configured for hockey 2026-27",
-      "status": "failed",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785974490677_teapdx",
-      "ts": "2026-08-06T00:01:30.677Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785974479244_yq8oi6",
-      "ts": "2026-08-06T00:01:19.244Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "in_progress",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785974453499_yhgbff",
-      "ts": "2026-08-06T00:00:53.499Z",
-      "type": "visual_test",
-      "title": "Visual test status updated",
-      "detail": "GitHub Actions run linked in the Agent Action Queue.",
-      "status": "queued",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785974442618_4ylowa",
-      "ts": "2026-08-06T00:00:42.618Z",
-      "type": "visual_test",
-      "title": "Visual test queued",
-      "detail": "CV/ChatBot behavior check started.",
-      "status": "queued",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "github_actions"
-    },
-    {
-      "id": "log_1785973496084_w60pml",
-      "ts": "2026-08-05T23:44:56.084Z",
-      "type": "checklist_publish",
-      "title": "JSON publish needs review",
-      "detail": "No spreadsheet configured for hockey 2026-27",
-      "status": "failed",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785973492533_gr0wdn",
-      "ts": "2026-08-05T23:44:52.533Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785973489332_377wxg",
-      "ts": "2026-08-05T23:44:49.332Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785971398783_4qjjl3",
-      "ts": "2026-08-05T23:09:58.783Z",
-      "type": "checklist_publish",
-      "title": "JSON publish needs review",
-      "detail": "No spreadsheet configured for hockey 2026-27",
-      "status": "failed",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785971395517_s00ky5",
-      "ts": "2026-08-05T23:09:55.517Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785971395464_17z2zq",
-      "ts": "2026-08-05T23:09:55.464Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "515 checklist rows and 28 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785971384938_5yoqmb",
-      "ts": "2026-08-05T23:09:44.938Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785971381578_1z25sh",
-      "ts": "2026-08-05T23:09:41.578Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "515 rows and 28 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785971380335_0yzjv0",
-      "ts": "2026-08-05T23:09:40.335Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785971374175_ok3prf",
-      "ts": "2026-08-05T23:09:34.175Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785971374157_tnm1z6",
-      "ts": "2026-08-05T23:09:34.157Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785971368225_alert",
-      "ts": "2026-08-05T23:09:24.857Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785971367836",
-      "ts": "2026-08-05T23:09:24.857Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 10 checked. PRV sync: skipped for fast sweep. 18 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785971367834",
-      "ts": "2026-08-05T23:09:24.857Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "PRV sync skipped for fast agent sweep. Use Sync PRV JSON or scheduled PRV sync for full PRV publish validation.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785971355695_pxrfxa",
-      "ts": "2026-08-05T23:09:15.695Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785971355682_rlqc9f",
-      "ts": "2026-08-05T23:09:15.682Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785900567390_tsw4ut",
-      "ts": "2026-08-05T03:29:27.390Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "404 https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785900554642_ldnayc",
-      "ts": "2026-08-05T03:29:14.642Z",
-      "type": "prv_sync_incident",
-      "title": "PRV sync incident created",
-      "detail": "404 https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "ignored",
-      "product": "Print Run Vault JSON Sync",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785900554623_yaj43z",
-      "ts": "2026-08-05T03:29:14.623Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync failed",
-      "detail": "404 https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785900534711_rfu623",
-      "ts": "2026-08-05T03:28:54.711Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "404 https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785900503750_njqhtu",
-      "ts": "2026-08-05T03:28:23.750Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync started",
-      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
-      "status": "started",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785900397369_lbjnv0",
-      "ts": "2026-08-05T03:26:37.369Z",
-      "type": "prv_sync_incident",
-      "title": "PRV sync incident created",
-      "detail": "Publish returned without public validation.",
-      "status": "failed",
-      "product": "Print Run Vault JSON Sync",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785900397360_w23gcg",
-      "ts": "2026-08-05T03:26:37.360Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync needs review",
-      "detail": "Publish returned without public validation.",
-      "status": "needs_review",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785900357799_z712pr",
-      "ts": "2026-08-05T03:25:57.799Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Unknown action",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785900323839_yxgk35",
-      "ts": "2026-08-05T03:25:23.839Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync started",
-      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
-      "status": "started",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785900319940_l2pjan",
-      "ts": "2026-08-05T03:25:19.940Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785900319929_j2w624",
-      "ts": "2026-08-05T03:25:19.929Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785900298300_f2wifj",
-      "ts": "2026-08-05T03:24:58.300Z",
-      "type": "memory",
-      "title": "Backend memory loaded",
-      "detail": "Loaded from data/command-center/agent-memory.json.",
-      "status": "loaded",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785900298293_iq7vmk",
-      "ts": "2026-08-05T03:24:58.293Z",
-      "type": "memory",
-      "title": "Agent memory imported",
-      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
-      "status": "imported",
-      "product": "",
-      "source": "admin"
-    },
-    {
-      "id": "log_1785900123561_qj2nua",
-      "ts": "2026-08-05T03:22:03.561Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync started",
-      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
-      "status": "started",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785898382403_k5d7qk",
-      "ts": "2026-08-05T02:53:02.403Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync failed",
-      "detail": "null is not an object (evaluating 'action.status')",
-      "status": "failed",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785898382397_r3i8ld",
-      "ts": "2026-08-05T02:53:02.397Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync completed",
-      "detail": "90 public PRV products and 3,564 product rows validated across 1 shard.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1785898338930_9zb6xg",
-      "ts": "2026-08-05T02:52:18.930Z",
-      "type": "prv_publish",
-      "title": "Manual PRV JSON sync started",
-      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
-      "status": "started",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    }
-  ],
-  "last_agent_report": null,
+    "completed_count": 0,
+    "needs_admin_count": 1,
+    "blocked_count": 0,
+    "completed": [],
+    "needs_admin": [
+      "Checklist review: 2026-27 Upper Deck MVP Hockey | hockey | missing"
+    ],
+    "blocked": [],
+    "proof": [],
+    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
+    "summary": "Checked 20 checklist source item(s) and 10 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
+  },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
       "status": "completed",
@@ -5560,7 +5119,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:09:48.674Z",
+      "ignoredAt": "2026-08-06T00:10:07.211Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5569,7 +5128,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:09:48.674Z",
+      "ignoredAt": "2026-08-06T00:10:07.211Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -6127,7 +5686,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:09:48.674Z",
+      "ignoredAt": "2026-08-06T00:10:07.211Z",
       "resolved": true
     },
     "hockey|2026_27_upper_deck_mvp_hockey": {
@@ -6136,7 +5695,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:09:48.674Z",
+      "ignoredAt": "2026-08-06T00:10:07.211Z",
       "resolved": true
     },
     "hockey|https www checklistcenter com 2026-27-upper-deck-mvp-hockey-card-checklist": {
@@ -6145,11 +5704,11 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T00:09:48.674Z",
+      "ignoredAt": "2026-08-06T00:10:07.211Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-06T00:09:50.136Z",
+  "saved_at": "2026-08-06T00:10:10.073Z",
   "saved_by": "cm_command_center_operator"
 }

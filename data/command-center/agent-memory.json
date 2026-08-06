@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-05T23:44:50.949Z",
+  "exported_at": "2026-08-06T00:00:40.202Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -391,15 +391,15 @@
       "sport": "hockey",
       "code": "2026_27_upper_deck_mvp_hockey",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
       "executionResult": "JSON publish needs review.",
-      "validationResult": "No spreadsheet configured for hockey 2026-27",
+      "validationResult": "CV/ChatBot visual test requested from progress rail...",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "createdAt": "2026-08-05T23:09:24.857Z",
-      "updatedAt": "2026-08-05T23:09:58.781Z"
+      "updatedAt": "2026-08-06T00:00:38.593Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -426,6 +426,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1785973496084_w60pml",
+      "ts": "2026-08-05T23:44:56.084Z",
+      "type": "checklist_publish",
+      "title": "JSON publish needs review",
+      "detail": "No spreadsheet configured for hockey 2026-27",
+      "status": "failed",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1785973492533_gr0wdn",
+      "ts": "2026-08-05T23:44:52.533Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1785973489332_377wxg",
       "ts": "2026-08-05T23:44:49.332Z",
@@ -5338,7 +5358,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-05T23:44:50.949Z",
+      "ignoredAt": "2026-08-06T00:00:40.202Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5347,7 +5367,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-05T23:44:50.949Z",
+      "ignoredAt": "2026-08-06T00:00:40.202Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -5901,6 +5921,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-05T23:44:54.717Z",
+  "saved_at": "2026-08-06T00:00:41.998Z",
   "saved_by": "cm_command_center_operator"
 }

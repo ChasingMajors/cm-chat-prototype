@@ -1,6 +1,6 @@
 (function () {
-  const COMMAND_CENTER_VERSION = "cc165-prv-substack-tag-sport-v1-2026-08-05";
-  const REQUIRED_OPERATOR_PRV_VERSION = "2026-08-05-operator-cc165-prv-substack-tag-sport";
+  const COMMAND_CENTER_VERSION = "cc166-prv-direct-source-watch-v1-2026-08-05";
+  const REQUIRED_OPERATOR_PRV_VERSION = "2026-08-05-operator-cc166-prv-direct-source-watch";
   const DATA_BASE = "https://app.chasingmajors.com/data/v1";
   const RELEASE_URL = "https://app.chasingmajors.com/data/v2/releases/schedule.json";
   const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
@@ -2805,7 +2805,7 @@
         + "&mode=" + encodeURIComponent(auditMode);
       const data = await fetchJson(url, { timeoutMs: auditMode === "deep_sheets" ? 180000 : 60000 });
       const items = Array.isArray(data.items) ? data.items : [];
-      const actionable = items.filter(item => item.status === "missing" || item.status === "needs_review" || item.status === "possible_update");
+      const actionable = items.filter(item => item.status === "missing" || item.status === "needs_review" || item.status === "possible_update" || item.status === "known_issue");
       const queuedCount = queueSourceWatchActions(items, auditMode);
       logActivity({
         type: "source_watch",
@@ -2851,6 +2851,7 @@
   async function runPrvSourceWatchWithBackend(options) {
     options = options || {};
     const endpoint = readOperatorEndpoint();
+    const sourceUrl = String(options.sourceUrl || "").trim();
 
     if (!endpoint) {
       renderSourceCheckMessage(
@@ -2865,7 +2866,9 @@
 
     renderSourceCheckMessage(
       "Running PRV Source Watch",
-      "The Operator Backend is checking recent SlabSquatch Substack posts against public Print Run Vault JSON.",
+      sourceUrl
+        ? "The Operator Backend is checking this SlabSquatch post against public Print Run Vault JSON."
+        : "The Operator Backend is checking recent SlabSquatch Substack posts against public Print Run Vault JSON.",
       "info",
       { noFocus: !!options.noFocus }
     );
@@ -2882,7 +2885,8 @@
       const url = endpoint
         + (endpoint.indexOf("?") > -1 ? "&" : "?")
         + "action=prvSourceWatch"
-        + "&mode=quick_json";
+        + "&mode=quick_json"
+        + (sourceUrl ? "&sourceUrl=" + encodeURIComponent(sourceUrl) : "");
       const data = await fetchJson(url, { timeoutMs: 60000 });
       const items = Array.isArray(data.items) ? data.items : [];
       const actionable = items.filter(item => item.status === "missing" || item.status === "needs_review" || item.status === "possible_update");
@@ -4384,7 +4388,7 @@
     }
 
     const items = Array.isArray(data.items) ? data.items : [];
-    const actionable = items.filter(item => item.status === "missing" || item.status === "needs_review" || item.status === "possible_update");
+    const actionable = items.filter(item => item.status === "missing" || item.status === "needs_review" || item.status === "possible_update" || item.status === "known_issue");
 
     els.sourceCheckResult.innerHTML = `
       <div class="source-watch-summary">
@@ -5598,9 +5602,15 @@
   }
 
   function runSentinelCommand(command) {
+    const directPrvSourceUrl = extractSlabSquatchPostUrl(command || "");
     const q = normalize(command || "");
     if (!q) {
       renderSourceCheckMessage("Ask Sentinel", "Type a product name or choose one of the quick prompts.", "info");
+      return;
+    }
+
+    if (directPrvSourceUrl) {
+      runPrvSourceWatchWithBackend({ sourceUrl: directPrvSourceUrl });
       return;
     }
 
@@ -5638,6 +5648,11 @@
       els.sourceTitleInput.value = command;
       validateSourceProductWithBackend();
     }
+  }
+
+  function extractSlabSquatchPostUrl(value) {
+    const match = String(value || "").match(/https:\/\/slabsquatch\.substack\.com\/p\/[^\s"'<>]+/i);
+    return match ? match[0].replace(/[),.;]+$/g, "") : "";
   }
 
   function renderPrvPublicValidationResult(data, actionId) {

@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-08-05-operator-cc165-prv-substack-tag-sport";
+const CM_OPERATOR_VERSION = "2026-08-05-operator-cc166-prv-direct-source-watch";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -132,7 +132,7 @@ function doGet(e) {
 
     if (action === "runDeepBackendAudit") return json_(runDeepBackendAudit_(p));
 
-    if (action === "prvSourceWatch") return json_(runPrvSourceWatch_(p.mode || ""));
+    if (action === "prvSourceWatch") return json_(runPrvSourceWatch_(p.mode || "", p.sourceUrl || p.url || ""));
 
     if (action === "previewPrvSource") {
       return json_(previewPrvSource_({
@@ -324,7 +324,7 @@ function doPost(e) {
 
     if (action === "runDeepBackendAudit") return json_(runDeepBackendAudit_(body));
 
-    if (action === "prvSourceWatch") return json_(runPrvSourceWatch_(body.mode || ""));
+    if (action === "prvSourceWatch") return json_(runPrvSourceWatch_(body.mode || "", body.sourceUrl || body.url || ""));
 
     if (action === "previewPrvSource") {
       return json_(previewPrvSource_(body));
@@ -950,10 +950,11 @@ function pushBackendAuditIssue_(issues, input) {
   });
 }
 
-function runPrvSourceWatch_(mode) {
+function runPrvSourceWatch_(mode, sourceUrl) {
   const auditMode = normalizeSourceWatchMode_(mode || "quick_json");
   const vaultRows = fetchVaultPublicIndexRows_();
-  const sourceItems = fetchRecentSlabSquatchItems_();
+  const directItem = buildPrvSourceWatchItemFromUrl_(sourceUrl);
+  const sourceItems = mergeSourceItems_((directItem ? [directItem] : []).concat(fetchRecentSlabSquatchItems_()));
 
   const results = sourceItems.map(function(item) {
     const classified = classifyPrvSourceItem_(item, vaultRows);
@@ -970,7 +971,8 @@ function runPrvSourceWatch_(mode) {
     mode: auditMode,
     coverage_source: "public_vault_json",
     source: "slabsquatch",
-    source_url: "https://substack.com/@slabsquatch",
+    source_url: sourceUrl || "https://substack.com/@slabsquatch",
+    requested_source_url: sourceUrl || "",
     fetched_count: sourceItems.length,
     supported_count: results.filter(function(r) { return r.status !== "ignored"; }).length,
     summary: summary,
@@ -1001,7 +1003,8 @@ function previewPrvSource_(input) {
   const html = fetchText_(sourceUrl);
   const title = extractSubstackPostTitle_(html) || extractPageTitle_(html) || titleFromSubstackUrl_(sourceUrl);
   const productName = normalizePrvSourceTitle_(title);
-  const sport = requestedSport || inferSport_(productName + " " + sourceUrl);
+  const tagText = extractSubstackPostTagTextFromHtml_(html);
+  const sport = requestedSport || inferSport_(productName + " " + tagText + " " + sourceUrl);
 
   if (!isAllowedSport_(sport)) {
     return {
@@ -1046,6 +1049,42 @@ function previewPrvSource_(input) {
         : "No print-run rows were parsed from the source post."],
     next_step: "Review PRV preview rows. Sheet write is intentionally not enabled yet."
   };
+}
+
+function buildPrvSourceWatchItemFromUrl_(sourceUrl) {
+  const url = safeString_(sourceUrl).trim();
+  if (!url) return null;
+  if (!/^https:\/\/slabsquatch\.substack\.com\/p\//i.test(url)) return null;
+
+  try {
+    const html = fetchText_(url);
+    const title = extractSubstackPostTitle_(html) || extractPageTitle_(html) || titleFromSubstackUrl_(url);
+    const productName = normalizePrvSourceTitle_(title);
+    const tagText = extractSubstackPostTagTextFromHtml_(html);
+    const sport = inferSport_(productName + " " + tagText + " " + url);
+
+    return {
+      title: productName,
+      raw_title: title,
+      sport: sport,
+      url: url,
+      source_url: url,
+      source_text: tagText,
+      discovery_source: "slabsquatch_direct_url",
+      target_tool: "prv"
+    };
+  } catch (err) {
+    return {
+      title: normalizePrvSourceTitle_(titleFromSubstackUrl_(url)),
+      raw_title: titleFromSubstackUrl_(url),
+      sport: inferSport_(url),
+      url: url,
+      source_url: url,
+      source_text: err && err.message ? err.message : String(err),
+      discovery_source: "slabsquatch_direct_url",
+      target_tool: "prv"
+    };
+  }
 }
 
 function executePrvSourceImport_(input) {
@@ -1220,14 +1259,10 @@ function buildPrvKeywordString_(product) {
 
 function extractSubstackBodyHtml_(html) {
   const raw = safeString_(html);
-  const preloadMatch = raw.match(/window\._preloads\s*=\s*JSON\.parse\("([\s\S]*?)"\)\s*<\/script>/i);
+  const preloadPost = extractSubstackPreloadPost_(raw);
 
-  if (preloadMatch && preloadMatch[1]) {
-    try {
-      const preloads = JSON.parse(JSON.parse("\"" + preloadMatch[1] + "\""));
-      const post = preloads && (preloads.post || preloads.postData && preloads.postData.post);
-      if (post && typeof post.body_html === "string" && post.body_html) return post.body_html;
-    } catch (err) {}
+  if (preloadPost && typeof preloadPost.body_html === "string" && preloadPost.body_html) {
+    return preloadPost.body_html;
   }
 
   const patterns = [
@@ -1264,6 +1299,24 @@ function extractSubstackBodyHtml_(html) {
       .replace(/\\u003e/g, ">")
       .replace(/\\u0026/g, "&");
   }
+}
+
+function extractSubstackPreloadPost_(html) {
+  const raw = safeString_(html);
+  const preloadMatch = raw.match(/window\._preloads\s*=\s*JSON\.parse\("([\s\S]*?)"\)\s*<\/script>/i);
+  if (!preloadMatch || !preloadMatch[1]) return null;
+
+  try {
+    const preloads = JSON.parse(JSON.parse("\"" + preloadMatch[1] + "\""));
+    return preloads && (preloads.post || preloads.postData && preloads.postData.post) || null;
+  } catch (err) {
+    return null;
+  }
+}
+
+function extractSubstackPostTagTextFromHtml_(html) {
+  const post = extractSubstackPreloadPost_(html);
+  return getSubstackPostTagText_(post);
 }
 
 function extractSubstackPostTitle_(html) {

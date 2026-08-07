@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-07T16:45:15.236Z",
+  "exported_at": "2026-08-07T16:45:40.666Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {},
   "tasks": [],
@@ -15,11 +15,11 @@
       "sport": "",
       "code": "prv_full_sync",
       "riskLevel": "high",
-      "status": "running",
-      "recommendedAction": "Run Agent Cycle to retry PRV JSON sync once before admin review.",
+      "status": "validated",
+      "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
       "adminDecision": "",
-      "executionResult": "PRV sheet write completed. PRV JSON publish started.",
-      "validationResult": "Retry running through Operator Backend and Static Data Exporter.",
+      "executionResult": "PRV full JSON sync completed through Static Data Exporter.",
+      "validationResult": "91 public PRV products and 3,599 product rows validated across 1 shard.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "",
@@ -27,7 +27,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-06T03:48:02.752Z",
-      "updatedAt": "2026-08-07T16:45:13.632Z"
+      "updatedAt": "2026-08-07T16:45:39.062Z"
     },
     {
       "id": "prv_watch|baseball|2026_topps_tier_one_2025_topps_dynasty_baseball",
@@ -140,6 +140,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1786121139062_qukns8",
+      "ts": "2026-08-07T16:45:39.062Z",
+      "type": "prv_sync_incident",
+      "title": "PRV sync incident recovered",
+      "detail": "91 public PRV products and 3,599 product rows validated across 1 shard.",
+      "status": "validated",
+      "product": "Print Run Vault JSON Sync",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1786121139058_rhvqp1",
+      "ts": "2026-08-07T16:45:39.058Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync completed",
+      "detail": "91 public PRV products and 3,599 product rows validated across 1 shard.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1786121113632_7jyj6o",
       "ts": "2026-08-07T16:45:13.632Z",
@@ -289,7 +309,7 @@
       "code": "2026_topps_tier_one_2025_topps_dynasty_baseball",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-tier-one-and-2025-topps",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:15.236Z",
+      "ignoredAt": "2026-08-07T16:45:40.666Z",
       "resolved": true
     },
     "baseball|2026_topps_tier_one_2025_topps_dynasty_baseball": {
@@ -298,7 +318,7 @@
       "code": "2026_topps_tier_one_2025_topps_dynasty_baseball",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-tier-one-and-2025-topps",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:15.236Z",
+      "ignoredAt": "2026-08-07T16:45:40.666Z",
       "resolved": true
     },
     "football|https www checklistcenter com 2026-pro-set-metal-football-card-checklist": {
@@ -307,7 +327,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-pro-set-metal-football-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:15.236Z",
+      "ignoredAt": "2026-08-07T16:45:40.666Z",
       "resolved": true
     },
     "football|2026 pro set metal football": {
@@ -316,7 +336,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-pro-set-metal-football-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:15.236Z",
+      "ignoredAt": "2026-08-07T16:45:40.666Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-winners-collection-arsenal-soccer-card-checklist": {
@@ -325,7 +345,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-arsenal-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:15.236Z",
+      "ignoredAt": "2026-08-07T16:45:40.666Z",
       "resolved": true
     },
     "soccer|2025_26_topps_winners_collection_arsenal_soccer": {
@@ -343,7 +363,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-nscc-promo-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:15.236Z",
+      "ignoredAt": "2026-08-07T16:45:40.666Z",
       "resolved": true
     },
     "hockey|2026 upper deck nscc promo hockey": {
@@ -352,7 +372,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-nscc-promo-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:15.236Z",
+      "ignoredAt": "2026-08-07T16:45:40.666Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist": {
@@ -361,7 +381,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:15.236Z",
+      "ignoredAt": "2026-08-07T16:45:40.666Z",
       "resolved": true
     },
     "soccer|2025-26 topps winners collection paris saint-germain soccer": {
@@ -370,7 +390,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:15.236Z",
+      "ignoredAt": "2026-08-07T16:45:40.666Z",
       "resolved": true
     },
     "soccer|2025-26 topps winners collection arsenal soccer": {
@@ -379,11 +399,29 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-arsenal-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:15.236Z",
+      "ignoredAt": "2026-08-07T16:45:40.666Z",
+      "resolved": true
+    },
+    "print run vault json sync": {
+      "product": "Print Run Vault JSON Sync",
+      "sport": "",
+      "code": "prv_full_sync",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-08-07T16:45:40.666Z",
+      "resolved": true
+    },
+    "prv_full_sync": {
+      "product": "Print Run Vault JSON Sync",
+      "sport": "",
+      "code": "prv_full_sync",
+      "sourceUrl": "",
+      "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
+      "ignoredAt": "2026-08-07T16:45:40.666Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-07T16:45:16.264Z",
+  "saved_at": "2026-08-07T16:45:41.846Z",
   "saved_by": "cm_command_center_operator"
 }

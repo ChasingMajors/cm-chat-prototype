@@ -2,28 +2,32 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-06T03:47:51.782Z",
+  "exported_at": "2026-08-07T16:45:15.236Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {},
   "tasks": [],
   "agent_actions": [
     {
-      "id": "source_watch|baseball|2026 leaf seasons in the sun baseball",
-      "type": "source_import",
-      "source": "scheduled_deep_sheets",
-      "product": "2026 Leaf Seasons in the Sun Baseball",
-      "sport": "baseball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "id": "prv_sync_incident_full_vault",
+      "type": "prv_sync_incident",
+      "source": "operator_backend",
+      "product": "Print Run Vault JSON Sync",
+      "sport": "",
+      "code": "prv_full_sync",
+      "riskLevel": "high",
+      "status": "running",
+      "recommendedAction": "Run Agent Cycle to retry PRV JSON sync once before admin review.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "PRV sheet write completed. PRV JSON publish started.",
+      "validationResult": "Retry running through Operator Backend and Static Data Exporter.",
       "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-seasons-in-the-sun-baseball-card-checklist/",
-      "createdAt": "2026-08-07T15:57:03.889Z",
-      "updatedAt": "2026-08-07T15:57:03.889Z"
+      "sourceUrl": "",
+      "bucket": "",
+      "targetBucket": "",
+      "expectedRowCount": 0,
+      "expectedParallelCount": 0,
+      "createdAt": "2026-08-06T03:48:02.752Z",
+      "updatedAt": "2026-08-07T16:45:13.632Z"
     },
     {
       "id": "prv_watch|baseball|2026_topps_tier_one_2025_topps_dynasty_baseball",
@@ -137,52 +141,52 @@
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1786118454068_alert",
-      "ts": "2026-08-07T15:57:03.889Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1786118453179",
-      "ts": "2026-08-07T15:57:03.889Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: passed. 6 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1786118453174",
-      "ts": "2026-08-07T15:57:03.889Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
+      "id": "log_1786121113632_7jyj6o",
+      "ts": "2026-08-07T16:45:13.632Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync started",
+      "detail": "Publishing Print Run Vault static JSON after manual Google Sheet changes.",
+      "status": "started",
       "product": "Print Run Vault",
       "source": "operator_backend"
     },
     {
-      "id": "log_1786032120254",
-      "ts": "2026-08-06T15:57:04.751Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 20 checked. PRV: 0 actionable from 9 checked. PRV sync: passed. 6 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
-      "status": "validated",
+      "id": "log_1786121113627_tss2e0",
+      "ts": "2026-08-07T16:45:13.627Z",
+      "type": "prv_sync_incident",
+      "title": "PRV safe recovery started",
+      "detail": "Agent is rerunning the full PRV JSON sync once as a safe recovery step.",
+      "status": "started",
+      "product": "Print Run Vault JSON Sync",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1786121113622_qocluh",
+      "ts": "2026-08-07T16:45:13.622Z",
+      "type": "agent_cycle",
+      "title": "Attempt safe PRV sync recovery",
+      "detail": "PRV JSON sync failed. Sentinel will retry the full PRV publish once, then record proof or hold for admin review.",
+      "status": "started",
       "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1785988082753_0kgu7o",
+      "ts": "2026-08-06T03:48:02.753Z",
+      "type": "prv_sync_incident",
+      "title": "PRV sync incident created",
+      "detail": "Unknown action",
+      "status": "failed",
+      "product": "Print Run Vault JSON Sync",
       "source": "operator_backend"
     },
     {
-      "id": "log_1786032120249",
-      "ts": "2026-08-06T15:57:04.751Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
+      "id": "log_1785988082743_wo661a",
+      "ts": "2026-08-06T03:48:02.743Z",
+      "type": "prv_publish",
+      "title": "Manual PRV JSON sync needs review",
+      "detail": "Unknown action",
+      "status": "needs_review",
       "product": "Print Run Vault",
       "source": "operator_backend"
     },
@@ -257,27 +261,7 @@
       "source": "slabsquatch"
     }
   ],
-  "last_agent_report": {
-    "ok": true,
-    "status": "needs_admin",
-    "generated_at": "2026-08-07T15:57:03.889Z",
-    "checked": {
-      "checklist_count": 20,
-      "prv_count": 9,
-      "skipped_ignored": 6
-    },
-    "completed_count": 0,
-    "needs_admin_count": 1,
-    "blocked_count": 0,
-    "completed": [],
-    "needs_admin": [
-      "Checklist review: 2026 Leaf Seasons in the Sun Baseball | baseball | missing"
-    ],
-    "blocked": [],
-    "proof": [],
-    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 9 PRV source item(s). 0 completed/progress item(s), 1 needs-admin item(s), 0 blocked/issue item(s)."
-  },
+  "last_agent_report": null,
   "visual_tests": {},
   "known_issues": {},
   "source_ignores": {
@@ -305,7 +289,7 @@
       "code": "2026_topps_tier_one_2025_topps_dynasty_baseball",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-tier-one-and-2025-topps",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:47:51.782Z",
+      "ignoredAt": "2026-08-07T16:45:15.236Z",
       "resolved": true
     },
     "baseball|2026_topps_tier_one_2025_topps_dynasty_baseball": {
@@ -314,7 +298,7 @@
       "code": "2026_topps_tier_one_2025_topps_dynasty_baseball",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-tier-one-and-2025-topps",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:47:51.782Z",
+      "ignoredAt": "2026-08-07T16:45:15.236Z",
       "resolved": true
     },
     "football|https www checklistcenter com 2026-pro-set-metal-football-card-checklist": {
@@ -323,7 +307,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-pro-set-metal-football-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:47:51.782Z",
+      "ignoredAt": "2026-08-07T16:45:15.236Z",
       "resolved": true
     },
     "football|2026 pro set metal football": {
@@ -332,7 +316,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-pro-set-metal-football-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:47:51.782Z",
+      "ignoredAt": "2026-08-07T16:45:15.236Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-winners-collection-arsenal-soccer-card-checklist": {
@@ -341,7 +325,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-arsenal-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:47:51.782Z",
+      "ignoredAt": "2026-08-07T16:45:15.236Z",
       "resolved": true
     },
     "soccer|2025_26_topps_winners_collection_arsenal_soccer": {
@@ -359,7 +343,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-nscc-promo-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:47:51.782Z",
+      "ignoredAt": "2026-08-07T16:45:15.236Z",
       "resolved": true
     },
     "hockey|2026 upper deck nscc promo hockey": {
@@ -368,7 +352,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-nscc-promo-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:47:51.782Z",
+      "ignoredAt": "2026-08-07T16:45:15.236Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist": {
@@ -377,7 +361,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:47:51.782Z",
+      "ignoredAt": "2026-08-07T16:45:15.236Z",
       "resolved": true
     },
     "soccer|2025-26 topps winners collection paris saint-germain soccer": {
@@ -386,7 +370,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:47:51.782Z",
+      "ignoredAt": "2026-08-07T16:45:15.236Z",
       "resolved": true
     },
     "soccer|2025-26 topps winners collection arsenal soccer": {
@@ -395,11 +379,11 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-arsenal-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-06T03:47:51.782Z",
+      "ignoredAt": "2026-08-07T16:45:15.236Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-07T16:00:54.108Z",
+  "saved_at": "2026-08-07T16:45:16.264Z",
   "saved_by": "cm_command_center_operator"
 }

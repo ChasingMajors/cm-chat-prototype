@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-07T16:45:48.484Z",
+  "exported_at": "2026-08-08T00:05:16.173Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {},
   "tasks": [],
@@ -131,15 +131,65 @@
       "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
       "executionResult": "Sheet write started through Operator Backend.",
-      "validationResult": "Preview rows are ready for admin review before sheet write.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "createdAt": "2026-08-06T03:20:03.604Z",
-      "updatedAt": "2026-08-07T16:45:46.882Z"
+      "updatedAt": "2026-08-08T00:05:14.566Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1786147514567_9pgnj4",
+      "ts": "2026-08-08T00:05:14.567Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1786147514563_go15qs",
+      "ts": "2026-08-08T00:05:14.563Z",
+      "type": "agent_cycle",
+      "title": "Self-heal pending checklist validation",
+      "detail": "2026-27 Upper Deck MVP Hockey was published but not visible yet. Sentinel will recheck public JSON before asking admin.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
+    {
+      "id": "log_1786147514080_i9g59u",
+      "ts": "2026-08-08T00:05:14.080Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1786147514021_tzw9yl",
+      "ts": "2026-08-08T00:05:14.021Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
+    {
+      "id": "log_1786147514013_84f6b7",
+      "ts": "2026-08-08T00:05:14.014Z",
+      "type": "agent_action",
+      "title": "Stale running work cleared",
+      "detail": "1 stale running card moved back to verifiable queue state.",
+      "status": "reconciled",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1786121146879_pba6on",
       "ts": "2026-08-07T16:45:46.879Z",
@@ -319,7 +369,7 @@
       "code": "2026_topps_tier_one_2025_topps_dynasty_baseball",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-tier-one-and-2025-topps",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:48.484Z",
+      "ignoredAt": "2026-08-08T00:05:16.173Z",
       "resolved": true
     },
     "baseball|2026_topps_tier_one_2025_topps_dynasty_baseball": {
@@ -328,7 +378,7 @@
       "code": "2026_topps_tier_one_2025_topps_dynasty_baseball",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-tier-one-and-2025-topps",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:48.484Z",
+      "ignoredAt": "2026-08-08T00:05:16.173Z",
       "resolved": true
     },
     "football|https www checklistcenter com 2026-pro-set-metal-football-card-checklist": {
@@ -337,7 +387,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-pro-set-metal-football-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:48.484Z",
+      "ignoredAt": "2026-08-08T00:05:16.173Z",
       "resolved": true
     },
     "football|2026 pro set metal football": {
@@ -346,7 +396,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-pro-set-metal-football-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:48.484Z",
+      "ignoredAt": "2026-08-08T00:05:16.173Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-winners-collection-arsenal-soccer-card-checklist": {
@@ -355,7 +405,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-arsenal-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:48.484Z",
+      "ignoredAt": "2026-08-08T00:05:16.173Z",
       "resolved": true
     },
     "soccer|2025_26_topps_winners_collection_arsenal_soccer": {
@@ -373,7 +423,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-nscc-promo-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:48.484Z",
+      "ignoredAt": "2026-08-08T00:05:16.173Z",
       "resolved": true
     },
     "hockey|2026 upper deck nscc promo hockey": {
@@ -382,7 +432,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-nscc-promo-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:48.484Z",
+      "ignoredAt": "2026-08-08T00:05:16.173Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist": {
@@ -391,7 +441,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:48.484Z",
+      "ignoredAt": "2026-08-08T00:05:16.173Z",
       "resolved": true
     },
     "soccer|2025-26 topps winners collection paris saint-germain soccer": {
@@ -400,7 +450,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:48.484Z",
+      "ignoredAt": "2026-08-08T00:05:16.173Z",
       "resolved": true
     },
     "soccer|2025-26 topps winners collection arsenal soccer": {
@@ -409,7 +459,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-arsenal-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:48.484Z",
+      "ignoredAt": "2026-08-08T00:05:16.173Z",
       "resolved": true
     },
     "print run vault json sync": {
@@ -418,7 +468,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:48.484Z",
+      "ignoredAt": "2026-08-08T00:05:16.173Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -427,11 +477,11 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-07T16:45:48.484Z",
+      "ignoredAt": "2026-08-08T00:05:16.173Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-07T16:45:50.757Z",
+  "saved_at": "2026-08-08T00:05:19.860Z",
   "saved_by": "cm_command_center_operator"
 }

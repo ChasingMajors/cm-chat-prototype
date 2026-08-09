@@ -23,7 +23,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-seasons-in-the-sun-baseball-card-checklist/",
       "createdAt": "2026-08-08T15:57:03.772Z",
-      "updatedAt": "2026-08-08T15:57:03.772Z"
+      "updatedAt": "2026-08-09T15:57:03.680Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -45,7 +45,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-06T03:48:02.752Z",
-      "updatedAt": "2026-08-08T15:57:03.772Z"
+      "updatedAt": "2026-08-09T15:57:03.680Z"
     },
     {
       "id": "prv_watch|baseball|2026_topps_tier_one_2025_topps_dynasty_baseball",
@@ -149,21 +149,61 @@
       "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
       "executionResult": "Pending checklist publish validation rechecked for 2026_27_upper_deck_mvp_hockey.",
-      "validationResult": "Published checklist JSON is still pending or stale after 1 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. Missing target bucket/year. Checked hockey current code 2026_27_upper_deck_mvp_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
+      "validationResult": "Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. Missing target bucket/year. Checked hockey current code 2026_27_upper_deck_mvp_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
       "runUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "createdAt": "2026-08-06T03:20:03.604Z",
-      "updatedAt": "2026-08-08T15:57:03.772Z",
+      "updatedAt": "2026-08-09T15:57:03.680Z",
       "targetBucket": "",
-      "pendingValidationAttempts": 1,
+      "pendingValidationAttempts": 2,
       "visualStartedAt": "",
       "visualRunUrl": "",
       "repairProof": "Agent attempted publish validation for 2026-27 Upper Deck MVP Hockey. Public JSON is not final yet; retry is scheduled.",
-      "autoExecutedAt": "2026-08-08T15:57:03.772Z"
+      "autoExecutedAt": "2026-08-09T15:57:03.680Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1786291297869_alert",
+      "ts": "2026-08-09T15:57:03.680Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1786291297375",
+      "ts": "2026-08-09T15:57:03.680Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 10 checked. PRV sync: passed. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2026-27 Upper Deck MVP Hockey -> pending_public_validation (Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1786291297373",
+      "ts": "2026-08-09T15:57:03.680Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending public validation",
+      "detail": "2026-27 Upper Deck MVP Hockey: Pending checklist publish validation rechecked for 2026_27_upper_deck_mvp_hockey. Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. Missing target bucket/year. Checked hockey current code 2026_27_upper_deck_mvp_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
+      "status": "pending_public_validation",
+      "product": "2026-27 Upper Deck MVP Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1786291249349",
+      "ts": "2026-08-09T15:57:03.680Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1786204887291_alert",
       "ts": "2026-08-08T15:57:03.772Z",
@@ -438,7 +478,7 @@
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-08-08T15:57:03.772Z",
+    "generated_at": "2026-08-09T15:57:03.680Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 10,
@@ -449,7 +489,7 @@
     "blocked_count": 0,
     "completed": [],
     "needs_admin": [
-      "2026-27 Upper Deck MVP Hockey -> pending_public_validation: Published checklist JSON is still pending or stale after 1 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. Missing target bucket/year. Checked hockey current code 2026_27_upper_deck_mvp_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
+      "2026-27 Upper Deck MVP Hockey -> pending_public_validation: Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. Missing target bucket/year. Checked hockey current code 2026_27_upper_deck_mvp_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
       "Checklist review: 2026 Leaf Seasons in the Sun Baseball | baseball | missing"
     ],
     "blocked": [],
@@ -597,6 +637,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-08T16:01:27.386Z",
+  "saved_at": "2026-08-09T16:01:37.911Z",
   "saved_by": "cm_command_center_operator"
 }

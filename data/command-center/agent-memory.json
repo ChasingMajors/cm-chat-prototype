@@ -2,29 +2,11 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-08T00:44:10.710Z",
+  "exported_at": "2026-08-10T02:42:24.457Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {},
   "tasks": [],
   "agent_actions": [
-    {
-      "id": "source_watch|baseball|2026 leaf seasons in the sun baseball",
-      "type": "source_import",
-      "source": "scheduled_deep_sheets",
-      "product": "2026 Leaf Seasons in the Sun Baseball",
-      "sport": "baseball",
-      "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
-      "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
-      "sourceUrl": "https://www.checklistcenter.com/2026-leaf-seasons-in-the-sun-baseball-card-checklist/",
-      "createdAt": "2026-08-08T15:57:03.772Z",
-      "updatedAt": "2026-08-09T15:57:03.680Z"
-    },
     {
       "id": "prv_sync_incident_full_vault",
       "type": "prv_sync_incident",
@@ -36,8 +18,8 @@
       "status": "validated",
       "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
       "adminDecision": "",
-      "executionResult": "Scheduled PRV full JSON sync completed through Static Data Exporter.",
-      "validationResult": "Scheduled PRV JSON sync completed.",
+      "executionResult": "PRV full JSON sync completed through Static Data Exporter.",
+      "validationResult": "91 public PRV products and 3,599 product rows validated across 1 shard.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "",
@@ -45,7 +27,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-06T03:48:02.752Z",
-      "updatedAt": "2026-08-09T15:57:03.680Z"
+      "updatedAt": "2026-08-07T16:45:39.062Z"
     },
     {
       "id": "prv_watch|baseball|2026_topps_tier_one_2025_topps_dynasty_baseball",
@@ -145,104 +127,38 @@
       "sport": "hockey",
       "code": "2026_27_upper_deck_mvp_hockey",
       "riskLevel": "medium",
-      "status": "pending_public_validation",
+      "status": "running",
       "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "Pending checklist publish validation rechecked for 2026_27_upper_deck_mvp_hockey.",
-      "validationResult": "Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. Missing target bucket/year. Checked hockey current code 2026_27_upper_deck_mvp_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
+      "executionResult": "Sheet write started through Operator Backend.",
+      "validationResult": "Coverage recheck started...",
       "runUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-mvp-hockey-card-checklist/",
       "createdAt": "2026-08-06T03:20:03.604Z",
-      "updatedAt": "2026-08-09T15:57:03.680Z",
-      "targetBucket": "",
-      "pendingValidationAttempts": 2,
-      "visualStartedAt": "",
-      "visualRunUrl": "",
-      "repairProof": "Agent attempted publish validation for 2026-27 Upper Deck MVP Hockey. Public JSON is not final yet; retry is scheduled.",
-      "autoExecutedAt": "2026-08-09T15:57:03.680Z"
+      "updatedAt": "2026-08-10T02:42:22.834Z"
     }
   ],
   "agent_run_queue": [],
   "activity_log": [
     {
-      "id": "log_1786291297869_alert",
-      "ts": "2026-08-09T15:57:03.680Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1786291297375",
-      "ts": "2026-08-09T15:57:03.680Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 10 checked. PRV sync: passed. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2026-27 Upper Deck MVP Hockey -> pending_public_validation (Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1786291297373",
-      "ts": "2026-08-09T15:57:03.680Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending public validation",
-      "detail": "2026-27 Upper Deck MVP Hockey: Pending checklist publish validation rechecked for 2026_27_upper_deck_mvp_hockey. Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. Missing target bucket/year. Checked hockey current code 2026_27_upper_deck_mvp_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
-      "status": "pending_public_validation",
+      "id": "log_1786329742835_riqtbv",
+      "ts": "2026-08-10T02:42:22.835Z",
+      "type": "validation",
+      "title": "Coverage recheck started",
+      "detail": "Checking current public checklist coverage for this product.",
+      "status": "running",
       "product": "2026-27 Upper Deck MVP Hockey",
       "source": "operator_backend"
     },
     {
-      "id": "log_1786291249349",
-      "ts": "2026-08-09T15:57:03.680Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1786204887291_alert",
-      "ts": "2026-08-08T15:57:03.772Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
+      "id": "log_1786329742786_j58bud",
+      "ts": "2026-08-10T02:42:22.786Z",
+      "type": "agent_cycle",
+      "title": "Self-heal pending checklist validation",
+      "detail": "2026-27 Upper Deck MVP Hockey was published but not visible yet. Sentinel will recheck public JSON before asking admin.",
+      "status": "started",
       "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1786204886736",
-      "ts": "2026-08-08T15:57:03.772Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 1 actionable from 20 checked. PRV: 0 actionable from 10 checked. PRV sync: passed. 6 admin-ignored source item(s) skipped. Auto actions: 1 run. 2026-27 Upper Deck MVP Hockey -> pending_public_validation (Published checklist JSON is still pending or stale after 1 check(s). Expected any rows / any parallels; found 0 rows / 0)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1786204886735",
-      "ts": "2026-08-08T15:57:03.772Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending public validation",
-      "detail": "2026-27 Upper Deck MVP Hockey: Pending checklist publish validation rechecked for 2026_27_upper_deck_mvp_hockey. Published checklist JSON is still pending or stale after 1 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. Missing target bucket/year. Checked hockey current code 2026_27_upper_deck_mvp_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
-      "status": "pending_public_validation",
-      "product": "2026-27 Upper Deck MVP Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1786204837970",
-      "ts": "2026-08-08T15:57:03.772Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
+      "source": "command_center"
     },
     {
       "id": "log_1786149848378_oaeau4",
@@ -475,28 +391,7 @@
       "source": "slabsquatch"
     }
   ],
-  "last_agent_report": {
-    "ok": true,
-    "status": "needs_admin",
-    "generated_at": "2026-08-09T15:57:03.680Z",
-    "checked": {
-      "checklist_count": 20,
-      "prv_count": 10,
-      "skipped_ignored": 6
-    },
-    "completed_count": 0,
-    "needs_admin_count": 2,
-    "blocked_count": 0,
-    "completed": [],
-    "needs_admin": [
-      "2026-27 Upper Deck MVP Hockey -> pending_public_validation: Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. Missing target bucket/year. Checked hockey current code 2026_27_upper_deck_mvp_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
-      "Checklist review: 2026 Leaf Seasons in the Sun Baseball | baseball | missing"
-    ],
-    "blocked": [],
-    "proof": [],
-    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 10 PRV source item(s). 0 completed/progress item(s), 2 needs-admin item(s), 0 blocked/issue item(s)."
-  },
+  "last_agent_report": null,
   "visual_tests": {},
   "known_issues": {},
   "source_ignores": {
@@ -524,7 +419,7 @@
       "code": "2026_topps_tier_one_2025_topps_dynasty_baseball",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-tier-one-and-2025-topps",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-08T00:44:10.709Z",
+      "ignoredAt": "2026-08-10T02:42:24.439Z",
       "resolved": true
     },
     "baseball|2026_topps_tier_one_2025_topps_dynasty_baseball": {
@@ -533,7 +428,7 @@
       "code": "2026_topps_tier_one_2025_topps_dynasty_baseball",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-tier-one-and-2025-topps",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-08T00:44:10.709Z",
+      "ignoredAt": "2026-08-10T02:42:24.439Z",
       "resolved": true
     },
     "football|https www checklistcenter com 2026-pro-set-metal-football-card-checklist": {
@@ -542,7 +437,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-pro-set-metal-football-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-08T00:44:10.710Z",
+      "ignoredAt": "2026-08-10T02:42:24.444Z",
       "resolved": true
     },
     "football|2026 pro set metal football": {
@@ -551,7 +446,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-pro-set-metal-football-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-08T00:44:10.710Z",
+      "ignoredAt": "2026-08-10T02:42:24.457Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-winners-collection-arsenal-soccer-card-checklist": {
@@ -560,7 +455,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-arsenal-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-08T00:44:10.709Z",
+      "ignoredAt": "2026-08-10T02:42:24.444Z",
       "resolved": true
     },
     "soccer|2025_26_topps_winners_collection_arsenal_soccer": {
@@ -578,7 +473,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-nscc-promo-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-08T00:44:10.709Z",
+      "ignoredAt": "2026-08-10T02:42:24.444Z",
       "resolved": true
     },
     "hockey|2026 upper deck nscc promo hockey": {
@@ -587,7 +482,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-nscc-promo-hockey-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-08T00:44:10.709Z",
+      "ignoredAt": "2026-08-10T02:42:24.444Z",
       "resolved": true
     },
     "soccer|https www checklistcenter com 2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist": {
@@ -596,7 +491,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-08T00:44:10.710Z",
+      "ignoredAt": "2026-08-10T02:42:24.444Z",
       "resolved": true
     },
     "soccer|2025-26 topps winners collection paris saint-germain soccer": {
@@ -605,7 +500,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-paris-saint-germain-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-08T00:44:10.710Z",
+      "ignoredAt": "2026-08-10T02:42:24.444Z",
       "resolved": true
     },
     "soccer|2025-26 topps winners collection arsenal soccer": {
@@ -614,7 +509,7 @@
       "code": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-topps-winners-collection-arsenal-soccer-card-checklist/",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-08T00:44:10.709Z",
+      "ignoredAt": "2026-08-10T02:42:24.444Z",
       "resolved": true
     },
     "print run vault json sync": {
@@ -623,7 +518,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-08T00:44:10.709Z",
+      "ignoredAt": "2026-08-10T02:42:24.438Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -632,11 +527,11 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-08T00:44:10.709Z",
+      "ignoredAt": "2026-08-10T02:42:24.439Z",
       "resolved": true
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-09T16:01:37.911Z",
+  "saved_at": "2026-08-10T02:42:30.662Z",
   "saved_by": "cm_command_center_operator"
 }

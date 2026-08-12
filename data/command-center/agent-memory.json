@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-12T23:47:27.600Z",
+  "exported_at": "2026-08-12T23:47:42.628Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {},
   "tasks": [],
@@ -28,6 +28,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1786578461026_e5779r",
+      "ts": "2026-08-12T23:47:41.026Z",
+      "type": "memory",
+      "title": "Backend memory loaded",
+      "detail": "Loaded from data/command-center/agent-memory.json.",
+      "status": "loaded",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1786578461017_jbcghu",
+      "ts": "2026-08-12T23:47:41.017Z",
+      "type": "memory",
+      "title": "Agent memory imported",
+      "detail": "Queue, log, approvals, known issues, and visual status were restored.",
+      "status": "imported",
+      "product": "",
+      "source": "admin"
+    },
     {
       "id": "log_1786578445999_gelaq6",
       "ts": "2026-08-12T23:47:25.999Z",
@@ -807,26 +827,6 @@
       "status": "failed",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1786507104084_k6u0ug",
-      "ts": "2026-08-12T03:58:24.084Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Invalid operator key.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1786507097450_6tj4jf",
-      "ts": "2026-08-12T03:58:17.450Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Invalid operator key.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": null,
@@ -970,6 +970,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-12T23:47:28.531Z",
+  "saved_at": "2026-08-12T23:47:43.929Z",
   "saved_by": "cm_command_center_operator"
 }

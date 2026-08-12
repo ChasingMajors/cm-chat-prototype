@@ -8,6 +8,78 @@
   "tasks": [],
   "agent_actions": [
     {
+      "id": "source_watch|soccer|2026 panini intl mexico soccer",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026 Panini INTL Mexico Soccer",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-panini-intl-mexico-soccer-card-checklist/",
+      "createdAt": "2026-08-12T15:57:04.113Z",
+      "updatedAt": "2026-08-12T15:57:04.113Z"
+    },
+    {
+      "id": "source_watch|soccer|2026 panini intl france soccer",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026 Panini INTL France Soccer",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-panini-intl-france-soccer-card-checklist/",
+      "createdAt": "2026-08-12T15:57:04.113Z",
+      "updatedAt": "2026-08-12T15:57:04.113Z"
+    },
+    {
+      "id": "source_watch|soccer|2026 panini intl england soccer",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026 Panini INTL England Soccer",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-panini-intl-england-soccer-card-checklist/",
+      "createdAt": "2026-08-12T15:57:04.113Z",
+      "updatedAt": "2026-08-12T15:57:04.113Z"
+    },
+    {
+      "id": "source_watch|soccer|2026 panini intl germany soccer",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026 Panini INTL Germany Soccer",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-panini-intl-germany-soccer-card-checklist/",
+      "createdAt": "2026-08-12T15:57:04.113Z",
+      "updatedAt": "2026-08-12T15:57:04.113Z"
+    },
+    {
       "id": "source_watch|baseball|2026 leaf seasons in the sun baseball",
       "type": "source_import",
       "source": "scheduled_deep_sheets",
@@ -23,7 +95,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-seasons-in-the-sun-baseball-card-checklist/",
       "createdAt": "2026-08-10T15:57:03.486Z",
-      "updatedAt": "2026-08-11T15:57:04.314Z"
+      "updatedAt": "2026-08-12T15:57:04.113Z"
     },
     {
       "id": "source_watch|hockey|2025-26 upper deck clear cut hockey",
@@ -41,7 +113,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-clear-cut-hockey-card-checklist/",
       "createdAt": "2026-08-10T15:57:03.486Z",
-      "updatedAt": "2026-08-11T15:57:04.314Z"
+      "updatedAt": "2026-08-12T15:57:04.113Z"
     },
     {
       "id": "prv_sync_incident_full_vault",
@@ -63,7 +135,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-06T03:48:02.752Z",
-      "updatedAt": "2026-08-11T15:57:04.314Z"
+      "updatedAt": "2026-08-12T15:57:04.113Z"
     },
     {
       "id": "prv_watch|baseball|2026_topps_tier_one_2025_topps_dynasty_baseball",
@@ -176,6 +248,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1786550422756_alert",
+      "ts": "2026-08-12T15:57:04.113Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1786550422213",
+      "ts": "2026-08-12T15:57:04.113Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 6 actionable from 20 checked. PRV: 0 actionable from 6 checked. PRV sync: passed. 6 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1786550422210",
+      "ts": "2026-08-12T15:57:04.113Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1786464044701_alert",
       "ts": "2026-08-11T15:57:04.314Z",
@@ -520,24 +622,28 @@
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-08-11T15:57:04.314Z",
+    "generated_at": "2026-08-12T15:57:04.113Z",
     "checked": {
       "checklist_count": 20,
-      "prv_count": 8,
+      "prv_count": 6,
       "skipped_ignored": 6
     },
     "completed_count": 0,
-    "needs_admin_count": 2,
+    "needs_admin_count": 6,
     "blocked_count": 0,
     "completed": [],
     "needs_admin": [
+      "Checklist review: 2026 Panini INTL Germany Soccer | soccer | missing",
+      "Checklist review: 2026 Panini INTL England Soccer | soccer | missing",
+      "Checklist review: 2026 Panini INTL France Soccer | soccer | missing",
+      "Checklist review: 2026 Panini INTL Mexico Soccer | soccer | missing",
       "Checklist review: 2025-26 Upper Deck Clear Cut Hockey | hockey | missing",
       "Checklist review: 2026 Leaf Seasons in the Sun Baseball | baseball | missing"
     ],
     "blocked": [],
     "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 8 PRV source item(s). 0 completed/progress item(s), 2 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 6 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {},
   "known_issues": {},
@@ -679,6 +785,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-11T16:00:44.785Z",
+  "saved_at": "2026-08-12T16:00:22.794Z",
   "saved_by": "cm_command_center_operator"
 }

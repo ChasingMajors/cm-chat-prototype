@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-12T23:47:24.157Z",
+  "exported_at": "2026-08-12T23:47:27.600Z",
   "autonomy_mode": "guarded_auto",
   "approvals": {},
   "tasks": [],
@@ -28,6 +28,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1786578445999_gelaq6",
+      "ts": "2026-08-12T23:47:25.999Z",
+      "type": "agent_cycle",
+      "title": "Admin decision required",
+      "detail": "2026-27 Upper Deck MVP Hockey needs approval before the agent can continue. Use Scan New Checklists if you want a fresh source scan without advancing this queue item.",
+      "status": "started",
+      "product": "",
+      "source": "command_center"
+    },
     {
       "id": "log_1786578442553_1he4mz",
       "ts": "2026-08-12T23:47:22.553Z",
@@ -817,16 +827,6 @@
       "status": "failed",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1786507091038_ws5xqy",
-      "ts": "2026-08-12T03:58:11.038Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Invalid operator key.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": null,
@@ -970,6 +970,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-12T23:47:25.153Z",
+  "saved_at": "2026-08-12T23:47:28.531Z",
   "saved_by": "cm_command_center_operator"
 }

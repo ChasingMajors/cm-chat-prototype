@@ -15,15 +15,15 @@
       "sport": "",
       "code": "prv_full_sync",
       "riskLevel": "high",
-      "status": "failed",
-      "recommendedAction": "Run Agent Cycle to let Sentinel retry PRV JSON sync once. If it fails again, inspect Static Data Exporter logs and GitHub publish permissions.",
+      "status": "validated",
+      "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
       "adminDecision": "",
-      "executionResult": "Scheduled PRV full JSON sync failed.",
-      "validationResult": "Scheduled PRV JSON sync returned a review response.",
+      "executionResult": "Scheduled PRV full JSON sync completed through Static Data Exporter.",
+      "validationResult": "Scheduled PRV JSON sync completed.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-08-17T15:57:04.104Z",
-      "updatedAt": "2026-08-17T15:57:04.104Z"
+      "updatedAt": "2026-08-18T15:57:04.024Z"
     },
     {
       "id": "prv_watch|baseball|2026 topps pristine baseball",
@@ -41,7 +41,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-pristine-mlb",
       "createdAt": "2026-08-14T15:57:05.239Z",
-      "updatedAt": "2026-08-17T15:57:04.104Z"
+      "updatedAt": "2026-08-18T15:57:04.024Z"
     },
     {
       "id": "source_watch|baseball|2026 leaf seasons in the sun baseball",
@@ -59,7 +59,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-seasons-in-the-sun-baseball-card-checklist/",
       "createdAt": "2026-08-14T15:57:05.239Z",
-      "updatedAt": "2026-08-17T15:57:04.104Z"
+      "updatedAt": "2026-08-18T15:57:04.024Z"
     },
     {
       "id": "source_watch|hockey|2025-26 upper deck clear cut hockey",
@@ -77,7 +77,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-clear-cut-hockey-card-checklist/",
       "createdAt": "2026-08-14T15:57:05.239Z",
-      "updatedAt": "2026-08-17T15:57:04.104Z"
+      "updatedAt": "2026-08-18T15:57:04.024Z"
     },
     {
       "id": "source_watch|soccer|2026 panini intl mexico soccer",
@@ -95,7 +95,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-intl-mexico-soccer-card-checklist/",
       "createdAt": "2026-08-14T15:57:05.239Z",
-      "updatedAt": "2026-08-17T15:57:04.104Z"
+      "updatedAt": "2026-08-18T15:57:04.024Z"
     },
     {
       "id": "source_watch|soccer|2026 panini intl france soccer",
@@ -113,7 +113,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-intl-france-soccer-card-checklist/",
       "createdAt": "2026-08-14T15:57:05.239Z",
-      "updatedAt": "2026-08-17T15:57:04.104Z"
+      "updatedAt": "2026-08-18T15:57:04.024Z"
     },
     {
       "id": "source_watch|soccer|2026 panini intl england soccer",
@@ -131,7 +131,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-intl-england-soccer-card-checklist/",
       "createdAt": "2026-08-14T15:57:05.239Z",
-      "updatedAt": "2026-08-17T15:57:04.104Z"
+      "updatedAt": "2026-08-18T15:57:04.024Z"
     },
     {
       "id": "source_watch|soccer|2026 panini intl germany soccer",
@@ -149,7 +149,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-intl-germany-soccer-card-checklist/",
       "createdAt": "2026-08-14T15:57:05.239Z",
-      "updatedAt": "2026-08-17T15:57:04.104Z"
+      "updatedAt": "2026-08-18T15:57:04.024Z"
     },
     {
       "id": "source_watch|baseball|2026 topps pristine baseball",
@@ -167,7 +167,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-pristine-baseball-card-checklist/",
       "createdAt": "2026-08-14T15:57:05.239Z",
-      "updatedAt": "2026-08-17T15:57:04.104Z"
+      "updatedAt": "2026-08-18T15:57:04.024Z"
     },
     {
       "id": "source_watch|hockey|2026-27 upper deck mvp hockey",
@@ -190,6 +190,36 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1787068838718_alert",
+      "ts": "2026-08-18T15:57:04.024Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1787068838258",
+      "ts": "2026-08-18T15:57:04.024Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 7 actionable from 20 checked. PRV: 1 actionable from 6 checked. PRV sync: passed. 4 admin-ignored source item(s) skipped. Auto action: This run only self-heals pending public or visual validation. Switch to Full auto for approved writes.",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1787068838254",
+      "ts": "2026-08-18T15:57:04.024Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1786982491917_alert",
       "ts": "2026-08-17T15:57:04.104Z",
@@ -959,42 +989,12 @@
       "status": "failed",
       "product": "",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1786507194655_glx3bl",
-      "ts": "2026-08-12T03:59:54.655Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Invalid operator key.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1786507191486_or3g4k",
-      "ts": "2026-08-12T03:59:51.486Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Invalid operator key.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1786507186810_8mlqtd",
-      "ts": "2026-08-12T03:59:46.810Z",
-      "type": "memory",
-      "title": "Backend memory auto-save failed",
-      "detail": "Invalid operator key.",
-      "status": "failed",
-      "product": "",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
-    "ok": false,
-    "status": "issue",
-    "generated_at": "2026-08-17T15:57:04.104Z",
+    "ok": true,
+    "status": "needs_admin",
+    "generated_at": "2026-08-18T15:57:04.024Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 6,
@@ -1002,7 +1002,7 @@
     },
     "completed_count": 0,
     "needs_admin_count": 8,
-    "blocked_count": 1,
+    "blocked_count": 0,
     "completed": [],
     "needs_admin": [
       "Checklist review: 2026 Topps Pristine Baseball | baseball | missing",
@@ -1014,12 +1014,10 @@
       "Checklist review: 2026 Leaf Seasons in the Sun Baseball | baseball | missing",
       "PRV review: 2026 Topps Pristine Baseball | baseball | missing"
     ],
-    "blocked": [
-      "PRV JSON sync failed: Scheduled PRV JSON sync returned a review response."
-    ],
+    "blocked": [],
     "proof": [],
-    "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
-    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 8 needs-admin item(s), 1 blocked/issue item(s)."
+    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
+    "summary": "Checked 20 checklist source item(s) and 6 PRV source item(s). 0 completed/progress item(s), 8 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {},
   "known_issues": {},
@@ -1161,6 +1159,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-17T16:01:32.409Z",
+  "saved_at": "2026-08-18T16:00:38.753Z",
   "saved_by": "cm_command_center_operator"
 }

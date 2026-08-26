@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-26T17:49:59.672Z",
+  "exported_at": "2026-08-26T17:50:18.364Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -515,25 +515,25 @@
     },
     {
       "id": "source_import|wordpress_api|2026 topps pristine baseball",
-      "type": "source_import",
-      "source": "wordpress_api",
+      "type": "checklist_publish",
+      "source": "operator_backend",
       "product": "2026 Topps Pristine Baseball",
       "sport": "baseball",
       "code": "2026_topps_pristine_baseball",
       "riskLevel": "medium",
       "status": "running",
-      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write started through Operator Backend.",
-      "validationResult": "Preview rows are ready for admin review before sheet write.",
-      "runUrl": "https://www.checklistcenter.com/2026-topps-pristine-baseball-card-checklist/",
+      "executionResult": "Sheet write completed. JSON publish started.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-pristine-baseball-card-checklist/",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.102Z",
-      "updatedAt": "2026-08-26T17:49:58.071Z"
+      "updatedAt": "2026-08-26T17:50:16.762Z"
     },
     {
       "id": "source_import|wordpress_api|2026 upper deck cfl football",
@@ -760,6 +760,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1787766616762_jdp34i",
+      "ts": "2026-08-26T17:50:16.762Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2026 Topps Pristine Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1787766616754_62ptz5",
+      "ts": "2026-08-26T17:50:16.754Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "705 checklist rows and 80 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2026 Topps Pristine Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1787766598067_hicqff",
       "ts": "2026-08-26T17:49:58.067Z",
@@ -5518,7 +5538,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:49:59.672Z",
+      "ignoredAt": "2026-08-26T17:50:18.364Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5527,7 +5547,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:49:59.672Z",
+      "ignoredAt": "2026-08-26T17:50:18.364Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -6085,7 +6105,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:49:59.672Z",
+      "ignoredAt": "2026-08-26T17:50:18.364Z",
       "resolved": true
     },
     "hockey|2026_27_upper_deck_mvp_hockey": {
@@ -6094,7 +6114,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:49:59.672Z",
+      "ignoredAt": "2026-08-26T17:50:18.364Z",
       "resolved": true
     },
     "hockey|https www checklistcenter com 2026-27-upper-deck-mvp-hockey-card-checklist": {
@@ -6126,6 +6146,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-26T17:50:00.955Z",
+  "saved_at": "2026-08-26T17:50:19.437Z",
   "saved_by": "cm_command_center_operator"
 }

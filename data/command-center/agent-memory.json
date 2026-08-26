@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-26T17:37:56.689Z",
+  "exported_at": "2026-08-26T17:38:04.959Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -411,10 +411,10 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_clear_cut_hockey",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "Import preview parsed 957 rows and 20 parallels.",
+      "executionResult": "Sheet write started through Operator Backend.",
       "validationResult": "Preview rows are ready for admin review before sheet write.",
       "runUrl": "https://www.checklistcenter.com/2025-26-upper-deck-clear-cut-hockey-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-clear-cut-hockey-card-checklist/",
@@ -423,7 +423,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.103Z",
-      "updatedAt": "2026-08-26T17:36:52.811Z"
+      "updatedAt": "2026-08-26T17:38:03.357Z"
     },
     {
       "id": "source_import|wordpress_api|2026 panini intl mexico soccer",
@@ -759,7 +759,18 @@
     }
   ],
   "agent_run_queue": [],
-  "activity_log": [],
+  "activity_log": [
+    {
+      "id": "log_1787765883354_e6xs2z",
+      "ts": "2026-08-26T17:38:03.354Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "2025-26 Upper Deck Clear Cut Hockey",
+      "source": "admin"
+    }
+  ],
   "last_agent_report": null,
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -5387,7 +5398,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:37:56.689Z",
+      "ignoredAt": "2026-08-26T17:38:04.959Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5396,7 +5407,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:37:56.689Z",
+      "ignoredAt": "2026-08-26T17:38:04.959Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -5954,7 +5965,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:37:56.689Z",
+      "ignoredAt": "2026-08-26T17:38:04.959Z",
       "resolved": true
     },
     "hockey|2026_27_upper_deck_mvp_hockey": {
@@ -5963,7 +5974,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:37:56.689Z",
+      "ignoredAt": "2026-08-26T17:38:04.959Z",
       "resolved": true
     },
     "hockey|https www checklistcenter com 2026-27-upper-deck-mvp-hockey-card-checklist": {
@@ -5995,6 +6006,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-26T17:37:58.410Z",
+  "saved_at": "2026-08-26T17:38:06.479Z",
   "saved_by": "cm_command_center_operator"
 }

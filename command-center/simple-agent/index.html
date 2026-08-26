@@ -269,6 +269,11 @@
       padding: 10px;
     }
 
+    .queue-note {
+      border-left: 4px solid var(--yellow);
+      padding-left: 12px;
+    }
+
     a { color: var(--blue); }
 
     @media (max-width: 640px) {
@@ -316,6 +321,14 @@
       </div>
     </section>
 
+    <section id="jsonQueueCard" class="card hidden">
+      <h2>JSON Holding Queue</h2>
+      <p id="jsonQueueSummary" class="queue-note"></p>
+      <div id="jsonQueuePrompt" class="actions">
+        <button id="showJsonQueueBtn" class="primary" type="button">Yes</button>
+      </div>
+      <div id="jsonQueueList" class="list hidden"></div>
+    </section>
 
     <section id="resultsCard" class="card hidden">
       <h2>Agent Cycle Results</h2>
@@ -380,6 +393,11 @@
         summary: document.getElementById("summary"),
         showChecklistsBtn: document.getElementById("showChecklistsBtn"),
         showPrvBtn: document.getElementById("showPrvBtn"),
+        jsonQueueCard: document.getElementById("jsonQueueCard"),
+        jsonQueueSummary: document.getElementById("jsonQueueSummary"),
+        jsonQueuePrompt: document.getElementById("jsonQueuePrompt"),
+        showJsonQueueBtn: document.getElementById("showJsonQueueBtn"),
+        jsonQueueList: document.getElementById("jsonQueueList"),
         checklistCard: document.getElementById("checklistCard"),
         prvCard: document.getElementById("prvCard"),
         checklistList: document.getElementById("checklistList"),
@@ -523,6 +541,62 @@
         if (!parts.length) return "0 products";
         if (parts.length === 1) return parts[0] + " product(s)";
         return parts.slice(0, -1).join(", ") + ", and " + parts[parts.length - 1] + " product(s)";
+      }
+
+      function queueKey(item) {
+        return [item && item.sport || "", item && item.bucket || "", item && item.code || ""].join("|");
+      }
+
+      function queuedWriteData(item) {
+        return {
+          target_bucket: item.bucket || "",
+          product: {
+            display_name: item.product || item.code || "Checklist JSON publish",
+            code: item.code || "",
+            sport: item.sport || "",
+            target_bucket: item.bucket || "",
+            year: item.bucket || ""
+          }
+        };
+      }
+
+      function removeJsonRetryQueueItem(item) {
+        const key = queueKey(item);
+        writeJsonRetryQueue(readJsonRetryQueue().filter(existing => queueKey(existing) !== key));
+        renderJsonRetryNotice();
+      }
+
+      function renderJsonRetryNotice() {
+        const queue = readJsonRetryQueue();
+        if (!queue.length) {
+          els.jsonQueueCard.classList.add("hidden");
+          els.jsonQueueList.classList.add("hidden");
+          els.jsonQueueList.innerHTML = "";
+          return;
+        }
+
+        els.jsonQueueSummary.textContent = "You have " + queue.length + " JSON file(s) needing to be uploaded. Proceed with a reattempt?";
+        els.jsonQueueCard.classList.remove("hidden");
+        els.jsonQueuePrompt.classList.remove("hidden");
+      }
+
+      function renderJsonRetryList() {
+        const queue = readJsonRetryQueue();
+        els.jsonQueuePrompt.classList.add("hidden");
+        els.jsonQueueList.classList.remove("hidden");
+        els.jsonQueueList.innerHTML = queue.map((item, index) => `
+          <div class="item">
+            <h3>JSON PUBLISH REATTEMPT</h3>
+            <div class="item-title">${escapeHtml(item.product || item.code || "Checklist JSON publish")}</div>
+            <div class="muted">${escapeHtml(item.reason || "Queued for future JSON publish retry.")}</div>
+            <span class="tag">${escapeHtml(item.sport || "unknown sport")}</span>
+            <span class="tag">Bucket: ${escapeHtml(item.bucket || "")}</span>
+            <span class="tag">Code: ${escapeHtml(item.code || "")}</span>
+            <div class="item-actions">
+              <button class="primary" type="button" data-update-json-index="${escapeHtml(index)}">Update JSON</button>
+            </div>
+          </div>
+        `).join("");
       }
 
       function renderDiscoverySummary(note) {
@@ -728,20 +802,22 @@
         const next = queue.filter(existing => [existing.sport, existing.bucket, existing.code].join("|") !== key);
         next.unshift(item);
         writeJsonRetryQueue(next.slice(0, 50));
+        renderJsonRetryNotice();
         openPreviewModal("Future retry queued", item.product || item.code || "Checklist JSON publish", '<div class="guardrail">Sentinel saved this product for a future JSON publish retry.</div>');
       }
 
-      function renderPublishFailure(writeData, attempt, detail) {
+      function renderPublishFailure(writeData, attempt, detail, queuedItem) {
         const product = writeData && writeData.product ? writeData.product : {};
         const isFinal = attempt >= JSON_RETRY_LIMIT;
+        const attemptLabel = attempt === 1 ? "First attempt" : "Attempt " + attempt;
         const body = isFinal
           ? '<div class="guardrail">Fifth attempt failed. Do you want me to queue this for a future retry?</div><div class="actions"><button class="primary" type="button" data-queue-future-publish>Yes</button><button type="button" data-close-preview>No</button></div>'
-          : '<div class="guardrail">First attempt failed. Requeueing another attempt in 30 seconds.</div><div class="status-line"><span class="dot working"></span><span id="publishCountdown">Retry ' + (attempt + 1) + ' of ' + JSON_RETRY_LIMIT + ' starts in 30s.</span></div>';
+          : '<div class="guardrail">' + escapeHtml(attemptLabel) + ' failed. Requeueing another attempt in 30 seconds.</div><div class="status-line"><span class="dot working"></span><span id="publishCountdown">Retry ' + (attempt + 1) + ' of ' + JSON_RETRY_LIMIT + ' starts in 30s.</span></div>';
         openPreviewModal(isFinal ? "JSON publish failed" : "JSON publish retry queued", product.display_name || product.code || "Checklist JSON publish", body);
-        if (!isFinal) startPublishCountdown(writeData, attempt + 1);
+        if (!isFinal) startPublishCountdown(writeData, attempt + 1, queuedItem);
       }
 
-      function startPublishCountdown(writeData, nextAttempt) {
+      function startPublishCountdown(writeData, nextAttempt, queuedItem) {
         if (state.publishTimer) clearInterval(state.publishTimer);
         let remaining = JSON_RETRY_DELAY_MS / 1000;
         state.publishTimer = setInterval(() => {
@@ -751,12 +827,12 @@
           if (remaining <= 0) {
             clearInterval(state.publishTimer);
             state.publishTimer = null;
-            publishJsonWithRetry(writeData, nextAttempt);
+            publishJsonWithRetry(writeData, nextAttempt, queuedItem);
           }
         }, 1000);
       }
 
-      function renderPublishSuccess(writeData, data, attempt) {
+      function renderPublishSuccess(writeData, data, attempt, queuedItem) {
         const product = writeData && writeData.product ? writeData.product : {};
         const publish = data && data.publish ? data.publish : data || {};
         const validation = publish.validation || data && data.validation || {};
@@ -764,6 +840,7 @@
         const publicValidation = validation.public || {};
         const checklistVault = validation.checklist_vault || {};
         const chatbot = validation.chatbot || {};
+        if (queuedItem) removeJsonRetryQueueItem(queuedItem);
         openPreviewModal("JSON Published", product.display_name || product.code || "Checklist JSON publish", `
           <div class="preview-meta">
             <span class="tag">Attempt: ${formatNumber(attempt)}</span>
@@ -779,7 +856,7 @@
         `);
       }
 
-      async function publishJsonWithRetry(writeData, attempt) {
+      async function publishJsonWithRetry(writeData, attempt, queuedItem) {
         const product = writeData && writeData.product ? writeData.product : {};
         const key = requireOperatorKey();
         const bucket = writeData && (writeData.target_bucket || product.target_bucket || product.year || "");
@@ -799,12 +876,12 @@
           }, 240000);
           const published = !!(data && (data.ok || data.public_pending || data.status === "published_pages_pending" || data.publish && (data.publish.ok || data.publish.status === "published_pages_pending")));
           if (published) {
-            renderPublishSuccess(writeData, data, attempt);
+            renderPublishSuccess(writeData, data, attempt, queuedItem);
             return;
           }
-          renderPublishFailure(writeData, attempt, data && (data.error || data.reason || data.next_step) || "Publish response needs review.");
+          renderPublishFailure(writeData, attempt, data && (data.error || data.reason || data.next_step) || "Publish response needs review.", queuedItem);
         } catch (err) {
-          renderPublishFailure(writeData, attempt, err && err.message ? err.message : "Publish request failed.");
+          renderPublishFailure(writeData, attempt, err && err.message ? err.message : "Publish request failed.", queuedItem);
         }
       }
 
@@ -935,6 +1012,7 @@
       els.previewModal.addEventListener("click", event => {
         if (event.target === els.previewModal) closePreviewModal();
       });
+      els.showJsonQueueBtn.addEventListener("click", renderJsonRetryList);
       document.addEventListener("click", event => {
         const button = event.target.closest("[data-preview-type]");
         if (!button) return;
@@ -956,6 +1034,18 @@
         queueFuturePublishRetry(state.lastWriteData, "Publish failed after 5 attempts.");
       });
       document.addEventListener("click", event => {
+        const button = event.target.closest("[data-update-json-index]");
+        if (!button) return;
+        const item = readJsonRetryQueue()[Number(button.dataset.updateJsonIndex)];
+        if (!item) {
+          openPreviewModal("Queued item missing", "This JSON retry item is no longer available.", '<div class="guardrail">Refresh the page and check the holding queue again.</div>');
+          return;
+        }
+        const writeData = queuedWriteData(item);
+        state.lastWriteData = writeData;
+        publishJsonWithRetry(writeData, 1, item);
+      });
+      document.addEventListener("click", event => {
         const button = event.target.closest("[data-close-preview]");
         if (!button) return;
         closePreviewModal();
@@ -967,6 +1057,7 @@
         els.prvCard.classList.toggle("hidden");
       });
       animateWaiting();
+      renderJsonRetryNotice();
       startIntro();
     })();
   </script>

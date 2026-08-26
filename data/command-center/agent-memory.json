@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-26T18:29:09.372Z",
+  "exported_at": "2026-08-26T18:31:47.420Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -653,11 +653,11 @@
       "sport": "basketball",
       "code": "2025_26_panini_origins_basketball",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "needs_admin",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "executionResult": "JSON publish needs review.",
+      "validationResult": "Sheet write succeeded, but publish/live validation needs review.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-panini-origins-basketball-card-checklist/",
       "bucket": "",
@@ -665,7 +665,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.101Z",
-      "updatedAt": "2026-08-26T18:29:07.771Z"
+      "updatedAt": "2026-08-26T18:31:45.809Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 upper deck premier hockey",
@@ -760,6 +760,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1787769105817_l37pgn",
+      "ts": "2026-08-26T18:31:45.817Z",
+      "type": "checklist_publish",
+      "title": "JSON publish needs review",
+      "detail": "Sheet write succeeded, but publish/live validation needs review.",
+      "status": "failed",
+      "product": "2025-26 Panini Origins Basketball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1787768947770_v2cnq4",
       "ts": "2026-08-26T18:29:07.770Z",
@@ -5658,7 +5668,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:29:09.372Z",
+      "ignoredAt": "2026-08-26T18:31:47.419Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5667,7 +5677,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:29:09.372Z",
+      "ignoredAt": "2026-08-26T18:31:47.420Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -6225,7 +6235,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:29:09.372Z",
+      "ignoredAt": "2026-08-26T18:31:47.420Z",
       "resolved": true
     },
     "hockey|2026_27_upper_deck_mvp_hockey": {
@@ -6234,7 +6244,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:29:09.372Z",
+      "ignoredAt": "2026-08-26T18:31:47.420Z",
       "resolved": true
     },
     "hockey|https www checklistcenter com 2026-27-upper-deck-mvp-hockey-card-checklist": {
@@ -6266,6 +6276,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-26T18:29:10.830Z",
+  "saved_at": "2026-08-26T18:31:48.997Z",
   "saved_by": "cm_command_center_operator"
 }

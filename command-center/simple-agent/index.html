@@ -355,12 +355,17 @@
       const VERSION = "simple-agent-v1-2026-08-26";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
+      const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
+      const JSON_RETRY_DELAY_MS = 30000;
+      const JSON_RETRY_LIMIT = 5;
       const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
 
       const state = {
         checklist: [],
         prv: [],
-        statusTimer: null
+        statusTimer: null,
+        lastWriteData: null,
+        publishTimer: null
       };
 
       const els = {
@@ -665,8 +670,14 @@
           return;
         }
 
+        state.lastWriteData = data;
         const product = data.product || {};
         const validation = data.validation || {};
+        const bucket = data.target_bucket || product.target_bucket || product.year || "";
+        const canPublish = product.code && product.sport && bucket;
+        const publishButton = canPublish
+          ? '<button class="primary" type="button" data-publish-json>Publish JSON</button>'
+          : '<button type="button" disabled>Publish JSON</button>';
         openPreviewModal("Google Sheet Updated", product.display_name || "Untitled product", `
           <div class="preview-meta">
             <span class="tag">REVIEW</span>
@@ -683,7 +694,118 @@
             <span class="tag">ChatBot: Review</span>
           </div>
           <div class="guardrail">Sheet write succeeded. JSON publish is intentionally waiting for the soak window before validation.</div>
+          <div class="actions">${publishButton}</div>
         `);
+      }
+
+      function readJsonRetryQueue() {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(JSON_RETRY_QUEUE_KEY) || "[]");
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (err) {
+          return [];
+        }
+      }
+
+      function writeJsonRetryQueue(queue) {
+        try {
+          localStorage.setItem(JSON_RETRY_QUEUE_KEY, JSON.stringify(queue || []));
+        } catch (err) {}
+      }
+
+      function queueFuturePublishRetry(writeData, detail) {
+        const product = writeData && writeData.product ? writeData.product : {};
+        const queue = readJsonRetryQueue();
+        const item = {
+          product: product.display_name || "",
+          code: product.code || "",
+          sport: product.sport || "",
+          bucket: writeData.target_bucket || product.target_bucket || product.year || "",
+          queued_at: new Date().toISOString(),
+          reason: detail || "Publish failed after 5 attempts."
+        };
+        const key = [item.sport, item.bucket, item.code].join("|");
+        const next = queue.filter(existing => [existing.sport, existing.bucket, existing.code].join("|") !== key);
+        next.unshift(item);
+        writeJsonRetryQueue(next.slice(0, 50));
+        openPreviewModal("Future retry queued", item.product || item.code || "Checklist JSON publish", '<div class="guardrail">Sentinel saved this product for a future JSON publish retry.</div>');
+      }
+
+      function renderPublishFailure(writeData, attempt, detail) {
+        const product = writeData && writeData.product ? writeData.product : {};
+        const isFinal = attempt >= JSON_RETRY_LIMIT;
+        const body = isFinal
+          ? '<div class="guardrail">Fifth attempt failed. Do you want me to queue this for a future retry?</div><div class="actions"><button class="primary" type="button" data-queue-future-publish>Yes</button><button type="button" data-close-preview>No</button></div>'
+          : '<div class="guardrail">First attempt failed. Requeueing another attempt in 30 seconds.</div><div class="status-line"><span class="dot working"></span><span id="publishCountdown">Retry ' + (attempt + 1) + ' of ' + JSON_RETRY_LIMIT + ' starts in 30s.</span></div>';
+        openPreviewModal(isFinal ? "JSON publish failed" : "JSON publish retry queued", product.display_name || product.code || "Checklist JSON publish", body);
+        if (!isFinal) startPublishCountdown(writeData, attempt + 1);
+      }
+
+      function startPublishCountdown(writeData, nextAttempt) {
+        if (state.publishTimer) clearInterval(state.publishTimer);
+        let remaining = JSON_RETRY_DELAY_MS / 1000;
+        state.publishTimer = setInterval(() => {
+          remaining -= 1;
+          const label = document.getElementById("publishCountdown");
+          if (label) label.textContent = "Retry " + nextAttempt + " of " + JSON_RETRY_LIMIT + " starts in " + remaining + "s.";
+          if (remaining <= 0) {
+            clearInterval(state.publishTimer);
+            state.publishTimer = null;
+            publishJsonWithRetry(writeData, nextAttempt);
+          }
+        }, 1000);
+      }
+
+      function renderPublishSuccess(writeData, data, attempt) {
+        const product = writeData && writeData.product ? writeData.product : {};
+        const publish = data && data.publish ? data.publish : data || {};
+        const validation = publish.validation || data && data.validation || {};
+        const github = validation.github || {};
+        const publicValidation = validation.public || {};
+        const checklistVault = validation.checklist_vault || {};
+        const chatbot = validation.chatbot || {};
+        openPreviewModal("JSON Published", product.display_name || product.code || "Checklist JSON publish", `
+          <div class="preview-meta">
+            <span class="tag">Attempt: ${formatNumber(attempt)}</span>
+            <span class="tag">GitHub publish: Complete</span>
+            <span class="tag">GitHub rows: ${formatNumber(github.row_count || 0)}</span>
+            <span class="tag">GitHub parallels: ${formatNumber(github.parallel_count || 0)}</span>
+            <span class="tag">Public rows: ${formatNumber(publicValidation.row_count || 0)}</span>
+            <span class="tag">Public parallels: ${formatNumber(publicValidation.parallel_count || 0)}</span>
+            <span class="tag">CV: ${checklistVault.ok ? "Passed" : "Review"}</span>
+            <span class="tag">ChatBot: ${chatbot.ok ? "Passed" : "Review"}</span>
+          </div>
+          <div class="guardrail">${escapeHtml(data && data.next_step || "Published. Public validation may still need the normal GitHub Pages soak window.")}</div>
+        `);
+      }
+
+      async function publishJsonWithRetry(writeData, attempt) {
+        const product = writeData && writeData.product ? writeData.product : {};
+        const key = requireOperatorKey();
+        const bucket = writeData && (writeData.target_bucket || product.target_bucket || product.year || "");
+        if (!key || !product.code || !product.sport || !bucket) {
+          openPreviewModal("Publish details missing", product.display_name || product.code || "Checklist JSON publish", '<div class="guardrail">Sentinel needs product code, sport, bucket, and admin key before publishing JSON.</div>');
+          return;
+        }
+
+        openPreviewModal("Publishing JSON", product.display_name || product.code || "Checklist JSON publish", '<div class="status-line"><span class="dot working"></span><span>Attempt ' + attempt + ' of ' + JSON_RETRY_LIMIT + ' is running.</span></div>');
+        try {
+          const data = await postOperatorJson(DEFAULT_OPERATOR_URL, {
+            action: "publishImportedChecklist",
+            sport: product.sport || "",
+            bucket: bucket,
+            code: product.code || "",
+            key: key
+          }, 240000);
+          const published = !!(data && (data.ok || data.public_pending || data.status === "published_pages_pending" || data.publish && (data.publish.ok || data.publish.status === "published_pages_pending")));
+          if (published) {
+            renderPublishSuccess(writeData, data, attempt);
+            return;
+          }
+          renderPublishFailure(writeData, attempt, data && (data.error || data.reason || data.next_step) || "Publish response needs review.");
+        } catch (err) {
+          renderPublishFailure(writeData, attempt, err && err.message ? err.message : "Publish request failed.");
+        }
       }
 
       async function writeChecklistSource(sourceUrl, sport) {
@@ -822,6 +944,21 @@
         const button = event.target.closest("[data-write-checklist-source]");
         if (!button) return;
         writeChecklistSource(button.dataset.writeChecklistSource, button.dataset.writeChecklistSport || "");
+      });
+      document.addEventListener("click", event => {
+        const button = event.target.closest("[data-publish-json]");
+        if (!button) return;
+        publishJsonWithRetry(state.lastWriteData, 1);
+      });
+      document.addEventListener("click", event => {
+        const button = event.target.closest("[data-queue-future-publish]");
+        if (!button) return;
+        queueFuturePublishRetry(state.lastWriteData, "Publish failed after 5 attempts.");
+      });
+      document.addEventListener("click", event => {
+        const button = event.target.closest("[data-close-preview]");
+        if (!button) return;
+        closePreviewModal();
       });
       els.showChecklistsBtn.addEventListener("click", () => {
         els.checklistCard.classList.toggle("hidden");

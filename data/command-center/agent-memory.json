@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-26T17:50:18.364Z",
+  "exported_at": "2026-08-26T17:54:18.594Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -521,11 +521,11 @@
       "sport": "baseball",
       "code": "2026_topps_pristine_baseball",
       "riskLevel": "medium",
-      "status": "running",
-      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
+      "status": "needs_admin",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed. JSON publish started.",
-      "validationResult": "CV/ChatBot validation needs review.",
+      "executionResult": "Sheet write completed; JSON publish request failed.",
+      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-pristine-baseball-card-checklist/",
       "bucket": "",
@@ -533,7 +533,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.102Z",
-      "updatedAt": "2026-08-26T17:50:16.762Z"
+      "updatedAt": "2026-08-26T17:54:16.906Z"
     },
     {
       "id": "source_import|wordpress_api|2026 upper deck cfl football",
@@ -760,6 +760,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1787766856991_rvlr7m",
+      "ts": "2026-08-26T17:54:16.992Z",
+      "type": "checklist_publish",
+      "title": "JSON publish failed",
+      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
+      "product": "2026 Topps Pristine Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1787766616762_jdp34i",
       "ts": "2026-08-26T17:50:16.762Z",
@@ -5538,7 +5548,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:50:18.364Z",
+      "ignoredAt": "2026-08-26T17:54:18.594Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5547,7 +5557,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:50:18.364Z",
+      "ignoredAt": "2026-08-26T17:54:18.594Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -6105,7 +6115,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:50:18.364Z",
+      "ignoredAt": "2026-08-26T17:54:18.594Z",
       "resolved": true
     },
     "hockey|2026_27_upper_deck_mvp_hockey": {
@@ -6114,7 +6124,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:50:18.364Z",
+      "ignoredAt": "2026-08-26T17:54:18.594Z",
       "resolved": true
     },
     "hockey|https www checklistcenter com 2026-27-upper-deck-mvp-hockey-card-checklist": {
@@ -6146,6 +6156,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-26T17:50:19.437Z",
+  "saved_at": "2026-08-26T17:54:20.234Z",
   "saved_by": "cm_command_center_operator"
 }

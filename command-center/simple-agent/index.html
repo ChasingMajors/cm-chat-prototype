@@ -15,6 +15,7 @@
       --green: #0f8f3d;
       --yellow: #9a6a00;
       --red: #b42318;
+      --fade: 180ms ease;
     }
 
     * { box-sizing: border-box; }
@@ -97,21 +98,6 @@
       opacity: 0.65;
     }
 
-    input {
-      width: 100%;
-      min-height: 38px;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 8px 10px;
-      color: var(--text);
-    }
-
-    .setup-grid {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      align-items: end;
-    }
 
     .status-line {
       display: flex;
@@ -119,6 +105,20 @@
       align-items: center;
       color: var(--muted);
       margin-top: 10px;
+      min-height: 22px;
+    }
+
+    .intro-actions {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(4px);
+      transition: opacity var(--fade), transform var(--fade);
+    }
+
+    .intro-actions.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
     }
 
     .dot {
@@ -127,11 +127,30 @@
       border-radius: 50%;
       background: var(--muted);
       flex: 0 0 auto;
+      animation: softPulse 1.4s ease-in-out infinite;
     }
 
     .dot.ready { background: var(--green); }
     .dot.working { background: var(--yellow); }
     .dot.issue { background: var(--red); }
+
+    .typing::after {
+      content: "|";
+      display: inline-block;
+      margin-left: 2px;
+      color: var(--muted);
+      animation: caretBlink 800ms steps(1, end) infinite;
+    }
+
+    @keyframes caretBlink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    @keyframes softPulse {
+      0%, 100% { transform: scale(1); opacity: 0.65; }
+      50% { transform: scale(1.25); opacity: 1; }
+    }
 
     .summary {
       border-left: 4px solid var(--blue);
@@ -178,10 +197,6 @@
         margin: 20px auto;
       }
 
-      .setup-grid {
-        grid-template-columns: 1fr;
-      }
-
       .actions {
         align-items: stretch;
         flex-direction: column;
@@ -196,32 +211,18 @@
 <body>
   <main>
     <section class="card">
-      <h1>Welcome ChasingMajors Team.</h1>
-      <p class="muted">Ready to run an Agent Cycle?</p>
-      <div class="actions">
+      <h1 id="welcomeText" aria-label="Welcome ChasingMajors Team."></h1>
+      <p id="readyText" class="muted" aria-label="Ready to run an Agent Cycle?"></p>
+      <div id="introActions" class="actions intro-actions">
         <button id="yesBtn" class="primary" type="button">Yes</button>
         <button id="noBtn" type="button">No</button>
       </div>
       <div id="runStatus" class="status-line">
         <span class="dot"></span>
-        <span>Waiting.</span>
+        <span id="waitingText">Waiting</span>
       </div>
     </section>
 
-    <section class="card">
-      <h2>Backend Setup</h2>
-      <div class="setup-grid">
-        <label>
-          Operator Backend URL
-          <input id="operatorUrl" type="url" placeholder="https://script.google.com/macros/s/.../exec" />
-        </label>
-        <button id="saveBtn" type="button">Save</button>
-      </div>
-      <div id="setupStatus" class="status-line">
-        <span class="dot"></span>
-        <span>Operator URL is checked before running.</span>
-      </div>
-    </section>
 
     <section id="resultsCard" class="card hidden">
       <h2>Agent Cycle Results</h2>
@@ -246,8 +247,6 @@
   <script>
     (function () {
       const VERSION = "simple-agent-v1-2026-08-26";
-      const OPERATOR_ENDPOINT_KEY = "cm_command_center_operator_endpoint_v1";
-      const REQUIRED_OPERATOR_VERSION = "2026-08-05-operator-cc166-prv-direct-source-watch";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
 
@@ -259,10 +258,11 @@
       const els = {
         yesBtn: document.getElementById("yesBtn"),
         noBtn: document.getElementById("noBtn"),
-        saveBtn: document.getElementById("saveBtn"),
-        operatorUrl: document.getElementById("operatorUrl"),
-        setupStatus: document.getElementById("setupStatus"),
+        welcomeText: document.getElementById("welcomeText"),
+        readyText: document.getElementById("readyText"),
+        introActions: document.getElementById("introActions"),
         runStatus: document.getElementById("runStatus"),
+        waitingText: document.getElementById("waitingText"),
         resultsCard: document.getElementById("resultsCard"),
         summary: document.getElementById("summary"),
         showChecklistsBtn: document.getElementById("showChecklistsBtn"),
@@ -272,20 +272,6 @@
         checklistList: document.getElementById("checklistList"),
         prvList: document.getElementById("prvList")
       };
-
-      function readOperatorUrl() {
-        try {
-          return String(localStorage.getItem(OPERATOR_ENDPOINT_KEY) || "").trim() || DEFAULT_OPERATOR_URL;
-        } catch (err) {
-          return DEFAULT_OPERATOR_URL;
-        }
-      }
-
-      function saveOperatorUrl(value) {
-        try {
-          localStorage.setItem(OPERATOR_ENDPOINT_KEY, String(value || "").trim());
-        } catch (err) {}
-      }
 
       function setStatus(node, kind, text) {
         const dot = node.querySelector(".dot");
@@ -317,9 +303,6 @@
         const health = await fetchJson(withQuery(endpoint, { action: "health" }), 30000);
         if (!health || !health.ok || health.service !== "cm_command_center_operator") {
           throw new Error("This is not the Command Center Operator Backend.");
-        }
-        if (health.version !== REQUIRED_OPERATOR_VERSION) {
-          throw new Error("Operator Backend is outdated. Live: " + (health.version || "unknown") + ". Required: " + REQUIRED_OPERATOR_VERSION + ".");
         }
         return health;
       }
@@ -397,11 +380,7 @@
       }
 
       async function runSimpleAgentCycle() {
-        const endpoint = els.operatorUrl.value.trim();
-        if (!endpoint) {
-          setStatus(els.setupStatus, "issue", "Operator Backend URL is missing.");
-          return;
-        }
+        const endpoint = DEFAULT_OPERATOR_URL;
 
         els.yesBtn.disabled = true;
         setStatus(els.runStatus, "working", "Running checklist and print run checks.");
@@ -411,9 +390,6 @@
 
         try {
           const health = await checkOperator(endpoint);
-          saveOperatorUrl(endpoint);
-          setStatus(els.setupStatus, "ready", "Operator ready: " + health.version);
-
           const checklistUrl = withQuery(endpoint, { action: "sourceWatch", mode: "quick_json" });
           const prvUrl = withQuery(endpoint, { action: "prvSourceWatch", mode: "quick_json" });
           const results = await Promise.all([
@@ -445,18 +421,38 @@
         }
       }
 
-      els.operatorUrl.value = readOperatorUrl();
-      els.saveBtn.addEventListener("click", async () => {
-        const endpoint = els.operatorUrl.value.trim();
-        saveOperatorUrl(endpoint);
-        setStatus(els.setupStatus, "working", "Checking Operator Backend.");
-        try {
-          const health = await checkOperator(endpoint);
-          setStatus(els.setupStatus, "ready", "Operator ready: " + health.version);
-        } catch (err) {
-          setStatus(els.setupStatus, "issue", err && err.message ? err.message : "Operator check failed.");
-        }
-      });
+      function animateWaiting() {
+        let dots = 0;
+        setInterval(() => {
+          dots = dots === 3 ? 0 : dots + 1;
+          if (els.waitingText && els.waitingText.textContent.indexOf("Waiting") === 0) {
+            els.waitingText.textContent = "Waiting" + ".".repeat(dots);
+          }
+        }, 450);
+      }
+
+      function typeText(node, text, done) {
+        let index = 0;
+        node.classList.add("typing");
+        const timer = setInterval(() => {
+          node.textContent = text.slice(0, index + 1);
+          index += 1;
+          if (index >= text.length) {
+            clearInterval(timer);
+            node.classList.remove("typing");
+            if (done) setTimeout(done, 180);
+          }
+        }, 34);
+      }
+
+      function startIntro() {
+        typeText(els.welcomeText, "Welcome ChasingMajors Team.", () => {
+          typeText(els.readyText, "Ready to run an Agent Cycle?", () => {
+            els.introActions.classList.add("visible");
+          });
+        });
+      }
+
       els.yesBtn.addEventListener("click", runSimpleAgentCycle);
       els.noBtn.addEventListener("click", () => {});
       els.showChecklistsBtn.addEventListener("click", () => {
@@ -465,7 +461,8 @@
       els.showPrvBtn.addEventListener("click", () => {
         els.prvCard.classList.toggle("hidden");
       });
-      setStatus(els.setupStatus, "", "Version " + VERSION + ". Save or run to check Operator Backend.");
+      animateWaiting();
+      startIntro();
     })();
   </script>
 </body>

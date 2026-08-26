@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-26T17:47:39.988Z",
+  "exported_at": "2026-08-26T17:48:04.799Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -427,17 +427,17 @@
     },
     {
       "id": "source_import|wordpress_api|2026 panini intl mexico soccer",
-      "type": "source_import",
-      "source": "wordpress_api",
+      "type": "checklist_publish",
+      "source": "operator_backend",
       "product": "2026 Panini INTL Mexico Soccer",
       "sport": "soccer",
-      "code": "",
+      "code": "2026_panini_intl_mexico_soccer",
       "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "status": "running",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "Sheet write completed. JSON publish started.",
+      "validationResult": "CV/ChatBot validation needs review.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-intl-mexico-soccer-card-checklist/",
       "bucket": "",
@@ -445,7 +445,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.103Z",
-      "updatedAt": "2026-08-26T17:10:51.103Z"
+      "updatedAt": "2026-08-26T17:48:03.197Z"
     },
     {
       "id": "source_import|wordpress_api|2026 panini intl france soccer",
@@ -760,6 +760,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1787766483196_tdrtc6",
+      "ts": "2026-08-26T17:48:03.196Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2026 Panini INTL Mexico Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1787766483184_x76d1e",
+      "ts": "2026-08-26T17:48:03.184Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "140 checklist rows and 46 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2026 Panini INTL Mexico Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1787766464094_5ig332",
+      "ts": "2026-08-26T17:47:44.094Z",
+      "type": "source_import",
+      "title": "Sheet write started",
+      "detail": "Admin requested product-scoped write to Google Sheets.",
+      "status": "started",
+      "product": "2026 Panini INTL Mexico Soccer",
+      "source": "admin"
+    },
+    {
+      "id": "log_1787766460861_3gf9g5",
+      "ts": "2026-08-26T17:47:40.861Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "140 rows and 46 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2026 Panini INTL Mexico Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1787766458375_n8toue",
       "ts": "2026-08-26T17:47:38.375Z",
@@ -5438,7 +5478,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:47:39.987Z",
+      "ignoredAt": "2026-08-26T17:48:04.799Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5447,7 +5487,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:47:39.988Z",
+      "ignoredAt": "2026-08-26T17:48:04.799Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -6005,7 +6045,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:47:39.988Z",
+      "ignoredAt": "2026-08-26T17:48:04.799Z",
       "resolved": true
     },
     "hockey|2026_27_upper_deck_mvp_hockey": {
@@ -6014,7 +6054,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T17:47:39.988Z",
+      "ignoredAt": "2026-08-26T17:48:04.799Z",
       "resolved": true
     },
     "hockey|https www checklistcenter com 2026-27-upper-deck-mvp-hockey-card-checklist": {
@@ -6046,6 +6086,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-26T17:47:42.896Z",
+  "saved_at": "2026-08-26T17:48:06.090Z",
   "saved_by": "cm_command_center_operator"
 }

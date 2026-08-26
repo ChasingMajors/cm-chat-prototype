@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-26T18:18:30.475Z",
+  "exported_at": "2026-08-26T18:18:48.907Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -559,25 +559,25 @@
     },
     {
       "id": "source_import|wordpress_api|2026 topps chrome logofractor baseball",
-      "type": "source_import",
-      "source": "wordpress_api",
+      "type": "checklist_publish",
+      "source": "operator_backend",
       "product": "2026 Topps Chrome LogoFractor Baseball",
       "sport": "baseball",
       "code": "2026_topps_chrome_logofractor_baseball",
       "riskLevel": "medium",
       "status": "running",
-      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
+      "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint and product bucket/code are correct.",
       "adminDecision": "",
-      "executionResult": "Sheet write started through Operator Backend.",
-      "validationResult": "Preview rows are ready for admin review before sheet write.",
-      "runUrl": "https://www.checklistcenter.com/2026-topps-chrome-logofractor-baseball-card-checklist/",
+      "executionResult": "Sheet write completed. JSON publish started.",
+      "validationResult": "CV/ChatBot validation needs review.",
+      "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-logofractor-baseball-card-checklist/",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.102Z",
-      "updatedAt": "2026-08-26T18:18:28.871Z"
+      "updatedAt": "2026-08-26T18:18:47.305Z"
     },
     {
       "id": "source_import|wordpress_api|2026 topps flagship football",
@@ -760,6 +760,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1787768327305_g4knzx",
+      "ts": "2026-08-26T18:18:47.305Z",
+      "type": "checklist_publish",
+      "title": "JSON publish started",
+      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
+      "status": "started",
+      "product": "2026 Topps Chrome LogoFractor Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1787768327295_xy6asq",
+      "ts": "2026-08-26T18:18:47.295Z",
+      "type": "checklist_publish",
+      "title": "Checklist data written",
+      "detail": "495 checklist rows and 58 parallels validated in the source sheet.",
+      "status": "needs_review",
+      "product": "2026 Topps Chrome LogoFractor Baseball",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1787768308849_g03jhe",
       "ts": "2026-08-26T18:18:28.850Z",
@@ -5578,7 +5598,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:18:30.474Z",
+      "ignoredAt": "2026-08-26T18:18:48.907Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5587,7 +5607,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:18:30.474Z",
+      "ignoredAt": "2026-08-26T18:18:48.907Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -6145,7 +6165,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:18:30.475Z",
+      "ignoredAt": "2026-08-26T18:18:48.907Z",
       "resolved": true
     },
     "hockey|2026_27_upper_deck_mvp_hockey": {
@@ -6154,7 +6174,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:18:30.475Z",
+      "ignoredAt": "2026-08-26T18:18:48.907Z",
       "resolved": true
     },
     "hockey|https www checklistcenter com 2026-27-upper-deck-mvp-hockey-card-checklist": {
@@ -6186,6 +6206,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-26T18:18:31.846Z",
+  "saved_at": "2026-08-26T18:18:49.704Z",
   "saved_by": "cm_command_center_operator"
 }

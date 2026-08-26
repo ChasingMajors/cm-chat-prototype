@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CM Sentinel Simple Agent</title>
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --panel: #ffffff;
+      --text: #111111;
+      --muted: #555555;
+      --border: #d7d7d7;
+      --blue: #0b63ce;
+      --green: #0f8f3d;
+      --yellow: #9a6a00;
+      --red: #b42318;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    main {
+      width: min(920px, calc(100% - 32px));
+      margin: 48px auto;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 20px;
+      margin-bottom: 14px;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      font-size: 22px;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    h3 {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    p, label, input, button, li {
+      font-size: 14px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    button {
+      border: 1px solid #1f2937;
+      border-radius: 4px;
+      background: #ffffff;
+      color: #111111;
+      cursor: pointer;
+      min-height: 38px;
+      padding: 8px 14px;
+      font-weight: 700;
+    }
+
+    button.primary {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #ffffff;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.65;
+    }
+
+    input {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 8px 10px;
+      color: var(--text);
+    }
+
+    .setup-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .status-line {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--muted);
+      flex: 0 0 auto;
+    }
+
+    .dot.ready { background: var(--green); }
+    .dot.working { background: var(--yellow); }
+    .dot.issue { background: var(--red); }
+
+    .summary {
+      border-left: 4px solid var(--blue);
+      padding-left: 12px;
+      margin-top: 12px;
+      white-space: pre-line;
+    }
+
+    .hidden { display: none; }
+
+    .list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .item {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px;
+      background: #ffffff;
+    }
+
+    .item-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .tag {
+      display: inline-block;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin: 4px 6px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    a { color: var(--blue); }
+
+    @media (max-width: 640px) {
+      main {
+        width: calc(100% - 20px);
+        margin: 20px auto;
+      }
+
+      .setup-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="card">
+      <h1>Welcome ChasingMajors Team.</h1>
+      <p class="muted">Ready to run an Agent Cycle?</p>
+      <div class="actions">
+        <button id="yesBtn" class="primary" type="button">Yes</button>
+        <button id="noBtn" type="button">No</button>
+      </div>
+      <div id="runStatus" class="status-line">
+        <span class="dot"></span>
+        <span>Waiting.</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Backend Setup</h2>
+      <div class="setup-grid">
+        <label>
+          Operator Backend URL
+          <input id="operatorUrl" type="url" placeholder="https://script.google.com/macros/s/.../exec" />
+        </label>
+        <button id="saveBtn" type="button">Save</button>
+      </div>
+      <div id="setupStatus" class="status-line">
+        <span class="dot"></span>
+        <span>Operator URL is checked before running.</span>
+      </div>
+    </section>
+
+    <section id="resultsCard" class="card hidden">
+      <h2>Agent Cycle Results</h2>
+      <div id="summary" class="summary"></div>
+      <div class="actions">
+        <button id="showChecklistsBtn" type="button">List Missing Checklist Product(s)</button>
+        <button id="showPrvBtn" type="button">List Missing Print Run Product(s)</button>
+      </div>
+    </section>
+
+    <section id="checklistCard" class="card hidden">
+      <h2>Missing Checklist Product(s)</h2>
+      <div id="checklistList" class="list"></div>
+    </section>
+
+    <section id="prvCard" class="card hidden">
+      <h2>Missing Print Run Product(s)</h2>
+      <div id="prvList" class="list"></div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const VERSION = "simple-agent-v1-2026-08-26";
+      const OPERATOR_ENDPOINT_KEY = "cm_command_center_operator_endpoint_v1";
+      const REQUIRED_OPERATOR_VERSION = "2026-08-05-operator-cc166-prv-direct-source-watch";
+      const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
+      const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
+
+      const state = {
+        checklist: [],
+        prv: []
+      };
+
+      const els = {
+        yesBtn: document.getElementById("yesBtn"),
+        noBtn: document.getElementById("noBtn"),
+        saveBtn: document.getElementById("saveBtn"),
+        operatorUrl: document.getElementById("operatorUrl"),
+        setupStatus: document.getElementById("setupStatus"),
+        runStatus: document.getElementById("runStatus"),
+        resultsCard: document.getElementById("resultsCard"),
+        summary: document.getElementById("summary"),
+        showChecklistsBtn: document.getElementById("showChecklistsBtn"),
+        showPrvBtn: document.getElementById("showPrvBtn"),
+        checklistCard: document.getElementById("checklistCard"),
+        prvCard: document.getElementById("prvCard"),
+        checklistList: document.getElementById("checklistList"),
+        prvList: document.getElementById("prvList")
+      };
+
+      function readOperatorUrl() {
+        try {
+          return String(localStorage.getItem(OPERATOR_ENDPOINT_KEY) || "").trim() || DEFAULT_OPERATOR_URL;
+        } catch (err) {
+          return DEFAULT_OPERATOR_URL;
+        }
+      }
+
+      function saveOperatorUrl(value) {
+        try {
+          localStorage.setItem(OPERATOR_ENDPOINT_KEY, String(value || "").trim());
+        } catch (err) {}
+      }
+
+      function setStatus(node, kind, text) {
+        const dot = node.querySelector(".dot");
+        const label = node.querySelector("span:last-child");
+        dot.className = "dot " + (kind || "");
+        label.textContent = text;
+      }
+
+      function withQuery(endpoint, params) {
+        const query = Object.keys(params).map(key => {
+          return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
+        }).join("&");
+        return endpoint + (endpoint.indexOf("?") > -1 ? "&" : "?") + query;
+      }
+
+      async function fetchJson(url, timeoutMs) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs || 60000);
+        try {
+          const response = await fetch(url, { cache: "no-store", signal: controller.signal });
+          if (!response.ok) throw new Error(response.status + " " + response.statusText);
+          return await response.json();
+        } finally {
+          clearTimeout(timer);
+        }
+      }
+
+      async function checkOperator(endpoint) {
+        const health = await fetchJson(withQuery(endpoint, { action: "health" }), 30000);
+        if (!health || !health.ok || health.service !== "cm_command_center_operator") {
+          throw new Error("This is not the Command Center Operator Backend.");
+        }
+        if (health.version !== REQUIRED_OPERATOR_VERSION) {
+          throw new Error("Operator Backend is outdated. Live: " + (health.version || "unknown") + ". Required: " + REQUIRED_OPERATOR_VERSION + ".");
+        }
+        return health;
+      }
+
+      function actionableItems(data) {
+        return (Array.isArray(data && data.items) ? data.items : []).filter(item => {
+          return item && (
+            item.status === "missing" ||
+            item.status === "needs_review" ||
+            item.status === "possible_update" ||
+            item.status === "known_issue"
+          );
+        });
+      }
+
+      function missingItems(data) {
+        return actionableItems(data).filter(item => item.status === "missing");
+      }
+
+      function sportCounts(items) {
+        const counts = {};
+        SPORTS.forEach(sport => counts[sport] = 0);
+        items.forEach(item => {
+          const sport = String(item.sport || "").toLowerCase();
+          if (counts[sport] !== undefined) counts[sport] += 1;
+        });
+        return counts;
+      }
+
+      function countSentence(counts) {
+        const parts = SPORTS.filter(sport => counts[sport]).map(sport => {
+          return counts[sport] + " " + sport;
+        });
+        if (!parts.length) return "0 products";
+        if (parts.length === 1) return parts[0] + " product(s)";
+        return parts.slice(0, -1).join(", ") + ", and " + parts[parts.length - 1] + " product(s)";
+      }
+
+      function titleFor(item) {
+        return item.matched_name || item.title || item.product || "Untitled product";
+      }
+
+      function sourceFor(item) {
+        return item.source_url || item.url || "";
+      }
+
+      function renderList(node, items, heading) {
+        if (!items.length) {
+          node.innerHTML = '<div class="item"><div class="item-title">No missing products found.</div><div class="muted">This lane is clear.</div></div>';
+          return;
+        }
+
+        node.innerHTML = items.map(item => {
+          const source = sourceFor(item);
+          return `
+            <div class="item">
+              <h3>${heading}</h3>
+              <div class="item-title">${escapeHtml(titleFor(item))}</div>
+              <div class="muted">${escapeHtml(item.reason || item.recommended_action || "Needs review before any database write.")}</div>
+              <span class="tag">${escapeHtml(item.sport || "unknown sport")}</span>
+              <span class="tag">${escapeHtml(item.status || "review")}</span>
+              ${source ? `<div><a href="${escapeHtml(source)}" target="_blank" rel="noopener noreferrer">Source</a></div>` : ""}
+            </div>
+          `;
+        }).join("");
+      }
+
+      function escapeHtml(value) {
+        return String(value == null ? "" : value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      async function runSimpleAgentCycle() {
+        const endpoint = els.operatorUrl.value.trim();
+        if (!endpoint) {
+          setStatus(els.setupStatus, "issue", "Operator Backend URL is missing.");
+          return;
+        }
+
+        els.yesBtn.disabled = true;
+        setStatus(els.runStatus, "working", "Running checklist and print run checks.");
+        els.resultsCard.classList.add("hidden");
+        els.checklistCard.classList.add("hidden");
+        els.prvCard.classList.add("hidden");
+
+        try {
+          const health = await checkOperator(endpoint);
+          saveOperatorUrl(endpoint);
+          setStatus(els.setupStatus, "ready", "Operator ready: " + health.version);
+
+          const checklistUrl = withQuery(endpoint, { action: "sourceWatch", mode: "quick_json" });
+          const prvUrl = withQuery(endpoint, { action: "prvSourceWatch", mode: "quick_json" });
+          const results = await Promise.all([
+            fetchJson(checklistUrl, 90000),
+            fetchJson(prvUrl, 90000)
+          ]);
+
+          state.checklist = missingItems(results[0]);
+          state.prv = missingItems(results[1]);
+
+          const checklistCounts = sportCounts(state.checklist);
+          const prvCounts = sportCounts(state.prv);
+          const checklistTotal = state.checklist.length;
+          const prvTotal = state.prv.length;
+
+          els.summary.textContent =
+            "I found " + checklistTotal + " missing checklist product(s) and " + prvTotal + " missing print run product(s) that need added to the database.\n" +
+            "Checklist: " + countSentence(checklistCounts) + " missing from the checklist tables.\n" +
+            "Print Runs: " + countSentence(prvCounts) + " missing from the print run files.";
+
+          renderList(els.checklistList, state.checklist, "NEW CHECKLIST FOUND - SOURCE IMPORT");
+          renderList(els.prvList, state.prv, "NEW PRINT RUN FOUND - PRV REVIEW");
+          els.resultsCard.classList.remove("hidden");
+          setStatus(els.runStatus, "ready", "Agent Cycle discovery complete.");
+        } catch (err) {
+          setStatus(els.runStatus, "issue", err && err.message ? err.message : "Agent Cycle failed.");
+        } finally {
+          els.yesBtn.disabled = false;
+        }
+      }
+
+      els.operatorUrl.value = readOperatorUrl();
+      els.saveBtn.addEventListener("click", async () => {
+        const endpoint = els.operatorUrl.value.trim();
+        saveOperatorUrl(endpoint);
+        setStatus(els.setupStatus, "working", "Checking Operator Backend.");
+        try {
+          const health = await checkOperator(endpoint);
+          setStatus(els.setupStatus, "ready", "Operator ready: " + health.version);
+        } catch (err) {
+          setStatus(els.setupStatus, "issue", err && err.message ? err.message : "Operator check failed.");
+        }
+      });
+      els.yesBtn.addEventListener("click", runSimpleAgentCycle);
+      els.noBtn.addEventListener("click", () => {});
+      els.showChecklistsBtn.addEventListener("click", () => {
+        els.checklistCard.classList.toggle("hidden");
+      });
+      els.showPrvBtn.addEventListener("click", () => {
+        els.prvCard.classList.toggle("hidden");
+      });
+      setStatus(els.setupStatus, "", "Version " + VERSION + ". Save or run to check Operator Backend.");
+    })();
+  </script>
+</body>
+</html>

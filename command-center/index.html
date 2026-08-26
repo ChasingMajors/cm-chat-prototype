@@ -387,7 +387,7 @@
 
   <script>
     (function () {
-      const VERSION = "simple-agent-shared-json-queue-v1-2026-08-26";
+      const VERSION = "simple-agent-session-key-shared-queue-v1-2026-08-26";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
       const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
@@ -515,10 +515,16 @@
 
       function readOperatorKey() {
         try {
-          return String(sessionStorage.getItem(OPERATOR_WRITE_KEY) || localStorage.getItem(OPERATOR_WRITE_KEY) || "").trim();
+          return String(sessionStorage.getItem(OPERATOR_WRITE_KEY) || "").trim();
         } catch (err) {
           return "";
         }
+      }
+
+      function clearLegacyPersistentOperatorKey() {
+        try {
+          localStorage.removeItem(OPERATOR_WRITE_KEY);
+        } catch (err) {}
       }
 
       function saveOperatorKey(key) {
@@ -737,10 +743,10 @@
       async function saveSharedJsonRetryQueue(queue, showFallbackNotice, replaceExact) {
         const nextQueue = Array.isArray(queue) ? queue.slice(0, 50) : [];
         state.jsonRetryQueue = nextQueue;
-        writeLocalJsonRetryQueue(nextQueue);
         const key = readOperatorKey();
         if (!key) {
           state.jsonQueueShared = false;
+          writeLocalJsonRetryQueue(nextQueue);
           return false;
         }
 
@@ -771,7 +777,7 @@
         } catch (err) {
           state.jsonQueueShared = false;
           if (showFallbackNotice) {
-            openPreviewModal("Shared queue save failed", "JSON Holding Queue", '<div class="guardrail">This item was saved on this device only because Sentinel could not update shared backend memory. ' + escapeHtml(explainBackendError(err && err.message ? err.message : String(err))) + '</div>');
+            openPreviewModal("Shared queue save failed", "JSON Holding Queue", '<div class="guardrail">This item was not added to the shared queue because Sentinel could not update backend memory. ' + escapeHtml(explainBackendError(err && err.message ? err.message : String(err))) + '</div>');
           }
           return false;
         }
@@ -1003,6 +1009,12 @@
 
       async function queueFuturePublishRetry(writeData, detail) {
         const product = writeData && writeData.product ? writeData.product : {};
+        const key = requireOperatorKey();
+        if (!key) {
+          openPreviewModal("Admin key needed", product.display_name || product.code || "Checklist JSON publish", '<div class="guardrail">Enter the admin key before adding this product to the shared JSON holding queue.</div>');
+          return;
+        }
+        await loadSharedJsonRetryQueue();
         const queue = readJsonRetryQueue();
         const item = {
           product: product.display_name || "",
@@ -1012,11 +1024,12 @@
           queued_at: new Date().toISOString(),
           reason: detail || "Publish failed after 5 attempts."
         };
-        const key = [item.sport, item.bucket, item.code].join("|");
-        const next = queue.filter(existing => [existing.sport, existing.bucket, existing.code].join("|") !== key);
+        const queueItemKey = [item.sport, item.bucket, item.code].join("|");
+        const next = queue.filter(existing => [existing.sport, existing.bucket, existing.code].join("|") !== queueItemKey);
         next.unshift(item);
-        await writeJsonRetryQueue(next.slice(0, 50), true);
+        const saved = await writeJsonRetryQueue(next.slice(0, 50), true, true);
         renderJsonRetryNotice();
+        if (!saved) return;
         const scope = state.jsonQueueShared ? "shared queue" : "this device only";
         openPreviewModal("Future retry queued", item.product || item.code || "Checklist JSON publish", '<div class="guardrail">Sentinel saved this product for a future JSON publish retry in the ' + escapeHtml(scope) + '.</div>');
       }
@@ -1406,6 +1419,7 @@
         els.prvCard.classList.toggle("hidden");
       });
       animateWaiting();
+      clearLegacyPersistentOperatorKey();
       loadSharedJsonRetryQueue().then(() => {
         renderJsonRetryNotice();
       });

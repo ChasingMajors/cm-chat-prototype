@@ -189,6 +189,86 @@
       font-size: 12px;
     }
 
+    .item-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.48);
+      display: none;
+      justify-content: center;
+      padding: 18px;
+      z-index: 20;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+      max-height: calc(100vh - 36px);
+      overflow: auto;
+      padding: 18px;
+      width: min(820px, 100%);
+    }
+
+    .modal-top {
+      align-items: flex-start;
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .modal-close {
+      min-height: 32px;
+      padding: 4px 10px;
+    }
+
+    .preview-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 10px 0 14px;
+    }
+
+    .preview-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .preview-row {
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 54px 1fr 1fr;
+      padding: 7px 0;
+    }
+
+    .preview-row em {
+      color: var(--muted);
+      font-style: normal;
+      text-align: right;
+    }
+
+    .guardrail {
+      background: #f7f7f7;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--muted);
+      margin-top: 14px;
+      padding: 10px;
+    }
+
     a { color: var(--blue); }
 
     @media (max-width: 640px) {
@@ -204,6 +284,19 @@
 
       button {
         width: 100%;
+      }
+
+      .preview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-row {
+        grid-template-columns: 42px 1fr;
+      }
+
+      .preview-row em {
+        grid-column: 2;
+        text-align: left;
       }
     }
   </style>
@@ -244,6 +337,19 @@
     </section>
   </main>
 
+  <div id="previewModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="previewModalTitle">
+    <div class="modal">
+      <div class="modal-top">
+        <div>
+          <h2 id="previewModalTitle">Import Preview</h2>
+          <p id="previewModalSubtitle" class="muted"></p>
+        </div>
+        <button id="previewModalClose" class="modal-close" type="button">Close</button>
+      </div>
+      <div id="previewModalBody"></div>
+    </div>
+  </div>
+
   <script>
     (function () {
       const VERSION = "simple-agent-v1-2026-08-26";
@@ -270,7 +376,12 @@
         checklistCard: document.getElementById("checklistCard"),
         prvCard: document.getElementById("prvCard"),
         checklistList: document.getElementById("checklistList"),
-        prvList: document.getElementById("prvList")
+        prvList: document.getElementById("prvList"),
+        previewModal: document.getElementById("previewModal"),
+        previewModalTitle: document.getElementById("previewModalTitle"),
+        previewModalSubtitle: document.getElementById("previewModalSubtitle"),
+        previewModalBody: document.getElementById("previewModalBody"),
+        previewModalClose: document.getElementById("previewModalClose")
       };
 
       function setStatus(node, kind, text) {
@@ -332,6 +443,15 @@
         return counts;
       }
 
+      function formatNumber(value) {
+        const number = Number(value || 0);
+        return Number.isFinite(number) ? number.toLocaleString() : "0";
+      }
+
+      function titleCase(value) {
+        return String(value || "").replace(/_/g, " ").replace(/\b\w/g, char => char.toUpperCase());
+      }
+
       function countSentence(counts) {
         const parts = SPORTS.filter(sport => counts[sport]).map(sport => {
           return counts[sport] + " " + sport;
@@ -349,13 +469,19 @@
         return item.source_url || item.url || "";
       }
 
-      function renderList(node, items, heading) {
+      function previewButtonFor(item, type, index) {
+        if (!sourceFor(item)) return "";
+        const label = type === "prv" ? "PRV Preview" : "Preview Ready";
+        return '<button type="button" data-preview-type="' + escapeHtml(type) + '" data-preview-index="' + escapeHtml(index) + '">' + label + '</button>';
+      }
+
+      function renderList(node, items, heading, type) {
         if (!items.length) {
           node.innerHTML = '<div class="item"><div class="item-title">No missing products found.</div><div class="muted">This lane is clear.</div></div>';
           return;
         }
 
-        node.innerHTML = items.map(item => {
+        node.innerHTML = items.map((item, index) => {
           const source = sourceFor(item);
           return `
             <div class="item">
@@ -364,10 +490,115 @@
               <div class="muted">${escapeHtml(item.reason || item.recommended_action || "Needs review before any database write.")}</div>
               <span class="tag">${escapeHtml(item.sport || "unknown sport")}</span>
               <span class="tag">${escapeHtml(item.status || "review")}</span>
-              ${source ? `<div><a href="${escapeHtml(source)}" target="_blank" rel="noopener noreferrer">Source</a></div>` : ""}
+              <div class="item-actions">
+                ${previewButtonFor(item, type, index)}
+                ${source ? `<a href="${escapeHtml(source)}" target="_blank" rel="noopener noreferrer">Source</a>` : ""}
+              </div>
             </div>
           `;
         }).join("");
+      }
+
+      function openPreviewModal(title, subtitle, bodyHtml) {
+        els.previewModalTitle.textContent = title || "Import Preview";
+        els.previewModalSubtitle.textContent = subtitle || "";
+        els.previewModalBody.innerHTML = bodyHtml || "";
+        els.previewModal.classList.add("open");
+      }
+
+      function closePreviewModal() {
+        els.previewModal.classList.remove("open");
+      }
+
+      function renderPreviewRows(rows, type) {
+        if (!rows.length) return '<p class="muted">No sample rows parsed.</p>';
+        return rows.map(row => {
+          if (type === "prv") {
+            const printRun = row.printRun ? "~" + formatNumber(row.printRun) : row.serial_no || "";
+            return '<div class="preview-row"><strong>' + escapeHtml(row.setType || "") + '</strong><span>' + escapeHtml(row.setLine || row.name || "") + '</span><em>' + escapeHtml(printRun) + '</em></div>';
+          }
+          return '<div class="preview-row"><strong>' + escapeHtml(row.card_no || "") + '</strong><span>' + escapeHtml(row.player || row.name || "") + '</span><em>' + escapeHtml(row.team || "") + '</em></div>';
+        }).join("");
+      }
+
+      function renderPreviewParallels(rows) {
+        if (!rows.length) return '<p class="muted">No sample parallels parsed.</p>';
+        return rows.map(row => {
+          return '<div class="preview-row"><strong>' + escapeHtml(row.parallel_name || row.name || "") + '</strong><span>' + escapeHtml(row.applies_to_subset || row.subset || "") + '</span><em>' + escapeHtml(row.serial_no || row.printRun || "") + '</em></div>';
+        }).join("");
+      }
+
+      function renderPreviewModal(data, type) {
+        if (!data || (!data.ok && data.status !== "preview_ready")) {
+          const title = type === "prv" ? "PRV Parser Review Needed" : "Import Preview Failed";
+          const detail = data && (data.error || data.reason) || "Unknown backend response.";
+          openPreviewModal(title, "Backend did not return a writable preview.", '<div class="guardrail">' + escapeHtml(detail) + '</div>');
+          return;
+        }
+
+        const product = data.product || {};
+        const sampleRows = Array.isArray(data.sample_rows) ? data.sample_rows : [];
+        const sampleParallels = Array.isArray(data.sample_parallels) ? data.sample_parallels : [];
+        const hasRows = Number(data.row_count || 0) > 0;
+        const title = type === "prv"
+          ? hasRows ? "PRV Source Preview" : "PRV Parser Review Needed"
+          : "Import Preview";
+        const rightColumn = type === "prv"
+          ? '<p>' + escapeHtml(hasRows ? data.next_step || "Review these rows before writing PRV temp data." : "Parser review is needed before this can write PRV sheet data.") + '</p>'
+          : renderPreviewParallels(sampleParallels);
+        const checklistMeta = type === "checklist"
+          ? '<span class="tag">Parallels: ' + formatNumber(data.parallel_count || 0) + '</span><span class="tag">Target: ' + escapeHtml(product.target_bucket || "") + '</span>'
+          : "";
+        const writeLabel = type === "prv" ? "Write PRV Temp Data" : "Write to Google Sheet";
+        const guardrail = type === "prv"
+          ? "Review the sample rows before writing. This trial page does not write PRV temp data yet."
+          : "Review the sample rows before writing. This action updates matching rows for this product code and appends new rows. It does not delete unrelated sheet data.";
+
+        openPreviewModal(title, product.display_name || "Untitled product", `
+          <div class="preview-meta">
+            <span class="tag">${escapeHtml(String(data.status || "preview").toUpperCase())}</span>
+            <span class="tag">Code: ${escapeHtml(product.code || "")}</span>
+            <span class="tag">Sport: ${escapeHtml(titleCase(product.sport || ""))}</span>
+            <span class="tag">Year: ${escapeHtml(product.year || "")}</span>
+            <span class="tag">Rows: ${formatNumber(data.row_count || 0)}</span>
+            ${checklistMeta}
+          </div>
+          <div class="preview-grid">
+            <div>
+              <h3>${type === "prv" ? "Sample PRV Rows" : "Sample Rows"}</h3>
+              ${renderPreviewRows(sampleRows, type)}
+            </div>
+            <div>
+              <h3>${type === "prv" ? "Next Step" : "Sample Parallels"}</h3>
+              ${rightColumn}
+            </div>
+          </div>
+          <div class="guardrail">${escapeHtml(guardrail)}</div>
+          <div class="actions"><button type="button" disabled>${escapeHtml(writeLabel)}</button></div>
+        `);
+      }
+
+      async function previewItem(type, index) {
+        const list = type === "prv" ? state.prv : state.checklist;
+        const item = list[Number(index)];
+        const source = item && sourceFor(item);
+        if (!item || !source) {
+          openPreviewModal("Source URL missing", "No preview can be built for this item.", '<div class="guardrail">This source watch item did not include a source link.</div>');
+          return;
+        }
+
+        openPreviewModal(type === "prv" ? "Building PRV preview" : "Building import preview", titleFor(item), '<div class="status-line"><span class="dot working"></span><span>Parsing source into preview rows.</span></div>');
+        try {
+          const action = type === "prv" ? "previewPrvSource" : "previewSourceImport";
+          const data = await fetchJson(withQuery(DEFAULT_OPERATOR_URL, {
+            action: action,
+            sourceUrl: source,
+            sport: item.sport || ""
+          }), 90000);
+          renderPreviewModal(data, type);
+        } catch (err) {
+          openPreviewModal(type === "prv" ? "PRV preview failed" : "Import preview failed", titleFor(item), '<div class="guardrail">' + escapeHtml(err && err.message ? err.message : "Preview failed.") + '</div>');
+        }
       }
 
       function escapeHtml(value) {
@@ -410,8 +641,8 @@
             "Checklist: " + countSentence(checklistCounts) + " missing from the checklist tables.\n" +
             "Print Runs: " + countSentence(prvCounts) + " missing from the print run files.";
 
-          renderList(els.checklistList, state.checklist, "NEW CHECKLIST FOUND - SOURCE IMPORT");
-          renderList(els.prvList, state.prv, "NEW PRINT RUN FOUND - PRV REVIEW");
+          renderList(els.checklistList, state.checklist, "NEW CHECKLIST FOUND - SOURCE IMPORT", "checklist");
+          renderList(els.prvList, state.prv, "NEW PRINT RUN FOUND - PRV REVIEW", "prv");
           els.resultsCard.classList.remove("hidden");
           setStatus(els.runStatus, "ready", "Agent Cycle discovery complete.");
         } catch (err) {
@@ -455,6 +686,15 @@
 
       els.yesBtn.addEventListener("click", runSimpleAgentCycle);
       els.noBtn.addEventListener("click", () => {});
+      els.previewModalClose.addEventListener("click", closePreviewModal);
+      els.previewModal.addEventListener("click", event => {
+        if (event.target === els.previewModal) closePreviewModal();
+      });
+      document.addEventListener("click", event => {
+        const button = event.target.closest("[data-preview-type]");
+        if (!button) return;
+        previewItem(button.dataset.previewType, button.dataset.previewIndex);
+      });
       els.showChecklistsBtn.addEventListener("click", () => {
         els.checklistCard.classList.toggle("hidden");
       });

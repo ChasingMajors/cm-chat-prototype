@@ -387,7 +387,7 @@
 
   <script>
     (function () {
-      const VERSION = "simple-agent-v1-2026-08-26";
+      const VERSION = "simple-agent-run-app-test-v1-2026-08-26";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
       const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
@@ -395,6 +395,8 @@
       const JSON_RETRY_DELAY_MS = 30000;
       const JSON_RETRY_LIMIT = 5;
       const JSON_RETRY_DECISION_ATTEMPT = 3;
+      const APP_TEST_POLL_MS = 15000;
+      const APP_TEST_POLL_LIMIT = 24;
       const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
 
       const state = {
@@ -404,7 +406,8 @@
         statusTimer: null,
         lastWriteData: null,
         activeQueuedItem: null,
-        publishTimer: null
+        publishTimer: null,
+        appTestTimer: null
       };
 
       const els = {
@@ -939,8 +942,8 @@
         if (queuedItem) removeJsonRetryQueueItem(queuedItem);
         state.lastWriteData = writeData;
         const visualButton = product.code && product.sport
-          ? '<button class="primary" type="button" data-queue-visual-test>Queue Visual Test</button>'
-          : '<button type="button" disabled>Queue Visual Test</button>';
+          ? '<button class="primary" type="button" data-run-app-test>Run App Test</button>'
+          : '<button type="button" disabled>Run App Test</button>';
         openPreviewModal("JSON Published", product.display_name || product.code || "Checklist JSON publish", `
           <div class="preview-meta">
             <span class="tag">Attempt: ${formatNumber(attempt)}</span>
@@ -957,15 +960,92 @@
         `);
       }
 
-      async function queueVisualTest(writeData) {
+      function visualRunState(data) {
+        const result = String(data && (data.result || data.conclusion || "") || "").toLowerCase();
+        const status = String(data && data.status || "").toLowerCase();
+        const note = String(data && data.note || "").toLowerCase();
+        const hasRun = !!(data && (data.run_id || data.run_url || data.workflow_url || data.actions_url));
+        if (result === "passed" || result === "success" || data && data.conclusion === "success") return "passed";
+        if (result === "failed" || result === "failure" || data && data.conclusion === "failure") return "failed";
+        if (status === "in_progress" || status === "running" || result === "running" || hasRun) return "running";
+        if (note.includes("no matching github run") || note.includes("no github run") || note.includes("no matching run")) return "queued";
+        return status === "queued" || result === "queued" ? "queued" : "queued";
+      }
+
+      function renderAppTestStatus(writeData, data, pollCount) {
+        const product = writeData && writeData.product ? writeData.product : {};
+        const stateLabel = visualRunState(data);
+        const runUrl = data && (data.run_url || data.workflow_url || data.actions_url || data.html_url || data.url || "");
+        const statusText = stateLabel === "passed"
+          ? "CV / ChatBot visual test passed."
+          : stateLabel === "failed"
+            ? "CV / ChatBot visual test failed. Open the report and review screenshots/errors."
+            : stateLabel === "running"
+              ? "App test is running. Checking again in 15 seconds."
+              : "App test was requested. Waiting for GitHub Actions to expose the run.";
+        const statusClass = stateLabel === "passed" ? "ready" : stateLabel === "failed" ? "issue" : "working";
+        const openLink = runUrl ? '<a href="' + escapeHtml(runUrl) + '" target="_blank" rel="noopener noreferrer">Open Report</a>' : "";
+
+        openPreviewModal(stateLabel === "passed" ? "App test passed" : stateLabel === "failed" ? "App test failed" : "Running app test", product.display_name || product.code || "CV/ChatBot app test", `
+          <div class="status-line"><span class="dot ${statusClass}"></span><span>${escapeHtml(statusText)}</span></div>
+          <div class="preview-meta">
+            <span class="tag">Status: ${escapeHtml(stateLabel)}</span>
+            <span class="tag">Check: ${formatNumber(pollCount)}</span>
+            <span class="tag">Code: ${escapeHtml(product.code || "")}</span>
+            <span class="tag">Sport: ${escapeHtml(titleCase(product.sport || ""))}</span>
+          </div>
+          <div class="guardrail">${escapeHtml(data && data.note || data && data.result || "Waiting for test result.")}</div>
+          <div class="actions">${openLink}<button type="button" data-refresh-app-test>Refresh Now</button></div>
+        `);
+      }
+
+      function stopAppTestPolling() {
+        if (state.appTestTimer) {
+          clearTimeout(state.appTestTimer);
+          state.appTestTimer = null;
+        }
+      }
+
+      async function pollAppTestStatus(writeData, startedAt, pollCount) {
+        const product = writeData && writeData.product ? writeData.product : {};
+        const key = readOperatorKey();
+        if (!key) return;
+        try {
+          const data = await postOperatorJson(DEFAULT_OPERATOR_URL, {
+            action: "getVisualProductTestStatus",
+            productName: product.display_name || product.name || product.code || "",
+            sport: product.sport || "",
+            code: product.code || "",
+            startedAt: startedAt || "",
+            key: key
+          }, 60000);
+          const stateLabel = visualRunState(data);
+          renderAppTestStatus(writeData, data, pollCount);
+          if ((stateLabel === "passed" || stateLabel === "failed")) {
+            stopAppTestPolling();
+            return;
+          }
+          if (pollCount >= APP_TEST_POLL_LIMIT) {
+            stopAppTestPolling();
+            openPreviewModal("App test still running", product.display_name || product.code || "CV/ChatBot app test", '<div class="guardrail">The test is still queued or running after several checks. Keep this page open and click Refresh Now, or open the Actions report if available.</div>');
+            return;
+          }
+          state.appTestTimer = setTimeout(() => pollAppTestStatus(writeData, startedAt, pollCount + 1), APP_TEST_POLL_MS);
+        } catch (err) {
+          openPreviewModal("App test status failed", product.display_name || product.code || "CV/ChatBot app test", '<div class="guardrail">' + escapeHtml(err && err.message ? err.message : "Unable to read app test status.") + '</div><div class="actions"><button type="button" data-refresh-app-test>Refresh Now</button></div>');
+        }
+      }
+
+      async function runAppTest(writeData) {
         const product = writeData && writeData.product ? writeData.product : {};
         const key = requireOperatorKey();
         if (!key || !product.code || !product.sport) {
-          openPreviewModal("Visual test details missing", product.display_name || product.code || "CV/ChatBot visual test", '<div class="guardrail">Sentinel needs product name, code, sport, and admin key before queuing the visual test.</div>');
+          openPreviewModal("App test details missing", product.display_name || product.code || "CV/ChatBot app test", '<div class="guardrail">Sentinel needs product name, code, sport, and admin key before running the app test.</div>');
           return;
         }
 
-        openPreviewModal("Queuing agent visual test", product.display_name || product.code || "CV/ChatBot visual test", '<div class="status-line"><span class="dot working"></span><span>The Operator Backend is starting the GitHub Actions CV/ChatBot test for this product.</span></div>');
+        stopAppTestPolling();
+        openPreviewModal("Running app test", product.display_name || product.code || "CV/ChatBot app test", '<div class="status-line"><span class="dot working"></span><span>Starting CV/ChatBot test now.</span></div>');
         try {
           const data = await postOperatorJson(DEFAULT_OPERATOR_URL, {
             action: "dispatchVisualProductTest",
@@ -974,13 +1054,15 @@
             code: product.code || "",
             key: key
           }, 60000);
-          const runUrl = data && (data.run_url || data.runUrl || data.html_url || data.url || "");
-          const detail = data && data.ok
-            ? "CV/ChatBot visual test queued. Refresh status from the main Command Center if you need the final GitHub Actions result."
-            : data && (data.error || data.reason) || "Visual test request needs review.";
-          openPreviewModal(data && data.ok ? "Visual test queued" : "Visual test needs review", product.display_name || product.code || "CV/ChatBot visual test", '<div class="guardrail">' + escapeHtml(detail) + '</div>' + (runUrl ? '<div class="actions"><a href="' + escapeHtml(runUrl) + '" target="_blank" rel="noopener noreferrer">Open GitHub Actions</a></div>' : ""));
+          if (!data || !data.ok) {
+            openPreviewModal("App test did not start", product.display_name || product.code || "CV/ChatBot app test", '<div class="guardrail">' + escapeHtml(data && (data.error || data.reason) || "Visual test request needs review.") + '</div>');
+            return;
+          }
+          const startedAt = data.started_at || data.startedAt || new Date().toISOString();
+          renderAppTestStatus(writeData, data, 0);
+          state.appTestTimer = setTimeout(() => pollAppTestStatus(writeData, startedAt, 1), APP_TEST_POLL_MS);
         } catch (err) {
-          openPreviewModal("Visual test failed to queue", product.display_name || product.code || "CV/ChatBot visual test", '<div class="guardrail">' + escapeHtml(err && err.message ? err.message : "Unknown backend response.") + '</div>');
+          openPreviewModal("App test failed to start", product.display_name || product.code || "CV/ChatBot app test", '<div class="guardrail">' + escapeHtml(err && err.message ? err.message : "Unknown backend response.") + '</div>');
         }
       }
 
@@ -1172,9 +1254,14 @@
         startPublishCountdown(state.lastWriteData, 4, state.activeQueuedItem);
       });
       document.addEventListener("click", event => {
-        const button = event.target.closest("[data-queue-visual-test]");
+        const button = event.target.closest("[data-run-app-test]");
         if (!button) return;
-        queueVisualTest(state.lastWriteData);
+        runAppTest(state.lastWriteData);
+      });
+      document.addEventListener("click", event => {
+        const button = event.target.closest("[data-refresh-app-test]");
+        if (!button) return;
+        pollAppTestStatus(state.lastWriteData, "", 1);
       });
       document.addEventListener("click", event => {
         const button = event.target.closest("[data-update-json-index]");

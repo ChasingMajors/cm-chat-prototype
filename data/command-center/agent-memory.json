@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-26T18:52:13.012Z",
+  "exported_at": "2026-08-26T18:52:22.725Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -414,18 +414,18 @@
       "status": "queued",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "GitHub Actions visual test queued.",
+      "executionResult": "",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/33002039540",
       "sourceUrl": "",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T18:52:11.406Z",
-      "updatedAt": "2026-08-26T18:52:11.409Z",
-      "visualRunUrl": "",
-      "visualStartedAt": "2026-08-26T18:51:54.412Z"
+      "updatedAt": "2026-08-26T18:52:21.120Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/33002039540",
+      "visualStartedAt": "2026-08-26T18:51:55Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 upper deck clear cut hockey",
@@ -440,16 +440,16 @@
       "adminDecision": "",
       "executionResult": "JSON publish needs review.",
       "validationResult": "CV/ChatBot visual test queued or running.",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/33002039540",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-clear-cut-hockey-card-checklist/",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.103Z",
-      "updatedAt": "2026-08-26T18:52:11.409Z",
-      "visualRunUrl": "",
-      "visualStartedAt": "2026-08-26T18:51:54.412Z"
+      "updatedAt": "2026-08-26T18:52:21.121Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/33002039540",
+      "visualStartedAt": "2026-08-26T18:51:55Z"
     },
     {
       "id": "source_import|wordpress_api|2026 panini intl mexico soccer",
@@ -786,6 +786,16 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1787770341121_mnhlgx",
+      "ts": "2026-08-26T18:52:21.121Z",
+      "type": "visual_test",
+      "title": "Visual test status updated",
+      "detail": "GitHub Actions run linked in the Agent Action Queue.",
+      "status": "in_progress",
+      "product": "2025-26 Upper Deck Clear Cut Hockey",
+      "source": "github_actions"
+    },
     {
       "id": "log_1787770331410_9clbcj",
       "ts": "2026-08-26T18:52:11.410Z",
@@ -3556,11 +3566,11 @@
       "checkedAt": "2026-08-06T00:08:35.218Z"
     },
     "hockey|2025_26_upper_deck_clear_cut_hockey": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-08-26T18:51:54.412Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/33002039540",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "hockey|2025_26_upper_deck_clear_cut_hockey",
@@ -3568,16 +3578,22 @@
       "productName": "2025-26 Upper Deck Clear Cut Hockey",
       "sport": "hockey",
       "code": "2025_26_upper_deck_clear_cut_hockey",
-      "updatedAt": "2026-08-26T18:52:11.404Z",
+      "updatedAt": "2026-08-26T18:52:21.116Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 33002039540,
+      "runNumber": 377,
+      "displayTitle": "Visual Product Test - 2025-26 Upper Deck Clear Cut Hockey",
+      "headSha": "e5645dec886cc2fccf07e1286b5bccc9a005dab4",
+      "createdAt": "2026-08-26T18:51:55Z",
+      "checkedAt": "2026-08-26T18:52:21.116Z"
     },
     "hockey|2025-26 upper deck clear cut hockey": {
-      "status": "queued",
-      "result": "queued",
+      "status": "in_progress",
+      "result": "in_progress",
       "conclusion": "",
       "startedAt": "2026-08-26T18:51:54.412Z",
-      "runUrl": "",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/33002039540",
       "workflowUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "actionsUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions",
       "trackingKey": "hockey|2025_26_upper_deck_clear_cut_hockey",
@@ -3585,9 +3601,15 @@
       "productName": "2025-26 Upper Deck Clear Cut Hockey",
       "sport": "hockey",
       "code": "2025_26_upper_deck_clear_cut_hockey",
-      "updatedAt": "2026-08-26T18:52:11.404Z",
+      "updatedAt": "2026-08-26T18:52:21.116Z",
       "knownIssue": false,
-      "knownIssueNote": ""
+      "knownIssueNote": "",
+      "runId": 33002039540,
+      "runNumber": 377,
+      "displayTitle": "Visual Product Test - 2025-26 Upper Deck Clear Cut Hockey",
+      "headSha": "e5645dec886cc2fccf07e1286b5bccc9a005dab4",
+      "createdAt": "2026-08-26T18:51:55Z",
+      "checkedAt": "2026-08-26T18:52:21.116Z"
     }
   },
   "known_issues": {},
@@ -5808,7 +5830,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:52:13.012Z",
+      "ignoredAt": "2026-08-26T18:52:22.725Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5817,7 +5839,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:52:13.012Z",
+      "ignoredAt": "2026-08-26T18:52:22.725Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -6375,7 +6397,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:52:13.012Z",
+      "ignoredAt": "2026-08-26T18:52:22.725Z",
       "resolved": true
     },
     "hockey|2026_27_upper_deck_mvp_hockey": {
@@ -6384,7 +6406,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:52:13.012Z",
+      "ignoredAt": "2026-08-26T18:52:22.725Z",
       "resolved": true
     },
     "hockey|https www checklistcenter com 2026-27-upper-deck-mvp-hockey-card-checklist": {
@@ -6416,6 +6438,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-26T18:52:13.971Z",
+  "saved_at": "2026-08-26T18:52:24.116Z",
   "saved_by": "cm_command_center_operator"
 }

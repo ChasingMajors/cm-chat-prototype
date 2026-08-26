@@ -459,6 +459,29 @@
         }
       }
 
+      async function postOperatorStep(action, payload, timeoutMs, stepLabel) {
+        try {
+          return await postOperatorJson(DEFAULT_OPERATOR_URL, Object.assign({ action: action }, payload || {}), timeoutMs);
+        } catch (err) {
+          const message = err && err.message ? err.message : String(err || "Unknown error");
+          throw new Error(stepLabel + " failed. " + explainBackendError(message));
+        }
+      }
+
+      function explainBackendError(message) {
+        const text = String(message || "").trim();
+        if (text.indexOf("404") === 0 || text.includes(" 404")) {
+          return "The Operator Backend returned 404. Confirm the hardcoded Apps Script /exec deployment is the current Command Center Operator web app.";
+        }
+        if (text.includes("Failed to fetch") || text.includes("NetworkError") || text.includes("Load failed")) {
+          return "The browser could not reach the Operator Backend. Check internet connection and Apps Script deployment access.";
+        }
+        if (text.includes("Timed out")) {
+          return text + " The backend may still be working, but this page stopped waiting.";
+        }
+        return text || "Unknown backend response.";
+      }
+
       function readOperatorKey() {
         try {
           return String(sessionStorage.getItem(OPERATOR_WRITE_KEY) || localStorage.getItem(OPERATOR_WRITE_KEY) || "").trim();
@@ -495,7 +518,7 @@
       }
 
       async function checkOperator(endpoint) {
-        const health = await fetchJson(withQuery(endpoint, { action: "health" }), 30000);
+        const health = await postOperatorStep("health", {}, 30000, "Operator Backend health check");
         if (!health || !health.ok || health.service !== "cm_command_center_operator") {
           throw new Error("This is not the Command Center Operator Backend.");
         }
@@ -992,14 +1015,12 @@
         try {
           const health = await checkOperator(endpoint);
           setTimedStatus("working", "Step 2 of 3: scanning missing checklist products");
-          const checklistUrl = withQuery(endpoint, { action: "sourceWatch", mode: "quick_json" });
-          const checklistData = await fetchJson(checklistUrl, 90000);
+          const checklistData = await postOperatorStep("sourceWatch", { mode: "quick_json" }, 90000, "Checklist source scan");
           state.checklist = missingItems(checklistData);
           renderDiscoverySummary("Checklist scan complete. Print-run scan is still running.");
 
           setTimedStatus("working", "Step 3 of 3: scanning missing print run products");
-          const prvUrl = withQuery(endpoint, { action: "prvSourceWatch", mode: "quick_json" });
-          const prvData = await fetchJson(prvUrl, 90000);
+          const prvData = await postOperatorStep("prvSourceWatch", { mode: "quick_json" }, 90000, "Print-run source scan");
           state.prv = missingItems(prvData);
           renderDiscoverySummary("");
 

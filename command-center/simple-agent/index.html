@@ -720,11 +720,11 @@
         openPreviewModal(type === "prv" ? "Building PRV preview" : "Building import preview", titleFor(item), '<div class="status-line"><span class="dot working"></span><span>Parsing source into preview rows.</span></div>');
         try {
           const action = type === "prv" ? "previewPrvSource" : "previewSourceImport";
-          const data = await fetchJson(withQuery(DEFAULT_OPERATOR_URL, {
+          const data = await postOperatorJson(DEFAULT_OPERATOR_URL, {
             action: action,
             sourceUrl: source,
             sport: item.sport || ""
-          }), 90000);
+          }, 90000);
           renderPreviewModal(data, type);
         } catch (err) {
           openPreviewModal(type === "prv" ? "PRV preview failed" : "Import preview failed", titleFor(item), '<div class="guardrail">' + escapeHtml(err && err.message ? err.message : "Preview failed.") + '</div>');

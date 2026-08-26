@@ -387,7 +387,7 @@
 
   <script>
     (function () {
-      const VERSION = "simple-agent-run-app-test-v1-2026-08-26";
+      const VERSION = "simple-agent-shared-json-queue-v1-2026-08-26";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
       const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
@@ -407,7 +407,11 @@
         lastWriteData: null,
         activeQueuedItem: null,
         publishTimer: null,
-        appTestTimer: null
+        appTestTimer: null,
+        jsonRetryQueue: [],
+        agentMemory: null,
+        jsonQueueShared: false,
+        jsonQueueLoaded: false
       };
 
       const els = {
@@ -520,6 +524,7 @@
       function saveOperatorKey(key) {
         try {
           sessionStorage.setItem(OPERATOR_WRITE_KEY, String(key || "").trim());
+          loadSharedJsonRetryQueue().then(() => renderJsonRetryNotice());
         } catch (err) {}
       }
 
@@ -640,6 +645,20 @@
         return [item && item.sport || "", item && item.bucket || "", item && item.code || ""].join("|");
       }
 
+      function mergeJsonRetryQueues(primary, secondary) {
+        const merged = [];
+        const seen = new Set();
+        [primary || [], secondary || []].forEach(queue => {
+          (Array.isArray(queue) ? queue : []).forEach(item => {
+            const key = queueKey(item);
+            if (!key || seen.has(key)) return;
+            seen.add(key);
+            merged.push(item);
+          });
+        });
+        return merged.slice(0, 50);
+      }
+
       function queuedWriteData(item) {
         return {
           target_bucket: item.bucket || "",
@@ -653,9 +672,122 @@
         };
       }
 
-      function removeJsonRetryQueueItem(item) {
+      function readLocalJsonRetryQueue() {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(JSON_RETRY_QUEUE_KEY) || "[]");
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (err) {
+          return [];
+        }
+      }
+
+      function writeLocalJsonRetryQueue(queue) {
+        try {
+          localStorage.setItem(JSON_RETRY_QUEUE_KEY, JSON.stringify(queue || []));
+        } catch (err) {}
+      }
+
+      function blankAgentMemory() {
+        return {
+          schema: "agent_memory_v1",
+          agent_actions: [],
+          activity_log: [],
+          tasks: [],
+          source_ignores: {},
+          json_publish_retry_queue: []
+        };
+      }
+
+      async function loadSharedJsonRetryQueue() {
+        const key = readOperatorKey();
+        const localQueue = readLocalJsonRetryQueue();
+        if (!key) {
+          state.jsonRetryQueue = localQueue;
+          state.jsonQueueShared = false;
+          state.jsonQueueLoaded = true;
+          return state.jsonRetryQueue;
+        }
+
+        try {
+          const data = await postOperatorJson(DEFAULT_OPERATOR_URL, {
+            action: "loadAgentMemory",
+            key: key
+          }, 60000);
+          const memory = data && data.memory && data.memory.schema === "agent_memory_v1" ? data.memory : blankAgentMemory();
+          const serverQueue = Array.isArray(memory.json_publish_retry_queue) ? memory.json_publish_retry_queue : [];
+          const merged = mergeJsonRetryQueues(serverQueue, localQueue);
+          memory.json_publish_retry_queue = merged;
+          state.agentMemory = memory;
+          state.jsonRetryQueue = merged;
+          state.jsonQueueShared = true;
+          state.jsonQueueLoaded = true;
+          writeLocalJsonRetryQueue(merged);
+          if (merged.length !== serverQueue.length || localQueue.some(item => !serverQueue.some(existing => queueKey(existing) === queueKey(item)))) {
+            await saveSharedJsonRetryQueue(merged, false, true);
+          }
+          return merged;
+        } catch (err) {
+          state.jsonRetryQueue = localQueue;
+          state.jsonQueueShared = false;
+          state.jsonQueueLoaded = true;
+          return state.jsonRetryQueue;
+        }
+      }
+
+      async function saveSharedJsonRetryQueue(queue, showFallbackNotice, replaceExact) {
+        const nextQueue = Array.isArray(queue) ? queue.slice(0, 50) : [];
+        state.jsonRetryQueue = nextQueue;
+        writeLocalJsonRetryQueue(nextQueue);
+        const key = readOperatorKey();
+        if (!key) {
+          state.jsonQueueShared = false;
+          return false;
+        }
+
+        try {
+          let memory = state.agentMemory && state.agentMemory.schema === "agent_memory_v1"
+            ? state.agentMemory
+            : null;
+          if (!memory) {
+            const data = await postOperatorJson(DEFAULT_OPERATOR_URL, {
+              action: "loadAgentMemory",
+              key: key
+            }, 60000);
+            memory = data && data.memory && data.memory.schema === "agent_memory_v1" ? data.memory : blankAgentMemory();
+          }
+          memory.json_publish_retry_queue = replaceExact ? nextQueue : mergeJsonRetryQueues(nextQueue, memory.json_publish_retry_queue || []);
+          memory.activity_log = Array.isArray(memory.activity_log) ? memory.activity_log : [];
+          memory.saved_at = new Date().toISOString();
+          await postOperatorJson(DEFAULT_OPERATOR_URL, {
+            action: "saveAgentMemory",
+            memory: memory,
+            key: key
+          }, 60000);
+          state.agentMemory = memory;
+          state.jsonRetryQueue = memory.json_publish_retry_queue;
+          writeLocalJsonRetryQueue(state.jsonRetryQueue);
+          state.jsonQueueShared = true;
+          return true;
+        } catch (err) {
+          state.jsonQueueShared = false;
+          if (showFallbackNotice) {
+            openPreviewModal("Shared queue save failed", "JSON Holding Queue", '<div class="guardrail">This item was saved on this device only because Sentinel could not update shared backend memory. ' + escapeHtml(explainBackendError(err && err.message ? err.message : String(err))) + '</div>');
+          }
+          return false;
+        }
+      }
+
+      function readJsonRetryQueue() {
+        return Array.isArray(state.jsonRetryQueue) ? state.jsonRetryQueue : [];
+      }
+
+      async function writeJsonRetryQueue(queue, showFallbackNotice, replaceExact) {
+        return await saveSharedJsonRetryQueue(queue, showFallbackNotice, replaceExact);
+      }
+
+      async function removeJsonRetryQueueItem(item) {
         const key = queueKey(item);
-        writeJsonRetryQueue(readJsonRetryQueue().filter(existing => queueKey(existing) !== key));
+        await writeJsonRetryQueue(readJsonRetryQueue().filter(existing => queueKey(existing) !== key), false, true);
         renderJsonRetryNotice();
       }
 
@@ -668,7 +800,8 @@
           return;
         }
 
-        els.jsonQueueSummary.textContent = "You have " + queue.length + " JSON file(s) needing to be uploaded. Proceed with a reattempt?";
+        const scope = state.jsonQueueShared ? "shared queue" : "this device only";
+        els.jsonQueueSummary.textContent = "You have " + queue.length + " JSON file(s) needing to be uploaded in the " + scope + ". Proceed with a reattempt?";
         els.jsonQueueCard.classList.remove("hidden");
         els.jsonQueuePrompt.classList.remove("hidden");
       }
@@ -868,22 +1001,7 @@
         `);
       }
 
-      function readJsonRetryQueue() {
-        try {
-          const parsed = JSON.parse(localStorage.getItem(JSON_RETRY_QUEUE_KEY) || "[]");
-          return Array.isArray(parsed) ? parsed : [];
-        } catch (err) {
-          return [];
-        }
-      }
-
-      function writeJsonRetryQueue(queue) {
-        try {
-          localStorage.setItem(JSON_RETRY_QUEUE_KEY, JSON.stringify(queue || []));
-        } catch (err) {}
-      }
-
-      function queueFuturePublishRetry(writeData, detail) {
+      async function queueFuturePublishRetry(writeData, detail) {
         const product = writeData && writeData.product ? writeData.product : {};
         const queue = readJsonRetryQueue();
         const item = {
@@ -897,9 +1015,10 @@
         const key = [item.sport, item.bucket, item.code].join("|");
         const next = queue.filter(existing => [existing.sport, existing.bucket, existing.code].join("|") !== key);
         next.unshift(item);
-        writeJsonRetryQueue(next.slice(0, 50));
+        await writeJsonRetryQueue(next.slice(0, 50), true);
         renderJsonRetryNotice();
-        openPreviewModal("Future retry queued", item.product || item.code || "Checklist JSON publish", '<div class="guardrail">Sentinel saved this product for a future JSON publish retry.</div>');
+        const scope = state.jsonQueueShared ? "shared queue" : "this device only";
+        openPreviewModal("Future retry queued", item.product || item.code || "Checklist JSON publish", '<div class="guardrail">Sentinel saved this product for a future JSON publish retry in the ' + escapeHtml(scope) + '.</div>');
       }
 
       function renderPublishFailure(writeData, attempt, detail, queuedItem) {
@@ -1287,7 +1406,9 @@
         els.prvCard.classList.toggle("hidden");
       });
       animateWaiting();
-      renderJsonRetryNotice();
+      loadSharedJsonRetryQueue().then(() => {
+        renderJsonRetryNotice();
+      });
       startIntro();
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {

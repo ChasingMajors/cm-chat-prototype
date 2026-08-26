@@ -387,7 +387,7 @@
 
   <script>
     (function () {
-      const VERSION = "simple-agent-session-key-shared-queue-v1-2026-08-26";
+      const VERSION = "simple-agent-shared-queue-auth-v1-2026-08-26";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
       const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
@@ -411,7 +411,10 @@
         jsonRetryQueue: [],
         agentMemory: null,
         jsonQueueShared: false,
-        jsonQueueLoaded: false
+        jsonQueueLoaded: false,
+        jsonQueueNeedsAuth: false,
+        jsonQueueLocalPending: 0,
+        jsonQueueError: ""
       };
 
       const els = {
@@ -708,9 +711,12 @@
         const key = readOperatorKey();
         const localQueue = readLocalJsonRetryQueue();
         if (!key) {
-          state.jsonRetryQueue = localQueue;
+          state.jsonRetryQueue = [];
           state.jsonQueueShared = false;
           state.jsonQueueLoaded = true;
+          state.jsonQueueNeedsAuth = localQueue.length > 0;
+          state.jsonQueueLocalPending = localQueue.length;
+          state.jsonQueueError = "";
           return state.jsonRetryQueue;
         }
 
@@ -727,15 +733,21 @@
           state.jsonRetryQueue = merged;
           state.jsonQueueShared = true;
           state.jsonQueueLoaded = true;
-          writeLocalJsonRetryQueue(merged);
+          state.jsonQueueNeedsAuth = false;
+          state.jsonQueueLocalPending = 0;
+          state.jsonQueueError = "";
+          writeLocalJsonRetryQueue([]);
           if (merged.length !== serverQueue.length || localQueue.some(item => !serverQueue.some(existing => queueKey(existing) === queueKey(item)))) {
             await saveSharedJsonRetryQueue(merged, false, true);
           }
           return merged;
         } catch (err) {
-          state.jsonRetryQueue = localQueue;
+          state.jsonRetryQueue = [];
           state.jsonQueueShared = false;
           state.jsonQueueLoaded = true;
+          state.jsonQueueNeedsAuth = false;
+          state.jsonQueueLocalPending = localQueue.length;
+          state.jsonQueueError = explainBackendError(err && err.message ? err.message : String(err));
           return state.jsonRetryQueue;
         }
       }
@@ -771,7 +783,7 @@
           }, 60000);
           state.agentMemory = memory;
           state.jsonRetryQueue = memory.json_publish_retry_queue;
-          writeLocalJsonRetryQueue(state.jsonRetryQueue);
+          writeLocalJsonRetryQueue([]);
           state.jsonQueueShared = true;
           return true;
         } catch (err) {
@@ -799,6 +811,26 @@
 
       function renderJsonRetryNotice() {
         const queue = readJsonRetryQueue();
+        if (state.jsonQueueNeedsAuth) {
+          els.jsonQueueSummary.textContent = "This device has " + state.jsonQueueLocalPending + " local JSON retry item(s) that are not synced. Enter the admin key to move them into the shared queue.";
+          els.showJsonQueueBtn.textContent = "Sync Shared Queue";
+          els.jsonQueueCard.classList.remove("hidden");
+          els.jsonQueuePrompt.classList.remove("hidden");
+          els.jsonQueueList.classList.add("hidden");
+          els.jsonQueueList.innerHTML = "";
+          return;
+        }
+
+        if (state.jsonQueueError) {
+          els.jsonQueueSummary.textContent = "Shared JSON queue could not be loaded. " + state.jsonQueueError;
+          els.showJsonQueueBtn.textContent = "Retry Shared Queue";
+          els.jsonQueueCard.classList.remove("hidden");
+          els.jsonQueuePrompt.classList.remove("hidden");
+          els.jsonQueueList.classList.add("hidden");
+          els.jsonQueueList.innerHTML = "";
+          return;
+        }
+
         if (!queue.length) {
           els.jsonQueueCard.classList.add("hidden");
           els.jsonQueueList.classList.add("hidden");
@@ -808,6 +840,7 @@
 
         const scope = state.jsonQueueShared ? "shared queue" : "this device only";
         els.jsonQueueSummary.textContent = "You have " + queue.length + " JSON file(s) needing to be uploaded in the " + scope + ". Proceed with a reattempt?";
+        els.showJsonQueueBtn.textContent = "Yes";
         els.jsonQueueCard.classList.remove("hidden");
         els.jsonQueuePrompt.classList.remove("hidden");
       }
@@ -829,6 +862,20 @@
             </div>
           </div>
         `).join("");
+      }
+
+      async function handleJsonQueuePrompt() {
+        if (state.jsonQueueNeedsAuth || state.jsonQueueError) {
+          const key = requireOperatorKey();
+          if (!key) return;
+          await loadSharedJsonRetryQueue();
+          renderJsonRetryNotice();
+          if (!state.jsonQueueNeedsAuth && !state.jsonQueueError && readJsonRetryQueue().length) {
+            renderJsonRetryList();
+          }
+          return;
+        }
+        renderJsonRetryList();
       }
 
       function renderDiscoverySummary(note) {
@@ -1354,7 +1401,7 @@
       els.previewModal.addEventListener("click", event => {
         if (event.target === els.previewModal) closePreviewModal();
       });
-      els.showJsonQueueBtn.addEventListener("click", renderJsonRetryList);
+      els.showJsonQueueBtn.addEventListener("click", handleJsonQueuePrompt);
       document.addEventListener("click", event => {
         const button = event.target.closest("[data-preview-type]");
         if (!button) return;

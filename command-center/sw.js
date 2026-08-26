@@ -1,4 +1,4 @@
-const CACHE_NAME = "cm-sentinel-pwa-v4-session-key-shared-queue";
+const CACHE_NAME = "cm-sentinel-pwa-v5-shared-queue-auth";
 const APP_SHELL = [
   "./",
   "./index.html",

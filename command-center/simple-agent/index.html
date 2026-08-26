@@ -2,8 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CM Sentinel Simple Agent</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f5f5" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="CM Sentinel" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icons/sentinel-icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="./icons/sentinel-icon.svg" />
+  <title>CM Sentinel</title>
   <style>
     :root {
       --bg: #f5f5f5;
@@ -27,6 +34,8 @@
       font-family: Arial, Helvetica, sans-serif;
       font-size: 14px;
       line-height: 1.45;
+      min-height: 100vh;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
 
     main {
@@ -193,7 +202,20 @@
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+      justify-content: space-between;
       margin-top: 10px;
+    }
+
+    .item-actions-left {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button.ignore {
+      border-color: var(--border);
+      color: var(--muted);
+      margin-left: auto;
     }
 
     .modal-backdrop {
@@ -369,6 +391,7 @@
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
       const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
+      const IGNORED_PRODUCTS_KEY = "cm_simple_agent_ignored_products_v1";
       const JSON_RETRY_DELAY_MS = 30000;
       const JSON_RETRY_LIMIT = 5;
       const JSON_RETRY_DECISION_ATTEMPT = 3;
@@ -377,6 +400,7 @@
       const state = {
         checklist: [],
         prv: [],
+        ignoredProducts: readIgnoredProducts(),
         statusTimer: null,
         lastWriteData: null,
         activeQueuedItem: null,
@@ -537,7 +561,48 @@
       }
 
       function missingItems(data) {
-        return actionableItems(data).filter(item => item.status === "missing");
+        return actionableItems(data).filter(item => item.status === "missing" && !isIgnoredProduct(item));
+      }
+
+      function readIgnoredProducts() {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(IGNORED_PRODUCTS_KEY) || "[]");
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (err) {
+          return [];
+        }
+      }
+
+      function writeIgnoredProducts(items) {
+        try {
+          localStorage.setItem(IGNORED_PRODUCTS_KEY, JSON.stringify(items || []));
+        } catch (err) {}
+      }
+
+      function productIgnoreKey(item) {
+        return [
+          String(item && item.sport || "").toLowerCase(),
+          String(item && (item.source_url || item.url || "") || "").toLowerCase(),
+          String(item && (item.matched_name || item.title || item.product || "") || "").toLowerCase()
+        ].join("|");
+      }
+
+      function isIgnoredProduct(item) {
+        return state.ignoredProducts.includes(productIgnoreKey(item));
+      }
+
+      function ignoreProduct(type, index) {
+        const list = type === "prv" ? state.prv : state.checklist;
+        const item = list[Number(index)];
+        if (!item) return;
+        const key = productIgnoreKey(item);
+        if (key && !state.ignoredProducts.includes(key)) {
+          state.ignoredProducts.push(key);
+          writeIgnoredProducts(state.ignoredProducts);
+        }
+        state.checklist = state.checklist.filter(candidate => !isIgnoredProduct(candidate));
+        state.prv = state.prv.filter(candidate => !isIgnoredProduct(candidate));
+        renderDiscoverySummary("Ignored products are hidden from future scans on this device.");
       }
 
       function sportCounts(items) {
@@ -671,8 +736,11 @@
               <span class="tag">${escapeHtml(item.sport || "unknown sport")}</span>
               <span class="tag">${escapeHtml(item.status || "review")}</span>
               <div class="item-actions">
-                ${previewButtonFor(item, type, index)}
-                ${source ? `<a href="${escapeHtml(source)}" target="_blank" rel="noopener noreferrer">Source</a>` : ""}
+                <div class="item-actions-left">
+                  ${previewButtonFor(item, type, index)}
+                  ${source ? `<a href="${escapeHtml(source)}" target="_blank" rel="noopener noreferrer">Source</a>` : ""}
+                </div>
+                <button class="ignore" type="button" data-ignore-type="${escapeHtml(type)}" data-ignore-index="${escapeHtml(index)}">Ignore</button>
               </div>
             </div>
           `;
@@ -1079,6 +1147,11 @@
         previewItem(button.dataset.previewType, button.dataset.previewIndex);
       });
       document.addEventListener("click", event => {
+        const button = event.target.closest("[data-ignore-type]");
+        if (!button) return;
+        ignoreProduct(button.dataset.ignoreType, button.dataset.ignoreIndex);
+      });
+      document.addEventListener("click", event => {
         const button = event.target.closest("[data-write-checklist-source]");
         if (!button) return;
         writeChecklistSource(button.dataset.writeChecklistSource, button.dataset.writeChecklistSport || "");
@@ -1129,6 +1202,11 @@
       animateWaiting();
       renderJsonRetryNotice();
       startIntro();
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js").catch(() => {});
+        });
+      }
     })();
   </script>
 </body>

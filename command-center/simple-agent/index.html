@@ -371,6 +371,7 @@
       const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
       const JSON_RETRY_DELAY_MS = 30000;
       const JSON_RETRY_LIMIT = 5;
+      const JSON_RETRY_DECISION_ATTEMPT = 3;
       const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
 
       const state = {
@@ -378,6 +379,7 @@
         prv: [],
         statusTimer: null,
         lastWriteData: null,
+        activeQueuedItem: null,
         publishTimer: null
       };
 
@@ -808,13 +810,16 @@
 
       function renderPublishFailure(writeData, attempt, detail, queuedItem) {
         const product = writeData && writeData.product ? writeData.product : {};
+        const isDecision = attempt === JSON_RETRY_DECISION_ATTEMPT;
         const isFinal = attempt >= JSON_RETRY_LIMIT;
         const attemptLabel = attempt === 1 ? "First attempt" : "Attempt " + attempt;
         const body = isFinal
           ? '<div class="guardrail">Fifth attempt failed. Do you want me to queue this for a future retry?</div><div class="actions"><button class="primary" type="button" data-queue-future-publish>Yes</button><button type="button" data-close-preview>No</button></div>'
+          : isDecision
+            ? '<div class="guardrail">Attempt 3 failed. Do you want to add this to the holding queue or make 2 more attempts?</div><div class="actions"><button class="primary" type="button" data-queue-future-publish>Add to Queue</button><button type="button" data-two-more-publish>2 More Attempts</button></div>'
           : '<div class="guardrail">' + escapeHtml(attemptLabel) + ' failed. Requeueing another attempt in 30 seconds.</div><div class="status-line"><span class="dot working"></span><span id="publishCountdown">Retry ' + (attempt + 1) + ' of ' + JSON_RETRY_LIMIT + ' starts in 30s.</span></div>';
-        openPreviewModal(isFinal ? "JSON publish failed" : "JSON publish retry queued", product.display_name || product.code || "Checklist JSON publish", body);
-        if (!isFinal) startPublishCountdown(writeData, attempt + 1, queuedItem);
+        openPreviewModal(isFinal ? "JSON publish failed" : isDecision ? "JSON publish decision needed" : "JSON publish retry queued", product.display_name || product.code || "Checklist JSON publish", body);
+        if (!isFinal && !isDecision) startPublishCountdown(writeData, attempt + 1, queuedItem);
       }
 
       function startPublishCountdown(writeData, nextAttempt, queuedItem) {
@@ -841,6 +846,10 @@
         const checklistVault = validation.checklist_vault || {};
         const chatbot = validation.chatbot || {};
         if (queuedItem) removeJsonRetryQueueItem(queuedItem);
+        state.lastWriteData = writeData;
+        const visualButton = product.code && product.sport
+          ? '<button class="primary" type="button" data-queue-visual-test>Queue Visual Test</button>'
+          : '<button type="button" disabled>Queue Visual Test</button>';
         openPreviewModal("JSON Published", product.display_name || product.code || "Checklist JSON publish", `
           <div class="preview-meta">
             <span class="tag">Attempt: ${formatNumber(attempt)}</span>
@@ -853,10 +862,40 @@
             <span class="tag">ChatBot: ${chatbot.ok ? "Passed" : "Review"}</span>
           </div>
           <div class="guardrail">${escapeHtml(data && data.next_step || "Published. Public validation may still need the normal GitHub Pages soak window.")}</div>
+          <div class="actions">${visualButton}</div>
         `);
       }
 
+      async function queueVisualTest(writeData) {
+        const product = writeData && writeData.product ? writeData.product : {};
+        const key = requireOperatorKey();
+        if (!key || !product.code || !product.sport) {
+          openPreviewModal("Visual test details missing", product.display_name || product.code || "CV/ChatBot visual test", '<div class="guardrail">Sentinel needs product name, code, sport, and admin key before queuing the visual test.</div>');
+          return;
+        }
+
+        openPreviewModal("Queuing agent visual test", product.display_name || product.code || "CV/ChatBot visual test", '<div class="status-line"><span class="dot working"></span><span>The Operator Backend is starting the GitHub Actions CV/ChatBot test for this product.</span></div>');
+        try {
+          const data = await postOperatorJson(DEFAULT_OPERATOR_URL, {
+            action: "dispatchVisualProductTest",
+            productName: product.display_name || product.name || product.code || "",
+            sport: product.sport || "",
+            code: product.code || "",
+            key: key
+          }, 60000);
+          const runUrl = data && (data.run_url || data.runUrl || data.html_url || data.url || "");
+          const detail = data && data.ok
+            ? "CV/ChatBot visual test queued. Refresh status from the main Command Center if you need the final GitHub Actions result."
+            : data && (data.error || data.reason) || "Visual test request needs review.";
+          openPreviewModal(data && data.ok ? "Visual test queued" : "Visual test needs review", product.display_name || product.code || "CV/ChatBot visual test", '<div class="guardrail">' + escapeHtml(detail) + '</div>' + (runUrl ? '<div class="actions"><a href="' + escapeHtml(runUrl) + '" target="_blank" rel="noopener noreferrer">Open GitHub Actions</a></div>' : ""));
+        } catch (err) {
+          openPreviewModal("Visual test failed to queue", product.display_name || product.code || "CV/ChatBot visual test", '<div class="guardrail">' + escapeHtml(err && err.message ? err.message : "Unknown backend response.") + '</div>');
+        }
+      }
+
       async function publishJsonWithRetry(writeData, attempt, queuedItem) {
+        state.lastWriteData = writeData;
+        state.activeQueuedItem = queuedItem || null;
         const product = writeData && writeData.product ? writeData.product : {};
         const key = requireOperatorKey();
         const bucket = writeData && (writeData.target_bucket || product.target_bucket || product.year || "");
@@ -1031,7 +1070,17 @@
       document.addEventListener("click", event => {
         const button = event.target.closest("[data-queue-future-publish]");
         if (!button) return;
-        queueFuturePublishRetry(state.lastWriteData, "Publish failed after 5 attempts.");
+        queueFuturePublishRetry(state.lastWriteData, "Admin moved this to the holding queue after JSON publish retries failed.");
+      });
+      document.addEventListener("click", event => {
+        const button = event.target.closest("[data-two-more-publish]");
+        if (!button) return;
+        startPublishCountdown(state.lastWriteData, 4, state.activeQueuedItem);
+      });
+      document.addEventListener("click", event => {
+        const button = event.target.closest("[data-queue-visual-test]");
+        if (!button) return;
+        queueVisualTest(state.lastWriteData);
       });
       document.addEventListener("click", event => {
         const button = event.target.closest("[data-update-json-index]");

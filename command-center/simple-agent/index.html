@@ -359,7 +359,8 @@
 
       const state = {
         checklist: [],
-        prv: []
+        prv: [],
+        statusTimer: null
       };
 
       const els = {
@@ -390,6 +391,23 @@
         const label = node.querySelector("span:last-child");
         dot.className = "dot " + (kind || "");
         label.textContent = text;
+      }
+
+      function stopTimedStatus() {
+        if (state.statusTimer) {
+          clearInterval(state.statusTimer);
+          state.statusTimer = null;
+        }
+      }
+
+      function setTimedStatus(kind, text) {
+        stopTimedStatus();
+        let seconds = 0;
+        setStatus(els.runStatus, kind, text + " (0s)");
+        state.statusTimer = setInterval(() => {
+          seconds += 1;
+          setStatus(els.runStatus, kind, text + " (" + seconds + "s)");
+        }, 1000);
       }
 
       function withQuery(endpoint, params) {
@@ -500,6 +518,23 @@
         if (!parts.length) return "0 products";
         if (parts.length === 1) return parts[0] + " product(s)";
         return parts.slice(0, -1).join(", ") + ", and " + parts[parts.length - 1] + " product(s)";
+      }
+
+      function renderDiscoverySummary(note) {
+        const checklistCounts = sportCounts(state.checklist);
+        const prvCounts = sportCounts(state.prv);
+        const checklistTotal = state.checklist.length;
+        const prvTotal = state.prv.length;
+
+        els.summary.textContent =
+          "I found " + checklistTotal + " missing checklist product(s) and " + prvTotal + " missing print run product(s) that need added to the database.\n" +
+          "Checklist: " + countSentence(checklistCounts) + " missing from the checklist tables.\n" +
+          "Print Runs: " + countSentence(prvCounts) + " missing from the print run files." +
+          (note ? "\n" + note : "");
+
+        renderList(els.checklistList, state.checklist, "NEW CHECKLIST FOUND - SOURCE IMPORT", "checklist");
+        renderList(els.prvList, state.prv, "NEW PRINT RUN FOUND - PRV REVIEW", "prv");
+        els.resultsCard.classList.remove("hidden");
       }
 
       function titleFor(item) {
@@ -709,38 +744,31 @@
         const endpoint = DEFAULT_OPERATOR_URL;
 
         els.yesBtn.disabled = true;
-        setStatus(els.runStatus, "working", "Running checklist and print run checks.");
+        state.checklist = [];
+        state.prv = [];
+        setTimedStatus("working", "Step 1 of 3: checking Operator Backend");
         els.resultsCard.classList.add("hidden");
         els.checklistCard.classList.add("hidden");
         els.prvCard.classList.add("hidden");
 
         try {
           const health = await checkOperator(endpoint);
+          setTimedStatus("working", "Step 2 of 3: scanning missing checklist products");
           const checklistUrl = withQuery(endpoint, { action: "sourceWatch", mode: "quick_json" });
+          const checklistData = await fetchJson(checklistUrl, 90000);
+          state.checklist = missingItems(checklistData);
+          renderDiscoverySummary("Checklist scan complete. Print-run scan is still running.");
+
+          setTimedStatus("working", "Step 3 of 3: scanning missing print run products");
           const prvUrl = withQuery(endpoint, { action: "prvSourceWatch", mode: "quick_json" });
-          const results = await Promise.all([
-            fetchJson(checklistUrl, 90000),
-            fetchJson(prvUrl, 90000)
-          ]);
+          const prvData = await fetchJson(prvUrl, 90000);
+          state.prv = missingItems(prvData);
+          renderDiscoverySummary("");
 
-          state.checklist = missingItems(results[0]);
-          state.prv = missingItems(results[1]);
-
-          const checklistCounts = sportCounts(state.checklist);
-          const prvCounts = sportCounts(state.prv);
-          const checklistTotal = state.checklist.length;
-          const prvTotal = state.prv.length;
-
-          els.summary.textContent =
-            "I found " + checklistTotal + " missing checklist product(s) and " + prvTotal + " missing print run product(s) that need added to the database.\n" +
-            "Checklist: " + countSentence(checklistCounts) + " missing from the checklist tables.\n" +
-            "Print Runs: " + countSentence(prvCounts) + " missing from the print run files.";
-
-          renderList(els.checklistList, state.checklist, "NEW CHECKLIST FOUND - SOURCE IMPORT", "checklist");
-          renderList(els.prvList, state.prv, "NEW PRINT RUN FOUND - PRV REVIEW", "prv");
-          els.resultsCard.classList.remove("hidden");
+          stopTimedStatus();
           setStatus(els.runStatus, "ready", "Agent Cycle discovery complete.");
         } catch (err) {
+          stopTimedStatus();
           setStatus(els.runStatus, "issue", err && err.message ? err.message : "Agent Cycle failed.");
         } finally {
           els.yesBtn.disabled = false;

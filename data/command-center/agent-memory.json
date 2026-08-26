@@ -2,7 +2,7 @@
   "ok": true,
   "app": "chasing_majors_command_center",
   "schema": "agent_memory_v1",
-  "exported_at": "2026-08-26T18:50:48.455Z",
+  "exported_at": "2026-08-26T18:51:50.063Z",
   "autonomy_mode": "full_auto",
   "approvals": {
     "next|scout|start source-watch as review-only": "approved"
@@ -453,21 +453,21 @@
       "source": "wordpress_api",
       "product": "2026 Panini INTL France Soccer",
       "sport": "soccer",
-      "code": "",
+      "code": "2026_panini_intl_france_soccer",
       "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "status": "needs_admin",
+      "recommendedAction": "Review sample rows, then approve the product-scoped sheet write if the source is correct.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
-      "runUrl": "",
+      "executionResult": "Import preview parsed 144 rows and 45 parallels.",
+      "validationResult": "Preview rows are ready for admin review before sheet write.",
+      "runUrl": "https://www.checklistcenter.com/2026-panini-intl-france-soccer-card-checklist/",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-intl-france-soccer-card-checklist/",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.103Z",
-      "updatedAt": "2026-08-26T17:10:51.103Z"
+      "updatedAt": "2026-08-26T18:51:44.323Z"
     },
     {
       "id": "source_import|wordpress_api|2026 panini intl england soccer",
@@ -565,11 +565,11 @@
       "sport": "baseball",
       "code": "2026_topps_chrome_logofractor_baseball",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "running",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
       "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "validationResult": "CV/ChatBot visual test requested from progress rail...",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-logofractor-baseball-card-checklist/",
       "bucket": "",
@@ -577,7 +577,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.102Z",
-      "updatedAt": "2026-08-26T18:22:47.681Z"
+      "updatedAt": "2026-08-26T18:51:16.847Z"
     },
     {
       "id": "source_import|wordpress_api|2026 topps flagship football",
@@ -760,6 +760,26 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1787770308458_izpfkq",
+      "ts": "2026-08-26T18:51:48.458Z",
+      "type": "memory",
+      "title": "Backend memory auto-save failed",
+      "detail": "Timed out after 60s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
+      "status": "failed",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1787770304331_vyxraa",
+      "ts": "2026-08-26T18:51:44.331Z",
+      "type": "source_import",
+      "title": "Import preview completed",
+      "detail": "144 rows and 45 parallels parsed.",
+      "status": "preview_ready",
+      "product": "2026 Panini INTL France Soccer",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1787770246853_8nbz9d",
       "ts": "2026-08-26T18:50:46.853Z",
@@ -5718,7 +5738,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:50:48.455Z",
+      "ignoredAt": "2026-08-26T18:51:50.063Z",
       "resolved": true
     },
     "prv_full_sync": {
@@ -5727,7 +5747,7 @@
       "code": "prv_full_sync",
       "sourceUrl": "",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:50:48.455Z",
+      "ignoredAt": "2026-08-26T18:51:50.063Z",
       "resolved": true
     },
     "hockey|https github com chasingmajors cm-chat-prototype actions runs 29305283232": {
@@ -6285,7 +6305,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:50:48.455Z",
+      "ignoredAt": "2026-08-26T18:51:50.063Z",
       "resolved": true
     },
     "hockey|2026_27_upper_deck_mvp_hockey": {
@@ -6294,7 +6314,7 @@
       "code": "2026_27_upper_deck_mvp_hockey",
       "sourceUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/31058278847",
       "reason": "Resolved or validated by admin. Future source scans should not requeue this exact source/product unless source ignores are cleared.",
-      "ignoredAt": "2026-08-26T18:50:48.455Z",
+      "ignoredAt": "2026-08-26T18:51:50.063Z",
       "resolved": true
     },
     "hockey|https www checklistcenter com 2026-27-upper-deck-mvp-hockey-card-checklist": {
@@ -6326,6 +6346,6 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-26T18:50:49.625Z",
+  "saved_at": "2026-08-26T18:51:51.457Z",
   "saved_by": "cm_command_center_operator"
 }

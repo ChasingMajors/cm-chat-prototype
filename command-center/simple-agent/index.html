@@ -354,6 +354,7 @@
     (function () {
       const VERSION = "simple-agent-v1-2026-08-26";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
+      const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
       const SPORTS = ["baseball", "basketball", "football", "hockey", "soccer"];
 
       const state = {
@@ -396,6 +397,46 @@
           return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
         }).join("&");
         return endpoint + (endpoint.indexOf("?") > -1 ? "&" : "?") + query;
+      }
+
+      async function postOperatorJson(endpoint, payload, timeoutMs) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs || 60000);
+        try {
+          const response = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload || {}),
+            signal: controller.signal
+          });
+          if (!response.ok) throw new Error(response.status + " " + response.statusText);
+          return await response.json();
+        } finally {
+          clearTimeout(timer);
+        }
+      }
+
+      function readOperatorKey() {
+        try {
+          return String(sessionStorage.getItem(OPERATOR_WRITE_KEY) || localStorage.getItem(OPERATOR_WRITE_KEY) || "").trim();
+        } catch (err) {
+          return "";
+        }
+      }
+
+      function saveOperatorKey(key) {
+        try {
+          sessionStorage.setItem(OPERATOR_WRITE_KEY, String(key || "").trim());
+        } catch (err) {}
+      }
+
+      function requireOperatorKey() {
+        let key = readOperatorKey();
+        if (key) return key;
+        key = window.prompt("Enter admin write key");
+        if (!key) return "";
+        saveOperatorKey(key);
+        return String(key).trim();
       }
 
       async function fetchJson(url, timeoutMs) {
@@ -553,6 +594,9 @@
         const guardrail = type === "prv"
           ? "Review the sample rows before writing. This trial page does not write PRV temp data yet."
           : "Review the sample rows before writing. This action updates matching rows for this product code and appends new rows. It does not delete unrelated sheet data.";
+        const writeButton = type === "checklist" && data.status === "preview_ready" && data.source_url
+          ? '<button class="primary" type="button" data-write-checklist-source="' + escapeHtml(data.source_url || "") + '" data-write-checklist-sport="' + escapeHtml(product.sport || "") + '">Write to Google Sheet</button>'
+          : '<button type="button" disabled>' + escapeHtml(writeLabel) + '</button>';
 
         openPreviewModal(title, product.display_name || "Untitled product", `
           <div class="preview-meta">
@@ -574,8 +618,59 @@
             </div>
           </div>
           <div class="guardrail">${escapeHtml(guardrail)}</div>
-          <div class="actions"><button type="button" disabled>${escapeHtml(writeLabel)}</button></div>
+          <div class="actions">${writeButton}</div>
         `);
+      }
+
+      function renderWriteResult(data) {
+        if (!data || !data.ok) {
+          const preview = data && data.preview ? data.preview : {};
+          const detail = data && data.error ? data.error : "Unknown backend response.";
+          openPreviewModal("Import blocked before sheet write", preview.product && preview.product.display_name ? preview.product.display_name : "No sheet write was made.", '<div class="guardrail">' + escapeHtml(detail) + '</div>');
+          return;
+        }
+
+        const product = data.product || {};
+        const validation = data.validation || {};
+        openPreviewModal("Google Sheet Updated", product.display_name || "Untitled product", `
+          <div class="preview-meta">
+            <span class="tag">REVIEW</span>
+            <span class="tag">Target: ${escapeHtml(data.target_bucket || product.target_bucket || product.year || "")}</span>
+            <span class="tag">Product rows: ${formatNumber(validation.product_rows || 0)}</span>
+            <span class="tag">Checklist rows: ${formatNumber(validation.checklist_rows || 0)}</span>
+            <span class="tag">Parallels: ${formatNumber(validation.parallel_rows || 0)}</span>
+            <span class="tag">GitHub publish: Not started</span>
+            <span class="tag">GitHub rows: 0</span>
+            <span class="tag">GitHub parallels: 0</span>
+            <span class="tag">Public rows: 0</span>
+            <span class="tag">Public parallels: 0</span>
+            <span class="tag">CV: Review</span>
+            <span class="tag">ChatBot: Review</span>
+          </div>
+          <div class="guardrail">Sheet write succeeded. JSON publish is intentionally waiting for the soak window before validation.</div>
+        `);
+      }
+
+      async function writeChecklistSource(sourceUrl, sport) {
+        const key = requireOperatorKey();
+        if (!key) {
+          openPreviewModal("Admin write key needed", "No sheet write was attempted.", '<div class="guardrail">Enter the admin write key to write this preview to Google Sheets.</div>');
+          return;
+        }
+
+        openPreviewModal("Writing to Google Sheet", "The Operator Backend is updating the mapped source sheet and validating the result.", '<div class="status-line"><span class="dot working"></span><span>Writing sheet rows. JSON publish will not run yet.</span></div>');
+        try {
+          const data = await postOperatorJson(DEFAULT_OPERATOR_URL, {
+            action: "executeSourceImport",
+            sourceUrl: sourceUrl,
+            sport: sport || "",
+            key: key,
+            publish: "0"
+          }, 240000);
+          renderWriteResult(data);
+        } catch (err) {
+          openPreviewModal("Import request failed", "No sheet write confirmation was received.", '<div class="guardrail">' + escapeHtml(err && err.message ? err.message : "Unknown backend response.") + '</div>');
+        }
       }
 
       async function previewItem(type, index) {
@@ -694,6 +789,11 @@
         const button = event.target.closest("[data-preview-type]");
         if (!button) return;
         previewItem(button.dataset.previewType, button.dataset.previewIndex);
+      });
+      document.addEventListener("click", event => {
+        const button = event.target.closest("[data-write-checklist-source]");
+        if (!button) return;
+        writeChecklistSource(button.dataset.writeChecklistSource, button.dataset.writeChecklistSport || "");
       });
       els.showChecklistsBtn.addEventListener("click", () => {
         els.checklistCard.classList.toggle("hidden");

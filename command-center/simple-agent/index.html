@@ -188,6 +188,18 @@
       margin-bottom: 4px;
     }
 
+    .source-product {
+      border-top: 1px solid var(--border);
+      margin-top: 10px;
+      padding-top: 10px;
+    }
+
+    .source-product:first-of-type {
+      border-top: 0;
+      margin-top: 0;
+      padding-top: 0;
+    }
+
     .tag {
       display: inline-block;
       border: 1px solid var(--border);
@@ -387,7 +399,7 @@
 
   <script>
     (function () {
-      const VERSION = "simple-agent-shared-queue-auth-v1-2026-08-26";
+      const VERSION = "simple-agent-prv-grouped-sources-v1-2026-08-26";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
       const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
@@ -579,6 +591,16 @@
 
       function missingItems(data) {
         return actionableItems(data).filter(item => item.status === "missing" && !isIgnoredProduct(item));
+      }
+
+      function actionablePrvItems(data) {
+        return actionableItems(data).filter(item => {
+          return !isIgnoredProduct(item) && (
+            item.status === "missing" ||
+            item.status === "needs_review" ||
+            item.status === "possible_update"
+          );
+        });
       }
 
       function readIgnoredProducts() {
@@ -885,9 +907,9 @@
         const prvTotal = state.prv.length;
 
         els.summary.textContent =
-          "I found " + checklistTotal + " missing checklist product(s) and " + prvTotal + " missing print run product(s) that need added to the database.\n" +
+          "I found " + checklistTotal + " missing checklist product(s) and " + prvTotal + " print run product(s) that need PRV review.\n" +
           "Checklist: " + countSentence(checklistCounts) + " missing from the checklist tables.\n" +
-          "Print Runs: " + countSentence(prvCounts) + " missing from the print run files." +
+          "Print Runs: " + countSentence(prvCounts) + " need print-run review or import." +
           (note ? "\n" + note : "");
 
         renderList(els.checklistList, state.checklist, "NEW CHECKLIST FOUND - SOURCE IMPORT", "checklist");
@@ -909,7 +931,77 @@
         return '<button type="button" data-preview-type="' + escapeHtml(type) + '" data-preview-index="' + escapeHtml(index) + '">' + label + '</button>';
       }
 
+      function sourceHostLabel(url) {
+        try {
+          return new URL(url).hostname.replace(/^www\./, "");
+        } catch (err) {
+          return "source";
+        }
+      }
+
+      function groupItemsBySource(items) {
+        const groups = [];
+        const byKey = {};
+        (items || []).forEach((item, index) => {
+          const source = sourceFor(item) || "no-source-" + index;
+          if (!byKey[source]) {
+            byKey[source] = {
+              source: source,
+              items: []
+            };
+            groups.push(byKey[source]);
+          }
+          byKey[source].items.push({ item: item, index: index });
+        });
+        return groups;
+      }
+
+      function renderPrvList(node, items, heading) {
+        if (!items.length) {
+          node.innerHTML = '<div class="item"><div class="item-title">No print-run source work found.</div><div class="muted">This lane is clear.</div></div>';
+          return;
+        }
+
+        node.innerHTML = groupItemsBySource(items).map(group => {
+          const grouped = group.items.length > 1;
+          const source = group.source.indexOf("no-source-") === 0 ? "" : group.source;
+          const groupHeader = grouped
+            ? '<div class="muted">Multiple PRV products found from ' + escapeHtml(sourceHostLabel(source)) + '.</div>'
+            : "";
+          return `
+            <div class="item">
+              <h3>${heading}</h3>
+              ${groupHeader}
+              ${group.items.map(entry => {
+                const item = entry.item;
+                const sourceUrl = sourceFor(item);
+                return `
+                  <div class="source-product">
+                    <div class="item-title">${escapeHtml(titleFor(item))}</div>
+                    <div class="muted">${escapeHtml(item.reason || item.recommended_action || "Needs review before any database write.")}</div>
+                    <span class="tag">${escapeHtml(item.sport || "unknown sport")}</span>
+                    <span class="tag">${escapeHtml(item.status || "review")}</span>
+                    <div class="item-actions">
+                      <div class="item-actions-left">
+                        ${previewButtonFor(item, "prv", entry.index)}
+                        ${sourceUrl ? `<a href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">Source</a>` : ""}
+                      </div>
+                      <button class="ignore" type="button" data-ignore-type="prv" data-ignore-index="${escapeHtml(entry.index)}">Ignore</button>
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          `;
+        }).join("");
+      }
+
       function renderList(node, items, heading, type) {
+        if (type === "prv") {
+          renderPrvList(node, items, heading);
+          return;
+        }
+
         if (!items.length) {
           node.innerHTML = '<div class="item"><div class="item-title">No missing products found.</div><div class="muted">This lane is clear.</div></div>';
           return;
@@ -1350,7 +1442,7 @@
 
           setTimedStatus("working", "Step 3 of 3: scanning missing print run products");
           const prvData = await postOperatorStep("prvSourceWatch", { mode: "quick_json" }, 90000, "Print-run source scan");
-          state.prv = missingItems(prvData);
+          state.prv = actionablePrvItems(prvData);
           renderDiscoverySummary("");
 
           stopTimedStatus();

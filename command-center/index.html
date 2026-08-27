@@ -399,7 +399,7 @@
 
   <script>
     (function () {
-      const VERSION = "simple-agent-prv-grouped-sources-v1-2026-08-26";
+      const VERSION = "simple-agent-prv-multiproduct-preview-v1-2026-08-26";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
       const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
@@ -1057,6 +1057,25 @@
         }).join("");
       }
 
+      function renderPrvProductChoices(products) {
+        const list = Array.isArray(products) ? products : [];
+        if (list.length < 2) return "";
+        return `
+          <h3>Products In This Source</h3>
+          <div class="list">
+            ${list.map(product => `
+              <div class="item">
+                <div class="item-title">${escapeHtml(product.display_name || product.code || "Untitled product")}</div>
+                <span class="tag">Code: ${escapeHtml(product.code || "")}</span>
+                <span class="tag">Sport: ${escapeHtml(titleCase(product.sport || ""))}</span>
+                <span class="tag">Year: ${escapeHtml(product.year || "")}</span>
+              </div>
+            `).join("")}
+          </div>
+          <div class="guardrail">This source mentions multiple products. Review rows carefully and do not write PRV data until rows are assigned to the correct product.</div>
+        `;
+      }
+
       function renderPreviewModal(data, type) {
         if (!data || (!data.ok && data.status !== "preview_ready")) {
           const title = type === "prv" ? "PRV Parser Review Needed" : "Import Preview Failed";
@@ -1066,11 +1085,12 @@
         }
 
         const product = data.product || {};
+        const products = Array.isArray(data.products) ? data.products : [];
         const sampleRows = Array.isArray(data.sample_rows) ? data.sample_rows : [];
         const sampleParallels = Array.isArray(data.sample_parallels) ? data.sample_parallels : [];
         const hasRows = Number(data.row_count || 0) > 0;
         const title = type === "prv"
-          ? hasRows ? "PRV Source Preview" : "PRV Parser Review Needed"
+          ? products.length > 1 ? "Multiple PRV Products Found" : hasRows ? "PRV Source Preview" : "PRV Parser Review Needed"
           : "Import Preview";
         const rightColumn = type === "prv"
           ? '<p>' + escapeHtml(hasRows ? data.next_step || "Review these rows before writing PRV temp data." : "Parser review is needed before this can write PRV sheet data.") + '</p>'
@@ -1080,7 +1100,9 @@
           : "";
         const writeLabel = type === "prv" ? "Write PRV Temp Data" : "Write to Google Sheet";
         const guardrail = type === "prv"
-          ? "Review the sample rows before writing. This trial page does not write PRV temp data yet."
+          ? products.length > 1
+            ? "This trial page found multiple PRV products in one source. Product-specific PRV write is intentionally blocked until rows are split by product."
+            : "Review the sample rows before writing. This trial page does not write PRV temp data yet."
           : "Review the sample rows before writing. This action updates matching rows for this product code and appends new rows. It does not delete unrelated sheet data.";
         const writeButton = type === "checklist" && data.status === "preview_ready" && data.source_url
           ? '<button class="primary" type="button" data-write-checklist-source="' + escapeHtml(data.source_url || "") + '" data-write-checklist-sport="' + escapeHtml(product.sport || "") + '">Write to Google Sheet</button>'
@@ -1095,6 +1117,7 @@
             <span class="tag">Rows: ${formatNumber(data.row_count || 0)}</span>
             ${checklistMeta}
           </div>
+          ${type === "prv" ? renderPrvProductChoices(products) : ""}
           <div class="preview-grid">
             <div>
               <h3>${type === "prv" ? "Sample PRV Rows" : "Sample Rows"}</h3>

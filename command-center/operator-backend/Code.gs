@@ -1030,7 +1030,11 @@ function previewPrvSource_(input) {
 
   const bodyHtml = extractSubstackBodyHtml_(html);
   const rows = parseSlabSquatchPrintRunRows_(bodyHtml, sourceUrl);
-  const product = buildPrvProductPreview_(productName, sport, sourceUrl);
+  const productNames = splitPrvProductTitles_(productName, sport);
+  const products = productNames.map(function(name) {
+    return buildPrvProductPreview_(name, sport, sourceUrl);
+  });
+  const product = products[0] || buildPrvProductPreview_(productName, sport, sourceUrl);
   const paywalled = isSubstackPostPaywalled_(html, bodyHtml);
 
   return {
@@ -1039,6 +1043,8 @@ function previewPrvSource_(input) {
     status: rows.length ? "preview_ready" : "needs_review",
     source_url: sourceUrl,
     product: product,
+    products: products,
+    multi_product: products.length > 1,
     row_count: rows.length,
     rows: rows.slice(0, 200),
     sample_rows: rows.slice(0, 12),
@@ -1584,6 +1590,30 @@ function buildPrvProductPreview_(productName, sport, sourceUrl) {
   product.keywords = buildPrvKeywordString_(product);
 
   return product;
+}
+
+function splitPrvProductTitles_(productName, sport) {
+  const cleaned = safeString_(productName)
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!cleaned) return [];
+
+  const parts = cleaned
+    .split(/\s+(?:and|&)\s+(?=(?:19|20)\d{2}\b)/i)
+    .map(function(part) {
+      return safeString_(part).replace(/\s+/g, " ").trim();
+    })
+    .filter(Boolean);
+
+  if (parts.length < 2) return [cleaned];
+
+  const sportLabel = titleCase_(sport);
+  return parts.map(function(part) {
+    if (sportLabel && normalize_(part).indexOf(normalize_(sportLabel)) < 0) {
+      return (part + " " + sportLabel).replace(/\s+/g, " ").trim();
+    }
+    return part;
+  });
 }
 
 function extractPrvProductYear_(value) {

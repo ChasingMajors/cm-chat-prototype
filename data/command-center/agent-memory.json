@@ -404,6 +404,24 @@
   ],
   "agent_actions": [
     {
+      "id": "source_watch|soccer|2026 topps chrome mls soccer",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026 Topps Chrome MLS Soccer",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-mls-soccer-card-checklist/",
+      "createdAt": "2026-08-28T15:57:04.994Z",
+      "updatedAt": "2026-08-28T15:57:04.994Z"
+    },
+    {
       "id": "prv_watch|soccer|2026 mid-year format value rankings- day 2 cost per numbered card",
       "type": "prv_source_review",
       "source": "scheduled_prv_quick_json",
@@ -545,7 +563,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-flagship-nfl-deep-dive",
       "createdAt": "2026-08-27T15:57:03.781Z",
-      "updatedAt": "2026-08-27T15:57:03.781Z"
+      "updatedAt": "2026-08-28T15:57:04.994Z"
     },
     {
       "id": "prv_watch|baseball|2026 topps chrome sapphire baseball and 2026 topps chrome logofractor baseball",
@@ -563,7 +581,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-chrome-sapphire-mlb-and",
       "createdAt": "2026-08-27T15:57:03.781Z",
-      "updatedAt": "2026-08-27T15:57:03.781Z"
+      "updatedAt": "2026-08-28T15:57:04.994Z"
     },
     {
       "id": "prv_watch|baseball|2026 topps chrome team samurai japan analysis or lack thereof",
@@ -618,11 +636,11 @@
       "sport": "hockey",
       "code": "2025_26_upper_deck_clear_cut_hockey",
       "riskLevel": "medium",
-      "status": "queued",
+      "status": "validated",
       "recommendedAction": "CV/ChatBot visual test is queued or running. Sentinel will refresh it on the next Agent Cycle.",
       "adminDecision": "",
-      "executionResult": "JSON publish needs review.",
-      "validationResult": "CV/ChatBot visual test queued or running.",
+      "executionResult": "CV/ChatBot visual test passed.",
+      "validationResult": "GitHub Actions visual test passed for 2025-26 Upper Deck Clear Cut Hockey.",
       "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/33002039540",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-clear-cut-hockey-card-checklist/",
       "bucket": "",
@@ -630,9 +648,12 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.103Z",
-      "updatedAt": "2026-08-26T18:52:21.121Z",
+      "updatedAt": "2026-08-28T15:57:04.994Z",
       "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/runs/33002039540",
-      "visualStartedAt": "2026-08-26T18:51:55Z"
+      "visualStartedAt": "2026-08-26T18:51:55Z",
+      "pendingValidationAttempts": 0,
+      "repairProof": "Agent completed repair for 2025-26 Upper Deck Clear Cut Hockey: CV/ChatBot visual test passed. GitHub Actions visual test passed for 2025-26 Upper Deck Clear Cut Hockey.",
+      "autoExecutedAt": "2026-08-28T15:57:04.994Z"
     },
     {
       "id": "source_import|wordpress_api|2026 panini intl mexico soccer",
@@ -698,7 +719,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.103Z",
-      "updatedAt": "2026-08-27T15:57:03.781Z"
+      "updatedAt": "2026-08-28T15:57:04.994Z"
     },
     {
       "id": "source_watch|soccer|2026 panini intl germany soccer",
@@ -720,7 +741,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.103Z",
-      "updatedAt": "2026-08-27T15:57:03.781Z"
+      "updatedAt": "2026-08-28T15:57:04.994Z"
     },
     {
       "id": "source_import|wordpress_api|2026 topps pristine baseball",
@@ -830,7 +851,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.102Z",
-      "updatedAt": "2026-08-27T15:57:03.781Z"
+      "updatedAt": "2026-08-28T15:57:04.994Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps chrome black basketball",
@@ -940,7 +961,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-05T03:26:37.369Z",
-      "updatedAt": "2026-08-27T15:57:03.781Z"
+      "updatedAt": "2026-08-28T15:57:04.994Z"
     },
     {
       "id": "visual_test|github_actions|2026-27 upper deck mvp hockey|2026_27_upper_deck_mvp_hockey",
@@ -969,6 +990,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1787932943063_alert",
+      "ts": "2026-08-28T15:57:04.994Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1787932941622",
+      "ts": "2026-08-28T15:57:04.994Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 4 actionable from 20 checked. PRV: 10 actionable from 13 checked. PRV sync: passed. Auto actions: 1 run. 2025-26 Upper Deck Clear Cut Hockey -> validated (GitHub Actions visual test passed for 2025-26 Upper Deck Clear Cut Hockey.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1787932941618",
+      "ts": "2026-08-28T15:57:04.994Z",
+      "type": "auto_action",
+      "title": "Full-auto action completed",
+      "detail": "2025-26 Upper Deck Clear Cut Hockey: CV/ChatBot visual test passed. GitHub Actions visual test passed for 2025-26 Upper Deck Clear Cut Hockey.",
+      "status": "validated",
+      "product": "2025-26 Upper Deck Clear Cut Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1787932937685",
+      "ts": "2026-08-28T15:57:04.994Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1787846543268_alert",
       "ts": "2026-08-27T15:57:03.781Z",
@@ -1383,7 +1444,7 @@
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-08-27T15:57:03.781Z",
+    "generated_at": "2026-08-28T15:57:04.994Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 13,
@@ -1396,10 +1457,10 @@
       "2025-26 Upper Deck Clear Cut Hockey -> validated: GitHub Actions visual test passed for 2025-26 Upper Deck Clear Cut Hockey."
     ],
     "needs_admin": [
+      "Checklist review: 2026 Topps Chrome MLS Soccer | soccer | missing",
       "Checklist review: 2026 Leaf Trinity Football | football | missing",
       "Checklist review: 2026 Panini INTL Germany Soccer | soccer | missing",
       "Checklist review: 2026 Panini INTL England Soccer | soccer | missing",
-      "Checklist review: 2026 Panini INTL France Soccer | soccer | missing",
       "PRV review: 2026 Topps Chrome Team Samurai Japan Analysis...or Lack Thereof | baseball | known_issue",
       "PRV review: 2026 Topps Chrome Sapphire Baseball and 2026 Topps Chrome Logofractor Baseball | baseball | missing",
       "PRV review: 2026 Topps Flagship Football | football | missing",
@@ -6696,7 +6757,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-27T16:02:23.284Z",
+  "saved_at": "2026-08-28T16:02:23.389Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

@@ -404,6 +404,24 @@
   ],
   "agent_actions": [
     {
+      "id": "prv_watch|football|2026 topps flagship football deep dive episode 2",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2026 Topps Flagship Football Deep Dive: Episode 2",
+      "sport": "football",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-flagship-football-deep",
+      "createdAt": "2026-08-29T15:57:03.957Z",
+      "updatedAt": "2026-08-29T15:57:03.957Z"
+    },
+    {
       "id": "source_watch|soccer|2026 topps chrome mls soccer",
       "type": "source_import",
       "source": "scheduled_deep_sheets",
@@ -419,7 +437,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-mls-soccer-card-checklist/",
       "createdAt": "2026-08-28T15:57:04.994Z",
-      "updatedAt": "2026-08-28T15:57:04.994Z"
+      "updatedAt": "2026-08-29T15:57:03.957Z"
     },
     {
       "id": "prv_watch|soccer|2026 mid-year format value rankings- day 2 cost per numbered card",
@@ -563,7 +581,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-flagship-nfl-deep-dive",
       "createdAt": "2026-08-27T15:57:03.781Z",
-      "updatedAt": "2026-08-28T15:57:04.994Z"
+      "updatedAt": "2026-08-29T15:57:03.957Z"
     },
     {
       "id": "prv_watch|baseball|2026 topps chrome sapphire baseball and 2026 topps chrome logofractor baseball",
@@ -581,7 +599,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-chrome-sapphire-mlb-and",
       "createdAt": "2026-08-27T15:57:03.781Z",
-      "updatedAt": "2026-08-28T15:57:04.994Z"
+      "updatedAt": "2026-08-29T15:57:03.957Z"
     },
     {
       "id": "prv_watch|baseball|2026 topps chrome team samurai japan analysis or lack thereof",
@@ -719,7 +737,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.103Z",
-      "updatedAt": "2026-08-28T15:57:04.994Z"
+      "updatedAt": "2026-08-29T15:57:03.957Z"
     },
     {
       "id": "source_watch|soccer|2026 panini intl germany soccer",
@@ -741,7 +759,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.103Z",
-      "updatedAt": "2026-08-28T15:57:04.994Z"
+      "updatedAt": "2026-08-29T15:57:03.957Z"
     },
     {
       "id": "source_import|wordpress_api|2026 topps pristine baseball",
@@ -795,19 +813,24 @@
       "sport": "baseball",
       "code": "2026_topps_chrome_logofractor_baseball",
       "riskLevel": "medium",
-      "status": "running",
+      "status": "queued",
       "recommendedAction": "Retry publish/recheck after confirming the Static Data Exporter endpoint is healthy.",
       "adminDecision": "",
-      "executionResult": "Sheet write completed; JSON publish request failed.",
-      "validationResult": "CV/ChatBot visual test requested from progress rail...",
-      "runUrl": "",
+      "executionResult": "CV/ChatBot visual test queued in GitHub Actions.",
+      "validationResult": "Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "runUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-logofractor-baseball-card-checklist/",
       "bucket": "",
       "targetBucket": "",
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.102Z",
-      "updatedAt": "2026-08-26T18:51:16.847Z"
+      "updatedAt": "2026-08-29T15:57:03.957Z",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "2026-08-29T16:00:46.750Z",
+      "visualRunUrl": "https://github.com/ChasingMajors/cm-chat-prototype/actions/workflows/visual-product-test.yml",
+      "repairProof": "CV/ChatBot visual test queued in GitHub Actions.",
+      "autoExecutedAt": "2026-08-29T15:57:03.957Z"
     },
     {
       "id": "source_import|wordpress_api|2026 topps flagship football",
@@ -851,7 +874,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.102Z",
-      "updatedAt": "2026-08-28T15:57:04.994Z"
+      "updatedAt": "2026-08-29T15:57:03.957Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps chrome black basketball",
@@ -961,7 +984,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-05T03:26:37.369Z",
-      "updatedAt": "2026-08-28T15:57:04.994Z"
+      "updatedAt": "2026-08-29T15:57:03.957Z"
     },
     {
       "id": "visual_test|github_actions|2026-27 upper deck mvp hockey|2026_27_upper_deck_mvp_hockey",
@@ -990,6 +1013,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1788019249567_alert",
+      "ts": "2026-08-29T15:57:03.957Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1788019248432",
+      "ts": "2026-08-29T15:57:03.957Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 4 actionable from 20 checked. PRV: 10 actionable from 13 checked. PRV sync: passed. Auto actions: 1 run. 2026 Topps Chrome LogoFractor Baseball -> queued (Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1788019248431",
+      "ts": "2026-08-29T15:57:03.957Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2026 Topps Chrome LogoFractor Baseball: CV/ChatBot visual test queued in GitHub Actions. Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
+      "status": "queued",
+      "product": "2026 Topps Chrome LogoFractor Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1788019246650",
+      "ts": "2026-08-29T15:57:03.957Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1787932943063_alert",
       "ts": "2026-08-28T15:57:04.994Z",
@@ -1444,38 +1507,34 @@
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-08-28T15:57:04.994Z",
+    "generated_at": "2026-08-29T15:57:03.957Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 13,
       "skipped_ignored": 0
     },
-    "completed_count": 1,
-    "needs_admin_count": 14,
+    "completed_count": 0,
+    "needs_admin_count": 15,
     "blocked_count": 0,
-    "completed": [
-      "2025-26 Upper Deck Clear Cut Hockey -> validated: GitHub Actions visual test passed for 2025-26 Upper Deck Clear Cut Hockey."
-    ],
+    "completed": [],
     "needs_admin": [
+      "2026 Topps Chrome LogoFractor Baseball -> queued: Visual test is queued. Sentinel will refresh the GitHub Actions result on the next sweep.",
       "Checklist review: 2026 Topps Chrome MLS Soccer | soccer | missing",
       "Checklist review: 2026 Leaf Trinity Football | football | missing",
       "Checklist review: 2026 Panini INTL Germany Soccer | soccer | missing",
       "Checklist review: 2026 Panini INTL England Soccer | soccer | missing",
+      "PRV review: 2026 Topps Flagship Football Deep Dive: Episode 2 | football | missing",
       "PRV review: 2026 Topps Chrome Team Samurai Japan Analysis...or Lack Thereof | baseball | known_issue",
       "PRV review: 2026 Topps Chrome Sapphire Baseball and 2026 Topps Chrome Logofractor Baseball | baseball | missing",
       "PRV review: 2026 Topps Flagship Football | football | missing",
       "PRV review: 2026 Topps Chrome Logofractor & 2026 Topps Chrome Baseball Fanatics Mega Boxes | baseball | known_issue",
       "PRV review: 2026 Topps Pristine Baseball | baseball | known_issue",
-      "PRV review: 2026 Topps Tribute | baseball | known_issue",
-      "PRV review: 2026 Mid-Year Format Value Rankings Day 5: The Final Scores | soccer | known_issue",
-      "PRV review: 2026 Mid-Year Format Value Rankings Day 4: Quality Hits | soccer | known_issue"
+      "PRV review: 2026 Topps Tribute | baseball | known_issue"
     ],
     "blocked": [],
-    "proof": [
-      "2025-26 Upper Deck Clear Cut Hockey -> validated: GitHub Actions visual test passed for 2025-26 Upper Deck Clear Cut Hockey."
-    ],
+    "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 13 PRV source item(s). 1 completed/progress item(s), 14 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 13 PRV source item(s). 0 completed/progress item(s), 15 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -6757,7 +6816,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-08-28T16:02:23.389Z",
+  "saved_at": "2026-08-29T16:00:49.660Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

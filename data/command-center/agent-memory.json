@@ -411,21 +411,21 @@
       "sport": "basketball",
       "code": "",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "pending_visual_validation",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "",
       "executionResult": "PRV sheet write and JSON publish completed for 2025_26_topps_chrome_update_sapphire_basketball.",
-      "validationResult": "PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "validationResult": "Public PRV JSON validated with 8 rows. Public PRV behavior validation is pending.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-chrome-update-sapphire",
       "createdAt": "2026-09-01T15:57:03.482Z",
-      "updatedAt": "2026-09-01T15:57:03.482Z",
+      "updatedAt": "2026-09-05T15:57:04.299Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
-      "repairProof": "PRV sheet write and JSON publish completed for 2025_26_topps_chrome_update_sapphire_basketball.",
-      "autoExecutedAt": "2026-09-01T15:57:03.482Z"
+      "repairProof": "Agent fixed/published 2025-26 Topps Chrome Update Sapphire Basketball and verified public JSON. Visual CV/ChatBot proof is next.",
+      "autoExecutedAt": "2026-09-05T15:57:04.299Z"
     },
     {
       "id": "prv_watch|football|2026 topps flagship football deep dive episode 2",
@@ -443,7 +443,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-flagship-football-deep",
       "createdAt": "2026-08-29T15:57:03.957Z",
-      "updatedAt": "2026-09-01T15:57:03.482Z"
+      "updatedAt": "2026-09-05T15:57:04.299Z"
     },
     {
       "id": "source_watch|soccer|2026 topps chrome mls soccer",
@@ -461,7 +461,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-mls-soccer-card-checklist/",
       "createdAt": "2026-08-28T15:57:04.994Z",
-      "updatedAt": "2026-09-01T15:57:03.482Z"
+      "updatedAt": "2026-09-05T15:57:04.299Z"
     },
     {
       "id": "prv_watch|soccer|2026 mid-year format value rankings- day 2 cost per numbered card",
@@ -614,16 +614,16 @@
       "product": "2026 Topps Chrome Sapphire Baseball and 2026 Topps Chrome Logofractor Baseball",
       "sport": "baseball",
       "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "riskLevel": "low",
+      "status": "known_issue",
+      "recommendedAction": "Source post appears paid/locked. Public HTML does not expose writable print-run rows. Keep as known issue unless admin has another source.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "PRV source was scanned and held before auto execution.",
+      "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-chrome-sapphire-mlb-and",
       "createdAt": "2026-08-27T15:57:03.781Z",
-      "updatedAt": "2026-09-01T15:57:03.482Z"
+      "updatedAt": "2026-09-05T15:57:04.299Z"
     },
     {
       "id": "prv_watch|baseball|2026 topps chrome team samurai japan analysis or lack thereof",
@@ -898,7 +898,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.102Z",
-      "updatedAt": "2026-09-01T15:57:03.482Z"
+      "updatedAt": "2026-09-05T15:57:04.299Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps chrome black basketball",
@@ -1008,7 +1008,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-05T03:26:37.369Z",
-      "updatedAt": "2026-09-01T15:57:03.482Z"
+      "updatedAt": "2026-09-05T15:57:04.299Z"
     },
     {
       "id": "visual_test|github_actions|2026-27 upper deck mvp hockey|2026_27_upper_deck_mvp_hockey",
@@ -1037,6 +1037,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1788624045656_alert",
+      "ts": "2026-09-05T15:57:04.299Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1788624045281",
+      "ts": "2026-09-05T15:57:04.299Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 2 actionable from 20 checked. PRV: 7 actionable from 10 checked. PRV sync: passed. Auto actions: 1 run. 2025-26 Topps Chrome Update Sapphire Basketball -> pending_visual_validation (Public PRV JSON validated with 8 rows. Public PRV behavior validation is pending.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1788624045279",
+      "ts": "2026-09-05T15:57:04.299Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2025-26 Topps Chrome Update Sapphire Basketball: PRV sheet write and JSON publish completed for 2025_26_topps_chrome_update_sapphire_basketball. Public PRV JSON validated with 8 rows. Public PRV behavior validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2025-26 Topps Chrome Update Sapphire Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1788624012394",
+      "ts": "2026-09-05T15:57:04.299Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1788278482538_alert",
       "ts": "2026-09-01T15:57:03.482Z",
@@ -1611,34 +1651,35 @@
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-09-01T15:57:03.482Z",
+    "generated_at": "2026-09-05T15:57:04.299Z",
     "checked": {
       "checklist_count": 20,
-      "prv_count": 12,
+      "prv_count": 10,
       "skipped_ignored": 0
     },
-    "completed_count": 0,
-    "needs_admin_count": 12,
+    "completed_count": 1,
+    "needs_admin_count": 9,
     "blocked_count": 0,
-    "completed": [],
+    "completed": [
+      "2025-26 Topps Chrome Update Sapphire Basketball -> pending_visual_validation: Public PRV JSON validated with 8 rows. Public PRV behavior validation is pending."
+    ],
     "needs_admin": [
-      "2025-26 Topps Chrome Update Sapphire Basketball -> needs_admin: PRV write completed, but public JSON validation needs review. Publish returned ok.",
       "Checklist review: 2026 Topps Chrome MLS Soccer | soccer | missing",
       "Checklist review: 2026 Leaf Trinity Football | football | missing",
-      "PRV review: 2025-26 Topps Chrome Update Sapphire Basketball | basketball | missing",
       "PRV review: 2026 Topps Flagship Football Deep Dive: Episode 2 | football | missing",
       "PRV review: 2026 Topps Chrome Team Samurai Japan Analysis...or Lack Thereof | baseball | known_issue",
-      "PRV review: 2026 Topps Chrome Sapphire Baseball and 2026 Topps Chrome Logofractor Baseball | baseball | missing",
+      "PRV review: 2026 Topps Chrome Sapphire Baseball and 2026 Topps Chrome Logofractor Baseball | baseball | known_issue",
       "PRV review: 2026 Topps Flagship Football | football | known_issue",
       "PRV review: 2026 Topps Chrome Logofractor & 2026 Topps Chrome Baseball Fanatics Mega Boxes | baseball | known_issue",
       "PRV review: 2026 Topps Pristine Baseball | baseball | known_issue",
-      "PRV review: 2026 Topps Tribute | baseball | known_issue",
-      "PRV review: 2026 Mid-Year Format Value Rankings Day 5: The Final Scores | soccer | known_issue"
+      "PRV review: 2026 Topps Tribute | baseball | known_issue"
     ],
     "blocked": [],
-    "proof": [],
+    "proof": [
+      "2025-26 Topps Chrome Update Sapphire Basketball -> pending_visual_validation: Public PRV JSON validated with 8 rows. Public PRV behavior validation is pending."
+    ],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 12 PRV source item(s). 0 completed/progress item(s), 12 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 10 PRV source item(s). 1 completed/progress item(s), 9 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -6920,7 +6961,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-09-01T16:01:22.656Z",
+  "saved_at": "2026-09-05T16:00:45.667Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

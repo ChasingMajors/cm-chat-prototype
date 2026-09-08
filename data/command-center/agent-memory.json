@@ -411,15 +411,21 @@
       "sport": "basketball",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "needs_admin",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "PRV sheet write and JSON publish completed for 2025_26_topps_chrome_black_basketball.",
+      "validationResult": "PRV write completed, but public JSON validation needs review. Publish returned ok.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2025-26-topps-chrome-black-nba",
       "createdAt": "2026-09-07T15:57:03.997Z",
-      "updatedAt": "2026-09-07T15:57:03.997Z"
+      "updatedAt": "2026-09-08T15:57:03.840Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "PRV sheet write and JSON publish completed for 2025_26_topps_chrome_black_basketball.",
+      "autoExecutedAt": "2026-09-08T15:57:03.840Z"
     },
     {
       "id": "source_watch|baseball|2026 panini prizm baseball",
@@ -437,7 +443,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-baseball-card-checklist/",
       "createdAt": "2026-09-07T15:57:03.997Z",
-      "updatedAt": "2026-09-07T15:57:03.997Z"
+      "updatedAt": "2026-09-08T15:57:03.840Z"
     },
     {
       "id": "prv_watch|basketball|2025-26 topps chrome update sapphire basketball",
@@ -497,7 +503,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-mls-soccer-card-checklist/",
       "createdAt": "2026-08-28T15:57:04.994Z",
-      "updatedAt": "2026-09-07T15:57:03.997Z"
+      "updatedAt": "2026-09-08T15:57:03.840Z"
     },
     {
       "id": "prv_watch|soccer|2026 mid-year format value rankings- day 2 cost per numbered card",
@@ -934,7 +940,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-26T17:10:51.102Z",
-      "updatedAt": "2026-09-07T15:57:03.997Z"
+      "updatedAt": "2026-09-08T15:57:03.840Z"
     },
     {
       "id": "source_import|wordpress_api|2025-26 topps chrome black basketball",
@@ -1044,7 +1050,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-05T03:26:37.369Z",
-      "updatedAt": "2026-09-07T15:57:03.997Z"
+      "updatedAt": "2026-09-08T15:57:03.840Z"
     },
     {
       "id": "visual_test|github_actions|2026-27 upper deck mvp hockey|2026_27_upper_deck_mvp_hockey",
@@ -1073,6 +1079,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1788883239469_alert",
+      "ts": "2026-09-08T15:57:03.840Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1788883238885",
+      "ts": "2026-09-08T15:57:03.840Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 3 actionable from 20 checked. PRV: 8 actionable from 10 checked. PRV sync: passed. Auto actions: 1 run. 2025-26 Topps Chrome Black Basketball -> needs_admin (PRV write completed, but public JSON validation needs review. Publish returned ok.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1788883238880",
+      "ts": "2026-09-08T15:57:03.840Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2025-26 Topps Chrome Black Basketball: PRV sheet write and JSON publish completed for 2025_26_topps_chrome_black_basketball. PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "status": "needs_admin",
+      "product": "2025-26 Topps Chrome Black Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1788883192651",
+      "ts": "2026-09-08T15:57:03.840Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1788796860932_alert",
       "ts": "2026-09-07T15:57:03.997Z",
@@ -1767,19 +1813,18 @@
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-09-07T15:57:03.997Z",
+    "generated_at": "2026-09-08T15:57:03.840Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 10,
       "skipped_ignored": 0
     },
-    "completed_count": 1,
-    "needs_admin_count": 11,
+    "completed_count": 0,
+    "needs_admin_count": 12,
     "blocked_count": 0,
-    "completed": [
-      "2025-26 Topps Chrome Update Sapphire Basketball -> validated: GitHub Actions visual test passed for 2025-26 Topps Chrome Update Sapphire Basketball."
-    ],
+    "completed": [],
     "needs_admin": [
+      "2025-26 Topps Chrome Black Basketball -> needs_admin: PRV write completed, but public JSON validation needs review. Publish returned ok.",
       "Checklist review: 2026 Panini Prizm Baseball | baseball | missing",
       "Checklist review: 2026 Topps Chrome MLS Soccer | soccer | missing",
       "Checklist review: 2026 Leaf Trinity Football | football | missing",
@@ -1793,11 +1838,9 @@
       "PRV review: 2026 Topps Tribute | baseball | known_issue"
     ],
     "blocked": [],
-    "proof": [
-      "2025-26 Topps Chrome Update Sapphire Basketball -> validated: GitHub Actions visual test passed for 2025-26 Topps Chrome Update Sapphire Basketball."
-    ],
+    "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 10 PRV source item(s). 1 completed/progress item(s), 11 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 10 PRV source item(s). 0 completed/progress item(s), 12 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -7079,7 +7122,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-09-07T16:01:01.200Z",
+  "saved_at": "2026-09-08T16:00:39.515Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

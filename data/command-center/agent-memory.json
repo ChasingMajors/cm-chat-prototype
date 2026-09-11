@@ -404,6 +404,24 @@
   ],
   "agent_actions": [
     {
+      "id": "source_watch|baseball|2026 fanatics under wraps emanate mlb - baseball signed photo",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026 Fanatics Under Wraps Emanate MLB - Baseball Signed Photo",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-fanatics-under-wraps-emanate-mlb-baseball-signed-photo-checklist/",
+      "createdAt": "2026-09-11T15:57:04.359Z",
+      "updatedAt": "2026-09-11T15:57:04.359Z"
+    },
+    {
       "id": "source_watch|hockey|2026-27 upper deck artifacts hockey",
       "type": "source_import",
       "source": "scheduled_deep_sheets",
@@ -414,18 +432,18 @@
       "status": "pending_public_validation",
       "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
-      "executionResult": "Checklist sheet write completed; published JSON validation is pending for 2026_27_upper_deck_artifacts_hockey.",
-      "validationResult": "Checklist write completed, but published JSON is not visible yet. The agent will retry publish validation on the next sweep. No spreadsheet configured for hockey 2026-27 Checked hockey 2026-27 code 2026_27_upper_deck_artifacts_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
+      "executionResult": "Pending checklist publish validation rechecked for 2026_27_upper_deck_artifacts_hockey.",
+      "validationResult": "Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. No spreadsheet configured for hockey 2026-27 Checked hockey 2026-27 code 2026_27_upper_deck_artifacts_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-artifacts-hockey-card-checklist/",
       "createdAt": "2026-09-10T15:57:04.254Z",
-      "updatedAt": "2026-09-10T15:57:04.254Z",
+      "updatedAt": "2026-09-11T15:57:04.359Z",
       "targetBucket": "2026-27",
-      "pendingValidationAttempts": 1,
+      "pendingValidationAttempts": 2,
       "visualStartedAt": "",
       "visualRunUrl": "",
       "repairProof": "Agent attempted publish validation for 2026-27 Upper Deck Artifacts Hockey. Public JSON is not final yet; retry is scheduled.",
-      "autoExecutedAt": "2026-09-10T15:57:04.254Z"
+      "autoExecutedAt": "2026-09-11T15:57:04.359Z"
     },
     {
       "id": "source_watch|baseball|2026 bowman chrome baseball",
@@ -443,7 +461,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-bowman-chrome-baseball-card-checklist/",
       "createdAt": "2026-09-10T15:57:04.254Z",
-      "updatedAt": "2026-09-10T15:57:04.254Z"
+      "updatedAt": "2026-09-11T15:57:04.359Z"
     },
     {
       "id": "prv_watch|soccer|2026 topps chrome mls",
@@ -509,7 +527,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-baseball-card-checklist/",
       "createdAt": "2026-09-07T15:57:03.997Z",
-      "updatedAt": "2026-09-10T15:57:04.254Z"
+      "updatedAt": "2026-09-11T15:57:04.359Z"
     },
     {
       "id": "prv_watch|basketball|2025-26 topps chrome update sapphire basketball",
@@ -569,7 +587,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-mls-soccer-card-checklist/",
       "createdAt": "2026-08-28T15:57:04.994Z",
-      "updatedAt": "2026-09-10T15:57:04.254Z"
+      "updatedAt": "2026-09-11T15:57:04.359Z"
     },
     {
       "id": "prv_watch|soccer|2026 mid-year format value rankings- day 2 cost per numbered card",
@@ -1116,7 +1134,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-05T03:26:37.369Z",
-      "updatedAt": "2026-09-10T15:57:04.254Z"
+      "updatedAt": "2026-09-11T15:57:04.359Z"
     },
     {
       "id": "visual_test|github_actions|2026-27 upper deck mvp hockey|2026_27_upper_deck_mvp_hockey",
@@ -1145,6 +1163,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1789142517543_alert",
+      "ts": "2026-09-11T15:57:04.359Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1789142517020",
+      "ts": "2026-09-11T15:57:04.359Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 4 actionable from 20 checked. PRV: 6 actionable from 11 checked. PRV sync: passed. Auto actions: 1 run. 2026-27 Upper Deck Artifacts Hockey -> pending_public_validation (Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1789142517007",
+      "ts": "2026-09-11T15:57:04.359Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending public validation",
+      "detail": "2026-27 Upper Deck Artifacts Hockey: Pending checklist publish validation rechecked for 2026_27_upper_deck_artifacts_hockey. Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. No spreadsheet configured for hockey 2026-27 Checked hockey 2026-27 code 2026_27_upper_deck_artifacts_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
+      "status": "pending_public_validation",
+      "product": "2026-27 Upper Deck Artifacts Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1789142468583",
+      "ts": "2026-09-11T15:57:04.359Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1789056099358_alert",
       "ts": "2026-09-10T15:57:04.254Z",
@@ -1904,68 +1962,27 @@
       "status": "preview_ready",
       "product": "2026 Panini INTL Mexico Soccer",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1787766458375_n8toue",
-      "ts": "2026-08-26T17:47:38.375Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2026 Panini INTL Mexico Soccer",
-      "source": "admin"
-    },
-    {
-      "id": "log_1787765986100_jsbr86",
-      "ts": "2026-08-26T17:39:46.100Z",
-      "type": "checklist_publish",
-      "title": "JSON publish needs review",
-      "detail": "Sheet write succeeded, but publish/live validation needs review.",
-      "status": "failed",
-      "product": "2025-26 Upper Deck Clear Cut Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1787765895061_4h6ou7",
-      "ts": "2026-08-26T17:38:15.061Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2025-26 Upper Deck Clear Cut Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1787765895050_d4iqxo",
-      "ts": "2026-08-26T17:38:15.050Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "957 checklist rows and 20 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2025-26 Upper Deck Clear Cut Hockey",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-09-10T15:57:04.254Z",
+    "generated_at": "2026-09-11T15:57:04.359Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 11,
       "skipped_ignored": 0
     },
     "completed_count": 0,
-    "needs_admin_count": 12,
+    "needs_admin_count": 11,
     "blocked_count": 0,
     "completed": [],
     "needs_admin": [
-      "2026-27 Upper Deck Artifacts Hockey -> pending_public_validation: Checklist write completed, but published JSON is not visible yet. The agent will retry publish validation on the next sweep. No spreadsheet configured for hockey 2026-27 Checked hockey 2026-27 code 2026_27_upper_deck_artifacts_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
+      "2026-27 Upper Deck Artifacts Hockey -> pending_public_validation: Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. No spreadsheet configured for hockey 2026-27 Checked hockey 2026-27 code 2026_27_upper_deck_artifacts_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
+      "Checklist review: 2026 Fanatics Under Wraps Emanate MLB - Baseball Signed Photo | baseball | missing",
       "Checklist review: 2026 Bowman Chrome Baseball | baseball | missing",
-      "Checklist review: 2026-27 Upper Deck Artifacts Hockey | hockey | missing",
       "Checklist review: 2026 Panini Prizm Baseball | baseball | missing",
       "Checklist review: 2026 Topps Chrome MLS Soccer | soccer | missing",
-      "Checklist review: 2026 Leaf Trinity Football | football | missing",
       "PRV review: 2026 Topps Flagship Football Deep Dive: Episode 2 | football | known_issue",
       "PRV review: 2026 Topps Chrome Team Samurai Japan Analysis...or Lack Thereof | baseball | known_issue",
       "PRV review: 2026 Topps Chrome Sapphire Baseball and 2026 Topps Chrome Logofractor Baseball | baseball | known_issue",
@@ -1976,7 +1993,7 @@
     "blocked": [],
     "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 11 PRV source item(s). 0 completed/progress item(s), 12 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 11 PRV source item(s). 0 completed/progress item(s), 11 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -7258,7 +7275,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-09-10T16:01:39.432Z",
+  "saved_at": "2026-09-11T16:01:57.579Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

@@ -418,6 +418,48 @@
   ],
   "agent_actions": [
     {
+      "id": "prv_watch|soccer|clean up analysis 2025-26 topps nbl australian basketball league and 2025-26 finest uefa club competitions",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "Clean Up Analysis: 2025-26 Topps NBL (Australian Basketball League) & 2025-26 Finest UEFA Club Competitions",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "adminDecision": "",
+      "executionResult": "PRV sheet write and JSON publish completed for clean_up_analysis_2025_26_topps_nbl_australian_basketball_league_2025_26_finest_uefa_club_competitions_soccer.",
+      "validationResult": "PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/clean-up-analysis-202526-topps-nbl",
+      "createdAt": "2026-09-15T15:57:04.056Z",
+      "updatedAt": "2026-09-15T15:57:04.056Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "PRV sheet write and JSON publish completed for clean_up_analysis_2025_26_topps_nbl_australian_basketball_league_2025_26_finest_uefa_club_competitions_soccer.",
+      "autoExecutedAt": "2026-09-15T15:57:04.056Z"
+    },
+    {
+      "id": "source_watch|hockey|2025-26 upper deck ice hockey",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2025-26 Upper Deck Ice Hockey",
+      "sport": "hockey",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-ice-hockey-card-checklist/",
+      "createdAt": "2026-09-15T15:57:04.056Z",
+      "updatedAt": "2026-09-15T15:57:04.056Z"
+    },
+    {
       "id": "source_watch|baseball|2026 fanatics under wraps emanate mlb - baseball signed photo",
       "type": "source_import",
       "source": "scheduled_deep_sheets",
@@ -433,7 +475,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-fanatics-under-wraps-emanate-mlb-baseball-signed-photo-checklist/",
       "createdAt": "2026-09-11T15:57:04.359Z",
-      "updatedAt": "2026-09-14T15:57:04.205Z"
+      "updatedAt": "2026-09-15T15:57:04.056Z"
     },
     {
       "id": "source_watch|hockey|2026-27 upper deck artifacts hockey",
@@ -475,7 +517,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-bowman-chrome-baseball-card-checklist/",
       "createdAt": "2026-09-10T15:57:04.254Z",
-      "updatedAt": "2026-09-14T15:57:04.205Z"
+      "updatedAt": "2026-09-15T15:57:04.056Z"
     },
     {
       "id": "prv_watch|soccer|2026 topps chrome mls",
@@ -541,7 +583,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-baseball-card-checklist/",
       "createdAt": "2026-09-07T15:57:03.997Z",
-      "updatedAt": "2026-09-14T15:57:04.205Z"
+      "updatedAt": "2026-09-15T15:57:04.056Z"
     },
     {
       "id": "prv_watch|basketball|2025-26 topps chrome update sapphire basketball",
@@ -601,7 +643,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-mls-soccer-card-checklist/",
       "createdAt": "2026-08-28T15:57:04.994Z",
-      "updatedAt": "2026-09-14T15:57:04.205Z"
+      "updatedAt": "2026-09-15T15:57:04.056Z"
     },
     {
       "id": "prv_watch|soccer|2026 mid-year format value rankings- day 2 cost per numbered card",
@@ -1148,7 +1190,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-05T03:26:37.369Z",
-      "updatedAt": "2026-09-14T15:57:04.205Z"
+      "updatedAt": "2026-09-15T15:57:04.056Z"
     },
     {
       "id": "visual_test|github_actions|2026-27 upper deck mvp hockey|2026_27_upper_deck_mvp_hockey",
@@ -1177,6 +1219,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1789488112815_alert",
+      "ts": "2026-09-15T15:57:04.056Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1789488111325",
+      "ts": "2026-09-15T15:57:04.056Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 5 actionable from 20 checked. PRV: 7 actionable from 11 checked. PRV sync: passed. Auto actions: 1 run. Clean Up Analysis: 2025-26 Topps NBL (Australian Basketball League) & 2025-26 Finest UEFA Club Competitions -> needs_admin (PRV write completed, but public JSON validation needs review. Publish returned ok.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1789488111324",
+      "ts": "2026-09-15T15:57:04.056Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "Clean Up Analysis: 2025-26 Topps NBL (Australian Basketball League) & 2025-26 Finest UEFA Club Competitions: PRV sheet write and JSON publish completed for clean_up_analysis_2025_26_topps_nbl_australian_basketball_league_2025_26_finest_uefa_club_competitions_soccer. PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "status": "needs_admin",
+      "product": "Clean Up Analysis: 2025-26 Topps NBL (Australian Basketball League) & 2025-26 Finest UEFA Club Competitions",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1789488052497",
+      "ts": "2026-09-15T15:57:04.056Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1789401659187_alert",
       "ts": "2026-09-14T15:57:04.205Z",
@@ -1936,79 +2018,39 @@
       "status": "failed",
       "product": "2026 Topps Chrome LogoFractor Baseball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1787768327305_g4knzx",
-      "ts": "2026-08-26T18:18:47.305Z",
-      "type": "checklist_publish",
-      "title": "JSON publish started",
-      "detail": "Sheet write is complete. Publishing product-scoped JSON as a separate phase.",
-      "status": "started",
-      "product": "2026 Topps Chrome LogoFractor Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1787768327295_xy6asq",
-      "ts": "2026-08-26T18:18:47.295Z",
-      "type": "checklist_publish",
-      "title": "Checklist data written",
-      "detail": "495 checklist rows and 58 parallels validated in the source sheet.",
-      "status": "needs_review",
-      "product": "2026 Topps Chrome LogoFractor Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1787768308849_g03jhe",
-      "ts": "2026-08-26T18:18:28.850Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "2026 Topps Chrome LogoFractor Baseball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1787766892844_dbb6e9",
-      "ts": "2026-08-26T17:54:52.844Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "495 rows and 58 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2026 Topps Chrome LogoFractor Baseball",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
-    "ok": false,
-    "status": "issue",
-    "generated_at": "2026-09-14T15:57:04.205Z",
+    "ok": true,
+    "status": "needs_admin",
+    "generated_at": "2026-09-15T15:57:04.056Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 11,
       "skipped_ignored": 0
     },
     "completed_count": 0,
-    "needs_admin_count": 10,
-    "blocked_count": 1,
+    "needs_admin_count": 13,
+    "blocked_count": 0,
     "completed": [],
     "needs_admin": [
+      "Clean Up Analysis: 2025-26 Topps NBL (Australian Basketball League) & 2025-26 Finest UEFA Club Competitions -> needs_admin: PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "Checklist review: 2025-26 Upper Deck Ice Hockey | hockey | missing",
       "Checklist review: 2026 Fanatics Under Wraps Emanate MLB - Baseball Signed Photo | baseball | missing",
       "Checklist review: 2026 Bowman Chrome Baseball | baseball | missing",
       "Checklist review: 2026 Panini Prizm Baseball | baseball | missing",
       "Checklist review: 2026 Topps Chrome MLS Soccer | soccer | missing",
+      "PRV review: Clean Up Analysis: 2025-26 Topps NBL (Australian Basketball League) & 2025-26 Finest UEFA Club Competitions | soccer | missing",
       "PRV review: 2026 Topps Flagship Football Deep Dive: Episode 2 | football | known_issue",
       "PRV review: 2026 Topps Chrome Team Samurai Japan Analysis...or Lack Thereof | baseball | known_issue",
       "PRV review: 2026 Topps Chrome Sapphire Baseball and 2026 Topps Chrome Logofractor Baseball | baseball | known_issue",
       "PRV review: 2026 Topps Flagship Football | football | known_issue",
-      "PRV review: 2026 Topps Chrome Logofractor & 2026 Topps Chrome Baseball Fanatics Mega Boxes | baseball | known_issue",
-      "PRV review: 2026 Topps Pristine Baseball | baseball | known_issue"
+      "PRV review: 2026 Topps Chrome Logofractor & 2026 Topps Chrome Baseball Fanatics Mega Boxes | baseball | known_issue"
     ],
-    "blocked": [
-      "2026-27 Upper Deck Artifacts Hockey -> failed: Agent attempted public checklist JSON validation 5 times and failed. Expected any rows / any parallels; found 0 rows / 0 parallels. Checked hockey 2026-27 code 2026_27_upper_deck_artifacts_hockey. Recheck: Product code not found in GitHub main checklist manifest."
-    ],
+    "blocked": [],
     "proof": [],
-    "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
-    "summary": "Checked 20 checklist source item(s) and 11 PRV source item(s). 0 completed/progress item(s), 10 needs-admin item(s), 1 blocked/issue item(s)."
+    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
+    "summary": "Checked 20 checklist source item(s) and 11 PRV source item(s). 0 completed/progress item(s), 13 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -7290,7 +7332,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-09-14T16:00:59.233Z",
+  "saved_at": "2026-09-15T16:01:53.067Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

@@ -418,6 +418,48 @@
   ],
   "agent_actions": [
     {
+      "id": "source_watch|hockey|2026 upper deck team usa juniors hockey",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026 Upper Deck Team USA Juniors Hockey",
+      "sport": "hockey",
+      "code": "2026_upper_deck_team_usa_juniors_hockey",
+      "riskLevel": "medium",
+      "status": "pending_public_validation",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Hockey source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "Checklist sheet write completed; published JSON validation is pending for 2026_upper_deck_team_usa_juniors_hockey.",
+      "validationResult": "Checklist write completed, but published JSON is not visible yet. The agent will retry publish validation on the next sweep. No spreadsheet configured for hockey 2026 Checked hockey 2026 code 2026_upper_deck_team_usa_juniors_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-upper-deck-team-usa-juniors-hockey-card-checklist/",
+      "createdAt": "2026-09-16T15:57:04.515Z",
+      "updatedAt": "2026-09-16T15:57:04.515Z",
+      "targetBucket": "2026",
+      "pendingValidationAttempts": 1,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "Agent attempted publish validation for 2026 Upper Deck Team USA Juniors Hockey. Public JSON is not final yet; retry is scheduled.",
+      "autoExecutedAt": "2026-09-16T15:57:04.515Z"
+    },
+    {
+      "id": "source_watch|soccer|2026-27 topps flagship premier league soccer",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026-27 Topps Flagship Premier League Soccer",
+      "sport": "soccer",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-27-topps-flagship-premier-league-soccer-card-checklist/",
+      "createdAt": "2026-09-16T15:57:04.515Z",
+      "updatedAt": "2026-09-16T15:57:04.515Z"
+    },
+    {
       "id": "prv_watch|soccer|clean up analysis 2025-26 topps nbl australian basketball league and 2025-26 finest uefa club competitions",
       "type": "prv_source_review",
       "source": "scheduled_prv_quick_json",
@@ -457,7 +499,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-ice-hockey-card-checklist/",
       "createdAt": "2026-09-15T15:57:04.056Z",
-      "updatedAt": "2026-09-15T15:57:04.056Z"
+      "updatedAt": "2026-09-16T15:57:04.515Z"
     },
     {
       "id": "source_watch|baseball|2026 fanatics under wraps emanate mlb - baseball signed photo",
@@ -475,7 +517,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-fanatics-under-wraps-emanate-mlb-baseball-signed-photo-checklist/",
       "createdAt": "2026-09-11T15:57:04.359Z",
-      "updatedAt": "2026-09-15T15:57:04.056Z"
+      "updatedAt": "2026-09-16T15:57:04.515Z"
     },
     {
       "id": "source_watch|hockey|2026-27 upper deck artifacts hockey",
@@ -517,7 +559,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-bowman-chrome-baseball-card-checklist/",
       "createdAt": "2026-09-10T15:57:04.254Z",
-      "updatedAt": "2026-09-15T15:57:04.056Z"
+      "updatedAt": "2026-09-16T15:57:04.515Z"
     },
     {
       "id": "prv_watch|soccer|2026 topps chrome mls",
@@ -583,7 +625,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-baseball-card-checklist/",
       "createdAt": "2026-09-07T15:57:03.997Z",
-      "updatedAt": "2026-09-15T15:57:04.056Z"
+      "updatedAt": "2026-09-16T15:57:04.515Z"
     },
     {
       "id": "prv_watch|basketball|2025-26 topps chrome update sapphire basketball",
@@ -643,7 +685,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-mls-soccer-card-checklist/",
       "createdAt": "2026-08-28T15:57:04.994Z",
-      "updatedAt": "2026-09-15T15:57:04.056Z"
+      "updatedAt": "2026-09-16T15:57:04.515Z"
     },
     {
       "id": "prv_watch|soccer|2026 mid-year format value rankings- day 2 cost per numbered card",
@@ -1190,7 +1232,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-05T03:26:37.369Z",
-      "updatedAt": "2026-09-15T15:57:04.056Z"
+      "updatedAt": "2026-09-16T15:57:04.515Z"
     },
     {
       "id": "visual_test|github_actions|2026-27 upper deck mvp hockey|2026_27_upper_deck_mvp_hockey",
@@ -1219,6 +1261,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1789574431101_alert",
+      "ts": "2026-09-16T15:57:04.515Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1789574430664",
+      "ts": "2026-09-16T15:57:04.515Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 7 actionable from 20 checked. PRV: 6 actionable from 11 checked. PRV sync: passed. Auto actions: 1 run. 2026 Upper Deck Team USA Juniors Hockey -> pending_public_validation (Checklist write completed, but published JSON is not visible yet. The agent will retry publish validation on the next sw)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1789574430663",
+      "ts": "2026-09-16T15:57:04.515Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending public validation",
+      "detail": "2026 Upper Deck Team USA Juniors Hockey: Checklist sheet write completed; published JSON validation is pending for 2026_upper_deck_team_usa_juniors_hockey. Checklist write completed, but published JSON is not visible yet. The agent will retry publish validation on the next sweep. No spreadsheet configured for hockey 2026 Checked hockey 2026 code 2026_upper_deck_team_usa_juniors_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
+      "status": "pending_public_validation",
+      "product": "2026 Upper Deck Team USA Juniors Hockey",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1789574394972",
+      "ts": "2026-09-16T15:57:04.515Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1789488112815_alert",
       "ts": "2026-09-15T15:57:04.056Z",
@@ -1978,79 +2060,39 @@
       "status": "needs_review",
       "product": "2025-26 Panini Origins Basketball",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1787768933944_21qx55",
-      "ts": "2026-08-26T18:28:53.944Z",
-      "type": "source_import",
-      "title": "Sheet write started",
-      "detail": "Admin requested product-scoped write to Google Sheets.",
-      "status": "started",
-      "product": "2025-26 Panini Origins Basketball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1787768929291_87b8pp",
-      "ts": "2026-08-26T18:28:49.291Z",
-      "type": "source_import",
-      "title": "Import preview completed",
-      "detail": "1,105 rows and 145 parallels parsed.",
-      "status": "preview_ready",
-      "product": "2025-26 Panini Origins Basketball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1787768927074_x3wrej",
-      "ts": "2026-08-26T18:28:47.074Z",
-      "type": "source_import",
-      "title": "Import preview started",
-      "detail": "Parsing source checklist rows and parallels before any sheet write.",
-      "status": "started",
-      "product": "2025-26 Panini Origins Basketball",
-      "source": "admin"
-    },
-    {
-      "id": "log_1787768567785_2ys7z4",
-      "ts": "2026-08-26T18:22:47.785Z",
-      "type": "checklist_publish",
-      "title": "JSON publish failed",
-      "detail": "Timed out after 240s: https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-      "status": "failed",
-      "product": "2026 Topps Chrome LogoFractor Baseball",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-09-15T15:57:04.056Z",
+    "generated_at": "2026-09-16T15:57:04.515Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 11,
       "skipped_ignored": 0
     },
     "completed_count": 0,
-    "needs_admin_count": 13,
+    "needs_admin_count": 14,
     "blocked_count": 0,
     "completed": [],
     "needs_admin": [
-      "Clean Up Analysis: 2025-26 Topps NBL (Australian Basketball League) & 2025-26 Finest UEFA Club Competitions -> needs_admin: PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "2026 Upper Deck Team USA Juniors Hockey -> pending_public_validation: Checklist write completed, but published JSON is not visible yet. The agent will retry publish validation on the next sweep. No spreadsheet configured for hockey 2026 Checked hockey 2026 code 2026_upper_deck_team_usa_juniors_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
+      "Checklist review: 2026-27 Topps Flagship Premier League Soccer | soccer | missing",
+      "Checklist review: 2026 Upper Deck Team USA Juniors Hockey | hockey | missing",
       "Checklist review: 2025-26 Upper Deck Ice Hockey | hockey | missing",
       "Checklist review: 2026 Fanatics Under Wraps Emanate MLB - Baseball Signed Photo | baseball | missing",
       "Checklist review: 2026 Bowman Chrome Baseball | baseball | missing",
       "Checklist review: 2026 Panini Prizm Baseball | baseball | missing",
       "Checklist review: 2026 Topps Chrome MLS Soccer | soccer | missing",
-      "PRV review: Clean Up Analysis: 2025-26 Topps NBL (Australian Basketball League) & 2025-26 Finest UEFA Club Competitions | soccer | missing",
       "PRV review: 2026 Topps Flagship Football Deep Dive: Episode 2 | football | known_issue",
       "PRV review: 2026 Topps Chrome Team Samurai Japan Analysis...or Lack Thereof | baseball | known_issue",
       "PRV review: 2026 Topps Chrome Sapphire Baseball and 2026 Topps Chrome Logofractor Baseball | baseball | known_issue",
-      "PRV review: 2026 Topps Flagship Football | football | known_issue",
-      "PRV review: 2026 Topps Chrome Logofractor & 2026 Topps Chrome Baseball Fanatics Mega Boxes | baseball | known_issue"
+      "PRV review: 2026 Topps Flagship Football | football | known_issue"
     ],
     "blocked": [],
     "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 11 PRV source item(s). 0 completed/progress item(s), 13 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 11 PRV source item(s). 0 completed/progress item(s), 14 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -7332,7 +7374,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-09-15T16:01:53.067Z",
+  "saved_at": "2026-09-16T16:00:31.116Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

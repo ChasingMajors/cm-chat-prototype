@@ -446,6 +446,48 @@
   ],
   "agent_actions": [
     {
+      "id": "prv_watch|baseball|2026 topps mars attacks christmas",
+      "type": "prv_source_review",
+      "source": "scheduled_prv_quick_json",
+      "product": "2026 Topps Mars Attacks Christmas",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "needs_admin",
+      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "adminDecision": "",
+      "executionResult": "PRV sheet write and JSON publish completed for 2026_topps_mars_attacks_christmas_baseball.",
+      "validationResult": "PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "runUrl": "",
+      "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-mars-attacks-christmas",
+      "createdAt": "2026-10-07T15:57:04.790Z",
+      "updatedAt": "2026-10-07T15:57:04.790Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "PRV sheet write and JSON publish completed for 2026_topps_mars_attacks_christmas_baseball.",
+      "autoExecutedAt": "2026-10-07T15:57:04.790Z"
+    },
+    {
+      "id": "source_watch|baseball|2026 topps allen and ginter baseball",
+      "type": "source_import",
+      "source": "scheduled_deep_sheets",
+      "product": "2026 Topps Allen & Ginter Baseball",
+      "sport": "baseball",
+      "code": "",
+      "riskLevel": "medium",
+      "status": "approval_required",
+      "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
+      "adminDecision": "",
+      "executionResult": "",
+      "validationResult": "",
+      "runUrl": "",
+      "sourceUrl": "https://www.checklistcenter.com/2026-topps-allen-ginter-baseball-card-checklist/",
+      "createdAt": "2026-10-07T15:57:04.790Z",
+      "updatedAt": "2026-10-07T15:57:04.790Z"
+    },
+    {
       "id": "prv_watch|baseball|2026 cosmic chrome baseball- early access print runs",
       "type": "prv_source_review",
       "source": "scheduled_prv_quick_json",
@@ -521,7 +563,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-bowman-football-deep-dive-analysis",
       "createdAt": "2026-09-30T15:57:04.202Z",
-      "updatedAt": "2026-10-01T15:57:03.789Z"
+      "updatedAt": "2026-10-07T15:57:04.790Z"
     },
     {
       "id": "source_watch|basketball|2026 panini prizm wnba basketball",
@@ -539,7 +581,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-wnba-basketball-card-checklist/",
       "createdAt": "2026-09-30T15:57:04.202Z",
-      "updatedAt": "2026-10-01T15:57:03.789Z"
+      "updatedAt": "2026-10-07T15:57:04.790Z"
     },
     {
       "id": "prv_watch|basketball|2025-26 topps pristine basketball",
@@ -548,16 +590,16 @@
       "product": "2025-26 Topps Pristine Basketball",
       "sport": "basketball",
       "code": "",
-      "riskLevel": "medium",
-      "status": "approval_required",
-      "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
+      "riskLevel": "low",
+      "status": "known_issue",
+      "recommendedAction": "Source post appears paid/locked. Public HTML does not expose writable print-run rows. Keep as known issue unless admin has another source.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "PRV source was scanned and held before auto execution.",
+      "validationResult": "Source post appears paid/locked. Public HTML does not expose writable print-run rows.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/202526-topps-pristine-nba-deep-dive",
       "createdAt": "2026-09-28T15:57:05.265Z",
-      "updatedAt": "2026-10-01T15:57:03.789Z"
+      "updatedAt": "2026-10-07T15:57:04.790Z"
     },
     {
       "id": "source_watch|hockey|2026-27 upper deck tim hortons hockey",
@@ -575,7 +617,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-tim-hortons-hockey-card-checklist/",
       "createdAt": "2026-09-28T15:57:05.265Z",
-      "updatedAt": "2026-10-01T15:57:03.789Z"
+      "updatedAt": "2026-10-07T15:57:04.790Z"
     },
     {
       "id": "prv_watch|basketball|2025-26 topps pristine basketball print runs",
@@ -635,7 +677,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-autograph-collection-football-card-checklist/",
       "createdAt": "2026-09-22T15:57:03.652Z",
-      "updatedAt": "2026-10-01T15:57:03.789Z",
+      "updatedAt": "2026-10-07T15:57:04.790Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
@@ -695,7 +737,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2025-26-upper-deck-splendor-hockey-card-checklist/",
       "createdAt": "2026-09-19T15:57:03.294Z",
-      "updatedAt": "2026-10-01T15:57:03.789Z"
+      "updatedAt": "2026-10-07T15:57:04.790Z"
     },
     {
       "id": "prv_watch|football|2026 topps flagship football revisited",
@@ -1548,7 +1590,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-05T03:26:37.369Z",
-      "updatedAt": "2026-10-01T15:57:03.789Z"
+      "updatedAt": "2026-10-07T15:57:04.790Z"
     },
     {
       "id": "visual_test|github_actions|2026-27 upper deck mvp hockey|2026_27_upper_deck_mvp_hockey",
@@ -1577,6 +1619,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1791388841932_alert",
+      "ts": "2026-10-07T15:57:04.790Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1791388841007",
+      "ts": "2026-10-07T15:57:04.790Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 5 actionable from 20 checked. PRV: 7 actionable from 13 checked. PRV sync: passed. Auto actions: 1 run. 2026 Topps Mars Attacks Christmas -> needs_admin (PRV write completed, but public JSON validation needs review. Publish returned ok.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1791388841003",
+      "ts": "2026-10-07T15:57:04.790Z",
+      "type": "auto_action",
+      "title": "Full-auto action needs review",
+      "detail": "2026 Topps Mars Attacks Christmas: PRV sheet write and JSON publish completed for 2026_topps_mars_attacks_christmas_baseball. PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "status": "needs_admin",
+      "product": "2026 Topps Mars Attacks Christmas",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1791388797420",
+      "ts": "2026-10-07T15:57:04.790Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1790870445099_alert",
       "ts": "2026-10-01T15:57:03.789Z",
@@ -2336,79 +2418,39 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1789056099358_alert",
-      "ts": "2026-09-10T15:57:04.254Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1789056098510",
-      "ts": "2026-09-10T15:57:04.254Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 5 actionable from 20 checked. PRV: 6 actionable from 11 checked. PRV sync: passed. Auto actions: 1 run. 2026-27 Upper Deck Artifacts Hockey -> pending_public_validation (Checklist write completed, but published JSON is not visible yet. The agent will retry publish validation on the next sw)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1789056098494",
-      "ts": "2026-09-10T15:57:04.254Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending public validation",
-      "detail": "2026-27 Upper Deck Artifacts Hockey: Checklist sheet write completed; published JSON validation is pending for 2026_27_upper_deck_artifacts_hockey. Checklist write completed, but published JSON is not visible yet. The agent will retry publish validation on the next sweep. No spreadsheet configured for hockey 2026-27 Checked hockey 2026-27 code 2026_27_upper_deck_artifacts_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
-      "status": "pending_public_validation",
-      "product": "2026-27 Upper Deck Artifacts Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1789056031591",
-      "ts": "2026-09-10T15:57:04.254Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
     "ok": true,
     "status": "needs_admin",
-    "generated_at": "2026-10-01T15:57:03.789Z",
+    "generated_at": "2026-10-07T15:57:04.790Z",
     "checked": {
       "checklist_count": 20,
-      "prv_count": 14,
+      "prv_count": 13,
       "skipped_ignored": 0
     },
     "completed_count": 0,
-    "needs_admin_count": 17,
+    "needs_admin_count": 13,
     "blocked_count": 0,
     "completed": [],
     "needs_admin": [
-      "2026 Topps Cosmic Chrome Baseball Early -> needs_admin: PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "2026 Topps Mars Attacks Christmas -> needs_admin: PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "Checklist review: 2026 Topps Allen & Ginter Baseball | baseball | missing",
       "Checklist review: 2026 Panini Prizm WNBA Basketball | basketball | missing",
       "Checklist review: 2026-27 Upper Deck Tim Hortons Hockey | hockey | missing",
       "Checklist review: 2026 Leaf Autograph Collection Football | football | missing",
       "Checklist review: 2025-26 Upper Deck Splendor Hockey | hockey | missing",
-      "Checklist review: 2025-26 Topps Museum Collection UEFA Soccer | soccer | missing",
-      "Checklist review: 2026-27 Topps Summer Signings UEFA Soccer | soccer | missing",
-      "Checklist review: 2026-27 Topps Flagship Premier League Soccer | soccer | missing",
-      "PRV review: 2026 Topps Cosmic Chrome Baseball Early | baseball | missing",
+      "PRV review: 2026 Topps Mars Attacks Christmas | baseball | missing",
       "PRV review: 2026 Cosmic Chrome Baseball- Early Access Print Runs | baseball | known_issue",
       "PRV review: 2026 Bowman Football | football | missing",
-      "PRV review: 2026 Bowman Football Early Access Print Runs | football | known_issue"
+      "PRV review: 2026 Bowman Football Early Access Print Runs | football | known_issue",
+      "PRV review: 2025-26 Topps Pristine Basketball | basketball | known_issue",
+      "PRV review: 2025-26 Topps Pristine Basketball Print Runs | basketball | known_issue"
     ],
     "blocked": [],
     "proof": [],
     "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 14 PRV source item(s). 0 completed/progress item(s), 17 needs-admin item(s), 0 blocked/issue item(s)."
+    "summary": "Checked 20 checklist source item(s) and 13 PRV source item(s). 0 completed/progress item(s), 13 needs-admin item(s), 0 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -7690,7 +7732,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-10-01T16:00:45.168Z",
+  "saved_at": "2026-10-07T16:00:41.987Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

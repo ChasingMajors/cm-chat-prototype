@@ -453,21 +453,21 @@
       "sport": "baseball",
       "code": "",
       "riskLevel": "medium",
-      "status": "needs_admin",
+      "status": "pending_visual_validation",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "",
       "executionResult": "PRV sheet write and JSON publish completed for 2026_bowman_chrome_sapphire_baseball.",
-      "validationResult": "PRV write completed, but public JSON validation needs review. Publish returned ok.",
+      "validationResult": "Public PRV JSON validated with 5 rows. Public PRV behavior validation is pending.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-bowman-chrome-sapphire-analysis",
       "createdAt": "2026-10-08T15:57:03.743Z",
-      "updatedAt": "2026-10-08T15:57:03.743Z",
+      "updatedAt": "2026-10-09T15:57:03.520Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
-      "repairProof": "PRV sheet write and JSON publish completed for 2026_bowman_chrome_sapphire_baseball.",
-      "autoExecutedAt": "2026-10-08T15:57:03.743Z"
+      "repairProof": "Agent fixed/published 2026 Bowman Chrome Sapphire and verified public JSON. Visual CV/ChatBot proof is next.",
+      "autoExecutedAt": "2026-10-09T15:57:03.520Z"
     },
     {
       "id": "prv_watch|baseball|2026 topps update",
@@ -485,7 +485,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-update-deep-dive",
       "createdAt": "2026-10-08T15:57:03.743Z",
-      "updatedAt": "2026-10-08T15:57:03.743Z"
+      "updatedAt": "2026-10-09T15:57:03.520Z"
     },
     {
       "id": "prv_watch|baseball|2026 topps mars attacks christmas",
@@ -1620,11 +1620,11 @@
       "sport": "",
       "code": "prv_full_sync",
       "riskLevel": "high",
-      "status": "failed",
-      "recommendedAction": "Run Agent Cycle to let Sentinel retry PRV JSON sync once. If it fails again, inspect Static Data Exporter logs and GitHub publish permissions.",
+      "status": "validated",
+      "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
       "adminDecision": "",
-      "executionResult": "Scheduled PRV full JSON sync failed.",
-      "validationResult": "Scheduled PRV JSON sync returned a review response.",
+      "executionResult": "Scheduled PRV full JSON sync completed through Static Data Exporter.",
+      "validationResult": "Scheduled PRV JSON sync completed.",
       "runUrl": "",
       "sourceUrl": "",
       "bucket": "",
@@ -1632,7 +1632,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-05T03:26:37.369Z",
-      "updatedAt": "2026-10-08T15:57:03.743Z"
+      "updatedAt": "2026-10-09T15:57:03.520Z"
     },
     {
       "id": "visual_test|github_actions|2026-27 upper deck mvp hockey|2026_27_upper_deck_mvp_hockey",
@@ -1661,6 +1661,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1791561660825_alert",
+      "ts": "2026-10-09T15:57:03.520Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel needs admin now",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1791561660321",
+      "ts": "2026-10-09T15:57:03.520Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 0 checked. PRV: 7 actionable from 14 checked. PRV sync: passed. Auto actions: 1 run. 2026 Bowman Chrome Sapphire -> pending_visual_validation (Public PRV JSON validated with 5 rows. Public PRV behavior validation is pending.) Checklist error: Timeout: https://www.checklistcenter.com/",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1791561660320",
+      "ts": "2026-10-09T15:57:03.520Z",
+      "type": "auto_action",
+      "title": "Full-auto action pending visual validation",
+      "detail": "2026 Bowman Chrome Sapphire: PRV sheet write and JSON publish completed for 2026_bowman_chrome_sapphire_baseball. Public PRV JSON validated with 5 rows. Public PRV behavior validation is pending.",
+      "status": "pending_visual_validation",
+      "product": "2026 Bowman Chrome Sapphire",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1791561621468",
+      "ts": "2026-10-09T15:57:03.520Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1791475363713_alert",
       "ts": "2026-10-08T15:57:03.743Z",
@@ -2420,65 +2460,25 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1789228887725_alert",
-      "ts": "2026-09-12T15:57:03.416Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1789228887011",
-      "ts": "2026-09-12T15:57:03.416Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 4 actionable from 20 checked. PRV: 6 actionable from 11 checked. PRV sync: passed. Auto actions: 1 run. 2026-27 Upper Deck Artifacts Hockey -> pending_public_validation (Published checklist JSON is still pending or stale after 3 check(s). Expected any rows / any parallels; found 0 rows / 0)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1789228887010",
-      "ts": "2026-09-12T15:57:03.416Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending public validation",
-      "detail": "2026-27 Upper Deck Artifacts Hockey: Pending checklist publish validation rechecked for 2026_27_upper_deck_artifacts_hockey. Published checklist JSON is still pending or stale after 3 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. Static Data Exporter publish call failed with 404 Checked hockey 2026-27 code 2026_27_upper_deck_artifacts_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
-      "status": "pending_public_validation",
-      "product": "2026-27 Upper Deck Artifacts Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1789228791932",
-      "ts": "2026-09-12T15:57:03.416Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
     "ok": false,
     "status": "issue",
-    "generated_at": "2026-10-08T15:57:03.743Z",
+    "generated_at": "2026-10-09T15:57:03.520Z",
     "checked": {
       "checklist_count": 0,
-      "prv_count": 15,
+      "prv_count": 14,
       "skipped_ignored": 0
     },
-    "completed_count": 0,
-    "needs_admin_count": 9,
-    "blocked_count": 2,
-    "completed": [],
+    "completed_count": 1,
+    "needs_admin_count": 7,
+    "blocked_count": 1,
+    "completed": [
+      "2026 Bowman Chrome Sapphire -> pending_visual_validation: Public PRV JSON validated with 5 rows. Public PRV behavior validation is pending."
+    ],
     "needs_admin": [
-      "2026 Bowman Chrome Sapphire -> needs_admin: PRV write completed, but public JSON validation needs review. Publish returned ok.",
       "PRV review: 2026 Topps Update | baseball | missing",
-      "PRV review: 2026 Bowman Chrome Sapphire | baseball | missing",
       "PRV review: 2026 Cosmic Chrome Baseball- Early Access Print Runs | baseball | known_issue",
       "PRV review: 2026 Bowman Football | football | known_issue",
       "PRV review: 2026 Bowman Football Early Access Print Runs | football | known_issue",
@@ -2487,12 +2487,13 @@
       "PRV review: 2026 Topps Flagship Football Revisited | football | known_issue"
     ],
     "blocked": [
-      "Checklist watch failed: Timeout: https://www.checklistcenter.com/",
-      "PRV JSON sync failed: Scheduled PRV JSON sync returned a review response."
+      "Checklist watch failed: Timeout: https://www.checklistcenter.com/"
     ],
-    "proof": [],
+    "proof": [
+      "2026 Bowman Chrome Sapphire -> pending_visual_validation: Public PRV JSON validated with 5 rows. Public PRV behavior validation is pending."
+    ],
     "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
-    "summary": "Checked 0 checklist source item(s) and 15 PRV source item(s). 0 completed/progress item(s), 9 needs-admin item(s), 2 blocked/issue item(s)."
+    "summary": "Checked 0 checklist source item(s) and 14 PRV source item(s). 1 completed/progress item(s), 7 needs-admin item(s), 1 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -7774,7 +7775,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-10-08T16:02:43.806Z",
+  "saved_at": "2026-10-09T16:01:00.888Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

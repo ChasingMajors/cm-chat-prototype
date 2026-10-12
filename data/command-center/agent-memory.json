@@ -453,15 +453,21 @@
       "sport": "football",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "failed",
       "recommendedAction": "Create approval task: inspect source checklist, import into Football source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "Checklist sheet write failed.",
+      "validationResult": "Source import preview is not ready for write.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-leaf-football-card-checklist/",
       "createdAt": "2026-10-11T15:57:03.425Z",
-      "updatedAt": "2026-10-11T15:57:03.425Z"
+      "updatedAt": "2026-10-12T15:57:03.712Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "Agent attempted repair for 2026 Leaf Football but it failed. Source import preview is not ready for write.",
+      "autoExecutedAt": "2026-10-12T15:57:03.712Z"
     },
     {
       "id": "source_watch|soccer|2026 topps chrome sapphire mls soccer",
@@ -479,7 +485,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-chrome-sapphire-mls-soccer-card-checklist/",
       "createdAt": "2026-10-11T15:57:03.425Z",
-      "updatedAt": "2026-10-11T15:57:03.425Z"
+      "updatedAt": "2026-10-12T15:57:03.712Z"
     },
     {
       "id": "source_watch|baseball|2026 topps update series baseball",
@@ -497,7 +503,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-update-series-baseball-card-checklist/",
       "createdAt": "2026-10-11T15:57:03.425Z",
-      "updatedAt": "2026-10-11T15:57:03.425Z"
+      "updatedAt": "2026-10-12T15:57:03.712Z"
     },
     {
       "id": "prv_watch|baseball|2026 bowman chrome sapphire",
@@ -539,7 +545,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-update-deep-dive",
       "createdAt": "2026-10-08T15:57:03.743Z",
-      "updatedAt": "2026-10-11T15:57:03.425Z"
+      "updatedAt": "2026-10-12T15:57:03.712Z"
     },
     {
       "id": "prv_watch|baseball|2026 topps mars attacks christmas",
@@ -581,7 +587,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-allen-ginter-baseball-card-checklist/",
       "createdAt": "2026-10-07T15:57:04.790Z",
-      "updatedAt": "2026-10-11T15:57:03.425Z"
+      "updatedAt": "2026-10-12T15:57:03.712Z"
     },
     {
       "id": "prv_watch|baseball|2026 cosmic chrome baseball- early access print runs",
@@ -677,7 +683,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-panini-prizm-wnba-basketball-card-checklist/",
       "createdAt": "2026-09-30T15:57:04.202Z",
-      "updatedAt": "2026-10-11T15:57:03.425Z"
+      "updatedAt": "2026-10-12T15:57:03.712Z"
     },
     {
       "id": "prv_watch|basketball|2025-26 topps pristine basketball",
@@ -713,7 +719,7 @@
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-upper-deck-tim-hortons-hockey-card-checklist/",
       "createdAt": "2026-09-28T15:57:05.265Z",
-      "updatedAt": "2026-10-11T15:57:03.425Z"
+      "updatedAt": "2026-10-12T15:57:03.712Z"
     },
     {
       "id": "prv_watch|basketball|2025-26 topps pristine basketball print runs",
@@ -1686,7 +1692,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-05T03:26:37.369Z",
-      "updatedAt": "2026-10-11T15:57:03.425Z"
+      "updatedAt": "2026-10-12T15:57:03.712Z"
     },
     {
       "id": "visual_test|github_actions|2026-27 upper deck mvp hockey|2026_27_upper_deck_mvp_hockey",
@@ -1715,6 +1721,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1791820790453_alert",
+      "ts": "2026-10-12T15:57:03.712Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel found items for admin review",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1791820789951",
+      "ts": "2026-10-12T15:57:03.712Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 6 actionable from 20 checked. PRV: 7 actionable from 12 checked. PRV sync: passed. Auto actions: 1 run. 2026 Leaf Football -> failed (Source import preview is not ready for write.)",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1791820789949",
+      "ts": "2026-10-12T15:57:03.712Z",
+      "type": "auto_action",
+      "title": "Full-auto action failed",
+      "detail": "2026 Leaf Football: Checklist sheet write failed. Source import preview is not ready for write.",
+      "status": "failed",
+      "product": "2026 Leaf Football",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1791820789260",
+      "ts": "2026-10-12T15:57:03.712Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1791734406262_alert",
       "ts": "2026-10-11T15:57:03.425Z",
@@ -2474,63 +2520,21 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1789488112815_alert",
-      "ts": "2026-09-15T15:57:04.056Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1789488111325",
-      "ts": "2026-09-15T15:57:04.056Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 5 actionable from 20 checked. PRV: 7 actionable from 11 checked. PRV sync: passed. Auto actions: 1 run. Clean Up Analysis: 2025-26 Topps NBL (Australian Basketball League) & 2025-26 Finest UEFA Club Competitions -> needs_admin (PRV write completed, but public JSON validation needs review. Publish returned ok.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1789488111324",
-      "ts": "2026-09-15T15:57:04.056Z",
-      "type": "auto_action",
-      "title": "Full-auto action needs review",
-      "detail": "Clean Up Analysis: 2025-26 Topps NBL (Australian Basketball League) & 2025-26 Finest UEFA Club Competitions: PRV sheet write and JSON publish completed for clean_up_analysis_2025_26_topps_nbl_australian_basketball_league_2025_26_finest_uefa_club_competitions_soccer. PRV write completed, but public JSON validation needs review. Publish returned ok.",
-      "status": "needs_admin",
-      "product": "Clean Up Analysis: 2025-26 Topps NBL (Australian Basketball League) & 2025-26 Finest UEFA Club Competitions",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1789488052497",
-      "ts": "2026-09-15T15:57:04.056Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
-    "ok": true,
-    "status": "needs_admin",
-    "generated_at": "2026-10-11T15:57:03.425Z",
+    "ok": false,
+    "status": "issue",
+    "generated_at": "2026-10-12T15:57:03.712Z",
     "checked": {
       "checklist_count": 20,
       "prv_count": 12,
       "skipped_ignored": 0
     },
-    "completed_count": 1,
-    "needs_admin_count": 14,
-    "blocked_count": 0,
-    "completed": [
-      "2026 Bowman Chrome Sapphire -> validated: GitHub Actions visual test passed for 2026 Bowman Chrome Sapphire."
-    ],
+    "completed_count": 0,
+    "needs_admin_count": 13,
+    "blocked_count": 1,
+    "completed": [],
     "needs_admin": [
       "Checklist review: 2026 Topps Update Series Baseball | baseball | missing",
       "Checklist review: 2026 Topps Chrome Sapphire MLS Soccer | soccer | missing",
@@ -2538,19 +2542,19 @@
       "Checklist review: 2026 Topps Allen & Ginter Baseball | baseball | missing",
       "Checklist review: 2026 Panini Prizm WNBA Basketball | basketball | missing",
       "Checklist review: 2026-27 Upper Deck Tim Hortons Hockey | hockey | missing",
-      "Checklist review: 2026 Leaf Autograph Collection Football | football | missing",
       "PRV review: 2026 Topps Update | baseball | missing",
       "PRV review: 2026 Cosmic Chrome Baseball- Early Access Print Runs | baseball | known_issue",
       "PRV review: 2026 Bowman Football | football | known_issue",
       "PRV review: 2026 Bowman Football Early Access Print Runs | football | known_issue",
-      "PRV review: 2025-26 Topps Pristine Basketball | basketball | known_issue"
+      "PRV review: 2025-26 Topps Pristine Basketball | basketball | known_issue",
+      "PRV review: 2025-26 Topps Pristine Basketball Print Runs | basketball | known_issue"
     ],
-    "blocked": [],
-    "proof": [
-      "2026 Bowman Chrome Sapphire -> validated: GitHub Actions visual test passed for 2026 Bowman Chrome Sapphire."
+    "blocked": [
+      "2026 Leaf Football -> failed: Source import preview is not ready for write."
     ],
-    "next_step": "Review the top needs-admin item, approve only if the source and target sheet/product are correct, then run Agent Cycle.",
-    "summary": "Checked 20 checklist source item(s) and 12 PRV source item(s). 1 completed/progress item(s), 14 needs-admin item(s), 0 blocked/issue item(s)."
+    "proof": [],
+    "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
+    "summary": "Checked 20 checklist source item(s) and 12 PRV source item(s). 0 completed/progress item(s), 13 needs-admin item(s), 1 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -7832,7 +7836,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-10-11T16:00:06.315Z",
+  "saved_at": "2026-10-12T15:59:50.531Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

@@ -501,15 +501,21 @@
       "sport": "baseball",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "failed",
       "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "Timeout: https://www.checklistcenter.com/2026-topps-update-series-baseball-card-checklist/",
+      "validationResult": "Timeout: https://www.checklistcenter.com/2026-topps-update-series-baseball-card-checklist/",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-update-series-baseball-card-checklist/",
       "createdAt": "2026-10-11T15:57:03.425Z",
-      "updatedAt": "2026-10-12T15:57:03.712Z"
+      "updatedAt": "2026-10-14T15:57:04.920Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "Agent attempted repair for 2026 Topps Update Series Baseball but it failed. A fix task was created when possible.",
+      "autoExecutedAt": "2026-10-14T15:57:04.920Z"
     },
     {
       "id": "prv_watch|baseball|2026 bowman chrome sapphire",
@@ -551,7 +557,7 @@
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/2026-topps-update-deep-dive",
       "createdAt": "2026-10-08T15:57:03.743Z",
-      "updatedAt": "2026-10-13T15:57:03.872Z"
+      "updatedAt": "2026-10-14T15:57:04.920Z"
     },
     {
       "id": "prv_watch|baseball|2026 topps mars attacks christmas",
@@ -1698,7 +1704,7 @@
       "expectedRowCount": 0,
       "expectedParallelCount": 0,
       "createdAt": "2026-08-05T03:26:37.369Z",
-      "updatedAt": "2026-10-13T15:57:03.872Z"
+      "updatedAt": "2026-10-14T15:57:04.920Z"
     },
     {
       "id": "visual_test|github_actions|2026-27 upper deck mvp hockey|2026_27_upper_deck_mvp_hockey",
@@ -1727,6 +1733,46 @@
   ],
   "agent_run_queue": [],
   "activity_log": [
+    {
+      "id": "log_1791993641293_alert",
+      "ts": "2026-10-14T15:57:04.920Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel needs admin now",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1791993640711",
+      "ts": "2026-10-14T15:57:04.920Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 0 checked. PRV: 6 actionable from 11 checked. PRV sync: passed. Auto actions: 1 run. 2026 Topps Update Series Baseball -> failed (Timeout: https://www.checklistcenter.com/2026-topps-update-series-baseball-card-checklist/) Checklist error: Timeout: https://www.checklistcenter.com/",
+      "status": "needs_review",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1791993640711",
+      "ts": "2026-10-14T15:57:04.920Z",
+      "type": "auto_action",
+      "title": "Full-auto action failed",
+      "detail": "2026 Topps Update Series Baseball: Timeout: https://www.checklistcenter.com/2026-topps-update-series-baseball-card-checklist/ Timeout: https://www.checklistcenter.com/2026-topps-update-series-baseball-card-checklist/",
+      "status": "failed",
+      "product": "2026 Topps Update Series Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1791993636126",
+      "ts": "2026-10-14T15:57:04.920Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
     {
       "id": "log_1791907298692_alert",
       "ts": "2026-10-13T15:57:03.872Z",
@@ -2486,59 +2532,19 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1789747371314_alert",
-      "ts": "2026-09-18T15:57:03.932Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1789747370515",
-      "ts": "2026-09-18T15:57:03.932Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 3 actionable from 20 checked. PRV: 7 actionable from 12 checked. PRV sync: passed. Auto actions: 1 run. 2026 Upper Deck Team USA Juniors Hockey -> pending_public_validation (Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1789747370513",
-      "ts": "2026-09-18T15:57:03.932Z",
-      "type": "auto_action",
-      "title": "Full-auto action pending public validation",
-      "detail": "2026 Upper Deck Team USA Juniors Hockey: Pending checklist publish validation rechecked for 2026_upper_deck_team_usa_juniors_hockey. Published checklist JSON is still pending or stale after 2 check(s). Expected any rows / any parallels; found 0 rows / 0 parallels. No spreadsheet configured for hockey 2026 Checked hockey 2026 code 2026_upper_deck_team_usa_juniors_hockey. Recheck: Product code not found in GitHub main checklist manifest.",
-      "status": "pending_public_validation",
-      "product": "2026 Upper Deck Team USA Juniors Hockey",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1789747324976",
-      "ts": "2026-09-18T15:57:03.932Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
     "ok": false,
     "status": "issue",
-    "generated_at": "2026-10-13T15:57:03.872Z",
+    "generated_at": "2026-10-14T15:57:04.920Z",
     "checked": {
       "checklist_count": 0,
-      "prv_count": 12,
+      "prv_count": 11,
       "skipped_ignored": 0
     },
     "completed_count": 0,
-    "needs_admin_count": 7,
+    "needs_admin_count": 6,
     "blocked_count": 2,
     "completed": [],
     "needs_admin": [
@@ -2547,16 +2553,15 @@
       "PRV review: 2026 Bowman Football | football | known_issue",
       "PRV review: 2026 Bowman Football Early Access Print Runs | football | known_issue",
       "PRV review: 2025-26 Topps Pristine Basketball | basketball | known_issue",
-      "PRV review: 2025-26 Topps Pristine Basketball Print Runs | basketball | known_issue",
-      "PRV review: 2026 Topps Flagship Football Revisited | football | known_issue"
+      "PRV review: 2025-26 Topps Pristine Basketball Print Runs | basketball | known_issue"
     ],
     "blocked": [
-      "2026 Topps Chrome Sapphire MLS Soccer -> failed: Timeout: https://www.checklistcenter.com/2026-topps-chrome-sapphire-mls-soccer-card-checklist/",
+      "2026 Topps Update Series Baseball -> failed: Timeout: https://www.checklistcenter.com/2026-topps-update-series-baseball-card-checklist/",
       "Checklist watch failed: Timeout: https://www.checklistcenter.com/"
     ],
     "proof": [],
     "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
-    "summary": "Checked 0 checklist source item(s) and 12 PRV source item(s). 0 completed/progress item(s), 7 needs-admin item(s), 2 blocked/issue item(s)."
+    "summary": "Checked 0 checklist source item(s) and 11 PRV source item(s). 0 completed/progress item(s), 6 needs-admin item(s), 2 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -7838,7 +7843,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-10-13T16:01:38.838Z",
+  "saved_at": "2026-10-14T16:00:41.323Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

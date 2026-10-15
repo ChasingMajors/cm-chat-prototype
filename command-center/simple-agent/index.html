@@ -915,12 +915,12 @@
         const prvCounts = sportCounts(state.prv);
         const checklistTotal = state.checklist.length;
         const prvBlocked = state.prv.filter(item => item.status === "known_issue").length;
-        const prvTotal = state.prv.length - prvBlocked;
+        const prvTotal = state.prv.length;
         const scan = state.prvScan;
         const prvScanDetail = scan ? "\nPrint-run scan: " + Number(scan.fetched_count || 0) + " supported source articles checked; " + Number(scan.summary && scan.summary.covered || 0) + " already have Vault rows; " + prvBlocked + " blocked source articles need attention. Checks the latest 20 source posts." : "";
 
         els.summary.textContent =
-          "I found " + checklistTotal + " missing checklist product(s) and " + prvTotal + " print run product(s) that need PRV review.\n" +
+          "I found " + checklistTotal + " missing checklist product(s) and " + prvTotal + " print-run source article(s) needing review or access.\n" +
           "Checklist: " + countSentence(checklistCounts) + " missing from the checklist tables.\n" +
           "Print Runs: " + countSentence(prvCounts) + " found for review, including blocked sources." + prvScanDetail +
           (note ? "\n" + note : "");

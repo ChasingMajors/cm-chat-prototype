@@ -1545,11 +1545,11 @@ function putGitHubChecklistSearchProduct_(sport, code, searchRows, generatedAt) 
 function fetchGitHubJsonFiles_(repoPaths) {
   const cfg = getGitHubConfig_();
   const requests = repoPaths.map(path => ({
-    url: "https://raw.githubusercontent.com/" + encodeURIComponent(cfg.owner) + "/"
-      + encodeURIComponent(cfg.repo) + "/" + encodeURIComponent(cfg.branch) + "/"
-      + encodeGitHubPath_(path) + "?cb=" + Date.now(),
+    url: "https://api.github.com/repos/" + encodeURIComponent(cfg.owner) + "/"
+      + encodeURIComponent(cfg.repo) + "/contents/" + encodeGitHubPath_(path)
+      + "?ref=" + encodeURIComponent(cfg.branch),
     method: "get", muteHttpExceptions: true,
-    headers: { Authorization: "Bearer " + cfg.token, Accept: "application/vnd.github.raw" }
+    headers: { Authorization: "Bearer " + cfg.token, Accept: "application/vnd.github.raw+json" }
   }));
   return UrlFetchApp.fetchAll(requests).map((response, index) => {
     if (response.getResponseCode() !== 200) {
@@ -4275,19 +4275,20 @@ function getGitHubFileSha_(repoPath) {
 
 function fetchGitHubJsonFile_(repoPath) {
   const cfg = getGitHubConfig_();
-  const url = "https://raw.githubusercontent.com/"
+  // Read the branch through the API. The raw CDN can return an older manifest
+  // immediately after a successful write, losing prior product updates.
+  const url = "https://api.github.com/repos/"
     + encodeURIComponent(cfg.owner)
     + "/" + encodeURIComponent(cfg.repo)
-    + "/" + encodeURIComponent(cfg.branch)
-    + "/" + encodeGitHubPath_(repoPath)
-    + "?cb=" + encodeURIComponent(String(Date.now()));
+    + "/contents/" + encodeGitHubPath_(repoPath)
+    + "?ref=" + encodeURIComponent(cfg.branch);
 
   const res = UrlFetchApp.fetch(url, {
     method: "get",
     muteHttpExceptions: true,
     headers: {
       Authorization: "Bearer " + cfg.token,
-      Accept: "application/vnd.github.raw"
+      Accept: "application/vnd.github.raw+json"
     }
   });
 

@@ -739,7 +739,7 @@
           state.jsonRetryQueue = [];
           state.jsonQueueShared = false;
           state.jsonQueueLoaded = true;
-          state.jsonQueueNeedsAuth = localQueue.length > 0;
+          state.jsonQueueNeedsAuth = true;
           state.jsonQueueLocalPending = localQueue.length;
           state.jsonQueueError = "";
           return state.jsonRetryQueue;
@@ -750,7 +750,8 @@
             action: "loadAgentMemory",
             key: key
           }, 60000);
-          const memory = data && data.memory && data.memory.schema === "agent_memory_v1" ? data.memory : blankAgentMemory();
+          if (!data || !data.ok) throw new Error(data && data.error || "Backend did not confirm the shared queue load.");
+          const memory = data.memory && data.memory.schema === "agent_memory_v1" ? data.memory : blankAgentMemory();
           const serverQueue = Array.isArray(memory.json_publish_retry_queue) ? memory.json_publish_retry_queue : [];
           const merged = mergeJsonRetryQueues(serverQueue, localQueue);
           memory.json_publish_retry_queue = merged;
@@ -840,8 +841,10 @@
       function renderJsonRetryNotice() {
         const queue = readJsonRetryQueue();
         if (state.jsonQueueNeedsAuth) {
-          els.jsonQueueSummary.textContent = "This device has " + state.jsonQueueLocalPending + " local JSON retry item(s) that are not synced. Enter the admin key to move them into the shared queue.";
-          els.showJsonQueueBtn.textContent = "Sync Shared Queue";
+          els.jsonQueueSummary.textContent = state.jsonQueueLocalPending
+            ? "This device has " + state.jsonQueueLocalPending + " local JSON retry item(s) that are not synced. Enter the admin key to move them into the shared queue."
+            : "Enter the admin key to load the shared JSON holding queue.";
+          els.showJsonQueueBtn.textContent = state.jsonQueueLocalPending ? "Sync Shared Queue" : "Load Shared Queue";
           els.jsonQueueCard.classList.remove("hidden");
           els.jsonQueuePrompt.classList.remove("hidden");
           els.jsonQueueList.classList.add("hidden");

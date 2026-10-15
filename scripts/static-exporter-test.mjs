@@ -35,6 +35,11 @@ assert.equal(writes.length, 4, '61 legacy shards require only two retained shard
 assert.equal(writes.at(-1), manifestPath);
 assert.equal(allRows().length, 62);
 assert.equal(allRows().filter(row => row.code === 'target').length, 1);
+
+context.putGitHubChecklistSearchProduct_('baseball', 'another-target', [{ code: 'another-target', player: 'Next product' }], 'next');
+assert.equal(repo.get(manifestPath).product_shards.target.length, 1, 'a consecutive product publish preserves the previous lookup');
+assert.equal(allRows().filter(row => row.code === 'target').length, 1);
+assert.equal(allRows().filter(row => row.code === 'another-target').length, 1);
 assert.equal(allRows().find(row => row.code === 'target').player, 'New');
 assert.equal(allRows().filter(row => row.player === 'Unchanged').length, 61);
 assert.equal(repo.get(dir + initial.shards[0]).rows[1].player, 'Old', 'old shard is immutable');
@@ -73,4 +78,25 @@ context.validatePublicChecklistProductLite_ = () => { throw new Error('Pages not
 const validation = context.validatePublishedChecklistProductLite_('baseball', 'target');
 assert.equal(validation.github.ok, true);
 assert.equal(validation.public.ok, false, 'Pages errors do not turn a committed GitHub publish into a failure');
+
+const requests = [];
+const reader = vm.createContext({
+  Date,
+  PropertiesService: { getScriptProperties: () => ({ getProperty: key => ({ GITHUB_TOKEN: 'test-token' })[key] || '' }) },
+  UrlFetchApp: {
+    fetch: (url, options) => {
+      requests.push({ url, options });
+      return { getResponseCode: () => 200, getContentText: () => '{"ok":true}' };
+    },
+    fetchAll: batch => batch.map(request => {
+      requests.push({ url: request.url, options: request });
+      return { getResponseCode: () => 200, getContentText: () => '{"rows":[]}' };
+    })
+  }
+});
+vm.runInContext(source, reader);
+assert.equal(reader.fetchGitHubJsonFile_('data/test.json').ok, true);
+reader.fetchGitHubJsonFiles_(['data/shard.json']);
+assert(requests.every(request => request.url.startsWith('https://api.github.com/repos/')));
+assert(requests.every(request => request.options.headers.Accept === 'application/vnd.github.raw+json'));
 console.log('Static exporter regression checks passed.');

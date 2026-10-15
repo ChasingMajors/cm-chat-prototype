@@ -779,6 +779,7 @@
       async function saveSharedJsonRetryQueue(queue, showFallbackNotice, replaceExact) {
         const nextQueue = Array.isArray(queue) ? queue.slice(0, 50) : [];
         state.jsonRetryQueue = nextQueue;
+        writeLocalJsonRetryQueue(nextQueue);
         const key = readOperatorKey();
         if (!key) {
           state.jsonQueueShared = false;
@@ -800,11 +801,12 @@
           memory.json_publish_retry_queue = replaceExact ? nextQueue : mergeJsonRetryQueues(nextQueue, memory.json_publish_retry_queue || []);
           memory.activity_log = Array.isArray(memory.activity_log) ? memory.activity_log : [];
           memory.saved_at = new Date().toISOString();
-          await postOperatorJson(DEFAULT_OPERATOR_URL, {
+          const saved = await postOperatorJson(DEFAULT_OPERATOR_URL, {
             action: "saveAgentMemory",
             memory: memory,
             key: key
           }, 60000);
+          if (!saved || !saved.ok) throw new Error(saved && saved.error || "Backend did not confirm the shared queue save.");
           state.agentMemory = memory;
           state.jsonRetryQueue = memory.json_publish_retry_queue;
           writeLocalJsonRetryQueue([]);
@@ -831,6 +833,7 @@
         const key = queueKey(item);
         await writeJsonRetryQueue(readJsonRetryQueue().filter(existing => queueKey(existing) !== key), false, true);
         renderJsonRetryNotice();
+        if (readJsonRetryQueue().length) renderJsonRetryList();
       }
 
       function renderJsonRetryNotice() {
@@ -882,7 +885,7 @@
             <span class="tag">Bucket: ${escapeHtml(item.bucket || "")}</span>
             <span class="tag">Code: ${escapeHtml(item.code || "")}</span>
             <div class="item-actions">
-              <button class="primary" type="button" data-update-json-index="${escapeHtml(index)}">Update JSON</button>
+              <button class="primary" type="button" data-update-json-key="${escapeHtml(queueKey(item))}">Update JSON</button>
             </div>
           </div>
         `).join("");
@@ -1574,9 +1577,9 @@
         pollAppTestStatus(state.lastWriteData, "", 1);
       });
       document.addEventListener("click", event => {
-        const button = event.target.closest("[data-update-json-index]");
+        const button = event.target.closest("[data-update-json-key]");
         if (!button) return;
-        const item = readJsonRetryQueue()[Number(button.dataset.updateJsonIndex)];
+        const item = readJsonRetryQueue().find(entry => queueKey(entry) === button.dataset.updateJsonKey);
         if (!item) {
           openPreviewModal("Queued item missing", "This JSON retry item is no longer available.", '<div class="guardrail">Refresh the page and check the holding queue again.</div>');
           return;

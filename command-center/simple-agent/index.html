@@ -399,7 +399,7 @@
 
   <script>
     (function () {
-      const VERSION = "simple-agent-json-publish-fix-2026-10-15";
+      const VERSION = "simple-agent-prv-discovery-fix-2026-10-15";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
       const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
@@ -414,6 +414,7 @@
       const state = {
         checklist: [],
         prv: [],
+        prvScan: null,
         ignoredProducts: readIgnoredProducts(),
         statusTimer: null,
         lastWriteData: null,
@@ -600,7 +601,8 @@
           return !isIgnoredProduct(item) && (
             item.status === "missing" ||
             item.status === "needs_review" ||
-            item.status === "possible_update"
+            item.status === "possible_update" ||
+            item.status === "known_issue"
           );
         });
       }
@@ -912,12 +914,15 @@
         const checklistCounts = sportCounts(state.checklist);
         const prvCounts = sportCounts(state.prv);
         const checklistTotal = state.checklist.length;
-        const prvTotal = state.prv.length;
+        const prvBlocked = state.prv.filter(item => item.status === "known_issue").length;
+        const prvTotal = state.prv.length - prvBlocked;
+        const scan = state.prvScan;
+        const prvScanDetail = scan ? "\nPrint-run scan: " + Number(scan.fetched_count || 0) + " supported source articles checked; " + Number(scan.summary && scan.summary.covered || 0) + " already have Vault rows; " + prvBlocked + " blocked source articles need attention. Checks the latest 20 source posts." : "";
 
         els.summary.textContent =
           "I found " + checklistTotal + " missing checklist product(s) and " + prvTotal + " print run product(s) that need PRV review.\n" +
           "Checklist: " + countSentence(checklistCounts) + " missing from the checklist tables.\n" +
-          "Print Runs: " + countSentence(prvCounts) + " need print-run review or import." +
+          "Print Runs: " + countSentence(prvCounts) + " found for review, including blocked sources." + prvScanDetail +
           (note ? "\n" + note : "");
 
         renderList(els.checklistList, state.checklist, "NEW CHECKLIST FOUND - SOURCE IMPORT", "checklist");
@@ -966,7 +971,7 @@
 
       function renderPrvList(node, items, heading) {
         if (!items.length) {
-          node.innerHTML = '<div class="item"><div class="item-title">No print-run source work found.</div><div class="muted">This lane is clear.</div></div>';
+          node.innerHTML = '<div class="item"><div class="item-title">No pending print-run sources found in this scan.</div><div class="muted">See the scan summary for articles checked and existing Vault coverage.</div></div>';
           return;
         }
 
@@ -978,7 +983,7 @@
             : "";
           return `
             <div class="item">
-              <h3>${heading}</h3>
+              <h3>${group.items.every(entry => entry.item.status === "known_issue") ? "PRINT RUN SOURCE FOUND - ACCESS BLOCKED" : heading}</h3>
               ${groupHeader}
               ${group.items.map(entry => {
                 const item = entry.item;
@@ -986,7 +991,7 @@
                 return `
                   <div class="source-product">
                     <div class="item-title">${escapeHtml(titleFor(item))}</div>
-                    <div class="muted">${escapeHtml(item.reason || item.recommended_action || "Needs review before any database write.")}</div>
+                    <div class="muted">${escapeHtml(item.blocked_reason || item.reason || item.recommended_action || "Needs review before any database write.")}</div>
                     <span class="tag">${escapeHtml(item.sport || "unknown sport")}</span>
                     <span class="tag">${escapeHtml(item.status || "review")}</span>
                     <div class="item-actions">
@@ -1021,7 +1026,7 @@
             <div class="item">
               <h3>${heading}</h3>
               <div class="item-title">${escapeHtml(titleFor(item))}</div>
-              <div class="muted">${escapeHtml(item.reason || item.recommended_action || "Needs review before any database write.")}</div>
+              <div class="muted">${escapeHtml(item.blocked_reason || item.reason || item.recommended_action || "Needs review before any database write.")}</div>
               <span class="tag">${escapeHtml(item.sport || "unknown sport")}</span>
               <span class="tag">${escapeHtml(item.status || "review")}</span>
               <div class="item-actions">
@@ -1478,6 +1483,7 @@
         els.yesBtn.disabled = true;
         state.checklist = [];
         state.prv = [];
+        state.prvScan = null;
         setTimedStatus("working", "Step 1 of 3: checking Operator Backend");
         els.resultsCard.classList.add("hidden");
         els.checklistCard.classList.add("hidden");
@@ -1492,6 +1498,8 @@
 
           setTimedStatus("working", "Step 3 of 3: scanning missing print run products");
           const prvData = await postOperatorStep("prvSourceWatch", { mode: "quick_json" }, 90000, "Print-run source scan");
+          if (!prvData || !prvData.ok || !Array.isArray(prvData.items)) throw new Error(prvData && prvData.error || "Print-run source scan did not return valid results.");
+          state.prvScan = prvData;
           state.prv = actionablePrvItems(prvData);
           renderDiscoverySummary("");
 

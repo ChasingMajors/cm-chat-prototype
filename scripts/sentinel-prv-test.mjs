@@ -1,0 +1,26 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+const root = new URL('../', import.meta.url);
+for (const file of ['command-center/index.html', 'command-center/simple-agent/index.html']) {
+  const script = fs.readFileSync(new URL(file, root), 'utf8').match(/<script>([\s\S]*?)<\/script>/)[1];
+  new vm.Script(script);
+  const ctx = vm.createContext({ isIgnoredProduct: item => !!item.ignored });
+  vm.runInContext(script.slice(script.indexOf('      function actionableItems'), script.indexOf('      function readIgnoredProducts')), ctx);
+  const items = [{ status: 'known_issue', title: 'Locked article' }, { status: 'missing' }, { status: 'covered' }, { status: 'missing', ignored: true }];
+  assert.equal(ctx.actionablePrvItems({items}).length, 2, 'blocked discoveries must remain visible');
+  const output = { summary: {textContent: ''}, resultsCard: {classList: {remove(){}}} };
+  Object.assign(ctx, {state: {checklist: [], prv: [items[0]], prvScan: {fetched_count: 11, summary: {covered: 5}}}, els: output, sportCounts: () => ({}), countSentence: () => '0 products', renderList(){}});
+  vm.runInContext(script.slice(script.indexOf('      function renderDiscoverySummary'), script.indexOf('      function titleFor')), ctx);
+  ctx.renderDiscoverySummary('');
+  assert(output.summary.textContent.includes('11 supported source articles checked; 5 already have Vault rows; 1 blocked source articles'));
+}
+const backend = vm.createContext({});
+vm.runInContext(fs.readFileSync(new URL('command-center/operator-backend/Code.gs', root), 'utf8'), backend);
+backend.fetchText_ = () => { throw new Error('Source unavailable'); };
+assert.throws(() => backend.fetchRecentSlabSquatchItems_(), /Print-run source discovery failed: Source unavailable/);
+backend.fetchText_ = () => '{}';
+assert.throws(() => backend.fetchRecentSlabSquatchItems_(), /did not return a post list/);
+backend.fetchText_ = () => JSON.stringify([{title: '2026 Bowman Football Print Runs', canonical_url: 'https://slabsquatch.substack.com/p/test', postTags: []}]);
+assert.equal(backend.fetchRecentSlabSquatchItems_()[0].sport, 'football');
+console.log('PRV discovery visibility, scan diagnostics, and source failure checks passed.');

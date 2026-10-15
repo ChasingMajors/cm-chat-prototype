@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-10-15-operator-upcoming-season-sources";
+const CM_OPERATOR_VERSION = "2026-10-15-operator-prv-discovery-diagnostics";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -1655,7 +1655,7 @@ function titleFromSubstackUrl_(url) {
 function fetchRecentSlabSquatchItems_() {
   try {
     const posts = JSON.parse(fetchText_(CM_SLABSQUATCH_ARCHIVE_API));
-    if (!Array.isArray(posts)) return [];
+    if (!Array.isArray(posts)) throw new Error("SlabSquatch archive did not return a post list.");
 
     return posts.map(function(post) {
       const title = decodeEntities_(safeString_(post && post.title)).trim();
@@ -1676,7 +1676,7 @@ function fetchRecentSlabSquatchItems_() {
       };
     }).filter(isUsablePrvSourceItem_);
   } catch (err) {
-    return [];
+    throw new Error("Print-run source discovery failed: " + (err && err.message ? err.message : String(err)));
   }
 }
 

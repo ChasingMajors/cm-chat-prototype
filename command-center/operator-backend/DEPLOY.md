@@ -44,7 +44,7 @@ The Command Center Operator writes the Google Sheet. The Static Data Exporter pu
 
 1. Update the Static Data Exporter Apps Script with the latest:
 
-   `/Users/chasingmajors/Desktop/CM App/Static Data Exporter code.gs`
+   `command-center/static-exporter/Code.gs`
 
 2. Deploy Static Data Exporter as a Web App.
 

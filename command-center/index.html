@@ -400,7 +400,7 @@
 
   <script>
     (function () {
-      const VERSION = "simple-agent-prv-discovery-fix-2026-10-15";
+      const VERSION = "simple-agent-scan-transport-fix-2026-10-15";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
       const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
@@ -496,8 +496,12 @@
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), timeoutMs || 60000);
         try {
-          const response = await fetch(endpoint, {
+          // Apps Script redirects to a temporary response URL. Avoid reusing a
+          // cached redirect after a deployment or an earlier scan.
+          const requestUrl = withQuery(endpoint, { requestId: Date.now() + "-" + Math.random().toString(36).slice(2) });
+          const response = await fetch(requestUrl, {
             method: "POST",
+            cache: "no-store",
             headers: { "Content-Type": "text/plain;charset=utf-8" },
             body: JSON.stringify(payload || {}),
             signal: controller.signal
@@ -510,18 +514,24 @@
       }
 
       async function postOperatorStep(action, payload, timeoutMs, stepLabel) {
-        try {
-          return await postOperatorJson(DEFAULT_OPERATOR_URL, Object.assign({ action: action }, payload || {}), timeoutMs);
-        } catch (err) {
-          const message = err && err.message ? err.message : String(err || "Unknown error");
-          throw new Error(stepLabel + " failed. " + explainBackendError(message));
+        const readOnly = ["health", "sourceWatch", "prvSourceWatch"].includes(action);
+        const deadline = Date.now() + (timeoutMs || 60000);
+        for (let attempt = 0; attempt < (readOnly ? 2 : 1); attempt++) {
+          try {
+            return await postOperatorJson(DEFAULT_OPERATOR_URL, Object.assign({ action: action }, payload || {}), Math.max(1, deadline - Date.now()));
+          } catch (err) {
+            const message = err && err.message ? err.message : String(err || "Unknown error");
+            const transient = /^(404|410|429|500|502|503|504)\b/.test(message) || /Failed to fetch|NetworkError|Load failed/.test(message);
+            if (readOnly && attempt === 0 && transient && deadline - Date.now() > 1000) continue;
+            throw new Error(stepLabel + " failed. " + explainBackendError(message));
+          }
         }
       }
 
       function explainBackendError(message) {
         const text = String(message || "").trim();
         if (text.indexOf("404") === 0 || text.includes(" 404")) {
-          return "The Operator Backend returned 404. Confirm the hardcoded Apps Script /exec deployment is the current Command Center Operator web app.";
+          return "The scan request returned HTTP 404. This can be an Apps Script response redirect failure; it does not by itself mean the deployment URL changed. Please try the Agent Cycle again if it persists.";
         }
         if (text.includes("Failed to fetch") || text.includes("NetworkError") || text.includes("Load failed")) {
           return "The browser could not reach the Operator Backend. Check internet connection and Apps Script deployment access.";
@@ -1494,6 +1504,7 @@
           const health = await checkOperator(endpoint);
           setTimedStatus("working", "Step 2 of 3: scanning missing checklist products");
           const checklistData = await postOperatorStep("sourceWatch", { mode: "quick_json" }, 90000, "Checklist source scan");
+          if (!checklistData || !checklistData.ok || !Array.isArray(checklistData.items)) throw new Error(checklistData && checklistData.error || "Checklist source scan did not return valid results.");
           state.checklist = missingItems(checklistData);
           renderDiscoverySummary("Checklist scan complete. Print-run scan is still running.");
 

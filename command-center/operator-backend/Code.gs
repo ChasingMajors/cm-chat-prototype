@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-08-05-operator-cc166-prv-direct-source-watch";
+const CM_OPERATOR_VERSION = "2026-10-15-operator-upcoming-season-sources";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -6146,3 +6146,26 @@ function json_(obj) {
     .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
 }
+
+// Explicit transition-season sources; historical and current aliases stay intact.
+const CM_UPCOMING_CHECKLIST_SOURCES = {
+  "baseball": {
+    "2027": "1S5hGR027EOL2oVztNrTpsBkextVs8JYk_pQcpMbgQTI"
+  },
+  "football": {
+    "2027": "1xXN0W3bV84QZ79rwo5a8FuUwgA8mmVjzdX_YO3ujIkU"
+  },
+  "basketball": {
+    "2026-27": "1oWXGj7UR8labT48x2jIHpDjApbySSAnsHu2V-3PgZX4",
+    "2027": "1NzwBCfYp7UphIl5GgmHqHGgtX9NYIcuQrfk7933VQuA"
+  },
+  "hockey": {
+    "2026-27": "1adQbzgv77VdkE_md_XbIUnlCaQFzas2i58p789Cz_80"
+  },
+  "soccer": {
+    "2026-27": "1MMfGfJiEx33ijaS7X3fxxWnpXCEU8KzRSnr1Fcro92M"
+  }
+};
+Object.keys(CM_UPCOMING_CHECKLIST_SOURCES).forEach(function(sport) {
+  Object.assign(CM_CHECKLIST_SOURCE_MAP[sport], CM_UPCOMING_CHECKLIST_SOURCES[sport]);
+});

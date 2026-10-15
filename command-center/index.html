@@ -1209,7 +1209,11 @@
         if (!data) return "Publish response was empty.";
         const publish = data.publish || {};
         const response = publish.response || {};
-        return publish.error || response.error || response.message || data.error || data.reason || data.next_step || publish.reason || "Publish response needs review.";
+        const detail = publish.error || response.error || response.message || data.error || data.reason || data.next_step || publish.reason;
+        if (detail) return detail;
+        const github = publish.validation && publish.validation.github;
+        if (github) return "GitHub verification did not pass: index " + (github.index_has_product ? "found" : "missing") + ", product rows " + Number(github.row_count || 0) + ", search rows " + Number(github.search_row_count || 0) + ".";
+        return "Publish response needs review.";
       }
 
       function renderPublishFailure(writeData, attempt, detail, queuedItem, paused) {
@@ -1222,7 +1226,7 @@
         const body = isFinal
           ? '<div class="guardrail">Fifth attempt failed. Do you want me to queue this for a future retry?</div><div class="actions"><button class="primary" type="button" data-queue-future-publish>Yes</button><button type="button" data-close-preview>No</button></div>'
           : isDecision
-            ? '<div class="guardrail">' + (paused ? 'The request timed out. The backend may still be running. Wait for it to finish before starting another publish.' : 'Attempt 3 failed. Do you want to add this to the holding queue or make 2 more attempts?') + '</div><div class="actions"><button class="primary" type="button" data-queue-future-publish>Add to Queue</button><button type="button" data-two-more-publish>2 More Attempts</button></div>'
+            ? '<div class="guardrail">' + (paused ? 'Automatic retries are paused because the write outcome needs verification. Check the publish details before starting another publish.' : 'Attempt 3 failed. Do you want to add this to the holding queue or make 2 more attempts?') + '</div><div class="actions"><button class="primary" type="button" data-queue-future-publish>Add to Queue</button><button type="button" data-two-more-publish>2 More Attempts</button></div>'
           : '<div class="guardrail">' + escapeHtml(attemptLabel) + ' failed. Requeueing another attempt in 30 seconds.</div><div class="status-line"><span class="dot working"></span><span id="publishCountdown">Retry ' + (attempt + 1) + ' of ' + JSON_RETRY_LIMIT + ' starts in 30s.</span></div>';
         openPreviewModal(paused ? "JSON publish status uncertain" : isFinal ? "JSON publish failed" : isDecision ? "JSON publish decision needed" : "JSON publish retry queued", product.display_name || product.code || "Checklist JSON publish", failureDetail + body);
         if (!isFinal && !isDecision) startPublishCountdown(writeData, attempt + 1, queuedItem);
@@ -1405,7 +1409,8 @@
             renderPublishSuccess(writeData, data, attempt, queuedItem);
             return;
           }
-          renderPublishFailure(writeData, attempt, getPublishError(data), queuedItem);
+          const written = !!(data && data.publish && data.publish.publish_result && data.publish.publish_result.ok);
+          renderPublishFailure(writeData, attempt, (written ? "GitHub file writes completed. Automatic republishing is paused while verification needs review. " : "") + getPublishError(data), queuedItem, written);
         } catch (err) {
           const timedOut = err && err.name === "AbortError";
           renderPublishFailure(writeData, attempt, timedOut ? "Timed out waiting for the Operator Backend. Its GitHub writes may still be running; automatic retries are paused to avoid overlapping publishes." : err && err.message ? err.message : "Publish request failed.", queuedItem, timedOut);

@@ -14,7 +14,7 @@
  *******************************************************/
 
 const CM_EXPORT_ROOT_FOLDER = "CM Static Data Export";
-const CM_EXPORT_VERSION = "2026-10-15-incremental-checklist-publish";
+const CM_EXPORT_VERSION = "2026-10-15-api-publish-upcoming-seasons";
 const CM_DRIVE_WRITE_RETRIES = 5;
 const CM_DRIVE_WRITE_PAUSE_MS = 250;
 const CM_DRIVE_WRITE_THROTTLE_EVERY = 20;
@@ -1553,7 +1553,6 @@ function fetchGitHubJsonFiles_(repoPaths) {
   }));
   return UrlFetchApp.fetchAll(requests).map((response, index) => {
     if (response.getResponseCode() !== 200) {
-      // Reuse the existing error handling for a failed parallel request.
       const data = fetchGitHubJsonFile_(repoPaths[index]);
       if (!data) throw new Error("Missing search shard: " + repoPaths[index]);
       return data;
@@ -4275,8 +4274,7 @@ function getGitHubFileSha_(repoPath) {
 
 function fetchGitHubJsonFile_(repoPath) {
   const cfg = getGitHubConfig_();
-  // Read the branch through the API. The raw CDN can return an older manifest
-  // immediately after a successful write, losing prior product updates.
+  // Read current branch contents through the API, avoiding stale raw CDN data.
   const url = "https://api.github.com/repos/"
     + encodeURIComponent(cfg.owner)
     + "/" + encodeURIComponent(cfg.repo)
@@ -4295,7 +4293,7 @@ function fetchGitHubJsonFile_(repoPath) {
   const code = res.getResponseCode();
   if (code === 404) return null;
   if (code < 200 || code >= 300) {
-    throw new Error("GitHub raw fetch failed with " + code + " for " + repoPath + ": " + res.getContentText());
+    throw new Error("GitHub content fetch failed with " + code + " for " + repoPath + ": " + res.getContentText());
   }
 
   const text = res.getContentText();
@@ -4462,3 +4460,66 @@ function encodeGitHubPath_(repoPath) {
     .map(part => encodeURIComponent(part))
     .join("/");
 }
+
+function prepareUpcomingChecklistSheets() {
+  const definitions = [
+    ["baseball", "2027", "Baseball 2027"],
+    ["football", "2027", "Football 2027"],
+    ["basketball", "2026-27", "Basketball 2026-27"],
+    ["basketball", "2027", "WNBA 2027"],
+    ["hockey", "2026-27", "Hockey 2026-27"],
+    ["soccer", "2026-27", "Soccer 2026-27"]
+  ];
+  const properties = PropertiesService.getScriptProperties();
+  const result = [];
+  definitions.forEach(function(definition) {
+    const sport = definition[0], season = definition[1];
+    const property = "CM_CHECKLIST_SEASON_" + sport + "_" + season;
+    let id = properties.getProperty(property);
+    const source = SpreadsheetApp.openById(CM_CHECKLIST_DB_MAP[sport].current);
+    const target = id ? SpreadsheetApp.openById(id) : SpreadsheetApp.create("CM Checklist DB - " + definition[2]);
+    if (!id) {
+      id = target.getId();
+      properties.setProperty(property, id);
+      target.getSheets()[0].setName("Products");
+    }
+    ["Products", "ChecklistRows", "Parallels"].forEach(function(name) {
+      const template = source.getSheetByName(name);
+      if (!template) throw new Error("Template tab missing: " + sport + " " + name);
+      const headers = template.getRange(1, 1, 1, template.getLastColumn()).getValues();
+      const sheet = target.getSheetByName(name) || target.insertSheet(name);
+      if (sheet.getLastRow() === 0) {
+        sheet.getRange(1, 1, 1, headers[0].length).setValues(headers).setFontWeight("bold");
+        sheet.setFrozenRows(1);
+      }
+      const actual = sheet.getRange(1, 1, 1, headers[0].length).getValues();
+      if (JSON.stringify(actual) !== JSON.stringify(headers)) throw new Error("Season header mismatch: " + name);
+    });
+    result.push({ sport: sport, season: season, id: id, url: target.getUrl() });
+  });
+  result.forEach(function(row) { Logger.log(JSON.stringify(row)); });
+  return result;
+}
+
+// Explicit transition-season sources; historical and current aliases stay intact.
+const CM_UPCOMING_CHECKLIST_SOURCES = {
+  "baseball": {
+    "2027": "1S5hGR027EOL2oVztNrTpsBkextVs8JYk_pQcpMbgQTI"
+  },
+  "football": {
+    "2027": "1xXN0W3bV84QZ79rwo5a8FuUwgA8mmVjzdX_YO3ujIkU"
+  },
+  "basketball": {
+    "2026-27": "1oWXGj7UR8labT48x2jIHpDjApbySSAnsHu2V-3PgZX4",
+    "2027": "1NzwBCfYp7UphIl5GgmHqHGgtX9NYIcuQrfk7933VQuA"
+  },
+  "hockey": {
+    "2026-27": "1adQbzgv77VdkE_md_XbIUnlCaQFzas2i58p789Cz_80"
+  },
+  "soccer": {
+    "2026-27": "1MMfGfJiEx33ijaS7X3fxxWnpXCEU8KzRSnr1Fcro92M"
+  }
+};
+Object.keys(CM_UPCOMING_CHECKLIST_SOURCES).forEach(function(sport) {
+  Object.assign(CM_CHECKLIST_DB_MAP[sport], CM_UPCOMING_CHECKLIST_SOURCES[sport]);
+});

@@ -99,4 +99,14 @@ assert.equal(reader.fetchGitHubJsonFile_('data/test.json').ok, true);
 reader.fetchGitHubJsonFiles_(['data/shard.json']);
 assert(requests.every(request => request.url.startsWith('https://api.github.com/repos/')));
 assert(requests.every(request => request.options.headers.Accept === 'application/vnd.github.raw+json'));
+
+const operator = vm.createContext({});
+vm.runInContext(fs.readFileSync(new URL('../command-center/operator-backend/Code.gs', import.meta.url), 'utf8'), operator);
+for (const [sport, season] of [['baseball', '2027'], ['football', '2027'], ['basketball', '2026-27'], ['basketball', '2027'], ['hockey', '2026-27'], ['soccer', '2026-27']]) {
+  const target = operator.getChecklistSpreadsheetId_(sport, season);
+  const exporterTarget = vm.runInContext(`CM_CHECKLIST_DB_MAP[${JSON.stringify(sport)}][${JSON.stringify(season)}]`, reader);
+  assert.equal(target, exporterTarget, 'imports and exports must use the same season source');
+  assert.notEqual(target, operator.getChecklistSpreadsheetId_(sport, 'current'), 'new season must not fall back to prior current sheet');
+}
+assert.notEqual(operator.getChecklistSpreadsheetId_('basketball', '2026-27'), operator.getChecklistSpreadsheetId_('basketball', '2027'), 'NBA and WNBA seasons must use distinct sources');
 console.log('Static exporter regression checks passed.');

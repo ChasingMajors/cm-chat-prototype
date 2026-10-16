@@ -1117,7 +1117,7 @@
           ? products.length > 1 ? "Multiple PRV Products Found" : hasRows ? "PRV Source Preview" : "PRV Parser Review Needed"
           : "Import Preview";
         const rightColumn = type === "prv"
-          ? '<p>' + escapeHtml(hasRows ? data.next_step || "Review these rows before writing PRV temp data." : "Parser review is needed before this can write PRV sheet data.") + '</p>'
+          ? '<p>' + escapeHtml(hasRows ? "Review these rows before writing print-run data." : "Parser review is needed before this can write PRV sheet data.") + '</p>'
           : renderPreviewParallels(sampleParallels);
         const checklistMeta = type === "checklist"
           ? '<span class="tag">Parallels: ' + formatNumber(data.parallel_count || 0) + '</span><span class="tag">Target: ' + escapeHtml(product.target_bucket || "") + '</span>'

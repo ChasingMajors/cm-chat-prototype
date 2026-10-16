@@ -400,7 +400,7 @@
 
   <script>
     (function () {
-      const VERSION = "simple-agent-scan-transport-fix-2026-10-15";
+      const VERSION = "simple-agent-pipeline-v2-2026-10-15";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
       const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
@@ -514,7 +514,7 @@
       }
 
       async function postOperatorStep(action, payload, timeoutMs, stepLabel) {
-        const readOnly = ["health", "sourceWatch", "prvSourceWatch"].includes(action);
+        const readOnly = ["health", "sourceWatch", "prvSourceWatch"].includes(action) || ["publishImportedChecklist", "publishPrvVaultStaticData"].includes(action) && !!(payload && payload.job_id);
         const deadline = Date.now() + (timeoutMs || 60000);
         for (let attempt = 0; attempt < (readOnly ? 2 : 1); attempt++) {
           try {
@@ -688,26 +688,26 @@
       }
 
       function queueKey(item) {
-        return [item && item.sport || "", item && item.bucket || "", item && item.code || ""].join("|");
+        return [item && item.kind || "checklist", item && item.sport || "", item && item.bucket || "", item && item.code || ""].join("|");
       }
 
       function mergeJsonRetryQueues(primary, secondary) {
-        const merged = [];
-        const seen = new Set();
+        const merged = [], positions = new Map();
         [primary || [], secondary || []].forEach(queue => {
           (Array.isArray(queue) ? queue : []).forEach(item => {
             const key = queueKey(item);
-            if (!key || seen.has(key)) return;
-            seen.add(key);
-            merged.push(item);
+            if (!positions.has(key)) { positions.set(key,merged.length); merged.push(item); return; }
+            const index = positions.get(key), existing = merged[index];
+            if ((item.updated_at || item.queued_at || "") > (existing.updated_at || existing.queued_at || "")) merged[index] = Object.assign({},existing,item);
           });
         });
-        return merged.slice(0, 50);
+        return merged.slice(0,50);
       }
 
       function queuedWriteData(item) {
         return {
           target_bucket: item.bucket || "",
+          target_tool: item.kind || "checklist",
           product: {
             display_name: item.product || item.code || "Checklist JSON publish",
             code: item.code || "",
@@ -882,7 +882,7 @@
         }
 
         const scope = state.jsonQueueShared ? "shared queue" : "this device only";
-        els.jsonQueueSummary.textContent = "You have " + queue.length + " JSON file(s) needing to be uploaded in the " + scope + ". Proceed with a reattempt?";
+        els.jsonQueueSummary.textContent = "You have " + queue.length + " JSON publish job(s) needing upload or verification in the " + scope + ". Proceed with a reattempt?";
         els.showJsonQueueBtn.textContent = "Yes";
         els.jsonQueueCard.classList.remove("hidden");
         els.jsonQueuePrompt.classList.remove("hidden");
@@ -901,7 +901,7 @@
             <span class="tag">Bucket: ${escapeHtml(item.bucket || "")}</span>
             <span class="tag">Code: ${escapeHtml(item.code || "")}</span>
             <div class="item-actions">
-              <button class="primary" type="button" data-update-json-key="${escapeHtml(queueKey(item))}">Update JSON</button>
+              <button class="primary" type="button" data-update-json-key="${escapeHtml(queueKey(item))}">${item.job_id ? "Resume / Verify" : "Update JSON"}</button>
             </div>
           </div>
         `).join("");
@@ -1126,9 +1126,11 @@
         const guardrail = type === "prv"
           ? products.length > 1
             ? "This trial page found multiple PRV products in one source. Product-specific PRV write is intentionally blocked until rows are split by product."
-            : "Review the sample rows before writing. This trial page does not write PRV temp data yet."
-          : "Review the sample rows before writing. This action updates matching rows for this product code and appends new rows. It does not delete unrelated sheet data.";
-        const writeButton = type === "checklist" && data.status === "preview_ready" && data.source_url
+            : "Review the sample rows before writing. A single-product source can be imported with recovery protection, then published as a background job."
+          : "Review the sample rows before writing. This action replaces this product’s rows exactly, including removing obsolete rows, and keeps a recovery snapshot. Unrelated products are preserved.";
+        const writeButton = type === "prv" && !data.multi_product && products.length <= 1 && data.status === "preview_ready" && data.source_url
+          ? '<button class="primary" type="button" data-write-prv-source="' + escapeHtml(data.source_url) + '" data-write-prv-sport="' + escapeHtml(product.sport || "") + '">Write Print Run Data</button>'
+          : type === "checklist" && data.status === "preview_ready" && data.source_url
           ? '<button class="primary" type="button" data-write-checklist-source="' + escapeHtml(data.source_url || "") + '" data-write-checklist-sport="' + escapeHtml(product.sport || "") + '">Write to Google Sheet</button>'
           : '<button type="button" disabled>' + escapeHtml(writeLabel) + '</button>';
 
@@ -1160,8 +1162,8 @@
       function renderWriteResult(data) {
         if (!data || !data.ok) {
           const preview = data && data.preview ? data.preview : {};
-          const detail = data && data.error ? data.error : "Unknown backend response.";
-          openPreviewModal("Import blocked before sheet write", preview.product && preview.product.display_name ? preview.product.display_name : "No sheet write was made.", '<div class="guardrail">' + escapeHtml(detail) + '</div>');
+          const detail = (data && data.error ? data.error : "Unknown backend response.") + (data && data.recovery ? " " + data.recovery : "");
+          openPreviewModal("Import needs attention", preview.product && preview.product.display_name ? preview.product.display_name : "Review import and recovery details.", '<div class="guardrail">' + escapeHtml(detail) + '</div>');
           return;
         }
 
@@ -1188,7 +1190,7 @@
             <span class="tag">CV: Review</span>
             <span class="tag">ChatBot: Review</span>
           </div>
-          <div class="guardrail">Sheet write succeeded. JSON publish is intentionally waiting for the soak window before validation.</div>
+          <div class="guardrail">Sheet row counts passed validation. Publish JSON saves a background job that commits and verifies the complete release.</div>
           <div class="actions">${publishButton}</div>
         `);
       }
@@ -1202,16 +1204,18 @@
         }
         await loadSharedJsonRetryQueue();
         const queue = readJsonRetryQueue();
-        const item = {
+        const existing = queue.find(candidate => queueKey(candidate) === queueKey({kind:writeData.target_tool || "checklist",sport:product.sport, bucket:writeData.target_bucket || product.target_bucket || product.year || "", code:product.code}));
+        const item = Object.assign({}, existing || {}, {
+          kind:writeData.target_tool || "checklist",
           product: product.display_name || "",
           code: product.code || "",
           sport: product.sport || "",
           bucket: writeData.target_bucket || product.target_bucket || product.year || "",
           queued_at: new Date().toISOString(),
-          reason: detail || "Publish failed after 5 attempts."
-        };
-        const queueItemKey = [item.sport, item.bucket, item.code].join("|");
-        const next = queue.filter(existing => [existing.sport, existing.bucket, existing.code].join("|") !== queueItemKey);
+          reason: detail || "Publish needs a status check."
+        });
+        const queueItemKey = queueKey(item);
+        const next = queue.filter(existing => queueKey(existing) !== queueItemKey);
         next.unshift(item);
         const saved = await writeJsonRetryQueue(next.slice(0, 50), true, true);
         renderJsonRetryNotice();
@@ -1270,11 +1274,12 @@
         const publicValidation = validation.public || {};
         const checklistVault = validation.checklist_vault || {};
         const chatbot = validation.chatbot || {};
-        if (queuedItem) removeJsonRetryQueueItem(queuedItem);
+        if (queuedItem && (!queuedItem.job_id || queuedItem.job_stage === "complete")) removeJsonRetryQueueItem(queuedItem);
         state.lastWriteData = writeData;
-        const visualButton = product.code && product.sport
+        const isPrv = writeData && writeData.target_tool === "prv";
+        const visualButton = !isPrv && product.code && product.sport
           ? '<button class="primary" type="button" data-run-app-test>Run App Test</button>'
-          : '<button type="button" disabled>Run App Test</button>';
+          : "";
         openPreviewModal("JSON Published", product.display_name || product.code || "Checklist JSON publish", `
           <div class="preview-meta">
             <span class="tag">Attempt: ${formatNumber(attempt)}</span>
@@ -1283,8 +1288,7 @@
             <span class="tag">GitHub parallels: ${formatNumber(github.parallel_count || 0)}</span>
             <span class="tag">Public rows: ${formatNumber(publicValidation.row_count || 0)}</span>
             <span class="tag">Public parallels: ${formatNumber(publicValidation.parallel_count || 0)}</span>
-            <span class="tag">CV: ${checklistVault.ok ? "Passed" : "Review"}</span>
-            <span class="tag">ChatBot: ${chatbot.ok ? "Passed" : "Review"}</span>
+            ${isPrv ? '<span class="tag">PRV public data: ' + (publicValidation.ok ? 'Verified' : 'Pending') + '</span>' : '<span class="tag">CV data: ' + (checklistVault.ok ? 'Verified' : 'Pending') + '</span><span class="tag">ChatBot data: ' + (chatbot.ok ? 'Verified' : 'Pending') + '</span>'}
           </div>
           <div class="guardrail">${escapeHtml(data && data.next_step || "Published. Public validation may still need the normal GitHub Pages soak window.")}</div>
           <div class="actions">${visualButton}</div>
@@ -1399,39 +1403,74 @@
 
       async function publishJsonWithRetry(writeData, attempt, queuedItem) {
         if (state.publishInFlight) return;
-        state.lastWriteData = writeData;
-        state.activeQueuedItem = queuedItem || null;
-        const product = writeData && writeData.product ? writeData.product : {};
+        const product = writeData && writeData.product || {};
         const key = requireOperatorKey();
         const bucket = writeData && (writeData.target_bucket || product.target_bucket || product.year || "");
-        if (!key || !product.code || !product.sport || !bucket) {
-          openPreviewModal("Publish details missing", product.display_name || product.code || "Checklist JSON publish", '<div class="guardrail">Sentinel needs product code, sport, bucket, and admin key before publishing JSON.</div>');
-          return;
-        }
-
+        if (!key || !product.code || !product.sport || !bucket) return;
         state.publishInFlight = true;
-        openPreviewModal("Publishing JSON", product.display_name || product.code || "Checklist JSON publish", '<div class="status-line"><span class="dot working"></span><span>Attempt ' + attempt + ' of ' + JSON_RETRY_LIMIT + ' is running.</span></div>');
+        state.lastWriteData = writeData;
+        let item;
         try {
-          const data = await postOperatorJson(DEFAULT_OPERATOR_URL, {
-            action: "publishImportedChecklist",
-            sport: product.sport || "",
-            bucket: bucket,
-            code: product.code || "",
-            key: key
-          }, 240000);
-          const published = !!(data && (data.ok || data.public_pending || data.status === "published_pages_pending" || data.publish && (data.publish.ok || data.publish.status === "published_pages_pending")));
-          if (published) {
-            renderPublishSuccess(writeData, data, attempt, queuedItem);
-            return;
+          const target = {kind:writeData.target_tool || "checklist",sport:product.sport,bucket:bucket,code:product.code};
+          item = queuedItem || readJsonRetryQueue().find(existing => queueKey(existing) === queueKey(target)) || target;
+          item = Object.assign({}, item, {product:product.display_name || product.code,queued_at:item.queued_at || new Date().toISOString()});
+          if (!item.request_id || item.job_stage === "failed") {
+            item.request_id = typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : "publish-" + Date.now() + "-" + Math.random().toString(36).slice(2);
+            item.job_id = "";
+            item.job_stage = "queued";
           }
-          const written = !!(data && data.publish && data.publish.publish_result && data.publish.publish_result.ok);
-          renderPublishFailure(writeData, attempt, (written ? "GitHub file writes completed. Automatic republishing is paused while verification needs review. " : "") + getPublishError(data), queuedItem, written);
+          state.activeQueuedItem = item;
+          // Persist the request identity before sending it, so a lost response
+          // or closed browser resumes the same backend job instead of republishing.
+          const save = async () => {
+            item.updated_at = new Date().toISOString();
+            const queue = readJsonRetryQueue().filter(existing => queueKey(existing) !== queueKey(item));
+            writeLocalJsonRetryQueue([item].concat(queue));
+            await writeJsonRetryQueue([item].concat(queue), false, true);
+            renderJsonRetryNotice();
+          };
+          await save();
+          for (let poll = 0; poll < 48; poll++) {
+            openPreviewModal("Publishing JSON", product.display_name || product.code,
+              '<div class="status-line"><span class="dot working"></span><span>' + escapeHtml(item.job_id ? "Job " + item.job_stage + ". Checking progress; uploads are not repeated." : "Submitting a saved publish job. Processing starts within about a minute.") + '</span></div><div class="guardrail">You can close this preview. The backend continues, and Resume / Verify in the holding queue reconnects to this job.</div>');
+            const data = await postOperatorStep(item.kind === "prv" ? "publishPrvVaultStaticData" : "publishImportedChecklist", {sport:product.sport,bucket:bucket,code:product.code,key:key,
+              async:"1",request_id:item.request_id,job_id:item.job_id || ""}, 90000, "Publish job status");
+            const job = data && (data.job || data.publish && data.publish.job);
+            if (!job) throw new Error(getPublishError(data));
+            const changed = item.job_id !== job.id || item.job_stage !== job.stage;
+            item.job_id = job.id;
+            item.job_stage = job.stage;
+            if (changed) await save();
+            if (job.stage === "complete" || job.stage === "published_pages_pending") {
+              renderPublishSuccess(writeData, data, attempt, item);
+              return;
+            }
+            if (job.stage === "failed") {
+              renderPublishFailure(writeData, attempt, getPublishError(data), item, true);
+              return;
+            }
+            await new Promise(resolve => setTimeout(resolve, 5000));
+            if (!els.previewModal.classList.contains("open")) return;
+          }
+          openPreviewModal("Publish job continues", product.display_name || product.code, '<div class="guardrail">The saved backend job continues independently. Use Resume / Verify in the holding queue to check progress.</div>');
         } catch (err) {
-          const timedOut = err && err.name === "AbortError";
-          renderPublishFailure(writeData, attempt, timedOut ? "Timed out waiting for the Operator Backend. Its GitHub writes may still be running; automatic retries are paused to avoid overlapping publishes." : err && err.message ? err.message : "Publish request failed.", queuedItem, timedOut);
-        } finally {
-          state.publishInFlight = false;
-        }
+          renderPublishFailure(writeData, attempt, "The publish request needs a status check. Its saved request ID will be reused. " + String(err && err.message || err), item, true);
+        } finally { state.publishInFlight = false; }
+      }
+
+      async function writePrvSource(sourceUrl, sport) {
+        const key = requireOperatorKey();
+        if (!key) return;
+        openPreviewModal("Writing print-run data", "The source rows will be validated and saved with a recovery snapshot.", '<div class="status-line"><span class="dot working"></span><span>Writing PRV rows.</span></div>');
+        try {
+          const data = await postOperatorJson(DEFAULT_OPERATOR_URL,{action:"executePrvSourceImport",sourceUrl:sourceUrl,sport:sport,key:key},240000);
+          if (data && data.ok) {
+            data.target_tool="prv";
+            data.source_validation=data.validation;
+            data.validation={product_rows:data.source_validation.index_rows,checklist_rows:data.source_validation.product_rows,parallel_rows:0,ok:data.source_validation.ok};
+          }
+          renderWriteResult(data);
+        } catch (err) { openPreviewModal("PRV import needs attention", "Check import status before retrying.", '<div class="guardrail">' + escapeHtml(String(err && err.message || err)) + '</div>'); }
       }
 
       async function writeChecklistSource(sourceUrl, sport) {
@@ -1503,20 +1542,23 @@
         try {
           const health = await checkOperator(endpoint);
           setTimedStatus("working", "Step 2 of 3: scanning missing checklist products");
+          let checklistWarning = "";
+          try {
           const checklistData = await postOperatorStep("sourceWatch", { mode: "quick_json" }, 90000, "Checklist source scan");
           if (!checklistData || !checklistData.ok || !Array.isArray(checklistData.items)) throw new Error(checklistData && checklistData.error || "Checklist source scan did not return valid results.");
           state.checklist = missingItems(checklistData);
           renderDiscoverySummary("Checklist scan complete. Print-run scan is still running.");
+          } catch (err) { checklistWarning = String(err && err.message || err); }
 
           setTimedStatus("working", "Step 3 of 3: scanning missing print run products");
           const prvData = await postOperatorStep("prvSourceWatch", { mode: "quick_json" }, 90000, "Print-run source scan");
           if (!prvData || !prvData.ok || !Array.isArray(prvData.items)) throw new Error(prvData && prvData.error || "Print-run source scan did not return valid results.");
           state.prvScan = prvData;
           state.prv = actionablePrvItems(prvData);
-          renderDiscoverySummary("");
+          renderDiscoverySummary(checklistWarning ? "Checklist scan incomplete: " + checklistWarning : "");
 
           stopTimedStatus();
-          setStatus(els.runStatus, "ready", "Agent Cycle discovery complete.");
+          setStatus(els.runStatus, checklistWarning ? "issue" : "ready", checklistWarning ? "Print-run scan complete. Checklist scan needs attention." : "Agent Cycle discovery complete.");
         } catch (err) {
           stopTimedStatus();
           setStatus(els.runStatus, "issue", err && err.message ? err.message : "Agent Cycle failed.");
@@ -1578,6 +1620,10 @@
         const button = event.target.closest("[data-write-checklist-source]");
         if (!button) return;
         writeChecklistSource(button.dataset.writeChecklistSource, button.dataset.writeChecklistSport || "");
+      });
+      document.addEventListener("click", event => {
+        const button = event.target.closest("[data-write-prv-source]");
+        if (button) writePrvSource(button.dataset.writePrvSource,button.dataset.writePrvSport || "");
       });
       document.addEventListener("click", event => {
         const button = event.target.closest("[data-publish-json]");

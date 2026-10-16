@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-10-15-operator-prv-discovery-diagnostics";
+const CM_OPERATOR_VERSION = "2026-10-15-operator-pipeline-v2";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -578,7 +578,7 @@ function scoreSourceTitleMatch_(targetTitle, sourceTitle, targetSport, sourceSpo
   return score;
 }
 
-function executeSourceImport_(input) {
+function executeSourceImportBase_(input) {
   requireOperatorKey_(input && input.key);
 
   const preview = previewSourceImport_(input);
@@ -1093,7 +1093,7 @@ function buildPrvSourceWatchItemFromUrl_(sourceUrl) {
   }
 }
 
-function executePrvSourceImport_(input) {
+function executePrvSourceImportBase_(input) {
   requireOperatorKey_(input && input.key);
 
   const preview = previewPrvSource_(input);
@@ -1156,7 +1156,7 @@ function getVaultSpreadsheetId_() {
   return safeString_(configured || CM_VAULT_SPREADSHEET_ID_FALLBACK).trim();
 }
 
-function upsertPrvIndex_(ss, product) {
+function upsertPrvIndexBase_(ss, product) {
   const sh = ensureSheetWithHeaders_(ss, CM_PRV_INDEX_SHEET, [
     "code", "display_name", "year", "sport", "manufacturer", "product", "keywords", "cmURL"
   ]);
@@ -2584,7 +2584,7 @@ function productToSheetObject_(product) {
   };
 }
 
-function upsertProducts_(ss, code, productObj) {
+function upsertProductsBase_(ss, code, productObj) {
   const sh = ensureSheetWithHeaders_(ss, CM_PRODUCTS_SHEET, [
     "code", "display_name", "year", "sport", "manufacturer", "product", "keywords"
   ]);
@@ -2609,7 +2609,7 @@ function upsertProducts_(ss, code, productObj) {
   }
 }
 
-function replaceRowsByCode_(ss, sheetName, code, objects, defaultHeaders) {
+function replaceRowsByCodeBase_(ss, sheetName, code, objects, defaultHeaders) {
   const sh = ensureSheetWithHeaders_(ss, sheetName, defaultHeaders);
   const headers = getHeaders_(sh);
   const rowsToWrite = objects.map(function(obj) {
@@ -2727,7 +2727,7 @@ function getPublishRecommendation_(sport, bucket) {
   return "Run the matching publish function for " + s + " " + b + ", then rebuild the checklist index if this is a new product.";
 }
 
-function publishChecklistAfterImport_(product, key) {
+function publishChecklistAfterImportBase_(product, key) {
   const exporterUrl = PropertiesService.getScriptProperties().getProperty(CM_STATIC_EXPORTER_URL_PROPERTY);
   if (!exporterUrl) {
     return {
@@ -2760,7 +2760,7 @@ function getChecklistCanonicalBucket_(sport, bucket) {
   return b;
 }
 
-function publishImportedChecklist_(input) {
+function publishImportedChecklistBase_(input) {
   requireOperatorKey_(input && input.key);
 
   const product = {
@@ -2812,7 +2812,7 @@ function summarizePublishResult_(publish) {
   }
 }
 
-function publishPrvVaultStaticData_(input) {
+function publishPrvVaultStaticDataPipelinePrevious_(input) {
   requireOperatorKey_(input && input.key);
 
   const code = safeString_(input && input.code).trim();
@@ -6169,3 +6169,309 @@ const CM_UPCOMING_CHECKLIST_SOURCES = {
 Object.keys(CM_UPCOMING_CHECKLIST_SOURCES).forEach(function(sport) {
   Object.assign(CM_CHECKLIST_SOURCE_MAP[sport], CM_UPCOMING_CHECKLIST_SOURCES[sport]);
 });
+
+/* Pipeline v2: recoverable imports and asynchronous publishing. */
+let CM_IMPORT_TRANSACTION = null;
+
+function replaceRowsByCode_(ss, sheetName, code, objects, defaultHeaders) {
+  const sh = ensureSheetWithHeaders_(ss, sheetName, defaultHeaders);
+  const headers = getHeaders_(sh);
+  const prepared = objects.map(obj => headers.map(header => safeString_(objectValueForHeader_(obj, header))));
+  validateSheetWriteRows_(prepared, headers.length, sheetName);
+  snapshotImportProduct_(ss, sh, code);
+  const existing = getRowNumbersByFirstColumnValue_(sh, code);
+  // Write contiguous ranges, rather than two network calls for every card.
+  let offset = 0;
+  while (offset < Math.min(existing.length, prepared.length)) {
+    let end = offset + 1;
+    while (end < Math.min(existing.length, prepared.length) && existing[end] === existing[end - 1] + 1) end++;
+    sh.getRange(existing[offset], 1, end - offset, headers.length).setNumberFormat("@").setValues(prepared.slice(offset, end));
+    offset = end;
+  }
+  if (prepared.length > existing.length) {
+    const start = sh.getLastRow() + 1;
+    const extra = prepared.slice(existing.length);
+    if (start + extra.length - 1 > sh.getMaxRows()) sh.insertRowsAfter(sh.getMaxRows(), start + extra.length - 1 - sh.getMaxRows());
+    sh.getRange(start, 1, extra.length, headers.length).setNumberFormat("@").setValues(extra);
+  }
+  // Clearing only this product's surplus cells preserves unrelated rows/formats.
+  let cursor = prepared.length;
+  while (cursor < existing.length) {
+    let end = cursor + 1;
+    while (end < existing.length && existing[end] === existing[end - 1] + 1) end++;
+    sh.getRange(existing[cursor], 1, end - cursor, headers.length).clearContent();
+    cursor = end;
+  }
+}
+
+function upsertProducts_(ss, code, row) {
+  const sh = ensureSheetWithHeaders_(ss, CM_PRODUCTS_SHEET, Object.keys(row));
+  snapshotImportProduct_(ss, sh, code);
+  return upsertProductsBase_(ss, code, row);
+}
+
+function upsertPrvIndex_(ss, product) {
+  const sh = ensureSheetWithHeaders_(ss, CM_PRV_INDEX_SHEET, ["code", "display_name", "keywords", "year", "sport", "manufacturer", "product", "cmURL"]);
+  snapshotImportProduct_(ss, sh, product.code);
+  return upsertPrvIndexBase_(ss, product);
+}
+
+function snapshotImportProduct_(ss, sh, code) {
+  if (!CM_IMPORT_TRANSACTION || CM_IMPORT_TRANSACTION.restoring) return;
+  if (CM_IMPORT_TRANSACTION.data.snapshots.some(s => s.sheet === sh.getName() && s.spreadsheet === ss.getId() && s.code === code)) return;
+  const values = sh.getDataRange().getValues();
+  CM_IMPORT_TRANSACTION.data.snapshots.push({ spreadsheet: ss.getId(), sheet: sh.getName(), code: code,
+    headers: values[0] || [], rows: values.slice(1).filter(row => safeString_(row[0]).trim() === code) });
+  CM_IMPORT_TRANSACTION.file.setContent(JSON.stringify(CM_IMPORT_TRANSACTION.data));
+  markImportState_(ss, code, "writing");
+}
+
+function markImportState_(ss, code, stage) {
+  const sheet = ensureSheetWithHeaders_(ss, "CMImportStatus", ["code", "stage", "updated_at"]);
+  const rows = getRowNumbersByFirstColumnValue_(sheet, code);
+  const values = [[code, stage, new Date().toISOString()]];
+  if (rows.length) sheet.getRange(rows[0], 1, 1, 3).setValues(values);
+  else sheet.appendRow(values[0]);
+}
+
+function restoreImportSnapshotInitial_(transaction) {
+  transaction.restoring = true;
+  transaction.data.snapshots.slice().reverse().forEach(snapshot => {
+    const ss = SpreadsheetApp.openById(snapshot.spreadsheet);
+    const sh = ss.getSheetByName(snapshot.sheet);
+    if (!sh) throw new Error("Recovery sheet missing: " + snapshot.sheet);
+    const objects = snapshot.rows.map(row => {
+      const obj = {}; snapshot.headers.forEach((header, index) => { obj[header] = row[index]; }); return obj;
+    });
+    replaceRowsByCode_(ss, snapshot.sheet, snapshot.code, objects, snapshot.headers);
+    markImportState_(ss, snapshot.code, "restored");
+  });
+  transaction.data.stage = "restored";
+  transaction.file.setContent(JSON.stringify(transaction.data));
+}
+
+function runRecoverableImport_(input, kind, operation) {
+  requireOperatorKey_(input && input.key);
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) return {ok:false, status:"import_busy", error:"Another source import is running. Wait before retrying."};
+  const props = PropertiesService.getScriptProperties();
+  const identity = kind + "|" + safeString_(input && (input.sourceUrl || input.url)) + "|" + safeString_(input && input.sport);
+  const digest = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, identity, Utilities.Charset.UTF_8).map(n => (n & 255).toString(16).padStart(2,"0")).join("");
+  const property = "CM_IMPORT_RECOVERY_" + digest;
+  try {
+    const oldId = props.getProperty(property);
+    if (oldId) {
+      const file = importRecoveryDocument_(oldId);
+      const data = JSON.parse(file.getBlob().getDataAsString());
+      if (data.stage === "writing") {
+        CM_IMPORT_TRANSACTION = {file:file, data:data};
+        restoreImportSnapshot_(CM_IMPORT_TRANSACTION);
+      }
+    }
+    const data = {stage:"writing", source: input.sourceUrl || input.url || "", started_at:new Date().toISOString(), snapshots:[]};
+    const file = importRecoveryDocument_("", "Sentinel import recovery " + digest);
+    file.setContent(JSON.stringify(data));
+    props.setProperty(property, file.getId());
+    CM_IMPORT_TRANSACTION = {file:file, data:data};
+    const result = operation();
+    if (data.snapshots.length) {
+      const validation = result && result.validation || {};
+      const expected = result && result.wrote || {};
+      const exact = kind === "prv"
+        ? validation.ok && Number(validation.product_rows || validation.rows || validation.row_count) === expected.rows
+        : validation.ok && validation.product_rows === 1 && validation.checklist_rows === expected.rows && validation.parallel_rows === expected.parallels;
+      if (!exact) throw new Error("Exact source row validation failed; restoring the prior product.");
+      data.snapshots.forEach(snapshot => markImportState_(SpreadsheetApp.openById(snapshot.spreadsheet), snapshot.code, "complete"));
+    }
+    data.stage = "complete";
+    file.setContent(JSON.stringify(data));
+    result.recovery_snapshot_id = file.getId();
+    return result;
+  } catch (err) {
+    let recovery = "No rows were changed.";
+    try {
+      if (CM_IMPORT_TRANSACTION && CM_IMPORT_TRANSACTION.data.snapshots.length) {
+        restoreImportSnapshot_(CM_IMPORT_TRANSACTION); recovery = "The previous product rows were restored.";
+      }
+    } catch (restoreError) { recovery = "Recovery needs review: " + restoreError.message; }
+    return {ok:false, status:"import_failed", error:String(err && err.message || err), recovery:recovery,
+      recovery_snapshot_id: CM_IMPORT_TRANSACTION && CM_IMPORT_TRANSACTION.file.getId() || ""};
+  } finally { CM_IMPORT_TRANSACTION = null; lock.releaseLock(); }
+}
+
+function executeSourceImport_(input) {
+  const result = runRecoverableImport_(input, "checklist", () => executeSourceImportBase_(Object.assign({}, input, {publish:"0"})));
+  if (result.ok && shouldPublishAfterImport_(input && input.publish)) {
+    result.publish = publishChecklistAfterImport_(Object.assign({}, result.product, {async:"1"}), input.key);
+    result.status = result.publish && result.publish.status || "written_needs_publish";
+  }
+  return result;
+}
+
+function executePrvSourceImportPipelinePrevious_(input) {
+  return runRecoverableImport_(input, "prv", () => executePrvSourceImportBase_(input));
+}
+
+function publishChecklistAfterImport_(product, key) {
+  const url = PropertiesService.getScriptProperties().getProperty(CM_STATIC_EXPORTER_URL_PROPERTY);
+  if (!url) return {ok:false,error:"Static Data Exporter URL is not configured."};
+  return postStaticExporterJson_(url, {action:"publishChecklistAfterImport", sport:product.sport,
+    bucket:getPublishBucketForChecklist_(product.sport, product.target_bucket || product.year), code:product.code,
+    async:product.async || "", request_id:product.request_id || "", job_id:product.job_id || "", key:key}, "Checklist publish request failed");
+}
+
+function publishImportedChecklist_(input) {
+  requireOperatorKey_(input && input.key);
+  const product = {sport:normalize_(input.sport), code:safeString_(input.code).trim(), target_bucket:safeString_(input.bucket || input.year).trim(),
+    async:input.async || "", request_id:input.request_id || "", job_id:input.job_id || ""};
+  if (!product.sport || !product.code || !product.target_bucket) return {ok:false,error:"Missing sport, bucket or product code."};
+  const publish = publishChecklistAfterImport_(product, input.key);
+  return {ok:!!publish.ok,status:publish.status || "needs_review",product:product,publish:publish,job:publish.job || null,
+    public_pending:publish.status === "published_pages_pending",updated_at:new Date().toISOString()};
+}
+
+function importRecoveryDocumentInitial_(id, name) {
+  // Use the existing Sheets authorization; recovery does not require new Drive access.
+  const document = id ? SpreadsheetApp.openById(id) : SpreadsheetApp.create(name);
+  const sheet = document.getSheets()[0];
+  return {getId:() => document.getId(), getBlob:() => ({getDataAsString:() => sheet.getDataRange().getValues().map(row => row[0]).join("")}),
+    setContent:text => {
+      const chunks = [];
+      for (let start = 0; start < text.length;) {
+        let end = Math.min(start + 30000, text.length);
+        if (end < text.length && /[\uD800-\uDBFF]/.test(text[end - 1])) end--;
+        chunks.push([text.slice(start, end)]); start = end;
+      }
+      sheet.getDataRange().clearContent();
+      if (chunks.length > sheet.getMaxRows()) sheet.insertRowsAfter(sheet.getMaxRows(), chunks.length - sheet.getMaxRows());
+      sheet.getRange(1, 1, chunks.length || 1, 1).setNumberFormat("@").setValues(chunks.length ? chunks : [[""]]);
+    }};
+}
+
+
+function restoreImportSnapshot_(transaction) {
+  transaction.restoring = true;
+  const targets = {};
+  transaction.data.snapshots.forEach(snapshot => { targets[snapshot.spreadsheet + "|" + snapshot.code] = snapshot; });
+  Object.keys(targets).forEach(key => {
+    const snapshot = targets[key];
+    markImportState_(SpreadsheetApp.openById(snapshot.spreadsheet), snapshot.code, "writing");
+  });
+  transaction.data.snapshots.slice().reverse().forEach(snapshot => {
+    const ss = SpreadsheetApp.openById(snapshot.spreadsheet);
+    if (!ss.getSheetByName(snapshot.sheet)) throw new Error("Recovery sheet missing: " + snapshot.sheet);
+    const objects = snapshot.rows.map(row => {
+      const obj = {}; snapshot.headers.forEach((header, index) => { obj[header] = row[index]; }); return obj;
+    });
+    replaceRowsByCode_(ss, snapshot.sheet, snapshot.code, objects, snapshot.headers);
+  });
+  Object.keys(targets).forEach(key => {
+    const snapshot = targets[key];
+    markImportState_(SpreadsheetApp.openById(snapshot.spreadsheet), snapshot.code, "restored");
+  });
+  transaction.data.stage = "restored";
+  transaction.file.setContent(JSON.stringify(transaction.data));
+}
+
+function importRecoveryDocument_(id, name) {
+  const document = id ? SpreadsheetApp.openById(id) : SpreadsheetApp.create(name);
+  const sheet = document.getSheets()[0];
+  return {getId:() => document.getId(), getBlob:() => ({getDataAsString:() => {
+    const values = sheet.getDataRange().getValues();
+    const marker = values.filter(row => row[1] === "complete").pop();
+    if (!marker) {
+      const boundary = values.findIndex(row => row[1] !== undefined && row[1] !== "");
+      const legacy = values.slice(0,boundary < 0 ? values.length : boundary).map(row => row[0]).join("");
+      try { if (Array.isArray(JSON.parse(legacy).snapshots)) return legacy; } catch (err) {}
+      throw new Error("No complete import recovery record exists.");
+    }
+    const chunks = values.filter(row => row[0] === marker[0] && row[1] !== "complete").sort((a,b) => Number(a[1])-Number(b[1]));
+    if (chunks.length !== Number(marker[2]) || chunks.some((row,i) => Number(row[1]) !== i)) throw new Error("Import recovery record is incomplete.");
+    return chunks.map(row => row[3]).join("");
+  }}),setContent:text => {
+    // Append a version and commit marker. An interrupted save cannot erase the
+    // previous complete recovery record.
+    const version = Utilities.getUuid(), chunks = [];
+    for (let start = 0; start < text.length;) {
+      let end = Math.min(start + 30000, text.length);
+      if (end < text.length && /[\uD800-\uDBFF]/.test(text[end - 1])) end--;
+      chunks.push(text.slice(start,end)); start=end;
+    }
+    if (!chunks.length) chunks.push("");
+    const rows = chunks.map((chunk,index) => [version,String(index),String(chunks.length),chunk]);
+    const startRow = sheet.getLastRow() + 1;
+    if (startRow + rows.length > sheet.getMaxRows()) sheet.insertRowsAfter(sheet.getMaxRows(), startRow + rows.length - sheet.getMaxRows());
+    sheet.getRange(startRow,1,rows.length,4).setNumberFormat("@").setValues(rows);
+    sheet.getRange(startRow+rows.length,1,1,4).setNumberFormat("@").setValues([[version,"complete",String(rows.length),""]]);
+  }};
+}
+
+// Editor-only verification fixtures; these do not touch production source sheets.
+function runSentinelImportRecoverySmokeTest() {
+  const id = Utilities.getUuid(), code = "pipeline_fixture";
+  const ss = SpreadsheetApp.create("Sentinel pipeline verification " + id);
+  const products = ss.getSheets()[0]; products.setName("Products");
+  products.getRange(1,1,2,2).setValues([["code","display_name"],[code,"Pipeline fixture"]]);
+  const rows = ss.insertSheet("ChecklistRows");
+  rows.getRange(1,1,5,2).setValues([["code","player"],[code,"old1"],["unrelated","KEEP"],[code,"old2"],[code,"old3"]]);
+  const parallels = ss.insertSheet("Parallels");
+  parallels.getRange(1,1,3,2).setValues([["code","parallel_name"],[code,"obsolete"],["unrelated","KEEP"]]);
+  const input = {sourceUrl:"pipeline-fixture-"+id,sport:"baseball",key:PropertiesService.getScriptProperties().getProperty(CM_OPERATOR_KEY_PROPERTY)};
+  const imported = runRecoverableImport_(input,"checklist",() => {
+    upsertProducts_(ss,code,{code:code,display_name:"Pipeline fixture"});
+    replaceRowsByCode_(ss,"ChecklistRows",code,[{code:code,player:"new1"}],["code","player"]);
+    replaceRowsByCode_(ss,"Parallels",code,[],["code","parallel_name"]);
+    return {ok:true,wrote:{rows:1,parallels:0},validation:validateWrittenProduct_(ss,code)};
+  });
+  if (!imported.ok) throw new Error(JSON.stringify(imported));
+  const saved = JSON.parse(importRecoveryDocument_(imported.recovery_snapshot_id).getBlob().getDataAsString());
+  if (saved.snapshots.length !== 3) throw new Error("Recovery snapshot did not preserve all three product tables.");
+  const failed = runRecoverableImport_(Object.assign({},input,{sourceUrl:input.sourceUrl+"-rollback"}),"checklist",() => {
+    replaceRowsByCode_(ss,"ChecklistRows",code,[{code:code,player:"bad1"},{code:code,player:"bad2"}],["code","player"]);
+    throw new Error("Intentional recovery smoke-test failure");
+  });
+  const actual = validateWrittenProduct_(ss,code);
+  const unrelated = countRowsByFirstColumn_(rows,"unrelated") === 1 && countRowsByFirstColumn_(parallels,"unrelated") === 1;
+  if (failed.ok || actual.checklist_rows !== 1 || actual.parallel_rows !== 0 || !unrelated) throw new Error("Real Sheet rollback or unrelated-row preservation failed.");
+  Logger.log(JSON.stringify({ok:true,mode:"isolated_google_sheet_fixture",source:ss.getUrl(),snapshot:imported.recovery_snapshot_id,
+    exact_replacement:true,empty_parallels:true,rollback:true,unrelated_rows_preserved:true,counts:actual}));
+}
+
+function runSentinelOperatorPipelineSmokeTest() {
+  const result = publishImportedChecklist_({sport:"hockey",bucket:"2026",code:"2026_upper_deck_team_canada_juniors_hockey_cards_checklist",async:"1",
+    request_id:"pipeline-hockey-"+Utilities.getUuid(),key:PropertiesService.getScriptProperties().getProperty(CM_OPERATOR_KEY_PROPERTY)});
+  Logger.log(JSON.stringify(result));
+}
+
+function executePrvSourceImport_(input) {
+  return runRecoverableImport_(input,"prv",() => {
+    const preview = previewPrvSource_(input);
+    if (!preview || !preview.ok || preview.status !== "preview_ready") return {ok:false,error:"PRV source is not ready for import.",preview:preview};
+    if (preview.multi_product) return {ok:false,error:"This article contains multiple products. Split and review their rows before importing.",preview:preview};
+    // Parse the full source again for the write; the preview response is capped.
+    const html = fetchText_(input.sourceUrl || input.url);
+    const rows = parseSlabSquatchPrintRunRows_(extractSubstackBodyHtml_(html),input.sourceUrl || input.url);
+    if (!rows.length || rows.length !== preview.row_count) throw new Error("PRV source changed or could not be fully parsed. Preview it again before writing.");
+    const product = preview.product, ss = SpreadsheetApp.openById(getVaultSpreadsheetId_());
+    upsertPrvIndex_(ss,product);
+    replaceRowsByCode_(ss,CM_PRODUCTS_SHEET,product.code,rows.map(row => prvRowToSheetObject_(product,row)),
+      ["code","display_name","keywords","year","sport","manufacturer","product","setType","setLine","printRun","serial","subSetSize","notes","cmURL"]);
+    return {ok:true,status:"written_needs_publish",target_tool:"prv",product:product,source_url:input.sourceUrl || input.url,
+      target_spreadsheet_id:ss.getId(),target_bucket:product.year,wrote:{index:1,rows:rows.length},validation:validateWrittenPrvProduct_(ss,product.code)};
+  });
+}
+
+function publishPrvVaultStaticData_(input) {
+  if (!input.async && !input.job_id) return publishPrvVaultStaticDataPipelinePrevious_(input);
+  requireOperatorKey_(input && input.key);
+  const url = PropertiesService.getScriptProperties().getProperty(CM_STATIC_EXPORTER_URL_PROPERTY);
+  if (!url) return {ok:false,error:"Static Data Exporter URL is not configured."};
+  const publish = postStaticExporterJson_(url,{action:"publishVaultStaticDataToGitHub",code:input.code,sport:input.sport || "",bucket:input.bucket || "",
+    async:input.async || "",job_id:input.job_id || "",request_id:input.request_id || "",key:input.key},"PRV publish job request failed");
+  return {ok:!!publish.ok,status:publish.status,publish:publish,job:publish.job || null,public_pending:publish.status === "published_pages_pending"};
+}
+
+function runSentinelPrvPipelineSmokeTest() {
+  Logger.log(JSON.stringify(publishPrvVaultStaticData_({code:"2026_bowman_chrome_sapphire_baseball",sport:"baseball",bucket:"2026",async:"1",
+    request_id:"pipeline-prv-"+Utilities.getUuid(),key:PropertiesService.getScriptProperties().getProperty(CM_OPERATOR_KEY_PROPERTY)})));
+}

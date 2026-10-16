@@ -5,7 +5,7 @@
   "scripts": {
     "test:sentinel": "node scripts/sentinel-command-center-test.mjs",
     "test:visual-product": "node scripts/visual-product-test.mjs",
-    "test:publish": "node scripts/static-exporter-test.mjs && node scripts/sentinel-publish-test.mjs"
+    "test:publish": "node scripts/static-exporter-test.mjs && node scripts/sentinel-publish-test.mjs && node scripts/sentinel-prv-test.mjs && node scripts/sentinel-transport-test.mjs && node scripts/pipeline-integrity-test.mjs && node scripts/sentinel-job-test.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",

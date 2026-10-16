@@ -14,7 +14,7 @@
  *******************************************************/
 
 const CM_EXPORT_ROOT_FOLDER = "CM Static Data Export";
-const CM_EXPORT_VERSION = "2026-10-15-api-publish-upcoming-seasons";
+const CM_EXPORT_VERSION = "2026-10-15-exporter-pipeline-v2";
 const CM_DRIVE_WRITE_RETRIES = 5;
 const CM_DRIVE_WRITE_PAUSE_MS = 250;
 const CM_DRIVE_WRITE_THROTTLE_EVERY = 20;
@@ -1089,7 +1089,7 @@ function testGitHubTokenAndCommit() {
   return Object.assign({ ok: true, path: path, repo: cfg.owner + "/" + cfg.repo }, result);
 }
 
-function publishChecklistStaticDataToGitHub() {
+function publishChecklistStaticDataToGitHubReleaseBase_() {
   const built = buildChecklistStaticDataFromDbMap_();
   const published = [];
 
@@ -1163,7 +1163,7 @@ function publishChecklistStaticDataToGitHub() {
   return result;
 }
 
-function publishCurrentChecklistStaticDataToGitHub() {
+function publishCurrentChecklistStaticDataToGitHubReleaseBase_() {
   const sports = Object.keys(CM_ACTIVE_CURRENT_KEYS);
   const results = sports.map(sport => publishCurrentChecklistSportToGitHub(sport, { skipIndex: true }));
   const indexResult = publishChecklistIndexFromProductBundlesToGitHub();
@@ -1195,7 +1195,7 @@ function publishCurrentSoccerChecklistToGitHub() {
   return publishCurrentChecklistSportAndIndexToGitHub_("soccer");
 }
 
-function publishCurrentChecklistSportAndIndexToGitHub_(sport) {
+function publishCurrentChecklistSportAndIndexToGitHubReleaseBase_(sport) {
   const dataResult = publishCurrentChecklistSportToGitHub(sport);
   const indexResult = publishChecklistIndexFromGoogleSheetsToGitHub();
   return {
@@ -1207,7 +1207,7 @@ function publishCurrentChecklistSportAndIndexToGitHub_(sport) {
   };
 }
 
-function publishChecklistAfterImport_(input) {
+function publishChecklistAfterImportBase_(input) {
   requireCmOperatorKey_(input && input.key);
 
   const lock = LockService.getScriptLock();
@@ -1222,7 +1222,7 @@ function publishChecklistAfterImport_(input) {
   }
 }
 
-function publishChecklistAfterImportLocked_(input) {
+function publishChecklistAfterImportLockedBase_(input) {
 
   const sport = normalizeKey_(input && input.sport);
   const bucket = value_(input && input.bucket);
@@ -1315,7 +1315,7 @@ function publishChecklistProductAfterImportToGitHub_(sportValue, bucketValue, co
   };
 }
 
-function buildChecklistStaticDataForSingleProduct_(sportValue, bucketValue, codeValue) {
+function buildChecklistStaticDataForSingleProductBase_(sportValue, bucketValue, codeValue) {
   const sport = normalizeKey_(sportValue);
   const bucket = value_(bucketValue);
   const code = value_(codeValue);
@@ -1885,7 +1885,7 @@ function publishSoccer2024_25ChecklistIndexToGitHub() {
   return publishChecklistIndexFromGoogleSheetsToGitHub();
 }
 
-function publishCurrentChecklistSportToGitHub(sportValue, options) {
+function publishCurrentChecklistSportToGitHubReleaseBase_(sportValue, options) {
   options = options || {};
   const sport = normalizeKey_(sportValue);
   const currentKey = value_(CM_ACTIVE_CURRENT_KEYS[sport]);
@@ -2018,7 +2018,7 @@ function publishCurrentChecklistSportToGitHub(sportValue, options) {
   return result;
 }
 
-function publishChecklistSourceToGitHub(sportValue, sourceKeyValue, options) {
+function publishChecklistSourceToGitHubReleaseBase_(sportValue, sourceKeyValue, options) {
   options = options || {};
   const sport = normalizeKey_(sportValue);
   const sourceKey = value_(sourceKeyValue);
@@ -2138,7 +2138,7 @@ function publishChecklistSourceToGitHub(sportValue, sourceKeyValue, options) {
   return result;
 }
 
-function publishChecklistSourceProductsToGitHub(sportValue, sourceKeyValue) {
+function publishChecklistSourceProductsToGitHubReleaseBase_(sportValue, sourceKeyValue) {
   const sport = normalizeKey_(sportValue);
   const sourceKey = value_(sourceKeyValue);
   if (!sport || !sourceKey) throw new Error("Missing sport or source key.");
@@ -2209,7 +2209,7 @@ function publishChecklistSourceProductsToGitHub(sportValue, sourceKeyValue) {
   return result;
 }
 
-function publishChecklistSourceSearchToGitHub(sportValue, sourceKeyValue) {
+function publishChecklistSourceSearchToGitHubReleaseBase_(sportValue, sourceKeyValue) {
   return publishChecklistSourceSearchStandaloneToGitHub(sportValue, sourceKeyValue);
 
   const sport = normalizeKey_(sportValue);
@@ -2282,7 +2282,7 @@ function publishChecklistSourceSearchToGitHub(sportValue, sourceKeyValue) {
   return result;
 }
 
-function publishChecklistSourceSearchStandaloneToGitHub(sportValue, sourceKeyValue) {
+function publishChecklistSourceSearchStandaloneToGitHubReleaseBase_(sportValue, sourceKeyValue) {
   const sport = normalizeKey_(sportValue);
   const sourceKey = value_(sourceKeyValue);
   if (!sport || !sourceKey) throw new Error("Missing sport or source key.");
@@ -2383,7 +2383,7 @@ function safeSourceKeyForFile_(sourceKey) {
     .replace(/^-+|-+$/g, "") || "source";
 }
 
-function publishChecklistIndexFromProductBundlesToGitHub() {
+function publishChecklistIndexFromProductBundlesToGitHubReleaseBase_() {
   const generatedAt = new Date().toISOString();
   const indexRows = [];
 
@@ -2435,7 +2435,7 @@ function publishChecklistIndexFromProductBundlesToGitHub() {
   return Object.assign({ ok: true, product_count: indexRows.length }, result);
 }
 
-function publishChecklistIndexFromGoogleSheetsToGitHub() {
+function publishChecklistIndexFromGoogleSheetsToGitHubReleaseBase_() {
   const generatedAt = new Date().toISOString();
   const indexRows = [];
   const seenCodes = {};
@@ -2983,7 +2983,7 @@ function parseSerialLimitForSignal_(value) {
   return 0;
 }
 
-function publishVaultStaticDataToGitHub() {
+function publishVaultStaticDataToGitHubFullBase_() {
   const built = buildVaultStaticData_();
   const published = [];
 
@@ -3052,7 +3052,7 @@ function publishVaultStaticDataToGitHub() {
   return result;
 }
 
-function publishVaultStaticDataToGitHubScheduled() {
+function publishVaultStaticDataToGitHubScheduledBase_() {
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(5000)) {
     const skipped = {
@@ -3081,7 +3081,7 @@ function publishVaultStaticDataToGitHubScheduled() {
   }
 }
 
-function publishVaultStaticDataToGitHub_(input) {
+function publishVaultStaticDataToGitHubBase_(input) {
   requireCmOperatorKey_(input && input.key);
 
   const code = value_(input && input.code);
@@ -4183,7 +4183,7 @@ function fetchPublicJson_(path) {
   return text ? JSON.parse(text) : null;
 }
 
-function getGitHubConfig_() {
+function getGitHubConfigBase_() {
   const props = PropertiesService.getScriptProperties();
   const token = value_(props.getProperty("GITHUB_TOKEN"));
   const owner = value_(props.getProperty("GITHUB_OWNER")) || "ChasingMajors";
@@ -4272,7 +4272,7 @@ function getGitHubFileSha_(repoPath) {
   }
 }
 
-function fetchGitHubJsonFile_(repoPath) {
+function fetchGitHubJsonFileBase_(repoPath) {
   const cfg = getGitHubConfig_();
   // Read current branch contents through the API, avoiding stale raw CDN data.
   const url = "https://api.github.com/repos/"
@@ -4300,7 +4300,7 @@ function fetchGitHubJsonFile_(repoPath) {
   return text ? JSON.parse(text) : null;
 }
 
-function putGitHubJsonFile_(repoPath, obj, message) {
+function putGitHubJsonFileBase_(repoPath, obj, message) {
   const cfg = getGitHubConfig_();
   const prettyJson = JSON.stringify(obj, null, 2) + "\n";
   const path = "/repos/" + encodeURIComponent(cfg.owner)
@@ -4523,3 +4523,519 @@ const CM_UPCOMING_CHECKLIST_SOURCES = {
 Object.keys(CM_UPCOMING_CHECKLIST_SOURCES).forEach(function(sport) {
   Object.assign(CM_CHECKLIST_DB_MAP[sport], CM_UPCOMING_CHECKLIST_SOURCES[sport]);
 });
+
+/* Pipeline v2: one commit per release, exact verification, durable jobs. */
+let CM_GITHUB_TRANSACTION = null;
+let CM_CURRENT_PUBLISH_JOB = null;
+
+function stablePipelineJson_(value) {
+  if (Array.isArray(value)) return "[" + value.map(stablePipelineJson_).join(",") + "]";
+  if (value && typeof value === "object") return "{" + Object.keys(value).filter(k => value[k] !== undefined).sort().map(k => JSON.stringify(k) + ":" + stablePipelineJson_(value[k])).join(",") + "}";
+  return JSON.stringify(value);
+}
+
+function pipelineHash_(value) {
+  return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, stablePipelineJson_(value), Utilities.Charset.UTF_8)
+    .map(n => (n & 255).toString(16).padStart(2, "0")).join("");
+}
+
+function productContentHash_(product) {
+  const meta = Object.assign({}, product && product.meta || {});
+  ["release_id", "content_sha256", "expected_rows", "expected_parallels"].forEach(k => delete meta[k]);
+  const data = {meta:meta, rows:product && product.rows || []};
+  if (product && Array.isArray(product.parallels)) data.parallels = product.parallels;
+  return pipelineHash_(data);
+}
+
+function assertSourceImportComplete_(ss, code) {
+  const sheet = ss.getSheetByName("CMImportStatus");
+  if (!sheet) return;
+  const status = sheet.getDataRange().getValues().slice(1).find(row => value_(row[0]) === code);
+  if (status && status[1] === "writing") throw new Error("Source import is incomplete for " + code + ". Resume the import before publishing.");
+}
+
+function buildChecklistStaticDataForSingleProduct_(sport, bucket, code) {
+  const sourceKey = resolveChecklistSourceKey_(sport, bucket === "current" ? CM_ACTIVE_CURRENT_KEYS[sport] : bucket);
+  const map = CM_CHECKLIST_DB_MAP[sport] || {};
+  assertSourceImportComplete_(SpreadsheetApp.openById(map[sourceKey] || map.current), code);
+  const single = buildChecklistStaticDataForSingleProductBase_(sport, bucket, code);
+  if (!single.productPayload.rows.length) throw new Error("Refusing to publish a checklist without rows.");
+  const release = CM_CURRENT_PUBLISH_JOB ? CM_CURRENT_PUBLISH_JOB.data.id : Utilities.getUuid();
+  single.productPayload.meta.content_sha256 = productContentHash_(single.productPayload);
+  single.productPayload.meta.release_id = release;
+  single.expected = {release_id:release, content_sha256:single.productPayload.meta.content_sha256,
+    row_count:single.productPayload.rows.length, parallel_count:single.productPayload.parallels.length,
+    search_row_count:single.searchRows.length, search_sha256:pipelineHash_(single.searchRows), index_sha256:pipelineHash_(single.indexRow)};
+  if (CM_GITHUB_TRANSACTION) CM_GITHUB_TRANSACTION.expected = single.expected;
+  return single;
+}
+
+function getGitHubConfig_() {
+  const cfg = getGitHubConfigBase_();
+  if (CM_GITHUB_TRANSACTION) cfg.branch = CM_GITHUB_TRANSACTION.base_commit;
+  return cfg;
+}
+
+function fetchGitHubJsonFile_(path) {
+  if (CM_GITHUB_TRANSACTION && Object.prototype.hasOwnProperty.call(CM_GITHUB_TRANSACTION.files, path)) {
+    return JSON.parse(CM_GITHUB_TRANSACTION.files[path]);
+  }
+  return fetchGitHubJsonFileBase_(path);
+}
+
+function putGitHubJsonFile_(path, data, message) {
+  if (!CM_GITHUB_TRANSACTION) return putGitHubJsonFileBase_(path, data, message);
+  const text = JSON.stringify(data, null, 2) + "\n";
+  CM_GITHUB_TRANSACTION.files[path] = text;
+  return {path:path, staged:true};
+}
+
+function githubRepoPath_() {
+  const cfg = getGitHubConfigBase_();
+  return "/repos/" + encodeURIComponent(cfg.owner) + "/" + encodeURIComponent(cfg.repo);
+}
+
+function runAtomicGitHubPublish_(operation, message) {
+  if (CM_GITHUB_TRANSACTION) throw new Error("Nested GitHub release staging is not supported.");
+  const cfg = getGitHubConfigBase_();
+  const repo = githubRepoPath_();
+  const refPath = repo + "/git/ref/heads/" + encodeGitHubPath_(cfg.branch);
+  const base = githubRequest_("get", refPath);
+  const commit = githubRequest_("get", repo + "/git/commits/" + base.object.sha);
+  const tx = {base_commit:base.object.sha, files:{}, expected:null};
+  CM_GITHUB_TRANSACTION = tx;
+  let result;
+  try { result = operation(); }
+  finally { CM_GITHUB_TRANSACTION = null; }
+  const paths = Object.keys(tx.files);
+  if (!paths.length) throw new Error("No files were staged for this release.");
+  const treeEntries = paths.map(path => ({path:path, mode:"100644", type:"blob", content:tx.files[path]}));
+  if (Utilities.newBlob(JSON.stringify(treeEntries)).getBytes().length > 40000000) throw new Error("Staged release exceeds the safe request size. Split the source update before retrying.");
+  // Do not overwrite a branch advanced by a different publisher.
+  if (githubRequest_("get", refPath).object.sha !== tx.base_commit) throw new Error("Publish conflict: GitHub changed during staging. No files were published; retry from the latest revision.");
+  if (CM_CURRENT_PUBLISH_JOB) {
+    CM_CURRENT_PUBLISH_JOB.data.expected = tx.expected;
+    CM_CURRENT_PUBLISH_JOB.data.stage = "committing";
+    savePipelineJob_(CM_CURRENT_PUBLISH_JOB);
+  }
+  const tree = githubRequest_("post", repo + "/git/trees", {base_tree:commit.tree.sha, tree:treeEntries});
+  const next = githubRequest_("post", repo + "/git/commits", {message:message, tree:tree.sha, parents:[tx.base_commit]});
+  // Save the candidate before moving the ref, so a lost HTTP response is recoverable.
+  if (CM_CURRENT_PUBLISH_JOB) {
+    CM_CURRENT_PUBLISH_JOB.data.commit = next.sha;
+    savePipelineJob_(CM_CURRENT_PUBLISH_JOB);
+  }
+  githubRequest_("patch", repo + "/git/refs/heads/" + encodeGitHubPath_(cfg.branch), {sha:next.sha, force:false});
+  if (CM_CURRENT_PUBLISH_JOB) {
+    CM_CURRENT_PUBLISH_JOB.data.stage = "committed";
+    savePipelineJob_(CM_CURRENT_PUBLISH_JOB);
+  }
+  return Object.assign({}, result, {ok:true, commit:next.sha, expected:tx.expected, files_published:paths.length,
+    files:paths.map(path => ({path:path,commit:next.sha}))});
+}
+
+function checklistSearchRowsForVerification_(sport, code, read) {
+  const dir = "checklists/search-index/";
+  const manifest = read(dir + sport + ".json") || {};
+  if (Array.isArray(manifest.rows)) return manifest.rows.filter(row => value_(row.code || row.Code) === code);
+  const names = manifest.product_shards && manifest.product_shards[code] || [];
+  return names.reduce((rows, name) => rows.concat((read(dir + name) || {}).rows || []), [])
+    .filter(row => value_(row.code || row.Code) === code);
+}
+
+function verifyChecklistRelease_(sport, code, expected, isPublic) {
+  const read = path => isPublic ? fetchPublicJson_(path) : fetchGitHubJsonFile_("data/v1/" + path);
+  try {
+    const index = (read("checklists/index.json") || {}).index || [];
+    const row = index.find(item => value_(item.Code || item.code) === code);
+    const manifest = read("checklists/products/" + sport + ".json") || {};
+    const shardName = manifest.product_map && manifest.product_map[code];
+    const products = manifest.products || shardName && (read("checklists/products/" + shardName) || {}).products || {};
+    const product = products[code];
+    const search = checklistSearchRowsForVerification_(sport, code, read);
+    const actualHash = product ? productContentHash_(product) : "";
+    const result = {ok:false, index_has_product:!!row, product_has_rows:!!(product && product.rows && product.rows.length),
+      row_count:product && product.rows && product.rows.length || 0, parallel_count:product && product.parallels && product.parallels.length || 0,
+      search_row_count:search.length, release_id:product && product.meta && product.meta.release_id || "",
+      content_sha256:actualHash, validation_mode:"exact_content_and_release"};
+    result.ok = !!(expected && row && product && result.release_id === expected.release_id && actualHash === expected.content_sha256 &&
+      result.row_count === expected.row_count && result.parallel_count === expected.parallel_count && search.length === expected.search_row_count &&
+      pipelineHash_(search) === expected.search_sha256 && pipelineHash_(row) === expected.index_sha256);
+    return result;
+  } catch (err) { return {ok:false,error:String(err && err.message || err),validation_mode:"exact_content_and_release"}; }
+}
+
+function verifyChecklistReleaseBoth_(sport, code, expected) {
+  const github = verifyChecklistRelease_(sport, code, expected, false);
+  const publicResult = verifyChecklistRelease_(sport, code, expected, true);
+  return {ok:github.ok && publicResult.ok, github:github, public:publicResult,
+    checklist_vault:{ok:publicResult.ok,reason:"Exact public product, index and search content verification."},
+    chatbot:{ok:publicResult.ok,reason:"Exact public product, index and search content verification; visual test remains separate."}};
+}
+
+function publishChecklistAfterImportLocked_(input) {
+  const sport = normalizeKey_(input && input.sport), bucket = value_(input && input.bucket), code = value_(input && input.code);
+  if (!sport || !bucket || !code || !CM_CHECKLIST_DB_MAP[sport]) throw new Error("Missing or unsupported checklist publish target.");
+  const result = runAtomicGitHubPublish_(() => publishChecklistProductAfterImportToGitHub_(sport, bucket, code), "Publish complete checklist release " + code);
+  const validation = verifyChecklistReleaseBoth_(sport, code, result.expected);
+  return {ok:validation.github.ok, status:validation.public.ok ? "published_and_public_validated" : validation.github.ok ? "published_pages_pending" : "published_validation_needs_review",
+    mode:"atomic_product_release",sport:sport,bucket:bucket,code:code,publish_result:result,validation:validation,updated_at:new Date().toISOString()};
+}
+
+function publishChecklistAfterImport_(input) {
+  requireCmOperatorKey_(input && input.key);
+  if (input.job_id) return getPipelineJobStatus_(input.job_id);
+  if (String(input.async) === "1") return enqueuePipelineJob_("checklist", input);
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) return {ok:false,status:"publish_busy",error:"Another release is running."};
+  try { return publishChecklistAfterImportLocked_(input); } finally { lock.releaseLock(); }
+}
+
+function buildPrvProductRelease_(code) {
+  const ss = getVaultSpreadsheet_();
+  assertSourceImportComplete_(ss, code);
+  const meta = sheetObjects_(ss.getSheetByName("Index")).find(row => value_(row.code) === code);
+  if (!meta) throw new Error("PRV source product not found: " + code);
+  const index = {Code:code, DisplayName:value_(meta.displayname || meta.display_name), Keywords:value_(meta.keywords),year:value_(meta.year),
+    sport:value_(meta.sport),manufacturer:value_(meta.manufacturer),product:value_(meta.product),cmURL:value_(meta.cmurl || meta.cm_url)};
+  const rows = sheetObjects_(ss.getSheetByName("Products")).filter(row => value_(row.code) === code).map(row => ({code:code,
+    setType:value_(row.settype || row.set_type),setLine:value_(row.setline || row.set_line),printRun:numberOrString_(row.printrun || row.print_run),
+    serial:value_(row.serial),subSetSize:numberOrString_(row.subsetsize || row.sub_set_size),notes:value_(row.notes),cmURL:value_(row.cmurl || row.cm_url)}));
+  if (!rows.length) throw new Error("Refusing to publish PRV without rows.");
+  const product = {ok:true,meta:{code:code,displayName:index.DisplayName,year:index.year,sport:index.sport,manufacturer:index.manufacturer,product:index.product,cmURL:index.cmURL},rows:rows};
+  product.meta.content_sha256 = productContentHash_(product);
+  product.meta.release_id = CM_CURRENT_PUBLISH_JOB ? CM_CURRENT_PUBLISH_JOB.data.id : Utilities.getUuid();
+  const expected = {release_id:product.meta.release_id,content_sha256:product.meta.content_sha256,row_count:rows.length,index_sha256:pipelineHash_(index)};
+  return {index:index,product:product,expected:expected};
+}
+
+function publishPrvProductAtomic_(code) {
+  const result = runAtomicGitHubPublish_(() => {
+    const built = buildPrvProductRelease_(code), now = new Date().toISOString();
+    CM_GITHUB_TRANSACTION.expected = built.expected;
+    const dir = "data/v1/vault/", manifest = fetchGitHubJsonFile_(dir + "products/all.json") || {};
+    const map = Object.assign({}, manifest.product_map || {});
+    const name = "product-" + safeSourceKeyForFile_(code) + "-" + safeSourceKeyForFile_(built.expected.release_id) + ".json";
+    const previous = map[code];
+    if (previous && Object.keys(map).some(key => key !== code && map[key] === previous)) {
+      const old = fetchGitHubJsonFile_(dir + "products/" + previous) || {};
+      const retained = Object.assign({}, old.products || {});
+      delete retained[code];
+      putGitHubJsonFile_(dir + "products/" + previous, Object.assign({}, old, {products:retained,generated_at:now}), "Remove migrated PRV product from shared shard");
+    }
+    // Only replace this product. Old grouped shards remain available to other codes.
+    map[code] = name;
+    const shards = Array.from(new Set(Object.keys(map).map(key => map[key])));
+    putGitHubJsonFile_(dir + "products/" + name, {ok:true,products:{[code]:built.product},generated_at:now}, "Update PRV product");
+    putGitHubJsonFile_(dir + "products/all.json", Object.assign({},manifest,{ok:true,sharded:true,shards:shards,product_map:map,generated_at:now}), "Update PRV product lookup");
+    const index = fetchGitHubJsonFile_(dir + "index.json") || {};
+    putGitHubJsonFile_(dir + "index.json", Object.assign({},index,{ok:true,index:(index.index || []).filter(row => value_(row.Code || row.code) !== code).concat([built.index]),generated_at:now}), "Update PRV index");
+    const root = fetchGitHubJsonFile_("data/v1/manifest.json") || {};
+    putGitHubJsonFile_("data/v1/manifest.json", Object.assign({},root,{vault_version:now,version:now,generated_at:now,schema:CM_EXPORT_VERSION}), "Update PRV version");
+    return {ok:true,code:code,mode:"atomic_prv_product_release",row_count:built.product.rows.length};
+  }, "Publish complete PRV release " + code);
+  const validation = verifyPrvReleaseBoth_(code, result.expected);
+  return {ok:validation.github.ok,status:validation.public.ok ? "published_and_public_validated" : validation.github.ok ? "published_pages_pending" : "published_validation_needs_review",code:code,publish:result,validation:validation};
+}
+
+function verifyPrvReleaseBoth_(code, expected) {
+  function check(isPublic) {
+    const read = path => isPublic ? fetchPublicJson_(path) : fetchGitHubJsonFile_("data/v1/" + path);
+    try {
+      const manifest = read("vault/products/all.json") || {}, name = manifest.product_map && manifest.product_map[code];
+      const product = name && ((read("vault/products/" + name) || {}).products || {})[code];
+      const row = ((read("vault/index.json") || {}).index || []).find(row => value_(row.Code || row.code) === code);
+      return {ok:!!(product && expected && row && product.meta.release_id === expected.release_id && productContentHash_(product) === expected.content_sha256 && product.rows.length === expected.row_count && pipelineHash_(row) === expected.index_sha256),
+        row_count:product && product.rows.length || 0,release_id:product && product.meta.release_id || "",validation_mode:"exact_content_and_release"};
+    } catch (err) { return {ok:false,error:String(err && err.message || err)}; }
+  }
+  return {github:check(false),public:check(true)};
+}
+
+function publishVaultStaticDataToGitHub_(input) {
+  requireCmOperatorKey_(input && input.key);
+  if (input.job_id) return getPipelineJobStatus_(input.job_id);
+  if (String(input.async) === "1") return enqueuePipelineJob_("prv", input);
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) return {ok:false,status:"publish_busy",error:"Another release is running."};
+  try {
+    if (input.code && !input.fullSync && String(input.full_sync) !== "1" && input.scope !== "full") return publishPrvProductAtomic_(value_(input.code));
+    const result = runAtomicGitHubPublish_(() => publishVaultStaticDataToGitHubFullBase_(), "Publish complete Vault release");
+    return {ok:true,status:"published_pages_pending",publish:result,validation:{ok:false,reason:"Full Vault committed; public deployment requires verification."}};
+  } finally { lock.releaseLock(); }
+}
+
+function publishVaultStaticDataToGitHub() {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) throw new Error("Another release is running.");
+  try { return runAtomicGitHubPublish_(() => publishVaultStaticDataToGitHubFullBase_(), "Publish complete Vault release"); }
+  finally { lock.releaseLock(); }
+}
+
+function publishVaultStaticDataToGitHubScheduled() {
+  try { return publishVaultStaticDataToGitHub(); }
+  catch (err) { return {ok:false,error:String(err && err.message || err)}; }
+}
+
+function pipelineJobFolder_() {
+  const props = PropertiesService.getScriptProperties(), id = props.getProperty("CM_PUBLISH_JOBS_FOLDER");
+  if (id) return DriveApp.getFolderById(id);
+  const folder = DriveApp.createFolder("Sentinel Publish Jobs");
+  props.setProperty("CM_PUBLISH_JOBS_FOLDER", folder.getId());
+  return folder;
+}
+
+function readPipelineJob_(id) {
+  if (!/^[a-zA-Z0-9_-]{8,100}$/.test(value_(id))) throw new Error("Invalid publish job ID.");
+  const files = pipelineJobFolder_().getFilesByName(id + ".json");
+  if (!files.hasNext()) throw new Error("Publish job not found: " + id);
+  const file = files.next();
+  return {file:file,data:JSON.parse(file.getBlob().getDataAsString())};
+}
+
+function savePipelineJobInitial_(job) {
+  job.data.updated_at = new Date().toISOString();
+  job.file.setContent(JSON.stringify(job.data));
+}
+
+function ensurePipelineWorker_() {
+  if (!ScriptApp.getProjectTriggers().some(trigger => trigger.getHandlerFunction() === "runSentinelPublishJobs")) {
+    ScriptApp.newTrigger("runSentinelPublishJobs").timeBased().everyMinutes(1).create();
+  }
+}
+
+function enqueuePipelineJobInitial_(kind, input) {
+  const id = value_(input.request_id);
+  if (!/^[a-zA-Z0-9_-]{8,100}$/.test(id)) throw new Error("A stable request_id is required to queue publishing.");
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) return {ok:false,status:"publish_busy",error:"Publisher is busy; reuse the same request ID to check again."};
+  try {
+    let existing = null;
+    const folder = pipelineJobFolder_(), files = folder.getFilesByName(id + ".json");
+    if (files.hasNext()) { const file = files.next(); existing = {file:file,data:JSON.parse(file.getBlob().getDataAsString())}; }
+    if (existing) {
+      if (existing.data.kind !== kind || existing.data.code !== value_(input.code) || existing.data.sport !== value_(input.sport) || existing.data.bucket !== value_(input.bucket)) throw new Error("Request ID is already used for a different publish target.");
+      return publicPipelineJob_(existing, false);
+    }
+    ensurePipelineWorker_();
+    const data = {id:id,kind:kind,sport:value_(input.sport),bucket:value_(input.bucket),code:value_(input.code),stage:"queued",attempts:0,created_at:new Date().toISOString()};
+    if (!data.code || kind === "checklist" && (!data.sport || !data.bucket || !CM_CHECKLIST_DB_MAP[data.sport])) throw new Error("Invalid queued publish target.");
+    if (activePipelineJobIds_().length >= 50) throw new Error("The publish queue is full. Resolve existing jobs before adding another.");
+    const file = folder.createFile(id + ".json",JSON.stringify(data),MimeType.PLAIN_TEXT);
+    const job = {file:file,data:data};
+    savePipelineJob_(job);
+    return publicPipelineJob_(job, false);
+  } finally { lock.releaseLock(); }
+}
+
+function publicPipelineJob_(job, refresh) {
+  const data = job.data;
+  // Verification is read-only and can safely run after a browser reconnect.
+  if (refresh && data.expected && ["committing","committed","verifying","published_pages_pending"].includes(data.stage)) {
+    const validation = data.kind === "prv" ? verifyPrvReleaseBoth_(data.code,data.expected) : verifyChecklistReleaseBoth_(data.sport,data.code,data.expected);
+    if (validation.github.ok) {
+      data.result = Object.assign({},data.result || {},{ok:true,status:validation.public.ok ? "published_and_public_validated" : "published_pages_pending",validation:validation});
+      data.stage = validation.public.ok ? "complete" : "published_pages_pending";
+      savePipelineJob_(job);
+    }
+  }
+  const result = data.result || {};
+  return Object.assign({},result,{ok:data.stage === "complete" || data.stage === "published_pages_pending",status:data.stage === "complete" ? "published_and_public_validated" : data.stage === "published_pages_pending" ? "published_pages_pending" : data.stage === "failed" ? "publish_failed" : "publish_" + data.stage,
+    error:data.error || result.error || "",job:{id:data.id,stage:data.stage,attempts:data.attempts,commit:data.commit || "",created_at:data.created_at,updated_at:data.updated_at || data.created_at}});
+}
+
+function runSentinelPublishJobsInitial_() {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) return;
+  try {
+    const files = pipelineJobFolder_().getFiles();
+    let next = null, pending = null;
+    while (files.hasNext()) {
+      const file = files.next();
+      if (!/\.json$/.test(file.getName())) continue;
+      const data = JSON.parse(file.getBlob().getDataAsString());
+      if (["running","committing","committed","verifying"].includes(data.stage) && Date.now() - new Date(data.updated_at || data.created_at).getTime() > 600000) {
+        const job = {file:file,data:data};
+        // Interrupted jobs never automatically repeat uncertain file writes.
+        const checked = data.expected ? publicPipelineJob_(job,true) : null;
+        if (!checked || !checked.ok) { data.stage="failed"; data.error="Previous worker was interrupted. Inspect this job before explicitly retrying."; savePipelineJob_(job); }
+      }
+      if (data.stage === "published_pages_pending" && !pending) pending = {file:file,data:data};
+      if (data.stage === "queued" && (!next || data.created_at < next.data.created_at)) next = {file:file,data:data};
+    }
+    if (!next) { if (pending) publicPipelineJob_(pending,true); return; }
+    CM_CURRENT_PUBLISH_JOB = next;
+    next.data.stage="running"; next.data.attempts++; savePipelineJob_(next);
+    try {
+      const result = next.data.kind === "prv" ? publishPrvProductAtomic_(next.data.code) : publishChecklistAfterImportLocked_(next.data);
+      next.data.result = result;
+      next.data.stage = result.ok ? result.status === "published_and_public_validated" ? "complete" : "published_pages_pending" : "verifying";
+      savePipelineJob_(next);
+    } catch (err) {
+      // A candidate commit/expected hash may already have reached GitHub.
+      if (next.data.expected && next.data.commit) {
+        next.data.stage="committing";
+        const checked = publicPipelineJob_(next,true);
+        if (checked.ok) return;
+      }
+      next.data.stage="failed"; next.data.error=String(err && err.message || err); savePipelineJob_(next);
+    }
+  } finally { CM_CURRENT_PUBLISH_JOB = null; lock.releaseLock(); }
+}
+
+function getPipelineJobStatus_(id) {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) return publicPipelineJob_(readPipelineJob_(id), false);
+  try { return publicPipelineJob_(readPipelineJob_(id), true); }
+  finally { lock.releaseLock(); }
+}
+
+// Owner-only editor smoke test: republish existing source data through the queue.
+function runSentinelPipelineSmokeTest() {
+  const id = "pipeline-smoke-" + new Date().toISOString().replace(/[^0-9]/g, "");
+  const queued = enqueuePipelineJob_("checklist", {request_id:id,sport:"basketball",bucket:"2026",code:"2026_donruss_wnba_basketball"});
+  Logger.log(JSON.stringify(queued));
+  runSentinelPublishJobs();
+  Logger.log(JSON.stringify(getPipelineJobStatus_(id)));
+}
+
+function runLegacyReleaseAtomically_(operation, label) {
+  if (CM_GITHUB_TRANSACTION) return operation();
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) throw new Error("Another release is running.");
+  try { return runAtomicGitHubPublish_(operation, label); }
+  finally { lock.releaseLock(); }
+}
+
+function publishChecklistStaticDataToGitHub() {
+  return runLegacyReleaseAtomically_(() => publishChecklistStaticDataToGitHubReleaseBase_(), "Publish complete publishChecklistStaticDataToGitHub");
+}
+
+function publishCurrentChecklistStaticDataToGitHub() {
+  return runLegacyReleaseAtomically_(() => publishCurrentChecklistStaticDataToGitHubReleaseBase_(), "Publish complete publishCurrentChecklistStaticDataToGitHub");
+}
+
+function publishCurrentChecklistSportAndIndexToGitHub_(sport) {
+  return runLegacyReleaseAtomically_(() => publishCurrentChecklistSportAndIndexToGitHubReleaseBase_(sport), "Publish complete publishCurrentChecklistSportAndIndexToGitHub_");
+}
+
+function publishCurrentChecklistSportToGitHub(sportValue, options) {
+  return runLegacyReleaseAtomically_(() => publishCurrentChecklistSportToGitHubReleaseBase_(sportValue, options), "Publish complete publishCurrentChecklistSportToGitHub");
+}
+
+function publishChecklistSourceToGitHub(sportValue, sourceKeyValue, options) {
+  return runLegacyReleaseAtomically_(() => publishChecklistSourceToGitHubReleaseBase_(sportValue, sourceKeyValue, options), "Publish complete publishChecklistSourceToGitHub");
+}
+
+function publishChecklistSourceProductsToGitHub(sportValue, sourceKeyValue) {
+  return runLegacyReleaseAtomically_(() => publishChecklistSourceProductsToGitHubReleaseBase_(sportValue, sourceKeyValue), "Publish complete publishChecklistSourceProductsToGitHub");
+}
+
+function publishChecklistSourceSearchToGitHub(sportValue, sourceKeyValue) {
+  return runLegacyReleaseAtomically_(() => publishChecklistSourceSearchToGitHubReleaseBase_(sportValue, sourceKeyValue), "Publish complete publishChecklistSourceSearchToGitHub");
+}
+
+function publishChecklistSourceSearchStandaloneToGitHub(sportValue, sourceKeyValue) {
+  return runLegacyReleaseAtomically_(() => publishChecklistSourceSearchStandaloneToGitHubReleaseBase_(sportValue, sourceKeyValue), "Publish complete publishChecklistSourceSearchStandaloneToGitHub");
+}
+
+function publishChecklistIndexFromProductBundlesToGitHub() {
+  return runLegacyReleaseAtomically_(() => publishChecklistIndexFromProductBundlesToGitHubReleaseBase_(), "Publish complete publishChecklistIndexFromProductBundlesToGitHub");
+}
+
+function publishChecklistIndexFromGoogleSheetsToGitHub() {
+  return runLegacyReleaseAtomically_(() => publishChecklistIndexFromGoogleSheetsToGitHubReleaseBase_(), "Publish complete publishChecklistIndexFromGoogleSheetsToGitHub");
+}
+
+function zzRunSentinelPipelineSmokeTest() {
+  return runSentinelPipelineSmokeTest();
+}
+
+
+function activePipelineJobIds_() {
+  const props = PropertiesService.getScriptProperties(), raw = props.getProperty("CM_ACTIVE_PUBLISH_JOBS");
+  if (raw) return JSON.parse(raw);
+  // One-time migration of existing receipts. Future ticks read only active jobs.
+  const ids = [], folderId = props.getProperty("CM_PUBLISH_JOBS_FOLDER");
+  if (folderId) {
+    const files = DriveApp.getFolderById(folderId).getFiles();
+    while (files.hasNext()) {
+      const file = files.next();
+      if (!/\.json$/.test(file.getName())) continue;
+      const data = JSON.parse(file.getBlob().getDataAsString());
+      if (!["complete","failed"].includes(data.stage)) ids.push(data.id);
+    }
+  }
+  props.setProperty("CM_ACTIVE_PUBLISH_JOBS",JSON.stringify(ids));
+  return ids;
+}
+
+function trackPipelineJob_(job) {
+  const ids = activePipelineJobIds_().filter(id => id !== job.data.id);
+  if (!["complete","failed"].includes(job.data.stage)) ids.push(job.data.id);
+  PropertiesService.getScriptProperties().setProperty("CM_ACTIVE_PUBLISH_JOBS",JSON.stringify(ids));
+}
+
+function savePipelineJob_(job) {
+  job.data.updated_at = new Date().toISOString();
+  job.file.setContent(JSON.stringify(job.data));
+  trackPipelineJob_(job);
+}
+
+function runSentinelPublishJobs() {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) return;
+  try {
+    const ids = activePipelineJobIds_();
+    if (!ids.length) return;
+    let next = null, pending = null;
+    ids.forEach(id => {
+      const job = readPipelineJob_(id), data = job.data;
+      if (["running","committing","committed","verifying"].includes(data.stage) && Date.now() - new Date(data.updated_at || data.created_at).getTime() > 600000) {
+        const checked = data.expected ? publicPipelineJob_(job,true) : null;
+        if (!checked || !checked.ok) { data.stage="failed"; data.error="Previous worker was interrupted. Inspect this job before explicitly retrying."; savePipelineJob_(job); }
+      }
+      if (data.stage === "published_pages_pending" && (!pending || (data.updated_at || data.created_at) < (pending.data.updated_at || pending.data.created_at))) pending=job;
+      if (data.stage === "queued" && (!next || data.created_at < next.data.created_at)) next=job;
+    });
+    if (!next) { if (pending) publicPipelineJob_(pending,true); return; }
+    CM_CURRENT_PUBLISH_JOB = next;
+    next.data.stage="running"; next.data.attempts++; savePipelineJob_(next);
+    try {
+      const result = next.data.kind === "prv" ? publishPrvProductAtomic_(next.data.code) : publishChecklistAfterImportLocked_(next.data);
+      next.data.result=result;
+      next.data.stage=result.ok ? result.status === "published_and_public_validated" ? "complete" : "published_pages_pending" : "verifying";
+      savePipelineJob_(next);
+    } catch (err) {
+      if (next.data.expected && next.data.commit) {
+        next.data.stage="committing";
+        if (publicPipelineJob_(next,true).ok) return;
+      }
+      next.data.stage="failed"; next.data.error=String(err && err.message || err); savePipelineJob_(next);
+    }
+  } finally { CM_CURRENT_PUBLISH_JOB=null; lock.releaseLock(); }
+}
+
+function enqueuePipelineJob_(kind, input) {
+  const id = value_(input.request_id);
+  if (!/^[a-zA-Z0-9_-]{8,100}$/.test(id)) throw new Error("A stable request_id is required to queue publishing.");
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(1000)) return {ok:false,status:"publish_busy",error:"Publisher is busy; reuse the same request ID to check again."};
+  try {
+    let existing = null;
+    const folder = pipelineJobFolder_(), files = folder.getFilesByName(id + ".json");
+    if (files.hasNext()) { const file = files.next(); existing = {file:file,data:JSON.parse(file.getBlob().getDataAsString())}; }
+    if (existing) {
+      if (existing.data.kind !== kind || existing.data.code !== value_(input.code) || existing.data.sport !== value_(input.sport) || existing.data.bucket !== value_(input.bucket)) throw new Error("Request ID is already used for a different publish target.");
+      return publicPipelineJob_(existing, false);
+    }
+    ensurePipelineWorker_();
+    const data = {id:id,kind:kind,sport:value_(input.sport),bucket:value_(input.bucket),code:value_(input.code),stage:"queued",attempts:0,created_at:new Date().toISOString()};
+    if (!data.code || kind === "checklist" && (!data.sport || !data.bucket || !CM_CHECKLIST_DB_MAP[data.sport])) throw new Error("Invalid queued publish target.");
+    if (activePipelineJobIds_().length >= 50) throw new Error("The publish queue is full. Resolve existing jobs before adding another.");
+    const file = folder.createFile(id + ".json",JSON.stringify(data),MimeType.PLAIN_TEXT);
+    const job = {file:file,data:data};
+    savePipelineJob_(job);
+    return publicPipelineJob_(job, false);
+  } finally { lock.releaseLock(); }
+}

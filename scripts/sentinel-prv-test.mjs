@@ -9,6 +9,13 @@ for (const file of ['command-center/index.html', 'command-center/simple-agent/in
   vm.runInContext(script.slice(script.indexOf('      function actionableItems'), script.indexOf('      function readIgnoredProducts')), ctx);
   const items = [{ status: 'known_issue', title: 'Locked article' }, { status: 'missing' }, { status: 'covered' }, { status: 'missing', ignored: true }];
   assert.equal(ctx.actionablePrvItems({items}).length, 2, 'blocked discoveries must remain visible');
+  let rendered;
+  Object.assign(ctx,{escapeHtml:String,titleCase:String,formatNumber:String,renderPreviewRows:()=>'',renderPrvProductChoices:()=>'',renderPreviewParallels:()=>'',openPreviewModal:(...args)=>rendered=args});
+  vm.runInContext(script.slice(script.indexOf('      function renderPreviewModal'),script.indexOf('      function renderWriteResult')),ctx);
+  ctx.renderPreviewModal({ok:true,status:'preview_ready',row_count:2,product:{sport:'baseball'},products:[{}],source_url:'https://slabsquatch.substack.com/p/test'},'prv');
+  assert(rendered[2].includes('data-write-prv-source='),'ready single-product PRV preview must allow protected import');
+  ctx.renderPreviewModal({ok:true,status:'preview_ready',row_count:2,multi_product:true,product:{},products:[{},{}],source_url:'source'},'prv');
+  assert(!rendered[2].includes('data-write-prv-source='),'mixed-product PRV preview must stay blocked');
   const output = { summary: {textContent: ''}, resultsCard: {classList: {remove(){}}} };
   Object.assign(ctx, {state: {checklist: [], prv: [items[0]], prvScan: {fetched_count: 11, summary: {covered: 5}}}, els: output, sportCounts: () => ({}), countSentence: () => '0 products', renderList(){}});
   vm.runInContext(script.slice(script.indexOf('      function renderDiscoverySummary'), script.indexOf('      function titleFor')), ctx);

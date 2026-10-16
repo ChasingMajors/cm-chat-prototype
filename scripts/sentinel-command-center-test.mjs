@@ -71,39 +71,25 @@ async function testViewport(viewport) {
     pageErrors.push(error && error.message ? error.message : String(error));
   });
 
+  // Deterministic read-only transport fixtures. No imports or publishes run.
+  await page.route("https://script.google.com/macros/s/**", async route => {
+    const body = JSON.parse(route.request().postData() || "{}");
+    const data = body.action === "health" ? {ok:true,service:"cm_command_center_operator"}
+      : body.action === "sourceWatch" ? {ok:true,items:[],fetched_count:1,summary:{covered:1}}
+      : {ok:true,items:[{status:"known_issue",title:"Audit locked print-run source",sport:"baseball",source_url:"https://slabsquatch.substack.com/p/audit",blocked_reason:"Source access blocked."}],fetched_count:2,summary:{known_issue:1,covered:1}};
+    await route.fulfill({status:200,contentType:"application/json",headers:{"access-control-allow-origin":"*"},body:JSON.stringify(data)});
+  });
   try {
     await page.goto(COMMAND_CENTER_URL, { waitUntil: "domcontentloaded", timeout: 45000 });
     await page.waitForLoadState("networkidle", { timeout: 45000 }).catch(() => {});
-    await page.getByText("Good morning, Admin.", { exact: false }).waitFor({ state: "visible", timeout: 30000 });
-
-    const initialText = await page.locator("body").innerText({ timeout: 10000 });
-    result.checks.push(assertIncludes(initialText, "CM Sentinel", "CM Sentinel brand visible"));
-    result.checks.push(assertIncludes(initialText, "Agent Action Queue", "Agent Action Queue visible"));
-    result.checks.push(assertIncludes(initialText, "Public Tool Audit", "Public Tool Audit visible"));
-    result.checks.push(assertIncludes(initialText, "Run Agent Cycle", "Run Agent Cycle visible"));
-
-    await clickAndWait(page, "#publicToolAuditBtn", /Public Tool Audit complete|Public data layer score|feed issue/i, 45000);
-    const publicAuditText = await page.locator("body").innerText({ timeout: 10000 });
-    result.checks.push(assertIncludes(publicAuditText, "Public Tool Audit complete", "Public Tool Audit completes"));
-    result.checks.push(assertAnyIncludes(publicAuditText, ["Checklist Vault", "Print Run Vault", "Release Schedule"], "Public tool cards render"));
-
-    await clickAndWait(page, '[data-sentinel-click="audit"]', /Auditing|Open items|Command Brief|Data Health|Health check/i, 45000);
-    const healthText = await page.locator("body").innerText({ timeout: 10000 });
-    result.checks.push(assertNotIncludes(healthText, "Command Center runtime error", "No runtime error shown"));
-    result.checks.push(assertNotIncludes(healthText, "Audit could not complete", "Health audit does not hard-fail"));
-
-    await page.locator("#agentCycleBtn").click({ timeout: 10000 });
-    await page.waitForTimeout(1500);
-    const cycleText = await page.locator("body").innerText({ timeout: 10000 });
-    result.checks.push(assertAnyIncludes(cycleText, [
-      "Running daily Sentinel sweep",
-      "Wait for active work",
-      "Build approved PRV preview",
-      "Verify PRV public JSON",
-      "Admin decision required",
-      "Operator Backend needed",
-      "Daily Sentinel sweep complete"
-    ], "Run Agent Cycle produces an operator response"));
+    await page.locator("#yesBtn").waitFor({ state: "visible", timeout: 30000 });
+    await page.locator("#yesBtn").click();
+    await page.getByText("Agent Cycle discovery complete.", {exact: true}).waitFor({timeout: 120000});
+    const cycleText = await page.locator("body").innerText();
+    result.checks.push(assertIncludes(cycleText, "print-run source article(s)", "Current Agent Cycle renders discovery counts"));
+    await page.locator("#showPrvBtn").click();
+    await page.getByText("PRINT RUN SOURCE FOUND - ACCESS BLOCKED", {exact: true}).first().waitFor();
+    result.checks.push(assertIncludes(await page.locator("body").innerText(), "Audit locked print-run source", "Blocked print-run discoveries remain visible"));
 
     const overflow = await page.evaluate(() => {
       const doc = document.documentElement;

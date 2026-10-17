@@ -29,3 +29,7 @@ c.fetchText_=()=> 'article';c.isSubstackPostPaywalled_=()=>true;result=c.reviewP
 c.fetchText_=()=> '{}';assert.throws(()=>c.fetchVaultPublicIndexRows_(),/coverage is unavailable/);
 assert.equal(c.classifyPrvSourceItem_(item,[index]).status,'needs_review','positive row count alone cannot mean covered');
 console.log('PRV coverage: missing groups, changed values/counts, ambiguity, serial semantics, cached fingerprints, revision invalidation and unavailable sources passed.');
+const action={type:'prv_source_review',product:index.name,sport:'baseball',sourceUrl:item.source_url,coverageState:'partially_covered',status:'approval_required'};
+assert.equal(c.validateScheduledAutoActionSafety_(action).ok,false);
+assert.equal(c.validateScheduledAutoActionSafety_({...action,status:'approved'}).ok,true);
+const memory=c.mergeScheduledPrvActions_([],[{...item,coverage_state:'unverified'}],'now','quick_json');assert.equal(memory[0].coverageState,'unverified');assert.equal(c.validateScheduledAutoActionSafety_(memory[0]).ok,false);

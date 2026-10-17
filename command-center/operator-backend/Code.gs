@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-10-17-operator-coverage-v5";
+const CM_OPERATOR_VERSION = "2026-10-17-operator-coverage-v5-approval";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -4759,6 +4759,8 @@ function validateScheduledAutoActionSafety_(action) {
   const isCoverageOnlyAudit = (safeString_(action && action.type).trim().toLowerCase() === "backend_data_issue" || safeString_(action && action.source).trim().toLowerCase() === "deep_backend_audit") &&
     !!code;
 
+  if (action.type === "prv_source_review" && action.coverageState && action.coverageState !== "product_not_found" && !isPendingPublicValidation && status !== "approved") return {ok:false,reason:"PRV coverage differences or uncertainty require explicit product approval before writing."};
+
   if (!product) return { ok: false, reason: "Missing product name." };
   if (!isAllowedSport_(sport)) return { ok: false, reason: "Unsupported or missing sport." };
   if (hasBlockedTerm_(product)) return { ok: false, reason: "Blocked product category term detected." };
@@ -5429,8 +5431,9 @@ function mergeScheduledPrvActions_(existingActions, sourceItems, now, mode) {
       sport: item.sport || "",
       code: item.matched_code || "",
       riskLevel: item.status === "missing" ? "medium" : "low",
+      coverageState: item.coverage_state || "",
       status: item.status === "known_issue" ? "known_issue" : "approval_required",
-      recommendedAction: item.recommended_action || "Review SlabSquatch source, preview PRV rows, then approve product-scoped PRV write.",
+      recommendedAction: item.reason || item.recommended_action || "Review SlabSquatch source, preview PRV rows, then approve product-scoped PRV write.",
       adminDecision: "",
       executionResult: item.status === "known_issue" ? "PRV source was scanned and held before auto execution." : "",
       validationResult: item.status === "known_issue" ? (item.blocked_reason || "Known PRV source issue.") : "",

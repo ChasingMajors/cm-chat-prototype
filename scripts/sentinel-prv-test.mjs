@@ -22,7 +22,8 @@ for (const file of ['command-center/index.html', 'command-center/simple-agent/in
   ctx.renderDiscoverySummary('');
   assert(output.summary.textContent.includes('11 supported source articles checked; 5 already have Vault rows; 1 blocked source articles'));
 }
-const backend = vm.createContext({});
+let checkpoint='20';
+const backend = vm.createContext({PropertiesService:{getScriptProperties:()=>({getProperty:()=>checkpoint,setProperty:(_,v)=>checkpoint=v})}});
 vm.runInContext(fs.readFileSync(new URL('command-center/operator-backend/Code.gs', root), 'utf8'), backend);
 backend.fetchText_ = () => { throw new Error('Source unavailable'); };
 assert.throws(() => backend.fetchRecentSlabSquatchItems_(), /Print-run source discovery failed: Source unavailable/);
@@ -30,4 +31,17 @@ backend.fetchText_ = () => '{}';
 assert.throws(() => backend.fetchRecentSlabSquatchItems_(), /did not return a post list/);
 backend.fetchText_ = () => JSON.stringify([{title: '2026 Bowman Football Print Runs', canonical_url: 'https://slabsquatch.substack.com/p/test', postTags: []}]);
 assert.equal(backend.fetchRecentSlabSquatchItems_()[0].sport, 'football');
+const makePosts=(start,count)=>Array.from({length:count},(_,i)=>({title:'2026 Bowman Football Print Runs '+(start+i),canonical_url:'https://slabsquatch.substack.com/p/'+(start+i),postTags:[]}));
+let offsets=[];
+backend.fetchText_=url=>{const offset=Number(new URL(url).searchParams.get('offset'));offsets.push(offset);return JSON.stringify(makePosts(offset,20));};
+let scan=backend.fetchRecentSlabSquatchItems_();assert.equal(scan.length,100);assert.deepEqual(offsets,[0,20,40,60,80]);assert.equal(checkpoint,'20','reading alone must not advance the scan');assert.equal(scan.scan_coverage.next_offset,100);assert.equal(scan.scan_coverage.archive_complete,false);checkpoint='100';
+offsets=[];scan=backend.fetchRecentSlabSquatchItems_();assert.deepEqual(offsets,[0,100,120,140,160]);assert.equal(scan.scan_coverage.next_offset,180);checkpoint='180';
+backend.fetchText_=url=>{const offset=Number(new URL(url).searchParams.get('offset'));return JSON.stringify(makePosts(offset,offset===0?20:3));};
+scan=backend.fetchRecentSlabSquatchItems_();assert.equal(scan.length,23);assert.equal(scan.scan_coverage.archive_complete,true);assert.equal(scan.scan_coverage.next_offset,20);
+checkpoint='100';backend.fetchText_=url=>{const offset=Number(new URL(url).searchParams.get('offset'));if(offset===120)throw Error('Failed older page');return JSON.stringify(makePosts(offset,20));};
+assert.throws(()=>backend.fetchRecentSlabSquatchItems_(),/Failed older page/);assert.equal(checkpoint,'100','failed scan does not skip unseen pages');
+backend.fetchText_=url=>JSON.stringify(makePosts(0,20));scan=backend.fetchRecentSlabSquatchItems_();assert.equal(scan.length,20,'repeated pages deduplicate by URL');
+backend.fetchVaultPublicIndexRows_=()=>[];let inspections=0;backend.markLockedPrvSourceIssue_=x=>{inspections++;return x;};backend.fetchText_=url=>JSON.stringify(makePosts(Number(new URL(url).searchParams.get('offset')),20));checkpoint='20';
+const cycle=backend.runPrvSourceWatch_('quick_json','');assert.equal(inspections,8);assert.equal(cycle.archive_scan.next_offset,100);assert.equal(checkpoint,'100');
+backend.classifyPrvSourceItem_=()=>{throw Error('Interrupted classification');};assert.throws(()=>backend.runPrvSourceWatch_('quick_json',''),/Interrupted classification/);assert.equal(checkpoint,'100');
 console.log('PRV discovery visibility, scan diagnostics, and source failure checks passed.');

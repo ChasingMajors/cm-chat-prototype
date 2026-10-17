@@ -399,7 +399,7 @@
 
   <script>
     (function () {
-      const VERSION = "simple-agent-pipeline-v2-2026-10-15";
+      const VERSION = "simple-agent-discovery-v4-2026-10-17";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
       const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
@@ -927,7 +927,7 @@
         const prvBlocked = state.prv.filter(item => item.status === "known_issue").length;
         const prvTotal = state.prv.length;
         const scan = state.prvScan;
-        const prvScanDetail = scan ? "\nPrint-run scan: " + Number(scan.fetched_count || 0) + " supported source articles checked; " + Number(scan.summary && scan.summary.covered || 0) + " already have Vault rows; " + prvBlocked + " blocked source articles need attention. Checks the latest 20 source posts." : "";
+        const prvScanDetail = scan ? "\nPrint-run scan: " + Number(scan.fetched_count || 0) + " supported source articles checked; " + Number(scan.summary && scan.summary.covered || 0) + " already have Vault rows; " + prvBlocked + " blocked source articles need attention. " + (scan.archive_scan ? "Checked " + Number(scan.archive_scan.pages_checked || 0) + " archive pages. " + (scan.archive_scan.archive_complete ? "Archive sweep reached the end." : "Older posts continue next cycle.") : "Checks the latest 20 source posts.") : "";
 
         els.summary.textContent =
           "I found " + checklistTotal + " missing checklist product(s) and " + prvTotal + " print-run source article(s) needing review or access.\n" +

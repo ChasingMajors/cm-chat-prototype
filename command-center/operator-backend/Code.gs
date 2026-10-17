@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-10-17-operator-season-routing-v3";
+const CM_OPERATOR_VERSION = "2026-10-17-operator-discovery-v4";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -954,12 +954,18 @@ function runPrvSourceWatch_(mode, sourceUrl) {
   const auditMode = normalizeSourceWatchMode_(mode || "quick_json");
   const vaultRows = fetchVaultPublicIndexRows_();
   const directItem = buildPrvSourceWatchItemFromUrl_(sourceUrl);
-  const sourceItems = mergeSourceItems_((directItem ? [directItem] : []).concat(fetchRecentSlabSquatchItems_()));
+  const archiveItems = fetchRecentSlabSquatchItems_();
+  const sourceItems = mergeSourceItems_((directItem ? [directItem] : []).concat(archiveItems));
 
+  let accessChecks = 0;
   const results = sourceItems.map(function(item) {
     const classified = classifyPrvSourceItem_(item, vaultRows);
+    if (["missing","needs_review","possible_update"].indexOf(classified.status) < 0) return classified;
+    // Keep discovery bounded; preview checks access for every selected article.
+    if (accessChecks++ >= 8) return Object.assign({}, classified, {source_access:"not_checked"});
     return markLockedPrvSourceIssue_(classified);
   });
+  PropertiesService.getScriptProperties().setProperty("CM_SLABSQUATCH_ARCHIVE_OFFSET_V1", String(archiveItems.scan_coverage.next_offset));
 
   const summary = results.reduce(function(out, item) {
     out[item.status] = (out[item.status] || 0) + 1;
@@ -971,6 +977,7 @@ function runPrvSourceWatch_(mode, sourceUrl) {
     mode: auditMode,
     coverage_source: "public_vault_json",
     source: "slabsquatch",
+    archive_scan: archiveItems.scan_coverage,
     source_url: sourceUrl || "https://substack.com/@slabsquatch",
     requested_source_url: sourceUrl || "",
     fetched_count: sourceItems.length,
@@ -1652,12 +1659,43 @@ function titleFromSubstackUrl_(url) {
     .trim();
 }
 
+function fetchSlabSquatchArchiveWindow_() {
+  const pageSize = 20, maxPages = 5, property = "CM_SLABSQUATCH_ARCHIVE_OFFSET_V1";
+  const properties = PropertiesService.getScriptProperties();
+  const saved = Number(properties.getProperty(property));
+  let offset = Number.isInteger(saved) && saved >= pageSize ? saved : pageSize;
+  let pages = 0, complete = false;
+  const seen = {}, posts = [];
+  function page(start) {
+    const url = CM_SLABSQUATCH_ARCHIVE_API.replace(/offset=\d+/, "offset=" + start);
+    const rows = JSON.parse(fetchText_(url));
+    if (!Array.isArray(rows)) throw new Error("SlabSquatch archive did not return a post list.");
+    pages++;
+    rows.forEach(function(post) {
+      const id = safeString_(post && (post.canonical_url || post.url || post.post_url || post.id));
+      if (!id) return;
+      if (!seen[id]) { seen[id] = true; posts.push(post); }
+    });
+    return rows;
+  }
+  // Recheck new posts every cycle, then resume the older archive independently.
+  const newest = page(0);
+  if (newest.length < pageSize) complete = true;
+  while (!complete && pages < maxPages) {
+    const rows = page(offset);
+    offset += rows.length;
+    if (rows.length < pageSize) complete = true;
+  }
+  // Failed page requests never advance the checkpoint. End-of-archive resets
+  // the sweep so changed articles are revisited on later cycles.
+  return {posts:posts,coverage:{posts_checked:posts.length,pages_checked:pages,archive_complete:complete,next_offset:complete ? pageSize : offset}};
+}
+
 function fetchRecentSlabSquatchItems_() {
   try {
-    const posts = JSON.parse(fetchText_(CM_SLABSQUATCH_ARCHIVE_API));
-    if (!Array.isArray(posts)) throw new Error("SlabSquatch archive did not return a post list.");
-
-    return posts.map(function(post) {
+    const archive = fetchSlabSquatchArchiveWindow_();
+    const posts = archive.posts;
+    const items = posts.map(function(post) {
       const title = decodeEntities_(safeString_(post && post.title)).trim();
       const url = safeString_(post && (post.canonical_url || post.url || post.post_url)).trim();
       const tagText = getSubstackPostTagText_(post);
@@ -1675,6 +1713,8 @@ function fetchRecentSlabSquatchItems_() {
         target_tool: "prv"
       };
     }).filter(isUsablePrvSourceItem_);
+    items.scan_coverage = archive.coverage;
+    return items;
   } catch (err) {
     throw new Error("Print-run source discovery failed: " + (err && err.message ? err.message : String(err)));
   }

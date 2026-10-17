@@ -50,3 +50,11 @@ Deploy the tested Exporter and Operator code versions to their existing web-app 
 ## Remaining scale limits
 
 Discovery rechecks the newest 20 posts and resumes older archive pages, up to five pages per successful cycle. Its Script Property checkpoint advances only after classification finishes; failed page requests or interrupted classification preserve the previous checkpoint. Reaching the archive end resets the sweep. URL duplicates are removed. At most eight candidate articles receive access checks during discovery; preview checks selected articles. The UI reports whether older pages remain. Source revision comparison and large search download optimization remain separate improvements. Product publication still reads the relevant source tabs, and a very large product can reach Apps Script's execution limit; the receipt/snapshot makes that a visible recoverable state. This repair is not a database migration or a claim of unlimited capacity.
+
+## Source coverage verification (v5)
+
+A populated PRV product starts unverified. Unique normalized product identity (sport, year/season, manufacturer and edition retained) is required before comparison. Discovery reads the structured v2 index and immutable product payload; an unavailable index stops the scan rather than implying empty coverage.
+
+Up to eight sources per cycle are fetched and checked. Exact parsed row names, numeric values, and available checklist sizes are compared against published rows. Missing groups and changed values remain possible updates; ambiguous identities, multiple rows with the same label, serial-limit/estimate mismatches, no parsed rows, and failed reads remain review tasks. Restricted sources remain blocked. Covered means all comparable parsed rows matched, not that unsupported article content was independently validated. No imports are performed by discovery.
+
+Comparisons record a source-row fingerprint and checked timestamp. Results are cached for five minutes, keyed by article URL, product identity, immutable public filename and public revision. A changed public file/revision invalidates the cache immediately; source changes are observed on the next comparison after the five-minute cache expires. Cached verified sources consume no inspection budget, leaving room for other pending sources. A pending comparison is never counted as covered.

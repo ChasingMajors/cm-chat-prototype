@@ -20,7 +20,7 @@ for (const file of ['command-center/index.html', 'command-center/simple-agent/in
   Object.assign(ctx, {state: {checklist: [], prv: [items[0]], prvScan: {fetched_count: 11, summary: {covered: 5}}}, els: output, sportCounts: () => ({}), countSentence: () => '0 products', renderList(){}});
   vm.runInContext(script.slice(script.indexOf('      function renderDiscoverySummary'), script.indexOf('      function titleFor')), ctx);
   ctx.renderDiscoverySummary('');
-  assert(output.summary.textContent.includes('11 supported source articles checked; 5 already have Vault rows; 1 blocked source articles'));
+  assert(output.summary.textContent.includes('11 supported source articles checked; 5 verified against parsed source rows; 1 blocked source articles'));
 }
 let checkpoint='20';
 const backend = vm.createContext({PropertiesService:{getScriptProperties:()=>({getProperty:()=>checkpoint,setProperty:(_,v)=>checkpoint=v})}});
@@ -41,7 +41,7 @@ scan=backend.fetchRecentSlabSquatchItems_();assert.equal(scan.length,23);assert.
 checkpoint='100';backend.fetchText_=url=>{const offset=Number(new URL(url).searchParams.get('offset'));if(offset===120)throw Error('Failed older page');return JSON.stringify(makePosts(offset,20));};
 assert.throws(()=>backend.fetchRecentSlabSquatchItems_(),/Failed older page/);assert.equal(checkpoint,'100','failed scan does not skip unseen pages');
 backend.fetchText_=url=>JSON.stringify(makePosts(0,20));scan=backend.fetchRecentSlabSquatchItems_();assert.equal(scan.length,20,'repeated pages deduplicate by URL');
-backend.fetchVaultPublicIndexRows_=()=>[];let inspections=0;backend.markLockedPrvSourceIssue_=x=>{inspections++;return x;};backend.fetchText_=url=>JSON.stringify(makePosts(Number(new URL(url).searchParams.get('offset')),20));checkpoint='20';
+backend.fetchVaultPublicIndexRows_=()=>[];let inspections=0;backend.reviewPrvSourceCoverage_=(x,rows,budget)=>{if(budget.remaining-->0)inspections++;return x;};backend.fetchText_=url=>JSON.stringify(makePosts(Number(new URL(url).searchParams.get('offset')),20));checkpoint='20';
 const cycle=backend.runPrvSourceWatch_('quick_json','');assert.equal(inspections,8);assert.equal(cycle.archive_scan.next_offset,100);assert.equal(checkpoint,'100');
 backend.classifyPrvSourceItem_=()=>{throw Error('Interrupted classification');};assert.throws(()=>backend.runPrvSourceWatch_('quick_json',''),/Interrupted classification/);assert.equal(checkpoint,'100');
 console.log('PRV discovery visibility, scan diagnostics, and source failure checks passed.');

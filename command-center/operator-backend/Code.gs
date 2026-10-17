@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-10-17-operator-discovery-v4";
+const CM_OPERATOR_VERSION = "2026-10-17-operator-coverage-v5";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -957,13 +957,9 @@ function runPrvSourceWatch_(mode, sourceUrl) {
   const archiveItems = fetchRecentSlabSquatchItems_();
   const sourceItems = mergeSourceItems_((directItem ? [directItem] : []).concat(archiveItems));
 
-  let accessChecks = 0;
+  const budget = {remaining:8};
   const results = sourceItems.map(function(item) {
-    const classified = classifyPrvSourceItem_(item, vaultRows);
-    if (["missing","needs_review","possible_update"].indexOf(classified.status) < 0) return classified;
-    // Keep discovery bounded; preview checks access for every selected article.
-    if (accessChecks++ >= 8) return Object.assign({}, classified, {source_access:"not_checked"});
-    return markLockedPrvSourceIssue_(classified);
+    return reviewPrvSourceCoverage_(classifyPrvSourceItem_(item, vaultRows), vaultRows, budget);
   });
   PropertiesService.getScriptProperties().setProperty("CM_SLABSQUATCH_ARCHIVE_OFFSET_V1", String(archiveItems.scan_coverage.next_offset));
 
@@ -1735,6 +1731,66 @@ function isUsablePrvSourceItem_(item) {
   return /analysis|deep dive|odds|print run|numbers|base|value|mega|sapphire|chrome|bowman|topps|panini|donruss|prizm|finest/.test(text);
 }
 
+function prvCoverageProductKey_(title, sport) {
+  return looseProductKey_(normalizePrvSourceTitle_(title).replace(new RegExp("\\s+" + sport + "$", "i"), ""));
+}
+
+function comparePrvCoverageRows_(sourceRows, publicRows) {
+  const groups = {};
+  function key(row) {return normalize_(safeString_(row.set_name || row.setLine)).replace(/^the print runs\s*:?\s*/i, "").replace(/\s+/g," ").trim();}
+  (publicRows || []).forEach(function(row) {const k=key(row);(groups[k] || (groups[k]=[])).push(row);});
+  const missing=[],changed=[],uncertain=[];
+  sourceRows.forEach(function(source) {
+    const candidates=groups[key(source)] || [];
+    if (!candidates.length) {missing.push(source.setLine);return;}
+    if (candidates.length !== 1) {uncertain.push(source.setLine);return;}
+    const row=candidates[0],raw=row.raw || row;
+    const kind=row.measurement && row.measurement.kind;
+    if (!source.serial && (row.serial_limit || raw.serial || kind === "serial_limit")) {uncertain.push(source.setLine);return;}
+    const value=row.measurement ? row.measurement.value : raw.printRun;
+    if (value === null || value === "" || value === undefined || !Number.isFinite(Number(value)) || !Number.isFinite(Number(source.printRun))) {uncertain.push(source.setLine);return;}
+    if (Number(value)!==Number(source.printRun) || source.serial && safeString_(source.serial)!==safeString_(raw.serial)) {changed.push(source.setLine);return;}
+    const size=Number(source.subSetSize || 0),publishedSize=Number(row.checklist_size || raw.subSetSize || 0);
+    if (size && size!==publishedSize) changed.push(source.setLine);
+  });
+  const state=missing.length ? "partially_covered" : changed.length ? "source_updated" : uncertain.length ? "uncertain_match" : sourceRows.length ? "parsed_rows_match" : "unverified";
+  return {state:state,source_rows:sourceRows.length,missing_groups:missing,changed_groups:changed,uncertain_groups:uncertain};
+}
+
+function reviewPrvSourceCoverage_(item, vaultRows, budget) {
+  if (!item || item.status === "ignored") return item;
+  const match=(vaultRows || []).find(function(row) {return row.code===item.matched_code;});
+  if (match) {
+    const key=prvCoverageProductKey_(item.title,item.sport);
+    const exact=(vaultRows || []).filter(function(row) {return row.sport===item.sport && prvCoverageProductKey_(row.name,item.sport)===key;});
+    if (exact.length!==1 || exact[0].code!==match.code) return Object.assign({},item,{status:"needs_review",coverage_state:"uncertain_match",reason:"Product identity is ambiguous; review the name, season and edition before importing."});
+  }
+  const cache=typeof CacheService !== "undefined" ? CacheService.getScriptCache() : null;
+  const cacheKey=cache ? "prv-coverage-v1:"+hashSentinelAlertKey_(JSON.stringify([item.source_url,item.matched_code,match && match.public_file,match && match.public_revision])) : "";
+  if (cache) {const saved=cache.get(cacheKey);if(saved) return Object.assign({},item,JSON.parse(saved),{coverage_cached:true});}
+  if (budget.remaining<=0) return Object.assign({},item,{status:match ? "needs_review" : item.status,coverage_state:"unverified",reason:match ? "Existing product found; source comparison is pending. Open Preview or run another cycle." : item.reason});
+  budget.remaining--;
+  let result;
+  try {
+    const html=fetchText_(item.source_url),body=extractSubstackBodyHtml_(html);
+    if (isSubstackPostPaywalled_(html,body)) result={status:"known_issue",coverage_state:"blocked_source",blocked_reason:"Source access is restricted; existing rows cannot establish complete coverage."};
+    else if (!match) result={status:item.status,coverage_state:"product_not_found"};
+    else {
+      if (!/^[a-z0-9][a-z0-9-]*\.json$/i.test(match.public_file || "")) throw new Error("Missing published product file.");
+      const published=JSON.parse(fetchText_(CM_APP_DATA_BASE.replace(/\/v1$/, "/v2/vault/products/")+match.public_file));
+      if (!published.meta || published.meta.code!==match.code || normalize_(published.meta.sport)!==item.sport || !Array.isArray(published.rows)) throw new Error("Published product identity could not be verified.");
+      const articleTitle=normalizePrvSourceTitle_(extractSubstackPostTitle_(html) || extractPageTitle_(html));
+      if (!articleTitle || prvCoverageProductKey_(articleTitle,item.sport)!==prvCoverageProductKey_(item.title,item.sport) || splitPrvProductTitles_(articleTitle,item.sport).length!==1) throw new Error("Article product identity requires review.");
+      const sourceRows=parseSlabSquatchPrintRunRows_(body,item.source_url),comparison=comparePrvCoverageRows_(sourceRows,published.rows);
+      const descriptions={parsed_rows_match:"All parsed source rows match published names, values and available checklist counts. Article parsing may omit unsupported content.",partially_covered:"Existing product is missing source groups; review additions before importing.",source_updated:"Source values or checklist counts differ from published data; review the changes.",uncertain_match:"Source rows cannot be matched unambiguously or use different measurement types.",unverified:"No comparable print-run rows could be parsed; coverage remains unverified."};
+      result={status:comparison.state==="parsed_rows_match" ? "covered" : ["partially_covered","source_updated"].indexOf(comparison.state)>=0 ? "possible_update" : "needs_review",coverage_state:comparison.state,comparison:comparison,source_fingerprint:hashSentinelAlertKey_(JSON.stringify(sourceRows.map(function(r){return [r.setType,r.setLine,r.printRun,r.serial,r.subSetSize];}))),reason:descriptions[comparison.state]};
+    }
+  } catch(err) {return Object.assign({},item,{status:"needs_review",coverage_state:"unverified",reason:"Coverage check failed: "+(err.message || String(err))});}
+  result.coverage_checked_at=new Date().toISOString();
+  if(cache) cache.put(cacheKey,JSON.stringify(result),300);
+  return Object.assign({},item,result);
+}
+
 function classifyPrvSourceItem_(item, vaultRows) {
   const title = safeString_(item && item.title).trim();
   const sport = normalize_(item && item.sport);
@@ -1754,7 +1810,8 @@ function classifyPrvSourceItem_(item, vaultRows) {
   if (match && match.score >= 140) {
     if (Number(match.row_count || 0) > 0) {
       return {
-        status: "covered",
+        status: "needs_review",
+        coverage_state: "unverified",
         title: title,
         sport: sport,
         source_url: item.url || "",
@@ -1766,7 +1823,7 @@ function classifyPrvSourceItem_(item, vaultRows) {
         discovery_source: item.discovery_source || "slabsquatch_substack",
         target_tool: "prv",
         published_at: item.published_at || "",
-        recommended_action: "PRV public JSON already has rows for this product. No queue action needed unless admin wants to manually compare source numbers."
+        recommended_action: "Existing product found; source content has not yet been compared."
       };
     }
 
@@ -1855,25 +1912,11 @@ function inspectPrvSourceLock_(sourceUrl) {
 }
 
 function fetchVaultPublicIndexRows_() {
-  const payload = JSON.parse(fetchText_(CM_APP_DATA_BASE + "/vault/index.json"));
-  const rows = payload && (payload.index || payload.rows);
-  const rowCounts = fetchVaultPublicRowCounts_();
-
-  return (Array.isArray(rows) ? rows : []).map(function(row) {
-    const code = safeString_(row.Code || row.code);
-    return {
-      code: code,
-      name: safeString_(row.DisplayName || row.displayName || row.display_name),
-      keywords: safeString_(row.Keywords || row.keywords),
-      year: safeString_(row.year),
-      sport: normalize_(row.sport),
-      manufacturer: safeString_(row.manufacturer),
-      product: safeString_(row.product),
-      row_count: Number(rowCounts[code] || 0)
-    };
-  }).filter(function(row) {
-    return row.code && row.name;
-  });
+  const payload = JSON.parse(fetchText_(CM_APP_DATA_BASE.replace(/\/v1$/, "/v2/vault/index.json")));
+  if (payload.schema_version !== 2 || !Array.isArray(payload.index)) throw new Error("Published PRV coverage is unavailable; scan stopped without assuming products are missing.");
+  return payload.index.map(function(row) {
+    return {code:safeString_(row.Code),name:safeString_(row.DisplayName),keywords:safeString_(row.Keywords),year:safeString_(row.year),sport:normalize_(row.sport),manufacturer:safeString_(row.manufacturer),product:safeString_(row.product),row_count:row.row_count,public_file:row.file,public_revision:payload.source_revision};
+  }).filter(function(row) {return row.code && row.name;});
 }
 
 function fetchVaultPublicRowCounts_() {

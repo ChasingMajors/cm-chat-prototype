@@ -5,6 +5,17 @@ import crypto from 'node:crypto';
 const repo = new URL('../', import.meta.url);
 const read = file => fs.readFileSync(new URL(file, repo), 'utf8');
 const clone = x => JSON.parse(JSON.stringify(x));
+const routing=vm.createContext({});
+vm.runInContext(read('command-center/operator-backend/Code.gs'),routing);
+for(const sport of ['baseball','football','basketball','hockey','soccer']){
+ assert.equal(routing.getChecklistSpreadsheetId_(sport,'2099'),'','unmapped year cannot fall back to current');
+ assert.equal(routing.getChecklistSpreadsheetId_(sport,'2099-00'),'','unmapped season cannot fall back to current');
+ assert.ok(routing.getChecklistSpreadsheetId_(sport,'current'),'explicit current alias remains available');
+}
+assert.ok(routing.getChecklistSpreadsheetId_('basketball','2026-27'));
+assert.ok(routing.getChecklistSpreadsheetId_('baseball','2027'));
+assert.equal(routing.getChecklistSpreadsheetId_('soccer','2026'),routing.getChecklistSpreadsheetId_('soccer','2025-26'));
+assert.equal(routing.getChecklistSpreadsheetId_('unknown','2026'),'');
 const utilities = {DigestAlgorithm:{SHA_256:'sha256'},Charset:{UTF_8:'utf8'},getUuid:()=>crypto.randomUUID(),
   computeDigest:(_, text)=>[...crypto.createHash('sha256').update(text).digest()],
   newBlob:text=>({getBytes:()=>[...Buffer.from(text)]})};

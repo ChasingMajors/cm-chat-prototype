@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-10-15-operator-pipeline-v2";
+const CM_OPERATOR_VERSION = "2026-10-17-operator-season-routing-v3";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -2568,7 +2568,9 @@ function getChecklistSpreadsheetId_(sport, bucket) {
   const map = CM_CHECKLIST_SOURCE_MAP[s] || {};
 
   if (key && map[key]) return map[key];
-  if (map.current) return map.current;
+  // Only an explicit current request may use the current-season alias.
+  // A missing future/historical season must never write into a different year.
+  if ((!key || key === "current") && map.current) return map.current;
   return "";
 }
 

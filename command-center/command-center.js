@@ -3827,9 +3827,9 @@
       return;
     }
 
-    if (action && !hasChecklistPreviewProof(action)) {
+    if (!(previewProof && previewProof.ready && previewProof.previewToken) || action && !hasChecklistPreviewProof(action)) {
       renderSourceCheckMessage("Preview required before sheet write", "Sentinel will preview this source first. No sheet write was attempted.", "warning");
-      await previewSourceImport(sourceUrl, sport || action.sport || "", action.id);
+      await previewSourceImport(sourceUrl, sport || action && action.sport || "", action && action.id);
       return;
     }
 
@@ -3860,6 +3860,8 @@
     try {
       const data = await postOperatorJson(endpoint, {
         action: "executeSourceImport",
+        previewToken: previewProof.previewToken,
+        targetCode: previewProof.code,
         sourceUrl: sourceUrl,
         sport: sport || "",
         key: key,
@@ -7833,6 +7835,7 @@
       product: data && data.product ? data.product.display_name || "" : "",
       rowCount,
       parallelCount,
+      previewToken: data && data.preview_token || "",
       checkedAt: new Date().toISOString()
     };
     state.importPreviewProof[key] = proof;

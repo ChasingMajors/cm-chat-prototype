@@ -1,0 +1,23 @@
+import fs from 'node:fs';import vm from 'node:vm';import assert from 'node:assert/strict';import crypto from 'node:crypto';
+const c=vm.createContext({Utilities:{DigestAlgorithm:{SHA_256:'sha256'},computeDigest:(_,s)=>[...crypto.createHash('sha256').update(s).digest()]}});vm.runInContext(fs.readFileSync(new URL('../command-center/operator-backend/Code.gs',import.meta.url),'utf8'),c);
+const proposed={code:'derived-spx',display_name:'2025-26 Upper Deck SPx Hockey',sport:'hockey',year:'2025-26',manufacturer:'Upper Deck',product:'SPx',target_bucket:'2025-26'};
+const existing={...proposed,code:'stable-spx-card'};
+assert.equal(c.resolveChecklistImportIdentity_(proposed,[existing]).match.code,existing.code);
+assert.equal(c.resolveChecklistImportIdentity_(proposed,[existing,{...existing,code:'duplicate'}]).state,'uncertain');
+assert.equal(c.resolveChecklistImportIdentity_(proposed,[{...existing,code:proposed.code,year:'2024-25'}]).state,'uncertain');
+assert.equal(c.resolveChecklistImportIdentity_(proposed,[]).state,'new');
+assert.equal(c.resolveChecklistImportIdentity_({...proposed,product:''},[]).state,'uncertain');
+assert.equal(c.resolveChecklistImportIdentity_(proposed,[{...existing,product:'SPx French'}]).state,'new','edition remains a distinct product');
+let catalog=[existing],sourceRows=[{code:'derived-spx',sport:'hockey',section:'Base',subset:'Base',card_no:'1',player:'Player',team:'Team',tag:''}],sourceParallels=[{code:'derived-spx',applies_to_section:'Base',applies_to_subset:'Base',parallel_name:'Gold',serial_no:'/1'}];
+c.fetchText_=()=> 'article';c.extractPageTitle_=()=>proposed.display_name;c.buildProductPreview_=()=>({...proposed});c.parseChecklistCenterArticle_=()=>({rows:structuredClone(sourceRows),parallels:structuredClone(sourceParallels),sections:[],warnings:[]});c.readChecklistImportCatalog_=()=>catalog;
+const input={sourceUrl:'https://www.checklistcenter.com/spx',sport:'hockey'},preview=c.previewSourceImport_(input);
+assert.equal(preview.product.code,existing.code);assert.equal(preview.rows[0].code,existing.code);assert.equal(preview.parallels[0].code,existing.code);assert.ok(preview.preview_token);assert.equal(sourceRows[0].code,'derived-spx');
+let writes=[];c.requireOperatorKey_=()=>{};c.getChecklistSpreadsheetId_=()=> 'source';c.SpreadsheetApp={openById:()=>({})};c.upsertProducts_=(_,code,p)=>writes.push({code,p});c.replaceRowsByCode_=(_,sheet,code,rows)=>writes.push({sheet,code,rows});c.parseFullSourceForWrite_=()=>({rows:structuredClone(sourceRows),parallels:structuredClone(sourceParallels)});c.validateWrittenProduct_=()=>({ok:true});c.shouldPublishAfterImport_=()=>false;
+const approved={...input,previewToken:preview.preview_token,targetCode:existing.code,publish:'0'};
+assert.equal(c.executeSourceImportBase_({...approved,targetCode:'wrong'}).ok,false);assert.equal(writes.length,0);
+sourceRows[0].player='Changed player';assert.equal(c.executeSourceImportBase_(approved).ok,false);assert.equal(writes.length,0,'same-count source changes invalidate approval');sourceRows[0].player='Player';
+c.parseFullSourceForWrite_=()=>({rows:[{...sourceRows[0],player:'Changed after preview'}],parallels:sourceParallels});assert.throws(()=>c.executeSourceImportBase_(approved),/source changed/);assert.equal(writes.length,0);
+c.parseFullSourceForWrite_=()=>({rows:sourceRows,parallels:sourceParallels});const result=c.executeSourceImportBase_(approved);assert.equal(result.ok,true);assert.equal(writes.length,3);assert(writes.every(w=>w.code===existing.code));assert(writes.slice(1).every(w=>w.rows.every(r=>r.code===existing.code)));
+catalog=[existing,{...existing,code:'duplicate'}];assert.equal(c.previewSourceImport_(input).ok,false);
+for(const file of ['command-center/index.html','command-center/simple-agent/index.html']){const script=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8').match(/<script>([\s\S]*?)<\/script>/)[1];new vm.Script(script);assert.ok(script.includes('data-checklist-review-token='));assert.ok(script.includes('button.dataset.checklistTargetCode'));}
+console.log('Checklist identity: existing code reuse, duplicate/edition protection, preview target binding, same-count source changes and canonical row/parallel writes passed.');

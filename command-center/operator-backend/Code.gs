@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-10-17-operator-import-identity-v6-r2";
+const CM_OPERATOR_VERSION = "2026-10-18-checklist-import-identity-v7";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -477,11 +477,22 @@ function previewSourceImport_(input) {
 
   const product = buildProductPreview_(title, sport, sourceUrl);
   const parsed = parseChecklistCenterArticle_(html, product);
+  const catalog = readChecklistImportCatalog_(product);
+  const identity = resolveChecklistImportIdentity_(product, catalog);
+  if (identity.state === "uncertain") return {ok:false,status:"needs_review",source_url:sourceUrl,product:product,error:identity.reason};
+  if (identity.match) product.code = identity.match.code;
+  parsed.rows = parsed.rows.map(row => Object.assign({}, row, {code:product.code}));
+  parsed.parallels = parsed.parallels.map(row => Object.assign({}, row, {code:product.code}));
+  const sourceFingerprint = checklistImportFingerprint_(parsed.rows, parsed.parallels);
+  const previewToken = hashSentinelAlertKey_(JSON.stringify([sourceUrl, product.sport, product.target_bucket, product.code, sourceFingerprint]));
 
   return {
     ok: true,
     mode: "preview_only",
     status: parsed.rows.length ? "preview_ready" : "needs_review",
+    identity_state: identity.state,
+    preview_token: previewToken,
+    source_fingerprint: sourceFingerprint,
     source_url: sourceUrl,
     product: product,
     row_count: parsed.rows.length,
@@ -593,6 +604,8 @@ function executeSourceImportBase_(input) {
     };
   }
 
+  if (!input.previewToken || input.previewToken !== preview.preview_token || input.targetCode !== preview.product.code) return {ok:false,status:"needs_review",error:"Checklist source or target changed. Preview again before writing."};
+
   const product = preview.product || {};
   const sport = normalize_(product.sport);
   const shouldPublish = shouldPublishAfterImport_(input && input.publish);
@@ -607,8 +620,11 @@ function executeSourceImportBase_(input) {
   const ss = SpreadsheetApp.openById(targetSpreadsheetId);
   const productRow = productToSheetObject_(product);
   const fullParsed = parseFullSourceForWrite_(input.sourceUrl || input.url, sport);
-  const rows = fullParsed.rows;
-  const parallels = fullParsed.parallels;
+  const rows = fullParsed.rows.map(row => Object.assign({}, row, {code:product.code}));
+  const parallels = fullParsed.parallels.map(row => Object.assign({}, row, {code:product.code}));
+  if (checklistImportFingerprint_(rows, parallels) !== preview.source_fingerprint) throw new Error("Checklist source changed after preview. No source rows were written.");
+  const currentIdentity = resolveChecklistImportIdentity_(product, readChecklistImportCatalog_(product));
+  if (currentIdentity.state === "uncertain" || (currentIdentity.match && currentIdentity.match.code !== product.code)) throw new Error("Checklist identity changed before write. Preview again.");
 
   upsertProducts_(ss, product.code, productRow);
   replaceRowsByCode_(ss, CM_CHECKLIST_ROWS_SHEET, product.code, rows, [
@@ -5684,6 +5700,32 @@ function putGitHubContentJsonAttempt_(path, obj, token, message, branch, attempt
 function getScriptPropertyWithDefault_(key, fallback) {
   const value = PropertiesService.getScriptProperties().getProperty(key);
   return safeString_(value).trim() || fallback;
+}
+
+function checklistImportFingerprint_(rows, parallels) {
+  const stable = value => Array.isArray(value) ? value.map(stable) : value && typeof value === "object" ? Object.fromEntries(Object.keys(value).sort().map(key => [key, stable(value[key])])) : value;
+  return hashSentinelAlertKey_(JSON.stringify(stable({rows:rows,parallels:parallels})));
+}
+
+function readChecklistImportCatalog_(product) {
+  const id = getChecklistSpreadsheetId_(product.sport, product.target_bucket || product.year);
+  if (!id) throw new Error("No mapped checklist source for this year.");
+  return sheetObjects_(SpreadsheetApp.openById(id).getSheetByName(CM_PRODUCTS_SHEET));
+}
+
+function resolveChecklistImportIdentity_(product, catalog) {
+  const norm = value => safeString_(value).normalize("NFKC").toLowerCase().trim().replace(/\s+/g," ");
+  const fields = ["sport","year","manufacturer","product"];
+  const complete = fields.every(key => norm(product[key]));
+  const same = row => complete && fields.every(key => norm(row[key]) === norm(product[key]));
+  const exact = catalog.filter(row => row.code === product.code);
+  if (exact.length > 1 || exact.length === 1 && !same(exact[0])) return {state:"uncertain",reason:"Existing checklist code has duplicate or conflicting product identity."};
+  const candidates = catalog.filter(same);
+  if (candidates.length > 1) return {state:"uncertain",reason:"Multiple checklist codes share this product identity. Reconcile them before importing."};
+  if (exact.length) return {state:"existing",match:exact[0]};
+  if (candidates.length === 1) return {state:"existing",match:candidates[0]};
+  if (!complete) return {state:"uncertain",reason:"Sport, year, manufacturer and product are required to resolve checklist identity."};
+  return {state:"new"};
 }
 
 function buildProductPreview_(title, sport, sourceUrl) {

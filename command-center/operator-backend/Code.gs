@@ -1845,7 +1845,7 @@ function comparePrvCoverageRows_(sourceRows, publicRows) {
 }
 
 function reviewPrvSourceCoverage_(item, vaultRows, budget) {
-  if (!item || item.status === "ignored") return item;
+  if (!item || item.status === "ignored" || item.status === "known_empty") return item;
   const match=(vaultRows || []).find(function(row) {return row.code===item.matched_code;});
   if (match) {
     const key=prvCoverageProductKey_(item.title,item.sport);

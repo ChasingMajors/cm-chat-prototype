@@ -43,6 +43,33 @@ const emptyNoStatus={...index,row_count:0};delete emptyNoStatus.status;
 assert.equal(c.classifyPrvSourceItem_(item,[emptyNoStatus]).status,'known_empty','row_count:0 alone derives known_empty');
 // Preserved behavior: a non-match still returns missing.
 assert.equal(c.classifyPrvSourceItem_({...item,title:'Totally Unrelated Product 1999',sport:'baseball'},[index]).status,'missing','non-match still returns missing');
+// FEAT-002 (F1): the COMPOSED source-watch flow must preserve known_empty as terminal/non-actionable.
+// A known-empty published shell whose source post parses a real print-run row must NOT be
+// relabeled possible_update/partially_covered/needs_review by the coverage/budget logic.
+(function(){
+  const base={...index,row_count:0,status:'empty'};
+  c.extractSubstackBodyHtml_=()=>'body';c.isSubstackPostPaywalled_=()=>false;c.extractSubstackPostTitle_=()=>index.name;
+  c.parseSlabSquatchPrintRunRows_=()=>[src('One')];c.splitPrvProductTitles_=()=>[index.name];
+  // A parseable source payload exists for the matched product; before the fix this made it actionable.
+  c.fetchText_=url=>url.includes('/products/')?JSON.stringify({meta:{code:'target',sport:'baseball'},rows:[pub('One',11)]}):'article';
+  cache.clear();
+  // With remaining budget — the path that formerly re-labeled to possible_update/needs_review.
+  let composed=c.reviewPrvSourceCoverage_(c.classifyPrvSourceItem_(item,[base]),[base],{remaining:8});
+  assert.equal(composed.status,'known_empty','composed flow keeps known_empty with budget remaining');
+  assert.equal(composed.coverage_state,'known_empty','known_empty coverage_state preserved through review');
+  assert.equal(composed.matched_code,'target','known_empty keeps matched_code through review');
+  for(const actionable of ['possible_update','partially_covered','needs_review','source_updated','covered']){
+    assert.notEqual(composed.status,actionable,'known_empty must not be relabeled '+actionable);
+    assert.notEqual(composed.coverage_state,actionable,'known_empty coverage_state must not be relabeled '+actionable);
+  }
+  // With exhausted budget — the path that formerly re-labeled to needs_review/unverified.
+  composed=c.reviewPrvSourceCoverage_(c.classifyPrvSourceItem_(item,[base]),[base],{remaining:0});
+  assert.equal(composed.status,'known_empty','composed flow keeps known_empty even with exhausted budget');
+  assert.equal(composed.coverage_state,'known_empty','exhausted budget does not relabel known_empty');
+  // Preserved: a genuinely missing product still flows through to an actionable/missing status.
+  const missingComposed=c.reviewPrvSourceCoverage_(c.classifyPrvSourceItem_({...item,title:'Totally Unrelated Product 1999',sport:'baseball'},[base]),[base],{remaining:8});
+  assert.equal(missingComposed.status,'missing','genuinely missing product still returns missing through composed flow');
+})();
 // FEAT-002: runDeepBackendAudit_ downgrades an empty-sheet product to informational when the public index row is a known-empty shell.
 const auditSource={Code:'target',code:'target',sport:'baseball',DisplayName:index.name,year:'2026',Keywords:'kw',row_count:0,parallel_count:0};
 c.fetchChecklistSourceRows_=()=>[auditSource];

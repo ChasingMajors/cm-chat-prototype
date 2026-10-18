@@ -1,0 +1,14 @@
+import fs from 'node:fs';import vm from 'node:vm';import assert from 'node:assert/strict';
+const c=vm.createContext({});vm.runInContext(fs.readFileSync(new URL('../command-center/operator-backend/Code.gs',import.meta.url),'utf8'),c);
+const product={code:'spx',display_name:'2025-26 Upper Deck SPx Hockey',sport:'hockey'};
+assert.equal(c.isLikelyChecklistRow_('Rookies – 1:7 Hobby/ePack'),false);
+assert.equal(c.isLikelyChecklistRow_('Auto Patch – #/99'),false);
+assert.equal(c.isLikelyChecklistRow_('Auto Patch Spectrum – Rookies – 1/1'),false);
+const parsed=c.parseChecklistCenterArticle_(`<article><h3>2025-26 Upper Deck SPx – Holoview F/X Set</h3><p>HV-1 Player One – Team One<br>Rookies – 1:7 Hobby/ePack<br>HV-2 Player Two – Team Two</p><h3>2025-26 Upper Deck SPx – 2022-23 UD Black Update Set</h3><p>3 Cards<br>UD Black Auto Patch – #/99<br>PON-A Player One – Team One<br>UD Black Auto Patch Spectrum – 1/1<br>PON-A Player One – Team One<br>Rookie Auto Jersey – #/375<br>DL Player Two – Team Two</p></article>`,product);
+assert.equal(parsed.rows.length,5,'odds and serial headings are not cards');
+const updates=parsed.rows.filter(r=>r.subset.includes('Update'));
+assert.equal(updates.length,3);assert(updates.every(r=>r.section==='Autograph'));
+assert.equal(new Set(updates.map(r=>r.subset+'|'+r.card_no)).size,3,'reused card numbers stay in different nested sets');
+assert.equal(updates[0].tag,'/99');assert.equal(updates[1].tag,'/1');assert.equal(updates[2].card_no,'DL');assert.equal(updates[2].player,'Player Two');assert.equal(updates[2].tag,'RC, /375');
+const mismatch=c.parseChecklistUpdateRows_(['7 Cards','Auto Patch – #/99','PON-A Player One – Team One'],product,'2022-23 Update');assert.equal(mismatch.rows.length,1);assert.equal(mismatch.warnings.length,1,'declared counts cannot create missing cards');
+console.log('Checklist parser: ratio/serial headings excluded, nested update identities retained, letter IDs and exact serials preserved, source count discrepancies reported.');

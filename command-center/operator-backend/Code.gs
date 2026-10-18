@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-10-18-checklist-import-identity-v7-r2";
+const CM_OPERATOR_VERSION = "2026-10-18-checklist-import-identity-v7-r3";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -160,7 +160,8 @@ function doGet(e) {
     if (action === "previewSourceImport") {
       return json_(previewSourceImport_({
         sourceUrl: p.sourceUrl || p.url || "",
-        sport: p.sport || ""
+        sport: p.sport || "",
+        previewOffset: p.previewOffset || "0"
       }));
     }
 
@@ -485,6 +486,7 @@ function previewSourceImport_(input) {
   parsed.parallels = parsed.parallels.map(row => Object.assign({}, row, {code:product.code}));
   const sourceFingerprint = checklistImportFingerprint_(parsed.rows, parsed.parallels);
   const previewToken = hashSentinelAlertKey_(JSON.stringify([sourceUrl, product.sport, product.target_bucket, product.code, sourceFingerprint]));
+  const previewOffset = Math.max(0, Math.floor(Number(input && input.previewOffset) || 0));
 
   return {
     ok: true,
@@ -500,7 +502,8 @@ function previewSourceImport_(input) {
     sections: parsed.sections,
     sample_rows: parsed.rows.slice(0, 10),
     sample_parallels: parsed.parallels.slice(0, 10),
-    rows: parsed.rows.slice(0, 500),
+    rows: parsed.rows.slice(previewOffset, previewOffset + 500),
+    preview_page: {offset:previewOffset,next_offset:previewOffset+500<parsed.rows.length?previewOffset+500:null,total:parsed.rows.length},
     parallels: parsed.parallels.slice(0, 500),
     warnings: parsed.warnings,
     next_step: "Review preview counts and samples. Sheet write is intentionally not enabled yet."
@@ -5771,9 +5774,14 @@ function parseChecklistCenterArticle_(html, product) {
     const section = inferChecklistSection_(heading);
     const lines = htmlToLines_(chunk.html);
     const rowLines = lines.filter(isLikelyChecklistRow_);
-    const sectionRows = rowLines.map(function(line) {
+    let sectionRows = rowLines.map(function(line) {
       return parseChecklistLine_(line, product, section, subset);
     }).filter(Boolean);
+    if (/\bUpdate\b/i.test(subset)) {
+      const nested = parseChecklistUpdateRows_(lines, product, subset);
+      sectionRows = nested.rows;
+      Array.prototype.push.apply(warnings, nested.warnings);
+    }
     const sectionParallels = extractParallelRows_(chunk.html, product, section, subset);
 
     if (sectionRows.length || sectionParallels.length) {
@@ -5799,6 +5807,30 @@ function parseChecklistCenterArticle_(html, product) {
     sections: sections,
     warnings: warnings
   };
+}
+
+function parseChecklistUpdateRows_(lines, product, parentSubset) {
+  const rows=[],warnings=[];let label="",serial="",declared=null;
+  for (const line of lines) {
+    const raw=normalizeChecklistLineText_(line),count=raw.match(/^(\d+)\s+Cards?\b/i);
+    if (count) { declared=Number(count[1]); continue; }
+    if (/^(?:Parallels?|Versions?|Configuration|Box Break|Release Date|Image)\b/i.test(raw)) continue;
+    if (!isLikelyChecklistRow_(raw)) {
+      if (!raw || raw.length>160 || /^https?:|^\d+\s+Cards?/i.test(raw)) continue;
+      label=raw.replace(/\s+-\s*(?:#?\s*\/\s*\d+(?:\s+or\s+Noted)?|1\s*\/\s*1)\s*$/i,"").trim();
+      serial=extractSerialTag_(raw);continue;
+    }
+    if (!label) { warnings.push("Update row has no named subgroup: "+raw);continue; }
+    const subset=parentSubset+" — "+label,section=inferChecklistSection_(label);
+    let row=parseChecklistLine_(raw,product,section,subset);
+    const letterId=raw.match(/^([A-Z]{1,8})\s+(.+?)\s+-\s+(.+)$/);
+    if (row && !row.card_no && letterId) row={...row,card_no:letterId[1],player:cleanPlayerName_(letterId[2]),team:cleanTeamName_(letterId[3])};
+    if (!row || !row.card_no) { warnings.push("Update card identity needs review: "+raw);continue; }
+    if (serial && !extractSerialTag_(raw)) row.tag=[row.tag,serial].filter(Boolean).join(", ");
+    rows.push(row);
+  }
+  if (declared!==null && declared!==rows.length) warnings.push(parentSubset+": source states "+declared+" cards; parsed "+rows.length+". Review the source count.");
+  return {rows:rows,warnings:warnings};
 }
 
 function extractArticleHtml_(html) {
@@ -5847,6 +5879,8 @@ function htmlToLines_(html) {
 function isLikelyChecklistRow_(line) {
   const raw = normalizeChecklistLineText_(line);
   if (!raw) return false;
+  const lastPart=raw.split(/\s+-\s+/).pop();
+  if (/^(?:1\s*:\s*[\d,]+(?:\s+.*)?|#?\s*\/\s*\d+(?:\s+or\s+Noted)?|1\s*\/\s*1)$/i.test(lastPart)) return false;
   if (/^(Parallels?|Versions?|Hobby|Configuration|Cards?\b|Serial Numbered|Find |Checklistcenter)/i.test(raw)) return false;
   if (/^\d+\s+Cards?\b/i.test(raw)) return false;
   if (/^[A-Z]{0,8}[-A-Z0-9]*\d[A-Z0-9-]*\s+.+\s+-\s+.+/.test(raw)) return true;

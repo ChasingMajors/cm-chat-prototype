@@ -124,6 +124,7 @@ function doGet(e) {
       return cmJsonOutput_({
         ok: true,
         service: "cm_static_data_exporter",
+        queue_version: "2026-10-18-verification-v8",
         supported_actions: ["health", "publishChecklistAfterImport", "publishVaultStaticDataToGitHub"],
         updated_at: new Date().toISOString()
       });
@@ -167,6 +168,7 @@ function doPost(e) {
       return cmJsonOutput_({
         ok: true,
         service: "cm_static_data_exporter",
+        queue_version: "2026-10-18-verification-v8",
         supported_actions: ["health", "publishChecklistAfterImport", "publishVaultStaticDataToGitHub"],
         updated_at: new Date().toISOString()
       });
@@ -4833,11 +4835,27 @@ function publicPipelineJob_(job, refresh) {
   // Verification is read-only and can safely run after a browser reconnect.
   if (refresh && data.expected && ["committing","committed","verifying","published_pages_pending"].includes(data.stage)) {
     const validation = data.kind === "prv" ? verifyPrvReleaseBoth_(data.code,data.expected) : verifyChecklistReleaseBoth_(data.sport,data.code,data.expected);
-    if (validation.github.ok) {
-      data.result = Object.assign({},data.result || {},{ok:true,status:validation.public.ok ? "published_and_public_validated" : "published_pages_pending",validation:validation});
-      data.stage = validation.public.ok ? "complete" : "published_pages_pending";
-      savePipelineJob_(job);
+    const now = new Date().toISOString();
+    data.verification_started_at = data.verification_started_at || data.updated_at || now;
+    data.verification_checked_at = now;
+    data.verification_checks = Number(data.verification_checks || 0) + 1;
+    data.result = Object.assign({},data.result || {},{validation:validation});
+    if (validation.github.ok && validation.public.ok) {
+      data.result.ok = true;
+      data.result.status = "published_and_public_validated";
+      data.stage = "complete";
+      data.error = "";
+    } else if (Date.now() - Date.parse(data.verification_started_at) >= 24 * 60 * 60 * 1000) {
+      data.stage = "failed";
+      data.error = "The expected release could not be verified within 24 hours. It may have been replaced by a newer release or deployment may have failed. Inspect the saved commit and validation before explicitly retrying; no upload was repeated.";
+      data.result.ok = false;
+    } else {
+      data.stage = validation.github.ok ? "published_pages_pending" : "verifying";
+      data.result.ok = validation.github.ok;
+      data.result.status = validation.github.ok ? "published_pages_pending" : "publish_verifying";
     }
+    // Persist unsuccessful checks too, so one unavailable release cannot monopolize verification.
+    savePipelineJob_(job);
   }
   const result = data.result || {};
   return Object.assign({},result,{ok:data.stage === "complete" || data.stage === "published_pages_pending",status:data.stage === "complete" ? "published_and_public_validated" : data.stage === "published_pages_pending" ? "published_pages_pending" : data.stage === "failed" ? "publish_failed" : "publish_" + data.stage,
@@ -4992,13 +5010,14 @@ function runSentinelPublishJobs() {
     ids.forEach(id => {
       const job = readPipelineJob_(id), data = job.data;
       if (["running","committing","committed","verifying"].includes(data.stage) && Date.now() - new Date(data.updated_at || data.created_at).getTime() > 600000) {
-        const checked = data.expected ? publicPipelineJob_(job,true) : null;
-        if (!checked || !checked.ok) { data.stage="failed"; data.error="Previous worker was interrupted. Inspect this job before explicitly retrying."; savePipelineJob_(job); }
+        if (!data.expected) { data.stage="failed"; data.error="Previous worker was interrupted. Inspect this job before explicitly retrying."; savePipelineJob_(job); }
       }
-      if (data.stage === "published_pages_pending" && (!pending || (data.updated_at || data.created_at) < (pending.data.updated_at || pending.data.created_at))) pending=job;
+      if (data.expected && ["committing","committed","verifying","published_pages_pending"].includes(data.stage) && (!pending || (data.verification_checked_at || data.updated_at || data.created_at) < (pending.data.verification_checked_at || pending.data.updated_at || pending.data.created_at))) pending=job;
       if (data.stage === "queued" && (!next || data.created_at < next.data.created_at)) next=job;
     });
-    if (!next) { if (pending) publicPipelineJob_(pending,true); return; }
+    // Check one pending release every tick, even while uploads remain queued.
+    if (pending) publicPipelineJob_(pending,true);
+    if (!next) return;
     CM_CURRENT_PUBLISH_JOB = next;
     next.data.stage="running"; next.data.attempts++; savePipelineJob_(next);
     try {

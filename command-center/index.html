@@ -400,7 +400,7 @@
 
   <script>
     (function () {
-      const VERSION = "simple-agent-import-v6-2026-10-17";
+      const VERSION = "simple-agent-queue-v7-2026-10-17";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
       const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
@@ -730,7 +730,8 @@
       function writeLocalJsonRetryQueue(queue) {
         try {
           localStorage.setItem(JSON_RETRY_QUEUE_KEY, JSON.stringify(queue || []));
-        } catch (err) {}
+          return true;
+        } catch (err) { return false; }
       }
 
       function blankAgentMemory() {
@@ -774,13 +775,16 @@
           state.jsonQueueNeedsAuth = false;
           state.jsonQueueLocalPending = 0;
           state.jsonQueueError = "";
-          writeLocalJsonRetryQueue([]);
-          if (merged.length !== serverQueue.length || localQueue.some(item => !serverQueue.some(existing => queueKey(existing) === queueKey(item)))) {
+          // A newer receipt can have the same product key and queue length.
+          // Keep the local copy until the complete merged queue is confirmed saved.
+          if (JSON.stringify(merged) !== JSON.stringify(serverQueue)) {
             await saveSharedJsonRetryQueue(merged, false, true);
+          } else {
+            writeLocalJsonRetryQueue([]);
           }
           return merged;
         } catch (err) {
-          state.jsonRetryQueue = [];
+          state.jsonRetryQueue = localQueue;
           state.jsonQueueShared = false;
           state.jsonQueueLoaded = true;
           state.jsonQueueNeedsAuth = false;
@@ -1426,8 +1430,9 @@
           const save = async () => {
             item.updated_at = new Date().toISOString();
             const queue = readJsonRetryQueue().filter(existing => queueKey(existing) !== queueKey(item));
-            writeLocalJsonRetryQueue([item].concat(queue));
-            await writeJsonRetryQueue([item].concat(queue), false, true);
+            const localSaved = writeLocalJsonRetryQueue([item].concat(queue));
+            const sharedSaved = await writeJsonRetryQueue([item].concat(queue), false, true);
+            if (!localSaved && !sharedSaved) throw new Error("Publishing is paused because the job identity could not be saved on this device or to the shared queue. Retry after storage or the connection is available.");
             renderJsonRetryNotice();
           };
           await save();

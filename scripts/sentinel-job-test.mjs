@@ -30,5 +30,20 @@ for (const file of ['command-center/index.html','command-center/simple-agent/ind
  ctx.postOperatorJson=async()=>({job:{id:'job-request-1',stage:'failed'}});
  await ctx.publishJsonWithRetry(input,1,queue[0]);
  assert.equal(failed,1);assert.equal(queue[0].job_stage,'failed');
- console.log(file+': persisted request identity, browser close/reconnect and failed-job pause passed');
+ // A lost submission response must reconnect with the saved request ID.
+ queue=[];let interruptedRequest='';
+ ctx.postOperatorJson=async (_,body)=>{interruptedRequest=body.request_id;throw Error('connection lost');};
+ await ctx.publishJsonWithRetry(input,1);
+ assert.equal(queue[0].request_id,interruptedRequest);
+ ctx.postOperatorJson=async (_,body)=>{assert.equal(body.request_id,interruptedRequest);return {job:{id:body.request_id,stage:'complete'}};};
+ await ctx.publishJsonWithRetry(input,1,queue[0]);
+ assert.equal(completed,2);
+ // Never submit when neither local nor shared storage confirms the receipt.
+ queue=[];let submissions=0;
+ ctx.writeLocalJsonRetryQueue=()=>false;ctx.writeJsonRetryQueue=async()=>false;
+ ctx.postOperatorJson=async()=>{submissions++;return {job:{id:'unsafe',stage:'running'}};};
+ await ctx.publishJsonWithRetry(input,1);
+ assert.equal(submissions,0,'a durable job identity must precede submission');
+ assert.equal(state.publishInFlight,false);
+ console.log(file+': persisted identity, lost response/reconnect, failed-job pause and storage-failure guard passed');
 }

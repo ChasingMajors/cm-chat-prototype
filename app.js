@@ -1251,13 +1251,35 @@ function resolvePlayerRequestFromOptions(playerReq, options) {
   };
 }
 
+// Default-OFF timing probe for the first meta-gated player resolution.
+// Enable via window.__cmMetaTiming = true (console.debug) and/or read
+// window.__cmMetaTimingLast after a resolution. Adds only a performance.now()
+// read on the hot path; no awaits and no console noise by default.
+function cmMetaTimingStart() {
+  if (typeof performance === "undefined" || typeof performance.now !== "function") return 0;
+  return performance.now();
+}
+
+function cmMetaTimingEnd(label, startedAt) {
+  if (!startedAt || typeof performance === "undefined" || typeof performance.now !== "function") return;
+  const deltaMs = performance.now() - startedAt;
+  if (typeof window !== "undefined") {
+    window.__cmMetaTimingLast = { label, deltaMs, at: Date.now() };
+    if (window.__cmMetaTiming === true && typeof console !== "undefined" && console.debug) {
+      console.debug(`[cm-meta-timing] ${label}: ${deltaMs.toFixed(1)}ms`);
+    }
+  }
+}
+
 async function resolveRookiePlayerRequest(playerReq) {
   if (!playerReq || !isRookieCardIntent(playerReq.originalQuery || "")) return null;
   if (playerReq.year || playerReq.code) return null;
 
+  const __cmMetaT0 = cmMetaTimingStart();
   await loadPlayerMeta().catch(() => []);
 
   const meta = getPlayerMetaEntry(playerReq.playerName);
+  cmMetaTimingEnd("resolveRookiePlayerRequest", __cmMetaT0);
   const rcYear = getRcYearForPlayerRequest(playerReq, meta);
 
   if (!rcYear) {

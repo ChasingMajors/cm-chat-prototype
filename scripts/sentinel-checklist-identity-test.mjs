@@ -8,6 +8,11 @@ assert.equal(c.resolveChecklistImportIdentity_(proposed,[{...existing,code:propo
 assert.equal(c.resolveChecklistImportIdentity_(proposed,[]).state,'new');
 assert.equal(c.resolveChecklistImportIdentity_({...proposed,product:''},[]).state,'uncertain');
 assert.equal(c.resolveChecklistImportIdentity_(proposed,[{...existing,product:'SPx French'}]).state,'new','edition remains a distinct product');
+c.getChecklistSpreadsheetId_=()=> 'source';c.SpreadsheetApp={openById:()=>({getSheetByName:()=>({getDataRange:()=>({getDisplayValues:()=>[['code','sport','year','manufacturer','product'],[existing.code,'hockey','2025-26','Upper Deck','SPx']]})})})};
+assert.equal(c.readChecklistImportCatalog_(proposed)[0].code,existing.code,'exercise the actual source-sheet reader');
+assert.equal(c.simplifySubsetName_('2025-26 Upper Deck SPx - 2022-23 UD Black Update Set',proposed.display_name),'2022-23 UD Black Update');
+assert.equal(c.simplifySubsetName_('2025-26 Upper Deck SPx - 2023-24 UD Black Update Set',proposed.display_name),'2023-24 UD Black Update');
+assert.equal(c.simplifySubsetName_('2025-26 Upper Deck SPx - All-Time Holoview Set',proposed.display_name),'All-Time Holoview');
 let catalog=[existing],sourceRows=[{code:'derived-spx',sport:'hockey',section:'Base',subset:'Base',card_no:'1',player:'Player',team:'Team',tag:''}],sourceParallels=[{code:'derived-spx',applies_to_section:'Base',applies_to_subset:'Base',parallel_name:'Gold',serial_no:'/1'}];
 c.fetchText_=()=> 'article';c.extractPageTitle_=()=>proposed.display_name;c.buildProductPreview_=()=>({...proposed});c.parseChecklistCenterArticle_=()=>({rows:structuredClone(sourceRows),parallels:structuredClone(sourceParallels),sections:[],warnings:[]});c.readChecklistImportCatalog_=()=>catalog;
 const input={sourceUrl:'https://www.checklistcenter.com/spx',sport:'hockey'},preview=c.previewSourceImport_(input);

@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-10-18-checklist-import-identity-v7";
+const CM_OPERATOR_VERSION = "2026-10-18-checklist-import-identity-v7-r2";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -5710,7 +5710,7 @@ function checklistImportFingerprint_(rows, parallels) {
 function readChecklistImportCatalog_(product) {
   const id = getChecklistSpreadsheetId_(product.sport, product.target_bucket || product.year);
   if (!id) throw new Error("No mapped checklist source for this year.");
-  return sheetObjects_(SpreadsheetApp.openById(id).getSheetByName(CM_PRODUCTS_SHEET));
+  return readSheetObjects_(SpreadsheetApp.openById(id).getSheetByName(CM_PRODUCTS_SHEET));
 }
 
 function resolveChecklistImportIdentity_(product, catalog) {
@@ -6006,11 +6006,14 @@ function simplifySubsetName_(heading, displayName) {
     .replace(/\s+/g, " ")
     .trim();
 
-  subset = subset.replace(productBase, "");
-  subset = subset.replace(/\b(19|20)\d{2}(?:-\d{2})?\b/g, "");
-  subset = subset.replace(/\bPanini\b|\bTopps\b|\bUpper Deck\b|\bBowman\b/gi, "");
-  subset = subset.replace(/\bNoir\b|\bRoad to FIFA\b|\bWorld Cup 26\b|\bSoccer\b/gi, "");
-  subset = subset.replace(/[–-]/g, " ");
+  // Remove only the enclosing release prefix. Years, brands and punctuation
+  // inside an update/throwback subset are part of its identity.
+  const escape = value => value.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  for (const prefix of [safeString_(displayName), productBase].filter(Boolean).sort((a,b)=>b.length-a.length)) {
+    const pattern = new RegExp("^" + escape(prefix) + "(?:\\s+[–—-]\\s*|\\s+|$)","i");
+    if (pattern.test(subset)) { subset=subset.replace(pattern,""); break; }
+  }
+  subset = subset.replace(/^\s*[–—-]\s*/, "");
   subset = subset.replace(/\s+Set\s*$/i, "");
   subset = subset.replace(/\s+/g, " ").trim();
 

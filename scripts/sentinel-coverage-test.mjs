@@ -28,7 +28,34 @@ cache.clear();c.fetchText_=()=>{throw Error('offline');};result=c.reviewPrvSourc
 c.fetchText_=()=> 'article';c.isSubstackPostPaywalled_=()=>true;result=c.reviewPrvSourceCoverage_(item,[index],{remaining:8});assert.equal(result.status,'known_issue');assert.notEqual(result.status,'covered');
 c.fetchText_=()=> '{}';assert.throws(()=>c.fetchVaultPublicIndexRows_(),/coverage is unavailable/);
 assert.equal(c.classifyPrvSourceItem_(item,[index]).status,'needs_review','positive row count alone cannot mean covered');
-console.log('PRV coverage: missing groups, changed values/counts, ambiguity, serial semantics, cached fingerprints, revision invalidation and unavailable sources passed.');
+// FEAT-002: a strong match that is a published-but-empty PRV shell is 'known_empty', not possible_update/missing/needs_review.
+const emptyIndex={...index,row_count:0,status:'empty'};
+const emptyClassified=c.classifyPrvSourceItem_(item,[emptyIndex]);
+assert.equal(emptyClassified.status,'known_empty','strong match with status:empty must be known_empty');
+assert.equal(emptyClassified.coverage_state,'known_empty','known_empty carries coverage_state');
+assert.equal(emptyClassified.matched_code,'target','known_empty carries matched_code');
+assert.equal(emptyClassified.matched_name,index.name,'known_empty carries matched_name');
+assert.notEqual(emptyClassified.status,'possible_update');
+assert.notEqual(emptyClassified.status,'missing');
+assert.notEqual(emptyClassified.status,'needs_review');
+// Backward-compat: no status field, row_count 0 still derives known_empty.
+const emptyNoStatus={...index,row_count:0};delete emptyNoStatus.status;
+assert.equal(c.classifyPrvSourceItem_(item,[emptyNoStatus]).status,'known_empty','row_count:0 alone derives known_empty');
+// Preserved behavior: a non-match still returns missing.
+assert.equal(c.classifyPrvSourceItem_({...item,title:'Totally Unrelated Product 1999',sport:'baseball'},[index]).status,'missing','non-match still returns missing');
+// FEAT-002: runDeepBackendAudit_ downgrades an empty-sheet product to informational when the public index row is a known-empty shell.
+const auditSource={Code:'target',code:'target',sport:'baseball',DisplayName:index.name,year:'2026',Keywords:'kw',row_count:0,parallel_count:0};
+c.fetchChecklistSourceRows_=()=>[auditSource];
+c.fetchChecklistPublicJsonRows_=()=>[{Code:'target',code:'target',sport:'baseball',DisplayName:index.name,row_count:0,parallel_count:0,status:'empty'}];
+const knownEmptyAudit=c.runDeepBackendAudit_({}).issues.find(i=>i.type==='product_has_no_checklist_rows');
+assert.ok(knownEmptyAudit,'empty-sheet product still produces an entry');
+assert.equal(knownEmptyAudit.status,'known_empty','known-empty public shell downgrades the empty-sheet issue');
+assert.equal(knownEmptyAudit.severity,'low','known-empty empty-sheet issue is informational');
+c.fetchChecklistPublicJsonRows_=()=>[{Code:'target',code:'target',sport:'baseball',DisplayName:index.name,row_count:0,parallel_count:0}];
+const needsAdminAudit=c.runDeepBackendAudit_({}).issues.find(i=>i.type==='product_has_no_checklist_rows');
+assert.equal(needsAdminAudit.status,'needs_admin','without a known-empty public shell the empty-sheet issue stays actionable');
+assert.equal(needsAdminAudit.severity,'medium','non-shell empty-sheet issue stays medium severity');
+console.log('PRV coverage: missing groups, changed values/counts, ambiguity, serial semantics, cached fingerprints, revision invalidation, known-empty shells and unavailable sources passed.');
 const action={type:'prv_source_review',product:index.name,sport:'baseball',sourceUrl:item.source_url,coverageState:'partially_covered',status:'approval_required'};
 assert.equal(c.validateScheduledAutoActionSafety_(action).ok,false);
 assert.equal(c.validateScheduledAutoActionSafety_({...action,status:'approved'}).ok,true);

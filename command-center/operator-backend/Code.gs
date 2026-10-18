@@ -804,18 +804,33 @@ function runDeepBackendAudit_(input) {
 
     if (sourceRowCount === 0) {
       stats.empty_sheet_products += 1;
-      pushBackendAuditIssue_(issues, {
-        type: "product_has_no_checklist_rows",
-        severity: "medium",
-        status: "needs_admin",
-        product: displayName || code,
-        sport: sport,
-        code: code,
-        bucket: row.source_key || row.year || "",
-        title: "Product has no checklist rows",
-        detail: "The Products tab has this product, but ChecklistRows has 0 rows for the code.",
-        recommended_action: "Add checklist rows or confirm this is a shell product that should stay unpublished."
-      });
+      if (publicRow && publicRow.status === "empty") {
+        pushBackendAuditIssue_(issues, {
+          type: "product_has_no_checklist_rows",
+          severity: "low",
+          status: "known_empty",
+          product: displayName || code,
+          sport: sport,
+          code: code,
+          bucket: row.source_key || row.year || "",
+          title: "Product is a known-empty published shell",
+          detail: "The Products tab has this product with 0 ChecklistRows, and the public index publishes it as an intentional empty shell (status 'empty').",
+          recommended_action: "No import needed. This is an intentional published shell; it is reachable by direct link and shows 'Data unavailable'."
+        });
+      } else {
+        pushBackendAuditIssue_(issues, {
+          type: "product_has_no_checklist_rows",
+          severity: "medium",
+          status: "needs_admin",
+          product: displayName || code,
+          sport: sport,
+          code: code,
+          bucket: row.source_key || row.year || "",
+          title: "Product has no checklist rows",
+          detail: "The Products tab has this product, but ChecklistRows has 0 rows for the code.",
+          recommended_action: "Add checklist rows or confirm this is a shell product that should stay unpublished."
+        });
+      }
     }
 
     if (!publicRow) {
@@ -1899,6 +1914,24 @@ function classifyPrvSourceItem_(item, vaultRows) {
       };
     }
 
+    if (match.status === "empty" || Number(match.row_count || 0) === 0) {
+      return {
+        status: "known_empty",
+        coverage_state: "known_empty",
+        title: title,
+        sport: sport,
+        source_url: item.url || "",
+        matched_name: match.name,
+        matched_code: match.code,
+        match_score: match.score,
+        comparison_source: "public_vault_json",
+        discovery_source: item.discovery_source || "slabsquatch_substack",
+        target_tool: "prv",
+        published_at: item.published_at || "",
+        recommended_action: "PRV product is published but intentionally has no print-run rows yet; recognized as covered — no duplicate import."
+      };
+    }
+
     return {
       status: "possible_update",
       title: title,
@@ -1987,7 +2020,7 @@ function fetchVaultPublicIndexRows_() {
   const payload = JSON.parse(fetchText_(CM_APP_DATA_BASE.replace(/\/v1$/, "/v2/vault/index.json")));
   if (payload.schema_version !== 2 || !Array.isArray(payload.index)) throw new Error("Published PRV coverage is unavailable; scan stopped without assuming products are missing.");
   return payload.index.map(function(row) {
-    return {code:safeString_(row.Code),name:safeString_(row.DisplayName),keywords:safeString_(row.Keywords),year:safeString_(row.year),sport:normalize_(row.sport),manufacturer:safeString_(row.manufacturer),product:safeString_(row.product),row_count:row.row_count,public_file:row.file,public_revision:payload.source_revision};
+    return {code:safeString_(row.Code),name:safeString_(row.DisplayName),keywords:safeString_(row.Keywords),year:safeString_(row.year),sport:normalize_(row.sport),manufacturer:safeString_(row.manufacturer),product:safeString_(row.product),row_count:row.row_count,status:safeString_(row.status) || (Number(row.row_count||0) ? 'ok' : 'empty'),public_file:row.file,public_revision:payload.source_revision};
   }).filter(function(row) {return row.code && row.name;});
 }
 
@@ -2131,7 +2164,8 @@ function findVaultIndexMatch_(title, sport, rows) {
         code: row.code,
         name: row.name,
         score: score,
-        row_count: Number(row.row_count || 0)
+        row_count: Number(row.row_count || 0),
+        status: row.status || (Number(row.row_count || 0) ? 'ok' : 'empty')
       };
     }
   });

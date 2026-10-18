@@ -1,4 +1,4 @@
-const CACHE_NAME = "cm-sentinel-pwa-v14-coverage";
+const CACHE_NAME = "cm-sentinel-pwa-v15-import";
 const APP_SHELL = [
   "./",
   "./index.html",

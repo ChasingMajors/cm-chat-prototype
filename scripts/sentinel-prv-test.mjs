@@ -12,8 +12,12 @@ for (const file of ['command-center/index.html', 'command-center/simple-agent/in
   let rendered;
   Object.assign(ctx,{escapeHtml:String,titleCase:String,formatNumber:String,renderPreviewRows:()=>'',renderPrvProductChoices:()=>'',renderPreviewParallels:()=>'',openPreviewModal:(...args)=>rendered=args});
   vm.runInContext(script.slice(script.indexOf('      function renderPreviewModal'),script.indexOf('      function renderWriteResult')),ctx);
-  ctx.renderPreviewModal({ok:true,status:'preview_ready',row_count:2,product:{sport:'baseball'},products:[{}],source_url:'https://slabsquatch.substack.com/p/test'},'prv');
+  ctx.renderPreviewModal({ok:true,status:'preview_ready',preview_token:'review-token',row_count:2,product:{sport:'baseball'},products:[{}],source_url:'https://slabsquatch.substack.com/p/test'},'prv');
   assert(rendered[2].includes('data-write-prv-source='),'ready single-product PRV preview must allow protected import');
+  ctx.renderPreviewModal({ok:true,status:'already_covered',row_count:2,product:{sport:'baseball'},products:[{}],source_url:'source'},'prv');
+  assert(!rendered[2].includes('data-write-prv-source='),'identical published data must not offer a write');
+  ctx.renderPreviewModal({ok:true,status:'preview_ready',row_count:2,product:{sport:'baseball'},products:[{}],source_url:'source'},'prv');
+  assert(!rendered[2].includes('data-write-prv-source='),'a reviewed token is required');
   ctx.renderPreviewModal({ok:true,status:'preview_ready',row_count:2,multi_product:true,product:{},products:[{},{}],source_url:'source'},'prv');
   assert(!rendered[2].includes('data-write-prv-source='),'mixed-product PRV preview must stay blocked');
   const output = { summary: {textContent: ''}, resultsCard: {classList: {remove(){}}} };

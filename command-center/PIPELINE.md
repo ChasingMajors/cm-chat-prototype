@@ -60,3 +60,9 @@ Up to eight sources per cycle are fetched and checked. Exact parsed row names, n
 Comparisons record a source-row fingerprint and checked timestamp. Results are cached for five minutes, keyed by article URL, product identity, immutable public filename and public revision. A changed public file/revision invalidates the cache immediately; source changes are observed on the next comparison after the five-minute cache expires. Cached verified sources consume no inspection budget, leaving room for other pending sources. A pending comparison is never counted as covered.
 
 Scheduled PRV review actions retain the coverage state. Coverage differences and unverified/ambiguous existing products require explicit product approval before automatic writes; existing pending public validation can continue. Regression fixtures cover both rejection and explicit approval.
+
+## PRV preview/import identity (v6)
+
+Preview resolves unique published identities to their existing code and metadata. Ambiguous names, conflicting codes, unavailable coverage and restricted sources are not writable. A parsed source already matching its published product returns already_covered. Writable previews carry a review token binding article URL, canonical code, full parsed-row fingerprint and immutable public product file.
+
+Import requires that token and target code, recreates the preview, reparses the full source and checks the fingerprint rather than row count alone. Inside the import lock it checks Index and Products metadata for unpublished or conflicting identities before modifying rows. A conflicting or unreviewed existing Sheet identity stops the write. Scheduled imports pass their fresh preview token and canonical target too. Legacy clients must reopen the current preview before writing.

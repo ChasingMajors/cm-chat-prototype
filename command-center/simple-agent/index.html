@@ -399,7 +399,7 @@
 
   <script>
     (function () {
-      const VERSION = "simple-agent-coverage-v5-2026-10-17";
+      const VERSION = "simple-agent-import-v6-2026-10-17";
       const DEFAULT_OPERATOR_URL = "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec";
       const OPERATOR_WRITE_KEY = "cm_command_center_operator_write_key_v1";
       const JSON_RETRY_QUEUE_KEY = "cm_simple_agent_json_retry_queue_v1";
@@ -1121,14 +1121,14 @@
         const checklistMeta = type === "checklist"
           ? '<span class="tag">Parallels: ' + formatNumber(data.parallel_count || 0) + '</span><span class="tag">Target: ' + escapeHtml(product.target_bucket || "") + '</span>'
           : "";
-        const writeLabel = type === "prv" ? "Write PRV Temp Data" : "Write to Google Sheet";
+        const writeLabel = type === "prv" ? data.status === "already_covered" ? "Already up to date" : "Review needed" : "Write to Google Sheet";
         const guardrail = type === "prv"
           ? products.length > 1
             ? "This trial page found multiple PRV products in one source. Product-specific PRV write is intentionally blocked until rows are split by product."
             : "Review the sample rows before writing. A single-product source can be imported with recovery protection, then published as a background job."
           : "Review the sample rows before writing. This action replaces this product’s rows exactly, including removing obsolete rows, and keeps a recovery snapshot. Unrelated products are preserved.";
-        const writeButton = type === "prv" && !data.multi_product && products.length <= 1 && data.status === "preview_ready" && data.source_url
-          ? '<button class="primary" type="button" data-write-prv-source="' + escapeHtml(data.source_url) + '" data-write-prv-sport="' + escapeHtml(product.sport || "") + '">Write Print Run Data</button>'
+        const writeButton = type === "prv" && !data.multi_product && products.length <= 1 && data.status === "preview_ready" && data.preview_token && data.source_url
+          ? '<button class="primary" type="button" data-write-prv-source="' + escapeHtml(data.source_url) + '" data-write-prv-sport="' + escapeHtml(product.sport || "") + '" data-prv-review-token="' + escapeHtml(data.preview_token || "") + '" data-prv-target-code="' + escapeHtml(product.code || "") + '">Write Print Run Data</button>'
           : type === "checklist" && data.status === "preview_ready" && data.source_url
           ? '<button class="primary" type="button" data-write-checklist-source="' + escapeHtml(data.source_url || "") + '" data-write-checklist-sport="' + escapeHtml(product.sport || "") + '">Write to Google Sheet</button>'
           : '<button type="button" disabled>' + escapeHtml(writeLabel) + '</button>';
@@ -1142,6 +1142,7 @@
             <span class="tag">Rows: ${formatNumber(data.row_count || 0)}</span>
             ${checklistMeta}
           </div>
+          ${type === "prv" && data.coverage_review ? '<div class="guardrail">' + escapeHtml(data.coverage_review.reason || data.coverage_review.state || "") + '</div>' : ""}
           ${type === "prv" ? renderPrvProductChoices(products) : ""}
           <div class="preview-grid">
             <div>
@@ -1457,12 +1458,12 @@
         } finally { state.publishInFlight = false; }
       }
 
-      async function writePrvSource(sourceUrl, sport) {
+      async function writePrvSource(sourceUrl, sport, previewToken, targetCode) {
         const key = requireOperatorKey();
         if (!key) return;
         openPreviewModal("Writing print-run data", "The source rows will be validated and saved with a recovery snapshot.", '<div class="status-line"><span class="dot working"></span><span>Writing PRV rows.</span></div>');
         try {
-          const data = await postOperatorJson(DEFAULT_OPERATOR_URL,{action:"executePrvSourceImport",sourceUrl:sourceUrl,sport:sport,key:key},240000);
+          const data = await postOperatorJson(DEFAULT_OPERATOR_URL,{action:"executePrvSourceImport",sourceUrl:sourceUrl,sport:sport,key:key,previewToken:previewToken,targetCode:targetCode},240000);
           if (data && data.ok) {
             data.target_tool="prv";
             data.source_validation=data.validation;
@@ -1622,7 +1623,7 @@
       });
       document.addEventListener("click", event => {
         const button = event.target.closest("[data-write-prv-source]");
-        if (button) writePrvSource(button.dataset.writePrvSource,button.dataset.writePrvSport || "");
+        if (button) writePrvSource(button.dataset.writePrvSource,button.dataset.writePrvSport || "",button.dataset.prvReviewToken || "",button.dataset.prvTargetCode || "");
       });
       document.addEventListener("click", event => {
         const button = event.target.closest("[data-publish-json]");

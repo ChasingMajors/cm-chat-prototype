@@ -1,0 +1,24 @@
+import fs from 'node:fs';import vm from 'node:vm';import assert from 'node:assert/strict';import crypto from 'node:crypto';
+const c=vm.createContext({Utilities:{DigestAlgorithm:{SHA_256:'sha256'},computeDigest:(_,s)=>[...crypto.createHash('sha256').update(s).digest()]}});vm.runInContext(fs.readFileSync(new URL('../command-center/operator-backend/Code.gs',import.meta.url),'utf8'),c);
+const product={code:'generated',display_name:'2026 Topps Chrome MLS',sport:'soccer',year:'2026'};
+const existing={code:'legacy-code',name:'2026 Topps Chrome MLS Soccer',sport:'soccer',year:'2026',public_file:'legacy-code-abc.json'};
+assert.equal(c.resolvePrvImportIdentity_(product,[existing]).match.code,'legacy-code');
+assert.equal(c.resolvePrvImportIdentity_(product,[existing,{...existing,code:'duplicate'}]).state,'uncertain');
+assert.equal(c.resolvePrvImportIdentity_(product,[{...existing,name:'2025 Topps Chrome MLS Soccer',code:'generated'}]).state,'uncertain');
+assert.equal(c.resolvePrvImportIdentity_(product,[]).state,'new');
+const rows=[{setType:'Base',setLine:'Base',printRun:100,serial:'',subSetSize:200}];
+c.fetchVaultPublicIndexRows_=()=>[existing];c.fetchText_=()=>JSON.stringify({meta:{code:'legacy-code',sport:'soccer'},rows:[{set_name:'Base',measurement:{value:100,kind:'estimate'},checklist_size:200,raw:{}}]});
+let target={...product},r=c.reviewPrvImportPreview_(target,rows,'source',false);assert.equal(target.code,'legacy-code');assert.equal(r.state,'already_covered');assert.ok(r.token);
+r=c.reviewPrvImportPreview_({...product},rows,'source',true);assert.equal(r.state,'blocked');
+c.fetchText_=()=>{throw Error('unavailable');};assert.throws(()=>c.reviewPrvImportPreview_({...product},rows,'source',false),/unavailable/);
+c.runRecoverableImport_=(_,kind,fn)=>fn();let writes=0;
+c.upsertPrvIndex_=()=>writes++;c.replaceRowsByCode_=()=>writes++;c.SpreadsheetApp={openById:()=>({getId:()=> 'fixture'})};c.getVaultSpreadsheetId_=()=> 'fixture';c.readPrvImportCatalog_=()=>[existing];c.fetchText_=()=> 'article';c.extractSubstackBodyHtml_=x=>x;c.parseSlabSquatchPrintRunRows_=()=>rows;c.validateWrittenPrvProduct_=()=>({ok:true,index_rows:1,product_rows:1});
+const preview={ok:true,status:'preview_ready',row_count:1,preview_token:'token',source_fingerprint:c.prvImportRowsFingerprint_(rows),identity_state:'existing',product:{...product,code:'legacy-code'}};
+c.previewPrvSource_=()=>preview;
+assert.equal(c.executePrvSourceImport_({sourceUrl:'source',previewToken:'old-token',targetCode:'legacy-code'}).ok,false);assert.equal(writes,0);
+assert.equal(c.executePrvSourceImport_({sourceUrl:'source',previewToken:'token',targetCode:'wrong-code'}).ok,false);assert.equal(writes,0);
+c.parseSlabSquatchPrintRunRows_=()=>[{...rows[0],printRun:101}];assert.throws(()=>c.executePrvSourceImport_({sourceUrl:'source',previewToken:'token',targetCode:'legacy-code'}),/source changed/);assert.equal(writes,0);
+c.parseSlabSquatchPrintRunRows_=()=>rows;c.readPrvImportCatalog_=()=>[{...existing,code:'another-existing-code'}];assert.throws(()=>c.executePrvSourceImport_({sourceUrl:'source',previewToken:'token',targetCode:'legacy-code'}),/unreviewed identity/);assert.equal(writes,0);
+c.readPrvImportCatalog_=()=>[existing];assert.equal(c.executePrvSourceImport_({sourceUrl:'source',previewToken:'token',targetCode:'legacy-code'}).ok,true);assert.equal(writes,2);
+for(const file of ['command-center/index.html','command-center/simple-agent/index.html']){const script=fs.readFileSync(new URL('../'+file,import.meta.url),'utf8').match(/<script>([\s\S]*?)<\/script>/)[1];new vm.Script(script);assert.ok(script.includes('data-prv-review-token='));assert.ok(script.includes('targetCode:targetCode'));}
+console.log('PRV import identity: canonical code reuse, duplicate blocking, no-change preview, restricted sources, target/token binding and same-count source changes passed.');

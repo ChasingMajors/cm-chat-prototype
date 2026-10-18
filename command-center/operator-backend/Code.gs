@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-10-17-operator-coverage-v5-approval";
+const CM_OPERATOR_VERSION = "2026-10-17-operator-import-identity-v6";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -1039,11 +1039,17 @@ function previewPrvSource_(input) {
   });
   const product = products[0] || buildPrvProductPreview_(productName, sport, sourceUrl);
   const paywalled = isSubstackPostPaywalled_(html, bodyHtml);
+  let review={state:"blocked",coverage:{state:"unverified",reason:"Select a single parsed product before writing."}};
+  if(rows.length && products.length===1){try{review=reviewPrvImportPreview_(product,rows,sourceUrl,paywalled);}catch(err){review={state:"blocked",coverage:{state:"unverified",reason:err.message || String(err)}};}}
 
   return {
     ok: true,
     mode: "prv_preview_only",
-    status: rows.length ? "preview_ready" : "needs_review",
+    status: review.state==="already_covered" ? "already_covered" : review.state==="ready" ? "preview_ready" : "needs_review",
+    coverage_review:review.coverage,
+    identity_state:review.identity_state || "unverified",
+    source_fingerprint:review.fingerprint || "",
+    preview_token:review.token || "",
     source_url: sourceUrl,
     product: product,
     products: products,
@@ -1051,12 +1057,12 @@ function previewPrvSource_(input) {
     row_count: rows.length,
     rows: rows.slice(0, 200),
     sample_rows: rows.slice(0, 12),
-    warnings: rows.length
+    warnings: paywalled ? ["Restricted source content cannot be imported."] : rows.length
       ? []
       : [paywalled
         ? "Source post appears paid/locked. Public HTML does not expose writable print-run rows."
         : "No print-run rows were parsed from the source post."],
-    next_step: "Review PRV preview rows. Sheet write is intentionally not enabled yet."
+    next_step: review.coverage.reason
   };
 }
 
@@ -1569,6 +1575,53 @@ function normalizePrvSetType_(heading) {
   if (h.indexOf("parallel") > -1) return "Parallel";
   if (h.indexOf("base") > -1) return "Base";
   return titleCase_(heading).replace(/\s*\(\d+\s*Card\s*Cl\)\s*$/i, "");
+}
+
+function resolvePrvImportIdentity_(product, catalog) {
+  const key=prvCoverageProductKey_(product.display_name,product.sport);
+  const exact=(catalog || []).filter(function(row){return normalize_(row.sport)===product.sport && prvCoverageProductKey_(row.name,product.sport)===key;});
+  const unique={};exact.forEach(function(row){unique[row.code]=row;});
+  const matches=Object.keys(unique);
+  if(matches.length===1) return {state:"existing",match:unique[matches[0]]};
+  if(matches.length>1) return {state:"uncertain",reason:"Multiple existing codes match this product. Resolve the duplicate identities before importing."};
+  if((catalog || []).some(function(row){return row.code===product.code;})) return {state:"uncertain",reason:"The generated code belongs to a different product identity."};
+  const near=findVaultIndexMatch_(product.display_name,product.sport,catalog || []);
+  if(near && near.score>=140) return {state:"uncertain",reason:"A similar existing product needs an identity review before a new code can be created."};
+  return {state:"new"};
+}
+
+function prvImportRowsFingerprint_(rows) {
+  return hashSentinelAlertKey_(JSON.stringify(rows.map(function(row){return [row.setType,row.setLine,row.printRun,row.serial,row.subSetSize];})));
+}
+
+function reviewPrvImportPreview_(product, rows, sourceUrl, paywalled) {
+  const fingerprint=prvImportRowsFingerprint_(rows);
+  if(paywalled) return {state:"blocked",coverage:{state:"blocked_source",reason:"Restricted source content cannot replace published PRV data."},fingerprint:fingerprint};
+  const catalog=fetchVaultPublicIndexRows_(),identity=resolvePrvImportIdentity_(product,catalog);
+  if(identity.state==="uncertain") return {state:"blocked",coverage:{state:"uncertain_match",reason:identity.reason},fingerprint:fingerprint};
+  let coverage={state:"product_not_found",reason:"No existing product identity was found in published PRV data."},publicFile="";
+  if(identity.match){
+    const match=identity.match;publicFile=match.public_file;
+    if(!/^[a-z0-9][a-z0-9-]*\.json$/i.test(publicFile || "")) throw new Error("Published product file is unavailable.");
+    const payload=JSON.parse(fetchText_(CM_APP_DATA_BASE.replace(/\/v1$/, "/v2/vault/products/")+publicFile));
+    if(!payload.meta || payload.meta.code!==match.code || normalize_(payload.meta.sport)!==product.sport || !Array.isArray(payload.rows)) throw new Error("Published product identity could not be verified.");
+    Object.assign(product,{code:match.code,display_name:match.name,year:match.year || product.year,manufacturer:match.manufacturer || product.manufacturer,product:match.product || product.product,keywords:match.keywords || product.keywords});
+    coverage=comparePrvCoverageRows_(rows,payload.rows);
+    coverage.reason=coverage.state==="parsed_rows_match" ? "All parsed source rows already match this published product. No write is needed." : coverage.state==="uncertain_match" ? "Published rows cannot be compared unambiguously; review before replacing them." : "Review the differences before replacing rows for this existing product.";
+  }
+  const writable=coverage.state!=="parsed_rows_match" && coverage.state!=="uncertain_match" && coverage.state!=="unverified";
+  return {state:coverage.state==="parsed_rows_match" ? "already_covered" : writable ? "ready" : "blocked",identity_state:identity.state,coverage:coverage,fingerprint:fingerprint,token:hashSentinelAlertKey_(JSON.stringify([sourceUrl,product.code,fingerprint,publicFile,identity.state]))};
+}
+
+function readPrvImportCatalog_(ss) {
+  const byCode={};
+  [CM_PRV_INDEX_SHEET,CM_PRODUCTS_SHEET].forEach(function(name){
+    const sheet=ss.getSheetByName(name);if(!sheet)return;
+    const values=sheet.getDataRange().getValues();if(!values.length)return;
+    const headers=values[0].map(function(h){return normalize_(h).replace(/[^a-z0-9]/g,"");});
+    values.slice(1).forEach(function(cells){const row={};headers.forEach(function(h,i){row[h]=safeString_(cells[i]);});if(!row.code || byCode[row.code])return;byCode[row.code]={code:row.code,name:row.displayname,sport:normalize_(row.sport),year:row.year,keywords:row.keywords};});
+  });
+  return Object.keys(byCode).map(function(code){return byCode[code];});
 }
 
 function buildPrvProductPreview_(productName, sport, sourceUrl) {
@@ -5083,7 +5136,7 @@ function runScheduledPrvAutoAction_(action, key) {
   const write = executePrvSourceImport_({
     sourceUrl: action.sourceUrl || action.runUrl || "",
     sport: action.sport || "",
-    key: key
+    key: key,previewToken:preview.preview_token,targetCode:preview.product.code
   });
 
   if (!write || !write.ok) {
@@ -6536,11 +6589,14 @@ function executePrvSourceImport_(input) {
     const preview = previewPrvSource_(input);
     if (!preview || !preview.ok || preview.status !== "preview_ready") return {ok:false,error:"PRV source is not ready for import.",preview:preview};
     if (preview.multi_product) return {ok:false,error:"This article contains multiple products. Split and review their rows before importing.",preview:preview};
+    if(!input.previewToken || input.previewToken!==preview.preview_token || input.targetCode!==preview.product.code) return {ok:false,error:"The reviewed source or product target changed. Reopen the preview before writing.",preview:preview};
     // Parse the full source again for the write; the preview response is capped.
     const html = fetchText_(input.sourceUrl || input.url);
     const rows = parseSlabSquatchPrintRunRows_(extractSubstackBodyHtml_(html),input.sourceUrl || input.url);
-    if (!rows.length || rows.length !== preview.row_count) throw new Error("PRV source changed or could not be fully parsed. Preview it again before writing.");
+    if (!rows.length || rows.length !== preview.row_count || prvImportRowsFingerprint_(rows)!==preview.source_fingerprint) throw new Error("PRV source changed or could not be fully parsed. Preview it again before writing.");
     const product = preview.product, ss = SpreadsheetApp.openById(getVaultSpreadsheetId_());
+    const authoritative=resolvePrvImportIdentity_(product,readPrvImportCatalog_(ss));
+    if(authoritative.state==="uncertain" || authoritative.match && (authoritative.match.code!==product.code || preview.identity_state!=="existing")) throw new Error("The source Sheet already contains this product under an unreviewed identity. Resolve its existing code before importing.");
     upsertPrvIndex_(ss,product);
     replaceRowsByCode_(ss,CM_PRODUCTS_SHEET,product.code,rows.map(row => prvRowToSheetObject_(product,row)),
       ["code","display_name","keywords","year","sport","manufacturer","product","setType","setLine","printRun","serial","subSetSize","notes","cmURL"]);

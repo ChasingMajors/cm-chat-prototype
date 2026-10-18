@@ -27,7 +27,7 @@
  * - Source import writes are idempotent by product code.
  *******************************************************/
 
-const CM_OPERATOR_VERSION = "2026-10-17-operator-import-identity-v6-r1";
+const CM_OPERATOR_VERSION = "2026-10-17-operator-import-identity-v6-r2";
 const CM_SCHEDULED_AUTO_ACTION_LIMIT = 1;
 const CM_MANUAL_AUTO_ACTION_LIMIT = 3;
 const CM_PUBLIC_VALIDATION_RETRY_LIMIT = 5;
@@ -1455,7 +1455,7 @@ function parseSlabSquatchPrintRunLine_(line, heading, setType, sourceUrl) {
   const cardListMatch = text.match(/\((\d+)\s*card\s*CL\)/i) ||
     safeString_(heading).match(/\((\d+)\s*card\s*CL\)/i);
   let setLine = text
-    .replace(/\s*-\s*~\s*[\d,]+\s*ea.*$/i, "")
+    .replace(/\s*[-:]\s*~\s*[\d,]+\s*ea.*$/i, "")
     .replace(/^~\s*[\d,]+\s*ea.*$/i, "")
     .replace(/\b(?:print\s*run|pr|production|numbered\s*to|limited\s*to|limited|copies|copy|made)\b\s*[:\-]?\s*~?\s*[\d,]+(?:\s*(?:ea|each|copies|copy|cards?))?/ig, "")
     .replace(/\s*[-–—]\s*~?\s*[\d,]+\s*(?:ea|each|copies|copy|cards?)\b.*$/i, "")

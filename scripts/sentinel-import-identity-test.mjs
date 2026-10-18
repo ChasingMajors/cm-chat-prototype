@@ -11,6 +11,11 @@ c.fetchVaultPublicIndexRows_=()=>[existing];c.fetchText_=()=>JSON.stringify({met
 let target={...product},r=c.reviewPrvImportPreview_(target,rows,'source',false);assert.equal(target.code,'legacy-code');assert.equal(r.state,'already_covered');assert.ok(r.token);
 r=c.reviewPrvImportPreview_({...product},rows,'source',true);assert.equal(r.state,'blocked');
 c.fetchText_=()=>{throw Error('unavailable');};assert.throws(()=>c.reviewPrvImportPreview_({...product},rows,'source',false),/unavailable/);
+c.fetchVaultPublicIndexRows_=()=>[existing];
+c.fetchText_=url=>url.includes('/products/')?JSON.stringify({meta:{code:'legacy-code',sport:'soccer'},rows:[{set_name:'Base',measurement:{value:100,kind:'estimate'},raw:{}}]}):'article';
+c.extractSubstackPostTitle_=()=>product.display_name;c.extractSubstackBodyHtml_=()=>'<p>Base: ~100 ea</p>';
+const actualPreview=c.previewPrvSource_({sourceUrl:'https://slabsquatch.substack.com/p/fixture',sport:'soccer'});
+assert.equal(actualPreview.status,'already_covered');assert.equal(actualPreview.product.code,'legacy-code');assert.equal(actualPreview.row_count,1);
 c.runRecoverableImport_=(_,kind,fn)=>fn();let writes=0;
 c.upsertPrvIndex_=()=>writes++;c.replaceRowsByCode_=()=>writes++;c.SpreadsheetApp={openById:()=>({getId:()=> 'fixture'})};c.getVaultSpreadsheetId_=()=> 'fixture';c.readPrvImportCatalog_=()=>[existing];c.fetchText_=()=> 'article';c.extractSubstackBodyHtml_=x=>x;c.parseSlabSquatchPrintRunRows_=()=>rows;c.validateWrittenPrvProduct_=()=>({ok:true,index_rows:1,product_rows:1});
 const preview={ok:true,status:'preview_ready',row_count:1,preview_token:'token',source_fingerprint:c.prvImportRowsFingerprint_(rows),identity_state:'existing',product:{...product,code:'legacy-code'}};

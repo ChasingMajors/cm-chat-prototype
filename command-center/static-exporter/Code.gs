@@ -32,6 +32,12 @@ const CM_OPERATOR_KEY_PROPERTY = "CM_OPERATOR_KEY";
 const CM_PUBLIC_DATA_BASE = "https://app.chasingmajors.com/data/v1";
 const CM_PUBLIC_VALIDATION_RETRIES = 6;
 const CM_PUBLIC_VALIDATION_PAUSE_MS = 2500;
+// Escalate a job stuck in published_pages_pending (GitHub commit succeeded but
+// public propagation unconfirmed) after this many ms. Well under the 24h hard-fail.
+const CM_PUBLISHED_PAGES_PENDING_MAX_AGE_MS = 6 * 60 * 60 * 1000;
+// Same Script Property name the Operator backend reads; the Exporter reuses it
+// to deliver stale-publish alerts via its own minimal UrlFetchApp POST.
+const CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY = "CM_SENTINEL_ALERT_WEBHOOK_URL";
 
 let CM_DRIVE_WRITE_COUNT = 0;
 
@@ -4830,10 +4836,64 @@ function enqueuePipelineJobInitial_(kind, input) {
   } finally { lock.releaseLock(); }
 }
 
+// Pure decision seam (no side effects, never throws): a published_pages_pending
+// job whose age reference is older than thresholdMs must be escalated.
+function shouldEscalatePendingJob_(data, nowMs, thresholdMs) {
+  if (!data || data.stage !== "published_pages_pending") return false;
+  const ref = Date.parse(data.verification_started_at || data.updated_at || data.created_at);
+  return Number.isFinite(ref) && (nowMs - ref) >= thresholdMs;
+}
+
+// Transition a stale pending job into the explicit, recoverable escalated state
+// published_pages_timeout, preserving all receipt evidence, and attempt one alert.
+// The GitHub commit succeeded; only public propagation is unconfirmed, so this is
+// NOT a hard failure. Called at most once per job (the stage leaves the pending
+// selection list, so later ticks do not re-escalate or re-alert).
+function escalatePendingPublishJob_(job, nowMs) {
+  const data = job.data;
+  const ref = Date.parse(data.verification_started_at || data.updated_at || data.created_at);
+  const ageMs = Number.isFinite(ref) ? nowMs - ref : null;
+  data.stage = "published_pages_timeout";
+  data.escalated = true;
+  data.escalated_at = new Date(nowMs).toISOString();
+  data.error = "The GitHub commit succeeded, but public GitHub Pages propagation could not be confirmed within the escalation threshold. The job is escalated for attention; a manual Resume/Verify can still re-check it and promote it to complete if Pages later propagates.";
+  savePipelineJob_(job);
+  // The worker must never break if alert delivery fails.
+  try { sendExporterStalePublishAlert_(data, ageMs); } catch (err) {}
+}
+
+// Minimal webhook sender mirroring the Operator's postSentinelAlertWebhook_.
+// Safe-by-default: with no webhook property configured, no network call is made
+// and nothing throws. Admin keys are never included in the payload.
+function sendExporterStalePublishAlert_(data, ageMs) {
+  const url = String(PropertiesService.getScriptProperties().getProperty(CM_SENTINEL_ALERT_WEBHOOK_URL_PROPERTY) || "").trim();
+  if (!url) return {ok:true,status:"skipped_no_destination"};
+  const payload = {
+    app: "CM Sentinel Exporter",
+    severity: "needs_review",
+    title: "Publish stuck in published_pages_pending",
+    job_id: data.id,
+    code: data.code || "",
+    kind: data.kind || "",
+    state: "published_pages_timeout",
+    age_ms: Number.isFinite(ageMs) ? ageMs : null,
+    commit: data.commit || "",
+    timestamp: data.escalated_at || new Date().toISOString()
+  };
+  try {
+    const res = UrlFetchApp.fetch(url, {method:"post",contentType:"application/json",muteHttpExceptions:true,payload:JSON.stringify(payload)});
+    const status = res.getResponseCode();
+    if (status < 200 || status >= 300) return {ok:false,error:"HTTP " + status + ": " + res.getContentText().slice(0,240)};
+    return {ok:true,status:status};
+  } catch (err) {
+    return {ok:false,error:err && err.message ? err.message : String(err)};
+  }
+}
+
 function publicPipelineJob_(job, refresh) {
   const data = job.data;
   // Verification is read-only and can safely run after a browser reconnect.
-  if (refresh && data.expected && ["committing","committed","verifying","published_pages_pending"].includes(data.stage)) {
+  if (refresh && data.expected && ["committing","committed","verifying","published_pages_pending","published_pages_timeout"].includes(data.stage)) {
     const validation = data.kind === "prv" ? verifyPrvReleaseBoth_(data.code,data.expected) : verifyChecklistReleaseBoth_(data.sport,data.code,data.expected);
     const now = new Date().toISOString();
     data.verification_started_at = data.verification_started_at || data.updated_at || now;
@@ -4849,6 +4909,12 @@ function publicPipelineJob_(job, refresh) {
       data.stage = "failed";
       data.error = "The expected release could not be verified within 24 hours. It may have been replaced by a newer release or deployment may have failed. Inspect the saved commit and validation before explicitly retrying; no upload was repeated.";
       data.result.ok = false;
+    } else if (data.escalated) {
+      // An escalated job stays escalated on an unsuccessful manual re-check; only
+      // a confirmed propagation (handled above) can promote it to complete.
+      data.stage = "published_pages_timeout";
+      data.result.ok = false;
+      data.result.status = "published_pages_timeout";
     } else {
       data.stage = validation.github.ok ? "published_pages_pending" : "verifying";
       data.result.ok = validation.github.ok;
@@ -4858,7 +4924,7 @@ function publicPipelineJob_(job, refresh) {
     savePipelineJob_(job);
   }
   const result = data.result || {};
-  return Object.assign({},result,{ok:data.stage === "complete" || data.stage === "published_pages_pending",status:data.stage === "complete" ? "published_and_public_validated" : data.stage === "published_pages_pending" ? "published_pages_pending" : data.stage === "failed" ? "publish_failed" : "publish_" + data.stage,
+  return Object.assign({},result,{ok:data.stage === "complete" || data.stage === "published_pages_pending",status:data.stage === "complete" ? "published_and_public_validated" : data.stage === "published_pages_pending" ? "published_pages_pending" : data.stage === "published_pages_timeout" ? "published_pages_timeout" : data.stage === "failed" ? "publish_failed" : "publish_" + data.stage,
     error:data.error || result.error || "",job:{id:data.id,stage:data.stage,attempts:data.attempts,commit:data.commit || "",created_at:data.created_at,updated_at:data.updated_at || data.created_at}});
 }
 
@@ -5012,6 +5078,10 @@ function runSentinelPublishJobs() {
       if (["running","committing","committed","verifying"].includes(data.stage) && Date.now() - new Date(data.updated_at || data.created_at).getTime() > 600000) {
         if (!data.expected) { data.stage="failed"; data.error="Previous worker was interrupted. Inspect this job before explicitly retrying."; savePipelineJob_(job); }
       }
+      // A job stuck in published_pages_pending past the max age escalates once to
+      // published_pages_timeout (recoverable, not a failure) with a single alert;
+      // it is not selected for the opportunistic re-check on the escalating tick.
+      if (shouldEscalatePendingJob_(data, Date.now(), CM_PUBLISHED_PAGES_PENDING_MAX_AGE_MS)) { escalatePendingPublishJob_(job, Date.now()); return; }
       if (data.expected && ["committing","committed","verifying","published_pages_pending"].includes(data.stage) && (!pending || (data.verification_checked_at || data.updated_at || data.created_at) < (pending.data.verification_checked_at || pending.data.updated_at || pending.data.created_at))) pending=job;
       if (data.stage === "queued" && (!next || data.created_at < next.data.created_at)) next=job;
     });

@@ -374,7 +374,7 @@ async function buildDirectPrintRunResponse(action) {
       type: "standard",
       badge: "Print Run",
       title: product.name || "Print Run",
-      summary: "I found the exact product, but no print run rows were returned yet.",
+      summary: "Print-run data is not available for this product yet.",
       metadata: uniq([
         product.year ? `Year: ${product.year}` : "",
         product.sport ? `Sport: ${titleCase(product.sport)}` : "",
@@ -5217,7 +5217,7 @@ async function buildPrintRunResponse(query) {
       type: "standard",
       badge: "Print Run",
       title: product.name,
-      summary: "I found the product in the vault index, but no print run rows were returned yet.",
+      summary: "Print-run data is not available for this product yet.",
       metadata: uniq([
         product.year ? `Year: ${product.year}` : "",
         product.sport ? `Sport: ${titleCase(product.sport)}` : "",

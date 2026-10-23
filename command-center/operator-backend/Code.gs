@@ -1872,7 +1872,10 @@ function reviewPrvSourceCoverage_(item, vaultRows, budget) {
       const descriptions={parsed_rows_match:"All parsed source rows match published names, values and available checklist counts. Article parsing may omit unsupported content.",partially_covered:"Existing product is missing source groups; review additions before importing.",source_updated:"Source values or checklist counts differ from published data; review the changes.",uncertain_match:"Source rows cannot be matched unambiguously or use different measurement types.",unverified:"No comparable print-run rows could be parsed; coverage remains unverified."};
       result={status:comparison.state==="parsed_rows_match" ? "covered" : ["partially_covered","source_updated"].indexOf(comparison.state)>=0 ? "possible_update" : "needs_review",coverage_state:comparison.state,comparison:comparison,source_fingerprint:hashSentinelAlertKey_(JSON.stringify(sourceRows.map(function(r){return [r.setType,r.setLine,r.printRun,r.serial,r.subSetSize];}))),reason:descriptions[comparison.state]};
     }
-  } catch(err) {return Object.assign({},item,{status:"needs_review",coverage_state:"unverified",reason:"Coverage check failed: "+(err.message || String(err))});}
+  } catch(err) {
+    if (err && err.statusCode === 404) return Object.assign({},item,{status:"needs_review",coverage_state:"data_unavailable",reason:"PRV has no published file for this product yet; it is recognized as not available, not an error."});
+    return Object.assign({},item,{status:"needs_review",coverage_state:"unverified",reason:"Coverage check failed: "+(err.message || String(err))});
+  }
   result.coverage_checked_at=new Date().toISOString();
   if(cache) cache.put(cacheKey,JSON.stringify(result),300);
   return Object.assign({},item,result);
@@ -6175,7 +6178,9 @@ function fetchText_(url) {
 
   const code = res.getResponseCode();
   if (code < 200 || code >= 300) {
-    throw new Error("Fetch failed " + code + " for " + url);
+    const err = new Error("Fetch failed " + code + " for " + url);
+    err.statusCode = code;
+    throw err;
   }
 
   return res.getContentText();

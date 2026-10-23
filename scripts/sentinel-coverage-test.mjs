@@ -25,6 +25,14 @@ result=c.reviewPrvSourceCoverage_(item,[{...index,public_file:'target-new.json'}
 result=c.reviewPrvSourceCoverage_(item,[index,{...index,code:'duplicate'}],{remaining:8});assert.equal(result.coverage_state,'uncertain_match');
 result=c.reviewPrvSourceCoverage_({...item,title:'2025 Topps Chrome Baseball'},[index],{remaining:8});assert.equal(result.coverage_state,'uncertain_match');
 cache.clear();c.fetchText_=()=>{throw Error('offline');};result=c.reviewPrvSourceCoverage_(item,[index],{remaining:8});assert.equal(result.coverage_state,'unverified');assert.equal(cache.size,0);
+// PRV 404 fix (Layer B): a matched product whose published file 404s (stale index) must read as a clean
+// informational 'data_unavailable' state, not the generic 'unverified' "Coverage check failed" error.
+cache.clear();c.extractSubstackBodyHtml_=()=>'body';c.isSubstackPostPaywalled_=()=>false;c.extractSubstackPostTitle_=()=>index.name;c.parseSlabSquatchPrintRunRows_=()=>[src('One')];c.splitPrvProductTitles_=()=>[index.name];
+c.fetchText_=url=>{if(url.includes('/products/')){const e=new Error('Fetch failed 404 for '+url);e.statusCode=404;throw e;}return 'article';};
+result=c.reviewPrvSourceCoverage_(item,[index],{remaining:8});assert.equal(result.coverage_state,'data_unavailable','a 404 on a matched product file is a clean not-available state');assert.notEqual(result.coverage_state,'unverified','a 404 must not read as a generic coverage failure');
+// Regression: a non-404 file-fetch failure still reads as 'unverified'.
+c.fetchText_=url=>{if(url.includes('/products/')){const e=new Error('Fetch failed 503 for '+url);e.statusCode=503;throw e;}return 'article';};
+result=c.reviewPrvSourceCoverage_(item,[index],{remaining:8});assert.equal(result.coverage_state,'unverified','a 5xx file-fetch failure still reads as unverified');
 c.fetchText_=()=> 'article';c.isSubstackPostPaywalled_=()=>true;result=c.reviewPrvSourceCoverage_(item,[index],{remaining:8});assert.equal(result.status,'known_issue');assert.notEqual(result.status,'covered');
 c.fetchText_=()=> '{}';assert.throws(()=>c.fetchVaultPublicIndexRows_(),/coverage is unavailable/);
 assert.equal(c.classifyPrvSourceItem_(item,[index]).status,'needs_review','positive row count alone cannot mean covered');

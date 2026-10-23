@@ -31,7 +31,11 @@ window.CMChat.api = window.CMChat.api || {};
         cache: "force-cache",
         signal: controller.signal
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) {
+        const err = new Error(`HTTP ${res.status}`);
+        err.status = res.status;
+        throw err;
+      }
       const data = await res.json();
       staticJsonCache.set(url, data);
       return data;
@@ -181,17 +185,30 @@ window.CMChat.api = window.CMChat.api || {};
     const cacheKey = utils.makeKey("vault-product", target);
     if (productCache.has(cacheKey)) return productCache.get(cacheKey);
 
-    const manifest = await fetchStaticJson(staticPath("/vault/products/all.json"));
-    const shardName = manifest.product_map?.[target] || manifest.productMap?.[target] || "";
-    const shardNames = shardName ? [shardName] : (manifest.shards || []);
+    try {
+      const manifest = await fetchStaticJson(staticPath("/vault/products/all.json"));
+      const shardName = manifest.product_map?.[target] || manifest.productMap?.[target] || "";
+      const shardNames = shardName ? [shardName] : (manifest.shards || []);
 
-    for (const shard of shardNames) {
-      const shardData = await fetchStaticJson(staticPath(`/vault/products/${shard}`));
-      const product = shardData.products?.[target];
-      if (product) {
-        productCache.set(cacheKey, product);
-        return product;
+      for (const shard of shardNames) {
+        const shardData = await fetchStaticJson(staticPath(`/vault/products/${shard}`));
+        const product = shardData.products?.[target];
+        if (product) {
+          productCache.set(cacheKey, product);
+          return product;
+        }
       }
+    } catch (err) {
+      // A 404 (missing manifest or missing shard file) means PRV simply has no
+      // print-run data for this product yet — a normal, expected state for the
+      // ~94% of products without PRV coverage. Treat it as "no data" (null) and
+      // do NOT engage the Apps Script fallback. Any other error (network, timeout,
+      // 5xx) is a real failure and must propagate to getPrintRunData's catch.
+      if (err && err.status === 404) {
+        console.debug("Vault product has no PRV data (404); treating as not available", target);
+        return null;
+      }
+      throw err;
     }
 
     return null;

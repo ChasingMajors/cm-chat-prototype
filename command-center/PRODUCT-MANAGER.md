@@ -57,6 +57,8 @@ Do not push to the production Pages branch or deploy Apps Script until the owner
 2. The owner securely configures `CM_PM_D1_READ_TOKEN` in Script Properties. Never send it through chat or enter it in the static UI. A dashboard URL identifies the database but does not authenticate this REST adapter.
 3. Run `productManagerInitialize()` once as the authorized owner. Keep the returned cache workbook private. It reuses existing Spreadsheet/UrlFetch permissions; this implementation does not require DriveApp access.
 4. Run `productManagerRefresh()` and inspect progress/source errors. Optionally install the five-minute trigger. Verify source totals and card-only counts after hydration.
+
+   After replacing a rejected credential or completing a publication, the owner can run `productManagerRefreshNow()` from the editor to check indexes and D1 immediately. It retains the same bounded file workload and refresh lease. Browser list/detail requests cannot invoke this function. `installProductManagerRefreshTrigger()` creates the five-minute refresh trigger only if none exists for that handler and preserves unrelated triggers.
 5. Update the existing versioned Apps Script deployment, keeping its URL/access settings. Do not create another script or web-app deployment.
 6. Publish the Sentinel navigation, Product Manager static files, and service-worker update through the normal repository review/release path.
 7. Verify real admin authentication, unauthenticated rejection, Google response redirects/CORS, source freshness, and cached list/detail latency on the deployed host. Local preview timings do not establish Apps Script latency.

@@ -238,13 +238,14 @@ function pmD1Due_(snapshot, now) {
   }
   return now-Date.parse(snapshot.d1_checked_at)>86400000;
 }
-function productManagerRefresh() {
+function productManagerRefresh(force) {
+  var forceRead=force===true; // Only the owner wrapper passes true; trigger event objects do not.
   var lease=pmRefreshLease_();
   if (!lease) return {ok:false,busy:true};
   try {
     var snapshot=pmReadSnapshot_(), now=Date.now(), deadline=now+210000;
-    if (snapshot.index_checked_at && now-Date.parse(snapshot.index_checked_at)<3600000 && !pmD1Due_(snapshot,now) && !(snapshot.pending_cv || []).length && !(snapshot.pending_prv || []).length) return {ok:true,unchanged:true};
-    if (!snapshot.index_checked_at || now-Date.parse(snapshot.index_checked_at)>3600000) {
+    if (!forceRead && snapshot.index_checked_at && now-Date.parse(snapshot.index_checked_at)<3600000 && !pmD1Due_(snapshot,now) && !(snapshot.pending_cv || []).length && !(snapshot.pending_prv || []).length) return {ok:true,unchanged:true};
+    if (forceRead || !snapshot.index_checked_at || now-Date.parse(snapshot.index_checked_at)>3600000) {
       var oldCv=snapshot.cv && snapshot.cv.revision, oldPrv=snapshot.prv && snapshot.prv.revision;
       snapshot.cv=pmIndex_(PM_CV_URL,snapshot.cv);
       snapshot.prv=pmIndex_(PM_PRV_URL,snapshot.prv);
@@ -261,7 +262,7 @@ function productManagerRefresh() {
       if (daily) snapshot.cycle_at=new Date(now).toISOString();
       snapshot.index_checked_at=new Date(now).toISOString();
     }
-    if (pmD1Due_(snapshot,now)) {
+    if (forceRead || pmD1Due_(snapshot,now)) {
       try { snapshot.d1=pmD1Inventory_(); }
       catch(err) { snapshot.d1=Object.assign({},snapshot.d1 || {entries:[]},{ok:false,error:err.message}); }
       snapshot.d1_checked_at=new Date(now).toISOString();
@@ -271,4 +272,13 @@ function productManagerRefresh() {
     pmSaveSnapshot_(snapshot);
     return {ok:true,progress:snapshot.progress};
   } finally { pmReleaseLease_(lease); }
+}
+
+// Editor-only owner controls; never dispatched by doGet/doPost.
+function productManagerRefreshNow() { return productManagerRefresh(true); }
+function installProductManagerRefreshTrigger() {
+  var existing=ScriptApp.getProjectTriggers().filter(function(t){return t.getHandlerFunction()==="productManagerRefresh";});
+  if (existing.length) return {ok:true,existing:existing.length};
+  ScriptApp.newTrigger("productManagerRefresh").timeBased().everyMinutes(5).create();
+  return {ok:true,created:true};
 }

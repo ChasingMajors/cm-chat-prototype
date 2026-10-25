@@ -23,7 +23,7 @@ function pmPath_(path) {
   return path.split("/").map(encodeURIComponent).join("/");
 }
 function pmD1Query_(sql, params) {
-  var token=PropertiesService.getScriptProperties().getProperty("CM_PM_D1_READ_TOKEN");
+  var token=String(PropertiesService.getScriptProperties().getProperty("CM_PM_D1_READ_TOKEN") || "").trim();
   if (!token) throw new Error("D1 read credential not configured.");
   // No client-controlled SQL, account, database, or endpoint.
   if ([PM_D1_PRODUCTS_SQL,PM_D1_ORPHANS_SQL].indexOf(sql)<0) throw new Error("Query not allowed.");
@@ -275,7 +275,11 @@ function productManagerRefresh(force) {
 }
 
 // Editor-only owner controls; never dispatched by doGet/doPost.
-function productManagerRefreshNow() { return productManagerRefresh(true); }
+function productManagerRefreshNow() {
+  var token=String(PropertiesService.getScriptProperties().getProperty("CM_PM_D1_READ_TOKEN") || "");
+  if (typeof Logger!=="undefined") Logger.log("D1 credential check (no secret): "+JSON.stringify({configured:!!token.trim(),surrounding_whitespace:token!==token.trim(),looks_like_token_name:/^[a-z]+-[a-z]+-[a-z0-9]{4}$/i.test(token.trim()),account_token_format:/^cfat_/.test(token.trim())}));
+  return productManagerRefresh(true);
+}
 function installProductManagerRefreshTrigger() {
   var existing=ScriptApp.getProjectTriggers().filter(function(t){return t.getHandlerFunction()==="productManagerRefresh";});
   if (existing.length) return {ok:true,existing:existing.length};

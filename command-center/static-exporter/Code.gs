@@ -335,6 +335,105 @@ function exportChecklistStaticData_(dataRoot) {
   }
 }
 
+/* Read-only reconciliation of PRV authoring identities. Original Sheet cells
+ * and public Index identifiers are never rewritten by this adapter. */
+function prvSourceTables_(ss) {
+  return prvReconcileTables_(sheetObjects_(ss.getSheetByName("Index")), sheetObjects_(ss.getSheetByName("Products")));
+}
+function prvReconcileTables_(index, products) {
+  function text(v) { return String(v == null ? "" : v).trim(); }
+  function fold(v) { return text(v).toLowerCase().replace(/\s+/g, " "); }
+  function name(r) { return text(r.displayname || r.display_name); }
+  function identity(r) {
+    const n=name(r), year=text(r.year) || (n.match(/\b(?:19|20)\d{2}(?:[-–]\d{2,4})?\b/) || [""])[0];
+    return n && year && text(r.sport) ? [fold(r.sport),fold(year),fold(n)].join("|") : "";
+  }
+  // Reviewed authoring/publication corrections from the October 25 audit.
+  // Preserve public identifiers and apply only while the source identity is
+  // exact and unique. Combined article titles are retained, never given rows.
+  const reviews=[
+    {from:"2026_topps_cosmic_chrome_early_baseball",to:"2026_topps_cosmic_chrome_baseball_early",name:"2026 Topps Cosmic Chrome Baseball",old:"2026 Topps Cosmic Chrome Baseball Early",year:"2026",sport:"baseball"},
+    {from:"2026_topps_allen_ginter_baseball",to:"2026_topps_allen_ginter_baseball",name:"2026 Topps Allen & Ginter Baseball",old:"2026 Topps Allen & Ginter",year:"2026",sport:"baseball"},
+    {from:"2026_topps_tier_one_baseball",to:"2026_topps_tier_one_baseball",name:"2026 Topps Tier One Baseball",year:"2026",sport:"baseball",add:true},
+    {from:"2025_topps_inception_baseball",to:"2025_topps_inception_baseball",name:"2025 Topps Inception Baseball",year:"2025",sport:"baseball",add:true},
+    {from:"2025_26_topps_inception_basketball",to:"2025_26_topps_inception_basketball",name:"2025-26 Topps Inception Basketball",year:"2025-26",sport:"basketball",add:true}
+  ];
+  index=index.slice();products=products.slice();
+  reviews.forEach(rule => {
+    const rows=products.filter(r=>text(r.code)===rule.from);
+    const expected=identity({displayname:rule.name,year:rule.year,sport:rule.sport});
+    if (!rows.length || rows.some(r=>identity(r)!==expected)) return;
+    const positions=[];index.forEach((r,i)=>{if(text(r.code)===rule.to)positions.push(i);});
+    if (!positions.length && rule.add) {
+      const r=rows[0];index.push({code:rule.to,displayname:rule.name,keywords:text(r.keywords)||rule.name,year:rule.year,sport:rule.sport,manufacturer:text(r.manufacturer),product:text(r.product),cmurl:text(r.cmurl || r.cm_url)});
+    } else if(positions.length===1) {
+      const i=positions[0], r=index[i];
+      if ((fold(name(r))===fold(rule.name) || rule.old && fold(name(r))===fold(rule.old)) && fold(r.sport)===rule.sport && (!text(r.year) || fold(r.year)===fold(rule.year))) index[i]=Object.assign({},r,{displayname:rule.name,year:rule.year});
+      else return;
+    } else return;
+    products=products.map(r=>text(r.code)===rule.from?Object.assign({},r,{code:rule.to}):r);
+  });
+  const codes=new Map(), names=new Map(), sourceIdentities=new Map(), targets=new Map();
+  index.forEach(r => {
+    const code=text(r.code), key=identity(r);
+    if (!code || !name(r)) return;
+    if (!codes.has(code)) codes.set(code,[]);
+    codes.get(code).push(r);
+    if (key) { if (!names.has(key)) names.set(key,[]); names.get(key).push(r); }
+  });
+  products.forEach(r => {
+    const code=text(r.code), key=identity(r);
+    if (!sourceIdentities.has(code)) sourceIdentities.set(code,new Set());
+    sourceIdentities.get(code).add(key);
+    const matches=names.get(key) || [];
+    if (matches.length===1) {
+      const target=text(matches[0].code);
+      if (!targets.has(target)) targets.set(target,new Set());
+      targets.get(target).add(code);
+    }
+  });
+  const report={input_rows:products.length,exact_rows:0,remapped_rows:0,unmatched_rows:0,unmatched:[],mappings:[]};
+  const missing=new Map(), mapped=new Map();
+  const resolved=products.map(r => {
+    const code=text(r.code), direct=codes.get(code) || [], key=identity(r), matches=names.get(key) || [];
+    if (direct.length===1) { report.exact_rows++; return r; }
+    let reason=direct.length>1 ? "Duplicate Index code" : "No exact name, year and sport match in Index";
+    if (!direct.length && matches.length===1) {
+      const target=text(matches[0].code);
+      if (sourceIdentities.get(code).size!==1 || !key) reason="Source code covers multiple or incomplete product identities";
+      else if ((codes.get(target) || []).length!==1) reason="Duplicate target Index code";
+      else if (targets.get(target).size!==1) reason="Multiple Products codes map to one Index identity";
+      else {
+        report.remapped_rows++;
+        const pair=code+"|"+target;
+        if (!mapped.has(pair)) mapped.set(pair,{source_code:code,published_code:target,display_name:name(matches[0]),rows:0});
+        mapped.get(pair).rows++;
+        return Object.assign({},r,{code:target});
+      }
+    } else if (!direct.length && matches.length>1) reason="Ambiguous Index name, year and sport";
+    report.unmatched_rows++;
+    const k=code+"|"+reason;
+    if (!missing.has(k)) missing.set(k,{code:code,reason:reason,rows:0});
+    missing.get(k).rows++;
+    // An unresolved row keeps its original identifier. It is not silently
+    // attached to a similar product or counted as successfully reconciled.
+    return r;
+  });
+  report.unmatched=Array.from(missing.values());report.mappings=Array.from(mapped.values());
+  if (typeof Logger!=="undefined") Logger.log("PRV source reconciliation: "+JSON.stringify({input_rows:report.input_rows,exact_rows:report.exact_rows,remapped_rows:report.remapped_rows,unmatched_rows:report.unmatched_rows,unmatched_codes:report.unmatched.length,mappings:report.mappings,unmatched_sample:report.unmatched.slice(0,20)}));
+  return {index:index,products:resolved,report:report};
+}
+function auditPrvSourceIdentity() {
+  const source=prvSourceTables_(getVaultSpreadsheet_());
+  const wanted=["2026 Bowman Baseball","2026 Bowman Mega Box Baseball","2026 Topps Chrome Black Baseball","2026 Topps Heritage Baseball","2026 Topps Series 1 Baseball","2026 Topps Series 1 Celebration Baseball","2026 Topps Tier One Baseball"];
+  const result=wanted.map(name=>{
+    const matches=source.index.filter(r=>value_(r.displayname || r.display_name)===name);
+    return {name:name,index_matches:matches.length,code:matches.length===1?matches[0].code:null,rows:matches.length===1?source.products.filter(r=>value_(r.code)===value_(matches[0].code)).length:null};
+  });
+  Logger.log("PRV REPAIR PREVIEW (read only): "+JSON.stringify(result));
+  return result;
+}
+
 function exportVaultStaticData_(dataRoot) {
   const ss = getVaultSpreadsheet_();
   if (!ss) {
@@ -342,11 +441,12 @@ function exportVaultStaticData_(dataRoot) {
     return;
   }
 
+  const sourceTables = prvSourceTables_(ss);
   const vaultRoot = ensureFolderPath_(dataRoot, ["vault"]);
   const productRoot = ensureFolderPath_(vaultRoot, ["products"]);
   const popRoot = ensureFolderPath_(vaultRoot, ["pop"]);
 
-  const indexRows = sheetObjects_(ss.getSheetByName("Index")).map(r => ({
+  const indexRows = sourceTables.index.map(r => ({
     Code: value_(r.code),
     DisplayName: value_(r.displayname || r.display_name),
     Keywords: value_(r.keywords),
@@ -357,7 +457,7 @@ function exportVaultStaticData_(dataRoot) {
     cmURL: value_(r.cmurl || r.cm_url)
   })).filter(r => r.Code && r.DisplayName);
 
-  const productRows = sheetObjects_(ss.getSheetByName("Products")).map(r => ({
+  const productRows = sourceTables.products.map(r => ({
     code: value_(r.code),
     setType: value_(r.settype || r.set_type),
     setLine: value_(r.setline || r.set_line),
@@ -472,8 +572,9 @@ function buildVaultStaticData_() {
   const ss = getVaultSpreadsheet_();
   if (!ss) throw new Error("Missing Vault spreadsheet. Set CM_VAULT_SPREADSHEET_ID.");
 
+  const sourceTables = prvSourceTables_(ss);
   const generatedAt = new Date().toISOString();
-  const indexRows = sheetObjects_(ss.getSheetByName("Index")).map(r => ({
+  const indexRows = sourceTables.index.map(r => ({
     Code: value_(r.code),
     DisplayName: value_(r.displayname || r.display_name),
     Keywords: value_(r.keywords),
@@ -484,7 +585,7 @@ function buildVaultStaticData_() {
     cmURL: value_(r.cmurl || r.cm_url)
   })).filter(r => r.Code && r.DisplayName);
 
-  const productRows = sheetObjects_(ss.getSheetByName("Products")).map(r => ({
+  const productRows = sourceTables.products.map(r => ({
     code: value_(r.code),
     setType: value_(r.settype || r.set_type),
     setLine: value_(r.setline || r.set_line),
@@ -4704,11 +4805,12 @@ function publishChecklistAfterImport_(input) {
 function buildPrvProductRelease_(code) {
   const ss = getVaultSpreadsheet_();
   assertSourceImportComplete_(ss, code);
-  const meta = sheetObjects_(ss.getSheetByName("Index")).find(row => value_(row.code) === code);
+  const sourceTables = prvSourceTables_(ss);
+  const meta = sourceTables.index.find(row => value_(row.code) === code);
   if (!meta) throw new Error("PRV source product not found: " + code);
   const index = {Code:code, DisplayName:value_(meta.displayname || meta.display_name), Keywords:value_(meta.keywords),year:value_(meta.year),
     sport:value_(meta.sport),manufacturer:value_(meta.manufacturer),product:value_(meta.product),cmURL:value_(meta.cmurl || meta.cm_url)};
-  const rows = sheetObjects_(ss.getSheetByName("Products")).filter(row => value_(row.code) === code).map(row => ({code:code,
+  const rows = sourceTables.products.filter(row => value_(row.code) === code).map(row => ({code:code,
     setType:value_(row.settype || row.set_type),setLine:value_(row.setline || row.set_line),...(value_(row.parallel) ? {parallel:value_(row.parallel)} : {}),printRun:numberOrString_(row.printrun || row.print_run),
     serial:value_(row.serial),subSetSize:numberOrString_(row.subsetsize || row.sub_set_size),notes:value_(row.notes),cmURL:value_(row.cmurl || row.cm_url)}));
   if (!rows.length) throw new Error("Refusing to publish PRV without rows.");

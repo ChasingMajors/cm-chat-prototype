@@ -29,6 +29,7 @@ const server=http.createServer(async(req,res)=>{
     if(url.pathname==='/'||url.pathname==='/command-center/'){res.writeHead(302,{Location:'/command-center/product-manager/'});res.end();return;}
     const file=allowed.get(url.pathname);if(!file){res.writeHead(404);res.end('Not found');return;}
     let content=await fs.readFile(path.join(root,'command-center/product-manager',file),'utf8');
+    if(file==='index.html')content=content.replace('Use your existing Sentinel admin key to view the inventory.',process.env.PM_PREVIEW_KEY?'Local preview: use the preview key configured for this server. The live site uses your Sentinel admin key.':'Local preview admin key: local-review-only. The live site uses your normal Sentinel admin key.');
     if(file.endsWith('.js'))content=content.replace(/const ENDPOINT='[^']+';/,`const ENDPOINT='${endpoint}';`);
     res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':'text/html');res.end(content);
   }catch(e){res.writeHead(400,{'Content-Type':'application/json'});res.end(JSON.stringify({ok:false,error:e.message}));}

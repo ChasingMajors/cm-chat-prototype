@@ -321,6 +321,9 @@ function doPost(e) {
   try {
     if (action === "health") return json_(buildHealthPayload_());
 
+    if (action === "productManagerList") return json_(pmList_(body));
+    if (action === "productManagerDetail") return json_(pmDetail_(body));
+
     if (action === "sourceWatch") return json_(runSourceWatch_(body.mode || ""));
 
     if (action === "runDeepBackendAudit") return json_(runDeepBackendAudit_(body));

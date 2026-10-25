@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Product Manager · CM Sentinel</title>
+  <link rel="stylesheet" href="product-manager.css?v=1">
+  <script src="product-manager.js?v=1" defer></script>
+</head>
+<body>
+  <main>
+    <nav aria-label="Sentinel"><a href="../">Sentinel</a><a href="./" aria-current="page">Product Manager</a></nav>
+    <header><div><p class="eyebrow">CM SENTINEL / DATA HEALTH</p><h1>Product Manager</h1><p class="muted">Inspect CV and PRV coverage across published sources.</p></div><button id="logout" hidden>Lock</button></header>
+    <section id="login" class="panel">
+      <h2>Administrator access</h2><p>Use your existing Sentinel admin key to view the inventory.</p>
+      <form id="login-form"><label for="key">Admin key</label><div class="inline"><input id="key" type="password" autocomplete="off" required maxlength="512"><button class="primary" type="submit">Unlock</button></div></form>
+    </section>
+    <p id="message" role="status" aria-live="polite"></p>
+    <div id="dashboard" hidden>
+      <div id="sports" class="tabs" role="group" aria-label="Sport"></div>
+      <section id="summary" class="summary" aria-label="Sport summary"></section>
+      <div class="freshness"><span id="freshness"></span><button id="reload" type="button">Reload inventory</button></div>
+      <p id="source-notice" class="notice" hidden></p>
+      <section id="list" class="panel">
+        <form id="filters" role="search">
+          <label class="search">Search products<input id="q" name="q" type="search" placeholder="Name, year, manufacturer or code" maxlength="150"></label>
+          <label>Year<select id="year" name="year"><option value="">All years</option></select></label>
+          <label>Manufacturer<select id="manufacturer" name="manufacturer"><option value="">All manufacturers</option></select></label>
+          <label>CV status<select id="cv_status" name="cv_status"></select></label>
+          <label>PRV status<select id="prv_status" name="prv_status"></select></label>
+          <label>Show<select id="filter" name="filter"><option value="">All products</option><option value="attention">Needs attention</option><option value="missing">Missing data</option><option value="sync">Sync issues</option></select></label>
+          <button id="reset" type="button">Reset</button>
+        </form>
+        <div class="table-wrap"><table><caption class="sr-only">Product data coverage. Select a product to inspect its sources.</caption><thead><tr>
+          <th scope="col" aria-sort="ascending"><button data-sort="product">Product <span aria-hidden="true">↕</span></button></th>
+          <th scope="col"><button data-sort="sport">Sport <span aria-hidden="true">↕</span></button></th>
+          <th scope="col"><button data-sort="year">Year <span aria-hidden="true">↕</span></button></th>
+          <th scope="col"><button data-sort="cv_count">CV Cards/Rows <span aria-hidden="true">↕</span></button></th>
+          <th scope="col"><button data-sort="cv_status">CV Status <span aria-hidden="true">↕</span></button></th>
+          <th scope="col"><button data-sort="prv_count">PRV Rows <span aria-hidden="true">↕</span></button></th>
+          <th scope="col"><button data-sort="prv_status">PRV Status <span aria-hidden="true">↕</span></button></th>
+        </tr></thead><tbody id="rows"></tbody></table></div>
+        <p id="empty" hidden>No products match these filters.</p>
+        <footer class="pagination"><span id="page-info"></span><div><button id="previous">Previous</button><button id="next">Next</button></div></footer>
+      </section>
+      <section id="detail" class="panel" hidden aria-labelledby="detail-name"><button id="back">← Back to products</button><div id="detail-content"></div></section>
+      <p class="footnote">Counts describe different datasets. Unknown counts appear as “Not checked,” never zero. Positive counts do not certify completeness.</p>
+    </div>
+  </main>
+</body>
+</html>

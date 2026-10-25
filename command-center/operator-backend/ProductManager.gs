@@ -228,12 +228,22 @@ function pmReleaseLease_(lease) {
     if (current && JSON.parse(current).token===lease.token) props.deleteProperty("CM_PM_REFRESH_LEASE");
   } finally { lock.releaseLock(); }
 }
+function pmD1Due_(snapshot, now) {
+  if (!snapshot.d1_checked_at) return true;
+  if (snapshot.d1 && !snapshot.d1.ok) {
+    // A newly configured credential must work immediately after installation,
+    // rather than waiting for yesterday's "not configured" attempt to expire.
+    if (/credential not configured/.test(snapshot.d1.error || "") && PropertiesService.getScriptProperties().getProperty("CM_PM_D1_READ_TOKEN")) return true;
+    return now-Date.parse(snapshot.d1_checked_at)>3600000;
+  }
+  return now-Date.parse(snapshot.d1_checked_at)>86400000;
+}
 function productManagerRefresh() {
   var lease=pmRefreshLease_();
   if (!lease) return {ok:false,busy:true};
   try {
     var snapshot=pmReadSnapshot_(), now=Date.now(), deadline=now+210000;
-    if (snapshot.index_checked_at && now-Date.parse(snapshot.index_checked_at)<3600000 && snapshot.d1_checked_at && now-Date.parse(snapshot.d1_checked_at)<86400000 && !(snapshot.pending_cv || []).length && !(snapshot.pending_prv || []).length) return {ok:true,unchanged:true};
+    if (snapshot.index_checked_at && now-Date.parse(snapshot.index_checked_at)<3600000 && !pmD1Due_(snapshot,now) && !(snapshot.pending_cv || []).length && !(snapshot.pending_prv || []).length) return {ok:true,unchanged:true};
     if (!snapshot.index_checked_at || now-Date.parse(snapshot.index_checked_at)>3600000) {
       var oldCv=snapshot.cv && snapshot.cv.revision, oldPrv=snapshot.prv && snapshot.prv.revision;
       snapshot.cv=pmIndex_(PM_CV_URL,snapshot.cv);
@@ -251,7 +261,7 @@ function productManagerRefresh() {
       if (daily) snapshot.cycle_at=new Date(now).toISOString();
       snapshot.index_checked_at=new Date(now).toISOString();
     }
-    if (!snapshot.d1_checked_at || now-Date.parse(snapshot.d1_checked_at)>86400000) {
+    if (pmD1Due_(snapshot,now)) {
       try { snapshot.d1=pmD1Inventory_(); }
       catch(err) { snapshot.d1=Object.assign({},snapshot.d1 || {entries:[]},{ok:false,error:err.message}); }
       snapshot.d1_checked_at=new Date(now).toISOString();

@@ -30,7 +30,7 @@ The workbook has `PM Cache A`, `PM Cache B`, and `PM Cache Manifest`. Writes rep
 `productManagerRefresh()` is an editor/trigger function, **not a browser endpoint**:
 
 1. Check published indexes at most hourly.
-2. Read the D1 product inventory at most daily, using parameterized, fixed SELECT queries. Authentication failures remain explicit and do not erase the last observed products.
+2. Read a healthy D1 product inventory at most daily, using parameterized, fixed SELECT queries. Failed reads retry after an hour; configuring a previously missing credential permits an immediate retry. Failures remain explicit and do not erase the last observed products.
 3. Process up to 20 CV shard files and 20 PRV files per invocation, with a 210-second work deadline. Failed files are isolated. New publications preserve unfinished queue order.
 4. Recheck files daily or after an index revision change. Last-observed counts retain their original file-check timestamps while a new sweep runs. An older PRV revision is not compared against a new index as proof of a sync failure.
 5. Save only derived metadata/counts to the private checkpoint. No card/player rows are retained in the cache.

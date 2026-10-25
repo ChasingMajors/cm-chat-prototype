@@ -361,6 +361,7 @@ function exportVaultStaticData_(dataRoot) {
     code: value_(r.code),
     setType: value_(r.settype || r.set_type),
     setLine: value_(r.setline || r.set_line),
+    ...(value_(r.parallel) ? {parallel: value_(r.parallel)} : {}),
     printRun: numberOrString_(r.printrun || r.print_run),
     serial: value_(r.serial),
     subSetSize: numberOrString_(r.subsetsize || r.sub_set_size),
@@ -487,6 +488,7 @@ function buildVaultStaticData_() {
     code: value_(r.code),
     setType: value_(r.settype || r.set_type),
     setLine: value_(r.setline || r.set_line),
+    ...(value_(r.parallel) ? {parallel: value_(r.parallel)} : {}),
     printRun: numberOrString_(r.printrun || r.print_run),
     serial: value_(r.serial),
     subSetSize: numberOrString_(r.subsetsize || r.sub_set_size),
@@ -4707,7 +4709,7 @@ function buildPrvProductRelease_(code) {
   const index = {Code:code, DisplayName:value_(meta.displayname || meta.display_name), Keywords:value_(meta.keywords),year:value_(meta.year),
     sport:value_(meta.sport),manufacturer:value_(meta.manufacturer),product:value_(meta.product),cmURL:value_(meta.cmurl || meta.cm_url)};
   const rows = sheetObjects_(ss.getSheetByName("Products")).filter(row => value_(row.code) === code).map(row => ({code:code,
-    setType:value_(row.settype || row.set_type),setLine:value_(row.setline || row.set_line),printRun:numberOrString_(row.printrun || row.print_run),
+    setType:value_(row.settype || row.set_type),setLine:value_(row.setline || row.set_line),...(value_(row.parallel) ? {parallel:value_(row.parallel)} : {}),printRun:numberOrString_(row.printrun || row.print_run),
     serial:value_(row.serial),subSetSize:numberOrString_(row.subsetsize || row.sub_set_size),notes:value_(row.notes),cmURL:value_(row.cmurl || row.cm_url)}));
   if (!rows.length) throw new Error("Refusing to publish PRV without rows.");
   const product = {ok:true,meta:{code:code,displayName:index.DisplayName,year:index.year,sport:index.sport,manufacturer:index.manufacturer,product:index.product,cmURL:index.cmURL},rows:rows};

@@ -19,6 +19,11 @@ const tier={...row,code:'2026_topps_tier_one_baseball',displayname:'2026 Topps T
 result=c.prvReconcileTables_([], [tier]);
 assert.equal(result.index[0].code,tier.code,'reviewed standalone product gains its own catalog entry');
 assert.equal(result.products[0].code,tier.code);
+result=c.prvReconcileTables_([{...meta,code:'2026_topps_tier_one',displayname:tier.displayname,year:2026}],[tier]);
+assert.equal(result.index.length,1,'latest reviewed Index alias must not create a duplicate Tier One product');
+assert.equal(result.index[0].code,tier.code,'retain the already published standalone Tier One identifier');
+result=c.prvReconcileTables_([{...meta,code:'unreviewed-code',displayname:tier.displayname,year:2026}],[tier]);
+assert.equal(result.index.length,1,'unreviewed aliases use ordinary unique matching without adding duplicate metadata');
 assert.equal(c.prvReconcileTables_([],[{...tier,displayname:'2025 Topps Dynasty Baseball'}]).index.length,0,'a combined-source mislabel is not accepted');
 const cosmic={...row,code:'2026_topps_cosmic_chrome_early_baseball',displayname:'2026 Topps Cosmic Chrome Baseball'};
 result=c.prvReconcileTables_([{...meta,code:'2026_topps_cosmic_chrome_baseball_early',displayname:'2026 Topps Cosmic Chrome Baseball Early'}],[cosmic]);

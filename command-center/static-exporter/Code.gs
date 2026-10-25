@@ -354,7 +354,7 @@ function prvReconcileTables_(index, products) {
   const reviews=[
     {from:"2026_topps_cosmic_chrome_early_baseball",to:"2026_topps_cosmic_chrome_baseball_early",name:"2026 Topps Cosmic Chrome Baseball",old:"2026 Topps Cosmic Chrome Baseball Early",year:"2026",sport:"baseball"},
     {from:"2026_topps_allen_ginter_baseball",to:"2026_topps_allen_ginter_baseball",name:"2026 Topps Allen & Ginter Baseball",old:"2026 Topps Allen & Ginter",year:"2026",sport:"baseball"},
-    {from:"2026_topps_tier_one_baseball",to:"2026_topps_tier_one_baseball",name:"2026 Topps Tier One Baseball",year:"2026",sport:"baseball",add:true},
+    {from:"2026_topps_tier_one_baseball",to:"2026_topps_tier_one_baseball",name:"2026 Topps Tier One Baseball",year:"2026",sport:"baseball",add:true,index_aliases:["2026_topps_tier_one"]},
     {from:"2025_topps_inception_baseball",to:"2025_topps_inception_baseball",name:"2025 Topps Inception Baseball",year:"2025",sport:"baseball",add:true},
     {from:"2025_26_topps_inception_basketball",to:"2025_26_topps_inception_basketball",name:"2025-26 Topps Inception Basketball",year:"2025-26",sport:"basketball",add:true}
   ];
@@ -365,7 +365,13 @@ function prvReconcileTables_(index, products) {
     if (!rows.length || rows.some(r=>identity(r)!==expected)) return;
     const positions=[];index.forEach((r,i)=>{if(text(r.code)===rule.to)positions.push(i);});
     if (!positions.length && rule.add) {
+      const sameIdentity=index.map((r,i)=>({r:r,i:i})).filter(e=>identity(e.r)===expected);
+      if (sameIdentity.length) {
+        if (sameIdentity.length!==1 || (rule.index_aliases || []).indexOf(text(sameIdentity[0].r.code))<0) return;
+        index[sameIdentity[0].i]=Object.assign({},sameIdentity[0].r,{code:rule.to,displayname:rule.name,year:rule.year});
+      } else {
       const r=rows[0];index.push({code:rule.to,displayname:rule.name,keywords:text(r.keywords)||rule.name,year:rule.year,sport:rule.sport,manufacturer:text(r.manufacturer),product:text(r.product),cmurl:text(r.cmurl || r.cm_url)});
+      }
     } else if(positions.length===1) {
       const i=positions[0], r=index[i];
       if ((fold(name(r))===fold(rule.name) || rule.old && fold(name(r))===fold(rule.old)) && fold(r.sport)===rule.sport && (!text(r.year) || fold(r.year)===fold(rule.year))) index[i]=Object.assign({},r,{displayname:rule.name,year:rule.year});
@@ -420,7 +426,7 @@ function prvReconcileTables_(index, products) {
     return r;
   });
   report.unmatched=Array.from(missing.values());report.mappings=Array.from(mapped.values());
-  if (typeof Logger!=="undefined") Logger.log("PRV source reconciliation: "+JSON.stringify({input_rows:report.input_rows,exact_rows:report.exact_rows,remapped_rows:report.remapped_rows,unmatched_rows:report.unmatched_rows,unmatched_codes:report.unmatched.length,mappings:report.mappings,unmatched_sample:report.unmatched.slice(0,20)}));
+  if (typeof Logger!=="undefined") Logger.log("PRV source reconciliation: "+JSON.stringify({input_rows:report.input_rows,exact_rows:report.exact_rows,remapped_rows:report.remapped_rows,unmatched_rows:report.unmatched_rows,unmatched_codes:report.unmatched.length,mapping_count:report.mappings.length,unmatched_sample:report.unmatched.slice(0,5)}));
   return {index:index,products:resolved,report:report};
 }
 function auditPrvSourceIdentity() {
@@ -428,7 +434,7 @@ function auditPrvSourceIdentity() {
   const wanted=["2026 Bowman Baseball","2026 Bowman Mega Box Baseball","2026 Topps Chrome Black Baseball","2026 Topps Heritage Baseball","2026 Topps Series 1 Baseball","2026 Topps Series 1 Celebration Baseball","2026 Topps Tier One Baseball"];
   const result=wanted.map(name=>{
     const matches=source.index.filter(r=>value_(r.displayname || r.display_name)===name);
-    return {name:name,index_matches:matches.length,code:matches.length===1?matches[0].code:null,rows:matches.length===1?source.products.filter(r=>value_(r.code)===value_(matches[0].code)).length:null};
+    return {name:name,index_matches:matches.length,code:matches.map(r=>value_(r.code)).join(","),rows:matches.length===1?source.products.filter(r=>value_(r.code)===value_(matches[0].code)).length:null};
   });
   Logger.log("PRV REPAIR PREVIEW (read only): "+JSON.stringify(result));
   return result;

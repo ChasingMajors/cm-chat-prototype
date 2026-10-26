@@ -36,7 +36,7 @@ test('HTML keeps exact seven-column order; source credentials and unrestricted r
 test('search includes alternate matched source IDs and original manufacturer names',()=>{const s=snapshot();s.prv.entries[0].Code='PRV-alias';s.prv.entries[0].manufacturer='OriginalMaker';const p=c.pmPage_(s,{q:'PRV-alias'},now);assert.equal(p.total,1);assert.equal(c.pmPage_(s,{q:'OriginalMaker'},now).total,1);assert.equal(Object.hasOwn(p.rows[0],'search_text'),false);});
 test('malformed catalog records remain inspectable without aborting the catalog',()=>{const s=snapshot([null,'bad',entry()],[],[]);const a=inventory(s);assert.equal(a.length,3);assert.equal(a.filter(r=>r.issues.some(i=>/Malformed/.test(i.message))).length,2);});
 test('D1 SQL counts cards only, retains zero-card products, pages, and finds orphan groups',async()=>{const x=await core();vm.runInContext(await fs.readFile(new URL('../command-center/operator-backend/ProductManager.gs',import.meta.url),'utf8'),x);const db=new DatabaseSync(':memory:');db.exec("CREATE TABLE products(code TEXT,sport TEXT,displayName TEXT,manufacturer TEXT,product TEXT,PRIMARY KEY(code,sport));CREATE TABLE cards(rowid INTEGER PRIMARY KEY,code TEXT,sport TEXT,type TEXT);CREATE INDEX idx_cards_code ON cards(code,sport);INSERT INTO products VALUES('p','baseball','P','Topps','P'),('z','baseball','Z','Topps','Z');INSERT INTO cards(code,sport,type)VALUES('p','baseball','card'),('p','baseball','card'),('p','baseball','product'),('p','baseball','other'),('orphan','hockey','card');");const rows=db.prepare(x.PM_D1_PRODUCTS_SQL).all(500,0);assert.equal(rows.length,2);assert.equal(rows[0].row_count,2);assert.equal(rows[0].raw_row_count,4);assert.equal(rows[0].product_rows,1);assert.equal(rows[0].other_rows,1);assert.equal(rows[1].row_count,0);assert.equal(db.prepare(x.PM_D1_PRODUCTS_SQL).all(1,1)[0].code,'z');const orphan=db.prepare(x.PM_D1_ORPHANS_SQL).all();assert.equal(orphan[0].code,'orphan');assert.equal(orphan[0].row_count,1);db.close();});
-test('bounded refresh writes derived metadata only; missing D1 credentials remain explicit',async()=>{
+test('bounded and forced refresh hydrate JSON without D1 budget approval',async()=>{
   const x=await core();vm.runInContext(await fs.readFile(new URL('../command-center/operator-backend/ProductManager.gs',import.meta.url),'utf8'),x);
   let stored=JSON.stringify({schema:1,cv_facts:{},prv_facts:{}}),writes=0;const requests=[];const cache=new Map();
   x.CacheService={getScriptCache:()=>({get:k=>cache.get(k)||null,getAll:keys=>Object.fromEntries(keys.filter(k=>cache.has(k)).map(k=>[k,cache.get(k)])),putAll:obj=>Object.entries(obj).forEach(([k,v])=>cache.set(k,v)),put:(k,v)=>cache.set(k,v),remove:k=>cache.delete(k)})};
@@ -44,7 +44,7 @@ test('bounded refresh writes derived metadata only; missing D1 credentials remai
   x.pmStorage_=id=>{assert.equal(id,'private-derived-file');assert.equal(held,false);return{read:()=>stored,write:value=>{stored=value;writes++;}};};
   let held=false;x.LockService={getScriptLock:()=>({tryLock:()=>{assert.equal(held,false);held=true;return true;},releaseLock(){held=false;}})};
   x.UrlFetchApp={fetch:(url,options)=>{requests.push({url,options});assert.equal(held,false);assert.equal(options.method,undefined);let body;if(url===x.PM_CV_URL)body={index:[entry()],generated_at:'cv1'};else if(url===x.PM_PRV_URL)body={index:[entry('p','Baseball',{file:'p.json',row_count:1})],source_revision:'prv1'};else if(url===x.PM_CV_BASE+'baseball.json')body={product_map:{p:'s.json'}};else if(url===x.PM_CV_BASE+'s.json')body={products:{p:{rows:[{player:'A'}],parallels:[]}}};else if(url===x.PM_PRV_BASE+'p.json')body={meta:{code:'p'},rows:[{set_name:'Base',issues:[]}],source_revision:'prv1'};else throw Error('Unexpected source URL '+url);return{getResponseCode:()=>200,getContentText:()=>JSON.stringify(body)};}};
-  const r=x.productManagerRefresh();assert.equal(r.ok,true);assert.equal(writes,1);const data=JSON.parse(stored);assert.equal(data.cv_facts['Baseball|p'].rows,1);assert.equal(data.prv_facts['Baseball|p'].rows,1);assert.equal(data.d1.ok,false);assert.match(data.d1.error,/not configured/);assert.equal(data.progress.cv_files_remaining,0);assert.equal(x.productManagerRefresh().unchanged,true);assert.equal(writes,1);assert.equal(requests.length,5);
+  const r=x.productManagerRefresh();assert.equal(r.ok,true);assert.equal(writes,1);const data=JSON.parse(stored);assert.equal(data.cv_facts['Baseball|p'].rows,1);assert.equal(data.prv_facts['Baseball|p'].rows,1);assert.equal(data.d1.ok,false);assert.match(data.d1.error,/budget approval/);assert.equal(data.progress.cv_files_remaining,0);assert.equal(x.productManagerRefresh().unchanged,true);assert.equal(writes,1);assert.equal(requests.length,5);
   assert.equal(x.productManagerRefresh({triggerUid:'test'}).unchanged,true,'trigger events do not bypass refresh intervals');
   assert.equal(x.productManagerRefreshNow().ok,true);assert.equal(writes,2);assert.equal(requests.length,7,'owner refresh immediately checks both indexes without repeating unchanged shard scans');
 });
@@ -60,4 +60,41 @@ test('private cache commits atomically, rejects unrelated workbooks, and stores 
 });
 test('new publications resume unfinished jobs and do not turn old PRV counts into false sync errors',async()=>{const x=await core();vm.runInContext(await fs.readFile(new URL('../command-center/operator-backend/ProductManager.gs',import.meta.url),'utf8'),x);const jobs=x.pmResumeJobs_([{url:'b',old:true}],[{url:'a'},{url:'b',updated:true},{url:'c'}],j=>j.url);assert.deepEqual(Array.from(jobs,j=>j.url),['b','a','c']);assert.equal(jobs[0].updated,true);const s=snapshot();s.prv.revision='new';s.prv_facts['Baseball|p']={state:'ok',rows:2,flagged_records:1,revision:'old'};const r=inventory(s)[0];assert.equal(r.prv_status,'Not Verified');assert.ok(r.issues.some(i=>i.kind==='stale'));});
 test('complete source failure produces an unavailable state, never a fake empty catalog',()=>{assert.throws(()=>c.pmPage_({cv:{ok:false,entries:[]},d1:{ok:false,entries:[]},prv:{ok:false,entries:[]}},{}),/Inventory unavailable/);});
-test('installing D1 credentials retries immediately without repeating healthy daily scans',async()=>{const x=await core();vm.runInContext(await fs.readFile(new URL('../command-center/operator-backend/ProductManager.gs',import.meta.url),'utf8'),x);let configured=false;x.PropertiesService={getScriptProperties:()=>({getProperty:()=>configured?'test-only':null})};const s={d1_checked_at:observed_at,d1:{ok:false,error:'D1 read credential not configured.'}};assert.equal(x.pmD1Due_(s,now),false);configured=true;assert.equal(x.pmD1Due_(s,now),true);s.d1={ok:true};assert.equal(x.pmD1Due_(s,now),false);s.d1={ok:false,error:'D1 returned HTTP 503.'};assert.equal(x.pmD1Due_(s,now+3600001),true);});
+test('D1 scans require today approval and remain off during all 288 timer fires',async()=>{
+ const x=await core();vm.runInContext(await fs.readFile(new URL('../command-center/operator-backend/ProductManager.gs',import.meta.url),'utf8'),x);
+ x.LockService={getScriptLock:()=>({tryLock:()=>true,releaseLock(){}})};
+ const props=new Map();x.PropertiesService={getScriptProperties:()=>({getProperty:k=>props.get(k)||null,setProperty:(k,v)=>props.set(k,v)})};
+ const s={d1_checked_at:'2026-10-23T00:00:00Z',d1:{ok:false,error:'D1 returned HTTP 503.'}};
+ for(let n=0;n<288;n++)assert.equal(x.pmD1Due_(s,Date.parse('2026-10-25T00:00:00Z')+n*300000),false);
+ props.set('CM_PM_D1_SCAN_APPROVED_UTC_DAY','2026-10-24');assert.equal(x.pmD1Due_(s,now),false);
+ props.set('CM_PM_D1_SCAN_APPROVED_UTC_DAY','2026-10-25');assert.equal(x.pmClaimD1Scan_(s,now),true);
+ // Intentionally leave the old snapshot unchanged, modeling query/cache failure.
+ for(let n=1;n<144;n++)assert.equal(x.pmClaimD1Scan_(s,now+n*300000),false);
+ assert.equal(x.pmD1Due_(s,now+86400000),false,'approval expires next UTC day');
+});
+test('healthy D1 counts retain daily spacing even with approval',async()=>{
+ const x=await core();vm.runInContext(await fs.readFile(new URL('../command-center/operator-backend/ProductManager.gs',import.meta.url),'utf8'),x);
+ x.PropertiesService={getScriptProperties:()=>({getProperty:k=>k==='CM_PM_D1_SCAN_APPROVED_UTC_DAY'?'2026-10-25':null})};
+ assert.equal(x.pmD1Due_({d1_checked_at:observed_at,d1:{ok:true}},now),false);
+});
+
+test('D1 attempt persistence failures abort before any SQL and lock is released',async()=>{
+ const x=await core();vm.runInContext(await fs.readFile(new URL('../command-center/operator-backend/ProductManager.gs',import.meta.url),'utf8'),x);
+ let released=0,queries=0;const props=new Map([['CM_PM_D1_SCAN_APPROVED_UTC_DAY','2026-10-25']]);
+ x.LockService={getScriptLock:()=>({tryLock:()=>true,releaseLock(){released++;}})};
+ x.PropertiesService={getScriptProperties:()=>({getProperty:k=>props.get(k)||null,setProperty(){throw Error('Property write failed');}})};
+ x.pmD1Inventory_=()=>{queries++;};
+ assert.throws(()=>{if(x.pmClaimD1Scan_({},now))x.pmD1Inventory_();},/Property write failed/);
+ assert.equal(queries,0);assert.equal(released,1);
+ x.PropertiesService={getScriptProperties:()=>({getProperty:k=>props.get(k)||null,setProperty(){}})};
+ assert.throws(()=>{if(x.pmClaimD1Scan_({},now))x.pmD1Inventory_();},/could not be verified/);
+ assert.equal(queries,0);assert.equal(released,2);
+});
+test('owner budget status reads cached progress without scanning or approving D1',async()=>{
+ const x=await core();vm.runInContext(await fs.readFile(new URL('../command-center/operator-backend/ProductManager.gs',import.meta.url),'utf8'),x);
+ x.PropertiesService={getScriptProperties:()=>({getProperty:()=>null,setProperty(){throw Error('Status must not write properties');}})};
+ x.pmReadSnapshot_=()=>({progress:{cv_files_remaining:0,prv_files_remaining:67},generated_at:observed_at});
+ x.pmD1Inventory_=()=>{throw Error('Status must not scan D1');};x.productManagerRefresh=()=>{throw Error('Status must not refresh');};
+ x.ScriptApp={getProjectTriggers:()=>[{getHandlerFunction:()=> 'productManagerRefresh'}]};x.Logger={log(){}};
+ const r=x.productManagerReadBudgetStatus();assert.equal(r.approved_today,false);assert.equal(r.refresh_triggers,1);assert.equal(r.progress.prv_files_remaining,67);
+});

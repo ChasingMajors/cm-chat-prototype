@@ -228,15 +228,31 @@ function pmReleaseLease_(lease) {
     if (current && JSON.parse(current).token===lease.token) props.deleteProperty("CM_PM_REFRESH_LEASE");
   } finally { lock.releaseLock(); }
 }
+// D1 is independent of JSON hydration. Approval is an explicit, UTC-day-scoped
+// owner property after checking the ACCOUNT's remaining read budget. No approval
+// is set by this code. Persist attempts separately from the snapshot so a failed
+// cache save, partial scan, or manual refresh cannot multiply card-table scans.
 function pmD1Due_(snapshot, now) {
+  var props=PropertiesService.getScriptProperties(), day=new Date(now).toISOString().slice(0,10);
+  if (props.getProperty("CM_PM_D1_SCAN_APPROVED_UTC_DAY")!==day) return false;
+  if (props.getProperty("CM_PM_D1_LAST_ATTEMPT_UTC_DAY")===day) return false;
   if (!snapshot.d1_checked_at) return true;
-  if (snapshot.d1 && !snapshot.d1.ok) {
-    // A newly configured credential must work immediately after installation,
-    // rather than waiting for yesterday's "not configured" attempt to expire.
-    if (/credential not configured/.test(snapshot.d1.error || "") && PropertiesService.getScriptProperties().getProperty("CM_PM_D1_READ_TOKEN")) return true;
-    return now-Date.parse(snapshot.d1_checked_at)>3600000;
-  }
-  return now-Date.parse(snapshot.d1_checked_at)>86400000;
+  var checked=Date.parse(snapshot.d1_checked_at);
+  return Number.isFinite(checked) && now-checked>86400000;
+}
+function pmClaimD1Scan_(snapshot, now) {
+  var lock=LockService.getScriptLock();
+  if (!lock.tryLock(1000)) return false;
+  try {
+    if (!pmD1Due_(snapshot,now)) return false;
+    var props=PropertiesService.getScriptProperties(),day=new Date(now).toISOString().slice(0,10);
+    // Durable Script Properties, NOT CacheService or the cache workbook. A failed
+    // write/read-back aborts before SQL. A crash after this point spends the day's
+    // single attempt rather than allowing another scan after lease expiry.
+    props.setProperty("CM_PM_D1_LAST_ATTEMPT_UTC_DAY",day);
+    if (props.getProperty("CM_PM_D1_LAST_ATTEMPT_UTC_DAY")!==day) throw new Error("D1 attempt record could not be verified; no D1 query started.");
+    return true;
+  } finally { lock.releaseLock(); }
 }
 function productManagerRefresh(force) {
   var forceRead=force===true; // Only the owner wrapper passes true; trigger event objects do not.
@@ -262,10 +278,12 @@ function productManagerRefresh(force) {
       if (daily) snapshot.cycle_at=new Date(now).toISOString();
       snapshot.index_checked_at=new Date(now).toISOString();
     }
-    if (forceRead || pmD1Due_(snapshot,now)) {
+    if (pmClaimD1Scan_(snapshot,now)) {
       try { snapshot.d1=pmD1Inventory_(); }
       catch(err) { snapshot.d1=Object.assign({},snapshot.d1 || {entries:[]},{ok:false,error:err.message}); }
       snapshot.d1_checked_at=new Date(now).toISOString();
+    } else if (!snapshot.d1) {
+      snapshot.d1={ok:false,entries:[],error:"D1 scan deferred until UTC-day read budget approval; no D1 query was run."};
     }
     snapshot.pending_cv=snapshot.pending_cv || []; snapshot.pending_prv=snapshot.pending_prv || [];
     pmRefreshJobs_(snapshot,20,deadline);
@@ -285,4 +303,11 @@ function installProductManagerRefreshTrigger() {
   if (existing.length) return {ok:true,existing:existing.length};
   ScriptApp.newTrigger("productManagerRefresh").timeBased().everyMinutes(5).create();
   return {ok:true,created:true};
+}
+
+// Owner/editor-only observation. Never routed from doGet/doPost. No SQL or refresh.
+function productManagerReadBudgetStatus() {
+  var now=Date.now(),day=new Date(now).toISOString().slice(0,10),props=PropertiesService.getScriptProperties(),snapshot=pmReadSnapshot_();
+  var result={utc_day:day,approved_today:props.getProperty("CM_PM_D1_SCAN_APPROVED_UTC_DAY")===day,attempt_recorded_today:props.getProperty("CM_PM_D1_LAST_ATTEMPT_UTC_DAY")===day,d1_checked_at:snapshot.d1_checked_at || null,d1_observed_at:snapshot.d1 && snapshot.d1.observed_at || null,inventory_updated_at:snapshot.generated_at,progress:snapshot.progress,refresh_triggers:ScriptApp.getProjectTriggers().filter(function(t){return t.getHandlerFunction()==="productManagerRefresh";}).length};
+  Logger.log("Product Manager read budget status: "+JSON.stringify(result));return result;
 }

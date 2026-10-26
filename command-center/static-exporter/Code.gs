@@ -356,12 +356,31 @@ function prvReconcileTables_(index, products) {
     {from:"2026_topps_allen_ginter_baseball",to:"2026_topps_allen_ginter_baseball",name:"2026 Topps Allen & Ginter Baseball",old:"2026 Topps Allen & Ginter",year:"2026",sport:"baseball"},
     {from:"2026_topps_tier_one_baseball",to:"2026_topps_tier_one_baseball",name:"2026 Topps Tier One Baseball",year:"2026",sport:"baseball",add:true,index_aliases:["2026_topps_tier_one"]},
     {from:"2025_topps_inception_baseball",to:"2025_topps_inception_baseball",name:"2025 Topps Inception Baseball",year:"2025",sport:"baseball",add:true},
-    {from:"2025_26_topps_inception_basketball",to:"2025_26_topps_inception_basketball",name:"2025-26 Topps Inception Basketball",year:"2025-26",sport:"basketball",add:true}
+    {from:"2025_26_topps_inception_basketball",to:"2025_26_topps_inception_basketball",name:"2025-26 Topps Inception Basketball",year:"2025-26",sport:"basketball",add:true},
+    {from:"2025_26_topps_finest_uefa_club_competitions_soccer",to:"2025_26_topps_finest_uefa_club_competitions_soccer",name:"2025-26 Topps Finest UEFA Club Competitions Soccer",source_old:"2025-26 Topp Finest UEFA Club Competitions Soccer",year:"2025-26",sport:"soccer",manufacturer:"Topps",product:"Finest UEFA Club Competitions",index_aliases:["2025_26_finest_uefa_club_competitions_soccer"],catalog_only:true},
+    {from:"2026_topps_pristine_premier_league_soccer",to:"2025_26_topps_pristine_premier_league_soccer",name:"2025-26 Topps Pristine Premier League Soccer",year:"2025-26",sport:"soccer",manufacturer:"Topps",product:"Pristine Premier League",index_aliases:["2026_topps_pristine_premier_league_soccer"],catalog_only:true},
+    {from:"2026_merlin_premier_league_soccer",to:"2025_26_topps_merlin_premier_league",name:"2025-26 Topps Merlin Premier League Soccer",year:"2025-26",sport:"soccer",manufacturer:"Topps",product:"Merlin Premier League",index_aliases:["2026_merlin_premier_league_soccer"],catalog_only:true}
   ];
   index=index.slice();products=products.slice();
+  const reviewHolds=new Map();
   reviews.forEach(rule => {
     const rows=products.filter(r=>text(r.code)===rule.from);
     const expected=identity({displayname:rule.name,year:rule.year,sport:rule.sport});
+    // Reviewed source-scoped aliases must already have one catalog identity.
+    // Never create metadata/coverage or normalize a different product by typo.
+    if (rule.catalog_only) {
+      const hold=()=>{if(rows.length)reviewHolds.set(rule.from,"HOLD: reviewed public identity is absent, ambiguous or conflicts with source metadata");};
+      const oldIdentity=rule.source_old && identity({displayname:rule.source_old,year:rule.year,sport:rule.sport});
+      if (rows.some(r=>(identity(r)!==expected && identity(r)!==oldIdentity) || fold(r.manufacturer)!==fold(rule.manufacturer) || fold(r.product)!==fold(rule.product))) return hold();
+      const allowed=[rule.to].concat(rule.index_aliases || []);
+      const candidates=index.map((r,i)=>({r:r,i:i})).filter(e=>allowed.indexOf(text(e.r.code))>=0 || identity(e.r)===expected);
+      if (candidates.length!==1) return hold();
+      const e=candidates[0];
+      if (allowed.indexOf(text(e.r.code))<0 || identity(e.r)!==expected || fold(e.r.manufacturer)!==fold(rule.manufacturer) || fold(e.r.product)!==fold(rule.product)) return hold();
+      index[e.i]=Object.assign({},e.r,{code:rule.to});
+      products=products.map(r=>text(r.code)===rule.from?Object.assign({},r,{code:rule.to,displayname:rule.name}):r);
+      return;
+    }
     if (!rows.length || rows.some(r=>identity(r)!==expected)) return;
     const positions=[];index.forEach((r,i)=>{if(text(r.code)===rule.to)positions.push(i);});
     if (!positions.length && rule.add) {
@@ -378,6 +397,29 @@ function prvReconcileTables_(index, products) {
       else return;
     } else return;
     products=products.map(r=>text(r.code)===rule.from?Object.assign({},r,{code:rule.to}):r);
+  });
+  // Owner-approved row-level Sapphire review. Never select by mutable Sheet
+  // position, shared article code, keyword year, or approximate numeric values.
+  const sapphireSource="2023_topps_chrome_sapphire_baseball";
+  const sapphireRules=[
+    {year:"2019",to:"2019_Topps_Chrome_Sapphire_Edition_Baseball",alias:"19TCSmlb",name:"2019 Topps Chrome Sapphire Edition Baseball",type:"Base",line:"[Base]",run:"1,030",size:"700",row:2076},
+    {year:"2020",to:"2020_topps_chrome_sapphire_baseball",alias:"20TCSmlb",name:"2020 Topps Chrome Sapphire Baseball",type:"Base",line:"[Base]",run:"1,030",size:"700",row:682},
+    {year:"2021",to:"2021_topps_chrome_sapphire_edition_baseball",alias:"21TCSmlb",name:"2021 Topps Chrome Sapphire Baseball",type:"Base",line:"[Base]",run:"1,100",size:"660",row:678},
+    {year:"2023",to:sapphireSource,alias:"23TCSmlb",name:"2023 Topps Chrome Sapphire Baseball",type:"Base",line:"[Base]",run:"1,200",size:"660",row:663},
+    {year:"2023",to:sapphireSource,alias:"23TCSmlb",name:"2023 Topps Chrome Sapphire Baseball",type:"Insert",line:"Sapphire Selections",run:"150",size:"10",row:664}
+  ];
+  sapphireRules.forEach(rule=>{
+    const expected=identity({displayname:rule.name,year:rule.year,sport:"baseball"});
+    const candidates=index.map((r,i)=>({r:r,i:i})).filter(e=>[rule.to,rule.alias].indexOf(text(e.r.code))>=0 || identity(e.r)===expected);
+    if(candidates.length!==1) return;
+    const e=candidates[0];
+    if([rule.to,rule.alias].indexOf(text(e.r.code))<0 || identity(e.r)!==expected || text(e.r.manufacturer)!=="Topps" || text(e.r.product)!=="Chrome Sapphire") return;
+    const matches=products.filter(r=>(text(r.code)===sapphireSource || r.prv_identity_review && r.prv_identity_review.review_id==="sapphire-five-2026-10-26") && identity(r)===expected && text(r.manufacturer)==="Topps" && text(r.product)==="Chrome Sapphire" && text(r.settype)===rule.type && text(r.setline)===rule.line && text(r.printrun).replace(/,/g, "")===rule.run.replace(/,/g, "") && text(r.subsetsize)===rule.size && ["parallel","serial","packodds","cmurl","notes"].every(k=>!text(r[k])));
+    // Competing rows/codes already targeting this exact identity are held;
+    // do not combine them or take ownership of an unreviewed source code.
+    if(matches.length!==1 || products.some(r=>r!==matches[0] && text(r.code)!==sapphireSource && !(r.prv_identity_review && r.prv_identity_review.review_id==="sapphire-five-2026-10-26") && identity(r)===expected)) return;
+    index[e.i]=Object.assign({},e.r,{code:rule.to});
+    products=products.map(r=>r===matches[0]?Object.assign({},r,{code:rule.to,prv_measurement_note:"Unverified estimate; original source URL not recorded.",prv_identity_review:{review_id:"sapphire-five-2026-10-26",source_code:sapphireSource,source_sheet_row:rule.row,measurement_verified:false}}):r);
   });
   const codes=new Map(), names=new Map(), sourceIdentities=new Map(), targets=new Map();
   index.forEach(r => {
@@ -402,6 +444,26 @@ function prvReconcileTables_(index, products) {
   const missing=new Map(), mapped=new Map();
   const resolved=products.map(r => {
     const code=text(r.code), direct=codes.get(code) || [], key=identity(r), matches=names.get(key) || [];
+    if(r.prv_identity_review && r.prv_identity_review.review_id==="sapphire-five-2026-10-26" && direct.length===1 && identity(direct[0])===key) {
+      report.remapped_rows++;
+      const pair=sapphireSource+"|"+code;
+      if(!mapped.has(pair))mapped.set(pair,{source_code:sapphireSource,published_code:code,display_name:name(direct[0]),rows:0});
+      mapped.get(pair).rows++;
+      return r;
+    }
+    // The reviewed Index split does not establish row ownership in the old
+    // combined article. Held rows are kept for diagnostics but excluded from
+    // every export route, even if a stale direct-code Index entry exists.
+    const combined=code==="2026_topps_pristine_premier_league_2026_merlin_premier_league_soccer";
+    const sapphireHeld=code===sapphireSource || code==="2022_topps_chrome_sapphire_baseball";
+    if (combined || sapphireHeld || reviewHolds.has(code)) {
+      report.unmatched_rows++;
+      const reason=combined?"HOLD: combined Pristine/Merlin source lacks reviewed per-row product ownership":sapphireHeld?"HOLD: Sapphire row is outside the five owner-approved exact signatures":reviewHolds.get(code);
+      const k=code+"|"+reason;
+      if (!missing.has(k)) missing.set(k,Object.assign({code:code,reason:reason,rows:0,held:true},combined?{candidate_public_codes:["2025_26_topps_pristine_premier_league_soccer","2025_26_topps_merlin_premier_league"]}:{}));
+      missing.get(k).rows++;
+      return Object.assign({},r,{prv_identity_hold:true});
+    }
     if (direct.length===1) { report.exact_rows++; return r; }
     let reason=direct.length>1 ? "Duplicate Index code" : "No exact name, year and sport match in Index";
     if (!direct.length && matches.length===1) {
@@ -463,7 +525,7 @@ function exportVaultStaticData_(dataRoot) {
     cmURL: value_(r.cmurl || r.cm_url)
   })).filter(r => r.Code && r.DisplayName);
 
-  const productRows = sourceTables.products.map(r => ({
+  const productRows = sourceTables.products.filter(r=>!r.prv_identity_hold).map(r => ({
     code: value_(r.code),
     setType: value_(r.settype || r.set_type),
     setLine: value_(r.setline || r.set_line),
@@ -471,7 +533,7 @@ function exportVaultStaticData_(dataRoot) {
     printRun: numberOrString_(r.printrun || r.print_run),
     serial: value_(r.serial),
     subSetSize: numberOrString_(r.subsetsize || r.sub_set_size),
-    notes: value_(r.notes),
+    notes: prvExportNotes_(r),
     cmURL: value_(r.cmurl || r.cm_url)
   })).filter(r => r.code);
 
@@ -591,7 +653,7 @@ function buildVaultStaticData_() {
     cmURL: value_(r.cmurl || r.cm_url)
   })).filter(r => r.Code && r.DisplayName);
 
-  const productRows = sourceTables.products.map(r => ({
+  const productRows = sourceTables.products.filter(r=>!r.prv_identity_hold).map(r => ({
     code: value_(r.code),
     setType: value_(r.settype || r.set_type),
     setLine: value_(r.setline || r.set_line),
@@ -599,7 +661,7 @@ function buildVaultStaticData_() {
     printRun: numberOrString_(r.printrun || r.print_run),
     serial: value_(r.serial),
     subSetSize: numberOrString_(r.subsetsize || r.sub_set_size),
-    notes: value_(r.notes),
+    notes: prvExportNotes_(r),
     cmURL: value_(r.cmurl || r.cm_url)
   })).filter(r => r.code);
 
@@ -4816,9 +4878,9 @@ function buildPrvProductRelease_(code) {
   if (!meta) throw new Error("PRV source product not found: " + code);
   const index = {Code:code, DisplayName:value_(meta.displayname || meta.display_name), Keywords:value_(meta.keywords),year:value_(meta.year),
     sport:value_(meta.sport),manufacturer:value_(meta.manufacturer),product:value_(meta.product),cmURL:value_(meta.cmurl || meta.cm_url)};
-  const rows = sourceTables.products.filter(row => value_(row.code) === code).map(row => ({code:code,
+  const rows = sourceTables.products.filter(row => !row.prv_identity_hold && value_(row.code) === code).map(row => ({code:code,
     setType:value_(row.settype || row.set_type),setLine:value_(row.setline || row.set_line),...(value_(row.parallel) ? {parallel:value_(row.parallel)} : {}),printRun:numberOrString_(row.printrun || row.print_run),
-    serial:value_(row.serial),subSetSize:numberOrString_(row.subsetsize || row.sub_set_size),notes:value_(row.notes),cmURL:value_(row.cmurl || row.cm_url)}));
+    serial:value_(row.serial),subSetSize:numberOrString_(row.subsetsize || row.sub_set_size),notes:prvExportNotes_(row),cmURL:value_(row.cmurl || row.cm_url)}));
   if (!rows.length) throw new Error("Refusing to publish PRV without rows.");
   const product = {ok:true,meta:{code:code,displayName:index.DisplayName,year:index.year,sport:index.sport,manufacturer:index.manufacturer,product:index.product,cmURL:index.cmURL},rows:rows};
   product.meta.content_sha256 = productContentHash_(product);
@@ -5237,4 +5299,34 @@ function enqueuePipelineJob_(kind, input) {
     savePipelineJob_(job);
     return publicPipelineJob_(job, false);
   } finally { lock.releaseLock(); }
+}
+
+function prvExportNotes_(row) {
+  return [value_(row.notes),value_(row.prv_measurement_note)].filter(Boolean).join(" ");
+}
+
+
+function auditApprovedSapphireRelease() {
+  const source=prvSourceTables_(getVaultSpreadsheet_());
+  const targets=[
+    ["2019_Topps_Chrome_Sapphire_Edition_Baseball",1],
+    ["2020_topps_chrome_sapphire_baseball",1],
+    ["2021_topps_chrome_sapphire_edition_baseball",1],
+    ["2023_topps_chrome_sapphire_baseball",2],
+    ["2025_26_topps_finest_uefa_club_competitions_soccer",32]
+  ];
+  if(source.report.input_rows!==8414 || source.report.unmatched_rows!==3633)throw new Error("Source snapshot changed; publication held.");
+  const approved=source.products.filter(r=>r.prv_identity_review && !r.prv_identity_hold);
+  const held=source.products.filter(r=>r.prv_identity_hold && /sapphire/i.test(r.code));
+  if(approved.length!==5 || held.length!==5)throw new Error("Approved/held Sapphire counts changed.");
+  const built=buildVaultStaticData_();
+  targets.forEach(t=>{
+    const p=built.products[t[0]];
+    if(!p || p.rows.length!==t[1])throw new Error("Release count mismatch: "+t[0]);
+    if(t[0].indexOf("sapphire")>=0 || /Sapphire/.test(t[0]))p.rows.forEach(r=>{
+      if(!/Unverified estimate/.test(r.notes) || r.cmURL)throw new Error("Unverified qualifier/source changed.");
+      if(r.setLine==="Autograph")throw new Error("Held autograph leaked.");
+    });
+  });
+  Logger.log("APPROVED RELEASE PREFLIGHT "+JSON.stringify({input_rows:source.report.input_rows,unmatched_rows:source.report.unmatched_rows,unmatched_groups:source.report.unmatched.length,approved_sapphire_rows:approved.length,held_sapphire_rows:held.length,targets:targets,sheet_writes:false,d1_queries:false}));
 }

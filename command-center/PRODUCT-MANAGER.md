@@ -67,6 +67,30 @@ Rollback removes the navigation/static route and the two dispatch lines, restore
 
 ## Local validation
 
+### Historical PRV identity follow-up (staged, approval required)
+
+- Reviewed Finest UEFA alias/typo adapter: preserve public code
+  `2025_26_topps_finest_uefa_club_competitions_soccer`; never edit source cells.
+- Preserve separate public Pristine/Merlin identities. HOLD the 36 combined
+  source rows until source sections establish each row's product ownership;
+  repeated Base/Refractors labels and row order are insufficient evidence.
+- Review Sentinel's multi-product-post import logic: identify product boundaries
+  before extracting rows; carry section-level product/year/sport/subset provenance;
+  never apply the article title's identity to every table. Cover multi-year posts,
+  repeated generic subset names, headings mistaken for numeric print runs, missing
+  boundaries and duplicate/replayed imports. Ambiguous ownership must be held and
+  reported, not merged or represented as checklist/print-run coverage.
+- Before importing overlap candidates, compare the populated Hoops, Topps
+  Basketball and Logofractor targets for repeated content. Separately verify the
+  mixed-year Sapphire rows against all five year identities; empty placeholders
+  reduce duplicate-content risk but do not resolve product ownership.
+- Then review the 132 exact CV identity candidates. The 11 CV gaps remain blocked
+  on real source checklists. Keep D1 scans off unless the current UTC-day budget
+  has been verified safe and the owner explicitly approves the day.
+
+The identity adapter and regression tests are local staging only. No Apps Script
+project/deployment ID/URL or source Sheet change is authorized by this staging work.
+
 Requires Node 24+ (`node:sqlite` is used for SQL tests), no new runtime framework.
 
 ```sh

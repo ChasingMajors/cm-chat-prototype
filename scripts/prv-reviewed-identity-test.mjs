@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import { createHash } from 'node:crypto';
 
 const c=vm.createContext({console,Date});
 vm.runInContext(fs.readFileSync(new URL('../command-center/static-exporter/Code.gs',import.meta.url),'utf8'),c);
@@ -105,3 +106,26 @@ console.log('Five-row Sapphire staging tests passed: exact signatures, held excl
 
 assert.equal(reconcile(sm,sr.map(r=>({...r,printrun:Number(r.printrun.replaceAll(',','')),subsetsize:Number(r.subsetsize)}))).products.filter(r=>r.prv_identity_review).length,5,'Sheet numeric values and CSV thousands formatting identify the same exact measurements');
 assert.equal(reconcile(sm,[{...sr[0],printrun:1030.01}]).products.filter(r=>r.prv_identity_review).length,0,'numeric formatting normalization never approximates values');
+
+// Synthetic fixtures exercise the approval adapter, never production coverage.
+const step=vm.createContext({Date,Logger:{log(){}},Utilities:{DigestAlgorithm:{SHA_256:'sha256'},Charset:{UTF_8:'utf8'},computeDigest:(_algorithm,s)=>Array.from(createHash('sha256').update(s).digest()),getUuid:()=> 'fixture'}});
+vm.runInContext(fs.readFileSync(new URL('../command-center/static-exporter/Code.gs',import.meta.url),'utf8'),step);
+const fixtureMeta={code:'fixture-public',displayname:'2025 Fixture Baseball',year:'2025',sport:'baseball',manufacturer:'Fixture',product:'Fixture'};
+const fixtureRow={...fixtureMeta,code:'fixture-source',settype:'Insert',setline:'Selections',parallel:'',printrun:'1,234',serial:'',subsetsize:'10',packodds:'1:12',notes:'Preserve original note',cmurl:''};
+const fixtureRule={source:'fixture-source',target:'fixture-public',meta:fixtureMeta,count:1,sha256:createHash('sha256').update(JSON.stringify([step.prvStep7Signature_(fixtureRow,'fixture-source')])).digest('hex')};
+step.prvApprovedStep7Manifest_=()=>[fixtureRule];
+let approved=step.prvApplyApprovedStep7_([],[fixtureRow]);
+assert.equal(approved.index.length,1);assert.equal(approved.products[0].code,'fixture-public');assert.equal(approved.products[0].settype,'Insert');assert.equal(approved.products[0].packodds,'1:12');assert.equal(approved.products[0].prv_identity_review.measurement_verified,false);assert.match(approved.products[0].prv_measurement_note,/Unverified/);
+assert.deepEqual(plain(step.prvApplyApprovedStep7_(approved.index,approved.products)),plain(approved),'Step 7 adapter is idempotent');
+assert.equal(fixtureRow.code,'fixture-source','authoring input remains immutable');
+assert.equal(step.prvApplyApprovedStep7_([],[{...fixtureRow,printrun:1234}]).index.length,1,'numeric CSV/Sheet formatting matches exactly');
+for(const delta of [{printrun:1235},{notes:'Changed evidence'},{packodds:'1:13'},{cmurl:'https://example.com/evidence'},{settype:'Base'},{year:'2026'}]){
+ const held=step.prvApplyApprovedStep7_([],[{...fixtureRow,...delta}]);assert.equal(held.index.length,0);assert.equal(held.products[0].prv_identity_hold,true,'changed evidence must be held');
+}
+assert.equal(step.prvApplyApprovedStep7_([],[fixtureRow,fixtureRow]).index.length,0,'duplicate source signatures do not publish');
+assert.equal(step.prvApplyApprovedStep7_([{...fixtureMeta,year:'2024'}],[fixtureRow]).products[0].prv_identity_hold,true,'conflicting exact target code is held');
+assert.equal(step.prvApplyApprovedStep7_([],[fixtureRow,{...fixtureRow,code:'fixture-public'}]).products[0].prv_identity_hold,true,'pre-existing target rows are not appended blindly');
+step.getVaultSpreadsheet_=()=>({getSheetByName:n=>n});step.sheetObjects_=n=>n==='Products'?[fixtureRow]:[];step.buildPopStaticData_=()=>({});step.assertSourceImportComplete_=()=>{};step.productContentHash_=()=> 'fixture';step.pipelineHash_=()=> 'fixture';
+const stepFull=step.buildVaultStaticData_().products['fixture-public'];assert.equal(stepFull.rows[0].odds,'1:12');assert.equal(stepFull.rows[0].setType,'Insert');assert.match(stepFull.rows[0].notes,/Preserve original note.*Unverified/);
+assert.deepEqual(plain(step.buildPrvProductRelease_('fixture-public').product.rows),plain(stepFull.rows),'Step 7 full/single export parity includes odds and qualifiers');
+console.log('Step 7 approval guards passed: exact signatures, changed-evidence holds, no blind append, idempotence, input immutability, odds, subset and qualifier preservation.');

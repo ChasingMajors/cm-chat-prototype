@@ -48,7 +48,7 @@ function pubmonRegister_(payload) {
       }
       return true;
     });
-    var now = pubmonNow_(), job = {id:id, code:String(payload.code || ""), sport:String(payload.sport || ""), bucket:String(payload.bucket || ""),
+    var now = pubmonNow_(), job = {id:id, code:String(payload.code || ""), sport:String(payload.sport || "").toLowerCase(), bucket:String(payload.bucket || ""),
       kind:payload.action === "publishVaultStaticDataToGitHub" ? "prv" : "checklist", state:"awaiting_commit", search_state:"not_checked",
       exporter_job_id:payload.job_id || (String(payload.async) === "1" ? id : null),
       base_sha:null, approved_content_hash:null, approval_evidence:"Legacy publisher does not supply a hash-bound approval receipt.",
@@ -66,7 +66,7 @@ function pubmonEnsureTrigger_() {
   }
 }
 function pubmonGitHub_(path) {
-  if (!/^\/(actions\/|commits\/|compare\/|deployments|pages)/.test(path) || path.indexOf("..") >= 0) throw new Error("Monitor API path rejected.");
+  if (!/^\/(actions\/|commits\/|contents\/data\/v1\/|deployments|pages)/.test(path) || path.indexOf("..") >= 0) throw new Error("Monitor API path rejected.");
   var token = PropertiesService.getScriptProperties().getProperty("CM_PUBLISH_GITHUB_READ_TOKEN");
   if (!token) throw new Error("Dedicated GitHub read credential not configured.");
   var r = UrlFetchApp.fetch(PUBMON_REPO + path, {headers:{Authorization:"Bearer " + token, Accept:"application/vnd.github+json", "X-GitHub-Api-Version":"2022-11-28"}, muteHttpExceptions:true});
@@ -83,7 +83,7 @@ function pubmonIngest_(job, data) {
     if (job.state === "awaiting_commit") { job.state = "commit_submitted"; job.committed_at = pubmonNow_(); }
   }
   var expected = data && data.expected || result.expected;
-  if (expected) job.expected = {release_id:expected.release_id,content_sha256:expected.content_sha256,row_count:expected.row_count,parallel_count:expected.parallel_count};
+  if (expected) job.expected = {release_id:expected.release_id,content_sha256:expected.content_sha256,row_count:expected.row_count,parallel_count:expected.parallel_count,index_sha256:expected.index_sha256};
   if (receipt.stage === "failed" || data && data.status === "publish_failed") { job.state = "failed"; job.error = "Exporter failed before a verified deployment."; }
 }
 function pubmonCapture_(payload, data) {
@@ -178,23 +178,54 @@ function pubmonStable_(v) {
 function pubmonHash_(v) {
   return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256,pubmonStable_(v),Utilities.Charset.UTF_8).map(function(n) { return (n & 255).toString(16).padStart(2,"0"); }).join("");
 }
+function pubmonProductHash_(product) {
+  var meta = Object.assign({},product.meta || {});
+  ["release_id","content_sha256","expected_rows","expected_parallels"].forEach(function(k) { delete meta[k]; });
+  var data = {meta:meta,rows:product.rows || []};
+  if (Array.isArray(product.parallels)) data.parallels = product.parallels;
+  return pubmonHash_(data);
+}
+function pubmonJson_(path, sha) {
+  if (!/^data\/v1\/[a-zA-Z0-9_./-]+\.json$/.test(path) || path.indexOf("..") >= 0) throw new Error("Invalid content evidence path.");
+  if (sha) {
+    var file = pubmonGitHub_("/contents/" + path + "?ref=" + sha);
+    if (file.encoding !== "base64" || !file.content) throw new Error("GitHub content evidence unavailable.");
+    return JSON.parse(Utilities.newBlob(Utilities.base64Decode(file.content)).getDataAsString());
+  }
+  var r = UrlFetchApp.fetch("https://app.chasingmajors.com/" + path + "?pubmon=" + Date.now(),{muteHttpExceptions:true});
+  if (r.getResponseCode() !== 200) throw new Error("Live JSON evidence unavailable.");
+  return JSON.parse(r.getContentText());
+}
+function pubmonProductEvidence_(job, sha) {
+  var dir = job.kind === "prv" ? "data/v1/vault/" : "data/v1/checklists/";
+  var index = pubmonJson_(dir + "index.json",sha);
+  var entries = (index.index || []).filter(function(row) { return (row.Code || row.code) === job.code; });
+  if (entries.length !== 1) throw new Error("Product index identity is absent or ambiguous.");
+  if (!/^[a-z]+$/.test(job.sport)) throw new Error("Product sport evidence invalid.");
+  var manifest = pubmonJson_(dir + "products/" + (job.kind === "prv" ? "all" : job.sport) + ".json",sha);
+  var file = manifest.product_map && manifest.product_map[job.code];
+  if (!/^[a-zA-Z0-9_-]+\.json$/.test(file || "")) throw new Error("Product payload location unavailable.");
+  var product = (pubmonJson_(dir + "products/" + file,sha).products || {})[job.code];
+  if (!product || !product.meta || product.meta.code !== job.code || !Array.isArray(product.rows) || String(product.meta.sport).toLowerCase() !== job.sport) throw new Error("Product payload identity invalid.");
+  return {index:index,product:product,index_row:entries[0]};
+}
 function pubmonLive_(job) {
   // Require publisher-supplied SHA evidence. Existing time stamps/release UUIDs
   // are NOT substitutes. This phase must not silently alter content publishing.
-  var path = job.kind === "prv" ? "data/v1/vault/index.json" : "data/v1/checklists/index.json";
-  var r = UrlFetchApp.fetch("https://app.chasingmajors.com/" + path + "?pubmon=" + encodeURIComponent(job.release_sha), {muteHttpExceptions:true});
-  if (r.getResponseCode() !== 200) return {ok:false,reason:"Live manifest unavailable."};
-  var manifest = JSON.parse(r.getContentText()), sha = manifest.release_sha || manifest.commit_sha;
+  if (!job.expected) {
+    // Read the exact submitted commit, never a newer branch or search record.
+    var pinned = pubmonProductEvidence_(job,job.submitted_sha), original = pinned.product;
+    job.expected = {release_id:original.meta.release_id || null,content_sha256:pubmonProductHash_(original),row_count:original.rows.length,
+      parallel_count:Array.isArray(original.parallels) ? original.parallels.length : undefined,index_sha256:pubmonHash_(pinned.index_row)};
+  }
+  var evidence = pubmonProductEvidence_(job,null), product = evidence.product, manifest = evidence.index;
+  var sha = manifest.release_sha || manifest.commit_sha;
   if (sha !== job.submitted_sha) return {ok:false,reason:"Live manifest has no matching source release SHA; publication remains unverified."};
-  // The existing verifier validates exact product hash, release ID and counts.
-  var data = pubmonExporter_(job), validation = data.validation && data.validation.public;
   var expected = job.expected;
-  if (!expected || !validation || !validation.ok || validation.validation_mode !== "exact_content_and_release") return {ok:false,reason:"Exact live product validation evidence missing."};
-  var ok = validation.release_id === expected.release_id && validation.row_count === expected.row_count &&
-    (job.kind === "prv" || validation.parallel_count === expected.parallel_count);
-  // Checklist verifier reports computed content hash; PRV verifier's ok includes it.
-  if (job.kind !== "prv") ok = ok && validation.content_sha256 === expected.content_sha256;
-  return {ok:!!ok,release_sha:sha,deployed_sha:job.release_sha,content_sha256:expected.content_sha256,row_count:validation.row_count,parallel_count:validation.parallel_count};
+  var actualHash = pubmonProductHash_(product), parallels = Array.isArray(product.parallels) ? product.parallels.length : undefined;
+  var ok = (product.meta.release_id || null) === expected.release_id && actualHash === expected.content_sha256 && product.rows.length === expected.row_count &&
+    (job.kind === "prv" || parallels === expected.parallel_count) && (!expected.index_sha256 || pubmonHash_(evidence.index_row) === expected.index_sha256);
+  return {ok:!!ok,release_sha:sha,deployed_sha:job.release_sha,content_sha256:actualHash,row_count:product.rows.length,parallel_count:parallels};
 }
 function pubmonAlert_(job) {
   if (["failed","cancelled","overdue"].indexOf(job.state) < 0 || job.alert_claimed_at) return;
@@ -292,7 +323,13 @@ function publishMonitorSetupStatus() {
 // property. This cannot dispatch anything, publish content or claim Live verified.
 function publishMonitorObserveProbe() {
   var runId = String(PropertiesService.getScriptProperties().getProperty("CM_PUBMON_PROBE_RUN_ID") || "");
-  if (!/^\d+$/.test(runId)) throw new Error("Set CM_PUBMON_PROBE_RUN_ID to the actual GitHub probe run ID.");
+  if (!runId) {
+    var recent = (pubmonGitHub_("/actions/workflows/publish-monitor-probe.yml/runs?event=workflow_dispatch&per_page=5").workflow_runs || []).filter(function(r) {
+      return r.event === "workflow_dispatch" && r.actor && r.actor.login === "ChasingMajors" && Date.now() - Date.parse(r.created_at) < 86400000;
+    });
+    if (recent.length) runId = String(recent[0].id);
+  }
+  if (!/^\d+$/.test(runId)) throw new Error("No recent owner-dispatched probe. Set CM_PUBMON_PROBE_RUN_ID to a real probe run ID.");
   var run = pubmonGitHub_("/actions/runs/" + runId);
   if (run.path !== ".github/workflows/publish-monitor-probe.yml" || run.event !== "workflow_dispatch") throw new Error("Not an isolated monitor probe run.");
   var id = "notification-probe-" + runId;
@@ -305,5 +342,26 @@ function publishMonitorObserveProbe() {
     }
   });
   runPublishMonitor();
-  var result = pubmonPublic_(pubmonRead_(id)); Logger.log(JSON.stringify(result)); return result;
+  var result = pubmonPublic_(pubmonRead_(id));
+  Logger.log(JSON.stringify({state:result.state,email:result.alert_status || "not_needed",polls:result.polls,run_url:result.run_url,id:result.id})); return result;
+}
+
+// Read-only acceptance check against the existing, approved Holiday Football
+// product. This observes a real release; it does NOT publish or approve content.
+function publishMonitorVerifyCurrentHolidayRelease() {
+  var manifest = pubmonJson_("data/v1/checklists/index.json",null), sha = manifest.release_sha;
+  if (!/^[a-f0-9]{40}$/.test(sha || "")) throw new Error("Live source-SHA metadata is not present yet.");
+  var id = "observe-holiday-" + sha.slice(0,20);
+  pubmonRegister_({request_id:id,action:"publishChecklistAfterImport",code:"2026_topps_holiday_football",sport:"football",bucket:"2026"});
+  pubmonLock_(function() {
+    var job = pubmonRead_(id);
+    if (PUBMON_TERMINAL.indexOf(job.state) < 0) {
+      job.observation_only = true; job.submitted_sha = sha; job.release_sha = sha; job.state = "commit_submitted";
+      pubmonSave_(job);
+    }
+  });
+  runPublishMonitor();
+  var result = pubmonPublic_(pubmonRead_(id));
+  if (result.state === "live_verified" && (result.evidence.live.row_count !== 763 || result.evidence.live.parallel_count !== 83)) throw new Error("Observed Holiday Football baseline counts changed; inspect before acceptance.");
+  Logger.log(JSON.stringify({state:result.state,live:result.evidence.live || null,polls:result.polls,run_url:result.run_url,id:result.id})); return result;
 }

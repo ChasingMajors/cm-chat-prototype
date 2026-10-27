@@ -19,3 +19,5 @@ jobs:
           node-version: '22'
       - name: Verify imports, publication, queue recovery and frontend guards
         run: npm run test:publish
+      - name: Verify publish monitoring and failure alerts
+        run: npm run test:publish-monitor

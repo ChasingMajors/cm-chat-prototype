@@ -558,6 +558,7 @@
       function saveOperatorKey(key) {
         try {
           sessionStorage.setItem(OPERATOR_WRITE_KEY, String(key || "").trim());
+          window.dispatchEvent(new Event("cm-publish-status-refresh"));
           loadSharedJsonRetryQueue().then(() => renderJsonRetryNotice());
         } catch (err) {}
       }
@@ -1278,23 +1279,25 @@
         const publicValidation = validation.public || {};
         const checklistVault = validation.checklist_vault || {};
         const chatbot = validation.chatbot || {};
-        if (queuedItem && (!queuedItem.job_id || queuedItem.job_stage === "complete")) removeJsonRetryQueueItem(queuedItem);
+        const monitor = data && (data.publish_monitor || data.publish && data.publish.publish_monitor);
+        if (queuedItem && monitor && monitor.state === "live_verified") removeJsonRetryQueueItem(queuedItem);
+        window.dispatchEvent(new Event("cm-publish-status-refresh"));
         state.lastWriteData = writeData;
         const isPrv = writeData && writeData.target_tool === "prv";
         const visualButton = !isPrv && product.code && product.sport
           ? '<button class="primary" type="button" data-run-app-test>Run App Test</button>'
           : "";
-        openPreviewModal("JSON Published", product.display_name || product.code || "Checklist JSON publish", `
+        openPreviewModal(monitor && monitor.state === "live_verified" ? "Live verified" : "Commit submitted — deployment unverified", product.display_name || product.code || "Checklist JSON publish", `
           <div class="preview-meta">
             <span class="tag">Attempt: ${formatNumber(attempt)}</span>
-            <span class="tag">GitHub publish: Complete</span>
+            <span class="tag">Commit accepted; check Publish status for deployment</span>
             <span class="tag">GitHub rows: ${formatNumber(github.row_count || 0)}</span>
             <span class="tag">GitHub parallels: ${formatNumber(github.parallel_count || 0)}</span>
             <span class="tag">Public rows: ${formatNumber(publicValidation.row_count || 0)}</span>
             <span class="tag">Public parallels: ${formatNumber(publicValidation.parallel_count || 0)}</span>
             ${isPrv ? '<span class="tag">PRV public data: ' + (publicValidation.ok ? 'Verified' : 'Pending') + '</span>' : '<span class="tag">CV data: ' + (checklistVault.ok ? 'Verified' : 'Pending') + '</span><span class="tag">ChatBot data: ' + (chatbot.ok ? 'Verified' : 'Pending') + '</span>'}
           </div>
-          <div class="guardrail">${escapeHtml(data && data.next_step || "Published. Public validation may still need the normal GitHub Pages soak window.")}</div>
+          <div class="guardrail">Check Publish status for Actions, Pages deployment and live verification. A commit receipt alone does not confirm publication.</div>
           <div class="actions">${visualButton}</div>
         `);
       }
@@ -1693,5 +1696,6 @@
       }
     })();
   </script>
+  <script src="../publish-monitor.js?v=1"></script>
 </body>
 </html>

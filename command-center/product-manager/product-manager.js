@@ -65,7 +65,7 @@
       const payload={...state};delete payload.id;const ck=JSON.stringify(payload);let data=!force&&cache.get(ck);if(!data||Date.now()-data.fetched>60000){data=await request('productManagerList',payload,signal);data.fetched=Date.now();if(cache.size>=20)cache.delete(cache.keys().next().value);cache.set(ck,data);}
       if(version!==sequence)return;renderOverview(data);renderRows(data);$('login').hidden=true;$('dashboard').hidden=false;$('logout').hidden=false;$('key').value='';
       if(state.id){const detail=await request('productManagerDetail',{id:state.id,sport:state.sport},signal);if(version!==sequence)return;renderDetail(detail);$('list').hidden=true;$('detail').hidden=false;}else{$('list').hidden=false;$('detail').hidden=true;}
-      message('');
+      message('');window.dispatchEvent(new Event('cm-publish-status-refresh'));
     }catch(err){if(version!==sequence)return;const m=err.name==='AbortError'?'Inventory request timed out. Try Reload inventory.':err.message;if(/Invalid operator key|Missing Script Property CM_OPERATOR_KEY/.test(m)){lock();message('Administrator access was rejected. Enter a valid Sentinel key.',true);}else message(m,true);}
     finally{clearTimeout(timeout);if(version===sequence){$('dashboard').setAttribute('aria-busy','false');$('reload').disabled=false;}}
   }

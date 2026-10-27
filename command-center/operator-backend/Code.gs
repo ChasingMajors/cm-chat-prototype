@@ -128,6 +128,8 @@ function doGet(e) {
   try {
     if (action === "health") return json_(buildHealthPayload_());
 
+    if (action === "publishMonitorStatus") return json_({ok:false,error:"Publish monitoring requires authenticated POST."});
+
     if (action === "sourceWatch") return json_(runSourceWatch_(p.mode || ""));
 
     if (action === "runDeepBackendAudit") return json_(runDeepBackendAudit_(p));
@@ -319,6 +321,7 @@ function doPost(e) {
   const action = safeString_(body.action).trim();
 
   try {
+    if (action === "publishMonitorStatus") return json_(publishMonitorStatus_(body));
     if (action === "health") return json_(buildHealthPayload_());
 
     if (action === "productManagerList") return json_(pmList_(body));
@@ -3047,6 +3050,9 @@ function publishPrvVaultStaticDataPipelinePrevious_(input) {
 }
 
 function postStaticExporterJson_(exporterUrl, payload, failurePrefix) {
+  const monitored = payload && ["publishChecklistAfterImport", "publishVaultStaticDataToGitHub"].includes(payload.action);
+  const monitorInput = monitored ? Object.assign({}, payload, {request_id:payload.request_id || payload.job_id || "monitor-" + Utilities.getUuid()}) : null;
+  if (monitored) pubmonRegister_(monitorInput);
   const res = UrlFetchApp.fetch(exporterUrl, {
     method: "post",
     contentType: "text/plain;charset=utf-8",
@@ -3078,6 +3084,10 @@ function postStaticExporterJson_(exporterUrl, payload, failurePrefix) {
     });
   }
 
+  if (monitored) {
+    try { data.publish_monitor = pubmonCapture_(monitorInput, data); }
+    catch (_) { data.monitor_warning = "Publish response received, but monitoring evidence could not be saved. Do not repeat the upload; inspect Actions."; }
+  }
   return data;
 }
 

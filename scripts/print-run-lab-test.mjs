@@ -100,26 +100,36 @@ test('base and insert default influence exceeds auto and relic anchors',()=>{
   for(const name of ['Finest Autographs Superfractor','Finest Freshman Auto Superfractor','Patch Superfractor','Memorabilia Superfractor','Relics Red'])assert.equal(anchorProfile({name}).defaultWeight,1);
 });
 test('weighted production agrees with a hand-derived relative least-squares optimum',()=>{
-  const p=project([{...row('Base Common Superfractor',['1:100'],10),name:'Base Common Superfractor'},{...row('Finest Autographs Superfractor',['1:100'],100),name:'Finest Autographs Superfractor'}],['Hobby']);p.robustWeights=false;
+  // EXPERIMENTAL weighted-least-squares optimum (opt-in; off by default).
+  const p=project([{...row('Base Common Superfractor',['1:100'],10),name:'Base Common Superfractor'},{...row('Finest Autographs Superfractor',['1:100'],100),name:'Finest Autographs Superfractor'}],['Hobby']);p.method='experimental';p.robustWeights=false;p.roundingWeights=false;
   let f=calculate(p);const expected=(10/1000+1/10000)/(10/1000**2+1/10000**2);assert.ok(Math.abs(f.packTotals[0]-expected)<1e-6);assert.equal(f.diagnostics[1].weight,1);
   p.rows[1].weight=0;f=calculate(p);assert.ok(Math.abs(f.packTotals[0]-1000)<1e-6);assert.equal(f.diagnostics[1].effectiveWeight,0);assert.ok(Math.abs(f.diagnostics[1].impliedEligible-10)<1e-8);
   p.rows[1].weight=1000;f=calculate(p);assert.ok(f.packTotals[0]>5000);
 });
-test('questionable anchors can be manually downweighted without changing source odds',()=>{
-  const p=project([row('reliable',['1:100'],10),row('questionable',['1:100'],100)],['Hobby']);p.robustWeights=false;
+test('questionable anchors can be manually downweighted (experimental mode)',()=>{
+  const p=project([row('reliable',['1:100'],10),row('questionable',['1:100'],100)],['Hobby']);p.method='experimental';p.robustWeights=false;p.roundingWeights=false;
   const before=calculate(p).packTotals[0];p.rows[1].weight=0.1;const after=calculate(p);assert.ok(Math.abs(after.packTotals[0]-1000)<Math.abs(before-1000));assert.deepEqual(p.rows[1].odds,['1:100']);
 });
-test('automatic outlier reductions are visible and can be disabled',()=>{
-  const p=project([row('a',['1:100'],10),row('b',['1:100'],100)],['Hobby']);const f=calculate(p);assert.ok(f.diagnostics.some(d=>d.downweighted));assert.equal(f.robustConverged,true);
-  p.robustWeights=false;assert.ok(calculate(p).diagnostics.every(d=>d.effectiveWeight===d.weight));
+test('automatic outlier reductions are off by default and opt-in in experimental mode',()=>{
+  // Default: no Huber downweighting, weights equal configured weights.
+  const base=project([row('a',['1:100'],10),row('b',['1:100'],100)],['Hobby']);
+  assert.ok(calculate(base).diagnostics.every(d=>d.effectiveWeight===d.weight));
+  // Opt-in Huber reduces an outlier's effective weight and is reported.
+  const exp=project([row('a',['1:100'],10),row('b',['1:100'],100)],['Hobby']);exp.robustWeights=true;
+  const f=calculate(exp);assert.ok(f.diagnostics.some(d=>d.downweighted));assert.equal(f.robustConverged,true);
 });
-test('coarse odds have an explicit lower precision weight',()=>{
-  const p=project([row('coarse',['1:2'],10)],['Hobby']);const f=calculate(p);assert.ok(Math.abs(f.diagnostics[0].precisionFactor-0.01)<1e-12);assert.ok(Math.abs(f.packTotals[0]-20)<1e-8);
-  p.roundingWeights=false;assert.equal(calculate(p).diagnostics[0].precisionFactor,1);
+test('coarse-odds precision factor is off by default and opt-in',()=>{
+  const base=project([row('coarse',['1:2'],10)],['Hobby']);
+  assert.equal(calculate(base).diagnostics[0].precisionFactor,1); // off by default
+  const exp=project([row('coarse',['1:2'],10)],['Hobby']);exp.roundingWeights=true;
+  assert.ok(Math.abs(calculate(exp).diagnostics[0].precisionFactor-0.01)<1e-12);
 });
-test('column scaling preserves independent pools and extreme pack scales',()=>{
-  const independent=calculate(project([row('a',['1:100','-'],10),row('b',['-','1:200000'],10)]));assert.equal(independent.valid,true);assert.ok(independent.wellConditioned);assert.deepEqual(independent.packTotals.map(Math.round),[1000,2000000]);
-  const huge=calculate(project([row('a',['1:100000000','1:200000000'],111),row('b',['1:100000000','1:202000000'],110)]));assert.equal(huge.valid,true);assert.ok(Math.abs(huge.packTotals[0]/1e9-1)<1e-6);assert.ok(Math.abs(huge.packTotals[1]/20.2e9-1)<1e-6);
+test('default median model solves independent pools and extreme pack scales',()=>{
+  const independent=calculate(project([row('a',['1:100','-'],10),row('b',['-','1:200000'],10)]));
+  assert.equal(independent.valid,true);assert.equal(independent.methodUsed,'median');assert.deepEqual(independent.packTotals.map(Math.round),[1000,2000000]);
+  // Coupled extreme-scale system routes to the experimental solver automatically.
+  const huge=calculate(project([row('a',['1:100000000','1:200000000'],111),row('b',['1:100000000','1:202000000'],110)]));
+  assert.equal(huge.valid,true);assert.ok(Math.abs(huge.packTotals[0]/1e9-1)<1e-6);assert.ok(Math.abs(huge.packTotals[1]/20.2e9-1)<1e-6);
 });
 test('supplied Finest numbering is scoped to the example and preserves omissions',()=>{
   const rows=applyFinestReference(matchFamilies(o.rows,c.families));const find=name=>rows.find(r=>r.name===name);
@@ -424,6 +434,170 @@ test('a legacy name-based alias migrates to a family id on restore',()=>{
 });
 test('an alias to a nonexistent section is rejected on restore',()=>{
   assert.throws(()=>restoreAliases({families:[{id:'f0',name:'Base',cards:[],count:1}],aliases:[{from:'X',to:'ghost'}]}));
+});
+
+// --- Batch 3: owner's median serial-anchor model is the default -------------
+
+test('default model is the median of serial-anchor implied packs',()=>{
+  // One format, serial-numbered base parallels. Total Packs = median of
+  // (subjects * serial * odds) across anchors; each parallel PR = packs/odds/subjects.
+  const rows=[['a',150,55,10],['b',150,60,9],['c',150,50,11],['d',150,25,22],['e',150,10,54],['f',150,1,526]]
+    .map(([id,subj,sn,N])=>({id,name:id,odds:['1:'+N],familyId:id,eligible:subj,serial:sn,anchor:true}));
+  const fams=rows.map(r=>({id:r.id,name:r.id,count:r.eligible,cards:[]}));
+  const f=calculate({families:fams,formats:['Hobby'],rows,packTotals:[null],allowScenario:false});
+  assert.equal(f.methodUsed,'median');
+  assert.equal(f.packTotals[0],81750);                 // median of 78900,81000,81000,82500,82500,82500
+  assert.deepEqual(f.packRange[0],{min:78900,max:82500,median:81750,anchors:6});
+  // per-parallel copies/card = packs / odds / subjects
+  assert.ok(Math.abs(f.results.find(r=>r.id==='a').perCard-81750/10/150)<1e-9);
+});
+test('median model: format-exclusive anchors solve per format',()=>{
+  const rows=[
+    {id:'h',name:'h',odds:['1:100','-'],familyId:'h',eligible:10,serial:1,anchor:true},
+    {id:'d',name:'d',odds:['-','1:200'],familyId:'d',eligible:10,serial:1,anchor:true},
+  ];
+  const f=calculate({families:[{id:'h',name:'h',count:10,cards:[]},{id:'d',name:'d',count:10,cards:[]}],formats:['Hobby','Delight'],rows,packTotals:[null,null],allowScenario:false});
+  assert.equal(f.methodUsed,'median');assert.deepEqual(f.packTotals.map(Math.round),[1000,2000]);
+});
+test('median model subtracts fixed-format contributions from a shared anchor',()=>{
+  // Shared /1 pool of 100 cards; Hobby fixed at 80000 (supplies 80 copies via 1:1000),
+  // leaving 20 for Delight at 1:500 -> 20*500 = 10000 Delight packs.
+  const f=calculate({families:[{id:'a',name:'a',count:100,cards:[]}],formats:['Hobby','Delight'],rows:[{id:'s',name:'s',odds:['1:1000','1:500'],familyId:'a',eligible:100,serial:1,anchor:true}],packTotals:[80000,null],allowScenario:false});
+  assert.equal(f.methodUsed,'median');assert.ok(Math.abs(f.packTotals[1]-10000)<1e-6);
+});
+test('genuinely coupled multi-format anchors route to the experimental solver',()=>{
+  // Two anchors, each spanning both unknown formats -> median cannot separate them.
+  const f=calculate({families:[{id:'a',name:'a',count:10,cards:[]},{id:'b',name:'b',count:10,cards:[]}],formats:['Hobby','Delight'],rows:[
+    {id:'a',name:'a',odds:['1:100','1:200'],familyId:'a',eligible:10,serial:1,anchor:true},
+    {id:'b',name:'b',odds:['1:150','1:250'],familyId:'b',eligible:10,serial:1,anchor:true},
+  ],packTotals:[null,null],allowScenario:false});
+  assert.equal(f.methodUsed,'experimental-fit');assert.equal(f.packRange,null);
+});
+test('heuristics are off by default and opt-in via method/flags',()=>{
+  const base=project([row('x',['1:2'],10)],['Hobby']); // coarse odds
+  const d=calculate(base);
+  assert.equal(d.diagnostics[0].precisionFactor,1);                 // coarse-odds off
+  assert.ok(d.diagnostics.every(dd=>dd.effectiveWeight===dd.weight)); // Huber off
+  assert.ok(/Default model: each format/.test(d.assumptions));
+  const e=calculate({...project([row('x',['1:2'],10)],['Hobby']),robustWeights:true,roundingWeights:true});
+  assert.ok(/EXPERIMENTAL/.test(e.assumptions));
+});
+
+// --- Batch 3 corrections from the independent re-validation -----------------
+
+test('negative inferred production is rejected, never reported as agreement',()=>{
+  // Hobby fixed at 100 already exceeds a nominal pool of 10 at 1:1; Delight residual is negative.
+  const f=calculate({families:[{id:'a',name:'a',count:10,cards:[]}],formats:['Hobby','Delight'],rows:[{id:'s',name:'s',odds:['1:1','1:1'],familyId:'a',eligible:10,serial:1,anchor:true}],packTotals:[100,null],allowScenario:false});
+  assert.equal(f.valid,false);assert.equal(f.packTotals,null);assert.equal(f.conflicts.length,0);
+  // The impossible negative residual is surfaced (as an error and/or row issue), never as agreement.
+  assert.ok([...f.errors,...f.rowIssues].some(e=>/negative or non-finite/.test(e)));
+  assert.ok(f.results.every(r=>r.total===null||r.total>=0));
+});
+test('default median is weighted: base/insert priority and downweighting are honored',()=>{
+  const fams=[{id:'base',name:'Base',count:10,cards:[],sectionKind:'Base'},...[1,2,3].map(i=>({id:'au'+i,name:'Autographs '+i,count:100,cards:[],sectionKind:'Autograph / memorabilia'}))];
+  const rows=[{id:'base',name:'Base X',odds:['1:100'],familyId:'base',eligible:10,serial:1,anchor:true},...[1,2,3].map(i=>({id:'au'+i,name:'Autographs '+i,odds:['1:100'],familyId:'au'+i,eligible:100,serial:1,anchor:true}))];
+  // Base implies 1000 (weight 10); three autos imply 10000 each (weight 1).
+  // Weighted median must favor the base tier, not the equal-vote 10000.
+  const f=calculate({families:fams,formats:['Hobby'],rows,packTotals:[null],allowScenario:false});
+  assert.equal(f.methodUsed,'median');assert.equal(f.packTotals[0],1000);
+  // Manual downweighting of the autos keeps the base-tier result.
+  const rows2=rows.map(r=>r.id.startsWith('au')?{...r,weight:0.001}:r);
+  assert.equal(calculate({families:fams,formats:['Hobby'],rows:rows2,packTotals:[null],allowScenario:false}).packTotals[0],1000);
+});
+test('non-finite implied packs are excluded as issues, not folded into the range',()=>{
+  const big='1:'+'1'+'0'.repeat(308);
+  const f=calculate({families:[],formats:['Hobby'],rows:[
+    {id:'a',name:'a',odds:['1:100'],familyId:'',eligible:100,serial:1,anchor:true},
+    {id:'b',name:'b',odds:['1:101'],familyId:'',eligible:100,serial:1,anchor:true},
+    {id:'c',name:'c',odds:[big],familyId:'',eligible:2,serial:1,anchor:true},
+  ],packTotals:[null],allowScenario:false});
+  assert.ok(f.valid);assert.equal(f.rowIssues.length,1);
+  assert.ok(Number.isFinite(f.packRange[0].min)&&Number.isFinite(f.packRange[0].max));
+  assert.equal(f.packRange[0].anchors,2);
+});
+test('an empty-format project is not a valid estimate',()=>{
+  const f=calculate({families:[],rows:[],formats:[],packTotals:[],allowScenario:false});
+  assert.equal(f.valid,false);assert.ok(f.errors.some(e=>/at least one pack format/.test(e)));
+});
+
+// --- Audit-trail / ledger honesty (Codex fixture) -------------------------
+// Hobby fixed at 100; Bad Base implies negative packs for the unknown Delight
+// format (fixed contribution 100 > pool 10) so it is INFEASIBLE there; Good
+// Base is feasible. Under the default WEIGHTED-MEDIAN model the excluded anchor
+// must report participation 'excluded-from-median', used=false, applied weight
+// 0, and must NOT be counted in usedAnchors. The ledger may not call it "used".
+const ledgerFixture=extra=>({
+  families:[{id:'bad',name:'Bad Base',count:10,cards:[],sectionKind:'Base'},{id:'good',name:'Good Base',count:200,cards:[],sectionKind:'Base'}],
+  formats:['Hobby','Delight'],
+  rows:[
+    {id:'bad',name:'Bad Base',odds:['1:1','1:1'],familyId:'bad',eligible:10,serial:1,anchor:true},
+    {id:'good',name:'Good Base',odds:['-','1:1'],familyId:'good',eligible:200,serial:1,anchor:true},
+  ],
+  packTotals:[100,null],allowScenario:false,...extra,
+});
+test('default median: an infeasible anchor is excluded from the audit trail, not counted as used',()=>{
+  const f=calculate(ledgerFixture());
+  assert.equal(f.methodUsed,'median');
+  const bad=f.diagnostics.find(d=>d.name==='Bad Base'),good=f.diagnostics.find(d=>d.name==='Good Base');
+  assert.equal(bad.participation,'excluded-from-median');
+  assert.equal(bad.used,false);
+  assert.equal(bad.effectiveWeight,0);
+  assert.equal(good.participation,'median');
+  assert.equal(good.used,true);
+  assert.ok(good.effectiveWeight>0);
+  assert.equal(f.usedAnchors,1);
+  assert.equal(f.enabledAnchors,2);
+  assert.ok(f.rowIssues.some(m=>/Bad Base/.test(m)&&/excluded/.test(m)));
+  assert.ok(!f.rowIssues.some(m=>/Bad Base/.test(m)&&/retained in the experimental fit/.test(m)));
+});
+test('experimental fit: an infeasible anchor is retained (not falsely reported as excluded)',()=>{
+  const f=calculate(ledgerFixture({method:'experimental'}));
+  assert.equal(f.methodUsed,'experimental-fit');
+  const bad=f.diagnostics.find(d=>d.name==='Bad Base');
+  assert.equal(bad.participation,'solver');
+  assert.equal(bad.used,true);
+  assert.ok(bad.effectiveWeight>0);
+  assert.ok(f.rowIssues.some(m=>/Bad Base/.test(m)&&/retained in the experimental fit/.test(m)));
+  assert.ok(!f.rowIssues.some(m=>/Bad Base/.test(m)&&/excluded from that format/.test(m)));
+});
+test('entered mode: consistency-only anchors are not mislabeled "excluded as infeasible"',()=>{
+  // All pack totals entered -> methodUsed 'entered'; anchors only check
+  // consistency, so they are NOT median participants (used=false) but are also
+  // NOT excluded as infeasible. The status line's "excluded as infeasible" note
+  // is gated to the median model; this asserts the invariant that gate relies on.
+  const f=calculate({families:[{id:'a',name:'Base',count:100,cards:[],sectionKind:'Base'}],formats:['Hobby'],rows:[{id:'a',name:'Base',odds:['1:100'],familyId:'a',eligible:100,serial:1,anchor:true}],packTotals:[100000],allowScenario:false});
+  assert.equal(f.methodUsed,'entered');
+  const d=f.diagnostics[0];
+  assert.equal(d.participation,'entered');
+  assert.equal(d.used,false);
+  assert.ok(d.effectiveWeight>0); // still a valid consistency checker, not excluded
+  assert.ok(f.rowIssues.every(m=>!/excluded/i.test(m))); // no exclusion issue raised
+  // The status clause that prints "excluded as infeasible" fires only for median.
+  const excludedNoteFires=f.methodUsed==='median'&&f.enabledAnchors>f.usedAnchors;
+  assert.equal(excludedNoteFires,false);
+});
+test('exported anchor ledger carries Participation, Exclusion reason and Applied weight, consistent with the method',()=>{
+  const f=calculate(ledgerFixture());
+  const PARTICIPATION_LABEL={'median':'Used (fed format median)','solver':'Used (experimental fit)','excluded-from-median':'Excluded (infeasible implied pool)','entered':'Consistency check only (totals entered)','not-an-anchor':'Not used as anchor'};
+  const header=['Anchor','Kind','Checklist count','Known copies per eligible card','Checklist-based copies','Estimated copies','Implied eligible cards','Relative discrepancy','Participation','Exclusion reason','Configured weight','Applied weight','Odds precision factor','Automatic reduction','Numbering source','Source concern','Method',...['Hobby','Delight'].map(x=>x+' packs')];
+  const text=csv([header,...f.diagnostics.map(d=>[d.name,d.kind,d.count,d.serial,d.total,d.predicted,d.impliedEligible,d.error,PARTICIPATION_LABEL[d.participation]||d.participation,d.participation==='excluded-from-median'?'Infeasible implied pool':'',d.weight,d.effectiveWeight,d.precisionFactor,d.downweighted,'',' ',f.assumptions,...f.packTotals])]);
+  const lines=text.split(/\r?\n/).filter(Boolean);
+  assert.ok(lines[0].includes('Participation')&&lines[0].includes('Exclusion reason')&&lines[0].includes('Applied weight'));
+  // Every cell is double-quoted with no embedded commas in this fixture, so a
+  // split on '","' with the outer quotes stripped recovers the columns exactly.
+  const cols=l=>l.replace(/^"/,'').replace(/"$/,'').split('","');
+  const badCols=cols(lines.find(l=>l.startsWith('"Bad Base"')));
+  const headerCols=cols(lines[0]);
+  const col=(row,name)=>row[headerCols.indexOf(name)];
+  assert.equal(col(badCols,'Participation'),'Excluded (infeasible implied pool)');
+  assert.equal(col(badCols,'Exclusion reason'),'Infeasible implied pool');
+  // The excluded anchor's exported applied weight is 0 — it never claims influence.
+  assert.equal(col(badCols,'Applied weight'),'0');
+  const goodCols=cols(lines.find(l=>l.startsWith('"Good Base"')));
+  assert.equal(col(goodCols,'Participation'),'Used (fed format median)');
+  assert.ok(Number(col(goodCols,'Applied weight'))>0);
+  // The exported method string names the weighted median.
+  assert.ok(/WEIGHTED MEDIAN/.test(f.assumptions));
 });
 
 console.log(`${checks} checks passed.`);

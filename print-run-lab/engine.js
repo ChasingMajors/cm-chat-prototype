@@ -435,7 +435,7 @@ export function calculate(project) {
   for(const r of candidates) {
     const row=rows.find(row=>row.id===r.id);
     const denominators=row.odds.filter(o=>!/^\s*[-–—]\s*$/.test(o)).map(o=>Number(o.replaceAll(',','').split(':')[1]));
-    r.precisionFactor=project.roundingWeights===false?1:Math.min(1,(Math.min(...denominators)/20)**2);
+    r.precisionFactor=project.roundingWeights===true?Math.min(1,(Math.min(...denominators)/20)**2):1;
     r.priorWeight=r.weight*r.precisionFactor;
   }
   const anchors=candidates.filter(r=>r.enabled);
@@ -443,15 +443,84 @@ export function calculate(project) {
   const unknown=formats.map((_,i)=>i).filter(i=>fixed[i]===null||fixed[i]===undefined||fixed[i]==='');
   const packTotals=fixed.map(x=>x===null||x===undefined||x===''?0:Number(x));
   if(packTotals.some(x=>!Number.isFinite(x)||x<0))errors.push('Pack totals must be nonnegative finite numbers.');
+  // Each enabled anchor implies, for an UNKNOWN format i it appears in, a Total
+  // Packs value. For a pool total `total = subjects*serial`, the anchor equation
+  // is sum_f(packs_f * rate_f) = total. Copies already supplied by any FIXED
+  // format are subtracted first, so the residual for format i is
+  //   packs_i = (total - sum_{fixed f}(packs_f * rate_f)) / rate_i
+  // For a single-format (or purely format-exclusive) anchor this reduces to
+  // total / rate_i = subjects*serial*N — the owner's hand formula.
+  // packImplications[formatIndex] = sorted {id,name,packs} from its anchors.
+  const fixedPacks=i=>(project.packTotals?.[i]===null||project.packTotals?.[i]===undefined||project.packTotals?.[i]==='')?null:Number(project.packTotals[i]);
+  // Anchors whose implied packs for a format come out non-finite or negative
+  // (e.g. fixed-format contribution exceeds the nominal pool) are recorded as
+  // issues and kept out of the median rather than poisoning it.
+  // Implications are only meaningful for UNKNOWN formats (the median targets).
+  // A FIXED format is not being solved, so its "implied packs" is not an
+  // estimate and an infeasibility there must not flag the anchor as excluded.
+  // Fixed-format slots are therefore left empty and never feed implicationIssues.
+  const implicationIssues=new Set();
+  const packImplications=formats.map((_,i)=>unknown.includes(i)?anchors
+    .filter(r=>(r.rates[i]||0)>0)
+    .map(r=>{
+      const fixedContribution=r.rates.reduce((s,v,f)=>{const fp=fixedPacks(f);return s+(f!==i&&fp!==null&&v?v*fp:0);},0);
+      const packs=(r.total-fixedContribution)/r.rates[i];
+      return {id:r.id,name:r.name,weight:r.priorWeight,packs};
+    })
+    .filter(p=>{if(Number.isFinite(p.packs)&&p.packs>=0)return true;implicationIssues.add(p.id);return false;})
+    .sort((x,y)=>x.packs-y.packs):[]);
+  // Overflow-safe midpoint: a+(b-a)/2 avoids (a+b) overflowing to Infinity.
+  const mid2=(a,b)=>a+(b-a)/2;
+  const median=arr=>arr.length?(arr.length%2?arr[(arr.length-1)/2]:mid2(arr[arr.length/2-1],arr[arr.length/2])):null;
+  // Weighted median: honors the base/insert>auto influence policy and manual
+  // downweighting, so a cluster of low-weight autograph anchors cannot outvote
+  // higher-weight base anchors. Falls back to the plain median when all weights
+  // are equal. Each item is {packs, weight}.
+  const weightedMedian=items=>{
+    if(!items.length)return null;
+    const tot=items.reduce((s,it)=>s+(it.weight>0?it.weight:0),0);
+    if(!(tot>0))return median(items.map(it=>it.packs)); // no positive weights: equal vote
+    let acc=0;const half=tot/2;
+    for(let k=0;k<items.length;k++){acc+=items[k].weight>0?items[k].weight:0;
+      if(acc>half)return items[k].packs;
+      if(acc===half)return k+1<items.length?mid2(items[k].packs,items[k+1].packs):items[k].packs;}
+    return items.at(-1).packs;
+  };
+  // Normalized anchor matrix for the experimental solver and the rank check.
   const a=anchors.map(r=>unknown.map(i=>(r.rates[i]||0)*100000/r.total));
   const b=anchors.map(r=>1-r.rates.reduce((sum,v,i)=>sum+(unknown.includes(i)?0:(v||0)*packTotals[i]/r.total),0));
+
+  // --- DEFAULT MODEL (owner's bottom-up serial-anchor method) ---------------
+  // For each unknown format, Total Packs = MEDIAN of its anchors' implied packs.
+  // This is the owner's hand method and matches the production PRV pipeline. It
+  // applies when every unknown format has at least one participating anchor and
+  // the anchors are not genuinely coupled across formats (a single anchor row
+  // spanning multiple unknown formats cannot be split into per-format packs by
+  // median alone — that is the experimental solver's job).
+  const experimental=project.method==='experimental'||project.robustWeights===true||project.roundingWeights===true;
+  const coupled=anchors.some(r=>unknown.filter(i=>(r.rates[i]||0)>0).length>1);
+  const medianApplies=!experimental && !coupled && unknown.every(i=>packImplications[i].length>0);
+
   const fullRank=formats.length>0 && rank(a)===unknown.length;
   let converged=unknown.length===0,conditioning=unknown.length?Infinity:0;
   let weights=anchors.map(r=>r.priorWeight),robustConverged=true;
-  // Huber relative-error fit: beyond 20% disagreement an anchor's influence
-  // decreases smoothly. Never rewrite the source odds or silently delete a row.
-  const robust=project.robustWeights!==false;
-  if(fullRank && unknown.length && !errors.length) {
+  let methodUsed=unknown.length?(medianApplies?'median':'experimental-fit'):'entered';
+  // Per-format implied-packs range. Only meaningful under the median model,
+  // where each anchor implies a per-format pack total; for a coupled/
+  // experimental fit a single anchor spans formats and its per-format implied
+  // packs is not separable, so the range would mislead and is withheld.
+  const packRange=medianApplies?formats.map((_,i)=>{const ps=packImplications[i].map(p=>p.packs);return ps.length?{min:Math.min(...ps),max:Math.max(...ps),median:weightedMedian(packImplications[i]),anchors:ps.length}:null;}):null;
+
+  if(medianApplies && unknown.length && !errors.length) {
+    // Deterministic: each unknown format's packs is the WEIGHTED median of its
+    // anchors' implied packs (influence policy preserved).
+    unknown.forEach(i=>{packTotals[i]=weightedMedian(packImplications[i]);});
+    converged=true;conditioning=1;
+  } else if((experimental||coupled) && fullRank && unknown.length && !errors.length) {
+    // --- EXPERIMENTAL MODE (NNLS + optional Huber/coarse-odds) --------------
+    // Off by default. Used only when explicitly enabled, or when anchors are
+    // genuinely coupled across formats so the median cannot separate them.
+    const robust=project.robustWeights===true;
     let previous=null;
     for(let pass=0;pass<(robust?400:1);pass++) {
       const sol=solveWeighted(a,b,weights);converged=sol.converged;conditioning=sol.conditioning;
@@ -470,26 +539,77 @@ export function calculate(project) {
       previous=sol.x;weights=next;
     }
   }
+  // An estimate requires at least one pack format; an empty-format project is
+  // not a solved system even though it has no "unknowns".
+  if(!formats.length)errors.push('Add at least one pack format before estimating production.');
+  // Any anchor whose implied packs could not be computed (non-finite or
+  // negative, e.g. a fixed format already exceeding the nominal pool) is a
+  // reported issue, never silently dropped into a false "anchors agree".
+  // Set of anchor ids whose implied packs were infeasible (negative/non-finite)
+  // for at least one format they participate in. The audit message is method-
+  // specific: under the median model such a row is genuinely EXCLUDED from that
+  // format's median; under the experimental solver it is NOT excluded — it
+  // remains in the objective with an infeasible implied pool, which the fit must
+  // reconcile. Saying "excluded" in that mode would be false.
+  for(const id of implicationIssues){const r=anchors.find(x=>x.id===id);const row=rows.find(x=>x.id===id);if(r&&row&&!row._issue){
+    // Precise wording for the median model: an anchor may be feasible for one
+    // unknown format and infeasible for another, so it is excluded from the
+    // median of the format(s) where its implied pool is infeasible — not
+    // necessarily every format it touches.
+    const msg=medianApplies
+      ?'Implied pack total is negative or non-finite for at least one format (a fixed format may already exceed this pool). This anchor was excluded from that format\u2019s median; review the odds, serial, or entered pack totals.'
+      :'Implied pack total is negative or non-finite (a fixed format may already exceed this pool). This anchor is retained in the experimental fit but its implied pool is infeasible; review the odds, serial, or entered pack totals.';
+    row._issue=msg;rowIssues.push(`${r.name}: ${msg}`);}}
+  // Which anchors actually fed a format median (used only under the median
+  // model). Only UNKNOWN formats are median targets, so an anchor that is
+  // feasible for a FIXED format but infeasible for every unknown format it
+  // touches is not a participant — it fed no median. Building this from
+  // packImplications over all formats (including fixed ones) would falsely
+  // count such an anchor as "used".
+  const medianParticipantIds=medianApplies?new Set(unknown.flatMap(i=>packImplications[i].map(p=>p.id))):null;
+  // After solving, every pack total must be finite and nonnegative. A negative
+  // inferred total is impossible production and must not pass as agreement.
+  if(packTotals.some(x=>!Number.isFinite(x)||x<0))errors.push('Inferred pack totals are negative or non-finite, which is impossible production. Review fixed pack totals, odds, and serial numbers; a fixed format may exceed a nominal pool.');
   const wellConditioned=conditioning<=1000;
-  const identifiable=fullRank;
+  // Identifiable under the default model = every unknown format has at least one
+  // participating serial anchor (so a median exists). Under the experimental
+  // solver it is full column rank. A fully-entered system (no unknowns) is
+  // trivially identifiable.
+  const identifiable=unknown.length===0 || (medianApplies ? unknown.every(i=>packImplications[i].length>0) : fullRank);
   // Evidence disagreements are reported, never used as a switch hiding results.
   const hasEstimate=identifiable&&converged&&!errors.length&&packTotals.every(Number.isFinite);
   const diagnostics=candidates.map(r=>{
     const index=anchors.findIndex(a=>a.id===r.id);
-    const effectiveWeight=index>=0?weights[index]:0;
+    // participation describes what the row ACTUALLY did under the method used:
+    //  - 'not-an-anchor': not enabled as an anchor (weight 0 or unchecked)
+    //  - 'excluded-from-median': enabled, but its implied packs were infeasible
+    //    and dropped from every format median (default model only)
+    //  - 'median': enabled and fed at least one format's median
+    //  - 'solver': enabled and present in the experimental least-squares fit
+    let participation;
+    if(index<0)participation='not-an-anchor';
+    else if(methodUsed==='median')participation=medianParticipantIds&&medianParticipantIds.has(r.id)?'median':'excluded-from-median';
+    else if(methodUsed==='experimental-fit')participation='solver';
+    else participation='entered'; // fully-entered totals: anchors only check consistency
+    // Effective influence: an anchor excluded from the median exerted none.
+    const effectiveWeight=participation==='excluded-from-median'?0:(index>=0?weights[index]:0);
     const rawPredicted=hasEstimate?r.rates.reduce((sum,v,i)=>sum+(v||0)*packTotals[i],0):null;
     // Never let a non-finite predicted value become a NaN discrepancy that then
     // slips past the >5% check as if it agreed.
     const predicted=rawPredicted!==null&&Number.isFinite(rawPredicted)?rawPredicted:null;
     const error=predicted===null?null:Math.abs(predicted-r.total)/r.total;
-    return {...r,effectiveWeight,downweighted:r.enabled&&effectiveWeight<r.weight*0.99,predicted,error:Number.isFinite(error)?error:null,impliedEligible:predicted===null?null:predicted/r.serial};
+    return {...r,participation,used:participation==='median'||participation==='solver',effectiveWeight,downweighted:r.enabled&&participation!=='excluded-from-median'&&effectiveWeight<r.weight*0.99,predicted,error:Number.isFinite(error)?error:null,impliedEligible:predicted===null?null:predicted/r.serial};
   });
   const conflicts=diagnostics.filter(r=>r.enabled&&r.error!==null&&r.error>0.05);
   // Rows whose derived value could not be computed (non-finite) must not be read
   // as agreement. Track them by id so an anchor that is also a result row is
   // counted once.
   const derivedIssueIds=new Set(diagnostics.filter(r=>r.enabled&&r.error===null&&hasEstimate).map(r=>r.id));
-  const assumptions='Base and ordinary insert anchors start at weight 10; autograph/memorabilia anchors at 1. Weights are editable heuristics. '+(project.roundingWeights===false?'Coarse-odds precision adjustment is off. ':'Coarse odds use precision factor min(1,(smallest printed denominator/20)^2). ')+(robust?'Huber weighting reduces influence beyond 20% relative disagreement. ':'Automatic outlier weighting is off. ');
+  const assumptions=methodUsed==='median'
+    ?'Default model: each format\u2019s pack total is the WEIGHTED MEDIAN of its numbered anchors\u2019 implied packs (implied packs = eligible subjects \u00d7 serial \u00d7 odds, less any fixed-format contribution), weighted by each anchor\u2019s influence so base/insert anchors outweigh autograph/memorabilia. Each parallel\u2019s estimate = packs \u00f7 odds \u00f7 eligible subjects. A dash means unavailable; anchors with an infeasible implied pool are excluded. These are estimates from published odds anchored on known serial numbers, not manufacturer-confirmed totals.'
+    :methodUsed==='entered'
+    ?'Pack totals were entered directly; each parallel\u2019s estimate = packs \u00f7 odds \u00f7 eligible subjects. Not manufacturer-confirmed.'
+    :'EXPERIMENTAL fit (off by default): nonnegative least squares'+(project.robustWeights===true?' with Huber outlier weighting':'')+(project.roundingWeights===true?' and coarse-odds precision weighting':'')+'. Uncalibrated; compare against the default median model. Not manufacturer-confirmed.';
   const results=rows.map(row=>{
     const family=families.find(f=>f.id===row.familyId),count=row.eligible??family?.count;
     let byFormat=hasEstimate&&row._rates?row._rates.map((v,i)=>v===null?0:v*packTotals[i]):null;
@@ -515,6 +635,10 @@ export function calculate(project) {
     const boundaryZero=hasEstimate&&unknown.includes(i)&&referenced&&packTotals[i]<=1e-6;
     return {format,cardsPerPack:config.cardsPerPack??null,packsPerBox:config.packsPerBox??null,boxes:hasEstimate&&config.packsPerBox>0&&Number.isFinite(packTotals[i])?packTotals[i]/config.packsPerBox:null,listedCardsPerPack:expectedCards,source:config.source||'',boundaryZero};
   });
-  return {formatChecks,packTotals:hasEstimate?packTotals:null,identifiable,fullRank,wellConditioned,converged,conditioning,valid:hasEstimate,hasEstimate,diagnostics,conflicts,errors,rowIssues,derivedIssues,results,scenario:provisional,provisional,robustConverged,assumptions,usedAnchors:anchors.length};
+  // usedAnchors counts anchors that actually participated under the method used
+  // (fed a format median, or were present in the experimental fit) — not merely
+  // enabled anchors, so the "using N anchors" status is honest.
+  const usedAnchors=diagnostics.filter(d=>d.used).length;
+  return {formatChecks,packTotals:hasEstimate?packTotals:null,methodUsed,packRange,packImplications,identifiable,fullRank,wellConditioned,converged,conditioning,valid:hasEstimate,hasEstimate,diagnostics,conflicts,errors,rowIssues,derivedIssues,results,scenario:provisional,provisional,robustConverged,assumptions,usedAnchors,enabledAnchors:anchors.length};
 }
 export function csv(rows) {return rows.map(r=>r.map(v=>{const s=String(v??'');return '"'+(/^[\s]*[=+@\-]/.test(s)?"'":'')+s.replaceAll('"','""')+'"';}).join(',')).join('\r\n');}

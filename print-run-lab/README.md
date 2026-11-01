@@ -19,7 +19,7 @@ A subject appearing on an autograph or memorabilia checklist does **not** establ
 - Enter a custom anchor weight between 0 and 1000. Blank means the type default; 0 or unchecking Use excludes it. Add a source-concern note explaining a change.
 - Optionally override the eligible checklist count for a particular parallel when verified.
 
-There are two optional automatic adjustments, both enabled by default and separately switchable:
+There are two optional automatic adjustments, both **off by default** and separately switchable (experimental — see "Experimental modes" below):
 
 1. **Coarse odds precision:** multiply the configured weight by `min(1,(smallest printed odds denominator/20)^2)`. Thus a format-exclusive 1:2 row gets a factor of 0.01, while 1:100 gets 1. This is a visible precision heuristic for rounded odds, not a statistical uncertainty calculation.
 2. **Outlier influence:** Huber fitting with relative-error threshold 0.20. Disagreements larger than 20% reduce an anchor's effective weight smoothly. No source odds or checklist entries are rewritten, and anchors are never silently deleted.
@@ -34,7 +34,9 @@ For an anchor family j, with eligible count Cj, known copies per card Sj, pack t
 
 The pool is shared across every detected format. `1:N` means 1/N hits per pack; `N:1` means N hits per pack. A dash means unavailable.
 
-The fit minimizes weighted relative discrepancies. With automatic outlier weighting disabled, the objective is `sum(weight_j * precision_j * (predicted_j / (Cj*Sj) - 1)^2)`. When enabled, the corresponding Huber relative-error loss is fitted by iteratively reweighted nonnegative least squares, with threshold 0.20. The active-set solver scales columns and its right-hand side before solving, so a large difference in physical pack totals does not itself imply redundant anchors. The angular conditioning estimate is exposed and sensitive allocations receive caution text; they are not suppressed solely because of a condition cutoff. A weight-refinement iteration cap results in a provisional label, not blank estimates.
+**Default model (bottom-up serial anchors).** For each unknown format, Total Packs is the **weighted median** of its numbered anchors' implied packs, where each anchor implies `packs = (Cj * Sj) * oddsDenominator = Cj * Sj / hitRate`. The weighting applies each anchor's influence (base/insert anchors outweigh autograph/memorabilia, and manual down-weighting is honored) so a cluster of low-weight anchors cannot outvote higher-weight ones; with equal weights it reduces to the plain median. Copies already supplied by any fixed format are subtracted before implying packs. Each parallel's estimate is then `packs / odds / eligible subjects`. The per-format implied-packs range (min, weighted median, max) is reported so the spread behind the point estimate is visible. This is deterministic, needs no solver, and matches the production PRV pipeline's median-anchor method and hand-built reference sheets. A single serial anchor per format (or format-exclusive anchors) is the common case; the owner's hand formula `Cj * Sj / hitRate` is its single-anchor special case.
+
+**Experimental modes (off by default).** Two weighting adjustments are available only as opt-in comparisons and are **not** used by default: a Huber relative-error reweighting (reduces an anchor's influence beyond 20% disagreement) and a coarse-odds precision factor (down-weights rounded short odds). When enabled — or when anchors are genuinely *coupled* across multiple unknown formats so a per-format median cannot separate them — a nonnegative least-squares active-set solver runs instead, with column/RHS scaling and an exposed angular conditioning estimate; sensitive allocations receive caution text rather than being suppressed. These adjustments are uncalibrated and are comparison tools only. The default weighted-median model is the recommended one; it is not yet calibrated against an independently known print run, and the ecosystem integration (publication eligibility, provenance) is still pending (see INTEGRATION.md). Treat its point estimates as provisional, not manufacturer-confirmed totals.
 
 Known format totals can be entered and are subtracted from the unknown system. If independent information is insufficient to allocate production across all formats, the interface explains which additional independent anchor or entered pack total is needed. It does not invent an unidentified pack mix. Structural column-mapping errors and actual solver failure also need correction. Invalid individual odds rows are marked separately while unaffected estimates remain available.
 
@@ -82,7 +84,7 @@ Card view/CSV omits groups whose extracted identity count differs from the eligi
 
 ## Verification
 
-Run `npm run test:print-run` with Node 22+ (Node 24 recommended). The current suite has 64 checks, including:
+Run `npm run test:print-run` with Node 22+ (Node 24 recommended). The current suite has 73 checks, including:
 
 - Shared/exclusive pools, known totals and multiple formats.
 - Estimates visible despite conflicting anchors.

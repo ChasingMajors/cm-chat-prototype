@@ -292,4 +292,138 @@ test('label cleaning strips catalog codes but preserves ordinal/edition qualifie
   assert.deepEqual(ord.formats,['1st Edition']);
 });
 
+// --- Batch 2: source-hierarchy classification, aliases, ambiguity, headings ---
+const checklist=lines=>parseChecklist([{number:1,rows:lines.map(t=>({text:t}))}]);
+
+test('a family under the AUTOGRAPH section defaults to weight 1 by its section, not its name',()=>{
+  const c=checklist(['AUTOGRAPH','ITALICS','IT-1 A Player','IT-2 B Player']);
+  const fam=c.families.find(f=>f.name==='ITALICS');
+  assert.equal(fam.sectionKind,'Autograph / memorabilia');
+  const p=anchorProfile({name:'Italics Blue Refractor'},fam);
+  assert.equal(p.defaultWeight,1);assert.equal(p.kind,'Autograph / memorabilia');assert.equal(p.source,'section');
+});
+test('section classification does not downgrade a name that says autograph',()=>{
+  const p=anchorProfile({name:'Base Autographs Gold'},{name:'BASE AUTOGRAPHS',sectionKind:'Base'});
+  assert.equal(p.defaultWeight,1); // name escalates to limited even under a Base section
+});
+test('base/insert sections classify without an autograph keyword',()=>{
+  const base=anchorProfile({name:'Base Common Refractor'},{name:'BASE CARDS COMMON',sectionKind:'Base'});
+  assert.equal(base.defaultWeight,10);assert.equal(base.kind,'Base');
+  const ins=anchorProfile({name:'Nocturnal Gold'},{name:'NOCTURNAL',sectionKind:'Insert'});
+  assert.equal(ins.defaultWeight,10);assert.equal(ins.kind,'Insert');
+});
+test('a TOPPS-containing section heading is kept; disclaimer prose is excluded',()=>{
+  const c=checklist(['BASE CARDS COMMON','1 A Player','TOPPS TRIBUTE','TT-1 B Player','TT-2 C Player']);
+  assert.ok(c.families.some(f=>f.name==='TOPPS TRIBUTE'&&f.count===2));
+  const d=checklist(['Checklists provided by Topps reflect the intended configuration','BASE CARDS COMMON','1 A Player']);
+  assert.ok(!d.families.some(f=>/provided by Topps/i.test(f.name)));
+});
+test('word-order-insensitive matching resolves "Base Cards Common" vs "Base Common Cards"',()=>{
+  const m=matchFamilies([{id:'r',name:'Base Cards Common Refractor',odds:[],familyId:''}],[{id:'a',name:'Base Common Cards',cards:[],count:1}]);
+  assert.equal(m[0].familyId,'a');assert.equal(m[0].ambiguous,false);
+});
+test('explicit aliases take priority over automatic matching',()=>{
+  const fams=[{id:'a',name:'ITALICS',cards:[],count:1},{id:'b',name:'Base',cards:[],count:1}];
+  const m=matchFamilies([{id:'r',name:'Italics Base Set',odds:[],familyId:''}],fams,[{from:'Italics',to:'ITALICS'}]);
+  assert.equal(m[0].familyId,'a');
+});
+test('an ambiguous name is left unmatched and flagged, not silently assigned',()=>{
+  const m=matchFamilies([{id:'r',name:'Red Blue Gold',odds:[],familyId:''}],[{id:'a',name:'Blue Red Gold',cards:[],count:1},{id:'b',name:'Gold Red Blue',cards:[],count:1}]);
+  assert.equal(m[0].familyId,'');assert.equal(m[0].ambiguous,true);
+  const none=matchFamilies([{id:'r',name:'Totally Different',odds:[],familyId:''}],[{id:'a',name:'Base Common',cards:[],count:1}]);
+  assert.equal(none[0].familyId,'');assert.equal(none[0].ambiguous,false);
+});
+test('word-boundary protection survives the Batch 2 matcher',()=>{
+  const m=matchFamilies([{id:'r',name:'The Manifold Superfractor',odds:[],familyId:''}],[{id:'w',name:'The Man',cards:[],count:1}]);
+  assert.equal(m[0].familyId,'');
+});
+test('a numeric prototype heading with a dash-form subset splits from the prior family',()=>{
+  const c=checklist(['FINEST MOMENTS AUTOGRAPHS','FMA-AJ Aaron Judge Yankees','FMA-BC Bartolo Colon Mets','1993 FINEST PROTOTYPES AUTOGRAPH VARIATION','93A-AP Andy Pettitte Astros','93A-BH Bryce Harper Phillies']);
+  assert.equal(c.families.find(f=>f.name==='FINEST MOMENTS AUTOGRAPHS').count,2);
+  assert.equal(c.families.find(f=>f.name==='1993 FINEST PROTOTYPES AUTOGRAPH VARIATION').count,2);
+  // the numeric-led "2 TOM BRADY" in a plain integer list is still a card, not a heading
+  const d=checklist(['BASE CARDS COMMON','1 Alpha Beta','2 TOM BRADY PATRIOTS','3 Gamma Delta']);
+  assert.equal(d.families.length,1);assert.equal(d.families[0].count,3);
+});
+
+// --- Batch 2 corrections from the independent re-validation ---
+
+test('a numeric card just before a new section/family heading is not lost',()=>{
+  // The look-ahead must stop at a section line, not mistake "2 TOM BRADY" for a
+  // heading because "RF-1" (a different family) appears two rows below.
+  const c=checklist(['BASE','BASE CARDS','1 Alpha Player','2 TOM BRADY PATRIOTS','INSERTS','REFLASH','RF-1 Beta Player']);
+  assert.equal(c.families.find(f=>f.name==='BASE CARDS').count,2);
+  assert.equal(c.families.find(f=>f.name==='REFLASH').count,1);
+});
+test('identical normalized names are flagged ambiguous on the primary path, not silently picked',()=>{
+  const fams=[{id:'a',name:'BASE CARDS COMMON',cards:[],count:50},{id:'b',name:'BASE COMMON CARDS',cards:[],count:99}];
+  const m=matchFamilies([{id:'r',name:'Base Cards Common Superfractor',odds:[],familyId:''}],fams);
+  assert.equal(m[0].familyId,'');assert.equal(m[0].ambiguous,true);
+  // Reversing the family order must give the same (ambiguous) outcome.
+  const m2=matchFamilies([{id:'r',name:'Base Cards Common Superfractor',odds:[],familyId:''}],[fams[1],fams[0]]);
+  assert.equal(m2[0].familyId,'');assert.equal(m2[0].ambiguous,true);
+});
+test('a genuine all-caps TOPPS section heading is kept, not merged as prose',()=>{
+  const c=checklist(['TEAM FINEST','TF-1 Alpha Beta','TOPPS CHROME ULTRAVIOLET ALL STARS AUTOGRAPHS','UV-1 Gamma Delta','UV-2 Echo Fox']);
+  assert.equal(c.families.find(f=>f.name==='TEAM FINEST').count,1);
+  const uv=c.families.find(f=>f.name==='TOPPS CHROME ULTRAVIOLET ALL STARS AUTOGRAPHS');
+  assert.ok(uv&&uv.count===2);
+  // mixed-case disclaimer prose is still excluded
+  const d=checklist(['Checklists provided by Topps reflect the configuration','BASE CARDS COMMON','1 Alpha Beta']);
+  assert.ok(!d.families.some(f=>/provided by Topps/i.test(f.name)));
+});
+test('a manual section assignment is preserved through an unrelated alias rematch',()=>{
+  const fams=[{id:'small',name:'Small',cards:[],count:10},{id:'large',name:'Large',cards:[],count:100}];
+  const rows=[{id:'r',name:'Large Superfractor',odds:['1:100'],familyId:'small',familyIdManual:true,serial:1,anchor:true}];
+  const after=matchFamilies(rows,fams,[{from:'Unrelated',to:'Small'}]);
+  assert.equal(after[0].familyId,'small'); // user's override wins
+  const auto=matchFamilies([{id:'r',name:'Large Superfractor',odds:['1:100'],familyId:'small',serial:1,anchor:true}],fams,[]);
+  assert.equal(auto[0].familyId,'large'); // without the flag, auto-match reassigns
+});
+test('the most specific alias wins regardless of add order',()=>{
+  const fams=[{id:'b',name:'Base',cards:[],count:10},{id:'v',name:'Variation',cards:[],count:5}];
+  const aliases=[{from:'Base',to:'Base'},{from:'Base Variation',to:'Variation'}];
+  const m=matchFamilies([{id:'r',name:'Base Variation Gold',odds:[],familyId:''}],fams,aliases);
+  assert.equal(m[0].familyId,'v'); // the longer "Base Variation" alias, not the general "Base"
+});
+test('a known ordinary section controls the class; a name keyword only escalates',()=>{
+  const insert=anchorProfile({name:'Base Refractor'},{name:'Tribute',sectionKind:'Insert'});
+  assert.equal(insert.kind,'Insert');assert.equal(insert.source,'section');assert.equal(insert.defaultWeight,10);
+  const esc=anchorProfile({name:'Autograph Parallel'},{name:'Some Insert',sectionKind:'Insert'});
+  assert.equal(esc.defaultWeight,1); // name escalates to limited even under an Insert section
+});
+
+// Alias persistence lifecycle (aliases target stable family IDs). These mirror
+// the app's restore-migration and family-delete handlers so a valid UI edit can
+// never produce a project the app rejects on reopen.
+const restoreAliases=p=>{ // mirrors app.js restore validation + migration
+  const isObj=v=>v&&typeof v==='object'&&!Array.isArray(v);
+  if(p.aliases!==undefined&&(!Array.isArray(p.aliases)||!p.aliases.every(a=>isObj(a)&&typeof a.from==='string'&&a.from.trim()&&typeof a.to==='string'&&p.families.some(f=>f.id===a.to||f.name===a.to))))throw Error('Invalid name aliases');
+  return (p.aliases||[]).map(a=>({...a,to:p.families.some(f=>f.id===a.to)?a.to:p.families.find(f=>f.name===a.to).id}));
+};
+test('an alias targeting a renamed family still restores and resolves',()=>{
+  const families=[{id:'small',name:'Small',cards:[],count:10},{id:'large',name:'Large',cards:[],count:100}];
+  const aliases=[{from:'Large',to:'small'}];        // id target
+  families[0].name='Small Renamed';                 // rename leaves the id alias intact
+  assert.doesNotThrow(()=>restoreAliases({families,aliases}));
+  assert.equal(matchFamilies([{id:'r',name:'Large Superfractor',odds:[],familyId:''}],families,aliases)[0].familyId,'small');
+});
+test('deleting a family removes its dependent aliases and orphaned manual flags',()=>{
+  let project={families:[{id:'small',name:'Small',cards:[],count:10},{id:'large',name:'Large',cards:[],count:100}],aliases:[{from:'Large',to:'small'}],rows:[{id:'r',name:'Large SF',familyId:'small',familyIdManual:true}]};
+  const fid='small';
+  project.families=project.families.filter(f=>f.id!==fid);
+  project.rows.forEach(r=>{if(r.familyId===fid){r.familyId='';delete r.familyIdManual;}});
+  project.aliases=project.aliases.filter(a=>a.to!==fid);
+  assert.deepEqual(project.aliases,[]);
+  assert.equal(project.rows[0].familyId,'');assert.equal('familyIdManual' in project.rows[0],false);
+  assert.doesNotThrow(()=>restoreAliases(project));
+});
+test('a legacy name-based alias migrates to a family id on restore',()=>{
+  const migrated=restoreAliases({families:[{id:'f0',name:'Base Common',cards:[],count:10}],aliases:[{from:'BC',to:'Base Common'}]});
+  assert.equal(migrated[0].to,'f0');
+});
+test('an alias to a nonexistent section is rejected on restore',()=>{
+  assert.throws(()=>restoreAliases({families:[{id:'f0',name:'Base',cards:[],count:1}],aliases:[{from:'X',to:'ghost'}]}));
+});
+
 console.log(`${checks} checks passed.`);

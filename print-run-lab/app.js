@@ -5,11 +5,11 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const influence=n=>n===null||n===undefined?'—':Number(n).toLocaleString(undefined,{maximumSignificantDigits:4});
 const fmt=n=>n===null||n===undefined?'—':Number(n).toLocaleString(undefined,{maximumFractionDigits:1});
-let project={version:1,title:'',families:[],formats:[],rows:[],packTotals:[],allowScenario:false,robustWeights:true,roundingWeights:true,formatConfigs:{},oddsBlocking:false,sources:{},warnings:[]};let fit;let busy=false;let resultPage=0;
+let project={version:1,title:'',families:[],formats:[],rows:[],packTotals:[],allowScenario:false,robustWeights:true,roundingWeights:true,formatConfigs:{},aliases:[],oddsBlocking:false,sources:{},warnings:[]};let fit;let busy=false;let resultPage=0;
 function notice(message){$('notice').textContent=message;}
 function download(name,data,type){const url=URL.createObjectURL(new Blob([data],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 function setBusy(value){busy=value;for(const id of ['example','checklist','odds','restore','openProject','save'])$(id).disabled=value;}
-function rematch(){project.rows=matchFamilies(project.rows,project.families);}
+function rematch(){project.rows=matchFamilies(project.rows,project.families,project.aliases);}
 async function loadPdf(kind,buffer,name){
   const pages=await readPdf(buffer,(n,total)=>notice(`Reading ${name} · page ${n} of ${total}…`));
   const parsed=kind==='checklist'?parseChecklist(pages):parseOdds(pages);
@@ -36,12 +36,19 @@ function render(){
   }).join('');
   $('roundingWeights').checked=project.roundingWeights!==false;
   $('robustWeights').checked=project.robustWeights!==false;
+  renderAliases();
   recalculate();
+}
+function renderAliases(){
+  // Alias targets are stable family IDs; the option value is the id and the
+  // visible label is the current family name, so a rename never breaks the alias.
+  $('aliasTo').innerHTML=project.families.map(f=>`<option value="${esc(f.id)}">${esc(f.name)}</option>`).join('');
+  $('aliasRows').innerHTML=(project.aliases||[]).map((a,i)=>{const fam=project.families.find(f=>f.id===a.to);return `<tr><td>${esc(a.from)}</td><td>${esc(fam?fam.name:'(section removed)')}</td><td><button class="remove" data-remove-alias="${i}" aria-label="Remove alias ${esc(a.from)}">×</button></td></tr>`;}).join('')||'<tr><td colspan="3">No aliases. Add one when an odds row name does not match its checklist section.</td></tr>';
 }
 function renderOdds(){
   $('oddsHead').innerHTML='<tr><th>Parallel</th><th>Checklist section</th>'+project.formats.map(f=>`<th>${esc(f)}</th>`).join('')+'<th>Eligible</th><th>Copies/card</th><th>Anchor</th><th>Page</th><th></th></tr>';
   const term=$('oddsFilter').value.toLowerCase();
-  $('oddsRows').innerHTML=project.rows.filter(r=>r.name.toLowerCase().includes(term)).map(r=>`<tr><td><input data-row="${esc(r.id)}" data-field="name" value="${esc(r.name)}" aria-label="Parallel name"></td><td><select aria-label="Checklist section for ${esc(r.name)}" data-row="${esc(r.id)}" data-field="familyId"><option value="">Unmatched</option>${project.families.map(f=>`<option value="${esc(f.id)}" ${f.id===r.familyId?'selected':''}>${esc(f.name)}</option>`).join('')}</select></td>${r.odds.map((o,i)=>`<td><input data-row="${esc(r.id)}" data-odd="${i}" value="${esc(o)}" aria-label="${esc(project.formats[i])} odds for ${esc(r.name)}"></td>`).join('')}<td><input type="number" min="1" step="1" placeholder="Section" aria-label="Eligible cards for ${esc(r.name)}" data-row="${esc(r.id)}" data-field="eligible" value="${r.eligible??''}"></td><td><input type="number" min="1" step="1" aria-label="Copies per card for ${esc(r.name)}" data-row="${esc(r.id)}" data-field="serial" value="${r.serial??''}"></td><td><input type="checkbox" data-row="${esc(r.id)}" data-field="anchor" ${r.anchor?'checked':''} aria-label="Use ${esc(r.name)} as anchor"></td><td>${esc(r.page||'Manual')}${r.referenceBoxOdds?.length?`<br><small>Box odds (reference only): ${esc(r.referenceBoxOdds.join(', '))}</small>`:''}</td><td><button class="remove" data-remove-row="${esc(r.id)}" aria-label="Remove odds row">×</button></td></tr>`).join('');
+  $('oddsRows').innerHTML=project.rows.filter(r=>r.name.toLowerCase().includes(term)).map(r=>`<tr><td><input data-row="${esc(r.id)}" data-field="name" value="${esc(r.name)}" aria-label="Parallel name"></td><td><select aria-label="Checklist section for ${esc(r.name)}" data-row="${esc(r.id)}" data-field="familyId"><option value="">Unmatched</option>${project.families.map(f=>`<option value="${esc(f.id)}" ${f.id===r.familyId?'selected':''}>${esc(f.name)}</option>`).join('')}</select>${!r.familyId&&r.ambiguous?'<br><span class="bad">Ambiguous name — assign a section or add an alias.</span>':''}</td>${r.odds.map((o,i)=>`<td><input data-row="${esc(r.id)}" data-odd="${i}" value="${esc(o)}" aria-label="${esc(project.formats[i])} odds for ${esc(r.name)}"></td>`).join('')}<td><input type="number" min="1" step="1" placeholder="Section" aria-label="Eligible cards for ${esc(r.name)}" data-row="${esc(r.id)}" data-field="eligible" value="${r.eligible??''}"></td><td><input type="number" min="1" step="1" aria-label="Copies per card for ${esc(r.name)}" data-row="${esc(r.id)}" data-field="serial" value="${r.serial??''}"></td><td><input type="checkbox" data-row="${esc(r.id)}" data-field="anchor" ${r.anchor?'checked':''} aria-label="Use ${esc(r.name)} as anchor"></td><td>${esc(r.page||'Manual')}${r.referenceBoxOdds?.length?`<br><small>Box odds (reference only): ${esc(r.referenceBoxOdds.join(', '))}</small>`:''}</td><td><button class="remove" data-remove-row="${esc(r.id)}" aria-label="Remove odds row">×</button></td></tr>`).join('');
 }
 function recalculate(){
   fit=calculate(project);
@@ -54,6 +61,8 @@ function recalculate(){
   if(fit.hasEstimate&&!fit.wellConditioned)status.textContent+=' Pack allocation is sensitive to small odds changes; treat these estimates with extra caution.';
   if(!fit.robustConverged)status.textContent+=' Automatic weight refinement reached its iteration limit; the displayed fit is provisional.';
   if(unmatched)status.textContent+=` ${unmatched} odds rows need a checklist match for a per-card estimate.`;
+  const ambiguous=project.rows.filter(r=>!r.familyId&&r.ambiguous).length;
+  if(ambiguous)status.textContent+=` ${ambiguous} of those have ambiguous names; assign a section or add a name alias in step 02.`;
   if(fit.rowIssues.length)status.textContent+=` ${fit.rowIssues.length} invalid odds rows are marked individually; other estimates remain available.`;
   $('anchors').innerHTML=project.rows.filter(r=>r.serial>0).map(r=>{
     const d=fit.diagnostics.find(d=>d.id===r.id),family=project.families.find(f=>f.id===r.familyId),profile=anchorProfile(r,family);
@@ -90,7 +99,7 @@ for(const kind of ['checklist','odds'])$(kind).addEventListener('change',async e
 $('example').addEventListener('click',async()=>{
   setBusy(true);const previous=project;
   try{
-    project={version:1,title:'2025 Topps Finest Football',families:[],formats:[],rows:[],packTotals:[],allowScenario:false,robustWeights:true,roundingWeights:true,formatConfigs:{},oddsBlocking:false,sources:{},warnings:[]};
+    project={version:1,title:'2025 Topps Finest Football',families:[],formats:[],rows:[],packTotals:[],allowScenario:false,robustWeights:true,roundingWeights:true,formatConfigs:{},aliases:[],oddsBlocking:false,sources:{},warnings:[]};
     for(const [kind,file]of [['checklist','2025-finest-checklist.pdf'],['odds','2025-finest-odds.pdf']]){
       const response=await fetch('./examples/'+file);if(!response.ok)throw Error(`Example unavailable (${response.status})`);
       await loadPdf(kind,await response.arrayBuffer(),file);
@@ -110,7 +119,11 @@ document.addEventListener('change',event=>{
   if(el.dataset.family){const f=project.families.find(f=>f.id===el.dataset.family);if(el.dataset.field==='count'&&(!el.checkValidity()||Number(el.value)<1)){notice('Card counts must be positive whole numbers.');render();return;}f[el.dataset.field]=el.dataset.field==='count'?Number(el.value):el.value;renderOdds();recalculate();}
   if(el.dataset.row){const row=project.rows.find(r=>r.id===el.dataset.row);if(!row)return;
     if(el.dataset.odd!==undefined)row.odds[+el.dataset.odd]=el.value;
-    else {const field=el.dataset.field;if(['serial','eligible'].includes(field)&&el.value!==''&&!el.checkValidity()){notice('Copies and eligible card counts must be positive whole numbers.');renderOdds();return;}row[field]=field==='anchor'?el.checked:['serial','eligible'].includes(field)?(el.value===''?null:Number(el.value)):el.value;if(field==='serial'){row.serialSource='Manually entered numbering';delete row.serialSourceUrl;}}
+    else {const field=el.dataset.field;if(['serial','eligible'].includes(field)&&el.value!==''&&!el.checkValidity()){notice('Copies and eligible card counts must be positive whole numbers.');renderOdds();return;}row[field]=field==='anchor'?el.checked:['serial','eligible'].includes(field)?(el.value===''?null:Number(el.value)):el.value;if(field==='serial'){row.serialSource='Manually entered numbering';delete row.serialSourceUrl;}
+      // A manual section choice is sticky: automatic rematching (including alias
+      // edits) must not overwrite it. Choosing "Unmatched" clears the override
+      // so auto-matching can resume for that row.
+      if(field==='familyId'){if(el.value)row.familyIdManual=true;else delete row.familyIdManual;renderOdds();}}
     recalculate();
   }
   if(el.dataset.anchorWeight){const r=project.rows.find(r=>r.id===el.dataset.anchorWeight);if(!el.checkValidity()){notice('Use an anchor weight from 0 to 1000. The previous value was kept.');recalculate();return;}r.weight=el.value===''?null:Number(el.value);recalculate();}
@@ -123,8 +136,16 @@ document.addEventListener('change',event=>{
 document.addEventListener('click',e=>{
   const format=e.target.closest('[data-remove-format]');if(format){const i=+format.dataset.removeFormat;if(project.formatConfigs)delete project.formatConfigs[project.formats[i]];project.formats.splice(i,1);project.packTotals.splice(i,1);project.rows.forEach(r=>r.odds.splice(i,1));project.allowScenario=false;render();return;}
   const family=e.target.closest('[data-remove-family]');const row=e.target.closest('[data-remove-row]');
-  if(family){project.families=project.families.filter(f=>f.id!==family.dataset.removeFamily);project.rows.forEach(r=>{if(r.familyId===family.dataset.removeFamily)r.familyId='';});render();}
+  if(family){const fid=family.dataset.removeFamily;project.families=project.families.filter(f=>f.id!==fid);project.rows.forEach(r=>{if(r.familyId===fid){r.familyId='';delete r.familyIdManual;}});if(project.aliases)project.aliases=project.aliases.filter(a=>a.to!==fid);render();}
   if(row){project.rows=project.rows.filter(r=>r.id!==row.dataset.removeRow);renderOdds();recalculate();}
+  const alias=e.target.closest('[data-remove-alias]');
+  if(alias){project.aliases.splice(+alias.dataset.removeAlias,1);rematch();render();}
+});
+$('addAlias').addEventListener('click',()=>{
+  const from=$('aliasFrom').value.trim(),to=$('aliasTo').value;
+  if(!from){notice('Enter the odds-name text the alias should match.');return;}
+  if(!to){notice('Add a checklist section first, then choose it for the alias.');return;}
+  project.aliases=[...(project.aliases||[]),{from,to}];$('aliasFrom').value='';rematch();render();notice(`Alias added: “${from}” → ${to}.`);
 });
 $('addFormat').addEventListener('click',()=>{project.formats.push('Format '+(project.formats.length+1));project.packTotals.push(null);project.rows.forEach(r=>r.odds.push('-'));project.allowScenario=false;render();});
 $('openProject').addEventListener('click',()=>$('restore').click());
@@ -136,11 +157,15 @@ $('restore').addEventListener('change',async e=>{
   try{const f=e.target.files[0];if(!f)return;if(f.size>30*1024*1024)throw Error('Project file exceeds 30 MB.');const p=JSON.parse(await f.text());
     const isObj=v=>v&&typeof v==='object'&&!Array.isArray(v);
     if(p.version!==1||!Array.isArray(p.families)||!Array.isArray(p.formats)||!p.formats.every(f=>typeof f==='string')||!Array.isArray(p.rows)||!isObj(p.sources)||!Array.isArray(p.warnings)||typeof p.allowScenario!=='boolean'||(p.oddsBlocking!==undefined&&typeof p.oddsBlocking!=='boolean')||(p.robustWeights!==undefined&&typeof p.robustWeights!=='boolean')||(p.roundingWeights!==undefined&&typeof p.roundingWeights!=='boolean'))throw Error('Unsupported project file.');
-    if(!p.families.every(f=>typeof f.id==='string'&&typeof f.name==='string'&&Number.isInteger(f.count)&&f.count>0&&Array.isArray(f.cards)&&f.cards.every(c=>typeof c.id==='string'&&typeof c.description==='string'))||!p.rows.every(r=>typeof r.id==='string'&&typeof r.name==='string'&&typeof r.anchor==='boolean'&&(r.weight===undefined||r.weight===null||Number.isFinite(r.weight)&&r.weight>=0&&r.weight<=1000)&&(r.weightNote===undefined||typeof r.weightNote==='string'&&r.weightNote.length<=2000)&&(r.familyId===''||p.families.some(f=>f.id===r.familyId))&&Array.isArray(r.odds)&&r.odds.length===p.formats.length&&r.odds.every(o=>typeof o==='string')&&(r.referenceBoxOdds===undefined||Array.isArray(r.referenceBoxOdds)&&r.referenceBoxOdds.every(o=>typeof o==='string'))&&(r.serial===null||Number.isInteger(r.serial)&&r.serial>0)&&(r.eligible===null||Number.isInteger(r.eligible)&&r.eligible>0))||!Array.isArray(p.packTotals)||p.packTotals.length!==p.formats.length||!p.packTotals.every(v=>v===null||Number.isFinite(v)&&v>=0))throw Error('Invalid project data.');
+    const KINDS=['Base','Insert','Autograph / memorabilia'];
+    if(!p.families.every(f=>typeof f.id==='string'&&typeof f.name==='string'&&Number.isInteger(f.count)&&f.count>0&&(f.sectionKind===undefined||f.sectionKind===null||KINDS.includes(f.sectionKind))&&Array.isArray(f.cards)&&f.cards.every(c=>typeof c.id==='string'&&typeof c.description==='string'))||!p.rows.every(r=>typeof r.id==='string'&&typeof r.name==='string'&&typeof r.anchor==='boolean'&&(r.familyIdManual===undefined||typeof r.familyIdManual==='boolean')&&(r.weight===undefined||r.weight===null||Number.isFinite(r.weight)&&r.weight>=0&&r.weight<=1000)&&(r.weightNote===undefined||typeof r.weightNote==='string'&&r.weightNote.length<=2000)&&(r.familyId===''||p.families.some(f=>f.id===r.familyId))&&Array.isArray(r.odds)&&r.odds.length===p.formats.length&&r.odds.every(o=>typeof o==='string')&&(r.referenceBoxOdds===undefined||Array.isArray(r.referenceBoxOdds)&&r.referenceBoxOdds.every(o=>typeof o==='string'))&&(r.serial===null||Number.isInteger(r.serial)&&r.serial>0)&&(r.eligible===null||Number.isInteger(r.eligible)&&r.eligible>0))||!Array.isArray(p.packTotals)||p.packTotals.length!==p.formats.length||!p.packTotals.every(v=>v===null||Number.isFinite(v)&&v>=0))throw Error('Invalid project data.');
     if(new Set(p.families.map(f=>f.id)).size!==p.families.length||new Set(p.rows.map(r=>r.id)).size!==p.rows.length)throw Error('Duplicate section or row identifiers.');
     if(!Object.values(p.sources).every(s=>typeof s.name==='string'&&Array.isArray(s.pages)&&s.pages.every(page=>Array.isArray(page.rows)&&page.rows.every(r=>typeof r.text==='string'))))throw Error('Invalid source text.');
     if(p.formatConfigs!==undefined&&(!isObj(p.formatConfigs)||!Object.entries(p.formatConfigs).every(([name,c])=>p.formats.includes(name)&&isObj(c)&&['cardsPerPack','packsPerBox'].every(k=>c[k]===undefined||c[k]===null||Number.isSafeInteger(c[k])&&c[k]>0)&&(c.source===undefined||typeof c.source==='string'))))throw Error('Invalid box configuration.');
-    p.formatConfigs??={};p.roundingWeights=p.roundingWeights!==false;
+    // Alias `to` is a stable family id; a legacy name-target is accepted and
+    // migrated to its id below. Either must resolve to an existing family.
+    if(p.aliases!==undefined&&(!Array.isArray(p.aliases)||!p.aliases.every(a=>isObj(a)&&typeof a.from==='string'&&a.from.trim()&&typeof a.to==='string'&&p.families.some(f=>f.id===a.to||f.name===a.to))))throw Error('Invalid name aliases (each needs a nonempty prefix and a target section that exists).');
+    p.formatConfigs??={};p.aliases=(p.aliases||[]).map(a=>({...a,to:p.families.some(f=>f.id===a.to)?a.to:p.families.find(f=>f.name===a.to).id}));p.roundingWeights=p.roundingWeights!==false;
     p.oddsBlocking=!!p.oddsBlocking;p.robustWeights=p.robustWeights!==false;project=p;render();notice('Project restored. Saved assumptions and edits are applied.');
   }catch(err){project=previous;render();notice(`Could not open project: ${err.message}`);}finally{e.target.value='';}
 });

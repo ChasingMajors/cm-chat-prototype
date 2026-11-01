@@ -9,25 +9,55 @@ export function parseRatio(s) {
 const CARD_ID=/^(\d+|[A-Za-z0-9]+-[A-Za-z0-9-]+)\s+(.+)/;
 export function parseChecklist(pages) {
   const families=[]; const warnings=[]; let current=null; let orphans=0;
+  // Track the PDF's current type section (BASE / INSERT / AUTOGRAPH / RELIC).
+  // This is the authoritative source for an anchor's influence class: a family
+  // listed under AUTOGRAPH is treated as a signature family even when its name
+  // lacks an autograph keyword (e.g. "Italics").
+  let section=null;
+  const SECTION_KIND={BASE:'Base',INSERT:'Insert',INSERTS:'Insert',AUTOGRAPH:'Autograph / memorabilia',AUTOGRAPHS:'Autograph / memorabilia',RELIC:'Autograph / memorabilia',RELICS:'Autograph / memorabilia','AUTOGRAPH RELIC':'Autograph / memorabilia'};
   // Flatten so headings can look ahead at the following rows: a numeric label
   // such as "92 FINEST" is a heading only when the rows beneath it are its
   // "92-N" subset cards; otherwise a numeric-led line is a card.
   const all=[]; for(const page of pages) for(const row of page.rows) all.push({text:row.text.trim(),page:page.number});
   for (let idx=0;idx<all.length;idx++) {
     const {text,page}=all[idx];
-    if (/^(?:BASE|INSERTS?|AUTOGRAPHS?|RELICS?)$/.test(text)) {current=null;continue;}
+    const sectionMatch=/^(BASE|INSERTS?|AUTOGRAPHS?|RELICS?|AUTOGRAPH RELIC)$/.exec(text);
+    if (sectionMatch) {current=null;section=SECTION_KIND[sectionMatch[1]]||null;continue;}
     const card=text.match(CARD_ID);
-    const upper=text.length<100 && /[A-Z]/.test(text) && text===text.toUpperCase() && !/CHECKLIST|TOPPS|CONTENTS|PROVIDED|CONFIGURATION/.test(text);
+    // A short all-caps line is a heading. Disclaimer/boilerplate prose is
+    // excluded. Disclaimer prose ("Checklists provided by Topps...") is mixed
+    // case and so already fails the all-caps test below; a genuine all-caps
+    // section name that happens to contain TOPPS ("TOPPS TRIBUTE", "TOPPS
+    // CHROME ULTRAVIOLET ALL STARS AUTOGRAPHS") is NOT excluded.
+    const boilerplate=/\b(?:CHECKLIST|CONTENTS|PROVIDED|CONFIGURATION)\b/.test(text);
+    const upper=text.length<100 && /[A-Z]/.test(text) && text===text.toUpperCase() && !boilerplate;
     // Decide heading vs card for an uppercase line that also parses as a card.
     let heading=upper;
     if (upper && card) {
       const numeric=/^(\d+)\s/.exec(text);
       if (numeric) {
-        // Numeric-led uppercase line: a heading only if the next card-like rows
-        // are its "<n>-..." subset. Otherwise it is a plain card (e.g.
-        // "2 TOM BRADY PATRIOTS").
-        const next=all.slice(idx+1,idx+4).map(r=>r.text).find(t=>CARD_ID.test(t));
-        heading=!!next && new RegExp(`^${numeric[1]}-`).test(next);
+        // Numeric-led uppercase line: decide heading vs card from the following
+        // card rows. It is a HEADING when the next card IDs are its "<n>-..."
+        // subset (e.g. "92 FINEST" -> "92-1") OR use a letter-led dash prefix
+        // (e.g. "1993 FINEST PROTOTYPES..." -> "93A-AP"). It is a CARD only when
+        // the next rows continue a plain numeric list (e.g. "2 TOM BRADY" sits
+        // between "1 ..." and "3 ...").
+        // Look only at rows immediately beneath this line, stopping at the next
+        // section line or any other heading — a dash-ID that belongs to a
+        // DIFFERENT family further down must not promote this numbered card.
+        let nextId=null;
+        for(let j=idx+1;j<all.length && j<=idx+3;j++){
+          const t=all[j].text;
+          if(/^(?:BASE|INSERTS?|AUTOGRAPHS?|RELICS?|AUTOGRAPH RELIC)$/.test(t))break; // section boundary
+          const m=CARD_ID.exec(t);
+          if(m){nextId=m[1];break;}
+          // A short all-caps non-card line beneath is a new heading: stop.
+          if(t.length<100 && /[A-Z]/.test(t) && t===t.toUpperCase())break;
+        }
+        // A dash-form subset ID ("92-1", "93A-AP", "FMA-AJ") directly beneath
+        // marks a heading; a plain integer ID ("3") means the numeric line is
+        // itself a card in a running list.
+        heading=!!nextId && /-/.test(nextId);
       }
       // Non-numeric uppercase lines that parse as a card (rare) stay headings.
     }
@@ -38,7 +68,7 @@ export function parseChecklist(pages) {
     }
     if (heading) {
       current=families.find(f=>f.name===text);
-      if (!current) {current={id:`f${families.length}`,name:text,cards:[],page};families.push(current);}
+      if (!current) {current={id:`f${families.length}`,name:text,cards:[],page,sectionKind:section};families.push(current);}
     }
   }
   const result=families.filter(f=>f.cards.length).map(f=>({...f,count:f.cards.length}));
@@ -200,23 +230,58 @@ export function parseOdds(pages) {
   if(!formats.length) warn('No format headings detected. Expected a Card, Cards, or Component Description header followed by pack-format columns. Review source text; scanned PDFs require OCR.',false);
   return {formats,rows,warnings,blocking};
 }
-export function matchFamilies(rows,families) {
+export function matchFamilies(rows,families,aliases) {
   // Tokenize on the normalized string but keep word boundaries, so a family
   // name matches a row only when its whole words are a leading run of the row's
   // words ("Base Common Refractor" matches "Base Common", but "The Manifold
   // Superfractor" does NOT match "The Man").
   const toks=s=>normalize(s).length?normalizeTokens(s):[];
-  const sorted=[...families].map(f=>({f,t:toks(f.name)})).filter(x=>x.t.length).sort((a,b)=>b.t.length-a.t.length);
+  const withToks=[...families].map(f=>({f,t:toks(f.name)})).filter(x=>x.t.length);
+  const sorted=[...withToks].sort((a,b)=>b.t.length-a.t.length);
+  // Explicit user aliases map an odds-name prefix to a stable family ID; they
+  // take priority over automatic matching. Each is {from, to} where `to` is a
+  // family id. A legacy alias whose `to` is a family name (not an id) is still
+  // honored by resolving the name to its current id.
+  const idSet=new Set(families.map(f=>f.id));
+  const aliasList=(aliases||[]).map(a=>({from:toks(a.from),to:idSet.has(a.to)?a.to:(families.find(f=>f.name===a.to)?.id||a.to)})).filter(a=>a.from.length);
   return rows.map(r=>{
+    // A manually assigned row is never re-matched automatically; the user's
+    // choice (including an explicit alias edit elsewhere) is preserved.
+    if(r.familyIdManual && families.some(f=>f.id===r.familyId))return {...r,ambiguous:false};
     const rt=toks(r.name);
-    const hit=sorted.find(({t})=>t.length<=rt.length && t.every((w,i)=>w===rt[i]));
-    return {...r,familyId:hit?.f.id||''};
+    // 1. Explicit alias: the alias's from-words are a leading run of the row.
+    //    The most specific (longest matching prefix) alias wins, so a general
+    //    alias does not shadow a more specific one regardless of add order.
+    const alias=aliasList.filter(a=>a.from.length<=rt.length && a.from.every((w,i)=>w===rt[i])).sort((x,y)=>y.from.length-x.from.length)[0];
+    if(alias){const fam=families.find(f=>f.id===alias.to);if(fam)return {...r,familyId:fam.id,ambiguous:false};}
+    // 2. Automatic match. A family matches when its whole words are a leading
+    //    run of the row (ordered prefix) or the same set in any order ("Base
+    //    Cards Common" vs "Base Common Cards"). Collect every such family, then
+    //    require a UNIQUE longest match: if two or more distinct families tie at
+    //    the best length (e.g. identical normalized names), leave the row
+    //    unmatched and flag it for review rather than silently picking one.
+    const hits=withToks.filter(({t})=>{
+      if(t.length>rt.length)return false;
+      const lead=rt.slice(0,t.length);
+      const ordered=t.every((w,i)=>w===lead[i]);
+      const sameSet=t.every(w=>lead.includes(w)) && lead.every(w=>t.includes(w));
+      return ordered||sameSet;
+    });
+    if(hits.length){
+      const maxLen=Math.max(...hits.map(x=>x.t.length));
+      const top=hits.filter(x=>x.t.length===maxLen);
+      const ids=new Set(top.map(x=>x.f.id));
+      if(ids.size===1)return {...r,familyId:top[0].f.id,ambiguous:false};
+      return {...r,familyId:'',ambiguous:true};
+    }
+    return {...r,familyId:'',ambiguous:false};
   });
 }
-// Normalize while preserving word boundaries: apply the same autograph/base
-// rewrites as normalize(), then split into alphanumeric word tokens.
+// Normalize while preserving word boundaries: apply the autograph/base rewrites,
+// drop the filler word "cards" (so "Base Common Cards" and "Base Cards Common"
+// both reduce to [base, common]), then split into alphanumeric word tokens.
 function normalizeTokens(s){
-  return String(s).toLowerCase().replace(/autographs?/g,'auto').replace(/base cards/g,'base').split(/[^a-z0-9]+/).filter(Boolean);
+  return String(s).toLowerCase().replace(/autographs?/g,'auto').replace(/base cards/g,'base').replace(/\bcards\b/g,' ').split(/[^a-z0-9]+/).filter(Boolean);
 }
 // Numerical rank of a matrix via Gauss-Jordan with partial pivoting and a
 // column-scaled relative pivot tolerance (so the threshold is not tied to the
@@ -301,9 +366,19 @@ function symEigenvalues(M) {
 // Relative influence defaults are editable heuristics, not confidence probabilities.
 export function anchorProfile(row,family) {
   const name=`${row.name} ${family?.name||''}`;
-  const limited=/\b(?:auto(?:graphs?)?|relics?|memorabilia|patch(?:es)?|swatch(?:es)?|jerseys?|signatures?)\b/i.test(name);
-  const kind=limited?'Autograph / memorabilia':/^base\b/i.test(row.name)||/^base\b/i.test(family?.name||'')?'Base':'Insert';
-  return {kind,defaultWeight:limited?1:10,reason:limited?'Checklist membership can vary by parallel; signing and memorabilia availability may be incomplete.':'Higher starting weight for ordinary printed cards; published odds can still be wrong.'};
+  // The family's PDF section (sectionKind, from the checklist parser) is the
+  // authoritative class. A name keyword can only ESCALATE to the limited class
+  // (a "Base Autograph" is still signed); it never downgrades a family the PDF
+  // placed under AUTOGRAPH/RELIC. When no section is known, fall back to the
+  // name-based heuristic.
+  const nameLimited=/\b(?:auto(?:graphs?)?|relics?|memorabilia|patch(?:es)?|swatch(?:es)?|jerseys?|signatures?)\b/i.test(name);
+  const sectionKind=family?.sectionKind;
+  const limited=sectionKind==='Autograph / memorabilia'||nameLimited;
+  let kind,source;
+  if(limited){kind='Autograph / memorabilia';source=sectionKind==='Autograph / memorabilia'?'section':'name';}
+  else if(sectionKind==='Base'||sectionKind==='Insert'){kind=sectionKind;source='section';} // a known ordinary section controls the class
+  else {kind=/^base\b/i.test(row.name)||/^base\b/i.test(family?.name||'')?'Base':'Insert';source='heuristic';} // no section info: name heuristic
+  return {kind,defaultWeight:limited?1:10,source,reason:limited?(source==='section'?'The checklist lists this family under an autograph/relic section; membership can vary by parallel.':'Checklist membership can vary by parallel; signing and memorabilia availability may be incomplete.'):'Higher starting weight for ordinary printed cards; published odds can still be wrong.'};
 }
 // Column and right-hand-side scaling makes the existing active-set solver's
 // tolerances independent of physical pack magnitudes. Condition measures angles,

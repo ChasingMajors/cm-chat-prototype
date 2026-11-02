@@ -2,9 +2,9 @@ name: Pipeline regressions
 on:
   push:
     branches: [main]
-    paths: ['command-center/**', 'print-run-lab/**', 'scripts/**', 'package.json', '.github/workflows/pipeline-regressions.yml']
+    paths: ['command-center/**', 'print-run-lab/**', 'data/print-run-lab/**', 'scripts/**', 'package.json', '.github/workflows/pipeline-regressions.yml']
   pull_request:
-    paths: ['command-center/**', 'print-run-lab/**', 'scripts/**', 'package.json', '.github/workflows/pipeline-regressions.yml']
+    paths: ['command-center/**', 'print-run-lab/**', 'data/print-run-lab/**', 'scripts/**', 'package.json', '.github/workflows/pipeline-regressions.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -23,3 +23,7 @@ jobs:
         run: npm run test:publish-monitor
       - name: Verify Print Run Lab calculations and extraction
         run: npm run test:print-run
+      - name: Verify public reading and owner-only authoring
+        run: npm run test:print-run-access
+      - name: Verify atomic Lab publishing and generated model parity
+        run: npm run test:print-run-publish

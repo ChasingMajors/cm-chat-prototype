@@ -128,6 +128,8 @@ function doGet(e) {
   try {
     if (action === "health") return json_(buildHealthPayload_());
 
+    if (["printRunAdminCapabilities", "publishPrintRunProject", "printRunPublishStatus"].includes(action)) return json_({ok:false,error:"Lab administration requires authenticated POST. Keys are not accepted in query strings."});
+
     if (action === "publishMonitorStatus") return json_({ok:false,error:"Publish monitoring requires authenticated POST."});
 
     if (action === "sourceWatch") return json_(runSourceWatch_(p.mode || ""));
@@ -321,6 +323,9 @@ function doPost(e) {
   const action = safeString_(body.action).trim();
 
   try {
+    if (action === "printRunAdminCapabilities") return json_(prlAdminCapabilities_(body));
+    if (action === "publishPrintRunProject") return json_(prlPublish_(body));
+    if (action === "printRunPublishStatus") return json_(prlStatus_(body));
     if (action === "publishMonitorStatus") return json_(publishMonitorStatus_(body));
     if (action === "health") return json_(buildHealthPayload_());
 

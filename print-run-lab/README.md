@@ -1,13 +1,24 @@
 # Print Run Lab
 
-Upload a checklist PDF and a pack-odds PDF to see best-fit production estimates at `/print-run-lab/`. The tool is linked from the app and Command Center. Serve the repository over HTTP; JavaScript modules do not load through `file://`.
+View published provisional estimates at `/print-run-lab/`. The owner can unlock authoring with Sentinel's existing operator key to import a checklist PDF and a pack-odds PDF. The tool is linked from the app and Command Center. Serve the repository over HTTP; JavaScript modules do not load through `file://`.
 
 ## Workflow
 
-1. Upload the two PDFs or load the Topps Finest example.
-2. Review extracted checklist groups, counts, pack formats and odds matches.
-3. Review numbered anchors and their relative weights. Best-fit estimates appear automatically, including when anchors disagree.
-4. Search parallel summaries or individual card estimates; export estimates and the supporting anchor calculations; save/reopen JSON projects.
+1. Public readers select a published project or load the Topps Finest example. Viewing, filtering and exports require no key.
+2. The owner unlocks authoring through a server-verified key before PDF import or local draft import becomes available.
+3. In an editable draft, review checklist counts, formats, matches and anchor weights. Estimates remain visible when anchors disagree.
+4. Local Save/Open download and restore drafts. They do not publish anything. To revise a shared project, explicitly edit a copy.
+5. After reviewing the source text, notes and estimates for public sharing, Publish creates an immutable shared revision. A successful repository commit is reported separately from verified live delivery.
+
+## Access and shared projects
+
+The static page stays public. Anonymous readers receive no mounted file importers or editable tables. This is application access gating, not confidentiality for publicly served parser code. All server publication and status actions authenticate before reading private storage or making network requests. The key uses the existing sessionStorage name and is sent only in an authenticated POST body to the fixed Sentinel Operator endpoint.
+
+Published projects live in `data/print-run-lab/v1/` in this repository. Readers load the same-origin catalog and verify revision hashes and metadata. Stored calculation snapshots are displayed without recalculation. The publishing backend recomputes each new snapshot using `PrintRunModel.gs`, generated from the unchanged browser engine and the public schema by `scripts/build-print-run-server.mjs`.
+
+Publishing defaults off until the backend's `CM_PRL_PUBLISH_ENABLED` setting is `true`. It uses the existing GitHub credential with a fixed repository and path; it does not write to PRV, Checklist Vault, Sheets or D1. Every shared revision remains provisional and not yet calibrated. See [backend deployment instructions](../command-center/operator-backend/PRINT-RUN-DEPLOY.md).
+
+Publication is intentionally public: allowlisted source text, notes and checklist information are included. Unknown fields and layout coordinates are removed, and source filenames omit local directories. This does not scrub arbitrary secrets typed into a note or embedded in source text; review those fields before publishing. PDFs stay in the browser. Public projections are limited to 2 MB and published snapshots to 4 MB.
 
 ## Domain assumptions and weights
 
@@ -84,7 +95,7 @@ Card view/CSV omits groups whose extracted identity count differs from the eligi
 
 ## Verification
 
-Run `npm run test:print-run` with Node 22+ (Node 24 recommended). The current suite has 73 checks, including:
+Run `npm run test:print-run` with Node 22+ (Node 24 recommended). The unchanged calculation suite has 81 checks, including:
 
 - Shared/exclusive pools, known totals and multiple formats.
 - Estimates visible despite conflicting anchors.
@@ -93,3 +104,5 @@ Run `npm run test:print-run` with Node 22+ (Node 24 recommended). The current su
 - Sensitive allocations, independent pools with different scales, and extreme-scale regression cases.
 - Real source extraction and the explicitly supplied example numbering/configuration.
 - Existing parser, matching and CSV regressions.
+
+Also run `npm run test:print-run-access` and `npm run test:print-run-publish` for public/owner access separation, frozen viewing, canonical model parity, strict catalog metadata, atomic commits, idempotency, stale-revision protection and delivery verification. These are local checks; authenticated live acceptance follows an approved backend and frontend deployment.

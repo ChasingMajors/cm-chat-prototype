@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "project_id": "prl_76841b16-1715-40e6-af7d-ecd32e4e3e36",
+  "revision_id": "d76b20f8-7540-4e60-a00a-5f218f4dfc4c",
+  "published_at": "2026-11-02T00:37:41.006Z",
+  "estimate_status": "provisional",
+  "calibration_status": "not-yet-calibrated",
+  "model": {
+    "version": "weighted-median-v1",
+    "engine_sha256": "302906af7c7b6140e8eb6e6ea340b2a642c8ca5077a3d2fb73869caa2366bf8d"
+  },
+  "project": {
+    "version": 1,
+    "title": "Deployment verification — synthetic demo",
+    "families": [
+      {
+        "id": "demo-base",
+        "name": "Synthetic demonstration base",
+        "count": 1,
+        "cards": [
+          {
+            "id": "DEMO-1",
+            "description": "Synthetic identity for deployment verification; not a real product",
+            "page": null
+          }
+        ],
+        "page": null,
+        "sectionKind": "Base"
+      }
+    ],
+    "formats": [
+      "Synthetic verification pack"
+    ],
+    "rows": [
+      {
+        "id": "demo-regular",
+        "name": "Synthetic base",
+        "familyId": "demo-base",
+        "odds": [
+          "1:1"
+        ],
+        "eligible": null,
+        "serial": null,
+        "anchor": false,
+        "page": null
+      },
+      {
+        "id": "demo-super",
+        "name": "Synthetic Superfractor",
+        "familyId": "demo-base",
+        "odds": [
+          "1:100"
+        ],
+        "eligible": null,
+        "serial": 1,
+        "anchor": true,
+        "page": null,
+        "serialSource": "Synthetic test input, not manufacturer data"
+      }
+    ],
+    "packTotals": [
+      null
+    ],
+    "aliases": [],
+    "sources": {},
+    "warnings": [
+      {
+        "kind": "verification",
+        "text": "Synthetic deployment test only. This is not a real product or an observed print run. All estimates are provisional and not yet calibrated."
+      }
+    ],
+    "formatConfigs": {},
+    "allowScenario": false,
+    "robustWeights": false,
+    "roundingWeights": false,
+    "oddsBlocking": false
+  },
+  "calculation": {
+    "formatChecks": [
+      {
+        "format": "Synthetic verification pack",
+        "cardsPerPack": null,
+        "packsPerBox": null,
+        "boxes": null,
+        "listedCardsPerPack": 1.01,
+        "source": "",
+        "boundaryZero": false
+      }
+    ],
+    "packTotals": [
+      100
+    ],
+    "methodUsed": "median",
+    "packRange": [
+      {
+        "min": 100,
+        "max": 100,
+        "median": 100,
+        "anchors": 1
+      }
+    ],
+    "packImplications": [
+      [
+        {
+          "id": "demo-super",
+          "name": "Synthetic Superfractor",
+          "weight": 10,
+          "packs": 100
+        }
+      ]
+    ],
+    "identifiable": true,
+    "fullRank": true,
+    "wellConditioned": true,
+    "converged": true,
+    "conditioning": 1,
+    "valid": true,
+    "hasEstimate": true,
+    "diagnostics": [
+      {
+        "id": "demo-super",
+        "name": "Synthetic Superfractor",
+        "count": 1,
+        "serial": 1,
+        "total": 1,
+        "rates": [
+          0.01
+        ],
+        "kind": "Base",
+        "defaultWeight": 10,
+        "source": "section",
+        "reason": "Higher starting weight for ordinary printed cards; published odds can still be wrong.",
+        "weight": 10,
+        "enabled": true,
+        "precisionFactor": 1,
+        "priorWeight": 10,
+        "participation": "median",
+        "used": true,
+        "effectiveWeight": 10,
+        "downweighted": false,
+        "predicted": 1,
+        "error": 0,
+        "impliedEligible": 1,
+        "exclusionReason": ""
+      }
+    ],
+    "conflicts": [],
+    "errors": [],
+    "rowIssues": [],
+    "derivedIssues": 0,
+    "results": [
+      {
+        "id": "demo-regular",
+        "name": "Synthetic base",
+        "family": "Synthetic demonstration base",
+        "familyId": "demo-base",
+        "count": 1,
+        "serial": null,
+        "byFormat": [
+          100
+        ],
+        "total": 100,
+        "perCard": 100,
+        "page": null,
+        "kind": "Base",
+        "issue": null
+      },
+      {
+        "id": "demo-super",
+        "name": "Synthetic Superfractor",
+        "family": "Synthetic demonstration base",
+        "familyId": "demo-base",
+        "count": 1,
+        "serial": 1,
+        "byFormat": [
+          1
+        ],
+        "total": 1,
+        "perCard": 1,
+        "page": null,
+        "kind": "Base",
+        "issue": null
+      }
+    ],
+    "scenario": false,
+    "provisional": false,
+    "robustConverged": true,
+    "assumptions": "Default model: each format’s pack total is the WEIGHTED MEDIAN of its numbered anchors’ implied packs (implied packs = eligible subjects × serial × odds, less any fixed-format contribution), weighted by each anchor’s influence so base/insert anchors outweigh autograph/memorabilia. Each parallel’s estimate = packs ÷ odds ÷ eligible subjects. A dash means unavailable; anchors with an infeasible implied pool are excluded. These are estimates from published odds anchored on known serial numbers, not manufacturer-confirmed totals.",
+    "usedAnchors": 1,
+    "enabledAnchors": 1
+  }
+}

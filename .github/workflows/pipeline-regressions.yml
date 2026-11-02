@@ -27,3 +27,5 @@ jobs:
         run: npm run test:print-run-access
       - name: Verify atomic Lab publishing and generated model parity
         run: npm run test:print-run-publish
+      - name: Verify offline owner calibration comparisons
+        run: npm run test:print-run-calibrate

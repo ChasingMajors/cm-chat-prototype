@@ -1,6 +1,6 @@
 // GENERATED from engine.js + project-schema.js. Do not edit; run node scripts/build-print-run-server.mjs.
 var PRLModel=(function(){
-const ENGINE_SHA256='302906af7c7b6140e8eb6e6ea340b2a642c8ca5077a3d2fb73869caa2366bf8d';
+const ENGINE_SHA256='6cdac98700c0f07d479532729a9515fe4e59f157e237570bd628c731aece3709';
 // Pure parsing and math; odds are normalized to expected hits per pack.
 const normalize = s => String(s).toLowerCase().replace(/autographs?/g,'auto').replace(/base cards/g,'base').replace(/[^a-z0-9]/g,'');
 function parseRatio(s) {
@@ -117,23 +117,84 @@ function headerColumns(items) {
   // Card/Cards/Component Description label.
   let start=0;
   for(let i=0;i<groups.length;i++){if(ODDS_HEADER.test(groups[i].text)){start=i+1;break;}}
-  return groups.slice(start).map(g=>{
-    // Clean SKU/catalog noise and the "PACK ODDS" suffix so a column reads as a
-    // channel name: "5313 - HOBBY PACK ODDS" -> "HOBBY", "FGC006155 Hobby" ->
-    // "Hobby". Preserve BOX/NumberedTo role detection on the raw text first.
-    const raw=g.text;
-    // Strip only a leading catalog identifier — a pure number ("5313"), a
-    // number with a trailing "-" ("5313-"), or a letters+many-digits SKU
-    // ("FGC006155") — plus the "PACK ODDS" suffix. Never strip ordinal/edition
-    // qualifiers like "1st Edition" (an ordinal is digits + st/nd/rd/th), which
-    // distinguish real formats.
-    const CATALOG=/^(?:\d+\s*-\s*|\d+\s+(?=[A-Za-z])|[A-Za-z]{2,}\d{3,}\s*-?\s*)(?!(?:st|nd|rd|th)\b)/i;
-    const label=raw.replace(CATALOG,'').replace(PACKODDS_LABEL,'').replace(BOXODDS_LABEL,'').replace(/\s+/g,' ').trim()||raw.trim();
-    return {label,x:g.x,end:g.end,role:META_LABEL.test(raw)?'numberedTo':BOXODDS_LABEL.test(raw)?'boxOdds':'format'};
-  });
+  return groups.slice(start).map(g=>({...columnFromText(g.text),x:g.x,end:g.end}));
+}
+// Clean SKU/catalog noise and the "PACK ODDS" suffix so a column reads as a
+// channel name: "5313 - HOBBY PACK ODDS" -> "HOBBY", "FGC006155 Hobby" ->
+// "Hobby". Preserve BOX/NumberedTo role detection on the raw text first.
+function columnFromText(raw) {
+  // Strip only a leading catalog identifier — a pure number ("5313"), a
+  // number with a trailing "-" ("5313-"), or a letters+many-digits SKU
+  // ("FGC006155") — plus the "PACK ODDS" suffix. Never strip ordinal/edition
+  // qualifiers like "1st Edition" (an ordinal is digits + st/nd/rd/th), which
+  // distinguish real formats.
+  const CATALOG=/^(?:\d+\s*-\s*|\d+\s+(?=[A-Za-z])|[A-Za-z]{2,}\d{3,}\s*-?\s*)(?!(?:st|nd|rd|th)\b)/i;
+  const label=raw.replace(CATALOG,'').replace(PACKODDS_LABEL,'').replace(BOXODDS_LABEL,'').replace(/\s+/g,' ').trim()||raw.trim();
+  return {label,role:META_LABEL.test(raw)?'numberedTo':BOXODDS_LABEL.test(raw)?'boxOdds':'format'};
+}
+// Number of trailing odds/dash cells on a row's text (0 for a label-only row).
+function trailingCellCount(text) {
+  const tokens=joinOddsTokens(text.trim().split(/\s+/));
+  let n=0;while(n<tokens.length && ODDS_CELL.test(tokens.at(-1-n))) n++;
+  return n;
+}
+// Multi-line wrapped header: columns are anchored by the first header line and
+// every following label-only line contributes its words to the nearest column
+// by x, joined top to bottom ("RETAIL" / "FAT PACK" -> "RETAIL FAT PACK"). A
+// column labelled only on line 1 survives. Applies only with positive evidence:
+// the label-only lines sit under the header span, are all upper case, carry no
+// odds cells, and the first data row's cell count equals the resulting column
+// count. Returns {cols, used} or null.
+function foldMultilineHeader(page, ri, groupedCols) {
+  // The x-gap grouping can merge adjacent equal labels ("CHINA EX" "CHINA EX"),
+  // so the raw header items (after the Card label) are the alternative anchors.
+  const headerItems=(page.rows[ri].items||[]).filter(i=>i.text.trim());
+  const labelAt=headerItems.findIndex(i=>ODDS_HEADER.test(i.text.trim()));
+  const rawCols=headerItems.slice(labelAt+1).map(i=>({...columnFromText(i.text.trim()),x:i.x,end:i.x+i.width}));
+  if(!groupedCols.length && !rawCols.length) return null;
+  const spanStart=Math.min(...(groupedCols.length?groupedCols:rawCols).map(c=>c.x));
+  const lines=[];
+  for(let j=ri+1;j<page.rows.length && lines.length<3;j++) {
+    const r=page.rows[j];
+    const items=(r.items||[]).filter(i=>i.text.trim());
+    if(!items.length || ODDS_HEADER.test(r.text.trim()) || items.some(i=>ODDS_CELL.test(i.text.trim()))) break;
+    if(r.text.trim()!==r.text.trim().toUpperCase() || items.some(i=>i.x<spanStart-40)) break;
+    lines.push({row:r,items});
+  }
+  for(let k=1;k<=lines.length;k++) {
+    // A lone aligned label ('BASE CARDS') is more likely a section row than a wrap.
+    if(k===1 && lines[0].items.length<2) continue;
+    const dataRow=page.rows[ri+1+k];
+    if(!dataRow) continue;
+    const n=trailingCellCount(dataRow.text);
+    const cols=[groupedCols,rawCols].find(c=>c.length===n);
+    if(!cols) continue;
+    const words=cols.map(c=>[c.label]);
+    let ok=true;
+    for(const line of lines.slice(0,k)) {
+      for(const it of line.items) {
+        const cx=it.x+it.width/2;
+        let best=-1,bd=Infinity;
+        cols.forEach((c,i)=>{const d=Math.min(Math.abs(it.x-c.x),Math.abs(cx-(c.x+c.end)/2),Math.abs(it.x+it.width-c.end));if(d<bd){bd=d;best=i;}});
+        if(best<0){ok=false;break;}
+        words[best].push(it.text.trim());
+      }
+    }
+    if(!ok) continue;
+    return {cols:cols.map((c,i)=>({...columnFromText(words[i].join(' ')),x:c.x,end:c.end})),used:lines.slice(0,k).map(l=>l.row),k};
+  }
+  return null;
 }
 function parseOdds(pages) {
   let columns=[]; let formats=[]; const rows=[]; const warnings=[]; let blocking=false; const consumed=new Set();
+  // Cell-count mismatches are tallied so a systemic header/data disagreement is
+  // reported once, loudly, rather than as hundreds of per-row warnings.
+  const mismatch={count:0,shown:0,byCells:new Map(),expected:0};
+  const MISMATCH_SHOWN=5;
+  const warnMismatch=(text,cells,expected)=>{
+    mismatch.count++;mismatch.expected=expected;mismatch.byCells.set(cells,(mismatch.byCells.get(cells)||0)+1);
+    if(mismatch.shown<MISMATCH_SHOWN){mismatch.shown++;warnings.push(text);}
+  };
   const warn=(text,block)=>{warnings.push(text);if(block)blocking=true;};
   const canonical=JSON.stringify.bind(JSON);
   for (let pi=0;pi<pages.length;pi++) { const page=pages[pi]; for (let ri=0;ri<page.rows.length;ri++) { const row=page.rows[ri];
@@ -165,7 +226,15 @@ function parseOdds(pages) {
       // fewer columns than the qualifier line.
       const noisy=fmtCols.some(c=>/\d/.test(c.label)||/^[A-Z]+-[A-Z0-9-]+$/i.test(c.label)) || quals.length>fmtCols.length;
       const aligned=quals.every(q=>q.x>=headerSpanStart-40);
-      if(isQualLine && noisy && aligned && quals.length>=fmtCols.length) {
+      // Three-line (or column-sparse) wrapped headers: fold every label-only
+      // line by column position. Tried first only when the single-line fold
+      // would not cover every line-1 column or more than one line qualifies.
+      const rawCount=(row.items||[]).filter(i=>i.text.trim()).length-1-(row.items||[]).filter(i=>i.text.trim()).findIndex(i=>ODDS_HEADER.test(i.text.trim()));
+      const multi=(quals.length<fmtCols.length || rawCount>cols.length || (page.rows[ri+2]&&trailingCellCount(page.rows[ri+2].text)===0)) ? foldMultilineHeader(page,ri,cols) : null;
+      if(multi) {
+        cols=multi.cols;
+        multi.used.forEach(r=>consumed.add(r));
+      } else if(isQualLine && noisy && aligned && quals.length>=fmtCols.length) {
         cols=quals.map(q=>({label:q.text.trim(),x:q.x,end:q.x+q.width,role:META_LABEL.test(q.text)?'numberedTo':BOXODDS_LABEL.test(q.text)?'boxOdds':'format'}));
         consumed.add(next);
       }
@@ -216,7 +285,7 @@ function parseOdds(pages) {
         cellCols.forEach((c,i)=>{(c.role==='format'?odds:referenceBoxOdds).push(trailing[i]);});
       } else {
         // Cell count does not match the declared columns: do not guess a split.
-        warn(`Page ${page.number}: could not align pack/box odds for “${row.text}” (${trailing.length} of ${cellCols.length} columns).`,false);
+        warnMismatch(`Page ${page.number}: could not align pack/box odds for “${row.text}” (${trailing.length} of ${cellCols.length} columns).`,trailing.length,cellCols.length);
         continue;
       }
     }
@@ -224,12 +293,20 @@ function parseOdds(pages) {
       if(name && /(?:\d[\d,]*\s*:\s*\d|[-–—])\s*$/.test(row.text)) warn(`Page ${page.number}: could not read odds for “${row.text}”; row skipped.`,false);
       continue;
     }
-    if(odds.length!==order.length) {warn(`Page ${page.number}: could not align odds for “${row.text}” (${odds.length} of ${order.length} columns).`,false);continue;}
+    if(odds.length!==order.length) {warnMismatch(`Page ${page.number}: could not align odds for “${row.text}” (${odds.length} of ${order.length} columns).`,odds.length,order.length);continue;}
     const canonicalOdds=order===formats?odds:formats.map(f=>odds[order.indexOf(f)]);
     const rec={id:`o${rows.length}`,name,odds:canonicalOdds,formatPages:page.number,familyId:'',eligible:null,serial,anchor:serial!==null,page:page.number};
     if(referenceBoxOdds&&referenceBoxOdds.length)rec.referenceBoxOdds=referenceBoxOdds;
     rows.push(rec);
   } }
+  if(mismatch.count>MISMATCH_SHOWN) warnings.push(`${mismatch.count-MISMATCH_SHOWN} more row${mismatch.count-MISMATCH_SHOWN>1?'s':''} with a cell-count mismatch are not listed individually.`);
+  if(mismatch.count>=5) {
+    const [cells,n]=[...mismatch.byCells.entries()].sort((a,b)=>b[1]-a[1])[0];
+    if(n>=5 && n*2>mismatch.count+rows.length) {
+      warnings.unshift(`The odds table header was read as ${mismatch.expected} pack formats but the data rows have ${cells} cells (${n} of ${mismatch.count+rows.length} data rows); review the detected formats. Estimates are blocked until the odds table is corrected.`);
+      blocking=true;
+    }
+  }
   if(!formats.length) warn('No format headings detected. Expected a Card, Cards, or Component Description header followed by pack-format columns. Review source text; scanned PDFs require OCR.',false);
   return {formats,rows,warnings,blocking};
 }

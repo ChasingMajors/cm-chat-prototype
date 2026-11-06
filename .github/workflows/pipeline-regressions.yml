@@ -23,6 +23,8 @@ jobs:
         run: npm run test:publish-monitor
       - name: Verify Print Run Lab calculations and extraction
         run: npm run test:print-run
+      - name: Verify multi-line odds header folding and systemic mismatch warning
+        run: npm run test:print-run-header
       - name: Verify public reading and owner-only authoring
         run: npm run test:print-run-access
       - name: Verify atomic Lab publishing and generated model parity

@@ -1,0 +1,30 @@
+{
+ "schema": "cm-prv-estimate-input/1",
+ "title": "2026-27 Topps Flagship Basketball",
+ "cv_code": "2026_27_topps_flagship_basketball",
+ "source": {
+  "kind": "project",
+  "sha256": "fdcb5ee8663c2c60a0bb366f9d2e09607d4ee8bf17f43842613be15bbbf0235d"
+ },
+ "model_version": "weighted-median-v1",
+ "engine_sha256": "6cdac98700c0f07d479532729a9515fe4e59f157e237570bd628c731aece3709",
+ "rule": {
+  "name": "leave-one-anchor-out stability",
+  "max_relative_change": 0.05,
+  "anchors_tested": 63,
+  "invalid_refits": [
+   {
+    "id": "o387",
+    "name": "BREAK POINT SUPERFRACTOR"
+   }
+  ],
+  "info_only_rows_that_would_pass_if_invalid_refits_ignored": 253,
+  "relic_handling": "hold"
+ },
+ "counts": {
+  "rows": 456,
+  "publishable": 0,
+  "held": 456
+ },
+ "estimates": []
+}

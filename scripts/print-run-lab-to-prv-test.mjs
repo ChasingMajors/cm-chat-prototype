@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import {execFileSync} from 'node:child_process';
 import {sanitizeProject,buildArtifact} from '../print-run-lab/project-schema.js';
-import {stabilityRule,convert,categorize,loadInput,engineSha256,buildOutputs,RELIC_HOLD_REASON} from './print-run-lab-to-prv.mjs';
+import {stabilityRule,convert,categorize,loadInput,engineSha256,buildOutputs,RELIC_HOLD_REASON,NOT_IN_CV_REASON} from './print-run-lab-to-prv.mjs';
 import {manyFormats} from './print-run-lab-many-formats.mjs';
 const script=new URL('./print-run-lab-to-prv.mjs',import.meta.url).pathname;
 const row=(id,name,odds,extra={})=>({id,name,familyId:'f',odds,eligible:null,serial:null,anchor:false,page:1,...extra});
@@ -29,10 +29,20 @@ test('rule is deterministic; an invalid refit with a single-anchor format holds 
   assert.deepEqual(stabilityRule(project()).rows,stabilityRule(project()).rows);
   const p=project();p.rows=p.rows.filter(r=>r.id!=='yb');
   const rule=stabilityRule(p),by=id=>rule.rows.find(r=>r.id===id);
-  assert.equal(rule.invalidRefits.length,1);assert.deepEqual(rule.invalidRefits[0].u_formats,['Y']);assert.equal(rule.unexplainedRefits.length,0);
+  assert.equal(rule.invalidRefits.length,1);assert.deepEqual(rule.invalidRefits[0].unidentifiable_formats,['Y']);assert.equal(rule.unexplainedRefits.length,0);
   assert.equal(by('xonly').status,'PUBLISHABLE');assert.equal(by('sig').status,'PUBLISHABLE');
   for(const id of ['base','yonly','ya'])assert.equal(by(id).status,'HELD');
-  assert.match(by('yonly').reason,/format Y rests on a single anchor \(Y ANCHOR A\)/);
+  assert.match(by('yonly').reason,/formats Y become unidentifiable without anchor Y ANCHOR A \(collinear\/single-anchor\)/);
+});
+test('a collinear format pair is held as unidentifiable and well-anchored rows still publish',()=>{
+  // C and D are separated only by anchor T; anchors S1,S2 carry identical odds in C and D.
+  const p=sanitizeProject({version:1,title:'C',families:[{id:'f',name:'Base',count:100,cards:[],sectionKind:'Base'}],formats:['X','C','D'],packTotals:[null,null,null],aliases:[],sources:{},warnings:[],formatConfigs:{},oddsBlocking:false,
+    rows:[row('xr','X ROW',['1:10','-','-']),row('cr','C ROW',['-','1:10','1:10']),row('xa','XA',['1:10','-','-'],{eligible:10,serial:10,anchor:true}),row('xb','XB',['1:20','-','-'],{eligible:5,serial:10,anchor:true}),
+      row('s1','S1',['-','1:10','1:10'],{eligible:10,serial:10,anchor:true}),row('s2','S2',['-','1:20','1:20'],{eligible:5,serial:10,anchor:true}),row('t','T',['-','1:5','1:10'],{eligible:15,serial:10,anchor:true})]});
+  const rule=stabilityRule(p),by=id=>rule.rows.find(r=>r.id===id),inv=rule.invalidRefits.find(x=>x.id==='t');
+  assert.deepEqual(inv.unidentifiable_formats,['C','D']);assert.equal(inv.reduced_valid,true);assert.equal(rule.unexplainedRefits.length,0);
+  assert.equal(by('cr').status,'HELD');assert.match(by('cr').reason,/formats C, D become unidentifiable without anchor T/);
+  assert.equal(by('xr').status,'PUBLISHABLE');
 });
 test('an unexplained invalid refit holds every row',()=>{
   // Two anchors, each in both formats: disabling one leaves one equation for two unknowns, with no single-anchor format.
@@ -70,4 +80,32 @@ test('artifact input is refused when the engine sha differs, and accepted when i
     for(const f of ['prv-input.json','held-rows.json','held-rows.md'])assert.ok(fs.existsSync(path.join(dir,'o',f)));
     assert.equal(JSON.parse(fs.readFileSync(path.join(dir,'o','prv-input.json'),'utf8')).engine_sha256,engineSha256());
   }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
+test('CV sections decide categories: relic families are held, facsimile signatures are not Autograph, schema-4 output is unrounded and serial-free',async()=>{
+  const {cvSectionsFrom,toPrvSchema4}=await import('./print-run-lab-to-prv.mjs');
+  const p=project();p.families.push({id:'fx',name:'BASE FACSIMILE AUTOGRAPHS',count:5,cards:[],sectionKind:'Insert'},{id:'og',name:'OWN THE GAME',count:5,cards:[],sectionKind:'Autograph / memorabilia'});
+  const cvSections=cvSectionsFrom({rows:[{section:'Base',subset:'Base'},{section:'Relic',subset:'Own The Game'},{section:'Base',subset:'Base Facsimile Autographs'},{section:'Autograph',subset:'Signatures'}]});
+  assert.equal(categorize(p,{familyId:'og',name:'OWN THE GAME'},{cvSections}).hold,RELIC_HOLD_REASON);
+  assert.equal(categorize(p,{familyId:'fx',name:'BASE FACSIMILE AUTOGRAPHS'},{cvSections}).category,'Base');
+  assert.equal(categorize(p,{familyId:'fx',name:'BASE FACSIMILE AUTOGRAPHS'}).category,'Insert');
+  assert.equal(categorize(p,{familyId:'og',name:'OWN THE GAME RED'}).category,null);assert.notEqual(categorize(p,{familyId:'og',name:'OWN THE GAME RED'}).category,'Autograph');
+  const out=buildOutputs(p,{source:{kind:'project',sha256:'x'},cvCode:'c',cvSections});
+  const doc=toPrvSchema4(p,out,{cvEntry:{Code:'c',DisplayName:'D',Keywords:'K',year:'y',manufacturer:'m',product:'p',sport:'s'},cvSections,estimateUrl:'https://e/',reviewedDate:'2026-01-01',projectFile:'f.json',projectSha256:'x'});
+  assert.equal(doc.method.name,'print_run_lab_estimates_v1');assert.equal(doc.records.length,out.prv.estimates.length);
+  for(const r of doc.records){assert.equal(r.serial_limit,null);assert.equal(r.kind,'estimate');}
+  const x=doc.records.find(r=>r.id==='xonly');assert.equal(x.name,'Base');assert.equal(x.parallel,'X Parallel');assert.equal(x.estimate,out.prv.estimates.find(e=>e.row_id==='xonly').copies_per_card);
+  assert.equal(doc.lab_provenance.status,'pending-lab-publication');assert.equal(doc.lab_provenance.project_id,null);
+});
+test('rows with an identical family and label are held as duplicates',async()=>{
+  const {DUPLICATE_REASON}=await import('./print-run-lab-to-prv.mjs');
+  const p=project();p.rows.push({...p.rows.find(r=>r.id==='xonly'),id:'xdup'});
+  const {estimates,held}=convert(p);
+  assert.ok(!estimates.some(e=>e.name==='X PARALLEL'));assert.equal(held.filter(h=>h.reasons.includes(DUPLICATE_REASON)).length,2);
+});
+test('with a CV checklist, rows of a subset missing from CV are held',()=>{
+  const cvSections=new Map([['base',{subset:'Base',section:'Base'}],['signatures',{subset:'Signatures',section:'Autograph'}],['woven relics',{subset:'Woven Relics',section:'Relic'}].map(x=>x)].slice(0,2));
+  const {estimates,held}=convert(project(),{cvSections});
+  assert.ok(!estimates.some(e=>e.family==='Woven Relics'));
+  const miss=sanitizeProject({...project(),families:[...project().families,{id:'g',name:'Ghost Set',count:5,cards:[],sectionKind:'Insert'}],rows:[...project().rows,row('gh','GHOST SET',['1:10','-'],{familyId:'g'})]});
+  const out=convert(miss,{cvSections});assert.ok(out.held.find(h=>h.id==='gh').reasons.includes(NOT_IN_CV_REASON));
 });

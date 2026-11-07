@@ -11,8 +11,25 @@ import {calculate,parseRatio} from '../print-run-lab/engine.js';
 import {sanitizeProject,validateArtifact,MODEL_VERSION} from '../print-run-lab/project-schema.js';
 
 export const DEFAULT_MAX_CHANGE=0.05;
+export const NOT_IN_CV_REASON='subset not in the CV checklist for this product';
+export const DUPLICATE_REASON='duplicate row label in family; PRV cannot distinguish the rows';
 export const RELIC_HOLD_REASON='no relic category in PRV estimate schema';
-const RELIC_RE=/\b(?:relics?|memorabilia|patch(?:es)?|swatch(?:es)?|jerseys?)\b/i;
+const RELIC_RE=/\b(?:relics?|memorabilia|patch(?:es)?|swatch(?:es)?|jerseys?|fabrics?|remnants?)\b/i;
+export const AMBIGUOUS_MEMORABILIA_REASON='autograph/memorabilia family without autograph wording or a CV section; cannot tell autograph from relic';
+const AUTO_RE=/\b(?:auto(?:graphs?)?|signatures?|signed)\b/i,FACSIMILE_RE=/\bfacsimile\b/i;
+const keyOf=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+const titleCase=s=>String(s||'').trim().toLowerCase().replace(/\b([a-z])/g,c=>c.toUpperCase());
+// CV subset lookup: exact alphanumeric key, then the key without a trailing "cards" ("BASE CARDS" -> "Base").
+export function cvSubsetFor(cvSections,familyName){
+  if(!cvSections)return null;
+  const k=keyOf(familyName);
+  return cvSections.get(k)||cvSections.get(k.replace(/cards$/,''))||null;
+}
+export function cvSectionsFrom(cvProduct){
+  const m=new Map();
+  for(const r of cvProduct.rows||[])if(r.subset&&r.section&&!m.has(keyOf(r.subset)))m.set(keyOf(r.subset),{subset:r.subset,section:r.section});
+  return m;
+}
 const enginePath=fileURLToPath(new URL('../print-run-lab/engine.js',import.meta.url));
 export const engineSha256=()=>createHash('sha256').update(fs.readFileSync(enginePath,'utf8')).digest('hex');
 
@@ -23,20 +40,41 @@ const usable=res=>res.valid===true&&res.hasEstimate===true&&Array.isArray(res.pa
 
 // Stability rule. For each enabled anchor a, refit with a disabled.
 //  - Valid refit: every row's perCard may move at most maxChange (relative).
-//  - Invalid refit: U(a) = formats a has odds in that no other enabled anchor has positive rate in
-//    (those formats rest on a single anchor). Rows with odds in any U(a) format are HELD. The remaining
-//    rows are judged against a second refit with a disabled AND the U(a) format columns removed
-//    (rows with odds only in U(a) dropped), which must itself be valid.
-//  - Invalid refit with U(a) empty, or an invalid reduced refit: unexplained; ALL rows are held, loudly.
+//  - Invalid refit: F(a) = unknown-pack format columns that become unidentifiable without a, i.e. columns
+//    in the support of the null space of the remaining anchors' rate matrix (single-anchor formats and
+//    collinear groups such as two columns whose remaining anchors all have identical odds). Rows with
+//    odds in any F(a) format are HELD. The remaining rows are judged against a reduced refit with a
+//    disabled AND the F(a) columns removed (rows with odds only in F(a) dropped; anchors touching F(a)
+//    disabled so their pools are not forced onto the remaining formats), which must itself be valid.
+//  - Invalid refit with F(a) empty, or an invalid reduced refit: unexplained; ALL rows are held, loudly.
 // A row is PUBLISHABLE iff base perCard is finite and > 0 and no anchor's refit holds it.
 export const UNEXPLAINED_REASON='refit failed unexplained';
 const positive=(row,i)=>parseRatio(row.odds[i])!==null;
+// Columns not uniquely determined by the anchor rate matrix: support of its null space.
+// Columns are scaled to unit max so tiny hit rates do not look like zeros; tolerance is relative.
+export function unidentifiableColumns(matrix,cols,tol=1e-9){
+  const A=matrix.map(r=>cols.map(c=>r[c]||0));
+  const scale=cols.map((_,j)=>Math.max(0,...A.map(r=>Math.abs(r[j]))));
+  const M=A.map(r=>r.map((v,j)=>scale[j]>0?v/scale[j]:0));
+  const n=cols.length,pivots=[];let row=0;
+  for(let j=0;j<n&&row<M.length;j++){
+    let best=row;for(let i=row+1;i<M.length;i++)if(Math.abs(M[i][j])>Math.abs(M[best][j]))best=i;
+    if(Math.abs(M[best][j])<=tol)continue;
+    [M[row],M[best]]=[M[best],M[row]];const pv=M[row][j];M[row]=M[row].map(v=>v/pv);
+    for(let i=0;i<M.length;i++)if(i!==row&&M[i][j]!==0){const f=M[i][j];M[i]=M[i].map((v,k)=>v-f*M[row][k]);}
+    pivots.push(j);row++;
+  }
+  const free=[...Array(n).keys()].filter(j=>!pivots.includes(j)),out=new Set();
+  for(const f of free){out.add(f);pivots.forEach((pj,i)=>{if(Math.abs(M[i][f])>tol)out.add(pj);});}
+  return [...out].map(j=>cols[j]).sort((a,b)=>a-b);
+}
+const rates=row=>row.odds.map(o=>parseRatio(o)??0);
 function reduce(project,disabledId,drop){
   const keep=project.formats.map((_,i)=>!drop.includes(i));
   const pick=a=>a&&a.filter((_,i)=>keep[i]);
   const formats=pick(project.formats);
   const rows=project.rows.filter(r=>r.odds.some((_,i)=>keep[i]&&positive(r,i))).map(r=>{
-    const o={...r,odds:pick(r.odds),anchor:r.id===disabledId?false:r.anchor};
+    const o={...r,odds:pick(r.odds),anchor:r.id===disabledId||drop.some(i=>positive(r,i))?false:r.anchor};
     if(r.referenceBoxOdds)o.referenceBoxOdds=pick(r.referenceBoxOdds);
     return o;
   });
@@ -60,16 +98,18 @@ export function stabilityRule(project,{maxChange=DEFAULT_MAX_CHANGE}={}){
     if(usable(re))per=perCardOf(re);
     else{
       const others=anchorRows.filter(r=>r.id!==a.id);
-      const U=project.formats.map((_,i)=>i).filter(i=>positive(arow,i)&&!others.some(o=>positive(o,i)));
-      const entry={id:a.id,name:a.name,u_formats:U.map(i=>project.formats[i]),reduced_valid:null};
+      const unknownCols=project.formats.map((_,i)=>i).filter(i=>project.packTotals[i]==null);
+      const U=unidentifiableColumns(others.map(rates),unknownCols);
+      const fmt=U.map(i=>project.formats[i]).join(', ');
+      const entry={id:a.id,name:a.name,unidentifiable_formats:U.map(i=>project.formats[i]),reduced_valid:null};
       invalid.push(entry);
-      if(!U.length){entry.explained=false;unexplained.push(entry);holdAll(`${UNEXPLAINED_REASON}: disabling anchor ${a.name} gives an invalid refit with no single-anchor format`);continue;}
+      if(!U.length){entry.explained=false;unexplained.push(entry);holdAll(`${UNEXPLAINED_REASON}: disabling anchor ${a.name} gives an invalid refit with every format still identifiable`);continue;}
       entry.explained=true;
-      project.rows.forEach(r=>{if(U.some(i=>positive(r,i))){const k=idx.get(r.id);if(k!==undefined){skip.add(k);holds[k].push(`format ${U.map(i=>project.formats[i]).join(', ')} rests on a single anchor (${a.name})`);}}});
-      const reduced=reduce(project,a.id,U);
-      const rr=fit(reduced);
-      entry.reduced_valid=usable(rr);
-      if(!usable(rr)){entry.explained=false;unexplained.push(entry);holdAll(`${UNEXPLAINED_REASON}: reduced refit without anchor ${a.name} and format ${entry.u_formats.join(', ')} is invalid`);continue;}
+      project.rows.forEach(r=>{if(U.some(i=>positive(r,i))){const k=idx.get(r.id);if(k!==undefined){skip.add(k);holds[k].push(`formats ${fmt} become unidentifiable without anchor ${a.name} (collinear/single-anchor)`);}}});
+      const reduced=U.length<unknownCols.length?reduce(project,a.id,U):null;
+      const rr=reduced&&fit(reduced);
+      entry.reduced_valid=!!rr&&usable(rr);
+      if(!entry.reduced_valid){entry.explained=false;unexplained.push(entry);holdAll(`${UNEXPLAINED_REASON}: reduced refit without anchor ${a.name} and formats ${fmt} is invalid`);continue;}
       const ids=rr.results.map(r=>r.id),per2=perCardOf(rr);
       per=basePer.map(()=>undefined);ids.forEach((id,j)=>{per[idx.get(id)]=per2[j];});
     }
@@ -93,8 +133,16 @@ export function stabilityRule(project,{maxChange=DEFAULT_MAX_CHANGE}={}){
 }
 // Category mapping. Relic rows are never labelled Autograph. relic='hold' (default) holds them;
 // relic='Relic' (or any label) maps them to that category once the app-side schema supports it.
-export function categorize(project,row,{relic='hold',categoryMap={}}={}){
+// When the CV checklist is supplied, the CV section decides (Base, Insert, Variation->Insert,
+// Autograph, Relic); facsimile signatures are never Autograph.
+export function categorize(project,row,{relic='hold',categoryMap={},cvSections=null}={}){
   const family=project.families.find(f=>f.id===row.familyId);
+  const cv=cvSubsetFor(cvSections,family?.name);
+  if(cv){
+    const sec={Base:'Base',Insert:'Insert',Variation:'Insert',Autograph:'Autograph',Relic:'Relic'}[cv.section];
+    if(sec==='Relic'){if(relic==='hold')return {category:null,hold:RELIC_HOLD_REASON};return {category:categoryMap.Relic||relic,hold:null};}
+    if(sec)return {category:categoryMap[sec]??sec,hold:null};
+  }
   const isRelic=RELIC_RE.test(`${row.name} ${family?.name||''}`);
   if(isRelic){
     if(relic==='hold')return {category:null,hold:RELIC_HOLD_REASON};
@@ -102,7 +150,9 @@ export function categorize(project,row,{relic='hold',categoryMap={}}={}){
   }
   const fromSection=family?.sectionKind;
   let kind=fromSection||(/^base\b/i.test(row.name)||/^base\b/i.test(family?.name||'')?'Base':'Insert');
-  if(/\b(?:auto(?:graphs?)?|signatures?)\b/i.test(`${row.name} ${family?.name||''}`))kind='Autograph / memorabilia';
+  const text=`${row.name} ${family?.name||''}`,auto=AUTO_RE.test(text)&&!FACSIMILE_RE.test(text);
+  if(auto)kind='Autograph / memorabilia';
+  else if(kind==='Autograph / memorabilia'){if(!FACSIMILE_RE.test(text))return {category:null,hold:AMBIGUOUS_MEMORABILIA_REASON};kind='Insert';}
   const key=kind==='Autograph / memorabilia'?'Autograph':kind;
   return {category:categoryMap[key]??key,hold:null};
 }
@@ -110,11 +160,13 @@ export function categorize(project,row,{relic='hold',categoryMap={}}={}){
 export function convert(project,opts={}){
   const rule=stabilityRule(project,opts);
   const estimates=[],held=[];
+  // Rows sharing family and name cannot be told apart in PRV (one record per subset+parallel): hold all of them.
+  const dupKey=r=>r.familyId+'\0'+r.name,dupCount=rule.rows.reduce((m,r)=>m.set(dupKey(r),(m.get(dupKey(r))||0)+1),new Map());
   for(const r of rule.rows){
     const row=project.rows.find(x=>x.id===r.id),cat=categorize(project,row,opts);
-    const reasons=[];if(r.reason)reasons.push(r.reason);if(cat.hold)reasons.push(cat.hold);
+    const reasons=[];if(r.reason)reasons.push(r.reason);if(cat.hold)reasons.push(cat.hold);if(dupCount.get(dupKey(r))>1)reasons.push(DUPLICATE_REASON);if(opts.cvSections&&!cvSubsetFor(opts.cvSections,project.families.find(f=>f.id===r.familyId)?.name))reasons.push(NOT_IN_CV_REASON);
     if(reasons.length){held.push({id:r.id,name:r.name,family:r.family,category:cat.category,per_card:r.perCard,max_change_pct:r.maxChangePct,worst_anchor:r.worstAnchor,reasons});continue;}
-    estimates.push({row_id:r.id,name:r.name,family_id:r.familyId,family:r.family,category:cat.category,copies_per_card:r.perCard,total_copies:r.total,eligible_cards:r.count,max_change_pct:r.maxChangePct,serial_limit:null,estimate:true});
+    estimates.push({row_id:r.id,page:row.page??null,name:r.name,family_id:r.familyId,family:r.family,category:cat.category,copies_per_card:r.perCard,total_copies:r.total,eligible_cards:r.count,max_change_pct:r.maxChangePct,serial_limit:null,estimate:true});
   }
   return {rule,estimates,held};
 }
@@ -125,13 +177,43 @@ export function buildOutputs(project,{source,cvCode=null,...opts}={}){
   const ruleDoc={name:'leave-one-anchor-out stability',max_relative_change:rule.maxChange,anchors_tested:rule.anchorsTested,invalid_refits:rule.invalidRefits,unexplained_refits:rule.unexplainedRefits.length,relic_handling:opts.relic||'hold'};
   const prv={schema:'cm-prv-estimate-input/1',...meta,rule:ruleDoc,counts:{rows:rule.rows.length,publishable:estimates.length,held:held.length},estimates};
   const report={schema:'cm-prv-held-report/1',...meta,rule:ruleDoc,counts:prv.counts,held};
-  const md=[`# Held rows: ${project.title}`,'',`Rule: publish only if base per-card > 0 and per-card changes <= ${(rule.maxChange*100).toFixed(2)}% in every leave-one-anchor-out refit (${rule.anchorsTested} anchors tested). An invalid refit holds only rows touching formats that rest on that single anchor, and the rest are judged on a reduced refit without those formats. An invalid refit with no single-anchor format holds every row.`,'',
+  const md=[`# Held rows: ${project.title}`,'',`Rule: publish only if base per-card > 0 and per-card changes <= ${(rule.maxChange*100).toFixed(2)}% in every leave-one-anchor-out refit (${rule.anchorsTested} anchors tested). An invalid refit holds only rows with odds in formats that become unidentifiable without that anchor (single-anchor or collinear), and the rest are judged on a reduced refit without those formats. An invalid refit with no such format, or an invalid reduced refit, holds every row.`,'',
     `Rows: ${rule.rows.length}. Publishable: ${estimates.length}. Held: ${held.length}.`,'',
-    ...Object.entries(held.reduce((m,h)=>{const k=/rests on a single anchor/.test(h.reasons[0])?'format rests on a single anchor':h.reasons[0].split(/:| \d/)[0].trim();m[k]=(m[k]||0)+1;return m;},{})).map(([k,n])=>`- ${n} × ${k}`),'',
-    ...(rule.invalidRefits.length?[`Invalid refits when the anchor is disabled: ${rule.invalidRefits.map(x=>`${x.name} (single-anchor formats: ${x.u_formats.join(', ')||'none'})`).join('; ')}.`,'']:[]),...(rule.unexplainedRefits.length?[`**WARNING: ${rule.unexplainedRefits.length} unexplained invalid refit(s); all rows held.**`,'']:[]),'| Row | Family | Reason |','|---|---|---|',...held.map(h=>`| ${h.name.replace(/\|/g,'/')} | ${h.family.replace(/\|/g,'/')} | ${h.reasons.join('; ').replace(/\|/g,'/')} |`),''].join('\n');
+    ...Object.entries(held.reduce((m,h)=>{const k=/become unidentifiable without anchor/.test(h.reasons[0])?'formats become unidentifiable without one anchor (collinear/single-anchor)':h.reasons[0].split(/:| \d/)[0].trim();m[k]=(m[k]||0)+1;return m;},{})).map(([k,n])=>`- ${n} × ${k}`),'',
+    ...(rule.invalidRefits.length?[`Invalid refits when the anchor is disabled: ${rule.invalidRefits.map(x=>`${x.name} (unidentifiable formats: ${x.unidentifiable_formats.join(', ')||'none'}; reduced refit ${x.reduced_valid?'valid':'INVALID'})`).join('; ')}.`,'']:[]),...(rule.unexplainedRefits.length?[`**WARNING: ${rule.unexplainedRefits.length} unexplained invalid refit(s); all rows held.**`,'']:[]),'| Row | Family | Reason |','|---|---|---|',...held.map(h=>`| ${h.name.replace(/\|/g,'/')} | ${h.family.replace(/\|/g,'/')} | ${h.reasons.join('; ').replace(/\|/g,'/')} |`),''].join('\n');
   return {prv,report,md};
 }
 
+// PRV schema-4 input for the app's print_run_lab_estimates_v1 method. meta is copied exactly from the
+// CV index entry; one record per publishable row; values unrounded; serial_limit always null.
+export function toPrvSchema4(project,out,{cvEntry,cvSections,estimateUrl,reviewedDate,projectFile,projectSha256}){
+  if(!cvEntry)throw Error('CV index entry required for --prv-file.');
+  const meta={code:cvEntry.Code,displayName:cvEntry.DisplayName,keywords:cvEntry.Keywords,year:cvEntry.year,manufacturer:cvEntry.manufacturer,product:cvEntry.product,sport:cvEntry.sport};
+  const unmatched=new Set();
+  const records=out.prv.estimates.map(e=>{
+    const fam=project.families.find(f=>f.id===e.family_id),cv=cvSubsetFor(cvSections,fam?.name);
+    if(!cv)unmatched.add(fam?.name||e.family);
+    const famName=String(fam?.name||e.family).toUpperCase(),rowName=String(e.name).toUpperCase();
+    const prefixes=[famName,famName.replace(/\s+CARDS$/,'')];
+    const pre=prefixes.find(x=>rowName===x||rowName.startsWith(x+' '));
+    const parallel=pre?titleCase(rowName.slice(pre.length)):titleCase(rowName);
+    return {id:e.row_id,kind:'estimate',category:e.category,name:cv?cv.subset:titleCase(fam?.name||e.family),subjects:e.eligible_cards,estimate:e.copies_per_card,serial_limit:null,parallel,page:e.page};
+  });
+  const heldReasons={};for(const h of out.report.held){const k=/become unidentifiable without anchor/.test(h.reasons[0])?'formats become unidentifiable without one anchor (collinear/single-anchor)':h.reasons[0].split(/:| \d/)[0].trim();heldReasons[k]=(heldReasons[k]||0)+1;}
+  const relicHeld=out.report.held.filter(h=>h.reasons.includes(RELIC_HOLD_REASON)).length;
+  return {schema_version:4,code:cvEntry.Code,meta,sources:{estimate_url:estimateUrl,reviewed_date:reviewedDate},
+    method:{name:'print_run_lab_estimates_v1',calibration:`Print Run Lab weighted-median fit of ${project.formats.length} Topps pack formats to numbered anchors. Only rows passing the leave-one-anchor-out stability rule (per-card change <= ${(out.prv.rule.max_relative_change*100).toFixed(0)}% in every refit) are published. Provisional; not manufacturer-confirmed.`},
+    lab_provenance:{status:'pending-lab-publication',project_id:null,revision_id:null,
+      note:'project_id and revision_id are filled after the owner publishes this project in Print Run Lab.',
+      model_version:out.prv.model_version,engine_sha256:out.prv.engine_sha256,
+      corrected_project:{file:projectFile,sha256:projectSha256},
+      formats:project.formats,
+      stability_rule:{name:out.prv.rule.name,max_relative_change:out.prv.rule.max_relative_change,anchors_tested:out.prv.rule.anchors_tested,invalid_refits:out.prv.rule.invalid_refits,unexplained_refits:out.prv.rule.unexplained_refits,relic_handling:out.prv.rule.relic_handling},
+      counts:{rows:out.prv.counts.rows,published:records.length,held:out.prv.counts.held,held_by_reason:heldReasons,relic_rows_held:relicHeld},
+      families_not_in_cv:[...unmatched].sort(),
+      source_documents:{odds_pdf:project.sources?.odds?.name??null,checklist_pdf:project.sources?.checklist?.name??null}},
+    records};
+}
 export function loadInput(file){
   const data=JSON.parse(fs.readFileSync(file,'utf8'));
   if(data&&data.project&&data.model){ // published artifact
@@ -151,7 +233,17 @@ function main(argv){
   const categoryMap=arg('category-map')?JSON.parse(fs.readFileSync(arg('category-map'),'utf8')):{};
   const maxChange=arg('max-change')===undefined?DEFAULT_MAX_CHANGE:Number(arg('max-change'));
   if(!Number.isFinite(maxChange)||maxChange<0)throw Error('Invalid --max-change.');
-  const {prv,report,md}=buildOutputs(project,{source,cvCode:arg('cv-code')||null,relic:arg('relic')||'hold',categoryMap,maxChange});
+  const cvProduct=arg('cv-product')?JSON.parse(fs.readFileSync(arg('cv-product'),'utf8')):null;
+  const cvCode=arg('cv-code')||null;
+  const cvSections=cvProduct?cvSectionsFrom(cvProduct.products?.[cvCode]||cvProduct):null;
+  const out=buildOutputs(project,{source,cvCode,relic:arg('relic')||'hold',categoryMap,maxChange,cvSections});
+  const {prv,report,md}=out;
+  if(arg('prv-file')){
+    const index=JSON.parse(fs.readFileSync(arg('cv-index'),'utf8')).index||[];
+    const matches=index.filter(e=>e.Code===cvCode);if(matches.length!==1)throw Error('--prv-file requires exactly one CV index entry for --cv-code.');
+    const doc=toPrvSchema4(project,out,{cvEntry:matches[0],cvSections,estimateUrl:arg('estimate-url'),reviewedDate:arg('reviewed-date'),projectFile:path.basename(input),projectSha256:source.sha256??null});
+    fs.writeFileSync(arg('prv-file'),JSON.stringify(doc,null,2)+'\n');
+  }
   fs.mkdirSync(outDir,{recursive:true});
   fs.writeFileSync(path.join(outDir,'prv-input.json'),JSON.stringify(prv,null,1)+'\n');
   fs.writeFileSync(path.join(outDir,'held-rows.json'),JSON.stringify(report,null,1)+'\n');

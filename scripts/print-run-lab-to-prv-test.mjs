@@ -25,12 +25,27 @@ test('stability rule holds unstable, zero and relic rows and publishes stable on
   assert.ok(estimates.every(e=>e.serial_limit===null&&e.estimate===true));
   assert.equal(estimates.length+held.length,rule.rows.length);
 });
-test('rule is deterministic and an invalid refit holds every row',()=>{
+test('rule is deterministic; an invalid refit with a single-anchor format holds only touching rows and publishes the rest',()=>{
   assert.deepEqual(stabilityRule(project()).rows,stabilityRule(project()).rows);
   const p=project();p.rows=p.rows.filter(r=>r.id!=='yb');
-  const rule=stabilityRule(p);
-  assert.equal(rule.invalidRefits.length,1);assert.ok(rule.rows.every(r=>r.status==='HELD'));
-  assert.match(rule.rows.find(r=>r.id==='xonly').reason,/invalid refit/);
+  const rule=stabilityRule(p),by=id=>rule.rows.find(r=>r.id===id);
+  assert.equal(rule.invalidRefits.length,1);assert.deepEqual(rule.invalidRefits[0].u_formats,['Y']);assert.equal(rule.unexplainedRefits.length,0);
+  assert.equal(by('xonly').status,'PUBLISHABLE');assert.equal(by('sig').status,'PUBLISHABLE');
+  for(const id of ['base','yonly','ya'])assert.equal(by(id).status,'HELD');
+  assert.match(by('yonly').reason,/format Y rests on a single anchor \(Y ANCHOR A\)/);
+});
+test('an unexplained invalid refit holds every row',()=>{
+  // Two anchors, each in both formats: disabling one leaves one equation for two unknowns, with no single-anchor format.
+  const p=sanitizeProject({version:1,title:'U',families:[{id:'f',name:'Base',count:100,cards:[],sectionKind:'Base'}],formats:['X','Y'],packTotals:[null,null],aliases:[],sources:{},warnings:[],formatConfigs:{},oddsBlocking:false,
+    rows:[row('r1','ROW',['1:10','1:10']),row('a1','A1',['1:10','1:20'],{eligible:10,serial:10,anchor:true}),row('a2','A2',['1:20','1:10'],{eligible:10,serial:10,anchor:true})]});
+  const orig=console.error;let warned='';console.error=m=>{warned+=m;};
+  let rule;try{rule=stabilityRule(p);}finally{console.error=orig;}
+  assert.ok(rule.unexplainedRefits.length>0);assert.match(warned,/unexplained/);
+  assert.ok(rule.rows.every(r=>r.status==='HELD'&&/refit failed unexplained/.test(r.reason)));
+});
+test('normal rows are unchanged when every refit is valid',()=>{
+  const rule=stabilityRule(project());
+  assert.equal(rule.invalidRefits.length,0);assert.equal(rule.rows.find(r=>r.id==='xonly').status,'PUBLISHABLE');
 });
 test('relic handling is configurable and never labelled Autograph',()=>{
   const p=project(),r=p.rows.find(x=>x.id==='relic');

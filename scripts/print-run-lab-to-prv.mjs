@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {fileURLToPath,pathToFileURL} from 'node:url';
-import {calculate} from '../print-run-lab/engine.js';
+import {calculate,parseRatio} from '../print-run-lab/engine.js';
 import {sanitizeProject,validateArtifact,MODEL_VERSION} from '../print-run-lab/project-schema.js';
 
 export const DEFAULT_MAX_CHANGE=0.05;
@@ -21,20 +21,60 @@ const fit=(project,disabledId)=>calculate({...project,rows:project.rows.map(r=>d
 const perCardOf=res=>res.results.map(r=>r.perCard);
 const usable=res=>res.valid===true&&res.hasEstimate===true&&Array.isArray(res.packTotals)&&res.packTotals.every(Number.isFinite);
 
-// Stability rule. A row is PUBLISHABLE iff base perCard is finite and > 0, every leave-one-anchor-out
-// refit is valid, and perCard moves by <= maxChange (relative) in every refit. Otherwise HELD with a reason.
+// Stability rule. For each enabled anchor a, refit with a disabled.
+//  - Valid refit: every row's perCard may move at most maxChange (relative).
+//  - Invalid refit: U(a) = formats a has odds in that no other enabled anchor has positive rate in
+//    (those formats rest on a single anchor). Rows with odds in any U(a) format are HELD. The remaining
+//    rows are judged against a second refit with a disabled AND the U(a) format columns removed
+//    (rows with odds only in U(a) dropped), which must itself be valid.
+//  - Invalid refit with U(a) empty, or an invalid reduced refit: unexplained; ALL rows are held, loudly.
+// A row is PUBLISHABLE iff base perCard is finite and > 0 and no anchor's refit holds it.
+export const UNEXPLAINED_REASON='refit failed unexplained';
+const positive=(row,i)=>parseRatio(row.odds[i])!==null;
+function reduce(project,disabledId,drop){
+  const keep=project.formats.map((_,i)=>!drop.includes(i));
+  const pick=a=>a&&a.filter((_,i)=>keep[i]);
+  const formats=pick(project.formats);
+  const rows=project.rows.filter(r=>r.odds.some((_,i)=>keep[i]&&positive(r,i))).map(r=>{
+    const o={...r,odds:pick(r.odds),anchor:r.id===disabledId?false:r.anchor};
+    if(r.referenceBoxOdds)o.referenceBoxOdds=pick(r.referenceBoxOdds);
+    return o;
+  });
+  const formatConfigs=Object.fromEntries(Object.entries(project.formatConfigs||{}).filter(([k])=>formats.includes(k)));
+  return {...project,formats,packTotals:pick(project.packTotals),formatConfigs,rows};
+}
 export function stabilityRule(project,{maxChange=DEFAULT_MAX_CHANGE}={}){
   const base=fit(project);
   if(!usable(base))throw Error('Base fit is not valid: '+base.errors.join(' '));
-  const basePer=perCardOf(base);
+  const basePer=perCardOf(base),idx=new Map(base.results.map((r,i)=>[r.id,i]));
   const anchors=base.diagnostics.filter(d=>d.enabled);
-  const worst=basePer.map(()=>({change:0,anchor:null}));const invalid=[];
+  const anchorRows=anchors.map(a=>project.rows.find(r=>r.id===a.id));
+  const worst=basePer.map(()=>({change:0,anchor:null}));
+  const holds=basePer.map(()=>[]);          // reasons from anchor refits
+  const invalid=[],unexplained=[];
+  const holdAll=reason=>holds.forEach(h=>h.push(reason));
   for(const a of anchors){
+    const arow=project.rows.find(r=>r.id===a.id);
     const re=fit(project,a.id);
-    if(!usable(re)){invalid.push({id:a.id,name:a.name});continue;}
-    const per=perCardOf(re);
+    let per,skip=new Set(),mapIdx=i=>i;
+    if(usable(re))per=perCardOf(re);
+    else{
+      const others=anchorRows.filter(r=>r.id!==a.id);
+      const U=project.formats.map((_,i)=>i).filter(i=>positive(arow,i)&&!others.some(o=>positive(o,i)));
+      const entry={id:a.id,name:a.name,u_formats:U.map(i=>project.formats[i]),reduced_valid:null};
+      invalid.push(entry);
+      if(!U.length){entry.explained=false;unexplained.push(entry);holdAll(`${UNEXPLAINED_REASON}: disabling anchor ${a.name} gives an invalid refit with no single-anchor format`);continue;}
+      entry.explained=true;
+      project.rows.forEach(r=>{if(U.some(i=>positive(r,i))){const k=idx.get(r.id);if(k!==undefined){skip.add(k);holds[k].push(`format ${U.map(i=>project.formats[i]).join(', ')} rests on a single anchor (${a.name})`);}}});
+      const reduced=reduce(project,a.id,U);
+      const rr=fit(reduced);
+      entry.reduced_valid=usable(rr);
+      if(!usable(rr)){entry.explained=false;unexplained.push(entry);holdAll(`${UNEXPLAINED_REASON}: reduced refit without anchor ${a.name} and format ${entry.u_formats.join(', ')} is invalid`);continue;}
+      const ids=rr.results.map(r=>r.id),per2=perCardOf(rr);
+      per=basePer.map(()=>undefined);ids.forEach((id,j)=>{per[idx.get(id)]=per2[j];});
+    }
     per.forEach((v,i)=>{
-      const b=basePer[i];if(!(Number.isFinite(b)&&b>0))return;
+      const b=basePer[i];if(!(Number.isFinite(b)&&b>0)||skip.has(i)||v===undefined)return;
       const change=Number.isFinite(v)?Math.abs(v-b)/b:Infinity;
       if(change>worst[i].change)worst[i]={change,anchor:a};
     });
@@ -42,17 +82,15 @@ export function stabilityRule(project,{maxChange=DEFAULT_MAX_CHANGE}={}){
   const rows=base.results.map((r,i)=>{
     const b=basePer[i];let status='PUBLISHABLE',reason=null;
     if(!(Number.isFinite(b)&&b>0)){status='HELD';reason='zero/undetermined base-fit per-card estimate';}
-    else if(invalid.length){status='HELD';reason=`invalid refit when anchor disabled: ${invalid.map(x=>x.name).slice(0,5).join('; ')}${invalid.length>5?` (+${invalid.length-5} more)`:''}; max change over the valid refits ${(worst[i].change*100).toFixed(2)}%`;}
+    else if(holds[i].length){status='HELD';reason=[...new Set(holds[i])].slice(0,3).join('; ')+(new Set(holds[i]).size>3?` (+${new Set(holds[i]).size-3} more)`:'');}
     else if(worst[i].change>maxChange){status='HELD';reason=`max change ${(worst[i].change*100).toFixed(2)}% > ${(maxChange*100).toFixed(2)}% when anchor disabled: ${worst[i].anchor.name}`;}
     return {id:r.id,name:r.name,familyId:r.familyId,family:r.family,count:r.count,perCard:b??null,total:r.total??null,byFormat:r.byFormat??null,
       maxChangePct:Number.isFinite(b)&&b>0?(Number.isFinite(worst[i].change)?+(worst[i].change*100).toFixed(4):null):null,
       worstAnchorId:worst[i].anchor?.id??null,worstAnchor:worst[i].anchor?.name??null,status,reason};
   });
-  // Informational only (NOT applied): rows that would pass if invalid refits were ignored.
-  const passIgnoringInvalid=rows.filter((r,i)=>r.status==='HELD'&&invalid.length&&Number.isFinite(basePer[i])&&basePer[i]>0&&worst[i].change<=maxChange).length;
-  return {base,anchorsTested:anchors.length,invalidRefits:invalid,maxChange,passIgnoringInvalid,rows};
+  if(unexplained.length)console.error(`WARNING: ${unexplained.length} unexplained invalid refit(s) (${unexplained.map(u=>u.name).join('; ')}); ALL rows held.`);
+  return {base,anchorsTested:anchors.length,invalidRefits:invalid,unexplainedRefits:unexplained,maxChange,rows};
 }
-
 // Category mapping. Relic rows are never labelled Autograph. relic='hold' (default) holds them;
 // relic='Relic' (or any label) maps them to that category once the app-side schema supports it.
 export function categorize(project,row,{relic='hold',categoryMap={}}={}){
@@ -84,13 +122,13 @@ export function convert(project,opts={}){
 export function buildOutputs(project,{source,cvCode=null,...opts}={}){
   const {rule,estimates,held}=convert(project,opts);
   const meta={title:project.title,cv_code:cvCode,source,model_version:MODEL_VERSION,engine_sha256:engineSha256()};
-  const ruleDoc={name:'leave-one-anchor-out stability',max_relative_change:rule.maxChange,anchors_tested:rule.anchorsTested,invalid_refits:rule.invalidRefits.map(x=>({id:x.id,name:x.name})),info_only_rows_that_would_pass_if_invalid_refits_ignored:rule.passIgnoringInvalid,relic_handling:opts.relic||'hold'};
+  const ruleDoc={name:'leave-one-anchor-out stability',max_relative_change:rule.maxChange,anchors_tested:rule.anchorsTested,invalid_refits:rule.invalidRefits,unexplained_refits:rule.unexplainedRefits.length,relic_handling:opts.relic||'hold'};
   const prv={schema:'cm-prv-estimate-input/1',...meta,rule:ruleDoc,counts:{rows:rule.rows.length,publishable:estimates.length,held:held.length},estimates};
   const report={schema:'cm-prv-held-report/1',...meta,rule:ruleDoc,counts:prv.counts,held};
-  const md=[`# Held rows: ${project.title}`,'',`Rule: publish only if base per-card > 0, every leave-one-anchor-out refit is valid, and per-card changes <= ${(rule.maxChange*100).toFixed(2)}% in every refit (${rule.anchorsTested} anchors tested).`,'',
+  const md=[`# Held rows: ${project.title}`,'',`Rule: publish only if base per-card > 0 and per-card changes <= ${(rule.maxChange*100).toFixed(2)}% in every leave-one-anchor-out refit (${rule.anchorsTested} anchors tested). An invalid refit holds only rows touching formats that rest on that single anchor, and the rest are judged on a reduced refit without those formats. An invalid refit with no single-anchor format holds every row.`,'',
     `Rows: ${rule.rows.length}. Publishable: ${estimates.length}. Held: ${held.length}.`,'',
-    ...Object.entries(held.reduce((m,h)=>{const k=h.reasons[0].split(/:| \d/)[0].trim();m[k]=(m[k]||0)+1;return m;},{})).map(([k,n])=>`- ${n} × ${k}`),'',
-    ...(rule.invalidRefits.length?[`Invalid refits (no estimate when the anchor is disabled): ${rule.invalidRefits.map(x=>x.name).join('; ')}. Info only, not applied: ${rule.passIgnoringInvalid} held rows would pass if those refits were ignored.`,'']:[]),'| Row | Family | Reason |','|---|---|---|',...held.map(h=>`| ${h.name.replace(/\|/g,'/')} | ${h.family.replace(/\|/g,'/')} | ${h.reasons.join('; ').replace(/\|/g,'/')} |`),''].join('\n');
+    ...Object.entries(held.reduce((m,h)=>{const k=/rests on a single anchor/.test(h.reasons[0])?'format rests on a single anchor':h.reasons[0].split(/:| \d/)[0].trim();m[k]=(m[k]||0)+1;return m;},{})).map(([k,n])=>`- ${n} × ${k}`),'',
+    ...(rule.invalidRefits.length?[`Invalid refits when the anchor is disabled: ${rule.invalidRefits.map(x=>`${x.name} (single-anchor formats: ${x.u_formats.join(', ')||'none'})`).join('; ')}.`,'']:[]),...(rule.unexplainedRefits.length?[`**WARNING: ${rule.unexplainedRefits.length} unexplained invalid refit(s); all rows held.**`,'']:[]),'| Row | Family | Reason |','|---|---|---|',...held.map(h=>`| ${h.name.replace(/\|/g,'/')} | ${h.family.replace(/\|/g,'/')} | ${h.reasons.join('; ').replace(/\|/g,'/')} |`),''].join('\n');
   return {prv,report,md};
 }
 

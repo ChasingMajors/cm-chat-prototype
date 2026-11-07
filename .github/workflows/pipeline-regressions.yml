@@ -31,3 +31,9 @@ jobs:
         run: npm run test:print-run-publish
       - name: Verify offline owner calibration comparisons
         run: npm run test:print-run-calibrate
+      - name: Verify 24-format cap
+        run: npm run test:print-run-formats
+      - name: Verify Lab to PRV converter and stability rule
+        run: npm run test:print-run-prv
+      - name: Verify generated server bundle is current
+        run: node scripts/build-print-run-server.mjs --check

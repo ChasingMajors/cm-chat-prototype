@@ -726,6 +726,7 @@ function csv(rows) {return rows.map(r=>r.map(v=>{const s=String(v??'');return '"
 const MODEL_VERSION='weighted-median-v1';
 const MAX_PROJECT_BYTES=2*1024*1024;
 const MAX_ARTIFACT_BYTES=4*1024*1024;
+const MAX_FORMATS=24;
 const obj=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 const bytes=s=>unescape(encodeURIComponent(s)).length;
 function text(v,max=200,empty=false){if(typeof v!=='string'||v.length>max||(!empty&&!v.trim()))throw Error('Invalid project text.');return v;}
@@ -748,7 +749,7 @@ function sanitizeProject(input){
   if(bytes(JSON.stringify(input))>MAX_PROJECT_BYTES)throw Error('Public project exceeds 2 MB. Save the full draft locally and reduce source text before publishing.');
   const p={version:1,title:text(input.title,300),families:[],formats:[],rows:[],packTotals:[],aliases:[],sources:{},warnings:[],formatConfigs:{},allowScenario:false,robustWeights:input.robustWeights===true,roundingWeights:input.roundingWeights===true,oddsBlocking:input.oddsBlocking===true};
   if(input.method!==undefined){if(input.method!=='experimental')throw Error('Unsupported calculation method.');p.method=input.method;}
-  for(const name of list(input.formats,12))p.formats.push(text(name,100));
+  for(const name of list(input.formats,MAX_FORMATS))p.formats.push(text(name,100));
   if(!p.formats.length||new Set(p.formats).size!==p.formats.length)throw Error('Distinct pack formats are required.');
   const familyIds=new Set(),rowIds=new Set();let identities=0;
   for(const f of list(input.families,1000)){
@@ -764,16 +765,16 @@ function sanitizeProject(input){
     if(!obj(r))throw Error('Invalid odds row.');const id=text(r.id);if(rowIds.has(id))throw Error('Duplicate odds row ID.');rowIds.add(id);
     const familyId=text(r.familyId,200,true);if(familyId&&!familyIds.has(familyId))throw Error('Unknown checklist section.');
     if(typeof r.anchor!=='boolean')throw Error('Invalid anchor selection.');
-    const out={id,name:text(r.name,500),familyId,odds:list(r.odds,12).map(v=>text(v,350,true)),eligible:r.eligible==null?null:integer(r.eligible),serial:r.serial==null?null:integer(r.serial),anchor:r.anchor,page:page(r.page)};
+    const out={id,name:text(r.name,500),familyId,odds:list(r.odds,MAX_FORMATS).map(v=>text(v,350,true)),eligible:r.eligible==null?null:integer(r.eligible),serial:r.serial==null?null:integer(r.serial),anchor:r.anchor,page:page(r.page)};
     if(out.odds.length!==p.formats.length)throw Error('Odds columns do not match the formats.');
     for(const k of ['familyIdManual','ambiguous'])if(r[k]!==undefined){if(typeof r[k]!=='boolean')throw Error('Invalid assignment flag.');out[k]=r[k];}
     if(r.weight!=null)out.weight=finite(r.weight,1000);
     optionalText(out,r,['weightNote','serialSource','serialSourceUrl']);
-    if(r.referenceBoxOdds!==undefined)out.referenceBoxOdds=list(r.referenceBoxOdds,12).map(v=>text(v,350,true));
+    if(r.referenceBoxOdds!==undefined)out.referenceBoxOdds=list(r.referenceBoxOdds,MAX_FORMATS).map(v=>text(v,350,true));
     p.rows.push(out);
   }
   if(!p.rows.length)throw Error('Odds rows are required.');
-  p.packTotals=list(input.packTotals,12).map(v=>v==null?null:finite(v));if(p.packTotals.length!==p.formats.length)throw Error('Pack total columns do not match.');
+  p.packTotals=list(input.packTotals,MAX_FORMATS).map(v=>v==null?null:finite(v));if(p.packTotals.length!==p.formats.length)throw Error('Pack total columns do not match.');
   for(const a of list(input.aliases||[],1000)){if(!obj(a))throw Error('Invalid alias.');const to=text(a.to);if(!familyIds.has(to))throw Error('Alias target must be a section ID.');const from=text(a.from,500);if(!/[a-z0-9]/i.test(from))throw Error('Alias prefix is empty.');p.aliases.push({from,to});}
   for(const [name,c] of Object.entries(input.formatConfigs||{})){if(!p.formats.includes(name)||!obj(c))throw Error('Invalid format configuration.');const out={};for(const k of ['cardsPerPack','packsPerBox'])if(c[k]!=null)out[k]=integer(c[k]);optionalText(out,c,['source']);Object.defineProperty(p.formatConfigs,name,{value:out,enumerable:true,writable:true,configurable:true});}
   if(!obj(input.sources))throw Error('Invalid project sources.');

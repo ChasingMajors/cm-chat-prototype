@@ -25,33 +25,18 @@ test('stability rule holds unstable, zero and relic rows and publishes stable on
   assert.ok(estimates.every(e=>e.serial_limit===null&&e.estimate===true));
   assert.equal(estimates.length+held.length,rule.rows.length);
 });
-test('rule is deterministic; an invalid refit with a single-anchor format holds only touching rows and publishes the rest',()=>{
+test('rule is deterministic',()=>{
   assert.deepEqual(stabilityRule(project()).rows,stabilityRule(project()).rows);
+});
+test('any invalid refit holds every row (no salvage), including rows unrelated to the broken formats',()=>{
+  // Dropping yb leaves Y with a single anchor; disabling ya makes the refit invalid. X rows are unaffected by that but must still be held.
   const p=project();p.rows=p.rows.filter(r=>r.id!=='yb');
-  const rule=stabilityRule(p),by=id=>rule.rows.find(r=>r.id===id);
-  assert.equal(rule.invalidRefits.length,1);assert.deepEqual(rule.invalidRefits[0].unidentifiable_formats,['Y']);assert.equal(rule.unexplainedRefits.length,0);
-  assert.equal(by('xonly').status,'PUBLISHABLE');assert.equal(by('sig').status,'PUBLISHABLE');
-  for(const id of ['base','yonly','ya'])assert.equal(by(id).status,'HELD');
-  assert.match(by('yonly').reason,/formats Y become unidentifiable without anchor Y ANCHOR A \(collinear\/single-anchor\)/);
-});
-test('a collinear format pair is held as unidentifiable and well-anchored rows still publish',()=>{
-  // C and D are separated only by anchor T; anchors S1,S2 carry identical odds in C and D.
-  const p=sanitizeProject({version:1,title:'C',families:[{id:'f',name:'Base',count:100,cards:[],sectionKind:'Base'}],formats:['X','C','D'],packTotals:[null,null,null],aliases:[],sources:{},warnings:[],formatConfigs:{},oddsBlocking:false,
-    rows:[row('xr','X ROW',['1:10','-','-']),row('cr','C ROW',['-','1:10','1:10']),row('xa','XA',['1:10','-','-'],{eligible:10,serial:10,anchor:true}),row('xb','XB',['1:20','-','-'],{eligible:5,serial:10,anchor:true}),
-      row('s1','S1',['-','1:10','1:10'],{eligible:10,serial:10,anchor:true}),row('s2','S2',['-','1:20','1:20'],{eligible:5,serial:10,anchor:true}),row('t','T',['-','1:5','1:10'],{eligible:15,serial:10,anchor:true})]});
-  const rule=stabilityRule(p),by=id=>rule.rows.find(r=>r.id===id),inv=rule.invalidRefits.find(x=>x.id==='t');
-  assert.deepEqual(inv.unidentifiable_formats,['C','D']);assert.equal(inv.reduced_valid,true);assert.equal(rule.unexplainedRefits.length,0);
-  assert.equal(by('cr').status,'HELD');assert.match(by('cr').reason,/formats C, D become unidentifiable without anchor T/);
-  assert.equal(by('xr').status,'PUBLISHABLE');
-});
-test('an unexplained invalid refit holds every row',()=>{
-  // Two anchors, each in both formats: disabling one leaves one equation for two unknowns, with no single-anchor format.
-  const p=sanitizeProject({version:1,title:'U',families:[{id:'f',name:'Base',count:100,cards:[],sectionKind:'Base'}],formats:['X','Y'],packTotals:[null,null],aliases:[],sources:{},warnings:[],formatConfigs:{},oddsBlocking:false,
-    rows:[row('r1','ROW',['1:10','1:10']),row('a1','A1',['1:10','1:20'],{eligible:10,serial:10,anchor:true}),row('a2','A2',['1:20','1:10'],{eligible:10,serial:10,anchor:true})]});
   const orig=console.error;let warned='';console.error=m=>{warned+=m;};
   let rule;try{rule=stabilityRule(p);}finally{console.error=orig;}
-  assert.ok(rule.unexplainedRefits.length>0);assert.match(warned,/unexplained/);
-  assert.ok(rule.rows.every(r=>r.status==='HELD'&&/refit failed unexplained/.test(r.reason)));
+  assert.equal(rule.invalidRefits.length,1);assert.equal(rule.invalidRefits[0].id,'ya');assert.match(warned,/invalid leave-one-anchor-out refit/);
+  assert.ok(rule.rows.every(r=>r.status==='HELD'));
+  assert.match(rule.rows.find(r=>r.id==='xonly').reason,/refit invalid: disabling anchor Y ANCHOR A/);
+  assert.equal(convert(p).estimates.length,0);
 });
 test('normal rows are unchanged when every refit is valid',()=>{
   const rule=stabilityRule(project());

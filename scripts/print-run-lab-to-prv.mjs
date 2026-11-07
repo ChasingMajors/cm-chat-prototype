@@ -7,7 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {fileURLToPath,pathToFileURL} from 'node:url';
-import {calculate,parseRatio} from '../print-run-lab/engine.js';
+import {calculate} from '../print-run-lab/engine.js';
 import {sanitizeProject,validateArtifact,MODEL_VERSION} from '../print-run-lab/project-schema.js';
 
 export const DEFAULT_MAX_CHANGE=0.05;
@@ -35,101 +35,43 @@ export const engineSha256=()=>createHash('sha256').update(fs.readFileSync(engine
 
 // calculate() mutates rows (_issue/_rates), so every fit gets its own row copies.
 const fit=(project,disabledId)=>calculate({...project,rows:project.rows.map(r=>disabledId&&r.id===disabledId?{...r,anchor:false}:{...r})});
+
+// Stability rule, applied exactly. For each enabled anchor a, refit with a disabled.
+//  - A row is PUBLISHABLE iff its base perCard is finite and > 0, every refit is valid, and its perCard
+//    changes <= maxChange (relative) in every refit.
+//  - If ANY refit is not usable (invalid, no estimate, non-finite pack totals), every row is HELD.
+//    There is no salvage: unidentifiable formats are not dropped and no reduced refit is run.
+export const INVALID_REFIT_REASON='refit invalid';
 const perCardOf=res=>res.results.map(r=>r.perCard);
 const usable=res=>res.valid===true&&res.hasEstimate===true&&Array.isArray(res.packTotals)&&res.packTotals.every(Number.isFinite);
-
-// Stability rule. For each enabled anchor a, refit with a disabled.
-//  - Valid refit: every row's perCard may move at most maxChange (relative).
-//  - Invalid refit: F(a) = unknown-pack format columns that become unidentifiable without a, i.e. columns
-//    in the support of the null space of the remaining anchors' rate matrix (single-anchor formats and
-//    collinear groups such as two columns whose remaining anchors all have identical odds). Rows with
-//    odds in any F(a) format are HELD. The remaining rows are judged against a reduced refit with a
-//    disabled AND the F(a) columns removed (rows with odds only in F(a) dropped; anchors touching F(a)
-//    disabled so their pools are not forced onto the remaining formats), which must itself be valid.
-//  - Invalid refit with F(a) empty, or an invalid reduced refit: unexplained; ALL rows are held, loudly.
-// A row is PUBLISHABLE iff base perCard is finite and > 0 and no anchor's refit holds it.
-export const UNEXPLAINED_REASON='refit failed unexplained';
-const positive=(row,i)=>parseRatio(row.odds[i])!==null;
-// Columns not uniquely determined by the anchor rate matrix: support of its null space.
-// Columns are scaled to unit max so tiny hit rates do not look like zeros; tolerance is relative.
-export function unidentifiableColumns(matrix,cols,tol=1e-9){
-  const A=matrix.map(r=>cols.map(c=>r[c]||0));
-  const scale=cols.map((_,j)=>Math.max(0,...A.map(r=>Math.abs(r[j]))));
-  const M=A.map(r=>r.map((v,j)=>scale[j]>0?v/scale[j]:0));
-  const n=cols.length,pivots=[];let row=0;
-  for(let j=0;j<n&&row<M.length;j++){
-    let best=row;for(let i=row+1;i<M.length;i++)if(Math.abs(M[i][j])>Math.abs(M[best][j]))best=i;
-    if(Math.abs(M[best][j])<=tol)continue;
-    [M[row],M[best]]=[M[best],M[row]];const pv=M[row][j];M[row]=M[row].map(v=>v/pv);
-    for(let i=0;i<M.length;i++)if(i!==row&&M[i][j]!==0){const f=M[i][j];M[i]=M[i].map((v,k)=>v-f*M[row][k]);}
-    pivots.push(j);row++;
-  }
-  const free=[...Array(n).keys()].filter(j=>!pivots.includes(j)),out=new Set();
-  for(const f of free){out.add(f);pivots.forEach((pj,i)=>{if(Math.abs(M[i][f])>tol)out.add(pj);});}
-  return [...out].map(j=>cols[j]).sort((a,b)=>a-b);
-}
-const rates=row=>row.odds.map(o=>parseRatio(o)??0);
-function reduce(project,disabledId,drop){
-  const keep=project.formats.map((_,i)=>!drop.includes(i));
-  const pick=a=>a&&a.filter((_,i)=>keep[i]);
-  const formats=pick(project.formats);
-  const rows=project.rows.filter(r=>r.odds.some((_,i)=>keep[i]&&positive(r,i))).map(r=>{
-    const o={...r,odds:pick(r.odds),anchor:r.id===disabledId||drop.some(i=>positive(r,i))?false:r.anchor};
-    if(r.referenceBoxOdds)o.referenceBoxOdds=pick(r.referenceBoxOdds);
-    return o;
-  });
-  const formatConfigs=Object.fromEntries(Object.entries(project.formatConfigs||{}).filter(([k])=>formats.includes(k)));
-  return {...project,formats,packTotals:pick(project.packTotals),formatConfigs,rows};
-}
 export function stabilityRule(project,{maxChange=DEFAULT_MAX_CHANGE}={}){
   const base=fit(project);
   if(!usable(base))throw Error('Base fit is not valid: '+base.errors.join(' '));
-  const basePer=perCardOf(base),idx=new Map(base.results.map((r,i)=>[r.id,i]));
+  const basePer=perCardOf(base);
   const anchors=base.diagnostics.filter(d=>d.enabled);
-  const anchorRows=anchors.map(a=>project.rows.find(r=>r.id===a.id));
   const worst=basePer.map(()=>({change:0,anchor:null}));
-  const holds=basePer.map(()=>[]);          // reasons from anchor refits
-  const invalid=[],unexplained=[];
-  const holdAll=reason=>holds.forEach(h=>h.push(reason));
+  const invalid=[];
   for(const a of anchors){
-    const arow=project.rows.find(r=>r.id===a.id);
     const re=fit(project,a.id);
-    let per,skip=new Set(),mapIdx=i=>i;
-    if(usable(re))per=perCardOf(re);
-    else{
-      const others=anchorRows.filter(r=>r.id!==a.id);
-      const unknownCols=project.formats.map((_,i)=>i).filter(i=>project.packTotals[i]==null);
-      const U=unidentifiableColumns(others.map(rates),unknownCols);
-      const fmt=U.map(i=>project.formats[i]).join(', ');
-      const entry={id:a.id,name:a.name,unidentifiable_formats:U.map(i=>project.formats[i]),reduced_valid:null};
-      invalid.push(entry);
-      if(!U.length){entry.explained=false;unexplained.push(entry);holdAll(`${UNEXPLAINED_REASON}: disabling anchor ${a.name} gives an invalid refit with every format still identifiable`);continue;}
-      entry.explained=true;
-      project.rows.forEach(r=>{if(U.some(i=>positive(r,i))){const k=idx.get(r.id);if(k!==undefined){skip.add(k);holds[k].push(`formats ${fmt} become unidentifiable without anchor ${a.name} (collinear/single-anchor)`);}}});
-      const reduced=U.length<unknownCols.length?reduce(project,a.id,U):null;
-      const rr=reduced&&fit(reduced);
-      entry.reduced_valid=!!rr&&usable(rr);
-      if(!entry.reduced_valid){entry.explained=false;unexplained.push(entry);holdAll(`${UNEXPLAINED_REASON}: reduced refit without anchor ${a.name} and formats ${fmt} is invalid`);continue;}
-      const ids=rr.results.map(r=>r.id),per2=perCardOf(rr);
-      per=basePer.map(()=>undefined);ids.forEach((id,j)=>{per[idx.get(id)]=per2[j];});
-    }
-    per.forEach((v,i)=>{
-      const b=basePer[i];if(!(Number.isFinite(b)&&b>0)||skip.has(i)||v===undefined)return;
+    if(!usable(re)){invalid.push({id:a.id,name:a.name,errors:(re.errors||[]).slice(0,3)});continue;}
+    perCardOf(re).forEach((v,i)=>{
+      const b=basePer[i];if(!(Number.isFinite(b)&&b>0))return;
       const change=Number.isFinite(v)?Math.abs(v-b)/b:Infinity;
       if(change>worst[i].change)worst[i]={change,anchor:a};
     });
   }
+  const invalidReason=invalid.length?`${INVALID_REFIT_REASON}: disabling anchor ${invalid[0].name} gives an invalid refit${invalid.length>1?` (+${invalid.length-1} more anchors)`:''}`:null;
   const rows=base.results.map((r,i)=>{
     const b=basePer[i];let status='PUBLISHABLE',reason=null;
     if(!(Number.isFinite(b)&&b>0)){status='HELD';reason='zero/undetermined base-fit per-card estimate';}
-    else if(holds[i].length){status='HELD';reason=[...new Set(holds[i])].slice(0,3).join('; ')+(new Set(holds[i]).size>3?` (+${new Set(holds[i]).size-3} more)`:'');}
+    else if(invalidReason){status='HELD';reason=invalidReason;}
     else if(worst[i].change>maxChange){status='HELD';reason=`max change ${(worst[i].change*100).toFixed(2)}% > ${(maxChange*100).toFixed(2)}% when anchor disabled: ${worst[i].anchor.name}`;}
     return {id:r.id,name:r.name,familyId:r.familyId,family:r.family,count:r.count,perCard:b??null,total:r.total??null,byFormat:r.byFormat??null,
       maxChangePct:Number.isFinite(b)&&b>0?(Number.isFinite(worst[i].change)?+(worst[i].change*100).toFixed(4):null):null,
       worstAnchorId:worst[i].anchor?.id??null,worstAnchor:worst[i].anchor?.name??null,status,reason};
   });
-  if(unexplained.length)console.error(`WARNING: ${unexplained.length} unexplained invalid refit(s) (${unexplained.map(u=>u.name).join('; ')}); ALL rows held.`);
-  return {base,anchorsTested:anchors.length,invalidRefits:invalid,unexplainedRefits:unexplained,maxChange,rows};
+  if(invalid.length)console.error(`WARNING: ${invalid.length} invalid leave-one-anchor-out refit(s) (${invalid.map(u=>u.name).join('; ')}); ALL rows held.`);
+  return {base,anchorsTested:anchors.length,invalidRefits:invalid,maxChange,rows};
 }
 // Category mapping. Relic rows are never labelled Autograph. relic='hold' (default) holds them;
 // relic='Relic' (or any label) maps them to that category once the app-side schema supports it.
@@ -174,13 +116,13 @@ export function convert(project,opts={}){
 export function buildOutputs(project,{source,cvCode=null,...opts}={}){
   const {rule,estimates,held}=convert(project,opts);
   const meta={title:project.title,cv_code:cvCode,source,model_version:MODEL_VERSION,engine_sha256:engineSha256()};
-  const ruleDoc={name:'leave-one-anchor-out stability',max_relative_change:rule.maxChange,anchors_tested:rule.anchorsTested,invalid_refits:rule.invalidRefits,unexplained_refits:rule.unexplainedRefits.length,relic_handling:opts.relic||'hold'};
+  const ruleDoc={name:'leave-one-anchor-out stability',max_relative_change:rule.maxChange,anchors_tested:rule.anchorsTested,invalid_refits:rule.invalidRefits,relic_handling:opts.relic||'hold'};
   const prv={schema:'cm-prv-estimate-input/1',...meta,rule:ruleDoc,counts:{rows:rule.rows.length,publishable:estimates.length,held:held.length},estimates};
   const report={schema:'cm-prv-held-report/1',...meta,rule:ruleDoc,counts:prv.counts,held};
-  const md=[`# Held rows: ${project.title}`,'',`Rule: publish only if base per-card > 0 and per-card changes <= ${(rule.maxChange*100).toFixed(2)}% in every leave-one-anchor-out refit (${rule.anchorsTested} anchors tested). An invalid refit holds only rows with odds in formats that become unidentifiable without that anchor (single-anchor or collinear), and the rest are judged on a reduced refit without those formats. An invalid refit with no such format, or an invalid reduced refit, holds every row.`,'',
+  const md=[`# Held rows: ${project.title}`,'',`Rule: publish only if base per-card > 0 and per-card changes <= ${(rule.maxChange*100).toFixed(2)}% in every leave-one-anchor-out refit (${rule.anchorsTested} anchors tested).` + " Any invalid refit holds every row.",'',
     `Rows: ${rule.rows.length}. Publishable: ${estimates.length}. Held: ${held.length}.`,'',
-    ...Object.entries(held.reduce((m,h)=>{const k=/become unidentifiable without anchor/.test(h.reasons[0])?'formats become unidentifiable without one anchor (collinear/single-anchor)':h.reasons[0].split(/:| \d/)[0].trim();m[k]=(m[k]||0)+1;return m;},{})).map(([k,n])=>`- ${n} × ${k}`),'',
-    ...(rule.invalidRefits.length?[`Invalid refits when the anchor is disabled: ${rule.invalidRefits.map(x=>`${x.name} (unidentifiable formats: ${x.unidentifiable_formats.join(', ')||'none'}; reduced refit ${x.reduced_valid?'valid':'INVALID'})`).join('; ')}.`,'']:[]),...(rule.unexplainedRefits.length?[`**WARNING: ${rule.unexplainedRefits.length} unexplained invalid refit(s); all rows held.**`,'']:[]),'| Row | Family | Reason |','|---|---|---|',...held.map(h=>`| ${h.name.replace(/\|/g,'/')} | ${h.family.replace(/\|/g,'/')} | ${h.reasons.join('; ').replace(/\|/g,'/')} |`),''].join('\n');
+    ...Object.entries(held.reduce((m,h)=>{const k=h.reasons[0].split(/:| \d/)[0].trim();m[k]=(m[k]||0)+1;return m;},{})).map(([k,n])=>`- ${n} × ${k}`),'',
+    ...(rule.invalidRefits.length?[`**WARNING: invalid refit when anchor disabled: ${rule.invalidRefits.map(x=>x.name).join('; ')}. All rows held.**`,'']:[]),'| Row | Family | Reason |','|---|---|---|',...held.map(h=>`| ${h.name.replace(/\|/g,'/')} | ${h.family.replace(/\|/g,'/')} | ${h.reasons.join('; ').replace(/\|/g,'/')} |`),''].join('\n');
   return {prv,report,md};
 }
 
@@ -199,7 +141,7 @@ export function toPrvSchema4(project,out,{cvEntry,cvSections,estimateUrl,reviewe
     const parallel=pre?titleCase(rowName.slice(pre.length)):titleCase(rowName);
     return {id:e.row_id,kind:'estimate',category:e.category,name:cv?cv.subset:titleCase(fam?.name||e.family),subjects:e.eligible_cards,estimate:e.copies_per_card,serial_limit:null,parallel,page:e.page};
   });
-  const heldReasons={};for(const h of out.report.held){const k=/become unidentifiable without anchor/.test(h.reasons[0])?'formats become unidentifiable without one anchor (collinear/single-anchor)':h.reasons[0].split(/:| \d/)[0].trim();heldReasons[k]=(heldReasons[k]||0)+1;}
+  const heldReasons={};for(const h of out.report.held){const k=h.reasons[0].split(/:| \d/)[0].trim();heldReasons[k]=(heldReasons[k]||0)+1;}
   const relicHeld=out.report.held.filter(h=>h.reasons.includes(RELIC_HOLD_REASON)).length;
   return {schema_version:4,code:cvEntry.Code,meta,sources:{estimate_url:estimateUrl,reviewed_date:reviewedDate},
     method:{name:'print_run_lab_estimates_v1',calibration:`Print Run Lab weighted-median fit of ${project.formats.length} Topps pack formats to numbered anchors. Only rows passing the leave-one-anchor-out stability rule (per-card change <= ${(out.prv.rule.max_relative_change*100).toFixed(0)}% in every refit) are published. Provisional; not manufacturer-confirmed.`},
@@ -208,7 +150,7 @@ export function toPrvSchema4(project,out,{cvEntry,cvSections,estimateUrl,reviewe
       model_version:out.prv.model_version,engine_sha256:out.prv.engine_sha256,
       corrected_project:{file:projectFile,sha256:projectSha256},
       formats:project.formats,
-      stability_rule:{name:out.prv.rule.name,max_relative_change:out.prv.rule.max_relative_change,anchors_tested:out.prv.rule.anchors_tested,invalid_refits:out.prv.rule.invalid_refits,unexplained_refits:out.prv.rule.unexplained_refits,relic_handling:out.prv.rule.relic_handling},
+      stability_rule:{name:out.prv.rule.name,max_relative_change:out.prv.rule.max_relative_change,anchors_tested:out.prv.rule.anchors_tested,invalid_refits:out.prv.rule.invalid_refits,relic_handling:out.prv.rule.relic_handling},
       counts:{rows:out.prv.counts.rows,published:records.length,held:out.prv.counts.held,held_by_reason:heldReasons,relic_rows_held:relicHeld},
       families_not_in_cv:[...unmatched].sort(),
       source_documents:{odds_pdf:project.sources?.odds?.name??null,checklist_pdf:project.sources?.checklist?.name??null}},

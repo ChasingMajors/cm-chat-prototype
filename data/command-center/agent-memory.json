@@ -473,15 +473,15 @@
       "code": "",
       "riskLevel": "medium",
       "coverageState": "unverified",
-      "status": "approval_required",
+      "status": "known_issue",
       "recommendedAction": "PRV does not appear to have this product. Review SlabSquatch post and decide whether to build Print Run Vault data.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "Full-auto guardrail blocked execution.",
+      "validationResult": "PRV coverage differences or uncertainty require explicit product approval before writing.",
       "runUrl": "",
       "sourceUrl": "https://slabsquatch.substack.com/p/condensed-clean-up-analysis-2026",
       "createdAt": "2026-11-05T16:57:03.849Z",
-      "updatedAt": "2026-11-05T16:57:03.849Z"
+      "updatedAt": "2026-11-09T16:57:03.649Z"
     },
     {
       "id": "prv_watch|baseball|this week in topps releases",
@@ -1969,6 +1969,46 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1794243610535_alert",
+      "ts": "2026-11-09T16:57:03.649Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel needs admin now",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1794243610076",
+      "ts": "2026-11-09T16:57:03.649Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 0 checked. PRV: 0 actionable from 0 checked. PRV sync: passed. Auto action: PRV coverage differences or uncertainty require explicit product approval before writing. Checklist error: Timeout: https://www.checklistcenter.com/ PRV source error: Print-run source discovery failed: Fetch failed 400 for https://slabsquatch.substack.com/api/v1/archive?sort=new&search=&offset=0&limit=20",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1794243610075",
+      "ts": "2026-11-09T16:57:03.649Z",
+      "type": "auto_action",
+      "title": "Full-auto action blocked",
+      "detail": "Condensed Clean-Up Analysis: 2026 Triumphant Tennis 2026 Royalty Premier League 2025-26 Definitive Basketball: PRV coverage differences or uncertainty require explicit product approval before writing.",
+      "status": "needs_review",
+      "product": "Condensed Clean-Up Analysis: 2026 Triumphant Tennis 2026 Royalty Premier League 2025-26 Definitive Basketball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1794243610072",
+      "ts": "2026-11-09T16:57:03.649Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1793898030297_alert",
       "ts": "2026-11-05T16:57:03.849Z",
       "type": "admin_alert",
@@ -2727,81 +2767,29 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1791907298692_alert",
-      "ts": "2026-10-13T15:57:03.872Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel needs admin now",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1791907297965",
-      "ts": "2026-10-13T15:57:03.872Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 0 actionable from 0 checked. PRV: 7 actionable from 12 checked. PRV sync: passed. Auto actions: 1 run. 2026 Topps Chrome Sapphire MLS Soccer -> failed (Timeout: https://www.checklistcenter.com/2026-topps-chrome-sapphire-mls-soccer-card-checklist/) Checklist error: Timeout: https://www.checklistcenter.com/",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1791907297964",
-      "ts": "2026-10-13T15:57:03.872Z",
-      "type": "auto_action",
-      "title": "Full-auto action failed",
-      "detail": "2026 Topps Chrome Sapphire MLS Soccer: Timeout: https://www.checklistcenter.com/2026-topps-chrome-sapphire-mls-soccer-card-checklist/ Timeout: https://www.checklistcenter.com/2026-topps-chrome-sapphire-mls-soccer-card-checklist/",
-      "status": "failed",
-      "product": "2026 Topps Chrome Sapphire MLS Soccer",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1791907293867",
-      "ts": "2026-10-13T15:57:03.872Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
     "ok": false,
     "status": "issue",
-    "generated_at": "2026-11-05T16:57:03.849Z",
+    "generated_at": "2026-11-09T16:57:03.649Z",
     "checked": {
       "checklist_count": 0,
-      "prv_count": 13,
+      "prv_count": 0,
       "skipped_ignored": 0
     },
     "completed_count": 0,
-    "needs_admin_count": 12,
-    "blocked_count": 1,
+    "needs_admin_count": 0,
+    "blocked_count": 2,
     "completed": [],
-    "needs_admin": [
-      "PRV review: 2025-26 Stadium Club Chrome UEFA | soccer | missing",
-      "PRV review: 2025-26 Stadium Club UEFA- Early Access Production Numbers & Print Runs | soccer | known_issue",
-      "PRV review: 2026 Allen & Ginter X | baseball | missing",
-      "PRV review: 2026 Bowman Sapphire Football Mini Dive | football | needs_review",
-      "PRV review: 2026 Panini Prizm Preferred Baseball Boxes- A Rudimentary | baseball | known_issue",
-      "PRV review: 2026 Topps Holiday Baseball: SP/SSP Guide and Random Questions Answered | baseball | needs_review",
-      "PRV review: 2026 Topps Holiday Football | football | known_issue",
-      "PRV review: 2026 Heritage Football | football | needs_review",
-      "PRV review: 2026 Topps Holiday Baseball | baseball | known_issue",
-      "PRV review: This week in Topps releases | baseball | known_issue",
-      "PRV review: Condensed Clean-Up Analysis: 2026 Triumphant Tennis 2026 Royalty Premier League 2025-26 Definitive Basketball | soccer | missing",
-      "PRV review: 2026 Topps Team Samurai Japan- Round 2 | baseball | needs_review"
-    ],
+    "needs_admin": [],
     "blocked": [
-      "Checklist watch failed: Timeout: https://www.checklistcenter.com/"
+      "Checklist watch failed: Timeout: https://www.checklistcenter.com/",
+      "PRV watch failed: Print-run source discovery failed: Fetch failed 400 for https://slabsquatch.substack.com/api/v1/archive?sort=new&search=&offset=0&limit=20"
     ],
     "proof": [],
     "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
-    "summary": "Checked 0 checklist source item(s) and 13 PRV source item(s). 0 completed/progress item(s), 12 needs-admin item(s), 1 blocked/issue item(s)."
+    "summary": "Checked 0 checklist source item(s) and 0 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 2 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -8083,7 +8071,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-11-05T17:00:30.392Z",
+  "saved_at": "2026-11-09T17:00:10.626Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

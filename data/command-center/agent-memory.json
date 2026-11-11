@@ -453,15 +453,15 @@
       "sport": "",
       "code": "prv_full_sync",
       "riskLevel": "high",
-      "status": "failed",
-      "recommendedAction": "Run Agent Cycle to let Sentinel retry PRV JSON sync once. If it fails again, inspect Static Data Exporter logs and GitHub publish permissions.",
+      "status": "validated",
+      "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
       "adminDecision": "",
-      "executionResult": "Scheduled PRV full JSON sync failed.",
-      "validationResult": "Scheduled PRV JSON sync returned a review response.",
+      "executionResult": "Scheduled PRV full JSON sync completed through Static Data Exporter.",
+      "validationResult": "Scheduled PRV JSON sync completed.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-11-10T16:57:05.347Z",
-      "updatedAt": "2026-11-10T16:57:05.347Z"
+      "updatedAt": "2026-11-11T16:57:04.037Z"
     },
     {
       "id": "source_watch|basketball|2026 panini impeccable wnba basketball",
@@ -495,15 +495,21 @@
       "sport": "baseball",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "failed",
       "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "Checklist sheet write failed.",
+      "validationResult": "Timeout: https://www.checklistcenter.com/2026-topps-cosmic-chrome-baseball-card-checklist/",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-cosmic-chrome-baseball-card-checklist/",
       "createdAt": "2026-11-10T16:57:05.347Z",
-      "updatedAt": "2026-11-10T16:57:05.347Z"
+      "updatedAt": "2026-11-11T16:57:04.037Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "Agent attempted repair for 2026 Topps Cosmic Chrome Baseball but it failed. Timeout: https://www.checklistcenter.com/2026-topps-cosmic-chrome-baseball-card-checklist/",
+      "autoExecutedAt": "2026-11-11T16:57:04.037Z"
     },
     {
       "id": "source_watch|football|2026 topps inception football",
@@ -1966,6 +1972,46 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1794416487485_alert",
+      "ts": "2026-11-11T16:57:04.037Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel needs admin now",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1794416484997",
+      "ts": "2026-11-11T16:57:04.037Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 0 checked. PRV: 0 actionable from 0 checked. PRV sync: passed. Auto actions: 1 run. 2026 Topps Cosmic Chrome Baseball -> failed (Timeout: https://www.checklistcenter.com/2026-topps-cosmic-chrome-baseball-card-checklist/) Checklist error: Timeout: https://www.checklistcenter.com/ PRV source error: Print-run source discovery failed: Fetch failed 400 for https://slabsquatch.substack.com/api/v1/archive?sort=new&search=&offset=0&limit=20",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1794416484995",
+      "ts": "2026-11-11T16:57:04.037Z",
+      "type": "auto_action",
+      "title": "Full-auto action failed",
+      "detail": "2026 Topps Cosmic Chrome Baseball: Checklist sheet write failed. Timeout: https://www.checklistcenter.com/2026-topps-cosmic-chrome-baseball-card-checklist/",
+      "status": "failed",
+      "product": "2026 Topps Cosmic Chrome Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1794416475652",
+      "ts": "2026-11-11T16:57:04.037Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1794330102091_alert",
       "ts": "2026-11-10T16:57:05.347Z",
       "type": "admin_alert",
@@ -2724,79 +2770,30 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1792252840294_alert",
-      "ts": "2026-10-17T15:57:03.422Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1792252839610",
-      "ts": "2026-10-17T15:57:03.422Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 2 actionable from 20 checked. PRV: 2 actionable from 11 checked. PRV sync: passed. Auto actions: 1 run. 2026 Topps Chrome Samurai Japan Baseball -> failed (Source import preview is not ready for write.)",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1792252839609",
-      "ts": "2026-10-17T15:57:03.422Z",
-      "type": "auto_action",
-      "title": "Full-auto action failed",
-      "detail": "2026 Topps Chrome Samurai Japan Baseball: Checklist sheet write failed. Source import preview is not ready for write.",
-      "status": "failed",
-      "product": "2026 Topps Chrome Samurai Japan Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1792252832307",
-      "ts": "2026-10-17T15:57:03.422Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
     "ok": false,
     "status": "issue",
-    "generated_at": "2026-11-10T16:57:05.347Z",
+    "generated_at": "2026-11-11T16:57:04.037Z",
     "checked": {
-      "checklist_count": 10,
+      "checklist_count": 0,
       "prv_count": 0,
       "skipped_ignored": 0
     },
     "completed_count": 0,
-    "needs_admin_count": 8,
+    "needs_admin_count": 0,
     "blocked_count": 3,
     "completed": [],
-    "needs_admin": [
-      "Checklist review: 2025 26 Upper Deck Tableau Hockey | hockey | missing",
-      "Checklist review: 2026 Topps Palatial Argentina Soccer | soccer | missing",
-      "Checklist review: 2026 Upper Deck Fall Expo Hockey | hockey | missing",
-      "Checklist review: 2026 27 Topps Flagship Basketball | basketball | missing",
-      "Checklist review: 2025 26 Topps Stadium Club Chrome UEFA Soccer | soccer | missing",
-      "Checklist review: 2026 Topps Inception Football | football | missing",
-      "Checklist review: 2026 Topps Cosmic Chrome Baseball | baseball | missing",
-      "Checklist review: 2026 Panini Impeccable WNBA Basketball | basketball | missing"
-    ],
+    "needs_admin": [],
     "blocked": [
-      "2026 Panini Impeccable WNBA Basketball -> failed: No mapped checklist source for this year.",
-      "PRV watch failed: Print-run source discovery failed: Fetch failed 400 for https://slabsquatch.substack.com/api/v1/archive?sort=new&search=&offset=0&limit=20",
-      "PRV JSON sync failed: Scheduled PRV JSON sync returned a review response."
+      "2026 Topps Cosmic Chrome Baseball -> failed: Timeout: https://www.checklistcenter.com/2026-topps-cosmic-chrome-baseball-card-checklist/",
+      "Checklist watch failed: Timeout: https://www.checklistcenter.com/",
+      "PRV watch failed: Print-run source discovery failed: Fetch failed 400 for https://slabsquatch.substack.com/api/v1/archive?sort=new&search=&offset=0&limit=20"
     ],
     "proof": [],
     "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
-    "summary": "Checked 10 checklist source item(s) and 0 PRV source item(s). 0 completed/progress item(s), 8 needs-admin item(s), 3 blocked/issue item(s)."
+    "summary": "Checked 0 checklist source item(s) and 0 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 3 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -8078,7 +8075,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-11-10T17:01:42.193Z",
+  "saved_at": "2026-11-11T17:01:28.041Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

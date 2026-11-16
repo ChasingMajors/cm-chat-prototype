@@ -477,15 +477,21 @@
       "sport": "baseball",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "failed",
       "recommendedAction": "Create approval task: inspect source checklist, import into Baseball source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "Checklist sheet write failed.",
+      "validationResult": "Timeout: https://www.checklistcenter.com/2026-topps-museum-collection-baseball-card-checklist/",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-topps-museum-collection-baseball-card-checklist/",
       "createdAt": "2026-11-14T16:57:03.724Z",
-      "updatedAt": "2026-11-15T16:57:03.541Z"
+      "updatedAt": "2026-11-16T16:57:03.956Z",
+      "targetBucket": "",
+      "pendingValidationAttempts": 0,
+      "visualStartedAt": "",
+      "visualRunUrl": "",
+      "repairProof": "Agent attempted repair for 2026 Topps Museum Collection Baseball but it failed. Timeout: https://www.checklistcenter.com/2026-topps-museum-collection-baseball-card-checklist/",
+      "autoExecutedAt": "2026-11-16T16:57:03.956Z"
     },
     {
       "id": "source_watch|baseball|2026 topps allen and ginter x baseball",
@@ -557,7 +563,7 @@
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-11-10T16:57:05.347Z",
-      "updatedAt": "2026-11-15T16:57:03.541Z"
+      "updatedAt": "2026-11-16T16:57:03.956Z"
     },
     {
       "id": "source_watch|basketball|2026 panini impeccable wnba basketball",
@@ -1979,6 +1985,46 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1794848421547_alert",
+      "ts": "2026-11-16T16:57:03.956Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel needs admin now",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1794848420900",
+      "ts": "2026-11-16T16:57:03.956Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 0 checked. PRV: 0 actionable from 0 checked. PRV sync: passed. Auto actions: 1 run. 2026 Topps Museum Collection Baseball -> failed (Timeout: https://www.checklistcenter.com/2026-topps-museum-collection-baseball-card-checklist/) Checklist error: Timeout: https://www.checklistcenter.com/ PRV source error: Print-run source discovery failed: Fetch failed 400 for https://slabsquatch.substack.com/api/v1/archive?sort=new&search=&offset=0&limit=20",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1794848420899",
+      "ts": "2026-11-16T16:57:03.956Z",
+      "type": "auto_action",
+      "title": "Full-auto action failed",
+      "detail": "2026 Topps Museum Collection Baseball: Checklist sheet write failed. Timeout: https://www.checklistcenter.com/2026-topps-museum-collection-baseball-card-checklist/",
+      "status": "failed",
+      "product": "2026 Topps Museum Collection Baseball",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1794848414650",
+      "ts": "2026-11-16T16:57:03.956Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1794761988860_alert",
       "ts": "2026-11-15T16:57:03.541Z",
       "type": "admin_alert",
@@ -2737,82 +2783,30 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1792771207037_alert",
-      "ts": "2026-10-23T15:57:03.526Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1792771206326",
-      "ts": "2026-10-23T15:57:03.526Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 3 actionable from 20 checked. PRV: 52 actionable from 65 checked. PRV sync: passed. 13 admin-ignored source item(s) skipped. Auto action: PRV coverage differences or uncertainty require explicit product approval before writing.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1792771206325",
-      "ts": "2026-10-23T15:57:03.526Z",
-      "type": "auto_action",
-      "title": "Full-auto action blocked",
-      "detail": "2026 Mid-Year Format Value Rankings- Day 2: Cost Per Numbered Card: PRV coverage differences or uncertainty require explicit product approval before writing.",
-      "status": "needs_review",
-      "product": "2026 Mid-Year Format Value Rankings- Day 2: Cost Per Numbered Card",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1792771206323",
-      "ts": "2026-10-23T15:57:03.526Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
     "ok": false,
     "status": "issue",
-    "generated_at": "2026-11-15T16:57:03.541Z",
+    "generated_at": "2026-11-16T16:57:03.956Z",
     "checked": {
-      "checklist_count": 20,
+      "checklist_count": 0,
       "prv_count": 0,
       "skipped_ignored": 0
     },
     "completed_count": 0,
-    "needs_admin_count": 13,
-    "blocked_count": 2,
+    "needs_admin_count": 0,
+    "blocked_count": 3,
     "completed": [],
-    "needs_admin": [
-      "Checklist review: 2026 Topps Midnight Football | football | missing",
-      "Checklist review: 2026-27 Upper Deck Advent Calendar Series 1 Hockey | hockey | missing",
-      "Checklist review: 2026 Topps Allen & Ginter X Baseball | baseball | missing",
-      "Checklist review: 2026 Topps Museum Collection Baseball | baseball | missing",
-      "Checklist review: 2025-26 Upper Deck Tableau Hockey | hockey | missing",
-      "Checklist review: 2026 Topps Palatial Argentina Soccer | soccer | missing",
-      "Checklist review: 2026 Upper Deck Fall Expo Hockey | hockey | missing",
-      "Checklist review: 2026-27 Topps Flagship Basketball | basketball | missing",
-      "Checklist review: 2025-26 Topps Stadium Club Chrome UEFA Soccer | soccer | missing",
-      "Checklist review: 2026 Topps Inception Football | football | missing",
-      "Checklist review: 2026 Topps Cosmic Chrome Baseball | baseball | missing",
-      "Checklist review: 2026 Panini Impeccable WNBA Basketball | basketball | missing"
-    ],
+    "needs_admin": [],
     "blocked": [
-      "2026 Bowman University Best Football -> failed: Checklist source or target changed. Preview again before writing.",
+      "2026 Topps Museum Collection Baseball -> failed: Timeout: https://www.checklistcenter.com/2026-topps-museum-collection-baseball-card-checklist/",
+      "Checklist watch failed: Timeout: https://www.checklistcenter.com/",
       "PRV watch failed: Print-run source discovery failed: Fetch failed 400 for https://slabsquatch.substack.com/api/v1/archive?sort=new&search=&offset=0&limit=20"
     ],
     "proof": [],
     "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
-    "summary": "Checked 20 checklist source item(s) and 0 PRV source item(s). 0 completed/progress item(s), 13 needs-admin item(s), 2 blocked/issue item(s)."
+    "summary": "Checked 0 checklist source item(s) and 0 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 3 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -8094,7 +8088,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-11-15T16:59:48.903Z",
+  "saved_at": "2026-11-16T17:00:21.626Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

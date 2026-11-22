@@ -477,21 +477,21 @@
       "sport": "soccer",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "failed",
       "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "Checklist sheet write failed.",
+      "validationResult": "Checklist source or target changed. Preview again before writing.",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-topps-gold-premier-league-soccer-card-checklist/",
       "createdAt": "2026-11-18T16:57:03.636Z",
-      "updatedAt": "2026-11-21T16:57:03.876Z",
+      "updatedAt": "2026-11-22T16:57:03.671Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
-      "repairProof": "Agent attempted repair for 2026 27 Topps Gold Premier League Soccer but it failed. Checklist source or target changed. Preview again before writing.",
-      "autoExecutedAt": "2026-11-18T16:57:03.636Z"
+      "repairProof": "Agent attempted repair for 2026-27 Topps Gold Premier League Soccer but it failed. Checklist source or target changed. Preview again before writing.",
+      "autoExecutedAt": "2026-11-22T16:57:03.671Z"
     },
     {
       "id": "source_watch|basketball|2025-26 topps x bob ross the joy of basketball",
@@ -659,7 +659,7 @@
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-11-10T16:57:05.347Z",
-      "updatedAt": "2026-11-21T16:57:03.876Z"
+      "updatedAt": "2026-11-22T16:57:03.671Z"
     },
     {
       "id": "source_watch|basketball|2026 panini impeccable wnba basketball",
@@ -2005,6 +2005,46 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1795366808138_alert",
+      "ts": "2026-11-22T16:57:03.671Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel needs admin now",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1795366807649",
+      "ts": "2026-11-22T16:57:03.671Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 0 checked. PRV: 0 actionable from 0 checked. PRV sync: passed. Auto actions: 1 run. 2026-27 Topps Gold Premier League Soccer -> failed (Checklist source or target changed. Preview again before writing.) Checklist error: Timeout: https://www.checklistcenter.com/ PRV source error: Print-run source discovery failed: Fetch failed 400 for https://slabsquatch.substack.com/api/v1/archive?sort=new&search=&offset=0&limit=20",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1795366807648",
+      "ts": "2026-11-22T16:57:03.671Z",
+      "type": "auto_action",
+      "title": "Full-auto action failed",
+      "detail": "2026-27 Topps Gold Premier League Soccer: Checklist sheet write failed. Checklist source or target changed. Preview again before writing.",
+      "status": "failed",
+      "product": "2026-27 Topps Gold Premier League Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1795366804092",
+      "ts": "2026-11-22T16:57:03.671Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1795280435529_alert",
       "ts": "2026-11-21T16:57:03.876Z",
       "type": "admin_alert",
@@ -2763,82 +2803,30 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1793203223204_alert",
-      "ts": "2026-10-28T15:57:03.733Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1793203222329",
-      "ts": "2026-10-28T15:57:03.733Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 3 actionable from 10 checked. PRV: 74 actionable from 76 checked. PRV sync: passed. 1 admin-ignored source item(s) skipped. Auto action: PRV coverage differences or uncertainty require explicit product approval before writing.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1793203222328",
-      "ts": "2026-10-28T15:57:03.733Z",
-      "type": "auto_action",
-      "title": "Full-auto action blocked",
-      "detail": "2025 Topps Update Series Baseball: PRV coverage differences or uncertainty require explicit product approval before writing.",
-      "status": "needs_review",
-      "product": "2025 Topps Update Series Baseball",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1793203222325",
-      "ts": "2026-10-28T15:57:03.733Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
     "ok": false,
     "status": "issue",
-    "generated_at": "2026-11-21T16:57:03.876Z",
+    "generated_at": "2026-11-22T16:57:03.671Z",
     "checked": {
-      "checklist_count": 20,
+      "checklist_count": 0,
       "prv_count": 0,
       "skipped_ignored": 0
     },
     "completed_count": 0,
-    "needs_admin_count": 13,
-    "blocked_count": 2,
+    "needs_admin_count": 0,
+    "blocked_count": 3,
     "completed": [],
-    "needs_admin": [
-      "Checklist review: 2026 Topps Chrome Football | football | missing",
-      "Checklist review: 2026 Topps Pro Debut Baseball | baseball | missing",
-      "Checklist review: 2025-26 Topps X Bob Ross The Joy of Basketball | basketball | missing",
-      "Checklist review: 2026-27 Topps Gold Premier League Soccer | soccer | missing",
-      "Checklist review: 2026 Topps Midnight Football | football | missing",
-      "Checklist review: 2026-27 Upper Deck Advent Calendar Series 1 Hockey | hockey | missing",
-      "Checklist review: 2026 Topps Allen & Ginter X Baseball | baseball | missing",
-      "Checklist review: 2026 Topps Museum Collection Baseball | baseball | missing",
-      "Checklist review: 2025-26 Upper Deck Tableau Hockey | hockey | missing",
-      "Checklist review: 2026 Topps Palatial Argentina Soccer | soccer | missing",
-      "Checklist review: 2026 Upper Deck Fall Expo Hockey | hockey | missing",
-      "Checklist review: 2026-27 Topps Flagship Basketball | basketball | missing"
-    ],
+    "needs_admin": [],
     "blocked": [
-      "2026 Topps Chrome Football -> failed: Checklist source or target changed. Preview again before writing.",
+      "2026-27 Topps Gold Premier League Soccer -> failed: Checklist source or target changed. Preview again before writing.",
+      "Checklist watch failed: Timeout: https://www.checklistcenter.com/",
       "PRV watch failed: Print-run source discovery failed: Fetch failed 400 for https://slabsquatch.substack.com/api/v1/archive?sort=new&search=&offset=0&limit=20"
     ],
     "proof": [],
     "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
-    "summary": "Checked 20 checklist source item(s) and 0 PRV source item(s). 0 completed/progress item(s), 13 needs-admin item(s), 2 blocked/issue item(s)."
+    "summary": "Checked 0 checklist source item(s) and 0 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 3 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -8120,7 +8108,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-11-21T17:00:35.592Z",
+  "saved_at": "2026-11-22T17:00:08.177Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

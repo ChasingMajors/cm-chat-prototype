@@ -525,21 +525,21 @@
       "sport": "soccer",
       "code": "",
       "riskLevel": "medium",
-      "status": "approval_required",
+      "status": "failed",
       "recommendedAction": "Create approval task: inspect source checklist, import into Soccer source sheet, publish that source, rebuild index if product is new, then retest search.",
       "adminDecision": "",
-      "executionResult": "",
-      "validationResult": "",
+      "executionResult": "Checklist sheet write failed.",
+      "validationResult": "Timeout: https://www.checklistcenter.com/2026-27-topps-gold-premier-league-soccer-card-checklist/",
       "runUrl": "",
       "sourceUrl": "https://www.checklistcenter.com/2026-27-topps-gold-premier-league-soccer-card-checklist/",
       "createdAt": "2026-11-18T16:57:03.636Z",
-      "updatedAt": "2026-11-23T16:57:03.549Z",
+      "updatedAt": "2026-11-26T16:57:03.955Z",
       "targetBucket": "",
       "pendingValidationAttempts": 0,
       "visualStartedAt": "",
       "visualRunUrl": "",
-      "repairProof": "Agent attempted repair for 2026-27 Topps Gold Premier League Soccer but it failed. Checklist source or target changed. Preview again before writing.",
-      "autoExecutedAt": "2026-11-22T16:57:03.671Z"
+      "repairProof": "Agent attempted repair for 2026 27 Topps Gold Premier League Soccer but it failed. Timeout: https://www.checklistcenter.com/2026-27-topps-gold-premier-league-soccer-card-checklist/",
+      "autoExecutedAt": "2026-11-26T16:57:03.955Z"
     },
     {
       "id": "source_watch|basketball|2025 26 topps x bob ross the joy of basketball",
@@ -699,15 +699,15 @@
       "sport": "",
       "code": "prv_full_sync",
       "riskLevel": "high",
-      "status": "failed",
-      "recommendedAction": "Run Agent Cycle to let Sentinel retry PRV JSON sync once. If it fails again, inspect Static Data Exporter logs and GitHub publish permissions.",
+      "status": "validated",
+      "recommendedAction": "No admin action needed unless a specific PRV product fails public validation.",
       "adminDecision": "",
-      "executionResult": "Scheduled PRV full JSON sync failed.",
-      "validationResult": "Scheduled PRV JSON sync returned a review response.",
+      "executionResult": "Scheduled PRV full JSON sync completed through Static Data Exporter.",
+      "validationResult": "Scheduled PRV JSON sync completed.",
       "runUrl": "",
       "sourceUrl": "",
       "createdAt": "2026-11-10T16:57:05.347Z",
-      "updatedAt": "2026-11-25T16:57:04.514Z"
+      "updatedAt": "2026-11-26T16:57:03.955Z"
     },
     {
       "id": "source_watch|basketball|2026 panini impeccable wnba basketball",
@@ -2015,6 +2015,46 @@
   "agent_run_queue": [],
   "activity_log": [
     {
+      "id": "log_1795712543990_alert",
+      "ts": "2026-11-26T16:57:03.955Z",
+      "type": "admin_alert",
+      "title": "CM Sentinel needs admin now",
+      "detail": "Alert sent via email.",
+      "status": "sent",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1795712543554",
+      "ts": "2026-11-26T16:57:03.955Z",
+      "type": "agent_sweep",
+      "title": "Scheduled Agent Sweep complete",
+      "detail": "Checklist: 0 actionable from 0 checked. PRV: 0 actionable from 0 checked. PRV sync: passed. Auto actions: 1 run. 2026 27 Topps Gold Premier League Soccer -> failed (Timeout: https://www.checklistcenter.com/2026-27-topps-gold-premier-league-soccer-card-checklist/) Checklist error: Timeout: https://www.checklistcenter.com/ PRV source error: Print-run source discovery failed: Fetch failed 400 for https://slabsquatch.substack.com/api/v1/archive?sort=new&search=&offset=0&limit=20",
+      "status": "validated",
+      "product": "",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1795712543553",
+      "ts": "2026-11-26T16:57:03.955Z",
+      "type": "auto_action",
+      "title": "Full-auto action failed",
+      "detail": "2026 27 Topps Gold Premier League Soccer: Checklist sheet write failed. Timeout: https://www.checklistcenter.com/2026-27-topps-gold-premier-league-soccer-card-checklist/",
+      "status": "failed",
+      "product": "2026 27 Topps Gold Premier League Soccer",
+      "source": "operator_backend"
+    },
+    {
+      "id": "log_1795712537073",
+      "ts": "2026-11-26T16:57:03.955Z",
+      "type": "prv_sync",
+      "title": "Scheduled PRV sync complete",
+      "detail": "Scheduled PRV JSON sync completed.",
+      "status": "validated",
+      "product": "Print Run Vault",
+      "source": "operator_backend"
+    },
+    {
       "id": "log_1795626109426_alert",
       "ts": "2026-11-25T16:57:04.514Z",
       "type": "admin_alert",
@@ -2773,52 +2813,12 @@
       "status": "validated",
       "product": "Print Run Vault",
       "source": "operator_backend"
-    },
-    {
-      "id": "log_1793552452349_alert",
-      "ts": "2026-11-01T16:57:03.641Z",
-      "type": "admin_alert",
-      "title": "CM Sentinel found items for admin review",
-      "detail": "Alert sent via email.",
-      "status": "sent",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1793552451654",
-      "ts": "2026-11-01T16:57:03.641Z",
-      "type": "agent_sweep",
-      "title": "Scheduled Agent Sweep complete",
-      "detail": "Checklist: 5 actionable from 9 checked. PRV: 71 actionable from 76 checked. PRV sync: passed. 3 admin-ignored source item(s) skipped. Auto action: PRV coverage differences or uncertainty require explicit product approval before writing.",
-      "status": "needs_review",
-      "product": "",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1793552451654",
-      "ts": "2026-11-01T16:57:03.641Z",
-      "type": "auto_action",
-      "title": "Full-auto action blocked",
-      "detail": "2025 Cosmic Chrome: PRV coverage differences or uncertainty require explicit product approval before writing.",
-      "status": "needs_review",
-      "product": "2025 Cosmic Chrome",
-      "source": "operator_backend"
-    },
-    {
-      "id": "log_1793552451651",
-      "ts": "2026-11-01T16:57:03.641Z",
-      "type": "prv_sync",
-      "title": "Scheduled PRV sync complete",
-      "detail": "Scheduled PRV JSON sync completed.",
-      "status": "validated",
-      "product": "Print Run Vault",
-      "source": "operator_backend"
     }
   ],
   "last_agent_report": {
     "ok": false,
     "status": "issue",
-    "generated_at": "2026-11-25T16:57:04.514Z",
+    "generated_at": "2026-11-26T16:57:03.955Z",
     "checked": {
       "checklist_count": 0,
       "prv_count": 0,
@@ -2826,18 +2826,17 @@
     },
     "completed_count": 0,
     "needs_admin_count": 0,
-    "blocked_count": 4,
+    "blocked_count": 3,
     "completed": [],
     "needs_admin": [],
     "blocked": [
-      "2026 Topps Chrome Football -> failed: Timeout: https://www.checklistcenter.com/2026-topps-chrome-football-card-checklist/",
+      "2026 27 Topps Gold Premier League Soccer -> failed: Timeout: https://www.checklistcenter.com/2026-27-topps-gold-premier-league-soccer-card-checklist/",
       "Checklist watch failed: Timeout: https://www.checklistcenter.com/",
-      "PRV watch failed: Print-run source discovery failed: Fetch failed 400 for https://slabsquatch.substack.com/api/v1/archive?sort=new&search=&offset=0&limit=20",
-      "PRV JSON sync failed: Scheduled PRV JSON sync returned a review response."
+      "PRV watch failed: Print-run source discovery failed: Fetch failed 400 for https://slabsquatch.substack.com/api/v1/archive?sort=new&search=&offset=0&limit=20"
     ],
     "proof": [],
     "next_step": "Review blocked items first. Sentinel created/kept them out of full-auto until an admin or engineering fix is safe.",
-    "summary": "Checked 0 checklist source item(s) and 0 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 4 blocked/issue item(s)."
+    "summary": "Checked 0 checklist source item(s) and 0 PRV source item(s). 0 completed/progress item(s), 0 needs-admin item(s), 3 blocked/issue item(s)."
   },
   "visual_tests": {
     "soccer|2025_26_topps_uefa_japan_edition": {
@@ -8119,7 +8118,7 @@
     }
   },
   "operator_endpoint": "https://script.google.com/macros/s/AKfycbyH90r_uVKKVyEUPAzQv65PlMC7j6LGYxq3s2HWAjBwkpTsLOo8U7KPhBWCD-6ExRjc/exec",
-  "saved_at": "2026-11-25T17:01:49.639Z",
+  "saved_at": "2026-11-26T17:02:24.036Z",
   "saved_by": "cm_command_center_operator",
   "json_publish_retry_queue": [
     {

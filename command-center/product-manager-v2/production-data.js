@@ -9,6 +9,7 @@
   const sportKey=value=>String(value??'').trim().toLowerCase();
   const owned=(o,key)=>o&&Object.hasOwn(o,key)?o[key]:undefined;
   const refCode=ref=>ref.Code||ref.code;
+  const vaultTable=(code,rows)=>({name:'Vault records',rows,defaults:{product_id:code},fields:['set_name','category','section','measurement','serial_limit','checklist_size','notes','source','calculation']});
   function file(name) {
     if(typeof name!=='string'||!/^[A-Za-z0-9_-]+\.json$/.test(name))throw Error('A source file name is invalid.');
     return name;
@@ -21,7 +22,9 @@
   }
   async function load(product,kind,{signal,fetcher=fetch}={}) {
     if(!['cv','prv'].includes(kind))throw Error('Invalid data collection.');
-    const refs=product.refs[kind==='cv'?'json':'prv'];
+    const startVaultDraft=kind==='prv'&&product.refs.prv.length===0&&product.refs.json.length===1&&
+      refCode(product.refs.json[0])===product.code&&sportKey(product.refs.json[0].sport)===sportKey(product.sport);
+    const refs=product.refs[kind==='cv'||startVaultDraft?'json':'prv'];
     if(refs.length!==1)throw Error(refs.length?'Source identity is ambiguous.':'No '+kind.toUpperCase()+' source is indexed for this product.');
     const ref=refs[0],code=refCode(ref),sport=sportKey(ref.sport);
     if(!code||!sport)throw Error('The product source is missing its identifier.');
@@ -52,13 +55,25 @@
         {name:'Parallels',rows:p.parallels||[],defaults:{code},fields:['parallel_name','serial_no','applies_to_section','applies_to_subset']},
         {name:'Product metadata',rows:[p.meta],singleton:true}];
       source='Live production Checklist Vault JSON';
+    }else if(startVaultDraft){
+      const [checklistIndex,vaultIndex]=await Promise.all([live('/data/v1/checklists/index.json'),live('/data/v2/vault/index.json')]);
+      assertRevision(checklistIndex,revision);
+      assertRevision(vaultIndex,revision);
+      const [checklist,duplicate]=exact(checklistIndex.index,code,sport);
+      const existingVault=vaultIndex.index.some(entry=>sportKey(entry.sport)===sport&&
+        (refCode(entry)===code||(checklist?.DisplayName&&entry.DisplayName===checklist.DisplayName)));
+      if(!checklist||duplicate||existingVault)
+        throw Error('Production source indexing changed. Reload the inventory and open the product again.');
+      tables=[vaultTable(code,[])];
+      source='New Print Run Vault draft';
+      note='This product has a production checklist and no published Vault source. Add records to start a local draft.';
     }else{
       const index=await live('/data/v2/vault/index.json');
       assertRevision(index,revision);
       const matches=exact(index.index,code,sport);
       if(matches.length!==1)throw Error('The indexed Vault source changed. Reload the inventory and open the product again.');
       const p=validate(await live(PRV+file(matches[0].file)));
-      tables=[{name:'Vault records',rows:p.rows,defaults:{product_id:code},fields:['set_name','category','section','measurement','serial_limit','checklist_size','notes','source','calculation']},
+      tables=[vaultTable(code,p.rows),
         {name:'Product metadata',rows:[p.meta],singleton:true}];
       source='Live production Print Run Vault JSON';
       const rawCodes=[...new Set(p.rows.map(row=>row.raw?.code).filter(Boolean))];

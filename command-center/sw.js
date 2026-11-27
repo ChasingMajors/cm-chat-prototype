@@ -1,4 +1,4 @@
-const CACHE_NAME = "cm-sentinel-pwa-v17-product-manager";
+const CACHE_NAME = "cm-sentinel-pwa-v18-product-manager-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -28,7 +28,7 @@ self.addEventListener("fetch", event => {
   if (url.origin !== self.location.origin) return;
   // Administrative inventory responses use POST. Also avoid retaining product
   // identifiers from detail-page URLs in the offline shell cache.
-  if (url.pathname.includes("/command-center/product-manager/")) return;
+  if (/\/command-center\/product-manager(?:-v2)?\//.test(url.pathname)) return;
 
   event.respondWith(
     fetch(request)

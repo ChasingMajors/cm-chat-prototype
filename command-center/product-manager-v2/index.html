@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://app.chasingmajors.com https://api.github.com https://raw.githubusercontent.com; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Product Manager 2.0 · CM Sentinel</title>
+  <link rel="stylesheet" href="product-manager.css?v=2">
+  <script src="editor-model.js?v=1" defer></script>
+  <script src="editor.js?v=1" defer></script>
+  <script src="production-data.js?v=1" defer></script>
+  <script src="product-manager.js?v=2" defer></script>
+</head>
+<body>
+  <nav class="topbar" aria-label="Sentinel">
+    <a class="brand" href="../"><span class="brand-mark" aria-hidden="true">CM</span> Sentinel</a>
+    <span class="breadcrumb">Product Manager 2.0</span>
+    <span class="badge preview">Publishing disabled</span>
+    <a class="legacy" href="../product-manager/">Existing Product Manager</a>
+    <button id="logout" hidden>Lock</button>
+  </nav>
+  <main>
+    <header id="page-header"><div><h1>Product Manager 2.0</h1><p>Production CV and PRV data with local draft editing</p></div></header>
+    <section id="login" class="panel sign-in">
+      <h2>Administrator access</h2>
+      <form id="login-form"><label for="key">Sentinel admin key</label><div class="inline"><input id="key" type="password" autocomplete="off" required maxlength="512"><button class="primary" type="submit">Unlock</button></div></form>
+    </section>
+    <p id="message" role="status" aria-live="polite"></p>
+    <div id="dashboard" hidden>
+      <section id="list">
+        <div id="sports" class="tabs" role="group" aria-label="Sport"></div>
+        <section id="summary" class="summary" aria-label="Sport summary"></section>
+        <p id="source-notice" class="notice" hidden></p>
+        <section class="panel inventory">
+          <form id="filters" role="search">
+            <label class="search">Search products<input id="q" type="search" placeholder="Name, year, maker or code" maxlength="150"></label>
+            <label>Year<select id="year"></select></label>
+            <label>Manufacturer<select id="manufacturer"></select></label>
+            <label>Show<select id="filter"><option value="">All products</option><option value="missing_cv">Missing CV</option><option value="missing_prv">Missing PRV</option><option value="partial">Incomplete</option><option value="sync">Sync issues</option><option value="recent">Recently updated</option><option value="attention">Needs attention</option></select></label>
+            <button id="reset" type="button">Reset</button>
+          </form>
+          <div class="table-wrap"><table><caption class="sr-only">Product inventory</caption><thead><tr id="inventory-columns"></tr></thead><tbody id="rows"></tbody></table></div>
+          <p id="empty" hidden>No products match these filters.</p>
+          <footer class="pagination"><span id="page-info"></span><div><button id="previous">Previous</button><button id="next">Next</button></div></footer>
+        </section>
+        <div class="freshness"><span id="freshness"></span><button id="reload" type="button">Reload inventory</button></div>
+      </section>
+      <section id="detail" hidden aria-labelledby="detail-name">
+        <div class="workspace-nav"><button id="back">All products</button><div><button id="product-previous">Previous product</button><button id="product-next">Next product</button></div></div>
+        <header id="detail-header"><div><h2 id="detail-name"></h2><p id="detail-meta"></p></div><span id="draft-state" class="badge" hidden>Unpublished draft</span></header>
+        <nav id="workspace-tabs" class="tabs" aria-label="Product workspace"></nav>
+        <div id="detail-content" class="panel workspace"></div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
